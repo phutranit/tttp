@@ -2,13 +2,28 @@ package vn.greenglobal.tttp;
 
 import java.util.Arrays;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import io.katharsis.resource.registry.ServiceUrlProvider;
+import io.katharsis.spring.boot.KatharsisConfigV2;
+import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 
 @SpringBootApplication
+@Import(KatharsisConfigV2.class)
+@EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
+@EnableAutoConfiguration(exclude={ElasticsearchAutoConfiguration.class})
 public class Application {
 
 	public static void main(String[] args) {
@@ -30,4 +45,19 @@ public class Application {
 		};
 	}
 
+	@Bean
+	public ServiceUrlProvider getServiceUrlProvider() {
+		return new ServiceUrlProvider() {
+			@Value("${katharsis.pathPrefix}")
+			private String pathPrefix;
+
+			@Resource
+			private HttpServletRequest request;
+
+			@Override
+			public String getUrl() {
+				return request.getScheme() + "://" + request.getHeader("host") + request.getContextPath() + pathPrefix;
+			}
+		};
+	}
 }
