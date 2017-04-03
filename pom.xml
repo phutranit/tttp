@@ -20,20 +20,11 @@
 	</properties>
 
 	<repositories>
-		<!-- <repository>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Repository Group</name>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository> -->
+		<!-- <repository> <id>jboss-public-repository-group</id> <name>JBoss Public 
+			Repository Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url> 
+			<layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
+			</releases> <snapshots> <enabled>false</enabled> <updatePolicy>never</updatePolicy> 
+			</snapshots> </repository> -->
 		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
@@ -72,6 +63,8 @@
 			<groupId>net.daum.clix</groupId>
 			<artifactId>spring-data-rest-webcommon</artifactId>
 			<version>0.9.0-SNAPSHOT</version>
+			<!-- <scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/spring-data-rest-webcommon-0.9.0-SNAPSHOT.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -88,9 +81,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-        </dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
@@ -100,7 +93,7 @@
 			<artifactId>commons-collections</artifactId>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -154,5 +147,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
