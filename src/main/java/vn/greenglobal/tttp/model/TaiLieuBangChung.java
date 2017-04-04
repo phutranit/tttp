@@ -32,7 +32,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
-	private SoTiepDan soTiepDan;
+	private SoTiepCongDan soTiepCongDan;
 	
 	@ManyToOne
 	@JsonApiToOne
@@ -87,12 +87,12 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.loaiTaiLieu = loaiTaiLieu;
 	}
 
-	public SoTiepDan getSoTiepDan() {
-		return soTiepDan;
+	public SoTiepCongDan getSoTiepCongDan() {
+		return soTiepCongDan;
 	}
 
-	public void setSoTiepDan(SoTiepDan soTiepDan) {
-		this.soTiepDan = soTiepDan;
+	public void setSoTiepCongDan(SoTiepCongDan soTiepCongDan) {
+		this.soTiepCongDan = soTiepCongDan;
 	}
 
 	public Don getDon() {
