@@ -1,2 +1,10 @@
-/target/
+target
 /.project
+.classpath
+/bin/
+/src-gen/
+
+.factorypath
+.settings/org.eclipse.wst.common.component
+.settings/org.eclipse.wst.common.project.facet.core.xml
+/.settings/
