@@ -1,6 +1,6 @@
 package vn.greenglobal.tttp.enums;
 
-public enum NguonTiepNhanDon {
+public enum NguonTiepNhanDonEnum {
 
 	TRUC_TIEP("Trực tiếp"),
 	BUU_CHINH("Bưu chính"),
@@ -8,7 +8,7 @@ public enum NguonTiepNhanDon {
 	NGUON_KHAC("Nguồn khác"),
 	LANH_DAO_TINH_THANH_PHO("Lãnh đạo Tỉnh/Thành phố");
 
-	NguonTiepNhanDon(String text) {
+	NguonTiepNhanDonEnum(String text) {
 		this.text = text;
 	}
 
