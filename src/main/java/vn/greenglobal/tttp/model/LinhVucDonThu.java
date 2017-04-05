@@ -15,7 +15,7 @@ import io.katharsis.resource.annotations.JsonApiToOne;
 @Table(name = "linhvuc")
 @JsonApiResource(type = "linhvucs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
-public class LinhVuc extends Model<LinhVuc> {
+public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	private String ma = "";
 	private String ten = "";
@@ -26,7 +26,7 @@ public class LinhVuc extends Model<LinhVuc> {
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
-	private LinhVuc cha;
+	private LinhVucDonThu cha;
 
 	public String getMa() {
 		return ma;
@@ -60,11 +60,11 @@ public class LinhVuc extends Model<LinhVuc> {
 		this.linhVucKhac = linhVucKhac;
 	}
 
-	public LinhVuc getCha() {
+	public LinhVucDonThu getCha() {
 		return cha;
 	}
 
-	public void setCha(LinhVuc cha) {
+	public void setCha(LinhVucDonThu cha) {
 		this.cha = cha;
 	}
 
