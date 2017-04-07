@@ -10,14 +10,13 @@ import io.katharsis.resource.annotations.JsonApiResource;
 
 @Entity
 @Table(name = "chucvu")
-@JsonApiResource(type = "chucvus")
+//@JsonApiResource(type = "chucvus")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ChucVu extends Model<ChucVu> {
 
 	private String ma = "";
 	private String ten = "";
 	private String moTa = "";
-
 	public String getMa() {
 		return ma;
 	}

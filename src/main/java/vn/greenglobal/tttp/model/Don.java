@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -27,6 +28,7 @@ public class Don extends Model<Don> {
 
 	private LocalDateTime ngayTiepNhan;
 
+	@OneToOne
 	private Don donLanTruoc;
 
 	private LoaiDonEnum loaiDon;

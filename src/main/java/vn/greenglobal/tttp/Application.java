@@ -22,7 +22,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 
 @SuppressWarnings("deprecation")
 @SpringBootApplication
-@Import(KatharsisConfigV2.class)
+//@Import(KatharsisConfigV2.class)
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 public class Application {
@@ -46,7 +46,7 @@ public class Application {
 		};
 	}
 
-	@Bean
+	/*@Bean
 	public ServiceUrlProvider getServiceUrlProvider() {
 		return new ServiceUrlProvider() {
 			@Value("${katharsis.pathPrefix}")
@@ -60,5 +60,5 @@ public class Application {
 				return request.getScheme() + "://" + request.getHeader("host") + request.getContextPath() + pathPrefix;
 			}
 		};
-	}
+	}*/
 }
