@@ -3,12 +3,15 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
+import io.katharsis.resource.annotations.JsonApiToOne;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 
@@ -27,6 +30,9 @@ public class Don extends Model<Don> {
 
 	private LocalDateTime ngayTiepNhan;
 
+	@ManyToOne
+	@JsonApiToOne
+	@JsonApiIncludeByDefault
 	private Don donLanTruoc;
 
 	private LoaiDonEnum loaiDon;

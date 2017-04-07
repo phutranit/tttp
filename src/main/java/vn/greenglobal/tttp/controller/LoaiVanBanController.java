@@ -19,7 +19,7 @@ import vn.greenglobal.tttp.model.LoaiVanBan;
 public class LoaiVanBanController extends BaseController<LoaiVanBan> {
 
 	public LoaiVanBanController(BaseRepository<LoaiVanBan, Long> repo) {
-		super(repo, LoaiVanBan.class);
+		super(repo);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaivanbans/search/findByRsql")
