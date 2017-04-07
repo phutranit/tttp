@@ -7,5 +7,5 @@ import vn.greenglobal.tttp.model.LoaiVanBan;
 
 @RestResource(path = "loaivanbans")
 public interface LoaiVanBanRepository extends BaseRepository<LoaiVanBan, Long> {
-	
+
 }

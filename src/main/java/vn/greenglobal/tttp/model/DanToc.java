@@ -9,21 +9,24 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import io.katharsis.resource.annotations.JsonApiResource;
 
 @Entity
-@Table(name = "loaivanban")
-@JsonApiResource(type = "loaivanbans")
+@Table(name = "dantoc")
+@JsonApiResource(type = "dantocs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
-public class LoaiVanBan extends Model<LoaiVanBan> {
+public class DanToc extends Model<DanToc> {
 
-	private int soThuTu;
+	private String ma = "";
 	private String ten = "";
+	private String tenKhac = "";
 	private String moTa = "";
-	
-	public int getSoThuTu() {
-		return soThuTu;
+
+	private boolean thieuSo;
+
+	public String getMa() {
+		return ma;
 	}
 
-	public void setSoThuTu(int soThuTu) {
-		this.soThuTu = soThuTu;
+	public void setMa(String ma) {
+		this.ma = ma;
 	}
 
 	public String getTen() {
@@ -34,6 +37,22 @@ public class LoaiVanBan extends Model<LoaiVanBan> {
 		this.ten = ten;
 	}
 
+	public String getTenKhac() {
+		return tenKhac;
+	}
+
+	public void setTenKhac(String tenKhac) {
+		this.tenKhac = tenKhac;
+	}
+
+	public boolean isThieuSo() {
+		return thieuSo;
+	}
+
+	public void setThieuSo(boolean thieuSo) {
+		this.thieuSo = thieuSo;
+	}
+
 	public String getMoTa() {
 		return moTa;
 	}
@@ -41,5 +60,5 @@ public class LoaiVanBan extends Model<LoaiVanBan> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
-	
+
 }

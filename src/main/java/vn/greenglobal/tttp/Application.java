@@ -20,10 +20,11 @@ import io.katharsis.resource.registry.ServiceUrlProvider;
 import io.katharsis.spring.boot.KatharsisConfigV2;
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 
+@SuppressWarnings("deprecation")
 @SpringBootApplication
 @Import(KatharsisConfigV2.class)
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
-@EnableAutoConfiguration(exclude={ElasticsearchAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 public class Application {
 
 	public static void main(String[] args) {

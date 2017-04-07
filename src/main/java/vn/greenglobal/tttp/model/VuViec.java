@@ -1,30 +1,28 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
 import io.katharsis.resource.annotations.JsonApiResource;
+import io.katharsis.resource.annotations.JsonApiToOne;
 
 @Entity
-@Table(name = "loaivanban")
-@JsonApiResource(type = "loaivanbans")
+@Table(name = "vuviec")
+@JsonApiResource(type = "vuviecs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
-public class LoaiVanBan extends Model<LoaiVanBan> {
+public class VuViec extends Model<VuViec> {
 
-	private int soThuTu;
 	private String ten = "";
-	private String moTa = "";
-	
-	public int getSoThuTu() {
-		return soThuTu;
-	}
 
-	public void setSoThuTu(int soThuTu) {
-		this.soThuTu = soThuTu;
-	}
+	@ManyToOne
+	@JsonApiToOne
+	@JsonApiIncludeByDefault
+	private Don don;
 
 	public String getTen() {
 		return ten;
@@ -34,12 +32,12 @@ public class LoaiVanBan extends Model<LoaiVanBan> {
 		this.ten = ten;
 	}
 
-	public String getMoTa() {
-		return moTa;
+	public Don getDon() {
+		return don;
 	}
 
-	public void setMoTa(String moTa) {
-		this.moTa = moTa;
+	public void setDon(Don don) {
+		this.don = don;
 	}
-	
+
 }

@@ -9,23 +9,23 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import io.katharsis.resource.annotations.JsonApiResource;
 
 @Entity
-@Table(name = "loaivanban")
-@JsonApiResource(type = "loaivanbans")
+@Table(name = "capdonvihanhchinh")
+@JsonApiResource(type = "capdonvihanhchinhs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
-public class LoaiVanBan extends Model<LoaiVanBan> {
+public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 
-	private int soThuTu;
+	private String ma = "";
 	private String ten = "";
 	private String moTa = "";
+
+	public String getMa() {
+		return ma;
+	}
+
+	public void setMa(String ma) {
+		this.ma = ma;
+	}
 	
-	public int getSoThuTu() {
-		return soThuTu;
-	}
-
-	public void setSoThuTu(int soThuTu) {
-		this.soThuTu = soThuTu;
-	}
-
 	public String getTen() {
 		return ten;
 	}
@@ -41,5 +41,5 @@ public class LoaiVanBan extends Model<LoaiVanBan> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
-	
+
 }
