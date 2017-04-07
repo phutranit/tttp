@@ -9,7 +9,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "thamquyengiaiquyet")
-//@JsonApiResource(type = "thamquyengiaiquyets")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 
@@ -17,8 +16,6 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	private String moTa = "";
 
 	@ManyToOne
-	//@JsonApiToOne
-	//@JsonApiIncludeByDefault
 	private ThamQuyenGiaiQuyet cha;
 
 	public String getTen() {
