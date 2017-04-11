@@ -15,6 +15,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import io.katharsis.resource.registry.ServiceUrlProvider;
 import io.katharsis.spring.boot.KatharsisConfigV2;
@@ -45,7 +48,18 @@ public class Application {
 
 		};
 	}
-
+	
+	@Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/tttp/api/**");
+            }
+        };
+    }
+	
+	
 	/*@Bean
 	public ServiceUrlProvider getServiceUrlProvider() {
 		return new ServiceUrlProvider() {
