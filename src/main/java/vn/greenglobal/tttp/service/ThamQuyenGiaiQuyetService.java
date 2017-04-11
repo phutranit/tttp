@@ -9,7 +9,7 @@ import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 
 public class ThamQuyenGiaiQuyetService {
 	
-	public Predicate predicateFindAll(String ten, String moTa, Long chaId) {
+	public Predicate predicateFindAll(String ten, String moTa, Long cha) {
 		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten));
@@ -19,8 +19,8 @@ public class ThamQuyenGiaiQuyetService {
 			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.eq(moTa));
 		}
 		
-		if (chaId != null && chaId > 0) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(chaId));
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(cha));
 		}
 		
 		return predAll;
