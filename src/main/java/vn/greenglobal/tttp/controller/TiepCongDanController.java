@@ -25,7 +25,7 @@ public class TiepCongDanController {
 	@RequestMapping(method = RequestMethod.GET, value = "/danhsachvuviecs", produces = { "application/json" })
 	public @ResponseBody JSONObject getAllDanTocs() throws FileNotFoundException, IOException, ParseException {
 		ClassLoader classLoader = getClass().getClassLoader();
-		String tcdFile = classLoader.getResource("tcd.json").getFile();
+		String tcdFile = classLoader.getResource("don.json").getFile();
 		JSONParser parser = new JSONParser();
 		Reader reader = new InputStreamReader(new FileInputStream(tcdFile), "UTF-8");
 		Object obj = parser.parse(reader);
@@ -59,11 +59,24 @@ public class TiepCongDanController {
 		return jsonObject;
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/congdans")
+	public @ResponseBody JSONObject getCongDans() throws IOException, ParseException {
+		log.info("Unable to getCongDans");
+		ClassLoader classLoader = getClass().getClassLoader();
+		String tcdFile = classLoader.getResource("congdan.json").getFile();
+		JSONParser parser = new JSONParser();
+		Reader reader = new InputStreamReader(new FileInputStream(tcdFile), "UTF-8");
+		Object obj = parser.parse(reader);
+		JSONObject jsonObject = (JSONObject) obj;
+		log.info("json " + jsonObject.toJSONString());
+		return jsonObject;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/congdans/{id}")
 	public @ResponseBody JSONObject getCongDans(@PathVariable("id") long id) throws IOException, ParseException {
 		log.info("Unable to getCongDans with id="+id+", not found");
 		ClassLoader classLoader = getClass().getClassLoader();
-		String tcdFile = classLoader.getResource("congdans.json").getFile();
+		String tcdFile = classLoader.getResource("congdan.json").getFile();
 		JSONParser parser = new JSONParser();
 		Reader reader = new InputStreamReader(new FileInputStream(tcdFile), "UTF-8");
 		Object obj = parser.parse(reader);
