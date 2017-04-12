@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -40,6 +41,11 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 
 	public void setCha(ThamQuyenGiaiQuyet cha) {
 		this.cha = cha;
+	}
+	
+	@Transient
+	public Long getThamQuyenGiaiQuyetId() {
+		return getId();
 	}
 
 }
