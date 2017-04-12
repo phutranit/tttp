@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 
-@RepositoryRestController
+@RestController
 public class ChucVuController extends BaseController<ChucVu> {
 
 	private static Log log = LogFactory.getLog(ChucVuController.class);

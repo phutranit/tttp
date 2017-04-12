@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAu
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 
@@ -37,6 +40,33 @@ public class Application {
 
 		};
 	}
+	
+	@Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/tttp/api/**");
+            }
+        };
+    }
+	
+	
+	/*@Bean
+	public ServiceUrlProvider getServiceUrlProvider() {
+		return new ServiceUrlProvider() {
+			@Value("${katharsis.pathPrefix}")
+			private String pathPrefix;
+
+			@Resource
+			private HttpServletRequest request;
+
+			@Override
+			public String getUrl() {
+				return request.getScheme() + "://" + request.getHeader("host") + request.getContextPath() + pathPrefix;
+			}
+		};
+	}*/
 
 	/*
 	 * @Bean public ServiceUrlProvider getServiceUrlProvider() { return new
