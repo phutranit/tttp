@@ -50,4 +50,10 @@ public class ThamQuyenGiaiQuyetService {
 		return thamQuyenGiaiQuyet;
 	}
 	
+	public boolean checkExistsData(ThamQuyenGiaiQuyetRepository repo, String ten) {
+		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false)
+				.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten)));
+		return thamQuyenGiaiQuyet != null ? true : false;
+	}
+	
 }
