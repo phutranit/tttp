@@ -9,6 +9,7 @@ import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import io.katharsis.resource.exception.ResourceException;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
@@ -47,15 +47,17 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.CREATED);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/thamquyengiaiquyets")
-	public @ResponseBody PagedResources<?> getList(Pageable pageable,
+	public @ResponseBody PagedResources<ThamQuyenGiaiQuyet> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			@RequestParam(value = "moTa", required = false) String moTa,
-			@RequestParam(value = "cha", required = false) Long cha) {
+			@RequestParam(value = "cha", required = false) Long cha,
+			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach ThamQuyenGiaiQuyet");
 
 		Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(ten, moTa, cha), pageable);
-		return assembler.toResource(page);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/thamquyengiaiquyets/{id}")
@@ -77,8 +79,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
 		if (!thamQuyenGiaiQuyetService.isExists(repo, id)) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the specified resource.");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		thamQuyenGiaiQuyet.setId(id);
