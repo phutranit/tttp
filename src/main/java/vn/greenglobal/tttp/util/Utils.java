@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class Utils {
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
 	}
 
-	public static <T> ResponseEntity<Object> doSave(BaseRepository<T, ?> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+	public static <T> ResponseEntity<Object> doSave(JpaRepository<T, ?> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		try {
 			repository.save(obj);
 		} catch (ConstraintViolationException e) {

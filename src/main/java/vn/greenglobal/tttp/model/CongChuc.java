@@ -35,8 +35,8 @@ public class CongChuc extends Model<CongChuc> {
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
-	private CoQuanQuanLy coQuanQuanLy;
-	
+	private CoQuanQuanLy donVi;
+
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
@@ -122,12 +122,12 @@ public class CongChuc extends Model<CongChuc> {
 		this.gioiTinh = gioiTinh;
 	}
 
-	public CoQuanQuanLy getCoQuanQuanLy() {
-		return coQuanQuanLy;
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
 	}
 
-	public void setCoQuanQuanLy(CoQuanQuanLy coQuanQuanLy) {
-		this.coQuanQuanLy = coQuanQuanLy;
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
 	}
 
 	public ChucVu getChucVu() {
