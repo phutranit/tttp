@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
-import java.time.LocalDateTime;
+import java.beans.Transient;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
@@ -25,8 +26,8 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonApiId
 	private Long id;
 	
-	private LocalDateTime ngayTao;
-	private LocalDateTime ngaySua;
+	private Date ngayTao;
+	private Date ngaySua;
 	
 	private boolean daXoa;
 	
@@ -49,22 +50,22 @@ public class Model<T extends Model<T>> implements Persistable {
 
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden=true)
-	public LocalDateTime getNgaySua() {
+	public Date getNgaySua() {
 		return this.ngaySua;
 	}
 
-	public void setNgaySua(LocalDateTime ngaySua1) {
+	public void setNgaySua(Date ngaySua1) {
 		this.ngaySua = ngaySua1;
 	}
 
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden=true)
-	public LocalDateTime getNgayTao() {
+	public Date getNgayTao() {
 		return this.ngayTao;
 	}
 
 
-	public void setNgayTao(LocalDateTime ngayTao1) {
+	public void setNgayTao(Date ngayTao1) {
 		this.ngayTao = ngayTao1;
 	}
 
@@ -77,6 +78,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.daXoa = daXoa;
 	}
 
+	@Transient
 	public boolean isNew() {
 		return id == null;
 	}
