@@ -36,7 +36,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "loaitailieus", description = "LoaiTaiLieu")
+@Api(value = "loaiTaiLieus", description = "Loại Tài Liệu")
 public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 
 	private static Log log = LogFactory.getLog(LoaiTaiLieuController.class);
@@ -50,7 +50,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/loaitailieus")
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus")
 	@ApiOperation(value = "Lấy danh sách LoaiTaiLieu", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<LoaiTaiLieu> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
@@ -60,7 +60,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/loaitailieus")
+	@RequestMapping(method = RequestMethod.POST, value = "/loaiTaiLieus")
 	@ApiOperation(value = "Thêm mới LoaiTaiLieu", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới LoaiTaiLieu thành công", response = LoaiTaiLieu.class),
 			@ApiResponse(code = 201, message = "Thêm mới LoaiTaiLieu thành công", response = LoaiTaiLieu.class)})
@@ -75,7 +75,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 
 	@ApiOperation(value = "Lấy LoaiTaiLieu theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy LoaiTaiLieu thành công", response = LoaiTaiLieu.class) })
-	@RequestMapping(method = RequestMethod.GET, value = "/loaitailieus/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus/{id}")
 	public ResponseEntity<PersistentEntityResource> getLoaiTaiLieu(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get LoaiTaiLieu theo id: " + id);
@@ -87,7 +87,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 		return new ResponseEntity<>(eass.toFullResource(loaiTaiLieu), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/loaitailieus/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/loaiTaiLieus/{id}")
 	@ApiOperation(value = "Cập nhật LoaiTaiLieu", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật LoaiTaiLieu thành công", response = LoaiTaiLieu.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
@@ -106,7 +106,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 		return Utils.doSave(repo, loaiTaiLieu, eass, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/loaitailieus/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/loaiTaiLieus/{id}")
 	@ApiOperation(value = "Xoá LoaiTaiLieu", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá LoaiTaiLieu thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
