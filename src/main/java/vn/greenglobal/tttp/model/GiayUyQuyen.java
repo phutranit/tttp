@@ -23,7 +23,7 @@ public class GiayUyQuyen extends Model<GiayUyQuyen> {
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
-	private CongDan congDan;
+	private Don_CongDan congDan;
 
 	public String getTen() {
 		return ten;
@@ -41,11 +41,11 @@ public class GiayUyQuyen extends Model<GiayUyQuyen> {
 		this.duongDan = duongDan;
 	}
 
-	public CongDan getCongDan() {
+	public Don_CongDan getCongDan() {
 		return congDan;
 	}
 
-	public void setCongDan(CongDan congDan) {
+	public void setCongDan(Don_CongDan congDan) {
 		this.congDan = congDan;
 	}
 	
