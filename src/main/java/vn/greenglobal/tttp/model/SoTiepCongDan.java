@@ -20,7 +20,8 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "sotiepcongdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
-
+	private static final long serialVersionUID = -6772485280557984436L;
+	
 	@ManyToOne
 	private Don don;
 	@ManyToOne
