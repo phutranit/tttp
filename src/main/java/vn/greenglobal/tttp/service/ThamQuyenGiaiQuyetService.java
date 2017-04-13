@@ -12,7 +12,7 @@ public class ThamQuyenGiaiQuyetService {
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.containsIgnoreCase(tuKhoa)
 					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)));
 		}
 		
