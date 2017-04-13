@@ -35,10 +35,25 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/file", produces = "application/json")
+	@RequestMapping(method = RequestMethod.POST, value = "/upload", produces = "application/json")
 	@ResponseBody
-	public Object file(HttpServletRequest req) {
-		System.out.println("file");
+	public Object upload(HttpServletRequest req) {
+		System.out.println("//file");
+		System.out.println(req);
+		Enumeration<String> hd = req.getHeaderNames();
+		String result = "";
+		for (;hd.hasMoreElements();) {
+			String s = hd.nextElement();
+			System.out.println(s + " = " + req.getHeader(s));
+			result += s + " = " + req.getHeader(s) + "; ";
+		}	
+		return Collections.singletonMap("response", result);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/authenticate", produces = "application/json")
+	@ResponseBody
+	public Object authenticate(HttpServletRequest req) {
+		System.out.println("//authenticate");
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";
