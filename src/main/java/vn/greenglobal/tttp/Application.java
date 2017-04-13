@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 
 @SpringBootApplication

@@ -27,7 +27,7 @@ public class Don extends Model<Don> {
 	private int soNguoi;
 
 	private LocalDateTime ngayTiepNhan;
-
+	
 	@OneToOne
 	private Don donLanTruoc;
 

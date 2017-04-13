@@ -7,21 +7,15 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "vuviec")
-@JsonApiResource(type = "vuviecs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VuViec extends Model<VuViec> {
 
 	private String ten = "";
+	private String noiDungVuViec = "";
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private Don don;
 
 	public String getTen() {
@@ -40,4 +34,11 @@ public class VuViec extends Model<VuViec> {
 		this.don = don;
 	}
 
+	public String getNoiDungVuViec() {
+		return noiDungVuViec;
+	}
+
+	public void setNoiDungVuViec(String noiDungVuViec) {
+		this.noiDungVuViec = noiDungVuViec;
+	}
 }
