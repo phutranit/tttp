@@ -9,6 +9,7 @@ public class ApiError {
 
 	private HttpStatus status;
     private String message;
+    private String code;
     private List<String> errors;
 
     //
@@ -31,6 +32,22 @@ public class ApiError {
         errors = Arrays.asList(error);
     }
 
+    public ApiError(final HttpStatus status, final String message, final String code, final List<String> errors) {
+        super();
+        this.status = status;
+        this.message = message;
+        this.code = code;
+        this.errors = errors;
+    }
+
+    public ApiError(final HttpStatus status, final String message, final String code, final String error) {
+        super();
+        this.status = status;
+        this.message = message;
+        this.code = code;
+        errors = Arrays.asList(error);
+    }
+    
     //
 
     public HttpStatus getStatus() {
@@ -60,5 +77,13 @@ public class ApiError {
     public void setError(final String error) {
         errors = Arrays.asList(error);
     }
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(final String code) {
+		this.code = code;
+	}
     
 }

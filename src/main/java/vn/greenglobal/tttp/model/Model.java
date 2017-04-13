@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 //import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.base.Strings;
 
 import io.katharsis.resource.annotations.JsonApiId;
 
@@ -19,8 +18,6 @@ public class Model<T extends Model<T>> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonApiId
 	private Long id;
-	
-	private String trangThai;
 	
 	private LocalDateTime ngayTao;
 	private LocalDateTime ngaySua;
@@ -33,14 +30,6 @@ public class Model<T extends Model<T>> {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public String getTrangThai() {
-		return trangThai;
-	}
-
-	public void setTrangThai(final String _trangThai) {
-		trangThai = Strings.nullToEmpty(_trangThai);
 	}
 
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
