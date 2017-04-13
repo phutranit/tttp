@@ -28,10 +28,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.service.ThamQuyenGiaiQuyetService;
-import vn.greenglobal.tttp.util.ApiErrorEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -69,14 +69,6 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
 
-//		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
-//		}
-//
-//		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
-//		}
-
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen()) && thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
@@ -104,11 +96,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
-		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
-		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
+		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen()) && thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
@@ -117,8 +105,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		}
 
 		thamQuyenGiaiQuyet.setId(id);
-		repo.save(thamQuyenGiaiQuyet);
-		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.OK);
+		return Utils.doSave(repo, thamQuyenGiaiQuyet, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/thamquyengiaiquyets/{id}")
