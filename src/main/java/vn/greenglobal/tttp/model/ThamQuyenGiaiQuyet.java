@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +17,12 @@ import io.swagger.annotations.ApiModelProperty;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
+<<<<<<< HEAD
 	
+=======
+
+	@NotBlank
+>>>>>>> da11580f8505513359f2cffea54e949165030935
 	private String ten = "";
 	private String moTa = "";
 
