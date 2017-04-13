@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -14,9 +13,6 @@ public class VuViec extends Model<VuViec> {
 
 	private String ten = "";
 
-	@ManyToOne
-	private Don don;
-
 	public String getTen() {
 		return ten;
 	}
@@ -24,13 +20,4 @@ public class VuViec extends Model<VuViec> {
 	public void setTen(String ten) {
 		this.ten = ten;
 	}
-
-	public Don getDon() {
-		return don;
-	}
-
-	public void setDon(Don don) {
-		this.don = don;
-	}
-
 }
