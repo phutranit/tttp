@@ -28,6 +28,8 @@ public class Don extends Model<Don> {
 	private String lyDoTuChoi = "";
 	private String huongXuLy = "";
 	private String ghiChuTiepCongDan = "";
+	private String huongGiaiQuyetDaThucHien = "";
+	private String lanGiaiQuyet = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
@@ -58,6 +60,10 @@ public class Don extends Model<Don> {
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
+	@ManyToOne
+	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy coQuanDaGiaiQuyet;
 
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -67,6 +73,8 @@ public class Don extends Model<Don> {
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+	@Enumerated(EnumType.STRING)
+	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 
 	public String getMa() {
 		return ma;
@@ -188,6 +196,38 @@ public class Don extends Model<Don> {
 		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
 	}
 
+	public String getHuongGiaiQuyetDaThucHien() {
+		return huongGiaiQuyetDaThucHien;
+	}
+
+	public void setHuongGiaiQuyetDaThucHien(String huongGiaiQuyetDaThucHien) {
+		this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+	}
+
+	public String getLanGiaiQuyet() {
+		return lanGiaiQuyet;
+	}
+
+	public void setLanGiaiQuyet(String lanGiaiQuyet) {
+		this.lanGiaiQuyet = lanGiaiQuyet;
+	}
+
+	public CapCoQuanQuanLy getCapCoQuanDaGiaiQuyet() {
+		return capCoQuanDaGiaiQuyet;
+	}
+
+	public void setCapCoQuanDaGiaiQuyet(CapCoQuanQuanLy capCoQuanDaGiaiQuyet) {
+		this.capCoQuanDaGiaiQuyet = capCoQuanDaGiaiQuyet;
+	}
+
+	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
+		return coQuanDaGiaiQuyet;
+	}
+
+	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
+		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
+	}
+
 	public Don getDonLanTruoc() {
 		return donLanTruoc;
 	}
@@ -291,4 +331,13 @@ public class Don extends Model<Don> {
 	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
 		this.loaiNguoiDungDon = loaiNguoiDungDon;
 	}
+
+	public HinhThucGiaiQuyetEnum getHinhThucDaGiaiQuyet() {
+		return hinhThucDaGiaiQuyet;
+	}
+
+	public void setHinhThucDaGiaiQuyet(HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet) {
+		this.hinhThucDaGiaiQuyet = hinhThucDaGiaiQuyet;
+	}
+
 }
