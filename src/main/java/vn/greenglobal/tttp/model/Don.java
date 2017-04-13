@@ -20,16 +20,18 @@ import vn.greenglobal.tttp.enums.*;
 @JsonApiResource(type = "dons")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don extends Model<Don> {
+	private static final long serialVersionUID = -3948748170078690779L;
 
 	private String ma = "";
 	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
 	private String diaDiemGapLanhDao = "";
 	private String lyDoTuChoi = "";
-	private String huongXuLy = "";
 	private String ghiChuTiepCongDan = "";
 	private String huongGiaiQuyetDaThucHien = "";
 	private String lanGiaiQuyet = "";
+	private String yKienXuLyDon = ""; //Xu ly don TCD
+	private String ghiChuXuLyDon = ""; //Xu ly don TCD
 
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
@@ -59,11 +61,11 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanGiaiQuyet;
-	@ManyToOne
 	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyet; //Xu ly don TCD
 
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -75,6 +77,8 @@ public class Don extends Model<Don> {
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyTCDEnum huongXuLy;
 
 	public String getMa() {
 		return ma;
@@ -114,14 +118,6 @@ public class Don extends Model<Don> {
 
 	public void setLyDoTuChoi(String lyDoTuChoi) {
 		this.lyDoTuChoi = lyDoTuChoi;
-	}
-
-	public String getHuongXuLy() {
-		return huongXuLy;
-	}
-
-	public void setHuongXuLy(String huongXuLy) {
-		this.huongXuLy = huongXuLy;
 	}
 
 	public int getSoLanKhieuNaiToCao() {
@@ -210,6 +206,22 @@ public class Don extends Model<Don> {
 
 	public void setLanGiaiQuyet(String lanGiaiQuyet) {
 		this.lanGiaiQuyet = lanGiaiQuyet;
+	}
+
+	public String getyKienXuLyDon() {
+		return yKienXuLyDon;
+	}
+
+	public void setyKienXuLyDon(String yKienXuLyDon) {
+		this.yKienXuLyDon = yKienXuLyDon;
+	}
+
+	public String getGhiChuXuLyDon() {
+		return ghiChuXuLyDon;
+	}
+
+	public void setGhiChuXuLyDon(String ghiChuXuLyDon) {
+		this.ghiChuXuLyDon = ghiChuXuLyDon;
 	}
 
 	public CapCoQuanQuanLy getCapCoQuanDaGiaiQuyet() {
@@ -340,4 +352,11 @@ public class Don extends Model<Don> {
 		this.hinhThucDaGiaiQuyet = hinhThucDaGiaiQuyet;
 	}
 
+	public HuongXuLyTCDEnum getHuongXuLy() {
+		return huongXuLy;
+	}
+
+	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
+		this.huongXuLy = huongXuLy;
+	}
 }
