@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,13 +16,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToMany;
-
 @Entity
 @Table(name = "sotiepcongdan")
-@JsonApiResource(type = "sotiepcongdans")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
@@ -39,7 +33,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime thoiHan;
 
 	private String loaiTiepDan = "";
-	private String noiDungVuViec = "";
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	private String donViChuTri = "";
@@ -50,6 +43,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
+			@JoinColumn(name = "sotiepcongdan_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "coquantochuctiepdan_id") })
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	
+	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
+		return coQuanToChucTiepDans;
+	}
+
+	public void setCoQuanToChucTiepDans(List<CoQuanToChucTiepDan> coQuanToChucTiepDans) {
+		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
+	}
 
 	public Don getDon() {
 		return don;
@@ -105,14 +113,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setLoaiTiepDan(String loaiTiepDan) {
 		this.loaiTiepDan = loaiTiepDan;
-	}
-
-	public String getNoiDungVuViec() {
-		return noiDungVuViec;
-	}
-
-	public void setNoiDungVuViec(String noiDungVuViec) {
-		this.noiDungVuViec = noiDungVuViec;
 	}
 
 	public String getNoiDungTiepCongDan() {
@@ -187,7 +187,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	/*@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sotiepcongdan_coquantochuctiepdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
@@ -203,5 +203,5 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setCoQuanToChucTiepDans(List<CoQuanToChucTiepDan> coQuanToChucTiepDans) {
 		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
-	}
+	}*/
 }
