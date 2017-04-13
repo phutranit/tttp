@@ -5,6 +5,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 
@@ -14,6 +15,12 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3826710912952156958L;
+	
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
