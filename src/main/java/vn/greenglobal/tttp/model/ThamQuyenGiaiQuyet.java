@@ -6,12 +6,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "thamquyengiaiquyet")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 

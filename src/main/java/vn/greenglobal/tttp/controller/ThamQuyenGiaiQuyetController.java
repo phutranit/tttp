@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +29,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.service.ThamQuyenGiaiQuyetService;
+import vn.greenglobal.tttp.util.ApiError;
 
 @RepositoryRestController
 public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQuyet> {
@@ -39,10 +45,9 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/thamquyengiaiquyets")
-	public ResponseEntity<PersistentEntityResource> create(@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet,
+	public ResponseEntity<PersistentEntityResource> create(@Valid @RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
-
 		repo.save(thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.CREATED);
 	}
