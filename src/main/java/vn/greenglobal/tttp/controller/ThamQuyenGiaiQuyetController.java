@@ -71,17 +71,10 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
 
-//		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
-//		}
-//
-//		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
-//		}
-
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen()) && thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
+		
 		try {
 			repo.save(thamQuyenGiaiQuyet);
 		} catch (ConstraintViolationException e) {
