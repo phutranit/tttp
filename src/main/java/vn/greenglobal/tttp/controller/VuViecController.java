@@ -24,6 +24,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.VuViec;
 import vn.greenglobal.tttp.repository.VuViecRepository;
 import vn.greenglobal.tttp.service.VuViecService;
+import vn.greenglobal.tttp.util.ApiErrorEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @RepositoryRestController
@@ -45,11 +46,11 @@ public class VuViecController extends BaseController<VuViec> {
 		log.info("Tao moi VuViec");
 		
 		if (VuViec.getTen() == null || "".equals(VuViec.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
 		if (vuViecService.checkExistsData(repo, VuViec.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
 		repo.save(VuViec);
@@ -86,15 +87,15 @@ public class VuViecController extends BaseController<VuViec> {
 		log.info("Update VuViec theo id: " + id);
 		
 		if (vuViec.getTen() == null || "".equals(vuViec.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
 		if (vuViecService.checkExistsData(repo, vuViec.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
 		if (!vuViecService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, "DATA_NOT_FOUND", "Dữ liệu này không tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
 		vuViec.setId(id);
@@ -108,7 +109,7 @@ public class VuViecController extends BaseController<VuViec> {
 
 		VuViec vuViec = vuViecService.deleteVuViec(repo, id);
 		if (vuViec == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, "DATA_NOT_FOUND", "Dữ liệu này không tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(vuViec);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

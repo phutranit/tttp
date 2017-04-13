@@ -25,7 +25,8 @@ public class SwaggerConfig {
     }	
     
     private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo(
+        @SuppressWarnings("deprecation")
+		ApiInfo apiInfo = new ApiInfo(
           "API Thanh Tra Thành Phố",
           "Danh sách danh mục API.",
           "API TOS",
