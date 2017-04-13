@@ -14,9 +14,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.Model;
 
 public class Utils {
@@ -51,5 +53,14 @@ public class Utils {
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
+	}
+
+	public static <T> ResponseEntity<Object> doSave(BaseRepository<T, ?> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		try {
+			repository.save(obj);
+		} catch (ConstraintViolationException e) {
+			return returnError(e);
+		}
+		return new ResponseEntity<>(eass.toFullResource(obj), status);
 	}
 }

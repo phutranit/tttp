@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import javax.validation.ConstraintViolationException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,12 +80,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen()) && thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
-		try {
-			repo.save(thamQuyenGiaiQuyet);
-		} catch (ConstraintViolationException e) {
-			return Utils.returnError(e);
-		}
-		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.CREATED);
+		return Utils.doSave(repo, thamQuyenGiaiQuyet, eass, HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "Lấy ThamQuyenGiaiQuyet theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
