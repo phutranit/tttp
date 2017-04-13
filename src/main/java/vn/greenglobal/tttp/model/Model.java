@@ -1,11 +1,14 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.springframework.data.domain.Persistable;
 
 //import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -15,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MappedSuperclass
 @ApiModel
-public class Model<T extends Model<T>> {
+public class Model<T extends Model<T>> implements Persistable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +29,14 @@ public class Model<T extends Model<T>> {
 	private LocalDateTime ngaySua;
 	
 	private boolean daXoa;
+	
+	public boolean equals(Object o) {
+		return this == o || o != null && getClass().isAssignableFrom(o.getClass()) && getId() != null && Objects.equals(getId(), ((Model) o).getId());
+	}
+
+	public int hashCode() {
+		return 31;
+	}
 	
 	@ApiModelProperty(hidden=true)
 	public Long getId() {
@@ -64,6 +75,10 @@ public class Model<T extends Model<T>> {
 
 	public void setDaXoa(boolean daXoa) {
 		this.daXoa = daXoa;
+	}
+
+	public boolean isNew() {
+		return id == null;
 	}
 
 }
