@@ -7,13 +7,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "donvihanhchinh")
-@JsonApiResource(type = "donvihanhchinhs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DonViHanhChinh extends Model<DonViHanhChinh> {
 
@@ -22,13 +17,9 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	private String moTa = "";
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private DonViHanhChinh cha;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private CapDonViHanhChinh capDonViHanhChinh;
 
 	public String getMa() {
