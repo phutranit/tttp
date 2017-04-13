@@ -6,12 +6,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiResource;
+import io.swagger.annotations.ApiModel;
 
 @Entity
-@Table(name = "loaitailieu")
-@JsonApiResource(type = "loaitailieus")
+@Table(name = "loaitailieus")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 
 	private String ten = "";
