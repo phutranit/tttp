@@ -10,8 +10,11 @@ import javax.persistence.MappedSuperclass;
 //import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.katharsis.resource.annotations.JsonApiId;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @MappedSuperclass
+@ApiModel
 public class Model<T extends Model<T>> {
 
 	@Id
@@ -24,6 +27,7 @@ public class Model<T extends Model<T>> {
 	
 	private boolean daXoa;
 	
+	@ApiModelProperty(hidden=true)
 	public Long getId() {
 		return id;
 	}
@@ -33,6 +37,7 @@ public class Model<T extends Model<T>> {
 	}
 
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+	@ApiModelProperty(hidden=true)
 	public LocalDateTime getNgaySua() {
 		return this.ngaySua;
 	}
@@ -42,6 +47,7 @@ public class Model<T extends Model<T>> {
 	}
 
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+	@ApiModelProperty(hidden=true)
 	public LocalDateTime getNgayTao() {
 		return this.ngayTao;
 	}
@@ -51,6 +57,7 @@ public class Model<T extends Model<T>> {
 		this.ngayTao = ngayTao1;
 	}
 
+	@ApiModelProperty(hidden=true)
 	public boolean isDaXoa() {
 		return daXoa;
 	}
