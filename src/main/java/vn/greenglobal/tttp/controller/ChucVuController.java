@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 
 @RestController
+@RepositoryRestController
 public class ChucVuController extends BaseController<ChucVu> {
 
 	private static Log log = LogFactory.getLog(ChucVuController.class);

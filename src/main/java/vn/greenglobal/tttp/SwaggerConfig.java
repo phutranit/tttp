@@ -12,27 +12,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {                                    
-    @Bean
-    public Docket api() { 
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-//          .apis(RequestHandlerSelectors.any()) 
-          .apis(RequestHandlerSelectors.basePackage("vn.greenglobal.tttp.controller"))
-          .paths(PathSelectors.any())                         
-          .build()
-          .apiInfo(apiInfo());                                           
-    }	
-    
-    private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo(
-          "API Thanh Tra Thành Phố",
-          "Danh sách danh mục API.",
-          "API TOS",
-          "Terms of service",
-          "toantt@greenglobal.com",
-          "License of API",
-          "API license URL");
-        return apiInfo;
-    }
+public class SwaggerConfig {
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				// .apis(RequestHandlerSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("vn.greenglobal.tttp.controller")).paths(PathSelectors.any())
+				.build().apiInfo(apiInfo());
+	}
+
+	@SuppressWarnings("deprecation")
+	private ApiInfo apiInfo() {
+		ApiInfo apiInfo = new ApiInfo("API Thanh Tra Thành Phố", "Danh sách API Thanh Tra Thành Phố",
+				"API VERSION: 1.0", "", "", "", "");
+		return apiInfo;
+	}
 }
