@@ -25,6 +25,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.service.ThamQuyenGiaiQuyetService;
+import vn.greenglobal.tttp.util.ApiErrorEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -53,7 +54,6 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
-		
 		repo.save(thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.CREATED);
 	}
@@ -90,15 +90,15 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 		
 		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
 		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
 		if (!thamQuyenGiaiQuyetService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, "DATA_NOT_FOUND", "Dữ liệu này không tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
 		thamQuyenGiaiQuyet.setId(id);
@@ -112,7 +112,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.deleteThamQuyenGiaiQuyet(repo, id);
 		if (thamQuyenGiaiQuyet == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, "DATA_NOT_FOUND", "Dữ liệu này không tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

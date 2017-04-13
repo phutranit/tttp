@@ -12,17 +12,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ChucVu extends Model<ChucVu> {
 
-	private String ma = "";
 	private String ten = "";
 	private String moTa = "";
-
-	public String getMa() {
-		return ma;
-	}
-
-	public void setMa(String ma) {
-		this.ma = ma;
-	}
 
 	public String getTen() {
 		return ten;

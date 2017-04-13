@@ -39,6 +39,9 @@ public class SwaggerConfig {
     
     /*private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo(
+    private ApiInfo apiInfo() {
+        @SuppressWarnings("deprecation")
+		ApiInfo apiInfo = new ApiInfo(
           "API Thanh Tra Thành Phố",
           "Danh sách danh mục API.",
           "API TOS",
@@ -50,15 +53,9 @@ public class SwaggerConfig {
     }*/
     
     
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Ecommerce Platform REST API Documents")
-                .description("Documents with Swagger 2")
-                .termsOfServiceUrl("http://nit-software.com")
-                .contact("")
-                .license("")
-                .licenseUrl("")
-                .version("2.0")
-                .build();
-    }
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder().title("Ecommerce Platform REST API Documents")
+				.description("Documents with Swagger 2").termsOfServiceUrl("http://nit-software.com").contact("")
+				.license("").licenseUrl("").version("2.0").build();
+	}
 }
