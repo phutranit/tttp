@@ -12,6 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class VuViec extends Model<VuViec> {
 
 	private String ten = "";
+	private String noiDungVuViec = "";
 
 	public String getTen() {
 		return ten;
@@ -19,5 +20,13 @@ public class VuViec extends Model<VuViec> {
 
 	public void setTen(String ten) {
 		this.ten = ten;
+	}
+
+	public String getNoiDungVuViec() {
+		return noiDungVuViec;
+	}
+
+	public void setNoiDungVuViec(String noiDungVuViec) {
+		this.noiDungVuViec = noiDungVuViec;
 	}
 }

@@ -19,12 +19,12 @@ public class ChungChiHanhNghe extends Model<ChungChiHanhNghe> {
 
 	private String ma = "";
 	private String ten = "";
-	private String moTa = "";
+	private String duongDan = "";
 
 	@ManyToOne
 	@JsonApiToOne
 	@JsonApiIncludeByDefault
-	private CongDan congDan;
+	private Don_CongDan congDan;
 
 	public String getMa() {
 		return ma;
@@ -42,19 +42,19 @@ public class ChungChiHanhNghe extends Model<ChungChiHanhNghe> {
 		this.ten = ten;
 	}
 
-	public String getMoTa() {
-		return moTa;
+	public String getDuongDan() {
+		return duongDan;
 	}
 
-	public void setMoTa(String moTa) {
-		this.moTa = moTa;
+	public void setDuongDan(String duongDan) {
+		this.duongDan = duongDan;
 	}
 
-	public CongDan getCongDan() {
+	public Don_CongDan getCongDan() {
 		return congDan;
 	}
 
-	public void setCongDan(CongDan congDan) {
+	public void setCongDan(Don_CongDan congDan) {
 		this.congDan = congDan;
 	}
 
