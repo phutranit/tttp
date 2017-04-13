@@ -51,7 +51,7 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus")
-	@ApiOperation(value = "Lấy danh sách LoaiTaiLieu", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Loại Tài Liệu", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<LoaiTaiLieu> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach LoaiTaiLieu");
@@ -61,9 +61,9 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/loaiTaiLieus")
-	@ApiOperation(value = "Thêm mới LoaiTaiLieu", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới LoaiTaiLieu thành công", response = LoaiTaiLieu.class),
-			@ApiResponse(code = 201, message = "Thêm mới LoaiTaiLieu thành công", response = LoaiTaiLieu.class)})
+	@ApiOperation(value = "Thêm mới Loại Tài Liệu", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Loại Tài Liệu thành công", response = LoaiTaiLieu.class),
+			@ApiResponse(code = 201, message = "Thêm mới Loại Tài Liệu thành công", response = LoaiTaiLieu.class)})
 	public ResponseEntity<Object> create(@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi LoaiTaiLieu");
 
@@ -73,9 +73,9 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 		return Utils.doSave(repo, loaiTaiLieu, eass, HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "Lấy LoaiTaiLieu theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy LoaiTaiLieu thành công", response = LoaiTaiLieu.class) })
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus/{id}")
+	@ApiOperation(value = "Lấy Loại Tài Liệu theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
 	public ResponseEntity<PersistentEntityResource> getLoaiTaiLieu(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get LoaiTaiLieu theo id: " + id);
@@ -88,8 +88,8 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/loaiTaiLieus/{id}")
-	@ApiOperation(value = "Cập nhật LoaiTaiLieu", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật LoaiTaiLieu thành công", response = LoaiTaiLieu.class) })
+	@ApiOperation(value = "Cập nhật Loại Tài Liệu", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 		log.info("Update LoaiTaiLieu theo id: " + id);
@@ -107,8 +107,8 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/loaiTaiLieus/{id}")
-	@ApiOperation(value = "Xoá LoaiTaiLieu", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá LoaiTaiLieu thành công") })
+	@ApiOperation(value = "Xoá Loại Tài Liệu", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Loại Tài Liệu thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete LoaiTaiLieu theo id: " + id);
 
