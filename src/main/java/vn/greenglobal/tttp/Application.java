@@ -37,7 +37,7 @@ public class Application {
 	@RequestMapping(method = RequestMethod.POST, value = "/file", produces = "application/json")
 	@ResponseBody
 	public Object file(HttpServletRequest req) {
-		System.out.println("file");
+		System.out.println("//file");
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";

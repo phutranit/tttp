@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import javax.validation.ConstraintViolationException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +71,22 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
 
-		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
-		}
+//		if (thamQuyenGiaiQuyet.getTen() == null || "".equals(thamQuyenGiaiQuyet.getTen())) {
+//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
+//		}
+//
+//		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
+//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+//		}
 
-		if (thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
+		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen()) && thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
-		
-		repo.save(thamQuyenGiaiQuyet);
+		try {
+			repo.save(thamQuyenGiaiQuyet);
+		} catch (ConstraintViolationException e) {
+			return Utils.returnError(e);
+		}
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.CREATED);
 	}
 

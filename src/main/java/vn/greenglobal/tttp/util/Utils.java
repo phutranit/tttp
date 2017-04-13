@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.http.HttpStatus;
@@ -33,5 +40,16 @@ public class Utils {
 		errorBody.put("errors", errors);
 		return new ResponseEntity<>(errorBody, httpStatus);
 	}
-	
+
+	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {
+		ConstraintViolation<?> vio = e.getConstraintViolations().iterator().next();
+		System.out.println(vio);
+		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
+		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
+		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
+		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
+	}
 }
