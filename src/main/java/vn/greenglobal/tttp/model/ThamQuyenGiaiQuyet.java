@@ -62,5 +62,11 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	public Long getThamQuyenGiaiQuyetId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetCha() {
+		return getCha();
+	}
 
 }

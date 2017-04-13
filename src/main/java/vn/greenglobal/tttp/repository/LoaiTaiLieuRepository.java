@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import vn.greenglobal.core.model.common.MutableRepo;
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 
-@RestResource(path = "loaitailieus")
+@RestResource(path = "loaiTaiLieus")
 public interface LoaiTaiLieuRepository extends MutableRepo<LoaiTaiLieu> {
 
 }
