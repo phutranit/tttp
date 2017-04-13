@@ -9,14 +9,11 @@ import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 
 public class ThamQuyenGiaiQuyetService {
 	
-	public Predicate predicateFindAll(String ten, String moTa, Long cha) {
+	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
-		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten));
-		}
-		
-		if (moTa != null && !"".equals(moTa)) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.eq(moTa));
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)
+					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)));
 		}
 		
 		if (cha != null && cha > 0) {
