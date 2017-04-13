@@ -1,4 +1,4 @@
-package vn.greenglobal.tttp.util;
+package vn.greenglobal.tttp.enums;
 
 public enum ApiErrorEnum {
 

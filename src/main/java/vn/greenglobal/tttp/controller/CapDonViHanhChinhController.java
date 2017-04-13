@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.VuViec;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
 import vn.greenglobal.tttp.service.CapDonViHanhChinhService;
-import vn.greenglobal.tttp.util.ApiErrorEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @RepositoryRestController
