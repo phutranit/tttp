@@ -9,11 +9,20 @@ import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 
 public class DonViHanhChinhService {
 	
-	public Predicate predicateFindAll(String ten) {
+	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
 		BooleanExpression predAll = QDonViHanhChinh.donViHanhChinh.daXoa.eq(false);
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten).or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
-		}		
+		}
+		
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
+		}
+		
+		if (capDonViHanhChinh != null && capDonViHanhChinh > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
+		}
+		
 		return predAll;
 	}
 	
@@ -31,7 +40,7 @@ public class DonViHanhChinhService {
 		return false;
 	}
 	
-	public DonViHanhChinh deleteCapDonViHanhChinh(DonViHanhChinhRepository repo, Long id) {
+	public DonViHanhChinh deleteDonViHanhChinh(DonViHanhChinhRepository repo, Long id) {
 		DonViHanhChinh donViHanhChinh = null;
 		if (isExists(repo, id)) {
 			donViHanhChinh = new DonViHanhChinh();
