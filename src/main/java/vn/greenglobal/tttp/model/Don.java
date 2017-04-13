@@ -3,6 +3,8 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,11 +22,12 @@ import vn.greenglobal.tttp.enums.*;
 public class Don extends Model<Don> {
 
 	private String ma = "";
-	private String noiDUng = "";
+	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
 	private String diaDiemGapLanhDao = "";
 	private String lyDoTuChoi = "";
 	private String huongXuLy = "";
+	private String ghiChuTiepCongDan = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
@@ -49,15 +52,21 @@ public class Don extends Model<Don> {
 	private LinhVuc linhVucChiTiet;
 	@ManyToOne
 	private LinhVuc chiTietLinhVucChiTiet;
-
+	@ManyToOne
+	private VuViec vuViec;
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 
+	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
+	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
+	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
+	@Enumerated(EnumType.STRING)
+	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 
 	public String getMa() {
 		return ma;
@@ -67,12 +76,12 @@ public class Don extends Model<Don> {
 		this.ma = ma;
 	}
 
-	public String getNoiDUng() {
-		return noiDUng;
+	public String getNoiDung() {
+		return noiDung;
 	}
 
-	public void setNoiDUng(String noiDUng) {
-		this.noiDUng = noiDUng;
+	public void setNoiDung(String noiDung) {
+		this.noiDung = noiDung;
 	}
 
 	public String getYeuCauCuaCongDan() {
@@ -155,6 +164,14 @@ public class Don extends Model<Don> {
 		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 
+	public String getGhiChuTiepCongDan() {
+		return ghiChuTiepCongDan;
+	}
+
+	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
+		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
+	}
+
 	public LocalDateTime getNgayTiepNhan() {
 		return ngayTiepNhan;
 	}
@@ -235,6 +252,14 @@ public class Don extends Model<Don> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
+	public VuViec getVuViec() {
+		return vuViec;
+	}
+
+	public void setVuViec(VuViec vuViec) {
+		this.vuViec = vuViec;
+	}
+
 	public LoaiDonEnum getLoaiDon() {
 		return loaiDon;
 	}
@@ -257,5 +282,13 @@ public class Don extends Model<Don> {
 
 	public void setNguonTiepNhanDon(NguonTiepNhanDonEnum nguonTiepNhanDon) {
 		this.nguonTiepNhanDon = nguonTiepNhanDon;
+	}
+
+	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
+		return loaiNguoiDungDon;
+	}
+
+	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
+		this.loaiNguoiDungDon = loaiNguoiDungDon;
 	}
 }
