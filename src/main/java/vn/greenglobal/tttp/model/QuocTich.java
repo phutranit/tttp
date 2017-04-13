@@ -6,14 +6,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiResource;
-
 @Entity
 @Table(name = "quoctich")
-@JsonApiResource(type = "quoctichs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class QuocTich extends Model<QuocTich> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6346735397507161561L;
+	
 	private String ma = "";
 	private String ten = "";
 	private String moTa = "";

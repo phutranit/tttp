@@ -19,14 +19,12 @@ public class LoaiTaiLieuService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false)
-				.and(QLoaiTaiLieu.loaiTaiLieu.id.eq(id));
+		return QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false).and(QLoaiTaiLieu.loaiTaiLieu.id.eq(id));
 	}
 
 	public boolean isExists(LoaiTaiLieuRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false)
-					.and(QLoaiTaiLieu.loaiTaiLieu.id.eq(id));
+			Predicate predicate = QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false).and(QLoaiTaiLieu.loaiTaiLieu.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
@@ -43,8 +41,8 @@ public class LoaiTaiLieuService {
 	}
 
 	public boolean checkExistsData(LoaiTaiLieuRepository repo, String ten) {
-		LoaiTaiLieu loaiTaiLieu = repo.findOne(QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false)
-				.and(QLoaiTaiLieu.loaiTaiLieu.ten.eq(ten)));
+		LoaiTaiLieu loaiTaiLieu = repo
+				.findOne(QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false).and(QLoaiTaiLieu.loaiTaiLieu.ten.eq(ten)));
 		return loaiTaiLieu != null ? true : false;
 	}
 

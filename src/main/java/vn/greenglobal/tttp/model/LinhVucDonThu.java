@@ -7,16 +7,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
-@Table(name = "linhvuc")
-@JsonApiResource(type = "linhvucs")
+@Table(name = "linhvucdonthu")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6767282651849050987L;
+	
 	private String ma = "";
 	private String ten = "";
 	private String moTa = "";
@@ -24,8 +24,6 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	private boolean linhVucKhac;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private LinhVucDonThu cha;
 
 	public String getMa() {

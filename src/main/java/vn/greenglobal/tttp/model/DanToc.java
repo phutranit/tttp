@@ -6,14 +6,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiResource;
-
 @Entity
 @Table(name = "dantoc")
-@JsonApiResource(type = "dantocs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DanToc extends Model<DanToc> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7550664635055554646L;
+	
 	private String ma = "";
 	private String ten = "";
 	private String tenKhac = "";

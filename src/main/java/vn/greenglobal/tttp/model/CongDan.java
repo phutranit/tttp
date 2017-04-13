@@ -9,16 +9,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "congdan")
-@JsonApiResource(type = "congdans")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CongDan extends Model<CongDan> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2302822305956477280L;
+	
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
@@ -31,33 +31,21 @@ public class CongDan extends Model<CongDan> {
 	private boolean gioiTinh;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private DonViHanhChinh tinhThanh;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private DonViHanhChinh quanHuyen;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private DonViHanhChinh phuongXa;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private ToDanPho toDanPho;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private QuocTich quocTich;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private DanToc danToc;
 
 	public String getHoVaTen() {

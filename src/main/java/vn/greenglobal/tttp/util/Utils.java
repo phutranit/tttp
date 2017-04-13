@@ -18,7 +18,6 @@ import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.Model;
 
 public class Utils {
