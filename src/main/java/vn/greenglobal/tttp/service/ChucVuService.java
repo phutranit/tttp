@@ -31,7 +31,7 @@ public class ChucVuService {
 		return false;
 	}
 	
-	public ChucVu deleteVuViec(ChucVuRepository repo, Long id) {
+	public ChucVu deleteChucVu(ChucVuRepository repo, Long id) {
 		ChucVu chucVu = null;
 		if (isExists(repo, id)) {
 			chucVu = new ChucVu();
