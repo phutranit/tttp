@@ -11,6 +11,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
@@ -29,6 +35,8 @@ import vn.greenglobal.tttp.service.CapDonViHanhChinhService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RepositoryRestController
+@RestController
+@Api(value = "capDonViHanhChinhs", description = "Cấp Đơn Vị Hành Chính")
 public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChinh> {
 
 	private static Log log = LogFactory.getLog(CapDonViHanhChinhController.class);
@@ -41,7 +49,10 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 		super(repo);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/capdonvihanhchinhs")
+	@RequestMapping(method = RequestMethod.POST, value = "/capDonViHanhChinhs")
+	@ApiOperation(value = "Thêm mới Cấp Đơn Vị Hành Chính", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class),
+			@ApiResponse(code = 201, message = "Thêm mới Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class)})
 	public ResponseEntity<Object> create(@RequestBody CapDonViHanhChinh capDonViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi VuViec");
@@ -59,7 +70,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/capdonvihanhchinhs")
+	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs")
+	@ApiOperation(value = "Lấy danh sách Cấp Đơn Vị Hành Chính", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<VuViec> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
@@ -69,7 +81,9 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/capdonvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs/{id}")
+	@ApiOperation(value = "Lấy Cấp Đơn Vị Hành Chính theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class) })
 	public ResponseEntity<PersistentEntityResource> getVuViec(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get VuViec theo id: " + id);
@@ -81,7 +95,9 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/capdonvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/capDonViHanhChinhs/{id}")
+	@ApiOperation(value = "Cập nhật Cấp Đơn Vị Hành Chính", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody CapDonViHanhChinh capDonViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
@@ -104,7 +120,9 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/capdonvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/capDonViHanhChinhs/{id}")
+	@ApiOperation(value = "Xoá Cấp Đơn Vị Hành Chính", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Cấp Đơn Vị Hành Chính thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete VuViec theo id: " + id);
 
