@@ -23,9 +23,7 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 @Table(name = "don")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don extends Model<Don> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 8736658787648062250L;
 	
 	private String ma = "";
@@ -38,7 +36,8 @@ public class Don extends Model<Don> {
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; //Xu ly don TCD
 	private String ghiChuXuLyDon = ""; //Xu ly don TCD
-
+	private String trangThaiDon = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
 
@@ -180,6 +179,14 @@ public class Don extends Model<Don> {
 
 	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
 		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
+	}
+	
+	public String getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiDon(String trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
 	}
 
 	public LocalDateTime getNgayTiepNhan() {
