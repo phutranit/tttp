@@ -4,7 +4,7 @@
 	<groupId>vn.greenglobal</groupId>
 	<artifactId>tttp-api</artifactId>
 	<version>1.0.0</version>
-	<!-- <packaging>war</packaging> -->
+	<packaging>war</packaging>
 	<name>Thanh tra TP API</name>
 
 	<parent>
