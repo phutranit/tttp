@@ -11,6 +11,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
@@ -29,6 +34,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
+@Api(value = "chucVus", description = "Chức Vụ")
 public class ChucVuController extends BaseController<ChucVu> {
 
 	private static Log log = LogFactory.getLog(ChucVuController.class);
@@ -41,7 +47,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 		super(repo);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/chucvus")
+	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class),
+			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class)})
 	public ResponseEntity<Object> create(@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi VuViec");
@@ -59,7 +67,8 @@ public class ChucVuController extends BaseController<ChucVu> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/chucvus")
+	@RequestMapping(method = RequestMethod.GET, value = "/chucVus")
+	@ApiOperation(value = "Lấy danh sách Chức Vụ", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<ChucVu> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
@@ -69,7 +78,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/chucvus/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/chucVus/{id}")
+	@ApiOperation(value = "Lấy Chức Vụ theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Chức Vụ thành công", response = ChucVu.class) })
 	public ResponseEntity<PersistentEntityResource> getChucVu(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get VuViec theo id: " + id);
@@ -81,7 +92,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/chucvus/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/chucVus/{id}")
+	@ApiOperation(value = "Cập nhật Chức Vụ", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Chức Vụ thành công", response = ChucVu.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
@@ -104,7 +117,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/chucvus/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/chucVus/{id}")
+	@ApiOperation(value = "Xoá Chức Vụ", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Chức Vụ thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete VuViec theo id: " + id);
 
