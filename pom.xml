@@ -94,6 +94,19 @@
         	<optional>true</optional>
     	</dependency>
 		<dependency>
+                    <groupId>com.querydsl</groupId>
+                    <artifactId>querydsl-apt</artifactId>
+                    <scope>provided</scope>
+		</dependency>
+		<dependency>
+                    <groupId>com.querydsl</groupId>
+                    <artifactId>querydsl-jpa</artifactId>
+                    <scope>provided</scope>
+                    <version>${querydsl.version}</version>
+                    <classifier>apt</classifier>
+                </dependency>
+
+		<dependency>
 			<groupId>net.daum.clix</groupId>
 			<artifactId>spring-data-rest-webcommon</artifactId>
 			<version>0.9.0-SNAPSHOT</version>

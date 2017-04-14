@@ -47,9 +47,16 @@ public class ThamQuyenGiaiQuyetService {
 		return thamQuyenGiaiQuyet;
 	}
 
-	public boolean checkExistsData(ThamQuyenGiaiQuyetRepository repo, String ten) {
-		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false)
-				.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten)));
+	public boolean checkExistsData(ThamQuyenGiaiQuyetRepository repo, ThamQuyenGiaiQuyet body) {
+		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(body.getTen()));
+		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(predAll);
+
 		return thamQuyenGiaiQuyet != null ? true : false;
 	}
 

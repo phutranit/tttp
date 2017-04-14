@@ -69,8 +69,9 @@ public class QuocTichController extends BaseController<QuocTich> {
 		log.info("Tao moi QuocTich");
 
 		if (StringUtils.isNotBlank(quocTich.getMa()) && StringUtils.isNotBlank(quocTich.getTen())
-				&& quocTichService.checkExistsData(repo, quocTich.getMa(), quocTich.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Mã hoặc tên đã tồn tại trong hệ thống!");
+				&& quocTichService.checkExistsData(repo, quocTich)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
+					ApiErrorEnum.MA_TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, quocTich, eass, HttpStatus.CREATED);
 	}
@@ -98,12 +99,14 @@ public class QuocTichController extends BaseController<QuocTich> {
 		log.info("Update QuocTich theo id: " + id);
 
 		if (StringUtils.isNotBlank(quocTich.getMa()) && StringUtils.isNotBlank(quocTich.getTen())
-				&& quocTichService.checkExistsData(repo, quocTich.getMa(), quocTich.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Mã hoặc tên đã tồn tại trong hệ thống!");
+				&& quocTichService.checkExistsData(repo, quocTich)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
+					ApiErrorEnum.MA_TEN_EXISTS.getText());
 		}
 
 		if (!quocTichService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
 		quocTich.setId(id);
@@ -118,7 +121,8 @@ public class QuocTichController extends BaseController<QuocTich> {
 
 		QuocTich quocTich = quocTichService.deleteQuocTich(repo, id);
 		if (quocTich == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(quocTich);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
