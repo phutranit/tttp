@@ -21,9 +21,6 @@ import org.hibernate.annotations.FetchMode;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6772485280557984436L;
 
 	@ManyToOne
