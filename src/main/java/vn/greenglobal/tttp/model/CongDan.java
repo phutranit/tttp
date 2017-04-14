@@ -19,9 +19,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CongDan extends Model<CongDan> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2302822305956477280L;
 	
 	@NotEmpty
