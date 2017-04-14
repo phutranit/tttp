@@ -37,7 +37,7 @@ public class LinhVucDonThuService {
 		return false;
 	}
 
-	public LinhVucDonThu deleteThamQuyenGiaiQuyet(LinhVucDonThuRepository repo, Long id) {
+	public LinhVucDonThu deleteLinhVucDonThu(LinhVucDonThuRepository repo, Long id) {
 		LinhVucDonThu linhVucDonThu = null;
 		if (isExists(repo, id)) {
 			linhVucDonThu = new LinhVucDonThu();
