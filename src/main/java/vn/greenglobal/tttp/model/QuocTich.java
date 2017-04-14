@@ -21,7 +21,7 @@ public class QuocTich extends Model<QuocTich> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6346735397507161561L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -53,9 +53,9 @@ public class QuocTich extends Model<QuocTich> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getQuocTichId() {
 		return getId();
 	}
