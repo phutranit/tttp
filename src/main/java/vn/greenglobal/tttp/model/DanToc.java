@@ -6,8 +6,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.NotEmpty;
-
+import org.hibernate.validator.constraints.NotBlank;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -21,7 +20,7 @@ public class DanToc extends Model<DanToc> {
 	private static final long serialVersionUID = -7550664635055554646L;
 	
 	private String ma = "";
-	@NotEmpty
+	@NotBlank
 	private String ten = "";
 	private String tenKhac = "";
 	private String moTa = "";

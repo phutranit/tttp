@@ -45,7 +45,7 @@ public class ToDanPho extends Model<ToDanPho> {
 		this.moTa = moTa;
 	}
 
-	@ApiModelProperty(position = 3)
+	@ApiModelProperty(position = 3, required = true, example = "{}")
 	public DonViHanhChinh getDonViHanhChinh() {
 		return donViHanhChinh;
 	}
@@ -53,15 +53,15 @@ public class ToDanPho extends Model<ToDanPho> {
 	public void setDonViHanhChinh(DonViHanhChinh donViHanhChinh) {
 		this.donViHanhChinh = donViHanhChinh;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getToDanPhoId() {
 		return getId();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public DonViHanhChinh getToDanPhoDVHC() {
 		return getDonViHanhChinh();
 	}

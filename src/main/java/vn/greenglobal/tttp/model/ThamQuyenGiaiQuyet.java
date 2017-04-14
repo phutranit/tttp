@@ -22,7 +22,7 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	 * 
 	 */
 	private static final long serialVersionUID = -6076575850788999749L;
-	
+
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
@@ -56,15 +56,15 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	public void setCha(ThamQuyenGiaiQuyet cha) {
 		this.cha = cha;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getThamQuyenGiaiQuyetId() {
 		return getId();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetCha() {
 		return getCha();
 	}

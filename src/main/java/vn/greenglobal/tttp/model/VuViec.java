@@ -6,8 +6,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.NotEmpty;
-
+import org.hibernate.validator.constraints.NotBlank;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -20,7 +19,7 @@ public class VuViec extends Model<VuViec> {
 	 */
 	private static final long serialVersionUID = 3736471703211724763L;
 	
-	@NotEmpty
+	@NotBlank
 	private String ten = "";
 	private String noiDungVuViec = "";
 	

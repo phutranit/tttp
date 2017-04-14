@@ -7,8 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.NotEmpty;
-
+import org.hibernate.validator.constraints.NotBlank;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -20,10 +19,9 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6767282651849050987L;
-	
+
 	private String ma = "";
-	
-	@NotEmpty
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
@@ -76,15 +74,15 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	public void setCha(LinhVucDonThu cha) {
 		this.cha = cha;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getLinhVucDonThuId() {
 		return getId();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuCha() {
 		return getCha();
 	}
