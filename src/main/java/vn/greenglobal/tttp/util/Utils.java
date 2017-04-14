@@ -48,9 +48,9 @@ public class Utils {
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL", "Trường " + vio.getPropertyPath() + " không được NULL!");
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE", "Trường " + vio.getPropertyPath() + " không được để trống!");
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
 	}
 
