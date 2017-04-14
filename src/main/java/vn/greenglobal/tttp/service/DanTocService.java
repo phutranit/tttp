@@ -43,11 +43,18 @@ public class DanTocService {
 		}
 		return danToc;
 	}
+	
+	public boolean checkExistsData(DanTocRepository repo, DanToc body) {
+		BooleanExpression predAll = QDanToc.danToc.daXoa.eq(false);
 
-	public boolean checkExistsData(DanTocRepository repo, String ten) {
-		DanToc thamQuyenGiaiQuyet = repo.findOne(QDanToc.danToc.daXoa.eq(false)
-				.and(QDanToc.danToc.ten.eq(ten)));
-		return thamQuyenGiaiQuyet != null ? true : false;
+		if (!body.isNew()) {
+			predAll = predAll.and(QDanToc.danToc.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QDanToc.danToc.ten.eq(body.getTen()));
+		DanToc danToc = repo.findOne(predAll);
+
+		return danToc != null ? true : false;
 	}
 
 }

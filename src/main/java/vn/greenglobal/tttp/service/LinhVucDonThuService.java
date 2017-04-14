@@ -6,14 +6,12 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
-
 public class LinhVucDonThuService {
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa)
-					.or(QLinhVucDonThu.linhVucDonThu.moTa.containsIgnoreCase(tuKhoa)));
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa));
 		}
 
 		if (cha != null && cha > 0) {
@@ -47,10 +45,18 @@ public class LinhVucDonThuService {
 		return linhVucDonThu;
 	}
 
-	public boolean checkExistsData(LinhVucDonThuRepository repo, String ten) {
-		LinhVucDonThu linhVucDonThu = repo.findOne(QLinhVucDonThu.linhVucDonThu.daXoa.eq(false)
-				.and(QLinhVucDonThu.linhVucDonThu.ten.eq(ten)));
+	
+	public boolean checkExistsData(LinhVucDonThuRepository repo, LinhVucDonThu body) {
+		BooleanExpression predAll = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen())
+				.or(QLinhVucDonThu.linhVucDonThu.ma.eq(body.getMa())));
+		LinhVucDonThu linhVucDonThu = repo.findOne(predAll);
+
 		return linhVucDonThu != null ? true : false;
 	}
-
 }

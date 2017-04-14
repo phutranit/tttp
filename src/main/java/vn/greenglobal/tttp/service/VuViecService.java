@@ -39,9 +39,16 @@ public class VuViecService {
 		return vuViec;
 	}
 
-	public boolean checkExistsData(VuViecRepository repo, String ten) {
-		VuViec vuViec = repo.findOne(QVuViec.vuViec.daXoa.eq(false).and(QVuViec.vuViec.ten.eq(ten)));
+	public boolean checkExistsData(VuViecRepository repo, VuViec body) {
+		BooleanExpression predAll = QVuViec.vuViec.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QVuViec.vuViec.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QVuViec.vuViec.ten.eq(body.getTen()));
+		VuViec vuViec = repo.findOne(predAll);
+
 		return vuViec != null ? true : false;
 	}
-
 }

@@ -69,7 +69,7 @@ public class DanTocController extends BaseController<DanToc> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi DanToc");
 
-		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc.getTen())) {
+		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
 		return Utils.doSave(repo, danToc, eass, HttpStatus.CREATED);
@@ -95,16 +95,14 @@ public class DanTocController extends BaseController<DanToc> {
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
 		log.info("Update DanToc theo id: " + id);
-
-		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc.getTen())) {
+		danToc.setId(id);
+		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!danTocService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
-		danToc.setId(id);
 		return Utils.doSave(repo, danToc, eass, HttpStatus.OK);
 	}
 

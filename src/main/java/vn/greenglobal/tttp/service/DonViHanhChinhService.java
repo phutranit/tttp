@@ -49,10 +49,17 @@ public class DonViHanhChinhService {
 		}
 		return donViHanhChinh;
 	}
-	
-	public boolean checkExistsData(DonViHanhChinhRepository repo, String ten) {
-		DonViHanhChinh donViHanhChinh = repo.findOne(QDonViHanhChinh.donViHanhChinh.daXoa.eq(false)
-				.and(QDonViHanhChinh.donViHanhChinh.ten.eq(ten)));
+		
+	public boolean checkExistsData(DonViHanhChinhRepository repo, DonViHanhChinh body) {
+		BooleanExpression predAll = QDonViHanhChinh.donViHanhChinh.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.eq(body.getTen()));
+		DonViHanhChinh donViHanhChinh = repo.findOne(predAll);
+
 		return donViHanhChinh != null ? true : false;
 	}
 	

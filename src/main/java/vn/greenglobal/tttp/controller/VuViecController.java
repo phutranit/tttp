@@ -60,7 +60,7 @@ public class VuViecController extends BaseController<VuViec> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
-		if (vuViecService.checkExistsData(repo, VuViec.getTen())) {
+		if (vuViecService.checkExistsData(repo, VuViec)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
@@ -101,20 +101,18 @@ public class VuViecController extends BaseController<VuViec> {
 			@RequestBody VuViec vuViec,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Update VuViec theo id: " + id);
-		
+		vuViec.setId(id);
 		if (vuViec.getTen() == null || "".equals(vuViec.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
-		if (vuViecService.checkExistsData(repo, vuViec.getTen())) {
+		if (vuViecService.checkExistsData(repo, vuViec)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
 		if (!vuViecService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
-		vuViec.setId(id);
 		repo.save(vuViec);
 		return new ResponseEntity<>(eass.toFullResource(vuViec), HttpStatus.OK);
 	}
