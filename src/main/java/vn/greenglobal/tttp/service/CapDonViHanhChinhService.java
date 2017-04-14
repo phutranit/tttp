@@ -41,10 +41,16 @@ public class CapDonViHanhChinhService {
 		return capDonViHanhChinh;
 	}
 
-	public boolean checkExistsData(CapDonViHanhChinhRepository repo, String ten) {
-		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false)
-				.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.eq(ten)));
+	public boolean checkExistsData(CapDonViHanhChinhRepository repo, CapDonViHanhChinh body) {
+		BooleanExpression predAll = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.eq(body.getTen()));
+		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(predAll);
+
 		return capDonViHanhChinh != null ? true : false;
 	}
-
 }

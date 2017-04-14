@@ -39,9 +39,16 @@ public class ChucVuService {
 		return chucVu;
 	}
 
-	public boolean checkExistsData(ChucVuRepository repo, String ten) {
-		ChucVu chucVu = repo.findOne(QChucVu.chucVu.daXoa.eq(false).and(QChucVu.chucVu.ten.eq(ten)));
+	public boolean checkExistsData(ChucVuRepository repo, ChucVu body) {
+		BooleanExpression predAll = QChucVu.chucVu.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QChucVu.chucVu.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QChucVu.chucVu.ten.eq(body.getTen()));
+		ChucVu chucVu = repo.findOne(predAll);
+
 		return chucVu != null ? true : false;
 	}
-
 }
