@@ -1,11 +1,17 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import vn.greenglobal.tttp.enums.*;
+
 @Entity
 @Table(name = "xulydon")
+@ApiModel
 public class XuLyDon extends Model<XuLyDon> {
 	private static final long serialVersionUID = -8406016838422350892L;
 
@@ -20,13 +26,17 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	private int thuTuThucHien = 0;
 
-	private String quyTrinhXuLy = "";
 	private String ghiChu = "";
 	private String yKienXuLy = "";
-	private String huongXuLy = "";
 	private String moTaTrangThai = "";
+	private String noiDungYeuCauXuLy = "";
 	private String noiDungThongTinTrinhLanhDao = "";
 
+	@Enumerated(EnumType.STRING)
+	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyXLDEnum huongXuLy;
+	
 	public Don getDon() {
 		return don;
 	}
@@ -67,14 +77,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thuTuThucHien = thuTuThucHien;
 	}
 
-	public String getQuyTrinhXuLy() {
-		return quyTrinhXuLy;
-	}
-
-	public void setQuyTrinhXuLy(String quyTrinhXuLy) {
-		this.quyTrinhXuLy = quyTrinhXuLy;
-	}
-
 	public String getGhiChu() {
 		return ghiChu;
 	}
@@ -90,15 +92,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setyKienXuLy(String yKienXuLy) {
 		this.yKienXuLy = yKienXuLy;
 	}
-
-	public String getHuongXuLy() {
-		return huongXuLy;
-	}
-
-	public void setHuongXuLy(String huongXuLy) {
-		this.huongXuLy = huongXuLy;
-	}
-
+	
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
 	}
@@ -115,4 +109,27 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
+	public String getNoiDungYeuCauXuLy() {
+		return noiDungYeuCauXuLy;
+	}
+
+	public void setNoiDungYeuCauXuLy(String noiDungYeuCauXuLy) {
+		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
+	}
+
+	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
+		return quyTrinhXuLy;
+	}
+
+	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
+		this.quyTrinhXuLy = quyTrinhXuLy;
+	}
+
+	public HuongXuLyXLDEnum getHuongXuLy() {
+		return huongXuLy;
+	}
+
+	public void setHuongXuLy(HuongXuLyXLDEnum huongXuLy) {
+		this.huongXuLy = huongXuLy;
+	}
 }
