@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -12,13 +13,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DonViHanhChinh extends Model<DonViHanhChinh> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8811521308334603087L;
 	private String ma = "";
+	@NotNull
 	private String ten = "";
 	private String moTa = "";
 
 	@ManyToOne
 	private DonViHanhChinh cha;
 
+	@NotNull
 	@ManyToOne
 	private CapDonViHanhChinh capDonViHanhChinh;
 

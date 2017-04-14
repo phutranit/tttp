@@ -43,21 +43,8 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 	@RequestMapping(method = RequestMethod.POST, value = "/donvihanhchinhs")
 	public ResponseEntity<Object> create(@RequestBody DonViHanhChinh donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi DonViHanhChinh");
-		
-		if (donViHanhChinh.getTen() == null || "".equals(donViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
-		}
-		
-		if (donViHanhChinh.getCapDonViHanhChinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "CAPDONVIHANHCHINH_REQUIRED", "Trường cấp đơn vị hành chính không được để trống!");
-		}
-		
-		if (donViHanhChinhService.checkExistsData(repo, donViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
-		}
-		repo.save(donViHanhChinh);
-		return new ResponseEntity<>(eass.toFullResource(donViHanhChinh), HttpStatus.CREATED);
+		log.info("Tao moi DonViHanhChinh");		
+		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -91,25 +78,12 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Update DonViHanhChinh theo id: " + id);
 		
-		if (donViHanhChinh.getTen() == null || "".equals(donViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-		
-		if (donViHanhChinh.getCapDonViHanhChinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "CAPDONVIHANHCHINH_REQUIRED", "Trường cấp đơn vị hành chính không được để trống!");
-		}
-		
-		if (donViHanhChinhService.checkExistsData(repo, donViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
-		}
-		
 		if (!donViHanhChinhService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
 		donViHanhChinh.setId(id);
-		repo.save(donViHanhChinh);
-		return new ResponseEntity<>(eass.toFullResource(donViHanhChinh), HttpStatus.OK);
+		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donvihanhchinhs/{id}")
