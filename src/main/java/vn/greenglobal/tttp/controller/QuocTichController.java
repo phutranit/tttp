@@ -68,9 +68,9 @@ public class QuocTichController extends BaseController<QuocTich> {
 	public ResponseEntity<Object> create(@RequestBody QuocTich quocTich, PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi QuocTich");
 
-		if (StringUtils.isNotBlank(quocTich.getMa()) && StringUtils.isNotBlank(quocTich.getTen())
-				&& quocTichService.checkExistsData(repo, quocTich.getMa(), quocTich.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Mã hoặc tên đã tồn tại trong hệ thống!");
+		if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
+					ApiErrorEnum.MA_TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, quocTich, eass, HttpStatus.CREATED);
 	}
@@ -97,16 +97,18 @@ public class QuocTichController extends BaseController<QuocTich> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Update QuocTich theo id: " + id);
 
-		if (StringUtils.isNotBlank(quocTich.getMa()) && StringUtils.isNotBlank(quocTich.getTen())
-				&& quocTichService.checkExistsData(repo, quocTich.getMa(), quocTich.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Mã hoặc tên đã tồn tại trong hệ thống!");
+		quocTich.setId(id);
+
+		if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
+					ApiErrorEnum.MA_TEN_EXISTS.getText());
 		}
 
 		if (!quocTichService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		quocTich.setId(id);
 		return Utils.doSave(repo, quocTich, eass, HttpStatus.OK);
 	}
 
@@ -118,7 +120,8 @@ public class QuocTichController extends BaseController<QuocTich> {
 
 		QuocTich quocTich = quocTichService.deleteQuocTich(repo, id);
 		if (quocTich == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(quocTich);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

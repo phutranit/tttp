@@ -58,7 +58,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
 		}
 		
-		if (chucVuService.checkExistsData(repo, chucVu.getTen())) {
+		if (chucVuService.checkExistsData(repo, chucVu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
 		
@@ -99,12 +99,13 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Update VuViec theo id: " + id);
-		
+
+		chucVu.setId(id);
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");
 		}
 		
-		if (chucVuService.checkExistsData(repo, chucVu.getTen())) {
+		if (chucVuService.checkExistsData(repo, chucVu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
 		
@@ -112,7 +113,6 @@ public class ChucVuController extends BaseController<ChucVu> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, "DATA_NOT_FOUND", "Dữ liệu này không tồn tại trong hệ thống!");
 		}
 		
-		chucVu.setId(id);
 		repo.save(chucVu);
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
 	}

@@ -61,7 +61,7 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
-		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh.getTen())) {
+		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
@@ -102,12 +102,13 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 			@RequestBody CapDonViHanhChinh capDonViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Update VuViec theo id: " + id);
-		
+
+		capDonViHanhChinh.setId(id);
 		if (capDonViHanhChinh.getTen() == null || "".equals(capDonViHanhChinh.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(), ApiErrorEnum.TEN_REQUIRED.getText());
 		}
 		
-		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh.getTen())) {
+		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		
@@ -115,7 +116,6 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		capDonViHanhChinh.setId(id);
 		repo.save(capDonViHanhChinh);
 		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
 	}
