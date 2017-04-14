@@ -34,7 +34,7 @@ public class DanTocService {
 		return false;
 	}
 
-	public DanToc deleteThamQuyenGiaiQuyet(DanTocRepository repo, Long id) {
+	public DanToc deleteDanToc(DanTocRepository repo, Long id) {
 		DanToc danToc = null;
 		if (isExists(repo, id)) {
 			danToc = new DanToc();
