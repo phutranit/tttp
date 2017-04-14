@@ -5,9 +5,14 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "congdan")
@@ -19,12 +24,14 @@ public class CongDan extends Model<CongDan> {
 	 */
 	private static final long serialVersionUID = 2302822305956477280L;
 	
+	@NotEmpty
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
 	private String noiCap = "";
 	private String diaChi = "";
 
+	@NotNull
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
@@ -42,12 +49,15 @@ public class CongDan extends Model<CongDan> {
 	@ManyToOne
 	private ToDanPho toDanPho;
 	
+	@NotNull
 	@ManyToOne
 	private QuocTich quocTich;
 	
+	@NotNull
 	@ManyToOne
 	private DanToc danToc;
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getHoVaTen() {
 		return hoVaTen;
 	}
@@ -56,6 +66,7 @@ public class CongDan extends Model<CongDan> {
 		this.hoVaTen = hoVaTen;
 	}
 
+	@ApiModelProperty(position = 2)
 	public String getSoDienThoai() {
 		return soDienThoai;
 	}
@@ -64,6 +75,7 @@ public class CongDan extends Model<CongDan> {
 		this.soDienThoai = soDienThoai;
 	}
 
+	@ApiModelProperty(position = 3)
 	public String getSoCMNDHoChieu() {
 		return soCMNDHoChieu;
 	}
@@ -72,6 +84,7 @@ public class CongDan extends Model<CongDan> {
 		this.soCMNDHoChieu = soCMNDHoChieu;
 	}
 
+	@ApiModelProperty(position = 4)
 	public String getNoiCap() {
 		return noiCap;
 	}
@@ -80,6 +93,7 @@ public class CongDan extends Model<CongDan> {
 		this.noiCap = noiCap;
 	}
 
+	@ApiModelProperty(position = 5)
 	public String getDiaChi() {
 		return diaChi;
 	}
@@ -88,6 +102,7 @@ public class CongDan extends Model<CongDan> {
 		this.diaChi = diaChi;
 	}
 
+	@ApiModelProperty(position = 6, required = true)
 	public LocalDateTime getNgaySinh() {
 		return ngaySinh;
 	}
@@ -96,6 +111,7 @@ public class CongDan extends Model<CongDan> {
 		this.ngaySinh = ngaySinh;
 	}
 
+	@ApiModelProperty(position = 7)
 	public LocalDateTime getNgayCap() {
 		return ngayCap;
 	}
@@ -104,6 +120,7 @@ public class CongDan extends Model<CongDan> {
 		this.ngayCap = ngayCap;
 	}
 
+	@ApiModelProperty(position = 8)
 	public boolean isGioiTinh() {
 		return gioiTinh;
 	}
@@ -112,6 +129,7 @@ public class CongDan extends Model<CongDan> {
 		this.gioiTinh = gioiTinh;
 	}
 
+	@ApiModelProperty(position = 9)
 	public DonViHanhChinh getTinhThanh() {
 		return tinhThanh;
 	}
@@ -120,6 +138,7 @@ public class CongDan extends Model<CongDan> {
 		this.tinhThanh = tinhThanh;
 	}
 
+	@ApiModelProperty(position = 10)
 	public DonViHanhChinh getQuanHuyen() {
 		return quanHuyen;
 	}
@@ -128,6 +147,7 @@ public class CongDan extends Model<CongDan> {
 		this.quanHuyen = quanHuyen;
 	}
 
+	@ApiModelProperty(position = 11)
 	public DonViHanhChinh getPhuongXa() {
 		return phuongXa;
 	}
@@ -136,6 +156,7 @@ public class CongDan extends Model<CongDan> {
 		this.phuongXa = phuongXa;
 	}
 
+	@ApiModelProperty(position = 12)
 	public ToDanPho getToDanPho() {
 		return toDanPho;
 	}
@@ -144,6 +165,7 @@ public class CongDan extends Model<CongDan> {
 		this.toDanPho = toDanPho;
 	}
 
+	@ApiModelProperty(position = 13)
 	public QuocTich getQuocTich() {
 		return quocTich;
 	}
@@ -152,6 +174,7 @@ public class CongDan extends Model<CongDan> {
 		this.quocTich = quocTich;
 	}
 
+	@ApiModelProperty(position = 14)
 	public DanToc getDanToc() {
 		return danToc;
 	}
@@ -160,4 +183,9 @@ public class CongDan extends Model<CongDan> {
 		this.danToc = danToc;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public Long getCongDanId() {
+		return getId();
+	}
 }
