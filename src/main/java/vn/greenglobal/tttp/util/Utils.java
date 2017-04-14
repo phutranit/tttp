@@ -56,9 +56,15 @@ public class Utils {
 
 	public static <T> ResponseEntity<Object> doSave(JpaRepository<T, ?> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		try {
-			repository.save(obj);
+			obj = repository.save(obj);
 		} catch (ConstraintViolationException e) {
 			return returnError(e);
+		} catch (Exception e) {
+			if (e.getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause());
+			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause().getCause());
+			throw e;
 		}
 		return new ResponseEntity<>(eass.toFullResource(obj), status);
 	}
