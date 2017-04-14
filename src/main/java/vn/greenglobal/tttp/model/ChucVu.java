@@ -2,9 +2,13 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "chucvu")
@@ -16,9 +20,11 @@ public class ChucVu extends Model<ChucVu> {
 	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 	
+	@NotEmpty
 	private String ten = "";
 	private String moTa = "";
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -27,6 +33,7 @@ public class ChucVu extends Model<ChucVu> {
 		this.ten = ten;
 	}
 
+	@ApiModelProperty(position = 2)
 	public String getMoTa() {
 		return moTa;
 	}
@@ -35,4 +42,9 @@ public class ChucVu extends Model<ChucVu> {
 		this.moTa = moTa;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public Long getCapDonViHanhChinhId() {
+		return getId();
+	}
 }

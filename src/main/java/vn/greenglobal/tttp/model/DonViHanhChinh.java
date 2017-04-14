@@ -3,10 +3,14 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "donvihanhchinh")
@@ -18,7 +22,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	 */
 	private static final long serialVersionUID = -8811521308334603087L;
 	private String ma = "";
-	@NotNull
+	@NotEmpty
 	private String ten = "";
 	private String moTa = "";
 
@@ -29,6 +33,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	@ManyToOne
 	private CapDonViHanhChinh capDonViHanhChinh;
 
+	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
 	}
@@ -37,6 +42,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 		this.ma = ma;
 	}
 	
+	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -45,6 +51,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 		this.ten = ten;
 	}
 
+	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
 	}
@@ -53,6 +60,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 		this.moTa = moTa;
 	}
 
+	@ApiModelProperty(position = 4)
 	public DonViHanhChinh getCha() {
 		return cha;
 	}
@@ -61,6 +69,7 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 		this.cha = cha;
 	}
 
+	@ApiModelProperty(position = 5, required = true)
 	public CapDonViHanhChinh getCapDonViHanhChinh() {
 		return capDonViHanhChinh;
 	}
@@ -68,5 +77,15 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	public void setCapDonViHanhChinh(CapDonViHanhChinh capDonViHanhChinh) {
 		this.capDonViHanhChinh = capDonViHanhChinh;
 	}
-
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public Long getDonViHanhChinhId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public DonViHanhChinh getDonViHanhChinhCha() {
+		return getCha();
+	}
 }
