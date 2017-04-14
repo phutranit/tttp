@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "nguoidung")
@@ -17,16 +18,15 @@ public class NguoiDung extends Model<NguoiDung> {
 	 */
 	private static final long serialVersionUID = 6979954418350232111L;
 	
+	@NotBlank
 	private String tenDangNhap = "";
+	@NotBlank
 	private String matKhau = "";
 	private String hinhDaiDien = "";
 	private String salkey = "";
 
 	private boolean active;
-
-	@ManyToOne
-	private CongChuc congChuc;
-
+	
 	public String getTenDangNhap() {
 		return tenDangNhap;
 	}
@@ -66,13 +66,4 @@ public class NguoiDung extends Model<NguoiDung> {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
-	public CongChuc getCongChuc() {
-		return congChuc;
-	}
-
-	public void setCongChuc(CongChuc congChuc) {
-		this.congChuc = congChuc;
-	}
-
 }
