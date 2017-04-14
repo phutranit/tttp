@@ -40,9 +40,16 @@ public class LoaiTaiLieuService {
 		return loaiTaiLieu;
 	}
 
-	public boolean checkExistsData(LoaiTaiLieuRepository repo, String ten) {
-		LoaiTaiLieu loaiTaiLieu = repo
-				.findOne(QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false).and(QLoaiTaiLieu.loaiTaiLieu.ten.eq(ten)));
+	public boolean checkExistsData(LoaiTaiLieuRepository repo, LoaiTaiLieu body) {
+		BooleanExpression predAll = QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QLoaiTaiLieu.loaiTaiLieu.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QLoaiTaiLieu.loaiTaiLieu.ten.eq(body.getTen()));
+		LoaiTaiLieu loaiTaiLieu = repo.findOne(predAll);
+
 		return loaiTaiLieu != null ? true : false;
 	}
 

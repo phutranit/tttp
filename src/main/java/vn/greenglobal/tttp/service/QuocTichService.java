@@ -41,9 +41,16 @@ public class QuocTichService {
 		return quocTich;
 	}
 
-	public boolean checkExistsData(QuocTichRepository repo, String ma, String ten) {
-		QuocTich quocTich = repo.findOne(QQuocTich.quocTich.daXoa.eq(false)
-				.and(QQuocTich.quocTich.ma.eq(ma).or(QQuocTich.quocTich.ten.eq(ten))));
+	public boolean checkExistsData(QuocTichRepository repo, QuocTich body) {
+		BooleanExpression predAll = QQuocTich.quocTich.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QQuocTich.quocTich.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QQuocTich.quocTich.ma.eq(body.getMa()).or(QQuocTich.quocTich.ten.eq(body.getTen())));
+		QuocTich quocTich = repo.findOne(predAll);
+
 		return quocTich != null ? true : false;
 	}
 
