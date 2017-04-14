@@ -11,6 +11,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
@@ -28,6 +34,8 @@ import vn.greenglobal.tttp.service.DonViHanhChinhService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RepositoryRestController
+@RestController
+@Api(value = "donViHanhChinhs", description = "Đơn Vị Hành Chính")
 public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 
 	private static Log log = LogFactory.getLog(DonViHanhChinhController.class);
@@ -40,7 +48,10 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 		super(repo);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/donvihanhchinhs")
+	@RequestMapping(method = RequestMethod.POST, value = "/donViHanhChinhs")
+	@ApiOperation(value = "Thêm mới Đơn Vị Hành Chính", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class),
+			@ApiResponse(code = 201, message = "Thêm mới Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class)})
 	public ResponseEntity<Object> create(@RequestBody DonViHanhChinh donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi DonViHanhChinh");		
@@ -48,7 +59,8 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/donvihanhchinhs")
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs")
+	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<DonViHanhChinh> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			@RequestParam(value = "capDonViHanhChinh", required = false) Long capDonViHanhChinh,
@@ -60,7 +72,9 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/donvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/{id}")
+	@ApiOperation(value = "Lấy Đơn Vị Hành Chính theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class) })
 	public ResponseEntity<PersistentEntityResource> getDonViHanhChinh(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get DonViHanhChinh theo id: " + id);
@@ -72,7 +86,9 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 		return new ResponseEntity<>(eass.toFullResource(donViHanhChinh), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/donvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/donViHanhChinhs/{id}")
+	@ApiOperation(value = "Cập nhật Đơn Vị Hành Chính", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody DonViHanhChinh donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
@@ -86,7 +102,9 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/donvihanhchinhs/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/donViHanhChinhs/{id}")
+	@ApiOperation(value = "Xoá Đơn Vị Hành Chính", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Đơn Vị Hành Chính thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete DonViHanhChinh theo id: " + id);
 
