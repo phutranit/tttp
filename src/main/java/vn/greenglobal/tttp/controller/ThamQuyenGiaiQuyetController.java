@@ -101,6 +101,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
+		thamQuyenGiaiQuyet.setId(id);
+
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 				&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -112,7 +114,6 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		thamQuyenGiaiQuyet.setId(id);
 		return Utils.doSave(repo, thamQuyenGiaiQuyet, eass, HttpStatus.OK);
 	}
 

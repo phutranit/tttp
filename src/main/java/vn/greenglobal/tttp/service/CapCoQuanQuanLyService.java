@@ -54,8 +54,7 @@ public class CapCoQuanQuanLyService {
 			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.eq(body.getMa())
-				.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.eq(body.getTen())));
+		predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.eq(body.getTen()));
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predAll);
 
 		return capCoQuanQuanLy != null ? true : false;

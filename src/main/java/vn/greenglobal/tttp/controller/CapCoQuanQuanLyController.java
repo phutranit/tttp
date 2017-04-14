@@ -70,7 +70,7 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi CapCoQuanQuanLy");
 
-		if (StringUtils.isNotBlank(capCoQuanQuanLy.getMa()) && StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
 					ApiErrorEnum.MA_TEN_EXISTS.getText());
@@ -100,10 +100,10 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
-		
+
 		capCoQuanQuanLy.setId(id);
-		
-		if (StringUtils.isNotBlank(capCoQuanQuanLy.getMa()) && StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+
+		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
 					ApiErrorEnum.MA_TEN_EXISTS.getText());

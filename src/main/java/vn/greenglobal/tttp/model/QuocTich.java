@@ -22,13 +22,12 @@ public class QuocTich extends Model<QuocTich> {
 	 */
 	private static final long serialVersionUID = 6346735397507161561L;
 	
-	@NotBlank
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
-	@ApiModelProperty(position = 1, required = true)
+	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
 	}
