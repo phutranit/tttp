@@ -2,22 +2,33 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
-import io.katharsis.resource.annotations.JsonApiResource;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "quoctich")
-@JsonApiResource(type = "quoctichs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class QuocTich extends Model<QuocTich> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6346735397507161561L;
+	
+	@NotBlank
 	private String ma = "";
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getMa() {
 		return ma;
 	}
@@ -26,6 +37,7 @@ public class QuocTich extends Model<QuocTich> {
 		this.ma = ma;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -34,12 +46,19 @@ public class QuocTich extends Model<QuocTich> {
 		this.ten = ten;
 	}
 
+	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
 	}
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public Long getQuocTichId() {
+		return getId();
 	}
 
 }

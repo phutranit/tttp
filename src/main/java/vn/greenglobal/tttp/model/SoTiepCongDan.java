@@ -21,6 +21,11 @@ import org.hibernate.annotations.FetchMode;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6772485280557984436L;
+
 	@ManyToOne
 	private Don don;
 	@ManyToOne
@@ -43,14 +48,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "sotiepcongdan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coquantochuctiepdan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
-	
+
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
 	}
@@ -186,22 +191,5 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
-
-	/*@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "sotiepcongdan_coquantochuctiepdan", joinColumns = {
-			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "coQuanToChucTiepDan_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-	@JsonApiToMany
-	@JsonApiIncludeByDefault
-	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<>();
-
-	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
-		return coQuanToChucTiepDans;
-	}
-
-	public void setCoQuanToChucTiepDans(List<CoQuanToChucTiepDan> coQuanToChucTiepDans) {
-		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
-	}*/
+	
 }

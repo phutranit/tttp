@@ -6,10 +6,19 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "don_congdan")
+@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don_CongDan extends Model<Don_CongDan> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7123036795988588832L;
+	
 	@ManyToOne
 	private Don don;
 	@ManyToOne
@@ -22,7 +31,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
-	// người đứng đơn, ủy quyền, khiếu tố
+	// Người đứng đơn, ủy quyền, khiếu tố
 	private String phanLoaiCongDan = "";
 	private String soTheLuatSu = "";
 

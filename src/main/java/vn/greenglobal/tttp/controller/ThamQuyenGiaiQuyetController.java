@@ -36,7 +36,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "thamquyengiaiquyets", description = "ThamQuyenGiaiQuyet")
+@Api(value = "thamQuyenGiaiQuyets", description = "Thẩm Quyền Giải Quyết")
 public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQuyet> {
 
 	private static Log log = LogFactory.getLog(ThamQuyenGiaiQuyetController.class);
@@ -50,8 +50,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/thamquyengiaiquyets")
-	@ApiOperation(value = "Lấy danh sách ThamQuyenGiaiQuyet", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/thamQuyenGiaiQuyets")
+	@ApiOperation(value = "Lấy danh sách Thẩm Quyền Giải Quyết", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<ThamQuyenGiaiQuyet> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
@@ -61,10 +61,10 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/thamquyengiaiquyets")
-	@ApiOperation(value = "Thêm mới ThamQuyenGiaiQuyet", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới ThamQuyenGiaiQuyet thành công", response = ThamQuyenGiaiQuyet.class),
-			@ApiResponse(code = 201, message = "Thêm mới ThamQuyenGiaiQuyet thành công", response = ThamQuyenGiaiQuyet.class)})
+	@RequestMapping(method = RequestMethod.POST, value = "/thamQuyenGiaiQuyets")
+	@ApiOperation(value = "Thêm mới Thẩm Quyền Giải Quyết", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class),
+			@ApiResponse(code = 201, message = "Thêm mới Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class)})
 	public ResponseEntity<Object> create(@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
@@ -75,9 +75,9 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		return Utils.doSave(repo, thamQuyenGiaiQuyet, eass, HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "Lấy ThamQuyenGiaiQuyet theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy ThamQuyenGiaiQuyet thành công", response = ThamQuyenGiaiQuyet.class) })
-	@RequestMapping(method = RequestMethod.GET, value = "/thamquyengiaiquyets/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/thamQuyenGiaiQuyets/{id}")
+	@ApiOperation(value = "Lấy Thẩm Quyền Giải Quyết theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
 	public ResponseEntity<PersistentEntityResource> getThamQuyenGiaiQuyet(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get ThamQuyenGiaiQuyet theo id: " + id);
@@ -89,9 +89,9 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/thamquyengiaiquyets/{id}")
-	@ApiOperation(value = "Cập nhật ThamQuyenGiaiQuyet", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật ThamQuyenGiaiQuyet thành công", response = ThamQuyenGiaiQuyet.class) })
+	@RequestMapping(method = RequestMethod.PATCH, value = "/thamQuyenGiaiQuyets/{id}")
+	@ApiOperation(value = "Cập nhật Thẩm Quyền Giải Quyết", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
 		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
@@ -108,9 +108,9 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 		return Utils.doSave(repo, thamQuyenGiaiQuyet, eass, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/thamquyengiaiquyets/{id}")
-	@ApiOperation(value = "Xoá ThamQuyenGiaiQuyet", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá ThamQuyenGiaiQuyet thành công") })
+	@RequestMapping(method = RequestMethod.DELETE, value = "/thamQuyenGiaiQuyets/{id}")
+	@ApiOperation(value = "Xoá Thẩm Quyền Giải Quyết", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Thẩm Quyền Giải Quyết thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete ThamQuyenGiaiQuyet theo id: " + id);
 

@@ -11,6 +11,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VuViec extends Model<VuViec> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3736471703211724763L;
+	
 	private String ten = "";
 	private String noiDungVuViec = "";
 

@@ -10,7 +10,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -19,7 +18,6 @@ import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.Model;
 
 public class Utils {

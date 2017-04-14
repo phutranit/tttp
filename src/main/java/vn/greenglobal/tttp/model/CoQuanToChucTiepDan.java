@@ -14,13 +14,15 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiResource;
-
 @Entity
 @Table(name = "coquantochuctiepdan")
-@JsonApiResource(type = "coquantochuctiepdans")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4101233843699537605L;
 
 	private String ten = "";
 	private String nguoiDaiDien = "";

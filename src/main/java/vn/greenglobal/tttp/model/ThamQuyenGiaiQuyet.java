@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,6 +18,12 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6076575850788999749L;
+	
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
@@ -54,6 +61,12 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	@ApiModelProperty(hidden=true)
 	public Long getThamQuyenGiaiQuyetId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetCha() {
+		return getCha();
 	}
 
 }

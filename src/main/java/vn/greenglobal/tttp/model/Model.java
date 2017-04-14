@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.model;
 
+import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -77,6 +78,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.daXoa = daXoa;
 	}
 
+	@Transient
 	public boolean isNew() {
 		return id == null;
 	}

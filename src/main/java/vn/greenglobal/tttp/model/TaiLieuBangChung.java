@@ -7,16 +7,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "tailieubangchung")
-@JsonApiResource(type = "tailieubangchungs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7863478663069074533L;
+	
 	private String ten = "";
 	private String tinhTrangTaiLieu = "";
 	private String duongDan = "";
@@ -25,18 +25,12 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	private int soTrang = 0;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private LoaiTaiLieu loaiTaiLieu;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private SoTiepCongDan soTiepCongDan;
 	
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private Don don;
 
 	public String getTen() {

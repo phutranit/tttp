@@ -7,23 +7,21 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "capcoquanquanly")
-@JsonApiResource(type = "capcoquanquanlys")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1973333094118013160L;
+	
 	private String ma = "";
 	private String ten = "";
 	private String moTa = "";
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private CapCoQuanQuanLy cha;
 	
 	public String getMa() {
