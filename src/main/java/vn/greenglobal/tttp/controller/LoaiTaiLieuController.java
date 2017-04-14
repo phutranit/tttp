@@ -99,6 +99,8 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 		log.info("Update LoaiTaiLieu theo id: " + id);
 
+		loaiTaiLieu.setId(id);
+
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
 				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -110,7 +112,6 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		loaiTaiLieu.setId(id);
 		return Utils.doSave(repo, loaiTaiLieu, eass, HttpStatus.OK);
 	}
 

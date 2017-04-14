@@ -23,7 +23,6 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	 */
 	private static final long serialVersionUID = -1973333094118013160L;
 	
-	@NotBlank
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -32,7 +31,7 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	@ManyToOne
 	private CapCoQuanQuanLy cha;
 	
-	@ApiModelProperty(position = 1, required = true)
+	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
 	}

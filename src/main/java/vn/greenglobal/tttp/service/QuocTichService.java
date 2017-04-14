@@ -48,7 +48,7 @@ public class QuocTichService {
 			predAll = predAll.and(QQuocTich.quocTich.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QQuocTich.quocTich.ma.eq(body.getMa()).or(QQuocTich.quocTich.ten.eq(body.getTen())));
+		predAll = predAll.and(QQuocTich.quocTich.ten.eq(body.getTen()));
 		QuocTich quocTich = repo.findOne(predAll);
 
 		return quocTich != null ? true : false;
