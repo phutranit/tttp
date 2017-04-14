@@ -36,7 +36,7 @@ public class ToDanPhoService {
 		return false;
 	}
 
-	public ToDanPho deleteThamQuyenGiaiQuyet(ToDanPhoRepository repo, Long id) {
+	public ToDanPho deleteToDanPho(ToDanPhoRepository repo, Long id) {
 		ToDanPho toDanPho = null;
 		if (isExists(repo, id)) {
 			toDanPho = new ToDanPho();
