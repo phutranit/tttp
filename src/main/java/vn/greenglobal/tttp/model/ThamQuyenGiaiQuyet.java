@@ -17,10 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -6076575850788999749L;
 
 	@NotBlank
