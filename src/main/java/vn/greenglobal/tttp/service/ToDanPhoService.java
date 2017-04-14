@@ -46,9 +46,17 @@ public class ToDanPhoService {
 		return toDanPho;
 	}
 
-	public boolean checkExistsData(ToDanPhoRepository repo, String ten) {
-		ToDanPho toDanPho = repo.findOne(QToDanPho.toDanPho.daXoa.eq(false)
-				.and(QToDanPho.toDanPho.ten.eq(ten)));
+	
+	public boolean checkExistsData(ToDanPhoRepository repo, ToDanPho body) {
+		BooleanExpression predAll = QToDanPho.toDanPho.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QToDanPho.toDanPho.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QToDanPho.toDanPho.ten.eq(body.getTen()));
+		ToDanPho toDanPho = repo.findOne(predAll);
+
 		return toDanPho != null ? true : false;
 	}
 

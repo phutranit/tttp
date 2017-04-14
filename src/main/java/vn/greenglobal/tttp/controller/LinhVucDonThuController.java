@@ -69,7 +69,7 @@ public class LinhVucDonThuController extends BaseController<LinhVucDonThu> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi LinhVucDonThu");
 
-		if (StringUtils.isNotBlank(LinhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, LinhVucDonThu.getTen())) {
+		if (StringUtils.isNotBlank(LinhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, LinhVucDonThu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
 		return Utils.doSave(repo, LinhVucDonThu, eass, HttpStatus.CREATED);
@@ -95,16 +95,14 @@ public class LinhVucDonThuController extends BaseController<LinhVucDonThu> {
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody LinhVucDonThu LinhVucDonThu, PersistentEntityResourceAssembler eass) {
 		log.info("Update LinhVucDonThu theo id: " + id);
-
-		if (StringUtils.isNotBlank(LinhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, LinhVucDonThu.getTen())) {
+		LinhVucDonThu.setId(id);
+		if (StringUtils.isNotBlank(LinhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, LinhVucDonThu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!linhVucDonThuService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
-		LinhVucDonThu.setId(id);
 		return Utils.doSave(repo, LinhVucDonThu, eass, HttpStatus.OK);
 	}
 
