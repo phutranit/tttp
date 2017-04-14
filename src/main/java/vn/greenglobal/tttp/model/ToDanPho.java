@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -16,7 +17,7 @@ public class ToDanPho extends Model<ToDanPho> {
 	 * 
 	 */
 	private static final long serialVersionUID = 5662282127057182748L;
-	
+	@NotNull
 	private String ten = "";
 	private String moTa = "";
 
