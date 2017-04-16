@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
+
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity

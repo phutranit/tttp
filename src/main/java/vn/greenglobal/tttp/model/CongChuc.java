@@ -38,6 +38,9 @@ public class CongChuc extends Model<CongChuc> {
 	@ManyToOne
 	private ChucVu chucVu;
 
+	@ManyToOne
+	private CongChuc congChuc;
+	
 	public String getMa() {
 		return ma;
 	}
@@ -134,4 +137,12 @@ public class CongChuc extends Model<CongChuc> {
 		this.chucVu = chucVu;
 	}
 
+	
+	public CongChuc getCongChuc() {
+		return congChuc;
+	}
+
+	public void setCongChuc(CongChuc congChuc) {
+		this.congChuc = congChuc;
+	}
 }

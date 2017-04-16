@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,8 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.repository.CongDanRepository;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.service.CongDanService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController

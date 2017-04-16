@@ -52,7 +52,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class)})
 	public ResponseEntity<Object> create(@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi VuViec");
+		log.info("Tao moi ChucVu");
 		
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");

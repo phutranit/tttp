@@ -7,7 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
-import vn.greenglobal.tttp.enums.*;
+import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
 @Entity
 @Table(name = "xulydon")
