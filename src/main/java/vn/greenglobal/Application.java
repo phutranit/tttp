@@ -1,4 +1,4 @@
-package vn.greenglobal.tttp;
+package vn.greenglobal;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +25,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -42,18 +44,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
+import vn.greenglobal.tttp.CustomAuthorizer;
 
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableWebSecurity
 @Controller
-public class Application {
-
+public class Application extends SpringBootServletInitializer {
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

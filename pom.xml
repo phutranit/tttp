@@ -107,16 +107,57 @@
 			<classifier>apt</classifier>
 		</dependency> -->
 
-		<dependency>
+		<!-- >dependency>
 			<groupId>net.daum.clix</groupId>
 			<artifactId>spring-data-rest-webcommon</artifactId>
 			<version>0.9.0-SNAPSHOT</version>
+		</dependency-->
 			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/spring-data-rest-webcommon-0.9.0-SNAPSHOT.jar</systemPath> -->
-		</dependency>
+        <dependency>
+            <groupId>io.katharsis</groupId>
+            <artifactId>katharsis-spring</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <version>5.6.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-lucene5</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+		<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-lang3</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vineey</groupId>
+            <artifactId>rsql-querydsl-all</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vineey</groupId>
+            <artifactId>rsql-querydsl-spring</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -231,6 +272,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+        		<groupId>org.apache.tomcat.maven</groupId>
+        		<artifactId>tomcat7-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

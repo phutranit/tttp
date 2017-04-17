@@ -25,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.VuViec;
@@ -45,7 +44,7 @@ public class VuViecController extends BaseController<VuViec> {
 	private VuViecRepository repo;
 
 	public VuViecController(BaseRepository<VuViec, Long> repo) {
-		super(repo);
+		superC(repo);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/vuViecs")
