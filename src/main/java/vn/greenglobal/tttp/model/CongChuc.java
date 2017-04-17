@@ -9,16 +9,16 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "congchuc")
-@JsonApiResource(type = "congchucs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CongChuc extends Model<CongChuc> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1368951945883561494L;
+	
 	private String ma = "";
 	private String hoVaTen = "";
 	private String soCMNDHoCHieu = "";
@@ -33,13 +33,9 @@ public class CongChuc extends Model<CongChuc> {
 	private boolean gioiTinh;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
-	private CoQuanQuanLy coQuanQuanLy;
-	
+	private CoQuanQuanLy donVi;
+
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private ChucVu chucVu;
 
 	public String getMa() {
@@ -122,12 +118,12 @@ public class CongChuc extends Model<CongChuc> {
 		this.gioiTinh = gioiTinh;
 	}
 
-	public CoQuanQuanLy getCoQuanQuanLy() {
-		return coQuanQuanLy;
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
 	}
 
-	public void setCoQuanQuanLy(CoQuanQuanLy coQuanQuanLy) {
-		this.coQuanQuanLy = coQuanQuanLy;
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
 	}
 
 	public ChucVu getChucVu() {

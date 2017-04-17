@@ -1,29 +1,29 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
+import org.hibernate.validator.constraints.NotBlank;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "vuviec")
-@JsonApiResource(type = "vuviecs")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VuViec extends Model<VuViec> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3736471703211724763L;
+	
+	@NotBlank
 	private String ten = "";
-
-	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
-	private Don don;
-
+	private String noiDungVuViec = "";
+	
+	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -32,12 +32,18 @@ public class VuViec extends Model<VuViec> {
 		this.ten = ten;
 	}
 
-	public Don getDon() {
-		return don;
+	@ApiModelProperty(position = 2)
+	public String getNoiDungVuViec() {
+		return noiDungVuViec;
 	}
 
-	public void setDon(Don don) {
-		this.don = don;
+	public void setNoiDungVuViec(String noiDungVuViec) {
+		this.noiDungVuViec = noiDungVuViec;
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden=true)
+	public Long getVuViecId() {
+		return getId();
+	}
 }

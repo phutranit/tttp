@@ -8,29 +8,27 @@ import vn.greenglobal.tttp.model.VuViec;
 import vn.greenglobal.tttp.repository.VuViecRepository;
 
 public class VuViecService {
-	
+
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = QVuViec.vuViec.daXoa.eq(false);
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QVuViec.vuViec.ten.eq(ten));
-		}		
+		}
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindOne(Long id) {
-		return QVuViec.vuViec.daXoa.eq(false)
-				.and(QVuViec.vuViec.id.eq(id));
+		return QVuViec.vuViec.daXoa.eq(false).and(QVuViec.vuViec.id.eq(id));
 	}
-	
+
 	public boolean isExists(VuViecRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QVuViec.vuViec.daXoa.eq(false)
-					.and(QVuViec.vuViec.id.eq(id));
+			Predicate predicate = QVuViec.vuViec.daXoa.eq(false).and(QVuViec.vuViec.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
-	
+
 	public VuViec deleteVuViec(VuViecRepository repo, Long id) {
 		VuViec vuViec = null;
 		if (isExists(repo, id)) {
@@ -40,11 +38,17 @@ public class VuViecService {
 		}
 		return vuViec;
 	}
-	
-	public boolean checkExistsData(VuViecRepository repo, String ten) {
-		VuViec vuViec = repo.findOne(QVuViec.vuViec.daXoa.eq(false)
-				.and(QVuViec.vuViec.ten.eq(ten)));
+
+	public boolean checkExistsData(VuViecRepository repo, VuViec body) {
+		BooleanExpression predAll = QVuViec.vuViec.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QVuViec.vuViec.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QVuViec.vuViec.ten.eq(body.getTen()));
+		VuViec vuViec = repo.findOne(predAll);
+
 		return vuViec != null ? true : false;
 	}
-	
 }

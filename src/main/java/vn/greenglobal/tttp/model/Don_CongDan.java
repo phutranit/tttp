@@ -1,0 +1,158 @@
+package vn.greenglobal.tttp.model;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+@Entity
+@Table(name = "don_congdan")
+@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Don_CongDan extends Model<Don_CongDan> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7123036795988588832L;
+	
+	@ManyToOne
+	private Don don;
+	@ManyToOne
+	private CongDan congDan;
+	@ManyToOne
+	private SoTiepCongDan soTiepDan;
+
+	// Phân loại người đứng đơn và loại đối tượng
+	private String phanLoai = "";
+	private String tenCoQuan = "";
+	private String diaChiCoQuan = "";
+	private String soDienThoai = "";
+	// Người đứng đơn, ủy quyền, khiếu tố
+	private String phanLoaiCongDan = "";
+	private String soTheLuatSu = "";
+
+	private boolean luatSu = false;
+	
+	private LocalDateTime ngayCapTheLuatSu;
+
+	private String noiCapTheLuatSu = "";
+	private String donVi = "";
+	private String chucVu = "";
+
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
+	}
+
+	public CongDan getCongDan() {
+		return congDan;
+	}
+
+	public void setCongDan(CongDan congDan) {
+		this.congDan = congDan;
+	}
+
+	public SoTiepCongDan getSoTiepDan() {
+		return soTiepDan;
+	}
+
+	public void setSoTiepDan(SoTiepCongDan soTiepDan) {
+		this.soTiepDan = soTiepDan;
+	}
+
+	public String getPhanLoai() {
+		return phanLoai;
+	}
+
+	public void setPhanLoai(String phanLoai) {
+		this.phanLoai = phanLoai;
+	}
+
+	public String getTenCoQuan() {
+		return tenCoQuan;
+	}
+
+	public void setTenCoQuan(String tenCoQuan) {
+		this.tenCoQuan = tenCoQuan;
+	}
+
+	public String getDiaChiCoQuan() {
+		return diaChiCoQuan;
+	}
+
+	public void setDiaChiCoQuan(String diaChiCoQuan) {
+		this.diaChiCoQuan = diaChiCoQuan;
+	}
+
+	public String getSoDienThoai() {
+		return soDienThoai;
+	}
+
+	public void setSoDienThoai(String soDienThoai) {
+		this.soDienThoai = soDienThoai;
+	}
+
+	public String getPhanLoaiCongDan() {
+		return phanLoaiCongDan;
+	}
+
+	public void setPhanLoaiCongDan(String phanLoaiCongDan) {
+		this.phanLoaiCongDan = phanLoaiCongDan;
+	}
+
+	public boolean isLuatSu() {
+		return luatSu;
+	}
+
+	public void setLuatSu(boolean luatSu) {
+		this.luatSu = luatSu;
+	}
+
+	public String getSoTheLuatSu() {
+		return soTheLuatSu;
+	}
+
+	public void setSoTheLuatSu(String soTheLuatSu) {
+		this.soTheLuatSu = soTheLuatSu;
+	}
+
+	public LocalDateTime getNgayCapTheLuatSu() {
+		return ngayCapTheLuatSu;
+	}
+
+	public void setNgayCapTheLuatSu(LocalDateTime ngayCapTheLuatSu) {
+		this.ngayCapTheLuatSu = ngayCapTheLuatSu;
+	}
+
+	public String getNoiCapTheLuatSu() {
+		return noiCapTheLuatSu;
+	}
+
+	public void setNoiCapTheLuatSu(String noiCapTheLuatSu) {
+		this.noiCapTheLuatSu = noiCapTheLuatSu;
+	}
+
+	public String getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(String donVi) {
+		this.donVi = donVi;
+	}
+
+	public String getChucVu() {
+		return chucVu;
+	}
+
+	public void setChucVu(String chucVu) {
+		this.chucVu = chucVu;
+	}
+
+}

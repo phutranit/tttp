@@ -1,12 +1,15 @@
-package vn.greenglobal.tttp;
+package vn.greenglobal;
 
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.matching.Matcher;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.ParameterClient;
@@ -14,43 +17,76 @@ import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
-import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
-import vn.greenglobal.tttp.util.CustomAuthorizer;
 
 @SpringBootApplication
-@EnableWebSecurity
-@EnableWebMvc
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
+@EnableWebMvc
+@Controller
 public class Application extends SpringBootServletInitializer {
-
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/upload", produces = "application/json")
+	@ResponseBody
+	public Object upload(HttpServletRequest req) {
+		System.out.println("//file");
+		System.out.println(req);
+		Enumeration<String> hd = req.getHeaderNames();
+		String result = "";
+		for (;hd.hasMoreElements();) {
+			String s = hd.nextElement();
+			System.out.println(s + " = " + req.getHeader(s));
+			result += s + " = " + req.getHeader(s) + "; ";
+		}	
+		return Collections.singletonMap("response", result);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/authenticate", produces = "application/json")
+	@ResponseBody
+	public Object authenticate(HttpServletRequest req) {
+		System.out.println("//authenticate");
+		System.out.println(req);
+		Enumeration<String> hd = req.getHeaderNames();
+		String result = "";
+		for (;hd.hasMoreElements();) {
+			String s = hd.nextElement();
+			System.out.println(s + " = " + req.getHeader(s));
+			result += s + " = " + req.getHeader(s) + "; ";
+		}	
+		return Collections.singletonMap("response", result);
+	}
+	
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
@@ -72,18 +108,6 @@ public class Application extends SpringBootServletInitializer {
             }
         };
     }
-	/*
-	@Bean
-	public FilterRegistrationBean corsFilter() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
-		config.addAllowedOrigin("http://domain1.com");
-		source.registerCorsConfiguration("/**", config);
-		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-		bean.setOrder(0);
-		return bean;
-	}
-	*/
 	
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {

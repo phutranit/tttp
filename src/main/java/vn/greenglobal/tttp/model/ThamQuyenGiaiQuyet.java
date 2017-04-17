@@ -9,10 +9,16 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "thamquyengiaiquyet")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
+	
+	private static final long serialVersionUID = -6076575850788999749L;
 
 	@NotBlank
 	private String ten = "";
@@ -21,6 +27,7 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet cha;
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -29,6 +36,7 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 		this.ten = ten;
 	}
 
+	@ApiModelProperty(position = 2)
 	public String getMoTa() {
 		return moTa;
 	}
@@ -37,6 +45,7 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 		this.moTa = moTa;
 	}
 
+	@ApiModelProperty(position = 3)
 	public ThamQuyenGiaiQuyet getCha() {
 		return cha;
 	}
@@ -44,10 +53,17 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	public void setCha(ThamQuyenGiaiQuyet cha) {
 		this.cha = cha;
 	}
-	
+
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getThamQuyenGiaiQuyetId() {
 		return getId();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetCha() {
+		return getCha();
 	}
 
 }

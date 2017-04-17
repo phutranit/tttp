@@ -7,24 +7,22 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
-
 @Entity
 @Table(name = "chungchihanhnghe")
-@JsonApiResource(type = "chungchihanhnghes")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ChungChiHanhNghe extends Model<ChungChiHanhNghe> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3305792884790507318L;
+	
 	private String ma = "";
 	private String ten = "";
-	private String moTa = "";
+	private String duongDan = "";
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
-	private CongDan congDan;
+	private Don_CongDan congDan;
 
 	public String getMa() {
 		return ma;
@@ -42,19 +40,19 @@ public class ChungChiHanhNghe extends Model<ChungChiHanhNghe> {
 		this.ten = ten;
 	}
 
-	public String getMoTa() {
-		return moTa;
+	public String getDuongDan() {
+		return duongDan;
 	}
 
-	public void setMoTa(String moTa) {
-		this.moTa = moTa;
+	public void setDuongDan(String duongDan) {
+		this.duongDan = duongDan;
 	}
 
-	public CongDan getCongDan() {
+	public Don_CongDan getCongDan() {
 		return congDan;
 	}
 
-	public void setCongDan(CongDan congDan) {
+	public void setCongDan(Don_CongDan congDan) {
 		this.congDan = congDan;
 	}
 

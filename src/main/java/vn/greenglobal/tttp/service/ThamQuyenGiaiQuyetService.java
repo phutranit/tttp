@@ -8,29 +8,26 @@ import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 
 public class ThamQuyenGiaiQuyetService {
-	
-	public Predicate predicateFindAll(String ten, String moTa, Long cha) {
+
+	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
-		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten));
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.containsIgnoreCase(tuKhoa)
+					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)));
 		}
-		
-		if (moTa != null && !"".equals(moTa)) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.eq(moTa));
-		}
-		
+
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(cha));
 		}
-		
+
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindOne(Long id) {
 		return QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false)
 				.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.id.eq(id));
 	}
-	
+
 	public boolean isExists(ThamQuyenGiaiQuyetRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false)
@@ -39,7 +36,7 @@ public class ThamQuyenGiaiQuyetService {
 		}
 		return false;
 	}
-	
+
 	public ThamQuyenGiaiQuyet deleteThamQuyenGiaiQuyet(ThamQuyenGiaiQuyetRepository repo, Long id) {
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = null;
 		if (isExists(repo, id)) {
@@ -49,11 +46,18 @@ public class ThamQuyenGiaiQuyetService {
 		}
 		return thamQuyenGiaiQuyet;
 	}
-	
-	public boolean checkExistsData(ThamQuyenGiaiQuyetRepository repo, String ten) {
-		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false)
-				.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(ten)));
+
+	public boolean checkExistsData(ThamQuyenGiaiQuyetRepository repo, ThamQuyenGiaiQuyet body) {
+		BooleanExpression predAll = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
+
+		if (!body.isNew()) {
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.id.ne(body.getId()));
+		}
+
+		predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.eq(body.getTen()));
+		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(predAll);
+
 		return thamQuyenGiaiQuyet != null ? true : false;
 	}
-	
+
 }

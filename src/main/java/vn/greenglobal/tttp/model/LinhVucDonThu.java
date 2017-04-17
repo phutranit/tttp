@@ -3,31 +3,34 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import io.katharsis.resource.annotations.JsonApiIncludeByDefault;
-import io.katharsis.resource.annotations.JsonApiResource;
-import io.katharsis.resource.annotations.JsonApiToOne;
+import org.hibernate.validator.constraints.NotBlank;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "linhvuc")
-@JsonApiResource(type = "linhvucs")
+@Table(name = "linhvucdonthu")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6767282651849050987L;
+
 	private String ma = "";
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
 	private boolean linhVucKhac;
 
 	@ManyToOne
-	@JsonApiToOne
-	@JsonApiIncludeByDefault
 	private LinhVucDonThu cha;
 
+	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
 	}
@@ -36,6 +39,7 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 		this.ma = ma;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -44,6 +48,7 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 		this.ten = ten;
 	}
 
+	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
 	}
@@ -52,6 +57,7 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 		this.moTa = moTa;
 	}
 
+	@ApiModelProperty(position = 4)
 	public boolean isLinhVucKhac() {
 		return linhVucKhac;
 	}
@@ -60,12 +66,25 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 		this.linhVucKhac = linhVucKhac;
 	}
 
+	@ApiModelProperty(position = 5)
 	public LinhVucDonThu getCha() {
 		return cha;
 	}
 
 	public void setCha(LinhVucDonThu cha) {
 		this.cha = cha;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getLinhVucDonThuId() {
+		return getId();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LinhVucDonThu getLinhVucDonThuCha() {
+		return getCha();
 	}
 
 }

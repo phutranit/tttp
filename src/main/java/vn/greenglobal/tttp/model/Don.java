@@ -3,36 +3,90 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import io.katharsis.resource.annotations.JsonApiResource;
+import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 
 @Entity
 @Table(name = "don")
-@JsonApiResource(type = "dons")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don extends Model<Don> {
 
+	private static final long serialVersionUID = 8736658787648062250L;
+	
 	private String ma = "";
-	private String noiDUng = "";
+	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
-
+	private String diaDiemGapLanhDao = "";
+	private String lyDoTuChoi = "";
+	private String ghiChuTiepCongDan = "";
+	private String huongGiaiQuyetDaThucHien = "";
+	private String lanGiaiQuyet = "";
+	private String yKienXuLyDon = ""; //Xu ly don TCD
+	private String ghiChuXuLyDon = ""; //Xu ly don TCD
+	private String trangThaiDon = "";
+	private String lyDoDinhChi = "";
+	private String soQuyetDinhDinhChi = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
 
-	private LocalDateTime ngayTiepNhan;
+	private boolean coUyQuyen = false;
+	private boolean thanhLapDon = false;
+	private boolean tuChoiTiepCongDan = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 
+	private LocalDateTime ngayTiepNhan;
+	private LocalDateTime ngayHenGapLanhDao;
+	private LocalDateTime ngayQuyetDinhDinhChi;
+	
 	@OneToOne
 	private Don donLanTruoc;
+	@ManyToOne
+	private CongChuc canBoXuLy;
+	@ManyToOne
+	private CoQuanQuanLy donVi;
+	@ManyToOne
+	private LinhVucDonThu linhVucDonThu;
+	@ManyToOne
+	private LinhVucDonThu linhVucDonThuChiTiet;
+	@ManyToOne
+	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+	@ManyToOne
+	private VuViec vuViec;
+	@ManyToOne
+	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
+	@ManyToOne
+	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy coQuanDaGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyet; //Xu ly don TCD
 
+	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
+	@Enumerated(EnumType.STRING)
+	private LoaiDoiTuongEnum loaiDoiTuong;
+	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
+	@Enumerated(EnumType.STRING)
+	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+	@Enumerated(EnumType.STRING)
+	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyTCDEnum huongXuLy;
 
 	public String getMa() {
 		return ma;
@@ -42,12 +96,12 @@ public class Don extends Model<Don> {
 		this.ma = ma;
 	}
 
-	public String getNoiDUng() {
-		return noiDUng;
+	public String getNoiDung() {
+		return noiDung;
 	}
 
-	public void setNoiDUng(String noiDUng) {
-		this.noiDUng = noiDUng;
+	public void setNoiDung(String noiDung) {
+		this.noiDung = noiDung;
 	}
 
 	public String getYeuCauCuaCongDan() {
@@ -56,6 +110,22 @@ public class Don extends Model<Don> {
 
 	public void setYeuCauCuaCongDan(String yeuCauCuaCongDan) {
 		this.yeuCauCuaCongDan = yeuCauCuaCongDan;
+	}
+
+	public String getDiaDiemGapLanhDao() {
+		return diaDiemGapLanhDao;
+	}
+
+	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
+		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
+	}
+
+	public String getLyDoTuChoi() {
+		return lyDoTuChoi;
+	}
+
+	public void setLyDoTuChoi(String lyDoTuChoi) {
+		this.lyDoTuChoi = lyDoTuChoi;
 	}
 
 	public int getSoLanKhieuNaiToCao() {
@@ -74,12 +144,140 @@ public class Don extends Model<Don> {
 		this.soNguoi = soNguoi;
 	}
 
+	public boolean isCoUyQuyen() {
+		return coUyQuyen;
+	}
+
+	public void setCoUyQuyen(boolean coUyQuyen) {
+		this.coUyQuyen = coUyQuyen;
+	}
+
+	public boolean isThanhLapDon() {
+		return thanhLapDon;
+	}
+
+	public void setThanhLapDon(boolean thanhLapDon) {
+		this.thanhLapDon = thanhLapDon;
+	}
+
+	public boolean isTuChoiTiepCongDan() {
+		return tuChoiTiepCongDan;
+	}
+
+	public void setTuChoiTiepCongDan(boolean tuChoiTiepCongDan) {
+		this.tuChoiTiepCongDan = tuChoiTiepCongDan;
+	}
+
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
+
+	public String getGhiChuTiepCongDan() {
+		return ghiChuTiepCongDan;
+	}
+
+	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
+		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
+	}
+	
+	public String getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiDon(String trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
+	}
+	
+	public String getLyDoDinhChi() {
+		return lyDoDinhChi;
+	}
+
+	public void setLyDoDinhChi(String lyDoDinhChi) {
+		this.lyDoDinhChi = lyDoDinhChi;
+	}
+
+	public String getSoQuyetDinhDinhChi() {
+		return soQuyetDinhDinhChi;
+	}
+
+	public void setSoQuyetDinhDinhChi(String soQuyetDinhDinhChi) {
+		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
+	}
+
+	public LocalDateTime getNgayQuyetDinhDinhChi() {
+		return ngayQuyetDinhDinhChi;
+	}
+
+	public void setNgayQuyetDinhDinhChi(LocalDateTime ngayQuyetDinhDinhChi) {
+		this.ngayQuyetDinhDinhChi = ngayQuyetDinhDinhChi;
+	}
+
 	public LocalDateTime getNgayTiepNhan() {
 		return ngayTiepNhan;
 	}
 
 	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
 		this.ngayTiepNhan = ngayTiepNhan;
+	}
+
+	public LocalDateTime getNgayHenGapLanhDao() {
+		return ngayHenGapLanhDao;
+	}
+
+	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
+		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
+	}
+
+	public String getHuongGiaiQuyetDaThucHien() {
+		return huongGiaiQuyetDaThucHien;
+	}
+
+	public void setHuongGiaiQuyetDaThucHien(String huongGiaiQuyetDaThucHien) {
+		this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+	}
+
+	public String getLanGiaiQuyet() {
+		return lanGiaiQuyet;
+	}
+
+	public void setLanGiaiQuyet(String lanGiaiQuyet) {
+		this.lanGiaiQuyet = lanGiaiQuyet;
+	}
+
+	public String getyKienXuLyDon() {
+		return yKienXuLyDon;
+	}
+
+	public void setyKienXuLyDon(String yKienXuLyDon) {
+		this.yKienXuLyDon = yKienXuLyDon;
+	}
+
+	public String getGhiChuXuLyDon() {
+		return ghiChuXuLyDon;
+	}
+
+	public void setGhiChuXuLyDon(String ghiChuXuLyDon) {
+		this.ghiChuXuLyDon = ghiChuXuLyDon;
+	}
+
+	public CapCoQuanQuanLy getCapCoQuanDaGiaiQuyet() {
+		return capCoQuanDaGiaiQuyet;
+	}
+
+	public void setCapCoQuanDaGiaiQuyet(CapCoQuanQuanLy capCoQuanDaGiaiQuyet) {
+		this.capCoQuanDaGiaiQuyet = capCoQuanDaGiaiQuyet;
+	}
+
+	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
+		return coQuanDaGiaiQuyet;
+	}
+
+	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
+		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
 	}
 
 	public Don getDonLanTruoc() {
@@ -90,12 +288,60 @@ public class Don extends Model<Don> {
 		this.donLanTruoc = donLanTruoc;
 	}
 
+	public CongChuc getCanBoXuLy() {
+		return canBoXuLy;
+	}
+
+	public void setCanBoXuLy(CongChuc canBoXuLy) {
+		this.canBoXuLy = canBoXuLy;
+	}
+
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
+	}
+
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
+		return thamQuyenGiaiQuyet;
+	}
+
+	public void setThamQuyenGiaiQuyet(ThamQuyenGiaiQuyet thamQuyenGiaiQuyet) {
+		this.thamQuyenGiaiQuyet = thamQuyenGiaiQuyet;
+	}
+
+	public CoQuanQuanLy getPhongBanGiaiQuyet() {
+		return phongBanGiaiQuyet;
+	}
+
+	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
+		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	public VuViec getVuViec() {
+		return vuViec;
+	}
+
+	public void setVuViec(VuViec vuViec) {
+		this.vuViec = vuViec;
+	}
+
 	public LoaiDonEnum getLoaiDon() {
 		return loaiDon;
 	}
 
 	public void setLoaiDon(LoaiDonEnum loaiDon) {
 		this.loaiDon = loaiDon;
+	}
+
+	public LoaiDoiTuongEnum getLoaiDoiTuong() {
+		return loaiDoiTuong;
+	}
+
+	public void setLoaiDoiTuong(LoaiDoiTuongEnum loaiDoiTuong) {
+		this.loaiDoiTuong = loaiDoiTuong;
 	}
 
 	public NguonTiepNhanDonEnum getNguonTiepNhanDon() {
@@ -106,4 +352,52 @@ public class Don extends Model<Don> {
 		this.nguonTiepNhanDon = nguonTiepNhanDon;
 	}
 
+	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
+		return loaiNguoiDungDon;
+	}
+
+	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
+		this.loaiNguoiDungDon = loaiNguoiDungDon;
+	}
+
+	public HinhThucGiaiQuyetEnum getHinhThucDaGiaiQuyet() {
+		return hinhThucDaGiaiQuyet;
+	}
+
+	public void setHinhThucDaGiaiQuyet(HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet) {
+		this.hinhThucDaGiaiQuyet = hinhThucDaGiaiQuyet;
+	}
+
+	public HuongXuLyTCDEnum getHuongXuLy() {
+		return huongXuLy;
+	}
+
+	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
+		this.huongXuLy = huongXuLy;
+	}
+
+	public LinhVucDonThu getLinhVucDonThu() {
+		return linhVucDonThu;
+	}
+
+	public void setLinhVucDonThu(LinhVucDonThu linhVucDonThu) {
+		this.linhVucDonThu = linhVucDonThu;
+	}
+
+	public LinhVucDonThu getLinhVucDonThuChiTiet() {
+		return linhVucDonThuChiTiet;
+	}
+
+	public void setLinhVucDonThuChiTiet(LinhVucDonThu linhVucDonThuChiTiet) {
+		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
+	}
+
+	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
+		return chiTietLinhVucDonThuChiTiet;
+	}
+
+	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
+		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
+	}
+	
 }
