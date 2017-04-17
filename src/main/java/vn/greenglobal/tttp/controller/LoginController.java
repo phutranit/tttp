@@ -25,7 +25,7 @@ public class LoginController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public void login(@RequestBody NguoiDung nguoiDung, Errors errors){
-		System.out.println("login");
+		System.out.println("login:"+errors);
 		if(nguoiDung!=null){
 			System.out.println(nguoiDung.getTenDangNhap());
 		}
