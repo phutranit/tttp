@@ -38,12 +38,15 @@ public class ToDanPhoService {
 	}
 
 	public ToDanPho deleteToDanPho(ToDanPhoRepository repo, Long id) {
-		ToDanPho toDanPho = null;
-		if (isExists(repo, id)) {
+		ToDanPho toDanPho = repo.findOne(predicateFindOne(id));
+		if(toDanPho!=null){
+			toDanPho.setDaXoa(true);
+		}
+		/*if (isExists(repo, id)) {
 			toDanPho = new ToDanPho();
 			toDanPho.setId(id);
 			toDanPho.setDaXoa(true);
-		}
+		}*/
 		return toDanPho;
 	}
 

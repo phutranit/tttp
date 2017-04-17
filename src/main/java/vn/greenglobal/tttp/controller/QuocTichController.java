@@ -26,7 +26,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.QuocTich;
@@ -46,7 +45,7 @@ public class QuocTichController extends BaseController<QuocTich> {
 	private QuocTichRepository repo;
 
 	public QuocTichController(BaseRepository<QuocTich, Long> repo) {
-		super(repo);
+		superC(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -69,8 +68,8 @@ public class QuocTichController extends BaseController<QuocTich> {
 		log.info("Tao moi QuocTich");
 
 		if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, quocTich, eass, HttpStatus.CREATED);
 	}
@@ -100,8 +99,8 @@ public class QuocTichController extends BaseController<QuocTich> {
 		quocTich.setId(id);
 
 		if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!quocTichService.isExists(repo, id)) {

@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 @Entity
 @Table(name = "nguoidung")
@@ -22,7 +25,9 @@ public class NguoiDung extends Model<NguoiDung> {
 	 */
 	private static final long serialVersionUID = 6979954418350232111L;
 
+	@NotBlank
 	private String tenDangNhap = "";
+	@NotBlank
 	private String matKhau = "";
 	private String hinhDaiDien = "";
 	private String salkey = "";
@@ -102,4 +107,15 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.vaiTros = vaiTros;
 	}
 
+	public void updatePassword(String pass) {
+		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+		String salkey = getSalkey();
+		if (salkey == null || salkey.equals("")) {
+			salkey = encryptor.encryptPassword((new Date()).toString());
+		}
+		String passNoHash = pass + salkey;
+		String passHash = encryptor.encryptPassword(passNoHash);
+		setSalkey(salkey);
+		setMatKhau(passHash);
+	}
 }
