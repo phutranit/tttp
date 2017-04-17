@@ -54,7 +54,7 @@ public class VaiTroController extends BaseController<VaiTro>{
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros")
+	@RequestMapping(method = RequestMethod.GET, value = "/api/v1/vaiTros")
 	@ApiOperation(value = "Lấy danh sách vai trò", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PagedResources<CapCoQuanQuanLy> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
@@ -68,7 +68,7 @@ public class VaiTroController extends BaseController<VaiTro>{
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/vaiTros")
+	@RequestMapping(method = RequestMethod.POST, value = "/api/v1/vaiTros")
 	@ApiOperation(value = "Thêm mới vai trò", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Vai Trò thành công", response = LoaiTaiLieu.class),

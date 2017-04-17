@@ -126,17 +126,27 @@ public class Application {
 
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
-				http
+				/*http
 					.authorizeRequests()
 						.antMatchers("/login", "/vaiTros").permitAll()
 						.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
 						.anyRequest().authenticated()
 						.and()
-					.httpBasic();
+					.httpBasic()
+						.and()
+					.csrf().disable();*/
 				
-				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
-				//http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-				//http.authorizeRequests().antMatchers("/**").authenticated();
+				//final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
+				//http.addFilterBefore(filter, BasicAuthenticationFilter.class)
+				//	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+				http.authorizeRequests()
+						.antMatchers("/login", "/api/v1/vaiTros").permitAll()
+						.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
+						.anyRequest().authenticated()
+						.and()
+					.httpBasic()
+						.and()
+					.csrf().disable();
 			}
 		};
 	}

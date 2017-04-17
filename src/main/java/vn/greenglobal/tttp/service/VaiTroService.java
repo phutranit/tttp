@@ -1,15 +1,15 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.model.CongDan;
-import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QVaiTro;
 import vn.greenglobal.tttp.model.VaiTro;
-import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 
+@Component
 public class VaiTroService {
 
 	BooleanExpression base = QVaiTro.vaiTro.daXoa.eq(false);
