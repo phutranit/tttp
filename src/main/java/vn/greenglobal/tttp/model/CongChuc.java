@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -32,7 +35,7 @@ public class CongChuc extends Model<CongChuc> {
 	private String dienThoai = "";
 	@NotBlank
 	private String email = "";
-	@NotBlank
+	@NotNull
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
@@ -112,6 +115,7 @@ public class CongChuc extends Model<CongChuc> {
 		this.email = email;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(position = 7, required = true)
 	public LocalDateTime getNgaySinh() {
 		return ngaySinh;

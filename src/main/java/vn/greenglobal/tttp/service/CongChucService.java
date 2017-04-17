@@ -37,7 +37,7 @@ public class CongChucService {
 		return false;
 	}
 
-	public CongChuc deleteCongDan(CongChucRepository repo, Long id) {
+	public CongChuc deleteCongChuc(CongChucRepository repo, Long id) {
 		CongChuc congDan = null;
 		if (isExists(repo, id)) {
 			congDan = new CongChuc();

@@ -75,7 +75,11 @@
 		    <artifactId>cors-filter</artifactId>
 		    <version>1.9.1</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
 		<dependency>
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-swagger2</artifactId>
@@ -92,7 +96,7 @@
         	<artifactId>spring-boot-devtools</artifactId>
         	<optional>true</optional>
     	</dependency>
-		<dependency>
+		<!-- <dependency>
                     <groupId>com.querydsl</groupId>
                     <artifactId>querydsl-apt</artifactId>
                     <scope>provided</scope>
@@ -103,7 +107,7 @@
                     <scope>provided</scope>
                     <version>${querydsl.version}</version>
                     <classifier>apt</classifier>
-                </dependency>
+                </dependency> -->
 
 		<!-- >dependency>
 			<groupId>net.daum.clix</groupId>
