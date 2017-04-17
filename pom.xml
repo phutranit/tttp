@@ -16,6 +16,7 @@
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<pac4j.version>1.9.6</pac4j.version>
 		<processDependencyManagement>false</processDependencyManagement>
 	</properties>
 
@@ -25,70 +26,64 @@
 			<layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
 			</releases> <snapshots> <enabled>false</enabled> <updatePolicy>never</updatePolicy> 
 			</snapshots> </repository> -->
-		<repository>
+		<!-- <repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>http://repo.spring.io/milestone</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
+		</repository> -->
 	</repositories>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.5.2.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>io.spring.platform</groupId>
-				<artifactId>platform-bom</artifactId>
-				<version>Brussels-SR1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>Brussels-SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-core</artifactId>
+	            <version>${pac4j.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-	
 		<dependency>
-		    <groupId>com.googlecode.json-simple</groupId>
-		    <artifactId>json-simple</artifactId>
-		    <version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-		    <groupId>com.thetransactioncompany</groupId>
-		    <artifactId>java-property-utils</artifactId>
-		    <version>1.9.1</version>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>com.thetransactioncompany</groupId>
-		    <artifactId>cors-filter</artifactId>
-		    <version>1.9.1</version>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>java-property-utils</artifactId>
+			<version>1.9.1</version>
 		</dependency>
-		
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-		    <version>2.6.1</version>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>1.9.1</version>
 		</dependency>
-		
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>2.6.1</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
 		</dependency>
-	
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
 		<dependency>
 			<groupId>net.daum.clix</groupId>
 			<artifactId>spring-data-rest-webcommon</artifactId>
@@ -104,6 +99,18 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-rest-hal-browser</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
@@ -122,10 +129,29 @@
 			<artifactId>commons-collections</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>cz.jirutka.spring</groupId>
-		    <artifactId>spring-rest-exception-handler</artifactId>
-		    <version>1.2.0</version>
-		</dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>spring-security-pac4j</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-core</artifactId>
+            </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-http</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-jwt</artifactId>
+            <version>${pac4j.version}</version>
+	    </dependency>
+		<!-- <dependency>
+			<groupId>cz.jirutka.spring</groupId>
+			<artifactId>spring-rest-exception-handler</artifactId>
+			<version>1.2.0</version>
+		</dependency> -->
 	</dependencies>
 
 	<build>
