@@ -31,7 +31,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
-@EnableWebMvc
+//@EnableWebMvc
 @Controller
 public class Application extends SpringBootServletInitializer {
 	@Override
