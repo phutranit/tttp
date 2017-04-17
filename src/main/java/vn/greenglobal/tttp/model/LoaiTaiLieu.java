@@ -21,7 +21,7 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	 * 
 	 */
 	private static final long serialVersionUID = -3826710912952156958L;
-	
+
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
@@ -43,9 +43,9 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getLoaiTaiLieuId() {
 		return getId();
 	}

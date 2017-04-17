@@ -23,9 +23,7 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 @Table(name = "don")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don extends Model<Don> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 8736658787648062250L;
 	
 	private String ma = "";
@@ -38,7 +36,10 @@ public class Don extends Model<Don> {
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; //Xu ly don TCD
 	private String ghiChuXuLyDon = ""; //Xu ly don TCD
-
+	private String trangThaiDon = "";
+	private String lyDoDinhChi = "";
+	private String soQuyetDinhDinhChi = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int soNguoi;
 
@@ -49,7 +50,8 @@ public class Don extends Model<Don> {
 
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayHenGapLanhDao;
-
+	private LocalDateTime ngayQuyetDinhDinhChi;
+	
 	@OneToOne
 	private Don donLanTruoc;
 	@ManyToOne
@@ -180,6 +182,38 @@ public class Don extends Model<Don> {
 
 	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
 		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
+	}
+	
+	public String getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiDon(String trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
+	}
+	
+	public String getLyDoDinhChi() {
+		return lyDoDinhChi;
+	}
+
+	public void setLyDoDinhChi(String lyDoDinhChi) {
+		this.lyDoDinhChi = lyDoDinhChi;
+	}
+
+	public String getSoQuyetDinhDinhChi() {
+		return soQuyetDinhDinhChi;
+	}
+
+	public void setSoQuyetDinhDinhChi(String soQuyetDinhDinhChi) {
+		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
+	}
+
+	public LocalDateTime getNgayQuyetDinhDinhChi() {
+		return ngayQuyetDinhDinhChi;
+	}
+
+	public void setNgayQuyetDinhDinhChi(LocalDateTime ngayQuyetDinhDinhChi) {
+		this.ngayQuyetDinhDinhChi = ngayQuyetDinhDinhChi;
 	}
 
 	public LocalDateTime getNgayTiepNhan() {

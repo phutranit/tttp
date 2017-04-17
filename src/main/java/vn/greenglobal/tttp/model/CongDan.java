@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.NotEmpty;
-
+import org.hibernate.validator.constraints.NotBlank;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -19,12 +18,9 @@ import io.swagger.annotations.ApiModelProperty;
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CongDan extends Model<CongDan> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2302822305956477280L;
 	
-	@NotEmpty
+	@NotBlank
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
@@ -129,7 +125,7 @@ public class CongDan extends Model<CongDan> {
 		this.gioiTinh = gioiTinh;
 	}
 
-	@ApiModelProperty(position = 9)
+	@ApiModelProperty(position = 9, example="{}")
 	public DonViHanhChinh getTinhThanh() {
 		return tinhThanh;
 	}
@@ -138,7 +134,7 @@ public class CongDan extends Model<CongDan> {
 		this.tinhThanh = tinhThanh;
 	}
 
-	@ApiModelProperty(position = 10)
+	@ApiModelProperty(position = 10, example="{}")
 	public DonViHanhChinh getQuanHuyen() {
 		return quanHuyen;
 	}
@@ -147,7 +143,7 @@ public class CongDan extends Model<CongDan> {
 		this.quanHuyen = quanHuyen;
 	}
 
-	@ApiModelProperty(position = 11)
+	@ApiModelProperty(position = 11, example="{}")
 	public DonViHanhChinh getPhuongXa() {
 		return phuongXa;
 	}
@@ -156,7 +152,7 @@ public class CongDan extends Model<CongDan> {
 		this.phuongXa = phuongXa;
 	}
 
-	@ApiModelProperty(position = 12)
+	@ApiModelProperty(position = 12, example="{}")
 	public ToDanPho getToDanPho() {
 		return toDanPho;
 	}
@@ -165,7 +161,7 @@ public class CongDan extends Model<CongDan> {
 		this.toDanPho = toDanPho;
 	}
 
-	@ApiModelProperty(position = 13)
+	@ApiModelProperty(position = 13, example="{}")
 	public QuocTich getQuocTich() {
 		return quocTich;
 	}
@@ -174,7 +170,7 @@ public class CongDan extends Model<CongDan> {
 		this.quocTich = quocTich;
 	}
 
-	@ApiModelProperty(position = 14)
+	@ApiModelProperty(position = 14, example="{}")
 	public DanToc getDanToc() {
 		return danToc;
 	}

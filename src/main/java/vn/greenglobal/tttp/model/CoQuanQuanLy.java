@@ -8,7 +8,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -70,6 +69,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 		this.cha = cha;
 	}
 
+	@ApiModelProperty(position = 5, required = true, example="{}")
 	public CapCoQuanQuanLy getCapCoQuanQuanLy() {
 		return capCoQuanQuanLy;
 	}

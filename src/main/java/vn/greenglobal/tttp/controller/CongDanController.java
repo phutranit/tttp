@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongDan;
@@ -46,7 +44,7 @@ public class CongDanController extends BaseController<CongDan> {
 	private CongDanRepository repo;
 
 	public CongDanController(BaseRepository<CongDan, Long> repo) {
-		super(repo);
+		superC(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
