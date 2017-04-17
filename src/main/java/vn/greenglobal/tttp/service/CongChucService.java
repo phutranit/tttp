@@ -4,14 +4,8 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.CongDan;
-import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QCongChuc;
-import vn.greenglobal.tttp.model.QCongDan;
-import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.CongChucRepository;
-import vn.greenglobal.tttp.repository.CongDanRepository;
-import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 
 public class CongChucService {
 

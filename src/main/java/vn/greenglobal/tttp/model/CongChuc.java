@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +23,7 @@ public class CongChuc extends Model<CongChuc> {
 	 * 
 	 */
 	private static final long serialVersionUID = -1368951945883561494L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String hoVaTen = "";
@@ -35,6 +33,7 @@ public class CongChuc extends Model<CongChuc> {
 	private String dienThoai = "";
 	@NotBlank
 	private String email = "";
+
 	@NotNull
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
@@ -48,7 +47,7 @@ public class CongChuc extends Model<CongChuc> {
 	@NotNull
 	@ManyToOne
 	private ChucVu chucVu;
-	
+
 	@NotNull
 	@ManyToOne
 	private NguoiDung nguoiDung;

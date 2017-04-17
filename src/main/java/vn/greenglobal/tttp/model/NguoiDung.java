@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
@@ -20,17 +18,16 @@ public class NguoiDung extends Model<NguoiDung> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6979954418350232111L;
-	
+
 	@NotBlank
 	private String tenDangNhap = "";
 	@NotBlank
 	private String matKhau = "";
 	private String hinhDaiDien = "";
 	private String salkey = "";
-	private String matKhauRetype = "";
 
 	private boolean active;
-	
+
 	public String getTenDangNhap() {
 		return tenDangNhap;
 	}
@@ -71,7 +68,6 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.active = active;
 	}
 
-	
 	public void updatePassword(String pass) {
 		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
 		String salkey = getSalkey();
