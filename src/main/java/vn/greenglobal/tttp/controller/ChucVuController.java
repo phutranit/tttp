@@ -25,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
@@ -44,7 +43,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 	private ChucVuRepository repo;
 
 	public ChucVuController(BaseRepository<ChucVu, Long> repo) {
-		super(repo);
+		superC(repo);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
