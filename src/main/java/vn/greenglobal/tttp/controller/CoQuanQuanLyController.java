@@ -74,8 +74,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 		log.info("Tao moi CoQuanQuanLy");
 
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, coQuanQuanLy, eass, HttpStatus.CREATED);
 	}
@@ -106,8 +106,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 		coQuanQuanLy.setId(id);
 
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!coQuanQuanLyService.isExists(repo, id)) {

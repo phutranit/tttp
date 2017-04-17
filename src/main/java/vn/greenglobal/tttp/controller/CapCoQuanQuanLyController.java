@@ -71,8 +71,8 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 
 		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, capCoQuanQuanLy, eass, HttpStatus.CREATED);
 	}
@@ -104,8 +104,8 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 
 		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!capCoQuanQuanLyService.isExists(repo, id)) {
