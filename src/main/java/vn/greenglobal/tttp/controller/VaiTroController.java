@@ -37,13 +37,13 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "vaiTros", description = "Vai trò")
-public class VaiTroController extends BaseController<VaiTro>{
+public class VaiTroController extends BaseController<VaiTro> {
 
-	private static Log log = LogFactory.getLog(ToDanPhoController.class);
-	
+	private static Log log = LogFactory.getLog(VaiTroController.class);
+
 	@Autowired
 	VaiTroRepository repo;
-	
+
 	@Autowired
 	VaiTroService vaiTroService;
 
@@ -53,33 +53,36 @@ public class VaiTroController extends BaseController<VaiTro>{
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros")
-	@ApiOperation(value = "Lấy danh sách Vai Trò", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Vai Trò", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<VaiTro> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach VaiTro");
 
 		Page<VaiTro> page = repo.findAll(vaiTroService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/vaiTros")
-	@ApiOperation(value = "Thêm mới Vai Trò", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Vai Trò thành công", response = VaiTro.class),
-			@ApiResponse(code = 201, message = "Thêm mới Vai trò thành công", response = VaiTro.class)})
+	@ApiOperation(value = "Thêm mới Vai Trò", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Vai Trò thành công", response = VaiTro.class),
+			@ApiResponse(code = 201, message = "Thêm mới Vai trò thành công", response = VaiTro.class) })
 	public ResponseEntity<Object> create(@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi VaiTro");
-		
+
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, vaiTro, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros/{id}")
-	@ApiOperation(value = "Lấy Vai Trò theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
-	public ResponseEntity<PersistentEntityResource> getVaiTro(@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+	@ApiOperation(value = "Lấy Vai Trò theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
+	public ResponseEntity<PersistentEntityResource> getVaiTro(@PathVariable("id") long id,
+			PersistentEntityResourceAssembler eass) {
 		log.info("Get VaiTro theo id: " + id);
 
 		VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
@@ -90,31 +93,40 @@ public class VaiTroController extends BaseController<VaiTro>{
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/vaiTros/{id}")
-	@ApiOperation(value = "Cập nhật Vai Trò", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Vai Trò thành công", response = VaiTro.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
-			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
+	@ApiOperation(value = "Cập nhật Vai Trò", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Vai Trò thành công", response = VaiTro.class) })
+	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody VaiTro vaiTro,
+			PersistentEntityResourceAssembler eass) {
 		log.info("Update VaiTro theo id: " + id);
 
-		if (!vaiTroService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		vaiTro.setId(id);
+		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		vaiTro.setId(id);
+		if (!vaiTroService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
 		return Utils.doSave(repo, vaiTro, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/vaiTros/{id}")
-	@ApiOperation(value = "Xoá Vai Trò", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Vai Trò thành công") })
+	@ApiOperation(value = "Xoá Vai Trò", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Vai Trò thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete VaiTro theo id: " + id);
 
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
 		if (vaiTro == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(vaiTro);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 }
