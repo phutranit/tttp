@@ -29,7 +29,6 @@ public class Don extends Model<Don> {
 	private String ma = "";
 	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
-	private String diaDiemGapLanhDao = "";
 	private String lyDoTuChoi = "";
 	private String ghiChuTiepCongDan = "";
 	private String huongGiaiQuyetDaThucHien = "";
@@ -46,10 +45,8 @@ public class Don extends Model<Don> {
 	private boolean coUyQuyen = false;
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private LocalDateTime ngayTiepNhan;
-	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	
 	@OneToOne
@@ -112,14 +109,6 @@ public class Don extends Model<Don> {
 		this.yeuCauCuaCongDan = yeuCauCuaCongDan;
 	}
 
-	public String getDiaDiemGapLanhDao() {
-		return diaDiemGapLanhDao;
-	}
-
-	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
-		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
-	}
-
 	public String getLyDoTuChoi() {
 		return lyDoTuChoi;
 	}
@@ -168,14 +157,6 @@ public class Don extends Model<Don> {
 		this.tuChoiTiepCongDan = tuChoiTiepCongDan;
 	}
 
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
-	}
-
 	public String getGhiChuTiepCongDan() {
 		return ghiChuTiepCongDan;
 	}
@@ -222,14 +203,6 @@ public class Don extends Model<Don> {
 
 	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
 		this.ngayTiepNhan = ngayTiepNhan;
-	}
-
-	public LocalDateTime getNgayHenGapLanhDao() {
-		return ngayHenGapLanhDao;
-	}
-
-	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
-		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
 	}
 
 	public String getHuongGiaiQuyetDaThucHien() {
