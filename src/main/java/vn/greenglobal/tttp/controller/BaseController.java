@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.greenglobal.core.model.common.BaseRepository;
-import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 
 public class BaseController<T> 
 	implements ResourceProcessor<RepositorySearchesResource> {
