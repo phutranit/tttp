@@ -105,7 +105,7 @@ public class Application {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/tttp/api/**");
+                registry.addMapping("/api/**");
             }
         };
     }
