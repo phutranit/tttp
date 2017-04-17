@@ -92,18 +92,19 @@
         	<artifactId>spring-boot-devtools</artifactId>
         	<optional>true</optional>
     	</dependency>
-		<dependency>
-                    <groupId>com.querydsl</groupId>
-                    <artifactId>querydsl-apt</artifactId>
-                    <scope>provided</scope>
+    	
+		<!-- <dependency>
+             <groupId>com.querydsl</groupId>
+             <artifactId>querydsl-apt</artifactId>
+             <scope>provided</scope>
 		</dependency>
 		<dependency>
-                    <groupId>com.querydsl</groupId>
-                    <artifactId>querydsl-jpa</artifactId>
-                    <scope>provided</scope>
-                    <version>${querydsl.version}</version>
-                    <classifier>apt</classifier>
-                </dependency>
+             <groupId>com.querydsl</groupId>
+             <artifactId>querydsl-jpa</artifactId>
+             <scope>provided</scope>
+             <version>${querydsl.version}</version>
+             <classifier>apt</classifier>
+         </dependency> -->
 
 		<!-- >dependency>
 			<groupId>net.daum.clix</groupId>
