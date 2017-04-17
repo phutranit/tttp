@@ -1,11 +1,15 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 @Entity
 @Table(name = "nguoidung")
@@ -17,16 +21,16 @@ public class NguoiDung extends Model<NguoiDung> {
 	 */
 	private static final long serialVersionUID = 6979954418350232111L;
 	
+	@NotBlank
 	private String tenDangNhap = "";
+	@NotBlank
 	private String matKhau = "";
 	private String hinhDaiDien = "";
 	private String salkey = "";
+	private String matKhauRetype = "";
 
 	private boolean active;
-
-	@ManyToOne
-	private CongChuc congChuc;
-
+	
 	public String getTenDangNhap() {
 		return tenDangNhap;
 	}
@@ -67,12 +71,16 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.active = active;
 	}
 
-	public CongChuc getCongChuc() {
-		return congChuc;
+	
+	public void updatePassword(String pass) {
+		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+		String salkey = getSalkey();
+		if (salkey == null || salkey.equals("")) {
+			salkey = encryptor.encryptPassword((new Date()).toString());
+		}
+		String passNoHash = pass + salkey;
+		String passHash = encryptor.encryptPassword(passNoHash);
+		setSalkey(salkey);
+		setMatKhau(passHash);
 	}
-
-	public void setCongChuc(CongChuc congChuc) {
-		this.congChuc = congChuc;
-	}
-
 }
