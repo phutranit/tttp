@@ -26,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.DanToc;
@@ -45,7 +46,7 @@ public class DanTocController extends BaseController<DanToc> {
 	private DanTocRepository repo;
 
 	public DanTocController(BaseRepository<DanToc, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

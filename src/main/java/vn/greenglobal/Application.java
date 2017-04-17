@@ -15,6 +15,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 //@EnableWebMvc
 @Controller
+@ComponentScan(basePackages={"vn.greenglobal.core.model.common"})
 public class Application extends SpringBootServletInitializer {
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

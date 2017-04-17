@@ -109,11 +109,11 @@
                     <classifier>apt</classifier>
                 </dependency> -->
 
-		<!-- >dependency>
+		<dependency>
 			<groupId>net.daum.clix</groupId>
 			<artifactId>spring-data-rest-webcommon</artifactId>
 			<version>0.9.0-SNAPSHOT</version>
-		</dependency-->
+		</dependency>
 			<!-- <scope>system</scope> <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/spring-data-rest-webcommon-0.9.0-SNAPSHOT.jar</systemPath> -->
         <dependency>
             <groupId>io.katharsis</groupId>
