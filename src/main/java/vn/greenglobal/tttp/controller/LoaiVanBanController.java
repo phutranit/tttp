@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.LoaiVanBan;
 
@@ -18,7 +19,7 @@ import vn.greenglobal.tttp.model.LoaiVanBan;
 public class LoaiVanBanController extends BaseController<LoaiVanBan> {
 
 	public LoaiVanBanController(BaseRepository<LoaiVanBan, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaivanbans/search/findByRsql")

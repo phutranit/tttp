@@ -29,6 +29,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,6 +56,7 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableWebSecurity
 @Controller
+@ComponentScan(basePackages={"vn.greenglobal.core.model.common"})
 public class Application extends SpringBootServletInitializer {
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
