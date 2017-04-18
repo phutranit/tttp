@@ -396,6 +396,21 @@ public class Don extends Model<Don> {
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
 	}
+	
+	@Transient
+	public CoQuanQuanLy getDonViDon() {
+		return getDonVi();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuDon() {
+		return getLinhVucDonThu();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
+		return getLinhVucDonThuChiTiet();
+	}
 
 	public List<Don_CongDan> getDonCongDans() {
 		return donCongDans;
