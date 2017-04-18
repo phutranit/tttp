@@ -26,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
@@ -46,7 +47,7 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 	private CoQuanQuanLyRepository repo;
 
 	public CoQuanQuanLyController(BaseRepository<CoQuanQuanLy, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -74,8 +75,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 		log.info("Tao moi CoQuanQuanLy");
 
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, coQuanQuanLy, eass, HttpStatus.CREATED);
 	}
@@ -106,8 +107,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 		coQuanQuanLy.setId(id);
 
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TEN_EXISTS.name(),
-					ApiErrorEnum.MA_TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!coQuanQuanLyService.isExists(repo, id)) {

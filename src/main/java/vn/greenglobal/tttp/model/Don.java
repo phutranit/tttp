@@ -1,16 +1,22 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
@@ -29,7 +35,6 @@ public class Don extends Model<Don> {
 	private String ma = "";
 	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
-	private String diaDiemGapLanhDao = "";
 	private String lyDoTuChoi = "";
 	private String ghiChuTiepCongDan = "";
 	private String huongGiaiQuyetDaThucHien = "";
@@ -46,10 +51,8 @@ public class Don extends Model<Don> {
 	private boolean coUyQuyen = false;
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private LocalDateTime ngayTiepNhan;
-	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	
 	@OneToOne
@@ -74,7 +77,10 @@ public class Don extends Model<Don> {
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; //Xu ly don TCD
-
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+	
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
 	@Enumerated(EnumType.STRING)
@@ -110,14 +116,6 @@ public class Don extends Model<Don> {
 
 	public void setYeuCauCuaCongDan(String yeuCauCuaCongDan) {
 		this.yeuCauCuaCongDan = yeuCauCuaCongDan;
-	}
-
-	public String getDiaDiemGapLanhDao() {
-		return diaDiemGapLanhDao;
-	}
-
-	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
-		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
 	}
 
 	public String getLyDoTuChoi() {
@@ -168,14 +166,6 @@ public class Don extends Model<Don> {
 		this.tuChoiTiepCongDan = tuChoiTiepCongDan;
 	}
 
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
-	}
-
 	public String getGhiChuTiepCongDan() {
 		return ghiChuTiepCongDan;
 	}
@@ -222,14 +212,6 @@ public class Don extends Model<Don> {
 
 	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
 		this.ngayTiepNhan = ngayTiepNhan;
-	}
-
-	public LocalDateTime getNgayHenGapLanhDao() {
-		return ngayHenGapLanhDao;
-	}
-
-	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
-		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
 	}
 
 	public String getHuongGiaiQuyetDaThucHien() {
@@ -399,5 +381,12 @@ public class Don extends Model<Don> {
 	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
-	
+
+	public List<SoTiepCongDan> getTiepCongDans() {
+		return tiepCongDans;
+	}
+
+	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
+		this.tiepCongDans = tiepCongDans;
+	}
 }

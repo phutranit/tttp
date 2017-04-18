@@ -9,17 +9,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "todanpho")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class ToDanPho extends Model<ToDanPho> {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5662282127057182748L;
+	
 	@NotNull
 	private String ten = "";
 	private String moTa = "";

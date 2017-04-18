@@ -1,11 +1,19 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 @Entity
 @Table(name = "nguoidung")
@@ -16,16 +24,40 @@ public class NguoiDung extends Model<NguoiDung> {
 	 * 
 	 */
 	private static final long serialVersionUID = 6979954418350232111L;
-	
+
+	@NotBlank
 	private String tenDangNhap = "";
+	@NotBlank
 	private String matKhau = "";
 	private String hinhDaiDien = "";
 	private String salkey = "";
 
 	private boolean active;
 
-	@ManyToOne
-	private CongChuc congChuc;
+	@ManyToMany
+	@JoinTable(name = "nguoidung_vaitro", 
+			joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), 
+			inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id")
+			)
+	private Set<VaiTro> vaiTros = new HashSet<>(0);;
+
+	public NguoiDung() {
+	}
+	
+	public NguoiDung(String tenDangNhap, String matKhau, boolean active) {
+		super();
+		this.tenDangNhap = tenDangNhap;
+		this.matKhau = matKhau;
+		this.active = active;
+	}
+
+	public NguoiDung(String tenDangNhap, String matKhau, boolean active, Set<VaiTro> vaiTros) {
+		super();
+		this.tenDangNhap = tenDangNhap;
+		this.matKhau = matKhau;
+		this.active = active;
+		this.vaiTros = vaiTros;
+	}
 
 	public String getTenDangNhap() {
 		return tenDangNhap;
@@ -67,12 +99,23 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.active = active;
 	}
 
-	public CongChuc getCongChuc() {
-		return congChuc;
+	public Set<VaiTro> getVaiTros() {
+		return vaiTros;
 	}
 
-	public void setCongChuc(CongChuc congChuc) {
-		this.congChuc = congChuc;
+	public void setVaiTros(Set<VaiTro> vaiTros) {
+		this.vaiTros = vaiTros;
 	}
 
+	public void updatePassword(String pass) {
+		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+		String salkey = getSalkey();
+		if (salkey == null || salkey.equals("")) {
+			salkey = encryptor.encryptPassword((new Date()).toString());
+		}
+		String passNoHash = pass + salkey;
+		String passHash = encryptor.encryptPassword(passNoHash);
+		setSalkey(salkey);
+		setMatKhau(passHash);
+	}
 }

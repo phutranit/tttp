@@ -15,8 +15,10 @@ import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.ParameterClient;
 import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
+import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
+import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,32 +29,38 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
+import vn.greenglobal.tttp.CustomAuthorizer;
 
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
-@EnableWebMvc
+@EnableWebSecurity
 @Controller
+@ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
+		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 	@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
-	
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -64,11 +72,11 @@ public class Application extends SpringBootServletInitializer {
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";
-		for (;hd.hasMoreElements();) {
+		for (; hd.hasMoreElements();) {
 			String s = hd.nextElement();
 			System.out.println(s + " = " + req.getHeader(s));
 			result += s + " = " + req.getHeader(s) + "; ";
-		}	
+		}
 		return Collections.singletonMap("response", result);
 	}
 
@@ -79,14 +87,14 @@ public class Application extends SpringBootServletInitializer {
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";
-		for (;hd.hasMoreElements();) {
+		for (; hd.hasMoreElements();) {
 			String s = hd.nextElement();
 			System.out.println(s + " = " + req.getHeader(s));
 			result += s + " = " + req.getHeader(s) + "; ";
-		}	
+		}
 		return Collections.singletonMap("response", result);
 	}
-	
+
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
@@ -98,77 +106,59 @@ public class Application extends SpringBootServletInitializer {
 			}
 		};
 	}
-	
+
 	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/tttp/api/**");
-            }
-        };
-    }
-	
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/api/**");
+			}
+		};
+	}
+
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication()
-					.withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
+						"ACTUATOR");
+
 			}
 
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
-				
-				http
-				.authorizeRequests()
-						.antMatchers("/resources/**", "/about").permitAll() 
-						.antMatchers("/browser/**").hasRole("ADMIN")
-						.antMatchers("/**").authenticated()
-					.and()
-				.formLogin()
-					.and()
-				.logout()
-						.invalidateHttpSession(true)
-					.and()
-				.httpBasic();
-				
-				/*final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
-				http.addFilterBefore(filter, BasicAuthenticationFilter.class)
-						.sessionManagement()
-						.sessionCreationPolicy(SessionCreationPolicy.NEVER);*/
-	
-				
+				http.authorizeRequests().antMatchers("/login", "/api/v1/vaiTros").permitAll().antMatchers("/browser/**")
+						.hasRole("ADMIN").anyRequest().permitAll().anyRequest().authenticated().and().httpBasic().and()
+						.csrf().disable();
+
+				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
+						"custom");
+				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
+						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+
 			}
 		};
 	}
 
-	
-	
 	@Value("${salt}")
 	private String salt;// = "12345678901234567890123456789012"; // 32 chars
 
 	@Bean
 	public Config configPac4j() throws ParseException {
-		final SecretSignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+		final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 		final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
-		
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
 		authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		
 		HeaderClient headerClient = new HeaderClient("Authorization", "Bearer ", authenticator);
-		
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
-		
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
-		
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
-		
 		final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
 		generator.setSignatureConfiguration(secretSignatureConfiguration);
 		generator.setEncryptionConfiguration(secretEncryptionConfiguration);

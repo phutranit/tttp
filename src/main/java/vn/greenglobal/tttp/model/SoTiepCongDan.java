@@ -4,17 +4,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import vn.greenglobal.tttp.enums.*;
 
 @Entity
 @Table(name = "sotiepcongdan")
@@ -33,7 +39,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
-
+	private LocalDateTime ngayHenGapLanhDao;
+	
 	private String loaiTiepDan = "";
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
@@ -42,16 +49,39 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String trangThaiKetQua = "";
 	private String diaDiemTiepDan = "";
 	private String noiDungBoSung = "";
-
+	private String diaDiemGapLanhDao = "";
+	@Transient
+	private String huongXuLyText = "";
+	@Transient
+	private String luotTiep = "";
+	
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
-
+	private boolean yeuCauGapTrucTiepLanhDao = false;
+	
+	@Enumerated(EnumType.STRING)
+	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyTCDEnum huongXuLy;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "sotiepcongdan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coquantochuctiepdan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<CongDan> congDans;
+	
+	public List<CongDan> getCongDans() {
+		return congDans;
+	}
+
+	public void setCongDans(List<CongDan> congDans) {
+		this.congDans = congDans;
+	}
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -189,4 +219,63 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
 	
+	public String getDiaDiemGapLanhDao() {
+		return diaDiemGapLanhDao;
+	}
+
+	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
+		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
+	}
+	
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
+	
+	public LocalDateTime getNgayHenGapLanhDao() {
+		return ngayHenGapLanhDao;
+	}
+
+	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
+		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
+	}
+
+	public HuongGiaiQuyetTCDEnum getHuongGiaiQuyet() {
+		return huongGiaiQuyet;
+	}
+
+	public void setHuongGiaiQuyet(HuongGiaiQuyetTCDEnum huongGiaiQuyet) {
+		this.huongGiaiQuyet = huongGiaiQuyet;
+	}
+
+	public HuongXuLyTCDEnum getHuongXuLy() {
+		return huongXuLy;
+	}
+
+	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
+		this.huongXuLy = huongXuLy;
+	}
+
+	public String getHuongXuLyText() {
+		return huongXuLyText;
+	}
+
+	public void setHuongXuLyText(String huongXuLyText) {
+		this.huongXuLyText = huongXuLyText;
+	}
+
+	public String getLuotTiep() {
+		return luotTiep;
+	}
+
+	public void setLuotTiep(String luotTiep) {
+		int n = 0;
+		if(don != null) {
+			n = don.getTiepCongDans().size();
+		}
+		this.luotTiep = ""+n;
+	}
 }

@@ -9,8 +9,10 @@ import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 
 public class CapCoQuanQuanLyService {
 
+	BooleanExpression base = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
+	
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
-		BooleanExpression predAll = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
 					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.containsIgnoreCase(tuKhoa))
@@ -25,13 +27,12 @@ public class CapCoQuanQuanLyService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false).and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
+		return base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
 	}
 
 	public boolean isExists(CapCoQuanQuanLyRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false)
-					.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
+			Predicate predicate = base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
@@ -48,7 +49,7 @@ public class CapCoQuanQuanLyService {
 	}
 
 	public boolean checkExistsData(CapCoQuanQuanLyRepository repo, CapCoQuanQuanLy body) {
-		BooleanExpression predAll = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.ne(body.getId()));
