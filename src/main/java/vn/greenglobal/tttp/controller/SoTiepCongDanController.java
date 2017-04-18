@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
-import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
