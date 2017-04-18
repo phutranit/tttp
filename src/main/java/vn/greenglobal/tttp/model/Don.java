@@ -47,6 +47,7 @@ public class Don extends Model<Don> {
 	private String soQuyetDinhDinhChi = "";
 	
 	private int soLanKhieuNaiToCao = 0;
+	private int tongSoLuotTCD;
 	private int soNguoi;
 
 	private boolean coUyQuyen = false;
@@ -81,6 +82,11 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
+	@Transient
+	private Don_CongDan donCongDan; //TCD
 	
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -382,7 +388,7 @@ public class Don extends Model<Don> {
 	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
-
+	
 	public List<SoTiepCongDan> getTiepCongDans() {
 		return tiepCongDans;
 	}
@@ -404,5 +410,31 @@ public class Don extends Model<Don> {
 	@Transient
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
+	}
+
+	public List<Don_CongDan> getDonCongDans() {
+		return donCongDans;
+	}
+
+	public void setDonCongDans(List<Don_CongDan> donCongDans) {
+		this.donCongDans = donCongDans;
+	}
+	
+	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
+		for (Don_CongDan obj : donCongDans) {
+			if(obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
+				donCongDan = obj;
+				break;
+			}
+		}
+		return donCongDan;
+	}
+
+	public int getTongSoLuotTCD() {
+		return tongSoLuotTCD;
+	}
+
+	public void setTongSoLuotTCD(int tongSoLuotTCD) {
+		this.tongSoLuotTCD = tongSoLuotTCD;
 	}
 }

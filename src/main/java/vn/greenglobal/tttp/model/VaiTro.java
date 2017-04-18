@@ -31,9 +31,6 @@ public class VaiTro extends Model<VaiTro> {
 	@Lob
 	private String quyen = "";
 
-	@ManyToMany(mappedBy = "vaiTros", fetch = FetchType.LAZY)
-	private Set<NguoiDung> nguoiDungs;
-
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
@@ -50,15 +47,6 @@ public class VaiTro extends Model<VaiTro> {
 
 	public void setQuyen(String quyen) {
 		this.quyen = quyen;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public Set<NguoiDung> getNguoiDungs() {
-		return nguoiDungs;
-	}
-
-	public void setNguoiDungs(Set<NguoiDung> nguoiDungs) {
-		this.nguoiDungs = nguoiDungs;
 	}
 
 }
