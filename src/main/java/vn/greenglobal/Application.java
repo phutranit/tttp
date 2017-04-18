@@ -32,7 +32,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 //@EnableWebMvc
 @Controller
-@ComponentScan(basePackages={"vn.greenglobal.core.model.common"})
+@ComponentScan(basePackages={"vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller"})
 public class Application extends SpringBootServletInitializer {
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
