@@ -18,8 +18,7 @@ public class SoTiepCongDanService {
 	}
 	
 	public Predicate predicateFindAllTCD(String tuKhoa, boolean thanhLapDon) {
-		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false)
-				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
+		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
 		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			log.info("-- tuKhoa : " +tuKhoa);
