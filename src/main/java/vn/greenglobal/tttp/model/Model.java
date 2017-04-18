@@ -12,6 +12,7 @@ import javax.persistence.MappedSuperclass;
 import org.springframework.data.domain.Persistable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -44,7 +45,6 @@ public class Model<T extends Model<T>> implements Persistable {
 		return 31;
 	}
 	
-	@ApiModelProperty(hidden=true)
 	public Long getId() {
 		return id;
 	}
@@ -75,6 +75,7 @@ public class Model<T extends Model<T>> implements Persistable {
 	}
 
 	@ApiModelProperty(hidden=true)
+	@JsonIgnore
 	public boolean isDaXoa() {
 		return daXoa;
 	}

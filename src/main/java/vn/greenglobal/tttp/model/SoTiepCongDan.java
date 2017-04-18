@@ -270,4 +270,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
 		this.soThuTuLuotTiep = soThuTuLuotTiep;
 	}
+	
+	@Transient
+	public List<CoQuanToChucTiepDan> getcoQuanToChucTiepDanSTCD() {
+		return coQuanToChucTiepDans;
+	}
+	
 }

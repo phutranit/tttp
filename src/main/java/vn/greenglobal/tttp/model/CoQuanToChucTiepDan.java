@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -42,6 +43,11 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 
 	public void setChucVu(String chucVu) {
 		this.chucVu = chucVu;
+	}
+	
+	@Transient
+	public Long getCoQuanToChucTiepDanId() {
+		return getId();
 	}
 	
 }
