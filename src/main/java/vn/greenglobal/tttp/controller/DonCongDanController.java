@@ -32,6 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.*;
@@ -62,7 +63,7 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	public TransactionTemplate transactioner;
 	
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
