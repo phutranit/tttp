@@ -1,5 +1,6 @@
 package vn.greenglobal;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -14,10 +15,10 @@ import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.ParameterClient;
 import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
+import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -34,9 +35,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,13 +53,14 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableWebSecurity
 @Controller
-@ComponentScan(basePackages={"vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller", "vn.greenglobal.tttp.service", "vn.greenglobal.tttp"})
+@ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
+		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 	@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
-	
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -71,11 +72,11 @@ public class Application extends SpringBootServletInitializer {
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";
-		for (;hd.hasMoreElements();) {
+		for (; hd.hasMoreElements();) {
 			String s = hd.nextElement();
 			System.out.println(s + " = " + req.getHeader(s));
 			result += s + " = " + req.getHeader(s) + "; ";
-		}	
+		}
 		return Collections.singletonMap("response", result);
 	}
 
@@ -86,14 +87,14 @@ public class Application extends SpringBootServletInitializer {
 		System.out.println(req);
 		Enumeration<String> hd = req.getHeaderNames();
 		String result = "";
-		for (;hd.hasMoreElements();) {
+		for (; hd.hasMoreElements();) {
 			String s = hd.nextElement();
 			System.out.println(s + " = " + req.getHeader(s));
 			result += s + " = " + req.getHeader(s) + "; ";
-		}	
+		}
 		return Collections.singletonMap("response", result);
 	}
-	
+
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
@@ -105,64 +106,51 @@ public class Application extends SpringBootServletInitializer {
 			}
 		};
 	}
-	
+
 	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**");
-            }
-        };
-    }
-	
-	@Autowired
-	@Qualifier("userDetailsService")
-	UserDetailsService userDetailsService;
-	
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**");
+			}
+		};
+	}
+
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication()
-						.withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
-				auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
+						"ACTUATOR");
+
 			}
 
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
-				/*http
-					.authorizeRequests()
-						.antMatchers("/login", "/vaiTros").permitAll()
-						.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
-						.anyRequest().authenticated()
-						.and()
-					.httpBasic()
-						.and()
-					.csrf().disable();*/
-				
-				//final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
-				//http.addFilterBefore(filter, BasicAuthenticationFilter.class)
-				//	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 				http.authorizeRequests()
-						.antMatchers("/login", "/api/v1/vaiTros").permitAll()
-						.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
-						.anyRequest().authenticated()
-						.and()
-					.httpBasic()
-						.and()
-					.csrf().disable();
+					//.antMatchers("/login").permitAll()
+					//.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
+					.anyRequest().permitAll()
+					//.and().httpBasic()
+					.and().csrf().disable();
+
+				//final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
+				//		"custom");
+				//http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
+				//		.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+
 			}
 		};
 	}
-	
-	@Value("${salt}")
-    private String salt;
 
-    @Bean
-    public Config configPac4j() {
-    	final SecretSignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+	@Value("${salt}")
+	private String salt;// = "12345678901234567890123456789012"; // 32 chars
+
+	@Bean
+	public Config configPac4j() throws ParseException {
+		final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 		final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
@@ -187,12 +175,5 @@ public class Application extends SpringBootServletInitializer {
 		System.out.println(authenticator.validateToken(token));
 		System.out.println(2);
 		return config;
-    }
-    
-    @Bean
-	public PasswordEncoder passwordEncoder(){
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		return encoder;
 	}
-    
 }
