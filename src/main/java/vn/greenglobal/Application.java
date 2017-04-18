@@ -130,10 +130,10 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
 				http.authorizeRequests()
-					.antMatchers("/login").permitAll()
-					.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
-					.anyRequest().authenticated()
-					.and().httpBasic()
+					//.antMatchers("/login").permitAll()
+					//.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
+					.anyRequest().permitAll()
+					//.and().httpBasic()
 					.and().csrf().disable();
 
 				//final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
