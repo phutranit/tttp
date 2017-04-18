@@ -59,7 +59,7 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/{id}")
 	@ApiOperation(value = "Lấy Tiếp Công Dân theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy lượt Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
 	public ResponseEntity<PersistentEntityResource> getsoTiepCongDans(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get SoTiepCongDan theo id: " + id);
