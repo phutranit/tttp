@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "don_congdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -41,6 +43,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String donVi = "";
 	private String chucVu = "";
 
+	@ApiModelProperty(position = 1, required = true)
 	public Don getDon() {
 		return don;
 	}
@@ -49,6 +52,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public CongDan getCongDan() {
 		return congDan;
 	}
@@ -57,6 +61,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.congDan = congDan;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public String getPhanLoai() {
 		return phanLoai;
 	}

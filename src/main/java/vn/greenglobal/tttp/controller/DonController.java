@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +36,45 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "dons", description = "Đơn")
+@Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends BaseController<Don> {
 
 	private static Log log = LogFactory.getLog(DonController.class);
 	private static DonService donService = new DonService();
-
+	
 	@Autowired
 	private DonRepository repo;
-
+	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/dons")
+	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class)})
+	public @ResponseBody PagedResources<Don> getList(Pageable pageable,
+			@RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
+			@RequestParam(value = "cmndHoChieu", required = false) String cmndHoChieu,
+			@RequestParam(value = "nguonDon", required = false) String nguonDon,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
+			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
+			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
+			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
+			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
+			PersistentEntityResourceAssembler eass){
+		
+		log.info("Get list Don");
+		
+		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
+				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
+				hanGiaiQuyetDenNgay, trinhTrangXuLy),pageable);
+		
+		return assembler.toResource(pageData, (ResourceAssembler) eass);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/dons")
 	@ApiOperation(value = "Thêm mới Đơn", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
@@ -60,18 +87,6 @@ public class DonController extends BaseController<Don> {
 		return new ResponseEntity<>(eass.toFullResource(Don), HttpStatus.CREATED);
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/dons")
-	@ApiOperation(value = "Lấy danh sách Đơn", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<Don> getList(Pageable pageable,
-			@RequestParam(value = "ten", required = false) String ten,
-			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach Don");
-
-		Page<Don> page = repo.findAll(donService.predicateFindAll(), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
 	@ApiOperation(value = "Lấy Đơn theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
@@ -85,7 +100,7 @@ public class DonController extends BaseController<Don> {
 		}
 		return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
 	}
-
+	
 	@RequestMapping(method = RequestMethod.PATCH, value = "/dons/{id}")
 	@ApiOperation(value = "Cập nhật Đơn", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Đơn thành công", response = Don.class) })
