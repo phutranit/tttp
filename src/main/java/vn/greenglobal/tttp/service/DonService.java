@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -21,8 +23,11 @@ public class DonService {
 //
 //		return predAll;
 //	}
-	
-	public Predicate predicateFindAll() {
+		
+	public Predicate predicateFindAll(String maDon, 
+			String tenNguoiDungDon, String nguonDon, String phanLoaiDon, 
+			String tiepNhanTuNgay,String tiepNhanDenNgay, String hanGiaiQuyetTuNgay,
+			String hanGiaiQuyetDenNgay, String trinhTrangXuLy) {
 		
 		BooleanExpression predAll = QDon.don.daXoa.eq(false);
 		return predAll;
