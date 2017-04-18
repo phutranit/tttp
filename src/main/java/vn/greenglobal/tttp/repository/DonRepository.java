@@ -6,6 +6,6 @@ import vn.greenglobal.core.model.common.MutableRepo;
 import vn.greenglobal.tttp.model.Don;
 
 @RestResource(path = "dons")
-public interface DonRepository extends MutableRepo<Don>{
+public interface DonRepository extends MutableRepo<Don> {
 
 }

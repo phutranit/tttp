@@ -8,15 +8,25 @@ sudo docker build --tag=tttp-server:1.0 server/
 
 #Run docker (run containers)
 
-sudo docker run -d --name=tttp-mariadb -p 3306:3306 tttp-mariadb:1.0
+# Run Mariadb server
+
+1. sudo docker run -d --name=tttp-mariadb -p 3306:3306 tttp-mariadb:1.0
+
+2. sudo docker exec -ti tttp-mariadb bash
+
+3. mysql -u root < /home/mysql/dump/tttp.sql
+
+# Run Phpmyadmin
 
 sudo docker run -d --name=tttp-phpadmin --link tttp-mariadb:mariadb -p 9000:80 tttp-phpadmin:1.0
 
-sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 --link=tttp-mariadb:mariadb tttp-server:1.0
+# Run api server
 
-or
+1. sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 --link=tttp-mariadb:mariadb tttp-server:1.0
 
-sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 -p 8088:80 -v /opt/tomcat/webapps:/opt/tomcat/webapps --link=tttp-mariadb:mariadb tttp-server:1.0
+2. sudo docker exec -ti tttp-server bash
+
+3. mvn spring-boot:run
 
 #Start and stop (follow order)
 

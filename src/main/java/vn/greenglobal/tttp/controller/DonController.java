@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.PagedResources;
@@ -13,6 +14,7 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +30,6 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.Don;
-import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.util.Utils;
@@ -74,18 +75,58 @@ public class DonController extends BaseController<Don> {
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value="/dons")
-	@ApiOperation(value = "Thêm mới đơn", position = 2 , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Thêm mới đơn thành công", response = Don.class),
-			@ApiResponse(code = 203, message = "Không có quyền thực hiện thêm mới đơn"),
-			
-	})
-	public ResponseEntity<Object> create(@RequestBody Don don,
+	@RequestMapping(method = RequestMethod.POST, value = "/dons")
+	@ApiOperation(value = "Thêm mới Đơn", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
+			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
+	public ResponseEntity<Object> create(@RequestBody Don Don,
 			PersistentEntityResourceAssembler eass) {
+		log.info("Tao moi Don");
 		
-		log.info("Create 'Don'");
+		repo.save(Don);
+		return new ResponseEntity<>(eass.toFullResource(Don), HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
+	@ApiOperation(value = "Lấy Đơn theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
+	public ResponseEntity<PersistentEntityResource> getDon(@PathVariable("id") long id,
+			PersistentEntityResourceAssembler eass) {
+		log.info("Get Don theo id: " + id);
+
+		Don don = repo.findOne(donService.predicateFindOne(id));
+		if (don == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PATCH, value = "/dons/{id}")
+	@ApiOperation(value = "Cập nhật Đơn", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Đơn thành công", response = Don.class) })
+	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+			@RequestBody Don don,
+			PersistentEntityResourceAssembler eass) {
+		log.info("Update Don theo id: " + id);
+		don.setId(id);
 		
 		
+		if (!donService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		repo.save(don);
+		return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/dons/{id}")
+	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+		log.info("Delete Don theo id: " + id);
+
+		Don don = donService.deleteDon(repo, id);
+		if (don == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		repo.save(don);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
