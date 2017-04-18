@@ -4,5 +4,9 @@ sudo docker build --tag=tttp-server:1.0 server/
 
 
 sudo docker run -d --name=tttp-mariadb -p 3306:3306 tttp-mariadb:1.0
-sudo docker run -d --name=tttp-phpadmin --link tttp-mariadb:db -p 9000:8080 tttp-phpadmin:1.0
-sudo docker run -d --name=tttp-server -p 8088:80 --link=tttp-mariadb:db tttp-server:1.0
+sudo docker run -d --name=tttp-phpadmin --link tttp-mariadb:mariadb -p 9000:80 tttp-phpadmin:1.0
+sudo docker run -d --name=tttp-server -p -p 8080:8080 -p 8009:8009 --link=tttp-mariadb:mariadb tttp-server:1.0
+
+or
+
+sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 -p 8088:80 -v /opt/tomcat/webapps:/opt/tomcat/webapps --link=tttp-mariadb:mariadb tttp-server:1.0
