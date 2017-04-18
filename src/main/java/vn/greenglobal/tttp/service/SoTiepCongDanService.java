@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.service;
 
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
@@ -10,6 +11,18 @@ public class SoTiepCongDanService {
 	
 	public Predicate predicateFindOne(Long id) {
 		return QSoTiepCongDan.soTiepCongDan.daXoa.eq(false).and(QSoTiepCongDan.soTiepCongDan.id.eq(id));
+	}
+	
+	public Predicate predicateFindAllTCD(String tuKhoa, boolean thanhLapDon) {
+		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false)
+				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
+		
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			/*predAll = predAll
+					.and(QSoTiepCongDan.soTiepCongDan.congDans.any().hoVaTen.containsIgnoreCase(tuKhoa)
+							.or(QSoTiepCongDan.soTiepCongDan.congDans.any().soCMNDHoChieu.eq(tuKhoa)));*/
+		}
+		return predAll;
 	}
 
 	public boolean isExists(SoTiepCongDanRepository repo, Long id) {

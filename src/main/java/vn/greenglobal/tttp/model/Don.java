@@ -1,16 +1,22 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
@@ -71,7 +77,10 @@ public class Don extends Model<Don> {
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; //Xu ly don TCD
-
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+	
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
 	@Enumerated(EnumType.STRING)
@@ -372,5 +381,12 @@ public class Don extends Model<Don> {
 	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
-	
+
+	public List<SoTiepCongDan> getTiepCongDans() {
+		return tiepCongDans;
+	}
+
+	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
+		this.tiepCongDans = tiepCongDans;
+	}
 }

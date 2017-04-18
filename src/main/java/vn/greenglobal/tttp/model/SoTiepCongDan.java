@@ -11,7 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,6 +50,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String diaDiemTiepDan = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
+	@Transient
+	private String huongXuLyText = "";
+	@Transient
+	private String luotTiep = "";
 	
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
@@ -64,6 +70,18 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 					@JoinColumn(name = "coquantochuctiepdan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<CongDan> congDans;
+	
+	public List<CongDan> getCongDans() {
+		return congDans;
+	}
+
+	public void setCongDans(List<CongDan> congDans) {
+		this.congDans = congDans;
+	}
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -239,5 +257,27 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
+	}
+
+	public String getHuongXuLyText() {
+		return huongXuLyText;
+	}
+
+	public void setHuongXuLyText(String huongXuLyText) {
+		this.huongXuLyText = huongXuLyText;
+	}
+
+	public String getLuotTiep() {
+		return luotTiep;
+	}
+
+	public void setLuotTiep(String luotTiep) {
+		int n = 0;
+		if(don != null) {
+			if(don.getTiepCongDans() != null) {
+				n = don.getTiepCongDans().size();
+			}
+		}
+		this.luotTiep = ""+n;
 	}
 }
