@@ -15,11 +15,8 @@ import io.swagger.annotations.ApiModelProperty;
 @Table(name = "todanpho")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ToDanPho extends Model<ToDanPho> {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5662282127057182748L;
+	
 	@NotNull
 	private String ten = "";
 	private String moTa = "";
