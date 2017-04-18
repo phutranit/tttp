@@ -3,13 +3,17 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
 @Table(name = "don_congdan")
@@ -27,7 +31,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private CongDan congDan;
 
 	// Phân loại người đứng đơn và loại đối tượng
-	private String phanLoai = "";
+	@NotNull
+	private PhanLoaiDonCongDanEnum phanLoai;
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
@@ -61,17 +66,20 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.congDan = congDan;
 	}
 
+	
+	
+	public String getTenCoQuan() {
+		return tenCoQuan;
+	}
+
 	@ApiModelProperty(position = 2, required = true)
-	public String getPhanLoai() {
+	@Enumerated(EnumType.STRING)
+	public PhanLoaiDonCongDanEnum getPhanLoai() {
 		return phanLoai;
 	}
 
-	public void setPhanLoai(String phanLoai) {
+	public void setPhanLoai(PhanLoaiDonCongDanEnum phanLoai) {
 		this.phanLoai = phanLoai;
-	}
-
-	public String getTenCoQuan() {
-		return tenCoQuan;
 	}
 
 	public void setTenCoQuan(String tenCoQuan) {
