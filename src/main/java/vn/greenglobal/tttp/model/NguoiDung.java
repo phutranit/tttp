@@ -9,11 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jasypt.util.password.BasicPasswordEncryptor;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "nguoidung")
@@ -67,6 +72,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.tenDangNhap = tenDangNhap;
 	}
 
+	@JsonIgnore
 	public String getMatKhau() {
 		return matKhau;
 	}
@@ -83,6 +89,8 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.hinhDaiDien = hinhDaiDien;
 	}
 
+	@ApiModelProperty(hidden=true)
+	@JsonIgnore
 	public String getSalkey() {
 		return salkey;
 	}
@@ -117,5 +125,10 @@ public class NguoiDung extends Model<NguoiDung> {
 		String passHash = encryptor.encryptPassword(passNoHash);
 		setSalkey(salkey);
 		setMatKhau(passHash);
+	}
+	
+	@Transient
+	public Long getNguoiDungId() {
+		return getId();
 	}
 }
