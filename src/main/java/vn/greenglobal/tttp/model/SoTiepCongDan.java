@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -71,18 +70,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SUBSELECT)
-	private List<CongDan> congDans;
-	
-	public List<CongDan> getCongDans() {
-		return congDans;
-	}
-
-	public void setCongDans(List<CongDan> congDans) {
-		this.congDans = congDans;
-	}
-
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
 	}
@@ -264,6 +251,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setHuongXuLyText(String huongXuLyText) {
+		if(huongXuLy != null) {
+			huongXuLyText = huongXuLy.getText();
+		}
 		this.huongXuLyText = huongXuLyText;
 	}
 

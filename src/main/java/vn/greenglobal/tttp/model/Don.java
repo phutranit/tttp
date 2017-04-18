@@ -80,6 +80,9 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
 	
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -388,5 +391,13 @@ public class Don extends Model<Don> {
 
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
+	}
+
+	public List<Don_CongDan> getDonCongDans() {
+		return donCongDans;
+	}
+
+	public void setDonCongDans(List<Don_CongDan> donCongDans) {
+		this.donCongDans = donCongDans;
 	}
 }

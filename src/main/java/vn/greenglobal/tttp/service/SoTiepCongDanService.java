@@ -18,9 +18,8 @@ public class SoTiepCongDanService {
 				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
 		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll
-					.and(QSoTiepCongDan.soTiepCongDan.congDans.any().hoVaTen.containsIgnoreCase(tuKhoa)
-							.or(QSoTiepCongDan.soTiepCongDan.congDans.any().soCMNDHoChieu.eq(tuKhoa)));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
+							.or(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.soCMNDHoChieu.eq(tuKhoa)));
 		}
 		return predAll;
 	}
