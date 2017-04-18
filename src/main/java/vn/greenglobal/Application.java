@@ -3,12 +3,15 @@ package vn.greenglobal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.matching.ExcludedPathMatcher;
+import org.pac4j.core.matching.Matcher;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.ParameterClient;
@@ -111,7 +114,7 @@ public class Application extends SpringBootServletInitializer {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**");
+                registry.addMapping("/**");
             }
         };
     }
@@ -146,7 +149,7 @@ public class Application extends SpringBootServletInitializer {
 				//http.addFilterBefore(filter, BasicAuthenticationFilter.class)
 				//	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 				http.authorizeRequests()
-						.antMatchers("/login", "/api/v1/vaiTros").permitAll()
+						.antMatchers("/login", "/v1/vaiTros").permitAll()
 						.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
 						.anyRequest().authenticated()
 						.and()
@@ -174,18 +177,9 @@ public class Application extends SpringBootServletInitializer {
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
-		final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
-		generator.setSignatureConfiguration(secretSignatureConfiguration);
-		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		System.out.println(1);
-		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addRole("admin");
-		commonProfile.addPermission("admin");
-		String token = generator.generate(commonProfile);
-		System.out.println(token);
-		System.out.println(authenticator.validateTokenAndGetClaims(token));
-		System.out.println(authenticator.validateToken(token));
-		System.out.println(2);
+		config.addMatcher("exclusde", new ExcludedPathMatcher("^/login$"));
+		System.out.println(config.getMatchers());
+		
 		return config;
     }
     
