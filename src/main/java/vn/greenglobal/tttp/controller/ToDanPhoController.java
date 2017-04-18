@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ToDanPho;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.service.ToDanPhoService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
@@ -44,7 +46,7 @@ public class ToDanPhoController extends BaseController<ToDanPho> {
 	private ToDanPhoRepository repo;
 
 	public ToDanPhoController(BaseRepository<ToDanPho, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -66,6 +68,10 @@ public class ToDanPhoController extends BaseController<ToDanPho> {
 	public ResponseEntity<Object> create(@RequestBody ToDanPho toDanPho,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
+		
+		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
 		return Utils.doSave(repo, toDanPho, eass, HttpStatus.CREATED);
 	}
 

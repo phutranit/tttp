@@ -25,6 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
@@ -43,7 +44,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 	private ChucVuRepository repo;
 
 	public ChucVuController(BaseRepository<ChucVu, Long> repo) {
-		superC(repo);
+		super(repo);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
@@ -51,7 +52,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class)})
 	public ResponseEntity<Object> create(@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi VuViec");
+		log.info("Tao moi ChucVu");
 		
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_REQUIRED", "Trường tên không được để trống!");

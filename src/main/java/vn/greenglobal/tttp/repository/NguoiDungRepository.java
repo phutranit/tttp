@@ -7,5 +7,7 @@ import vn.greenglobal.tttp.model.NguoiDung;
 
 @RestResource(path = "nguoiDungs")
 public interface NguoiDungRepository extends MutableRepo<NguoiDung> {
-	
+
+	NguoiDung findByTenDangNhap(final String username);
+
 }
