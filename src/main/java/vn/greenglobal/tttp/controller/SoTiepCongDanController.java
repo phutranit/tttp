@@ -47,13 +47,14 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/tiepCongDanThuongXuyens")
-	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE, response = Don_CongDan.class)
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans")
+	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE, response = SoTiepCongDan.class)
 	public @ResponseBody PagedResources<SoTiepCongDan> getDanhSachTiepCongDanThuongXuyens(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach Tiep Cong Dan");
 		boolean thanhLapDon = false;
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, thanhLapDon), pageable);
+		log.info("-- page " +page.getNumberOfElements());
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
