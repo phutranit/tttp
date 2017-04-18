@@ -43,7 +43,7 @@ public class VaiTro extends Model<VaiTro> {
 		this.ten = ten;
 	}
 
-	@ApiModelProperty(position = 2)
+	@ApiModelProperty(position = 2, required = true)
 	public String getQuyen() {
 		return quyen;
 	}
@@ -52,7 +52,7 @@ public class VaiTro extends Model<VaiTro> {
 		this.quyen = quyen;
 	}
 
-	@ApiModelProperty(position = 3)
+	@ApiModelProperty(hidden = true)
 	public Set<NguoiDung> getNguoiDungs() {
 		return nguoiDungs;
 	}
