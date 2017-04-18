@@ -66,7 +66,7 @@ public class DonController extends BaseController<Don> {
 			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
 			PersistentEntityResourceAssembler eass){
 		
-		log.info("Get list 'Don'");
+		log.info("Get list Don");
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
