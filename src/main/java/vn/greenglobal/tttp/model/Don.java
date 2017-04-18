@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -83,6 +84,8 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
+	@Transient
+	private Don_CongDan donCongDan; //TCD
 	
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -399,5 +402,15 @@ public class Don extends Model<Don> {
 
 	public void setDonCongDans(List<Don_CongDan> donCongDans) {
 		this.donCongDans = donCongDans;
+	}
+
+	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
+		for (Don_CongDan obj : donCongDans) {
+			if(obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
+				donCongDan = obj;
+				break;
+			}
+		}
+		return donCongDan;
 	}
 }
