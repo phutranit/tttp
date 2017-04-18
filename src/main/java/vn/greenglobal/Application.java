@@ -53,7 +53,7 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableWebSecurity
 @Controller
-@ComponentScan(basePackages={"vn.greenglobal.core.model.common"})
+@ComponentScan(basePackages={"vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller"})
 public class Application extends SpringBootServletInitializer {
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
