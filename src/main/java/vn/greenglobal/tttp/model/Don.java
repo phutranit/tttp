@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -388,5 +389,20 @@ public class Don extends Model<Don> {
 
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
+	}
+	
+	@Transient
+	public CoQuanQuanLy getDonViDon() {
+		return getDonVi();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuDon() {
+		return getLinhVucDonThu();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
+		return getLinhVucDonThuChiTiet();
 	}
 }
