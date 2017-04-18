@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,11 +19,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.*;
 
 @Entity
 @Table(name = "sotiepcongdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private static final long serialVersionUID = -6772485280557984436L;
@@ -40,7 +42,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-	
+
 	private String loaiTiepDan = "";
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
@@ -52,36 +54,24 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String diaDiemGapLanhDao = "";
 	@Transient
 	private String huongXuLyText = "";
-	@Transient
-	private String luotTiep = "";
-	
+
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
 	private boolean yeuCauGapTrucTiepLanhDao = false;
-	
+
+	private int soThuTuLuotTiep = 0;
+
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
-			@JoinColumn(name = "sotiepcongdan_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "coquantochuctiepdan_id") })
+			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
-	
-	@OneToMany(fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SUBSELECT)
-	private List<CongDan> congDans;
-	
-	public List<CongDan> getCongDans() {
-		return congDans;
-	}
-
-	public void setCongDans(List<CongDan> congDans) {
-		this.congDans = congDans;
-	}
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -91,6 +81,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -99,6 +90,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoTiepDan() {
 		return canBoTiepDan;
 	}
@@ -107,6 +99,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.canBoTiepDan = canBoTiepDan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonVi() {
 		return donVi;
 	}
@@ -218,7 +211,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
-	
+
 	public String getDiaDiemGapLanhDao() {
 		return diaDiemGapLanhDao;
 	}
@@ -226,7 +219,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
 		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
 	}
-	
+
 	public boolean isYeuCauGapTrucTiepLanhDao() {
 		return yeuCauGapTrucTiepLanhDao;
 	}
@@ -234,7 +227,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
 		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
-	
+
 	public LocalDateTime getNgayHenGapLanhDao() {
 		return ngayHenGapLanhDao;
 	}
@@ -264,18 +257,17 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setHuongXuLyText(String huongXuLyText) {
+		if (huongXuLy != null) {
+			huongXuLyText = huongXuLy.getText();
+		}
 		this.huongXuLyText = huongXuLyText;
 	}
 
-	public String getLuotTiep() {
-		return luotTiep;
+	public int getSoThuTuLuotTiep() {
+		return soThuTuLuotTiep;
 	}
 
-	public void setLuotTiep(String luotTiep) {
-		int n = 0;
-		if(don != null) {
-			n = don.getTiepCongDans().size();
-		}
-		this.luotTiep = ""+n;
+	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
+		this.soThuTuLuotTiep = soThuTuLuotTiep;
 	}
 }
