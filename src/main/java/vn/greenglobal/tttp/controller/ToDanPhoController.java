@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ToDanPho;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.service.ToDanPhoService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
@@ -67,6 +68,10 @@ public class ToDanPhoController extends BaseController<ToDanPho> {
 	public ResponseEntity<Object> create(@RequestBody ToDanPho toDanPho,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi ThamQuyenGiaiQuyet");
+		
+		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
 		return Utils.doSave(repo, toDanPho, eass, HttpStatus.CREATED);
 	}
 

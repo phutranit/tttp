@@ -30,8 +30,8 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.repository.CongDanRepository;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.service.CongDanService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController

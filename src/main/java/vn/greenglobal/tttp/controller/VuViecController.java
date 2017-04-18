@@ -33,9 +33,9 @@ import vn.greenglobal.tttp.repository.VuViecRepository;
 import vn.greenglobal.tttp.service.VuViecService;
 import vn.greenglobal.tttp.util.Utils;
 
+@RestController
 @RepositoryRestController
 @Api(value = "vuViecs", description = "Vụ Việc")
-@RestController
 public class VuViecController extends BaseController<VuViec> {
 
 	private static Log log = LogFactory.getLog(VuViecController.class);
