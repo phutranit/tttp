@@ -51,12 +51,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String diaDiemGapLanhDao = "";
 	@Transient
 	private String huongXuLyText = "";
-	@Transient
-	private String luotTiep = "";
 	
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
 	private boolean yeuCauGapTrucTiepLanhDao = false;
+
+	private int soThuTuLuotTiep = 0;
 	
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
@@ -257,15 +257,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.huongXuLyText = huongXuLyText;
 	}
 
-	public String getLuotTiep() {
-		return luotTiep;
+	public int getSoThuTuLuotTiep() {
+		return soThuTuLuotTiep;
 	}
 
-	public void setLuotTiep(String luotTiep) {
-		int n = 0;
-		if(don != null) {
-			n = don.getTiepCongDans().size();
-		}
-		this.luotTiep = ""+n;
+	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
+		this.soThuTuLuotTiep = soThuTuLuotTiep;
 	}
 }
