@@ -23,8 +23,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private Don don;
 	@ManyToOne
 	private CongDan congDan;
-	@ManyToOne
-	private SoTiepCongDan soTiepDan;
 
 	// Phân loại người đứng đơn và loại đối tượng
 	private String phanLoai = "";
@@ -57,14 +55,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	public void setCongDan(CongDan congDan) {
 		this.congDan = congDan;
-	}
-
-	public SoTiepCongDan getSoTiepDan() {
-		return soTiepDan;
-	}
-
-	public void setSoTiepDan(SoTiepCongDan soTiepDan) {
-		this.soTiepDan = soTiepDan;
 	}
 
 	public String getPhanLoai() {

@@ -19,9 +19,12 @@ import io.katharsis.resource.annotations.JsonApiId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+@SuppressWarnings("rawtypes")
 @MappedSuperclass
 @ApiModel
 public class Model<T extends Model<T>> implements Persistable {
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
