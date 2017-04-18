@@ -7,6 +7,11 @@ ADD deployment.key /var/www/deployment.key
 RUN chmod 400 /var/www/deployment.key
 RUN mkdir /root/.ssh
 RUN ssh-keyscan bitbucket.org >> ~/.ssh/known_hosts
+RUN eval "$(ssh-agent -s)" && ssh-add /var/www/deployment.key && git clone git@bitbucket.org:toancauxanh/restapi-common.git /var/www/restapi-common
+WORKDIR /var/www/restapi-common
+RUN git checkout master
+WORKDIR /var/www/restapi-common
+RUN mvn install
 RUN eval "$(ssh-agent -s)" && ssh-add /var/www/deployment.key && git clone git@bitbucket.org:toancauxanh/tttp-api.git /var/www/tttp-api
 WORKDIR /var/www/tttp-api
 RUN ls -la .
