@@ -274,9 +274,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setLuotTiep(String luotTiep) {
 		int n = 0;
 		if(don != null) {
-			if(don.getTiepCongDans() != null) {
-				n = don.getTiepCongDans().size();
-			}
+			n = don.getTiepCongDans().size();
 		}
 		this.luotTiep = ""+n;
 	}
