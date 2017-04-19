@@ -58,12 +58,12 @@ public class DonViHanhChinhService {
 	}
 	
 	public DonViHanhChinh deleteDonViHanhChinh(DonViHanhChinhRepository repo, Long id) {
-		DonViHanhChinh donViHanhChinh = null;
-		if (isExists(repo, id)) {
-			donViHanhChinh = new DonViHanhChinh();
-			donViHanhChinh.setId(id);
+		DonViHanhChinh donViHanhChinh = repo.findOne(predicateFindOne(id));
+		
+		if (donViHanhChinh != null) {
 			donViHanhChinh.setDaXoa(true);
 		}
+
 		return donViHanhChinh;
 	}
 		

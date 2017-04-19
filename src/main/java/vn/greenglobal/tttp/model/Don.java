@@ -55,7 +55,6 @@ public class Don extends Model<Don> {
 	@NotNull
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
@@ -455,14 +454,6 @@ public class Don extends Model<Don> {
 	@Transient
 	public Long getDonId() {
 		return getId();
-	}
-
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 
 }

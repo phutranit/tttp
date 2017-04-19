@@ -32,12 +32,12 @@ public class QuocTichService {
 	}
 
 	public QuocTich deleteQuocTich(QuocTichRepository repo, Long id) {
-		QuocTich quocTich = null;
-		if (isExists(repo, id)) {
-			quocTich = new QuocTich();
-			quocTich.setId(id);
+		QuocTich quocTich = repo.findOne(predicateFindOne(id));
+
+		if (quocTich != null) {
 			quocTich.setDaXoa(true);
 		}
+
 		return quocTich;
 	}
 

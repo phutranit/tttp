@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,6 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -45,28 +43,25 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 
 	private static Log log = LogFactory.getLog(SoTiepCongDanController.class);
 	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();
-	
+
 	@Autowired
 	private SoTiepCongDanRepository repo;
-	
+
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
-	
+
 	@Autowired
 	private DonRepository donRepository;
-	
-	@Autowired
-	protected PagedResourcesAssembler<Don> assemblerDon;
 
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans")
-	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE, response = SoTiepCongDan.class)
+	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE, response = SoTiepCongDan.class)
 	public @ResponseBody PagedResources<SoTiepCongDan> getDanhSachTiepCongDans(Pageable pageable,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, 
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -75,14 +70,16 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach Tiep Cong Dan");
 		boolean thanhLapDon = false;
-		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy, tuNgay, denNgay, loaiTiepCongDan, thanhLapDon), pageable);
-		log.info("-- page " +page.getNumberOfElements());
+		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
+				tuNgay, denNgay, loaiTiepCongDan, thanhLapDon), pageable);
+		log.info("-- page " + page.getNumberOfElements());
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/{id}")
-	@ApiOperation(value = "Lấy Tiếp Công Dân theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy lượt Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
+	@ApiOperation(value = "Lấy Tiếp Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy lượt Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
 	public ResponseEntity<PersistentEntityResource> getSoTiepCongDans(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get SoTiepCongDan theo id: " + id);
@@ -105,10 +102,10 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 		}
-		
+
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDanDinhKys/{id}")
 	@ApiOperation(value = "Cập nhật Sổ Tiếp Công Dân Đình Kỳ", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -118,14 +115,14 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		log.info("Update SoTiepCongDan theo id: " + id);
 
 		soTiepCongDan.setId(id);
-		
+
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 		}
 
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
@@ -134,7 +131,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
 		if (soTiepCongDan == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -143,13 +141,13 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
 	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(Pageable pageable,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+	public @ResponseBody PagedResources<SoTiepCongDan> getListHoSoVuViecYeuCauGapLanhDao(Pageable pageable,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach HoSoVuViecYeuCauGapLanhDao");
 
-		Page<Don> page = donRepository.findAll(pageable);
-		return assemblerDon.toResource(page, (ResourceAssembler) eass);
+		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindTCDYeuCauGapLanhDao(tuNgay, denNgay), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 }

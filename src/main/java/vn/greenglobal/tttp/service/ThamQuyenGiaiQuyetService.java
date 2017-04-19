@@ -38,12 +38,12 @@ public class ThamQuyenGiaiQuyetService {
 	}
 
 	public ThamQuyenGiaiQuyet deleteThamQuyenGiaiQuyet(ThamQuyenGiaiQuyetRepository repo, Long id) {
-		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = null;
-		if (isExists(repo, id)) {
-			thamQuyenGiaiQuyet = new ThamQuyenGiaiQuyet();
-			thamQuyenGiaiQuyet.setId(id);
+		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(predicateFindOne(id));
+		
+		if (thamQuyenGiaiQuyet != null) {
 			thamQuyenGiaiQuyet.setDaXoa(true);
 		}
+
 		return thamQuyenGiaiQuyet;
 	}
 

@@ -12,38 +12,36 @@ public class DanTocService {
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = QDanToc.danToc.daXoa.eq(false);
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QDanToc.danToc.ten.containsIgnoreCase(tuKhoa)
-					.or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
-					.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
+			predAll = predAll.and(
+					QDanToc.danToc.ten.containsIgnoreCase(tuKhoa).or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
+							.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
 		}
 
 		return predAll;
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QDanToc.danToc.daXoa.eq(false)
-				.and(QDanToc.danToc.id.eq(id));
+		return QDanToc.danToc.daXoa.eq(false).and(QDanToc.danToc.id.eq(id));
 	}
 
 	public boolean isExists(DanTocRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QDanToc.danToc.daXoa.eq(false)
-					.and(QDanToc.danToc.id.eq(id));
+			Predicate predicate = QDanToc.danToc.daXoa.eq(false).and(QDanToc.danToc.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
 	public DanToc deleteDanToc(DanTocRepository repo, Long id) {
-		DanToc danToc = null;
-		if (isExists(repo, id)) {
-			danToc = new DanToc();
-			danToc.setId(id);
+		DanToc danToc = repo.findOne(predicateFindOne(id));
+
+		if (danToc != null) {
 			danToc.setDaXoa(true);
 		}
+
 		return danToc;
 	}
-	
+
 	public boolean checkExistsData(DanTocRepository repo, DanToc body) {
 		BooleanExpression predAll = QDanToc.danToc.daXoa.eq(false);
 

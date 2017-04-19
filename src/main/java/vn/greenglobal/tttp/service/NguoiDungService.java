@@ -13,7 +13,7 @@ import vn.greenglobal.tttp.repository.NguoiDungRepository;
 public class NguoiDungService {
 
 	BooleanExpression base = QNguoiDung.nguoiDung.daXoa.eq(false);
-	
+
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QNguoiDung.nguoiDung.id.eq(id));
 	}
@@ -37,12 +37,14 @@ public class NguoiDungService {
 
 		return nguoiDung != null ? true : false;
 	}
-	
+
 	public NguoiDung deleteNguoiDung(NguoiDungRepository repo, Long id) {
 		NguoiDung nguoiDung = repo.findOne(predicateFindOne(id));
-		if(nguoiDung!=null){
+
+		if (nguoiDung != null) {
 			nguoiDung.setDaXoa(true);
 		}
+
 		return nguoiDung;
 	}
 
