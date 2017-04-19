@@ -29,7 +29,6 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CapDonViHanhChinh;
-import vn.greenglobal.tttp.model.VuViec;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
 import vn.greenglobal.tttp.service.CapDonViHanhChinhService;
 import vn.greenglobal.tttp.util.Utils;
@@ -72,7 +71,7 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs")
 	@ApiOperation(value = "Lấy danh sách Cấp Đơn Vị Hành Chính", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<VuViec> getList(Pageable pageable,
+	public @ResponseBody PagedResources<CapDonViHanhChinh> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach VuViec");
