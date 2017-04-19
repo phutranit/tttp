@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,13 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -48,6 +53,12 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
+	
+	@Autowired
+	private DonRepository donRepository;
+	
+	@Autowired
+	protected PagedResourcesAssembler<Don> assemblerDon;
 
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
@@ -129,6 +140,18 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		}
 		repo.save(soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
+	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+		log.info("Get danh sach HoSoVuViecYeuCauGapLanhDao");
+
+		Page<Don> page = donRepository.findAll(pageable);
+		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
 
 }
