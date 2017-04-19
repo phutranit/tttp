@@ -45,7 +45,7 @@ public class Utils {
 
 	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {
 		ConstraintViolation<?> vio = e.getConstraintViolations().iterator().next();
-		System.out.println(vio);
+		System.out.println("returnError -> " + vio);
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath() + " không được để trống!");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
@@ -61,9 +61,12 @@ public class Utils {
 		} catch (ConstraintViolationException e) {
 			return returnError(e);
 		} catch (Exception e) {
+			System.out.println("doSave -> " + e.getCause());
 			if (e.getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause());
 			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause().getCause());
+			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause().getCause());
 			throw e;
 		}
