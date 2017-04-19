@@ -32,11 +32,9 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
-import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
-import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -142,7 +140,7 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
 	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(Pageable pageable,
