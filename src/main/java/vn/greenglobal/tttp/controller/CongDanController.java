@@ -47,7 +47,21 @@ public class CongDanController extends BaseController<CongDan> {
 	public CongDanController(BaseRepository<CongDan, Long> repo) {
 		super(repo);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congDanBySuggests")
+	@ApiOperation(value = "Lấy danh sách Suggest Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<CongDan> getCongDanBySuggests(Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "soCMNND", required = false) String soCMNND,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			PersistentEntityResourceAssembler eass) {
+		log.info("Get danh sach CongDan By Suggest");
 
+		Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans")
 	@ApiOperation(value = "Lấy danh sách Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
