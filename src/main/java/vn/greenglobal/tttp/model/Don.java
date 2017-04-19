@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -36,7 +33,7 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 public class Don extends Model<Don> {
 
 	private static final long serialVersionUID = 8736658787648062250L;
-	
+
 	private String ma = "";
 	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
@@ -44,23 +41,25 @@ public class Don extends Model<Don> {
 	private String ghiChuTiepCongDan = "";
 	private String huongGiaiQuyetDaThucHien = "";
 	private String lanGiaiQuyet = "";
-	private String yKienXuLyDon = ""; //Xu ly don TCD
-	private String ghiChuXuLyDon = ""; //Xu ly don TCD
+	private String yKienXuLyDon = ""; // Xu ly don TCD
+	private String ghiChuXuLyDon = ""; // Xu ly don TCD
 	private String trangThaiDon = "";
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
-	
+
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
 	private int soNguoi;
 
 	private boolean coUyQuyen = false;
+	@NotNull
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
-	
+
 	@OneToOne
 	private Don donLanTruoc;
 	@ManyToOne
@@ -73,6 +72,7 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+	@NotNull
 	@ManyToOne
 	private VuViec vuViec;
 	@ManyToOne
@@ -82,19 +82,28 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanGiaiQuyet; //Xu ly don TCD
+	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "don_congdan", joinColumns = {
-			@JoinColumn(name = "don_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "congDan_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
-	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
+	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
+
+	/*
+	 * @ManyToMany(fetch = FetchType.EAGER)
+	 * 
+	 * @JoinTable(name = "don_congdan", joinColumns = {
+	 * 
+	 * @JoinColumn(name = "don_id") }, inverseJoinColumns = {
+	 * 
+	 * @JoinColumn(name = "congDan_id") })
+	 * 
+	 * @Fetch(value = FetchMode.SUBSELECT)
+	 */
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 	@Transient
-	private Don_CongDan donCongDan; //TCD
-	
+	private Don_CongDan donCongDan; // TCD
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -191,7 +200,7 @@ public class Don extends Model<Don> {
 	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
 		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
 	}
-	
+
 	public String getTrangThaiDon() {
 		return trangThaiDon;
 	}
@@ -199,7 +208,7 @@ public class Don extends Model<Don> {
 	public void setTrangThaiDon(String trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
-	
+
 	public String getLyDoDinhChi() {
 		return lyDoDinhChi;
 	}
@@ -399,7 +408,7 @@ public class Don extends Model<Don> {
 	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
-	
+
 	public List<SoTiepCongDan> getTiepCongDans() {
 		return tiepCongDans;
 	}
@@ -407,17 +416,17 @@ public class Don extends Model<Don> {
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
 	}
-	
+
 	@Transient
 	public CoQuanQuanLy getDonViDon() {
 		return getDonVi();
 	}
-	
+
 	@Transient
 	public LinhVucDonThu getLinhVucDonThuDon() {
 		return getLinhVucDonThu();
 	}
-	
+
 	@Transient
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
@@ -430,10 +439,10 @@ public class Don extends Model<Don> {
 	public void setDonCongDans(List<Don_CongDan> donCongDans) {
 		this.donCongDans = donCongDans;
 	}
-	
+
 	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
 		for (Don_CongDan obj : donCongDans) {
-			if(obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
+			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
 				donCongDan = obj;
 				break;
 			}
@@ -448,9 +457,23 @@ public class Don extends Model<Don> {
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
 	}
-	
+
 	@Transient
 	public List<Don_CongDan> getListDonCongDan() {
 		return getDonCongDans();
 	}
+
+	@Transient
+	public Long getDonId() {
+		return getId();
+	}
+
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
+
 }

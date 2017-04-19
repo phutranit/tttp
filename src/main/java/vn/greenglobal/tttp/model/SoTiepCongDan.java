@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,18 +32,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private static final long serialVersionUID = -6772485280557984436L;
 
+	@NotNull
 	@ManyToOne
 	private Don don;
+	@NotNull
 	@ManyToOne
 	private CongChuc canBoTiepDan;
+	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 
+	@NotNull
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-	
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	private String donViChuTri = "";
@@ -56,7 +60,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private int soThuTuLuotTiep = 0;
 
@@ -211,14 +214,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
 		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
-	}
-
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 
 	public LocalDateTime getNgayHenGapLanhDao() {
