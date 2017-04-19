@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -41,6 +42,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 	private static ChucVuService chucVuService = new ChucVuService();
 
 	@Autowired
+	private ApplicationContext ctx;
+	
+	@Autowired
 	private ChucVuRepository repo;
 
 	public ChucVuController(BaseRepository<ChucVu, Long> repo) {
@@ -73,7 +77,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach VuViec");
-
+		System.out.println("ctx:"+ctx.getMessage("NotEmpty", args, locale));
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}

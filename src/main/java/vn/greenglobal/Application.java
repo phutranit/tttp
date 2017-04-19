@@ -125,12 +125,16 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 
-				registry.addMapping("/**").allowedOrigins("*").allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE").maxAge(3600).allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+				registry.addMapping("/**")
+					.allowedOrigins("*")
+					.allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
+					.allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+					.maxAge(3600);
 			}
 		};
 	}
 
-	//@Bean
+	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
@@ -154,6 +158,7 @@ public class Application extends SpringBootServletInitializer {
 				
 				http.authorizeRequests()
 					.anyRequest().authenticated()
+					.and().httpBasic()
 					.and().csrf().disable();
 
 			}
@@ -175,8 +180,12 @@ public class Application extends SpringBootServletInitializer {
 		parameterClient.setSupportGetRequest(true);
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
 		final Config config = new Config(clients);
-		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
+		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
+		//System.out.println(token);
+		//System.out.println(authenticator.validateTokenAndGetClaims(token));
+		//System.out.println(authenticator.validateToken(token));
+		//System.out.println(2);
 		return config;
 	}
 }
