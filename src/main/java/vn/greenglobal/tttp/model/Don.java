@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -51,6 +52,7 @@ public class Don extends Model<Don> {
 	private int soNguoi;
 
 	private boolean coUyQuyen = false;
+	@NotNull
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
 
@@ -69,6 +71,7 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+	@NotNull
 	@ManyToOne
 	private VuViec vuViec;
 	@ManyToOne
@@ -82,18 +85,31 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
-	@OneToMany(fetch = FetchType.EAGER)
+
+	
+	/*
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "don_congdan", joinColumns = {
+			@JoinColumn(name = "don_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "congDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
+	*/
+	@OneToMany(mappedBy="don",fetch = FetchType.EAGER)
+	@Fetch(value=FetchMode.SELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
 	@Transient
 	private Don_CongDan donCongDan; //TCD
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
@@ -436,5 +452,15 @@ public class Don extends Model<Don> {
 
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
+	}
+	
+	@Transient
+	public List<Don_CongDan> getListDonCongDan() {
+		return getDonCongDans();
+	}
+	
+	@Transient
+	public Long getDonId() {
+		return getId();
 	}
 }
