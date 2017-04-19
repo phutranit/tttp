@@ -23,11 +23,11 @@ public class UserController extends BaseController<User>{
 	@Autowired
 	private UserRepository userRepository;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestBody User user, Errors errors) {
 		System.out.println("username:"+user.getUsername());
         User u = userRepository.findByUsername(user.getUsername());
         return "login";
-    }
+    }*/
 	
 }
