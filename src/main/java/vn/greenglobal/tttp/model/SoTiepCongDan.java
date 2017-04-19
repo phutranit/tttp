@@ -42,12 +42,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 
+	@NotNull
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
 
-	private String loaiTiepDan = "";
+	@Enumerated(EnumType.STRING)
+	private LoaiTiepDanEnum loaiTiepDan;
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	private String donViChuTri = "";
@@ -136,11 +138,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.thoiHan = thoiHan;
 	}
 
-	public String getLoaiTiepDan() {
+	public LoaiTiepDanEnum getLoaiTiepDan() {
 		return loaiTiepDan;
 	}
 
-	public void setLoaiTiepDan(String loaiTiepDan) {
+	public void setLoaiTiepDan(LoaiTiepDanEnum loaiTiepDan) {
 		this.loaiTiepDan = loaiTiepDan;
 	}
 
