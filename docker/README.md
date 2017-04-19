@@ -10,7 +10,7 @@ sudo docker build --tag=tttp-server:1.0 server/
 
 # Run Mariadb server
 
-1. sudo docker run -d --name=tttp-mariadb -p 3306:3306 tttp-mariadb:1.0
+1. sudo docker run -d --name=tttp-mariadb -v /home/tttpdata/mariadb:/var/lib/mysql -p 3306:3306 tttp-mariadb:1.0
 
 2. sudo docker exec -ti tttp-mariadb bash
 

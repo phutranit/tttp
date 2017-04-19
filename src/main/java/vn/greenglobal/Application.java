@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.matching.ExcludedPathMatcher;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.http.client.direct.ParameterClient;
@@ -38,6 +39,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -52,8 +54,6 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import com.thetransactioncompany.cors.CORSFilter;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
@@ -130,7 +130,7 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	@Bean
+	//@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
@@ -141,25 +141,27 @@ public class Application extends SpringBootServletInitializer {
 			}
 
 			@Override
+			public void configure(WebSecurity sec) throws Exception {
+				sec.ignoring().antMatchers("/login");
+			}
+			
+			@Override
 			protected void configure(HttpSecurity http) throws Exception {
+				
+				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
+				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
+						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
+				
 				http.authorizeRequests()
-					//.antMatchers("/login").permitAll()
-					//.antMatchers("/browser/**").hasRole("ADMIN").anyRequest().permitAll()
-					.anyRequest().permitAll()
-					//.and().httpBasic()
+					.anyRequest().authenticated()
 					.and().csrf().disable();
-
-				//final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
-				//		"custom");
-				//http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
-				//		.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
 			}
 		};
 	}
 
 	@Value("${salt}")
-	private String salt;// = "12345678901234567890123456789012"; // 32 chars
+	private String salt;
 
 	@Bean
 	public Config configPac4j() throws ParseException {
@@ -175,18 +177,6 @@ public class Application extends SpringBootServletInitializer {
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
-		final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
-		generator.setSignatureConfiguration(secretSignatureConfiguration);
-		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		System.out.println(1);
-		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addRole("admin");
-		commonProfile.addPermission("admin");
-		String token = generator.generate(commonProfile);
-		System.out.println(token);
-		System.out.println(authenticator.validateTokenAndGetClaims(token));
-		System.out.println(authenticator.validateToken(token));
-		System.out.println(2);
 		return config;
 	}
 }
