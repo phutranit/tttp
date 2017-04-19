@@ -55,8 +55,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.thetransactioncompany.cors.CORSFilter;
-
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 
@@ -132,15 +130,15 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	@Bean
+	//@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
-			/*@Override
+			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
 				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
 						"ACTUATOR");
 
-			}*/
+			}
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
