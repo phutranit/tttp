@@ -57,10 +57,13 @@ public class Don extends Model<Don> {
 	private boolean coUyQuyen = false;
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
-
+	private boolean yeuCauGapTrucTiepLanhDao = false;
+	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	
+	
+
 	@OneToOne
 	private Don donLanTruoc;
 	@ManyToOne
@@ -447,6 +450,14 @@ public class Don extends Model<Don> {
 
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
+	}
+	
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 	
 	@Transient
