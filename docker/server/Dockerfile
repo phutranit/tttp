@@ -1,4 +1,4 @@
-FROM dordoka/tomcat
+FROM openjdk:8
 
 RUN apt-get update && \
     apt-get -y install maven
@@ -23,4 +23,4 @@ RUN mvn dependency:resolve
 #RUN sh -c "cp /var/www/tttp-api/target/tttp-api-1.0.0.war /opt/tomcat/webapps/ROOT.war"
 #ADD run.sh /var/www/run.sh
 #RUN chmod u+x /var/www/run.sh
-#WORKDIR /var/www/tttp-api
+WORKDIR /var/www/tttp-api

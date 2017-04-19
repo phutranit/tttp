@@ -60,7 +60,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private int soThuTuLuotTiep = 0;
 
@@ -215,14 +214,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
 		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
-	}
-
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 
 	public LocalDateTime getNgayHenGapLanhDao() {

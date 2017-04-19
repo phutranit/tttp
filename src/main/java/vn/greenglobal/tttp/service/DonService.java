@@ -10,6 +10,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
@@ -38,9 +39,10 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
-			
+
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.
 					containsIgnoreCase(tenNguoiDungDon));
+
 		}
 		
 		if (StringUtils.isNotBlank(cmndHoChieu)) {
@@ -91,8 +93,8 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			
-			predAll = predAll.and(QDon.don.huongXuLy.eq(
-					HuongXuLyTCDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+			predAll = predAll.and(QDon.don.huongXuLyXLD.eq(
+					HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
 		
 		return predAll;

@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -8,7 +10,21 @@ import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 
 public class CongDanService {
-
+	
+	public Predicate predicateFindCongDanBySuggests(String tuKhoa, String soCMND, String diaChi) {
+		BooleanExpression predAll = QCongDan.congDan.daXoa.eq(false);
+		if (StringUtils.isNotBlank(tuKhoa)) {
+			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa));
+		}
+		if (StringUtils.isNotBlank(soCMND)) {
+			predAll = predAll.and(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(soCMND));
+		}
+		if (StringUtils.isNotBlank(diaChi)) {
+			predAll = predAll.and(QCongDan.congDan.diaChi.containsIgnoreCase(diaChi));
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, 
 			Long phuongXa, Long toDanPho) {
 		BooleanExpression predAll = QCongDan.congDan.daXoa.eq(false);
@@ -33,8 +49,6 @@ public class CongDanService {
 		if (toDanPho != null && toDanPho > 0) {
 			predAll = predAll.and(QCongDan.congDan.toDanPho.id.eq(toDanPho));
 		}
-
-
 		return predAll;
 	}
 
