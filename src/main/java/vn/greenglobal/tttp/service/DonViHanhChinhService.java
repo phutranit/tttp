@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -18,6 +20,21 @@ public class DonViHanhChinhService {
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
 		}
+		
+		if (capDonViHanhChinh != null && capDonViHanhChinh > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
+		}
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindTinhThanhPho(String ten, Long capDonViHanhChinh) {
+		BooleanExpression predAll = QDonViHanhChinh.donViHanhChinh.daXoa.eq(false);
+		if (StringUtils.isNotBlank(ten)) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten).or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
+		}
+		
+		predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.isNull());
 		
 		if (capDonViHanhChinh != null && capDonViHanhChinh > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
