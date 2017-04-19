@@ -61,6 +61,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private int soThuTuLuotTiep = 0;
 
@@ -70,7 +71,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private HuongXuLyTCDEnum huongXuLy;
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
@@ -209,6 +210,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
 
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
+
 	public String getDiaDiemGapLanhDao() {
 		return diaDiemGapLanhDao;
 	}
@@ -267,17 +276,17 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
 		this.soThuTuLuotTiep = soThuTuLuotTiep;
 	}
-	
+
 	@Transient
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDanSTCD() {
 		return coQuanToChucTiepDans;
 	}
-	
+
 	@Transient
 	public Don getDonSTCD() {
 		return getDon();
 	}
-	
+
 	@Transient
 	public String getSoLuotTiepStr() {
 		String out = "";
@@ -289,4 +298,5 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		}
 		return out;
 	}
+
 }

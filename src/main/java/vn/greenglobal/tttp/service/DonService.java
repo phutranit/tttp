@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
@@ -129,12 +128,12 @@ public class DonService {
 	}
 
 	public Don deleteDon(DonRepository repo, Long id) {
-		Don don = null;
-		if (isExists(repo, id)) {
-			don = new Don();
-			don.setId(id);
+		Don don = repo.findOne(predicateFindOne(id));
+		
+		if (don != null) {
 			don.setDaXoa(true);
 		}
+
 		return don;
 	}
 }
