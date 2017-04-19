@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.Locale;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
+import vn.greenglobal.tttp.util.MessageByLocaleService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -42,7 +45,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 	private static ChucVuService chucVuService = new ChucVuService();
 
 	@Autowired
-	private ApplicationContext ctx;
+	MessageByLocaleService message;
 	
 	@Autowired
 	private ChucVuRepository repo;
@@ -77,7 +80,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach VuViec");
-		System.out.println("ctx:"+ctx.getMessage("NotEmpty", args, locale));
+		System.out.println("message:"+message.getMessage("NotEmpty"));
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
