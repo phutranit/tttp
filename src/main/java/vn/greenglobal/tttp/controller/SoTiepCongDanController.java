@@ -84,17 +84,18 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		return new ResponseEntity<>(eass.toFullResource(soTiepCongDan), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDanDinhKys")
-	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDans")
+	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ thành công", response = SoTiepCongDan.class),
-			@ApiResponse(code = 201, message = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ thành công", response = SoTiepCongDan.class) })
-	public ResponseEntity<Object> createSoTiepCongDanDinhKy(@RequestBody SoTiepCongDan soTiepCongDan,
+			@ApiResponse(code = 200, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class),
+			@ApiResponse(code = 201, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
+	public ResponseEntity<Object> createSoTiepCongDan(@RequestBody SoTiepCongDan soTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi SoTiepCongDan");
-
-		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
+			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
+				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+			}
 		}
 		
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
