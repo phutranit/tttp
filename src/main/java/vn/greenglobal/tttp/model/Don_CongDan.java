@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
@@ -25,8 +26,10 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	 */
 	private static final long serialVersionUID = -7123036795988588832L;
 	
+	@NotNull
 	@ManyToOne
 	private Don don;
+	@NotNull
 	@ManyToOne
 	private CongDan congDan;
 
@@ -158,4 +161,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.chucVu = chucVu;
 	}
 
+	@Transient
+	public CongDan getThongTinCongDan() {
+		return getCongDan();
+	}
 }
