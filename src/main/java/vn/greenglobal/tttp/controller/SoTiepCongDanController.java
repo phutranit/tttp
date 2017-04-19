@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import javax.persistence.EntityManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,10 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +35,7 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -48,10 +55,19 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	private SoTiepCongDanRepository repo;
 
 	@Autowired
-	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
+	private DonRepository repoDon;
 
 	@Autowired
-	private DonRepository donRepository;
+	public EntityManager em;
+	
+	@Autowired
+	public PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	public TransactionTemplate transactioner;
+
+	@Autowired
+	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
 
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
@@ -90,20 +106,32 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		return new ResponseEntity<>(eass.toFullResource(soTiepCongDan), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDanDinhKys")
-	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDans")
+	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ thành công", response = SoTiepCongDan.class),
-			@ApiResponse(code = 201, message = "Thêm mới Sổ Tiếp Công Dân Đình Kỳ thành công", response = SoTiepCongDan.class) })
-	public ResponseEntity<Object> createSoTiepCongDanDinhKy(@RequestBody SoTiepCongDan soTiepCongDan,
+			@ApiResponse(code = 200, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class),
+			@ApiResponse(code = 201, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
+	public ResponseEntity<Object> createSoTiepCongDan(@RequestBody SoTiepCongDan soTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi SoTiepCongDan");
-
-		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
+			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
+				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+			}
 		}
-
-		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
+			@Override
+			public Object doInTransaction(TransactionStatus arg0) {
+				Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+				soTiepCongDan.setDon(don);
+				int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
+				soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
+				repoDon.save(soTiepCongDan.getDon());
+				return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+			}
+		});
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDanDinhKys/{id}")
@@ -146,7 +174,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach HoSoVuViecYeuCauGapLanhDao");
 
-		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindTCDYeuCauGapLanhDao(tuNgay, denNgay), pageable);
+		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindTCDYeuCauGapLanhDao(tuNgay, denNgay),
+				pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 

@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -76,7 +77,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -277,8 +278,25 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@Transient
-	public List<CoQuanToChucTiepDan> getcoQuanToChucTiepDanSTCD() {
+	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDanSTCD() {
 		return coQuanToChucTiepDans;
+	}
+
+	@Transient
+	public Don getDonSTCD() {
+		return getDon();
+	}
+
+	@Transient
+	public String getSoLuotTiepStr() {
+		String out = "";
+		out += getSoThuTuLuotTiep() + "/";
+		if (getDon() != null) {
+			out += getDon().getTongSoLuotTCD();
+		} else {
+			out += "1";
+		}
+		return out;
 	}
 
 }
