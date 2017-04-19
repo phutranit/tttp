@@ -9,11 +9,34 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 
 public class DonCongDanService {
 
+
 	public  Predicate predicateFindAll(Long don) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
 		if (don != null && don > 0) {
 			QDon_CongDan.don_CongDan.don.id.eq(don);
+	}
+	
+	public  Predicate predicateFindAll(String tuKhoa) {
+		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			predAll = predAll.and(QDon_CongDan.don_CongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa))
+					.or(QDon_CongDan.don_CongDan.congDan.soCMNDHoChieu.eq(tuKhoa));
 		}
+		return predAll;
+	}
+	
+	public  Predicate predicateFindByTCD(String tuKhoa) {
+		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			predAll = predAll.and(QDon_CongDan.don_CongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa))
+					.or(QDon_CongDan.don_CongDan.congDan.soCMNDHoChieu.eq(tuKhoa));
+		}
+		return predAll;
+	}
+	
+	public Predicate predicateFindAllTCD(String tuKhoa, boolean thanhLapDon) {
+		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false)
+				.and(QDon_CongDan.don_CongDan.don.thanhLapDon.eq(thanhLapDon));
 		return predAll;
 	}
 	

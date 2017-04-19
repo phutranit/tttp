@@ -19,8 +19,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
@@ -87,6 +85,15 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+
+	
+	/*
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "don_congdan", joinColumns = {
+			@JoinColumn(name = "don_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "congDan_id") })
+	@Fetch(value = FetchMode.SUBSELECT)
+	*/
 	@OneToMany(mappedBy="don",fetch = FetchType.EAGER)
 	@Fetch(value=FetchMode.SELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
