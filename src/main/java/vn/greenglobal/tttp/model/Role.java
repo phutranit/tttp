@@ -8,10 +8,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
-//@Cache(region = "auth", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role extends Model<Role>{
 	
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5562057839471452525L;
+
+	private String name;
     
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
