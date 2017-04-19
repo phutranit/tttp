@@ -273,4 +273,20 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return coQuanToChucTiepDans;
 	}
 	
+	@Transient
+	public Don getDonSTCD() {
+		return getDon();
+	}
+	
+	@Transient
+	public String getSoLuotTiepStr() {
+		String out = "";
+		out += getSoThuTuLuotTiep() + "/";
+		if (getDon() != null) {
+			out += getDon().getTongSoLuotTCD();
+		} else {
+			out += "1";
+		}
+		return out;
+	}
 }
