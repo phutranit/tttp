@@ -21,7 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
-import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
@@ -72,9 +72,6 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
-	@NotNull
-	@ManyToOne
-	private VuViec vuViec;
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
@@ -119,7 +116,7 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
-	private HuongXuLyTCDEnum huongXuLy;
+	private HuongXuLyXLDEnum huongXuLyXLD;
 
 	public String getMa() {
 		return ma;
@@ -329,14 +326,6 @@ public class Don extends Model<Don> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
-	public VuViec getVuViec() {
-		return vuViec;
-	}
-
-	public void setVuViec(VuViec vuViec) {
-		this.vuViec = vuViec;
-	}
-
 	public LoaiDonEnum getLoaiDon() {
 		return loaiDon;
 	}
@@ -377,12 +366,12 @@ public class Don extends Model<Don> {
 		this.hinhThucDaGiaiQuyet = hinhThucDaGiaiQuyet;
 	}
 
-	public HuongXuLyTCDEnum getHuongXuLy() {
-		return huongXuLy;
+	public HuongXuLyXLDEnum getHuongXuLyXLD() {
+		return huongXuLyXLD;
 	}
 
-	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
-		this.huongXuLy = huongXuLy;
+	public void setHuongXuLyXLD(HuongXuLyXLDEnum huongXuLyXLD) {
+		this.huongXuLyXLD = huongXuLyXLD;
 	}
 
 	public LinhVucDonThu getLinhVucDonThu() {
