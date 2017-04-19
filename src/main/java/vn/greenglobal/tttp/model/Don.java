@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -55,6 +52,7 @@ public class Don extends Model<Don> {
 	private int soNguoi;
 
 	private boolean coUyQuyen = false;
+	@NotNull
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
 
@@ -73,6 +71,7 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+	@NotNull
 	@ManyToOne
 	private VuViec vuViec;
 	@ManyToOne
@@ -86,11 +85,17 @@ public class Don extends Model<Don> {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); //TCD
+
+	
+	/*
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "don_congdan", joinColumns = {
 			@JoinColumn(name = "don_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "congDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
+	*/
+	@OneToMany(mappedBy="don",fetch = FetchType.EAGER)
+	@Fetch(value=FetchMode.SELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); //TCD
 	@Transient
 	private Don_CongDan donCongDan; //TCD
@@ -452,5 +457,10 @@ public class Don extends Model<Don> {
 	@Transient
 	public List<Don_CongDan> getListDonCongDan() {
 		return getDonCongDans();
+	}
+	
+	@Transient
+	public Long getDonId() {
+		return getId();
 	}
 }
