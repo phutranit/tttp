@@ -36,9 +36,11 @@ public class VaiTroService {
 
 	public VaiTro delete(VaiTroRepository repo, Long id) {
 		VaiTro vaiTro = repo.findOne(predicateFindOne(id));
+		
 		if (vaiTro != null) {
 			vaiTro.setDaXoa(true);
 		}
+		
 		return vaiTro;
 	}
 

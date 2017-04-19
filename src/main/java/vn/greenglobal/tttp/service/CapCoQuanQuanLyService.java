@@ -39,12 +39,12 @@ public class CapCoQuanQuanLyService {
 	}
 
 	public CapCoQuanQuanLy deleteCapCoQuanQuanLy(CapCoQuanQuanLyRepository repo, Long id) {
-		CapCoQuanQuanLy capCoQuanQuanLy = null;
-		if (isExists(repo, id)) {
-			capCoQuanQuanLy = new CapCoQuanQuanLy();
-			capCoQuanQuanLy.setId(id);
+		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predicateFindOne(id));
+		
+		if (capCoQuanQuanLy != null) {
 			capCoQuanQuanLy.setDaXoa(true);
 		}
+
 		return capCoQuanQuanLy;
 	}
 
