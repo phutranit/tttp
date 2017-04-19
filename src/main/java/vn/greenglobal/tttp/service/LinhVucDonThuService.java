@@ -1,11 +1,13 @@
 package vn.greenglobal.tttp.service;
 
 import com.querydsl.core.types.Predicate;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
+
 public class LinhVucDonThuService {
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
@@ -22,8 +24,7 @@ public class LinhVucDonThuService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QLinhVucDonThu.linhVucDonThu.daXoa.eq(false)
-				.and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
+		return QLinhVucDonThu.linhVucDonThu.daXoa.eq(false).and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
 	}
 
 	public boolean isExists(LinhVucDonThuRepository repo, Long id) {
@@ -36,16 +37,15 @@ public class LinhVucDonThuService {
 	}
 
 	public LinhVucDonThu deleteLinhVucDonThu(LinhVucDonThuRepository repo, Long id) {
-		LinhVucDonThu linhVucDonThu = null;
-		if (isExists(repo, id)) {
-			linhVucDonThu = new LinhVucDonThu();
-			linhVucDonThu.setId(id);
+		LinhVucDonThu linhVucDonThu = repo.findOne(predicateFindOne(id));
+
+		if (linhVucDonThu != null) {
 			linhVucDonThu.setDaXoa(true);
 		}
+
 		return linhVucDonThu;
 	}
 
-	
 	public boolean checkExistsData(LinhVucDonThuRepository repo, LinhVucDonThu body) {
 		BooleanExpression predAll = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
 

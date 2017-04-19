@@ -30,12 +30,12 @@ public class ChucVuService {
 	}
 
 	public ChucVu deleteChucVu(ChucVuRepository repo, Long id) {
-		ChucVu chucVu = null;
-		if (isExists(repo, id)) {
-			chucVu = new ChucVu();
-			chucVu.setId(id);
+		ChucVu chucVu = repo.findOne(predicateFindOne(id));
+
+		if (chucVu != null) {
 			chucVu.setDaXoa(true);
 		}
+
 		return chucVu;
 	}
 
