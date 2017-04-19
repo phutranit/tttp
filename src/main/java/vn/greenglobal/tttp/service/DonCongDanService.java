@@ -13,7 +13,9 @@ public class DonCongDanService {
 	public  Predicate predicateFindAll(Long don) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
 		if (don != null && don > 0) {
-			QDon_CongDan.don_CongDan.don.id.eq(don);
+			predAll = QDon_CongDan.don_CongDan.don.id.eq(don);
+		}
+		return predAll;
 	}
 	
 	public  Predicate predicateFindAll(String tuKhoa) {
