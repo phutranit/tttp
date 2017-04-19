@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.util;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,5 +75,21 @@ public class Utils {
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
- }
+	}
+	
+	public static LocalDateTime fixTuNgay(String tuNgayCurrent) {
+		// Fix tuNgay
+		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
+		tuNgay = LocalDateTime.of(tuNgay.getYear(),
+				tuNgay.getMonth(),tuNgay.getDayOfMonth(),0,0,0);
+		return tuNgay;
+	}
+	
+	public static LocalDateTime fixDenNgay(String denNgayCurrent) {
+		// Fix denNgay
+		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent);
+		denNgay = LocalDateTime.of(denNgay.getYear(),
+				denNgay.getMonth(),denNgay.getDayOfMonth(),23,59,59);
+		return denNgay;
+	}
 }

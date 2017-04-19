@@ -1,8 +1,8 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -12,6 +12,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 public class SoTiepCongDanService {
 	private static Log log = LogFactory.getLog(SoTiepCongDanService.class);
@@ -23,39 +24,38 @@ public class SoTiepCongDanService {
 	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay, String denNgay, String loaiTiepCongDan, boolean thanhLapDon) {
 		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false)
 				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
+		if (StringUtils.isNotBlank(tuKhoa)) {
 			log.info("-- tuKhoa : " +tuKhoa);
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
 					.or(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
 		}
-		
-		if (phanLoaiDon != null && !"".equals(phanLoaiDon)) {
+		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon));
 		}
-		if (huongXuLy != null && !"".equals(huongXuLy)) {
+		if (StringUtils.isNotBlank(huongXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy));
 		}
-		if (loaiTiepCongDan != null && !"".equals(loaiTiepCongDan)) {
+		if (StringUtils.isNotBlank(loaiTiepCongDan)) {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.stringValue().containsIgnoreCase(loaiTiepCongDan));
 		}
-		if (tuNgay != null && denNgay != null) {
-			LocalDateTime dtTuNgay = LocalDateTime.parse(tuNgay, formatter);
-			LocalDateTime dtDenNgay = LocalDateTime.parse(denNgay, formatter);
+		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+			
 			log.info("-- dtTuNgay : " + dtTuNgay);
 			log.info("-- dtDenNgay : " + dtDenNgay);
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
 		} else {
-			if (tuNgay != null) {
-				LocalDateTime dtTuNgay = LocalDateTime.parse(tuNgay, formatter);
+			if (StringUtils.isNotBlank(tuNgay)) {
+				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 				log.info("-- dtTuNgay : " + dtTuNgay);
 				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.after(dtTuNgay));
 			}
-			if (denNgay != null) {
-				LocalDateTime dtDenNgay = LocalDateTime.parse(denNgay, formatter);
+			if (StringUtils.isNotBlank(denNgay)) {
+				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 				log.info("-- dtTuNgay : " + dtDenNgay);
 				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.before(dtDenNgay));
 			}
