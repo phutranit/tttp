@@ -79,8 +79,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach VuViec");
-		System.out.println("message:"+message.getMessage("NotEmpty"));
+		
+		log.info(message.getMessage("get.list", new Object[] {ChucVu.class.getSimpleName()}));
+		
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}

@@ -38,8 +38,8 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
