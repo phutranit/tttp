@@ -19,7 +19,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -35,6 +37,7 @@ public class Don extends Model<Don> {
 	private static final long serialVersionUID = 8736658787648062250L;
 
 	private String ma = "";
+	@NotBlank
 	private String noiDung = "";
 	private String yeuCauCuaCongDan = "";
 	private String lyDoTuChoi = "";
@@ -66,9 +69,11 @@ public class Don extends Model<Don> {
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
+	@NotNull
 	@ManyToOne
 	private LinhVucDonThu linhVucDonThu;
 	@ManyToOne
+	@NotNull
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
@@ -126,6 +131,7 @@ public class Don extends Model<Don> {
 		this.ma = ma;
 	}
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getNoiDung() {
 		return noiDung;
 	}
@@ -326,6 +332,7 @@ public class Don extends Model<Don> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public LoaiDonEnum getLoaiDon() {
 		return loaiDon;
 	}
@@ -334,6 +341,7 @@ public class Don extends Model<Don> {
 		this.loaiDon = loaiDon;
 	}
 
+	@ApiModelProperty(position = 3, required = true)
 	public LoaiDoiTuongEnum getLoaiDoiTuong() {
 		return loaiDoiTuong;
 	}
@@ -342,6 +350,7 @@ public class Don extends Model<Don> {
 		this.loaiDoiTuong = loaiDoiTuong;
 	}
 
+	@ApiModelProperty(position = 4, required = true)
 	public NguonTiepNhanDonEnum getNguonTiepNhanDon() {
 		return nguonTiepNhanDon;
 	}
@@ -350,6 +359,7 @@ public class Don extends Model<Don> {
 		this.nguonTiepNhanDon = nguonTiepNhanDon;
 	}
 
+	@ApiModelProperty(position = 5, required = true)
 	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
 		return loaiNguoiDungDon;
 	}
@@ -374,6 +384,7 @@ public class Don extends Model<Don> {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}
 
+	@ApiModelProperty(position = 6, required = true)
 	public LinhVucDonThu getLinhVucDonThu() {
 		return linhVucDonThu;
 	}
@@ -382,6 +393,7 @@ public class Don extends Model<Don> {
 		this.linhVucDonThu = linhVucDonThu;
 	}
 
+	@ApiModelProperty(position = 7, required = true)
 	public LinhVucDonThu getLinhVucDonThuChiTiet() {
 		return linhVucDonThuChiTiet;
 	}
@@ -438,7 +450,7 @@ public class Don extends Model<Don> {
 		}
 		return donCongDan;
 	}
-
+	
 	public int getTongSoLuotTCD() {
 		return tongSoLuotTCD;
 	}

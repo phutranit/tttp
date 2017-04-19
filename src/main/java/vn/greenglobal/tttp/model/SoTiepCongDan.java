@@ -66,8 +66,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
 	
