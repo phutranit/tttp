@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,7 +55,12 @@ public class DonController extends BaseController<Don> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/dons")
 	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class)})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"),
+	})
 	public @ResponseBody PagedResources<Don> getList(Pageable pageable,
 			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
@@ -71,8 +79,29 @@ public class DonController extends BaseController<Don> {
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
 				hanGiaiQuyetDenNgay, trinhTrangXuLy),pageable);
-		
+			
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
+	}
+	
+	public boolean CheckInputDateTime (String tuNgay, String denNgay) {
+		
+		if (StringUtils.isNotBlank(tuNgay)) {
+			try {
+				LocalDateTime.parse(denNgay);
+			} catch (DateTimeParseException ex) {
+				return false;
+			}
+			if (StringUtils.isNotBlank(tuNgay)){
+				try {
+					LocalDateTime.parse(denNgay);
+				} catch (DateTimeParseException ex) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/dons")
