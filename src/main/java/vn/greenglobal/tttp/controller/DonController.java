@@ -139,7 +139,6 @@ public class DonController extends BaseController<Don> {
 		log.info("Update Don theo id: " + id);
 		don.setId(id);
 		
-		
 		if (!donService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
