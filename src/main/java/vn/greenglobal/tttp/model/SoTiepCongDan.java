@@ -42,8 +42,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-
-	private String loaiTiepDan = "";
+	
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	private String donViChuTri = "";
@@ -65,7 +64,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
-
+	@Enumerated(EnumType.STRING)
+	private LoaiTiepDanEnum loaiTiepDan;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
@@ -130,14 +131,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setThoiHan(LocalDateTime thoiHan) {
 		this.thoiHan = thoiHan;
-	}
-
-	public String getLoaiTiepDan() {
-		return loaiTiepDan;
-	}
-
-	public void setLoaiTiepDan(String loaiTiepDan) {
-		this.loaiTiepDan = loaiTiepDan;
 	}
 
 	public String getNoiDungTiepCongDan() {
@@ -250,6 +243,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
+	}
+
+	public LoaiTiepDanEnum getLoaiTiepDan() {
+		return loaiTiepDan;
+	}
+
+	public void setLoaiTiepDan(LoaiTiepDanEnum loaiTiepDan) {
+		this.loaiTiepDan = loaiTiepDan;
 	}
 
 	public String getHuongXuLyText() {
