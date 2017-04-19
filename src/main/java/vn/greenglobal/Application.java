@@ -125,7 +125,7 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 
-				registry.addMapping("/**").allowedOrigins("*").allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE").maxAge(3600).allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+				registry.addMapping("/**").allowedOrigins("*", "localhost", "tttpfrontend.danang.gov.vn").allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE").maxAge(3600).allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			}
 		};
 	}
