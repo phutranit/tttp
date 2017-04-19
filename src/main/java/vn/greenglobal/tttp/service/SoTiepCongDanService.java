@@ -1,10 +1,7 @@
 package vn.greenglobal.tttp.service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,10 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.LoaiDonEnum;
-import vn.greenglobal.tttp.model.Don_CongDan;
-import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -27,8 +20,9 @@ public class SoTiepCongDanService {
 		return QSoTiepCongDan.soTiepCongDan.daXoa.eq(false).and(QSoTiepCongDan.soTiepCongDan.id.eq(id));
 	}
 	
-	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay, String denNgay, String loaiTiepCongDan, List<Don_CongDan> donCongDans, boolean thanhLapDon) {
-		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
+	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay, String denNgay, String loaiTiepCongDan, boolean thanhLapDon) {
+		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false)
+				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {

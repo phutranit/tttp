@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -94,12 +95,16 @@ public class Don extends Model<Don> {
 	@Transient
 	private Don_CongDan donCongDan; //TCD
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
@@ -402,6 +407,21 @@ public class Don extends Model<Don> {
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
 	}
+	
+	@Transient
+	public CoQuanQuanLy getDonViDon() {
+		return getDonVi();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuDon() {
+		return getLinhVucDonThu();
+	}
+	
+	@Transient
+	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
+		return getLinhVucDonThuChiTiet();
+	}
 
 	public List<Don_CongDan> getDonCongDans() {
 		return donCongDans;
@@ -427,5 +447,10 @@ public class Don extends Model<Don> {
 
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
+	}
+	
+	@Transient
+	public List<Don_CongDan> getListDonCongDan() {
+		return getDonCongDans();
 	}
 }
