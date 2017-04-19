@@ -39,14 +39,14 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
 			
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.like(
-					StringUtils.trimToEmpty(tenNguoiDungDon)));
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.
+					containsIgnoreCase(tenNguoiDungDon));
 		}
 		
 		if (StringUtils.isNotBlank(cmndHoChieu)) {
 		
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.
-					eq(StringUtils.trimToEmpty(cmndHoChieu)));
+					containsIgnoreCase(cmndHoChieu));
 		}
 	
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
