@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
@@ -115,4 +116,19 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
+	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
+	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+		log.info("Delete SoTiepCongDan theo id: " + id);
+
+		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
+		if (soTiepCongDan == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		repo.save(soTiepCongDan);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
 }

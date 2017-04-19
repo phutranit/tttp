@@ -8,9 +8,13 @@ import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 
 public class DonCongDanService {
-	
-	public  Predicate predicateFindAll() {
+
+
+	public  Predicate predicateFindAll(Long don) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
+		if (don != null && don > 0) {
+			predAll = QDon_CongDan.don_CongDan.don.id.eq(don);
+		}
 		return predAll;
 	}
 	
