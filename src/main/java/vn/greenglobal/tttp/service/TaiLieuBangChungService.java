@@ -27,7 +27,7 @@ public class TaiLieuBangChungService {
 		return false;
 	}
 
-	public TaiLieuBangChung deleteToDanPho(TaiLieuBangChungRepository repo, Long id) {
+	public TaiLieuBangChung deleteTaiLieuBangChung(TaiLieuBangChungRepository repo, Long id) {
 		TaiLieuBangChung taiLieuBangChung = repo.findOne(predicateFindOne(id));
 
 		if (taiLieuBangChung != null) {
