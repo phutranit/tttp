@@ -29,7 +29,6 @@ This README would normally document whatever steps are necessary to get your app
 
 	- run testmode: mvn tomcat7:run
 
-
 ### Who do I talk to? ###
 
 * Repo owner or admin

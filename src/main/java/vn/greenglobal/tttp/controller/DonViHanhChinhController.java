@@ -39,7 +39,9 @@ import vn.greenglobal.tttp.util.Utils;
 public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 
 	private static Log log = LogFactory.getLog(DonViHanhChinhController.class);
-	private static DonViHanhChinhService donViHanhChinhService = new DonViHanhChinhService();
+	
+	@Autowired
+	DonViHanhChinhService donViHanhChinhService;
 
 	@Autowired
 	private DonViHanhChinhRepository repo;
@@ -50,11 +52,11 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/donViHanhChinhs")
 	@ApiOperation(value = "Thêm mới Đơn Vị Hành Chính", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class),
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class),
 			@ApiResponse(code = 201, message = "Thêm mới Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class)})
 	public ResponseEntity<Object> create(@RequestBody DonViHanhChinh donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi DonViHanhChinh");		
 		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
 	}
 	
@@ -66,8 +68,6 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 			@RequestParam(value = "capDonViHanhChinh", required = false) Long capDonViHanhChinh,
 			@RequestParam(value = "cha", required = false) Long cha,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach DonViHanhChinh");
-
 		Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -77,8 +77,6 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn Vị Hành Chính thành công", response = DonViHanhChinh.class) })
 	public ResponseEntity<PersistentEntityResource> getDonViHanhChinh(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get DonViHanhChinh theo id: " + id);
-
 		DonViHanhChinh donViHanhChinh = repo.findOne(donViHanhChinhService.predicateFindOne(id));
 		if (donViHanhChinh == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,12 +90,9 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody DonViHanhChinh donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Update DonViHanhChinh theo id: " + id);
-		
 		if (!donViHanhChinhService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
 		donViHanhChinh.setId(id);
 		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
 	}
@@ -106,8 +101,6 @@ public class DonViHanhChinhController extends BaseController<DonViHanhChinh> {
 	@ApiOperation(value = "Xoá Đơn Vị Hành Chính", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Đơn Vị Hành Chính thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete DonViHanhChinh theo id: " + id);
-
 		DonViHanhChinh donViHanhChinh = donViHanhChinhService.deleteDonViHanhChinh(repo, id);
 		if (donViHanhChinh == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());

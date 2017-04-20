@@ -13,10 +13,16 @@ public class MessageByLocaleServiceImpl implements MessageByLocaleService{
 	@Autowired
     private MessageSource messageSource;
 
+	Locale locale = LocaleContextHolder.getLocale();
+	
     @Override
     public String getMessage(String id) {
-        Locale locale = LocaleContextHolder.getLocale();
         return messageSource.getMessage(id,null,locale);
     }
+
+	@Override
+	public String getMessage(String id, Object[] params) {
+		return messageSource.getMessage(id, params,locale);
+	}
 
 }

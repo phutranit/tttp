@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -94,7 +96,7 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-//	@JoinTable(name = "don_congd an", joinColumns = {
+//	@JoinTable(name = "don_congdan", joinColumns = {
 //			@JoinColumn(name = "congDan_id") }, inverseJoinColumns = {
 //					@JoinColumn(name = "don_id") })
 	@Fetch(value = FetchMode.SELECT)
@@ -105,20 +107,7 @@ public class Don extends Model<Don> {
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
 	
 	@Transient
-	private Don_CongDan donCongDan; // TCD
-	@Transient
-	private List<Don_CongDan> donCongDanByPhanLoais = new ArrayList<Don_CongDan>(); // TCD	
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public List<Don_CongDan> getDonCongDanBiKhieuTos() {
-		for (Don_CongDan don_CongDan : donCongDanByPhanLoais) {
-			if(don_CongDan.getPhanLoaiCongDan().equals("DOI_TUONG_BI_KHIEU_TO")) {
-				donCongDanByPhanLoais.add(don_CongDan);
-			}
-		}
-		return donCongDanByPhanLoais;
-	}
+	private Don_CongDan donCongDan; // TCD	
 
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon; //TCD Enum
