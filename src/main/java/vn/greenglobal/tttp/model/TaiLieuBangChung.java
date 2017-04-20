@@ -3,9 +3,11 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "tailieubangchung")
@@ -16,7 +18,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7863478663069074533L;
-	
+	@NotBlank
 	private String ten = "";
 	private String tinhTrangTaiLieu = "";
 	private String duongDan = "";
@@ -24,12 +26,14 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	private int soTrang = 0;
 
-	@ManyToOne	
+	@NotNull
+	@ManyToOne
 	private LoaiTaiLieu loaiTaiLieu;
 	
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 	
+	@NotNull
 	@ManyToOne
 	private Don don;
 

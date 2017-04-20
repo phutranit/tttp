@@ -105,8 +105,8 @@ public class ToDanPhoController extends BaseController<ToDanPho> {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/toDanPhos/{id}")
-	@ApiOperation(value = "Xoá Thẩm Quyền Giải Quyết", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Thẩm Quyền Giải Quyết thành công") })
+	@ApiOperation(value = "Xoá Tổ Dân Phố", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Tổ Dân Phố thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 		log.info("Delete ThamQuyenGiaiQuyet theo id: " + id);
 

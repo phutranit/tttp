@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.*;
 
 @Entity
 @Table(name = "don_congdan")
@@ -33,14 +34,18 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@ManyToOne
 	private CongDan congDan;
 
-	// Phân loại người đứng đơn và loại đối tượng
-	@NotNull
-	private PhanLoaiDonCongDanEnum phanLoai;
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
+	
+	// Phân loại người đứng đơn và loại đối tượng
+	@Enumerated(EnumType.STRING)
+	private LoaiNguoiDungDonEnum phanLoai;
+		
 	// Người đứng đơn, ủy quyền, khiếu tố
-	private String phanLoaiCongDan = "";
+	@Enumerated(EnumType.STRING)
+	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
+	
 	private String soTheLuatSu = "";
 
 	private boolean luatSu = false;
@@ -69,25 +74,23 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.congDan = congDan;
 	}
 
-	
-	
 	public String getTenCoQuan() {
 		return tenCoQuan;
 	}
 
 	@ApiModelProperty(position = 2, required = true)
-	@Enumerated(EnumType.STRING)
-	public PhanLoaiDonCongDanEnum getPhanLoai() {
+	public LoaiNguoiDungDonEnum getPhanLoai() {
 		return phanLoai;
 	}
 
-	public void setPhanLoai(PhanLoaiDonCongDanEnum phanLoai) {
+	public void setPhanLoai(LoaiNguoiDungDonEnum phanLoai) {
 		this.phanLoai = phanLoai;
 	}
-
+	
 	public void setTenCoQuan(String tenCoQuan) {
 		this.tenCoQuan = tenCoQuan;
 	}
+	
 
 	public String getDiaChiCoQuan() {
 		return diaChiCoQuan;
@@ -105,11 +108,11 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.soDienThoai = soDienThoai;
 	}
 
-	public String getPhanLoaiCongDan() {
+	public PhanLoaiDonCongDanEnum getPhanLoaiCongDan() {
 		return phanLoaiCongDan;
 	}
 
-	public void setPhanLoaiCongDan(String phanLoaiCongDan) {
+	public void setPhanLoaiCongDan(PhanLoaiDonCongDanEnum phanLoaiCongDan) {
 		this.phanLoaiCongDan = phanLoaiCongDan;
 	}
 
