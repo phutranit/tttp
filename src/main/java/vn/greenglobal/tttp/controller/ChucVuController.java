@@ -1,11 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
-import java.util.Locale;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -35,6 +32,8 @@ import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.MessageByLocaleService;
 import vn.greenglobal.tttp.util.Utils;
+import vn.greenglobal.tttp.util.patch.Patch;
+import vn.greenglobal.tttp.util.patch.PatchRequestBody;
 
 @RestController
 @RepositoryRestController
@@ -79,9 +78,6 @@ public class ChucVuController extends BaseController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
-		
-		log.info(message.getMessage("get.list", new Object[] {ChucVu.class.getSimpleName()}));
-		
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -91,8 +87,6 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Chức Vụ thành công", response = ChucVu.class) })
 	public ResponseEntity<PersistentEntityResource> getChucVu(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get VuViec theo id: " + id);
-
 		ChucVu chucVu = repo.findOne(chucVuService.predicateFindOne(id));
 		if (chucVu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,7 +94,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/chucVus/{id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/chucVus/{id}")
 	@ApiOperation(value = "Cập nhật Chức Vụ", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Chức Vụ thành công", response = ChucVu.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
