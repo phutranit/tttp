@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,11 +38,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "coQuanQuanLys", description = "Cơ Quan Quản Lý")
 public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 
-	private static Log log = LogFactory.getLog(CoQuanQuanLyController.class);
-	private static CoQuanQuanLyService coQuanQuanLyService = new CoQuanQuanLyService();
-
 	@Autowired
 	private CoQuanQuanLyRepository repo;
+
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
 
 	public CoQuanQuanLyController(BaseRepository<CoQuanQuanLy, Long> repo) {
 		super(repo);
@@ -58,7 +56,6 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 			@RequestParam(value = "cha", required = false) Long cha,
 			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach CoQuanQuanLy");
 
 		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy),
 				pageable);
@@ -72,7 +69,6 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 			@ApiResponse(code = 201, message = "Thêm mới Cơ Quan Quản Lý thành công", response = CoQuanQuanLy.class) })
 	public ResponseEntity<Object> create(@RequestBody CoQuanQuanLy coQuanQuanLy,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi CoQuanQuanLy");
 
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -85,9 +81,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 	@ApiOperation(value = "Lấy Cơ Quan Quản Lý theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Cơ Quan Quản Lý thành công", response = CoQuanQuanLy.class) })
-	public ResponseEntity<PersistentEntityResource> getCapCoQuanQuanLy(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get CoQuanQuanLy theo id: " + id);
 
 		CoQuanQuanLy coQuanQuanLy = repo.findOne(coQuanQuanLyService.predicateFindOne(id));
 		if (coQuanQuanLy == null) {
@@ -102,10 +97,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 			@ApiResponse(code = 200, message = "Cập nhật Cơ Quan Quản Lý thành công", response = CoQuanQuanLy.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody CoQuanQuanLy coQuanQuanLy, PersistentEntityResourceAssembler eass) {
-		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
 		coQuanQuanLy.setId(id);
-
 		if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
@@ -123,9 +116,8 @@ public class CoQuanQuanLyController extends BaseController<CoQuanQuanLy> {
 	@ApiOperation(value = "Xoá Cơ Quan Quản Lý", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cơ Quan Quản Lý thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete CoQuanQuanLy theo id: " + id);
 
-		CoQuanQuanLy coQuanQuanLy = coQuanQuanLyService.deleteCoQuanQuanLy(repo, id);
+		CoQuanQuanLy coQuanQuanLy = coQuanQuanLyService.delete(repo, id);
 		if (coQuanQuanLy == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
