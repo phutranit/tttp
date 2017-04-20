@@ -108,12 +108,11 @@ public class DonController extends BaseController<Don> {
 	@ApiOperation(value = "Thêm mới Đơn", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
-	public ResponseEntity<Object> create(@RequestBody Don Don,
+	public ResponseEntity<Object> create(@RequestBody Don don,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi Don");
 		
-		repo.save(Don);
-		return new ResponseEntity<>(eass.toFullResource(Don), HttpStatus.CREATED);
+		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
@@ -142,8 +141,7 @@ public class DonController extends BaseController<Don> {
 		if (!donService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(don);
-		return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
+		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/dons/{id}")

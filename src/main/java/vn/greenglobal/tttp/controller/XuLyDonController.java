@@ -114,7 +114,7 @@ public class XuLyDonController extends BaseController<XuLyDon> {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/{id}/dinhchi")
-	@ApiOperation(value = "Quy trình đình chỉ ", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "Quy trình rút đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Đình chỉ đơn thanh công", response = XuLyDon.class) })
 	public ResponseEntity<Object> rutDon(@RequestBody XuLyDon xuLyDon, @PathVariable("id") Long id,

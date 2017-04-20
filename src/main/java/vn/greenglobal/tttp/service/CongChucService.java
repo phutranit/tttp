@@ -34,13 +34,13 @@ public class CongChucService {
 	}
 
 	public CongChuc deleteCongChuc(CongChucRepository repo, Long id) {
-		CongChuc congDan = null;
-		if (isExists(repo, id)) {
-			congDan = new CongChuc();
-			congDan.setId(id);
-			congDan.setDaXoa(true);
+		CongChuc congChuc = repo.findOne(predicateFindOne(id));
+		
+		if (congChuc != null) {
+			congChuc.setDaXoa(true);
 		}
-		return congDan;
+
+		return congChuc;
 	}
 	
 	public boolean checkExistsData(CongChucRepository repo, CongChuc body) {

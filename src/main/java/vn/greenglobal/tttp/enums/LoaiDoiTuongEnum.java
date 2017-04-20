@@ -2,7 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum LoaiDoiTuongEnum {
 
-	QUYET_DINH_HANH_CHINH("Quyết định hành chính");
+	QUYET_DINH_HANH_CHINH("Quyết đị hành chính");
 
 	LoaiDoiTuongEnum(String text) {
 		this.text = text;

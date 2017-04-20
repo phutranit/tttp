@@ -41,12 +41,12 @@ public class CoQuanQuanLyService {
 	}
 
 	public CoQuanQuanLy deleteCoQuanQuanLy(CoQuanQuanLyRepository repo, Long id) {
-		CoQuanQuanLy coQuanQuanLy = null;
-		if (isExists(repo, id)) {
-			coQuanQuanLy = new CoQuanQuanLy();
-			coQuanQuanLy.setId(id);
+		CoQuanQuanLy coQuanQuanLy = repo.findOne(predicateFindOne(id));
+
+		if (coQuanQuanLy != null) {
 			coQuanQuanLy.setDaXoa(true);
 		}
+
 		return coQuanQuanLy;
 	}
 

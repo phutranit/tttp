@@ -8,4 +8,5 @@ import vn.greenglobal.tttp.model.Don;
 @RestResource(path = "dons")
 public interface DonRepository extends MutableRepo<Don> {
 
+	
 }

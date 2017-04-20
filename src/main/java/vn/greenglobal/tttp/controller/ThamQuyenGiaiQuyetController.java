@@ -128,6 +128,7 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+		System.out.println("namdaica");
 		repo.save(thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
