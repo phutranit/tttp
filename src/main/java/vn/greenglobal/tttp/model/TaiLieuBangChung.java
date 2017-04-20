@@ -24,7 +24,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	private int soTrang = 0;
 
-	@ManyToOne
+	@ManyToOne	
 	private LoaiTaiLieu loaiTaiLieu;
 	
 	@ManyToOne
