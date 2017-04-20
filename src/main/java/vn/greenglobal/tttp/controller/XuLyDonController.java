@@ -61,7 +61,6 @@ public class XuLyDonController extends BaseController<XuLyDon> {
 		
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
 
-			log.info("XuLyDon is exists");
 			XuLyDon xuLyDonHienTai = repo.findOne(xuLyDonService.predicateFindMax(
 					xuLyDon.getDon().getId()));
 			xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
@@ -96,7 +95,7 @@ public class XuLyDonController extends BaseController<XuLyDon> {
 			xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien()+1);
 			return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
 		}
-		log.info("XuLyDon isn't exists");
+
 		String note = HuongXuLyXLDEnum.CHUYEN_DON.getText() + "cho lãnh đạo";
 		xuLyDon.setThuTuThucHien(0);
 		xuLyDon.setHuongXuLy(HuongXuLyXLDEnum.CHUYEN_DON);
@@ -132,7 +131,6 @@ public class XuLyDonController extends BaseController<XuLyDon> {
 		donrepo.save(don);
 		if (xuLyDonService.isExists(repo, id)) {
 			
-			log.info("XuLyDon is exists");
 			XuLyDon xuLyDonHienTai = repo.findOne(xuLyDonService.predicateFindMax(
 					xuLyDon.getDon().getId()));
 			xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
@@ -152,8 +150,7 @@ public class XuLyDonController extends BaseController<XuLyDon> {
 			}
 			return Utils.doSave(repo, xuLyDonHienTai, eass, HttpStatus.CREATED);
 		}
-		
-		log.info("XuLyDon isn't exists");
+
 		XuLyDon xuLyDonVanThu = new XuLyDon();
 		xuLyDonVanThu.setCongChuc(xuLyDon.getCongChuc());
 		xuLyDonVanThu.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());

@@ -3,11 +3,14 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,6 +32,7 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity
 @Table(name = "don")
@@ -47,6 +51,7 @@ public class Don extends Model<Don> {
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
+
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
@@ -81,30 +86,43 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy capCoQuanDangGiaiQuyet;
+	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
+	
 	@OneToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
-
-	/*
-	 * @ManyToMany(fetch = FetchType.EAGER)
-	 * 
-	 * @JoinTable(name = "don_congdan", joinColumns = {
-	 * 
-	 * @JoinColumn(name = "don_id") }, inverseJoinColumns = {
-	 * 
-	 * @JoinColumn(name = "congDan_id") })
-	 * 
-	 * @Fetch(value = FetchMode.SUBSELECT)
-	 */
+	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+//	@JoinTable(name = "don_congd an", joinColumns = {
+//			@JoinColumn(name = "congDan_id") }, inverseJoinColumns = {
+//					@JoinColumn(name = "don_id") })
 	@Fetch(value = FetchMode.SELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
+	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
+	
 	@Transient
 	private Don_CongDan donCongDan; // TCD
+	@Transient
+	private List<Don_CongDan> donCongDanByPhanLoais = new ArrayList<Don_CongDan>(); // TCD	
+	
+	public List<Don_CongDan> getDonCongDanBiKhieuTos() {
+		for (Don_CongDan don_CongDan : donCongDanByPhanLoais) {
+			if(don_CongDan.getPhanLoaiCongDan().equals("DOI_TUONG_BI_KHIEU_TO")) {
+				donCongDanByPhanLoais.add(don_CongDan);
+			}
+		}
+		return donCongDanByPhanLoais;
+	}
 
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiDon; //TCD Enum
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@NotNull
@@ -123,6 +141,14 @@ public class Don extends Model<Don> {
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
+	
+	public Don_CongDan getDonCongDan() {
+		return donCongDan;
+	}
+
+	public void setDonCongDan(Don_CongDan donCongDan) {
+		this.donCongDan = donCongDan;
+	}
 
 	public String getMa() {
 		return ma;
@@ -385,6 +411,14 @@ public class Don extends Model<Don> {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}
 
+	public TrangThaiDonEnum getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
+	}
+	
 	@ApiModelProperty(position = 6, required = true)
 	public LinhVucDonThu getLinhVucDonThu() {
 		return linhVucDonThu;
@@ -470,4 +504,19 @@ public class Don extends Model<Don> {
 		return getId();
 	}
 
+	public CoQuanQuanLy getCapCoQuanDangGiaiQuyet() {
+		return capCoQuanDangGiaiQuyet;
+	}
+
+	public void setCapCoQuanDangGiaiQuyet(CoQuanQuanLy capCoQuanDangGiaiQuyet) {
+		this.capCoQuanDangGiaiQuyet = capCoQuanDangGiaiQuyet;
+	}
+
+	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
+		return taiLieuBangChungs;
+	}
+
+	public void setTaiLieuBangChungs(List<TaiLieuBangChung> taiLieuBangChungs) {
+		this.taiLieuBangChungs = taiLieuBangChungs;
+	}
 }
