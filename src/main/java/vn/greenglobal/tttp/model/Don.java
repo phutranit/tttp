@@ -97,7 +97,7 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-//	@JoinTable(name = "don_congd an", joinColumns = {
+//	@JoinTable(name = "don_congdan", joinColumns = {
 //			@JoinColumn(name = "congDan_id") }, inverseJoinColumns = {
 //					@JoinColumn(name = "don_id") })
 	@Fetch(value = FetchMode.SELECT)

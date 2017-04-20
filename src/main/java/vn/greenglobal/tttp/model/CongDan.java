@@ -63,7 +63,7 @@ public class CongDan extends Model<CongDan> {
 	
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	@OrderBy("ngayTao DESC")
+	@OrderBy("ngayTao ASC")
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD 
 	
 	public List<Don_CongDan> getDonCongDans() {

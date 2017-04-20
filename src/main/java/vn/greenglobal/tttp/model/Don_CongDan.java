@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -171,5 +172,13 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Transient
 	public Don getThongTinDon() {
 		return getDon();
+	}
+	
+	@Transient
+	public LocalDateTime getNgayTiepNhan() {
+		if (getDon() != null) {
+			return getDon().getNgayTiepNhan();
+		}
+		return null;
 	}
 }
