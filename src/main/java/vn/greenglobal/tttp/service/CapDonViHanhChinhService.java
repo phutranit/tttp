@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,10 +9,13 @@ import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.QCapDonViHanhChinh;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
 
+@Component
 public class CapDonViHanhChinhService {
 
+	BooleanExpression base = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
+
 	public Predicate predicateFindAll(String ten) {
-		BooleanExpression predAll = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten)
 					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten)));
@@ -19,19 +24,18 @@ public class CapDonViHanhChinhService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false).and(QCapDonViHanhChinh.capDonViHanhChinh.id.eq(id));
+		return base.and(QCapDonViHanhChinh.capDonViHanhChinh.id.eq(id));
 	}
 
 	public boolean isExists(CapDonViHanhChinhRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false)
-					.and(QCapDonViHanhChinh.capDonViHanhChinh.id.eq(id));
+			Predicate predicate = base.and(QCapDonViHanhChinh.capDonViHanhChinh.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
-	public CapDonViHanhChinh deleteCapDonViHanhChinh(CapDonViHanhChinhRepository repo, Long id) {
+	public CapDonViHanhChinh delete(CapDonViHanhChinhRepository repo, Long id) {
 		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(predicateFindOne(id));
 
 		if (capDonViHanhChinh != null) {
@@ -42,7 +46,7 @@ public class CapDonViHanhChinhService {
 	}
 
 	public boolean checkExistsData(CapDonViHanhChinhRepository repo, CapDonViHanhChinh body) {
-		BooleanExpression predAll = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.id.ne(body.getId()));

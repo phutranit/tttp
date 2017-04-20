@@ -127,27 +127,6 @@ public class EnumController {
 		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetTCDs")
-	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTCDs() {
-		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
-		Map<String, Object> phanLoaiObj = new HashMap<>();
-
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
-		phanLoaiList.add(phanLoaiObj);
-
-		phanLoaiObj = new HashMap<>();
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
-		phanLoaiList.add(phanLoaiObj);
-
-		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
-		errorBody.put("phanLoaiList", phanLoaiList);
-
-		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
-	}
-	
 	@RequestMapping(method = RequestMethod.GET, value = "/quyTrinhXuLyXLDs/giaoViec")
 	@ApiOperation(value = "Lấy danh sách Quy Trình Xử Lý Đơn XLD", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachQuyTrinhXuLyXLDs(
@@ -281,6 +260,27 @@ public class EnumController {
 			phanLoaiList.add(phanLoaiObj);
 		}
 	
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("phanLoaiList", phanLoaiList);
+
+		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetTCDs")
+	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTCDs() {
+		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
+		Map<String, Object> phanLoaiObj = new HashMap<>();
+
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		phanLoaiObj = new HashMap<>();
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+		phanLoaiList.add(phanLoaiObj);
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("phanLoaiList", phanLoaiList);
 

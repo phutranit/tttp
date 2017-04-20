@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,6 +9,7 @@ import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCapCoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 
+@Component
 public class CapCoQuanQuanLyService {
 
 	BooleanExpression base = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
@@ -35,10 +38,11 @@ public class CapCoQuanQuanLyService {
 			Predicate predicate = base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
 			return repo.exists(predicate);
 		}
+		
 		return false;
 	}
 
-	public CapCoQuanQuanLy deleteCapCoQuanQuanLy(CapCoQuanQuanLyRepository repo, Long id) {
+	public CapCoQuanQuanLy delete(CapCoQuanQuanLyRepository repo, Long id) {
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predicateFindOne(id));
 		
 		if (capCoQuanQuanLy != null) {

@@ -23,7 +23,9 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.*;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 
 @Entity
 @Table(name = "sotiepcongdan")

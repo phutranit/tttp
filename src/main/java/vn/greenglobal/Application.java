@@ -130,7 +130,7 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	// @Bean
+	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
@@ -142,7 +142,15 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/login");
+				sec.ignoring().antMatchers("/login", 
+						"/v2/api-docs", 
+						"/configuration/ui", 
+						"/configuration/security", 
+						"/swagger-resources", 
+						"/swagger-ui.html", 
+						"/swagger-resources/configuration/ui",
+						"/swagger-resources/configuration/security",
+						"/webjars/**");
 			}
 
 			@Override

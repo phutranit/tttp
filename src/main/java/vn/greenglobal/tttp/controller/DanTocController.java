@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +37,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "danTocs", description = "Dân tộc")
 public class DanTocController extends BaseController<DanToc> {
 
-	private static Log log = LogFactory.getLog(DanTocController.class);
-	private static DanTocService danTocService = new DanTocService();
-
 	@Autowired
 	private DanTocRepository repo;
+
+	@Autowired
+	private DanTocService danTocService;
 
 	public DanTocController(BaseRepository<DanToc, Long> repo) {
 		super(repo);
@@ -51,23 +49,20 @@ public class DanTocController extends BaseController<DanToc> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/danTocs")
-	@ApiOperation(value = "Lấy danh sách Dân tộc", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Dân tộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<DanToc> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach DanToc");
 
 		Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa, cha), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/danTocs")
-	@ApiOperation(value = "Thêm mới Dân tộc", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Dân tộc thành công", response = DanToc.class),
-			@ApiResponse(code = 201, message = "Thêm mới Dân tộc thành công", response = DanToc.class)})
-	public ResponseEntity<Object> create(@RequestBody DanToc danToc,
-			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi DanToc");
+	@ApiOperation(value = "Thêm mới Dân tộc", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Dân tộc thành công", response = DanToc.class),
+			@ApiResponse(code = 201, message = "Thêm mới Dân tộc thành công", response = DanToc.class) })
+	public ResponseEntity<Object> create(@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
 
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
@@ -76,11 +71,10 @@ public class DanTocController extends BaseController<DanToc> {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/danTocs/{id}")
-	@ApiOperation(value = "Lấy Dân tộc theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Dân tộc thành công", response = DanToc.class) })
-	public ResponseEntity<PersistentEntityResource> getDanToc(@PathVariable("id") long id,
+	@ApiOperation(value = "Lấy Dân tộc theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Dân tộc thành công", response = DanToc.class) })
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get DanToc theo id: " + id);
 
 		DanToc danToc = repo.findOne(danTocService.predicateFindOne(id));
 		if (danToc == null) {
@@ -90,31 +84,34 @@ public class DanTocController extends BaseController<DanToc> {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/danTocs/{id}")
-	@ApiOperation(value = "Cập nhật Dân tộc", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Dân tộc thành công", response = DanToc.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
-			@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
-		log.info("Update DanToc theo id: " + id);
+	@ApiOperation(value = "Cập nhật Dân tộc", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Dân tộc thành công", response = DanToc.class) })
+	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody DanToc danToc,
+			PersistentEntityResourceAssembler eass) {
+		
 		danToc.setId(id);
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
 		if (!danTocService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		return Utils.doSave(repo, danToc, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/danTocs/{id}")
-	@ApiOperation(value = "Xoá Dân tộc", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Dân tộc thành công") })
+	@ApiOperation(value = "Xoá Dân tộc", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Dân tộc thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete DanToc theo id: " + id);
 
-		DanToc danToc = danTocService.deleteDanToc(repo, id);
+		DanToc danToc = danTocService.delete(repo, id);
 		if (danToc == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		repo.save(danToc);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -12,23 +12,24 @@ import vn.greenglobal.tttp.repository.VaiTroRepository;
 @Component
 public class VaiTroService {
 
-	BooleanExpression basePrediCate = QVaiTro.vaiTro.daXoa.eq(false);
+	BooleanExpression base = QVaiTro.vaiTro.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
+		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			basePrediCate = basePrediCate.and(QVaiTro.vaiTro.ten.containsIgnoreCase(tuKhoa));
+			predAll = predAll.and(QVaiTro.vaiTro.ten.containsIgnoreCase(tuKhoa));
 		}
 
-		return basePrediCate;
+		return predAll;
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return basePrediCate.and(QVaiTro.vaiTro.id.eq(id));
+		return base.and(QVaiTro.vaiTro.id.eq(id));
 	}
 
 	public boolean isExists(VaiTroRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = basePrediCate.and(QVaiTro.vaiTro.id.eq(id));
+			Predicate predicate = base.and(QVaiTro.vaiTro.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
@@ -45,12 +46,14 @@ public class VaiTroService {
 	}
 
 	public boolean checkExistsData(VaiTroRepository repo, VaiTro body) {
+		BooleanExpression predAll = base;
+		
 		if (!body.isNew()) {
-			basePrediCate = basePrediCate.and(QVaiTro.vaiTro.id.ne(body.getId()));
+			predAll = predAll.and(QVaiTro.vaiTro.id.ne(body.getId()));
 		}
 
-		basePrediCate = basePrediCate.and(QVaiTro.vaiTro.ten.eq(body.getTen()));
-		VaiTro vaiTro = repo.findOne(basePrediCate);
+		predAll = predAll.and(QVaiTro.vaiTro.ten.eq(body.getTen()));
+		VaiTro vaiTro = repo.findOne(base);
 
 		return vaiTro != null ? true : false;
 	}
