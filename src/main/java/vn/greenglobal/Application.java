@@ -62,7 +62,7 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 	private final Logger log = LoggerFactory.getLogger(Application.class);
-	
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
@@ -71,7 +71,7 @@ public class Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/upload", produces = "application/json")
 	@ResponseBody
 	public Object upload(HttpServletRequest req) {
@@ -119,17 +119,15 @@ public class Application extends SpringBootServletInitializer {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-
-				registry.addMapping("/**")
-					.allowedOrigins("*", "localhost", "tttpfrontend.danang.gov.vn")
-					.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-					.allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-					.maxAge(3600);
+				registry.addMapping("/**").allowedOrigins("*").allowCredentials(true)
+						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
+						.allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+						.maxAge(3600);
 			}
 		};
 	}
 
-	@Bean
+	// @Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
@@ -143,18 +141,16 @@ public class Application extends SpringBootServletInitializer {
 			public void configure(WebSecurity sec) throws Exception {
 				sec.ignoring().antMatchers("/login");
 			}
-			
+
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
-				
-				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
+
+				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
+						"custom");
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-				
-				http.authorizeRequests()
-					.anyRequest().authenticated()
-					.and().httpBasic()
-					.and().csrf().disable();
+
+				http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
 
 			}
 		};
@@ -177,24 +173,25 @@ public class Application extends SpringBootServletInitializer {
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
-		//System.out.println(token);
-		//System.out.println(authenticator.validateTokenAndGetClaims(token));
-		//System.out.println(authenticator.validateToken(token));
-		//System.out.println(2);
+		// System.out.println(token);
+		// System.out.println(authenticator.validateTokenAndGetClaims(token));
+		// System.out.println(authenticator.validateToken(token));
+		// System.out.println(2);
 		return config;
 	}
-	
+
 	@Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.US);
-        return slr;
-    }
-    @Bean
-    public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:locale/messages");
-        messageSource.setCacheSeconds(3600); //refresh cache once per hour
-        return messageSource;
-    }
+	public LocaleResolver localeResolver() {
+		SessionLocaleResolver slr = new SessionLocaleResolver();
+		slr.setDefaultLocale(Locale.US);
+		return slr;
+	}
+
+	@Bean
+	public ReloadableResourceBundleMessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:locale/messages");
+		messageSource.setCacheSeconds(3600); // refresh cache once per hour
+		return messageSource;
+	}
 }

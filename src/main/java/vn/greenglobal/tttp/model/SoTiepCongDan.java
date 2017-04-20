@@ -282,16 +282,19 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDanSTCD() {
 		return coQuanToChucTiepDans;
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Don getDonSTCD() {
 		return getDon();
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public String getSoLuotTiepStr() {
 		String out = "";
 		out += getSoThuTuLuotTiep() + "/";
