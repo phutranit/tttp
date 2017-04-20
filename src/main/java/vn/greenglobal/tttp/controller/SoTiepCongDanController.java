@@ -134,11 +134,11 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		});
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDanDinhKys/{id}")
-	@ApiOperation(value = "Cập nhật Sổ Tiếp Công Dân Đình Kỳ", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
+	@ApiOperation(value = "Cập nhật Sổ Tiếp Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Cập nhật Sổ Tiếp Công Dân Đình Kỳ thành công", response = SoTiepCongDan.class) })
-	public @ResponseBody ResponseEntity<Object> updateSoTiepCongDanDinhKy(@PathVariable("id") long id,
+			@ApiResponse(code = 200, message = "Cập nhật Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
+	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
 		log.info("Update SoTiepCongDan theo id: " + id);
 
