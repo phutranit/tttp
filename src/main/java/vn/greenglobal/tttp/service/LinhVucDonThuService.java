@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,10 +9,13 @@ import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 
+@Component
 public class LinhVucDonThuService {
 
+	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
+
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
-		BooleanExpression predAll = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa));
 		}
@@ -23,19 +28,18 @@ public class LinhVucDonThuService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QLinhVucDonThu.linhVucDonThu.daXoa.eq(false).and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
+		return base.and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
 	}
 
 	public boolean isExists(LinhVucDonThuRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false)
-					.and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
+			Predicate predicate = base.and(QLinhVucDonThu.linhVucDonThu.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
-	public LinhVucDonThu deleteLinhVucDonThu(LinhVucDonThuRepository repo, Long id) {
+	public LinhVucDonThu delete(LinhVucDonThuRepository repo, Long id) {
 		LinhVucDonThu linhVucDonThu = repo.findOne(predicateFindOne(id));
 
 		if (linhVucDonThu != null) {
@@ -46,7 +50,7 @@ public class LinhVucDonThuService {
 	}
 
 	public boolean checkExistsData(LinhVucDonThuRepository repo, LinhVucDonThu body) {
-		BooleanExpression predAll = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.ne(body.getId()));

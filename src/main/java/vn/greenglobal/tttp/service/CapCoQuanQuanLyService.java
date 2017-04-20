@@ -38,10 +38,11 @@ public class CapCoQuanQuanLyService {
 			Predicate predicate = base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(id));
 			return repo.exists(predicate);
 		}
+		
 		return false;
 	}
 
-	public CapCoQuanQuanLy deleteCapCoQuanQuanLy(CapCoQuanQuanLyRepository repo, Long id) {
+	public CapCoQuanQuanLy delete(CapCoQuanQuanLyRepository repo, Long id) {
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predicateFindOne(id));
 		
 		if (capCoQuanQuanLy != null) {

@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +37,6 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "vaiTros", description = "Vai trò")
 public class VaiTroController extends BaseController<VaiTro> {
 
-	private static Log log = LogFactory.getLog(VaiTroController.class);
-
 	@Autowired
 	VaiTroRepository repo;
 
@@ -58,7 +54,6 @@ public class VaiTroController extends BaseController<VaiTro> {
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach VaiTro");
 
 		Page<VaiTro> page = repo.findAll(vaiTroService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -69,7 +64,6 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Vai Trò thành công", response = VaiTro.class),
 			@ApiResponse(code = 201, message = "Thêm mới Vai trò thành công", response = VaiTro.class) })
 	public ResponseEntity<Object> create(@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi VaiTro");
 
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -83,7 +77,6 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
 	public ResponseEntity<PersistentEntityResource> getVaiTro(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get VaiTro theo id: " + id);
 
 		VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
 		if (vaiTro == null) {
@@ -98,7 +91,6 @@ public class VaiTroController extends BaseController<VaiTro> {
 			@ApiResponse(code = 200, message = "Cập nhật Vai Trò thành công", response = VaiTro.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody VaiTro vaiTro,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Update VaiTro theo id: " + id);
 
 		vaiTro.setId(id);
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
@@ -118,7 +110,6 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@ApiOperation(value = "Xoá Vai Trò", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Vai Trò thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete VaiTro theo id: " + id);
 
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
 		if (vaiTro == null) {
