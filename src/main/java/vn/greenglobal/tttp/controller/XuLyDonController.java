@@ -36,7 +36,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "xuLyDons", description = "Xử lý đơn")
-public class XuLyDonController extends BaseController<XuLyDon> {
+public class XuLyDonController extends TttpController<XuLyDon> {
 
 	private static Log log = LogFactory.getLog(XuLyDonController.class);
 	private static XuLyDonService xuLyDonService = new XuLyDonService();

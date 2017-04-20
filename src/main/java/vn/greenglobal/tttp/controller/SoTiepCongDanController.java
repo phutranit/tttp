@@ -32,7 +32,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -47,7 +46,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "soTiepCongDans", description = "Sổ tiếp công dân")
 @RestController
-public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
+public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	private static Log log = LogFactory.getLog(SoTiepCongDanController.class);
 	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();

@@ -41,7 +41,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
-public class DonController extends BaseController<Don> {
+public class DonController extends TttpController<Don> {
 
 	private static Log log = LogFactory.getLog(DonController.class);
 	private static DonService donService = new DonService();

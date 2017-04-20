@@ -31,7 +31,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -43,7 +42,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "congChucs", description = "Công chức")
-public class CongChucController extends BaseController<CongChuc> {
+public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucRepository repo;
@@ -53,10 +52,10 @@ public class CongChucController extends BaseController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
-
+	
 	@Autowired
 	public EntityManager em;
-
+	
 	@Autowired
 	public PlatformTransactionManager transactionManager;
 
@@ -74,7 +73,7 @@ public class CongChucController extends BaseController<CongChuc> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-
+		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -215,7 +214,7 @@ public class CongChucController extends BaseController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
+		
 		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {

@@ -37,7 +37,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "chucVus", description = "Chức Vụ")
-public class ChucVuController extends BaseController<ChucVu> {
+public class ChucVuController extends TttpController<ChucVu> {
 
 	@Autowired
 	ProfileUtils profileUtil;
@@ -61,7 +61,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
-		System.out.println(profileUtil.getUserInfo(authorization));
+
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -107,7 +107,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ChucVu chucVu, PersistentEntityResourceAssembler eass) {
-		
+
 		chucVu.setId(id);
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
@@ -133,13 +133,13 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Chức Vụ thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-		
+
 		ChucVu chucVu = chucVuService.delete(repo, id);
 		if (chucVu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
+
 		repo.save(chucVu);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
