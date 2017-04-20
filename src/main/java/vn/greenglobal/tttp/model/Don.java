@@ -3,7 +3,6 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -108,8 +107,8 @@ public class Don extends Model<Don> {
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
 	
 	@Transient
-	private Don_CongDan donCongDan; // TCD
-	
+	private Don_CongDan donCongDan; // TCD	
+
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon; //TCD Enum
 	@Enumerated(EnumType.STRING)
@@ -443,20 +442,24 @@ public class Don extends Model<Don> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getDonViDon() {
 		return getDonVi();
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuDon() {
 		return getLinhVucDonThu();
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
 		return donCongDans;
 	}
@@ -484,6 +487,19 @@ public class Don extends Model<Don> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<Don_CongDan> getListDonCongDan() {
+		return getDonCongDans();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
+		return getTaiLieuBangChungs();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getDonId() {
 		return getId();
 	}
@@ -496,6 +512,7 @@ public class Don extends Model<Don> {
 		this.capCoQuanDangGiaiQuyet = capCoQuanDangGiaiQuyet;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
 	}
