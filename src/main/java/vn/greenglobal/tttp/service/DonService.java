@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -28,8 +29,6 @@ public class DonService {
 			String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy) {
 		
-		Log log = LogFactory.getLog(DonService.class);
-		
 		BooleanExpression predAll = QDon.don.daXoa.eq(false);
 		
 		if (StringUtils.isNotBlank(maDon)) {
@@ -38,14 +37,16 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
-			
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tenNguoiDungDon));
+
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.
+					containsIgnoreCase(tenNguoiDungDon));
+
 		}
 		
 		if (StringUtils.isNotBlank(cmndHoChieu)) {
 		
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.
-					containsIgnoreCase((cmndHoChieu)));
+					containsIgnoreCase(cmndHoChieu));
 		}
 	
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
@@ -60,7 +61,6 @@ public class DonService {
 				
 				predAll = predAll.and(QDon.don.ngayTiepNhan.between(
 						fixTuNgay(tiepNhanTuNgay),fixDenNgay(tiepNhanDenNgay)));
-				log.info(fixTuNgay(tiepNhanTuNgay).toString() + fixDenNgay(tiepNhanDenNgay).toString());
 			} else {
 
 				predAll = predAll.and(QDon.don.ngayTiepNhan.year().eq(
@@ -127,6 +127,28 @@ public class DonService {
 		return false;
 	}
 
+	public Don updateQuyTrinhXuLyDon(DonRepository repo, Long id, 
+			QuyTrinhXuLyDonEnum quyTrinhXuLyDonEnum) {
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setQuyTrinhXuLy(quyTrinhXuLyDonEnum);
+		}
+		return don;
+	}
+	
+	public Don updateHuongXuLy(DonRepository repo, Long id, 
+			HuongXuLyXLDEnum huongXuLyXLDEnum) {
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setHuongXuLyXLD(huongXuLyXLDEnum);
+		}
+		return don;
+	}
+	
 	public Don deleteDon(DonRepository repo, Long id) {
 		Don don = repo.findOne(predicateFindOne(id));
 		
