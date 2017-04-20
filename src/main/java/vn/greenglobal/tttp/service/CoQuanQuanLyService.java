@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,10 +9,13 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 
+@Component
 public class CoQuanQuanLyService {
+	
+	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy) {
-		BooleanExpression predAll = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
 					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa))
@@ -29,18 +34,18 @@ public class CoQuanQuanLyService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
+		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
+			Predicate predicate = base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
-	public CoQuanQuanLy deleteCoQuanQuanLy(CoQuanQuanLyRepository repo, Long id) {
+	public CoQuanQuanLy delete(CoQuanQuanLyRepository repo, Long id) {
 		CoQuanQuanLy coQuanQuanLy = repo.findOne(predicateFindOne(id));
 
 		if (coQuanQuanLy != null) {
@@ -51,7 +56,7 @@ public class CoQuanQuanLyService {
 	}
 
 	public boolean checkExistsData(CoQuanQuanLyRepository repo, CoQuanQuanLy body) {
-		BooleanExpression predAll = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(body.getId()));

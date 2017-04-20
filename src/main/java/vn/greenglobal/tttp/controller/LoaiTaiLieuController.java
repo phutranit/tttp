@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +37,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "loaiTaiLieus", description = "Loại Tài Liệu")
 public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 
-	private static Log log = LogFactory.getLog(LoaiTaiLieuController.class);
-	private static LoaiTaiLieuService loaiTaiLieuQuyetService = new LoaiTaiLieuService();
-
 	@Autowired
 	private LoaiTaiLieuRepository repo;
+
+	@Autowired
+	private LoaiTaiLieuService loaiTaiLieuQuyetService;
 
 	public LoaiTaiLieuController(BaseRepository<LoaiTaiLieu, Long> repo) {
 		super(repo);
@@ -54,7 +52,6 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	@ApiOperation(value = "Lấy danh sách Loại Tài Liệu", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<LoaiTaiLieu> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach LoaiTaiLieu");
 
 		Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuQuyetService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -66,7 +63,6 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 			@ApiResponse(code = 200, message = "Thêm mới Loại Tài Liệu thành công", response = LoaiTaiLieu.class),
 			@ApiResponse(code = 201, message = "Thêm mới Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
 	public ResponseEntity<Object> create(@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi LoaiTaiLieu");
 
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
 				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
@@ -80,9 +76,8 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	@ApiOperation(value = "Lấy Loại Tài Liệu theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
-	public ResponseEntity<PersistentEntityResource> getLoaiTaiLieu(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get LoaiTaiLieu theo id: " + id);
 
 		LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuQuyetService.predicateFindOne(id));
 		if (loaiTaiLieu == null) {
@@ -97,10 +92,8 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 			@ApiResponse(code = 200, message = "Cập nhật Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
-		log.info("Update LoaiTaiLieu theo id: " + id);
 
 		loaiTaiLieu.setId(id);
-
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
 				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -119,13 +112,13 @@ public class LoaiTaiLieuController extends BaseController<LoaiTaiLieu> {
 	@ApiOperation(value = "Xoá Loại Tài Liệu", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Loại Tài Liệu thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete LoaiTaiLieu theo id: " + id);
 
-		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuQuyetService.deleteLoaiTaiLieu(repo, id);
+		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuQuyetService.delete(repo, id);
 		if (loaiTaiLieu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
 		repo.save(loaiTaiLieu);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
