@@ -52,10 +52,12 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans")
 	@ApiOperation(value = "Lấy danh sách Quan hệ giữa Đơn và Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<Don_CongDan> getList(Pageable pageable,
-			@RequestParam(value = "don", required = false) Long don, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "don", required = false) Long don,
+			@RequestParam(value = "phanLoai", required = false) String phanLoai,
+			PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach DonCongDan");
 
-		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don), pageable);
+		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, phanLoai), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	

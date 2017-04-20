@@ -79,6 +79,7 @@ public class Utils {
 	
 	public static LocalDateTime fixTuNgay(String tuNgayCurrent) {
 		// Fix tuNgay
+		//LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
 		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
 		tuNgay = LocalDateTime.of(tuNgay.getYear(),
 				tuNgay.getMonth(),tuNgay.getDayOfMonth(),0,0,0);

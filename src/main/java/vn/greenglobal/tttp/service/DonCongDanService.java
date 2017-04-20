@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -10,10 +12,13 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 public class DonCongDanService {
 
 
-	public  Predicate predicateFindAll(Long don) {
+	public  Predicate predicateFindAll(Long don, String phanLoai) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
 		if (don != null && don > 0) {
 			predAll = QDon_CongDan.don_CongDan.don.id.eq(don);
+		}
+		if (StringUtils.isNotBlank(phanLoai)) {
+			predAll = QDon_CongDan.don_CongDan.phanLoaiCongDan.stringValue().containsIgnoreCase(phanLoai);
 		}
 		return predAll;
 	}
@@ -41,7 +46,6 @@ public class DonCongDanService {
 				.and(QDon_CongDan.don_CongDan.don.thanhLapDon.eq(thanhLapDon));
 		return predAll;
 	}
-	
 	
 	public Predicate predicateFindOne(Long id) {
 		return QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.id.eq(id));
