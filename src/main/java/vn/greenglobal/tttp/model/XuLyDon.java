@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -23,6 +24,10 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy phongBanXuLy;
+	@ManyToOne 
+	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 
 	private int thuTuThucHien = 0;
@@ -33,6 +38,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungYeuCauXuLy = "";
 	private String noiDungThongTinTrinhLanhDao = "";
 
+	@Enumerated(EnumType.STRING)
+	private ChucVuEnum chucVu;
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@Enumerated(EnumType.STRING)
@@ -113,6 +120,14 @@ public class XuLyDon extends Model<XuLyDon> {
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
+	
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
+		this.canBoXuLyChiDinh = canBoChiDinh;
+	}
 
 	public void setNoiDungYeuCauXuLy(String noiDungYeuCauXuLy) {
 		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
@@ -132,5 +147,13 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setHuongXuLy(HuongXuLyXLDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
+	}
+	
+	public ChucVuEnum getChucVu() {
+		return chucVu;
+	}
+
+	public void setChucVu(ChucVuEnum chucVu) {
+		this.chucVu = chucVu;
 	}
 }
