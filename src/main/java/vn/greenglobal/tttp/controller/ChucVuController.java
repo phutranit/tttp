@@ -70,7 +70,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class),
 			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class)})
-	public ResponseEntity<Object> create(@RequestBody ChucVu chucVu,
+	public ResponseEntity<Object> create(
+			@RequestHeader(value="Authorization", required = true) String authorization,
+			@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
@@ -86,9 +88,6 @@ public class ChucVuController extends BaseController<ChucVu> {
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.CREATED);
 	}
 	
-	@Value("${salt}")
-	private String salt;
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/chucVus")
 	@ApiOperation(value = "Lấy danh sách Chức Vụ", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -96,6 +95,7 @@ public class ChucVuController extends BaseController<ChucVu> {
 			@RequestHeader(value="Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
+		System.out.println(profileUtil.getUserInfo(authorization));
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -103,8 +103,11 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@RequestMapping(method = RequestMethod.GET, value = "/chucVus/{id}")
 	@ApiOperation(value = "Lấy Chức Vụ theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Chức Vụ thành công", response = ChucVu.class) })
-	public ResponseEntity<PersistentEntityResource> getChucVu(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getChucVu(
+			@RequestHeader(value="Authorization", required = true) String authorization,
+			@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
+		
 		ChucVu chucVu = repo.findOne(chucVuService.predicateFindOne(id));
 		if (chucVu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -115,7 +118,9 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@RequestMapping(method = RequestMethod.PUT, value = "/chucVus/{id}")
 	@ApiOperation(value = "Cập nhật Chức Vụ", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Chức Vụ thành công", response = ChucVu.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value="Authorization", required = true) String authorization,
+			@PathVariable("id") long id,
 			@RequestBody ChucVu chucVu,
 			PersistentEntityResourceAssembler eass) {
 		chucVu.setId(id);
@@ -141,7 +146,8 @@ public class ChucVuController extends BaseController<ChucVu> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/chucVus/{id}")
 	@ApiOperation(value = "Xoá Chức Vụ", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Chức Vụ thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value="Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 		ChucVu chucVu = chucVuService.deleteChucVu(repo, id);
 		if (chucVu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

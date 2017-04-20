@@ -1,12 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
-import java.nio.charset.Charset;
-import java.util.Base64;
-import java.util.Base64.Decoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pac4j.core.profile.CommonProfile;
@@ -18,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,17 +40,13 @@ public class LoginController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public @ResponseBody ResponseEntity<Object> login(
-			@RequestHeader(value = "Authorization", required = false) String auth) {
+			@RequestHeader(value = "Username", required = true) String username,
+			@RequestHeader(value = "Password", required = true) String password) {
 		Map<String, Object> result = new HashMap<>();
-		String basicToken = StringUtils.substringAfter(auth, " ");
-		String credentials = new String(Base64.getDecoder().decode(basicToken), Charset.forName("UTF-8"));
-		// credentials = username:password
-		System.out.println(basicToken);
-		final String[] values = credentials.split(":", 2);
 		NguoiDung user;
-		if (values != null && values.length!=0) {
-			user = repo.findByTenDangNhap(values[0]);
-			if (user != null || String.valueOf(values[0]).equals("tttp")) {
+		if (username != null && !username.isEmpty()) {
+			user = repo.findByTenDangNhap(username);
+			if (user != null || username.equals("tttp")) {
 				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 				final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
@@ -64,8 +54,8 @@ public class LoginController {
 				generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 				
 				CommonProfile commonProfile = new CommonProfile();
-				commonProfile.addRole(null);
-				commonProfile.addPermission(null);
+				//commonProfile.addRole(null);
+				//commonProfile.addPermission(null);
 				commonProfile.setId(user.getId());
 				commonProfile.addAttribute("username", user.getTenDangNhap());
 				String token = generator.generate(commonProfile);

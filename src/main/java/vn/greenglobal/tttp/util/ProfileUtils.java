@@ -22,15 +22,16 @@ public class ProfileUtils {
 	@Autowired
 	NguoiDungRepository nguoiDungRepository;
 	
+	final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+	final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
+	final JwtAuthenticator authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
+	
+	private CommonProfile profile;
+	
 	public NguoiDung getUserInfo(String authHeader) {
 		if (authHeader != null && authHeader.startsWith("Bearer")) {
 			String token = StringUtils.substringAfter(authHeader, " ");
-			final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
-			final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
-			final JwtAuthenticator authenticator = new JwtAuthenticator();
-			authenticator.setSignatureConfiguration(secretSignatureConfiguration);
-			authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-			CommonProfile profile = authenticator.validateToken(token);
+			profile = authenticator.validateToken(token);
 			NguoiDung user = nguoiDungRepository.findByTenDangNhap(String.valueOf(profile.getAttribute("username")));
 			return user;
 		}

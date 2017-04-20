@@ -21,18 +21,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 	@Bean
 	public Docket api() {
-		ParameterBuilder aParameterBuilder = new ParameterBuilder();
+		/*ParameterBuilder aParameterBuilder = new ParameterBuilder();
 		aParameterBuilder.name("Authorization")
 				.modelRef(new ModelRef("string"))
 				.parameterType("header").required(false).build();
 		
 		List<Parameter> aParameters = new ArrayList<Parameter>();
-		aParameters.add(aParameterBuilder.build());
+		aParameters.add(aParameterBuilder.build());*/
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				// .apis(RequestHandlerSelectors.any())
 				.apis(RequestHandlerSelectors.basePackage("vn.greenglobal.tttp.controller")).paths(PathSelectors.any())
-				.build().apiInfo(apiInfo())
-				.globalOperationParameters(aParameters);
+				.build().apiInfo(apiInfo());
+				//.globalOperationParameters(aParameters);
 	}
 
 	@SuppressWarnings("deprecation")
