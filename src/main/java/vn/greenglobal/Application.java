@@ -26,12 +26,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -119,12 +121,12 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
+						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
 								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
 								"http://192.168.1.242:9830", "192.168.1.242:9830")
 						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Type",
-								"authorization", "client-security-token")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+								"authorization", "client-security-token", "X-Application-Context", "Date")
 						.maxAge(3600);
 			}
 		};
