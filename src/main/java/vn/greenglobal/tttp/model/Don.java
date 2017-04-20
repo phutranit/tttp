@@ -3,14 +3,11 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -112,6 +109,8 @@ public class Don extends Model<Don> {
 	@Transient
 	private List<Don_CongDan> donCongDanByPhanLoais = new ArrayList<Don_CongDan>(); // TCD	
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDanBiKhieuTos() {
 		for (Don_CongDan don_CongDan : donCongDanByPhanLoais) {
 			if(don_CongDan.getPhanLoaiCongDan().equals("DOI_TUONG_BI_KHIEU_TO")) {
@@ -454,20 +453,24 @@ public class Don extends Model<Don> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getDonViDon() {
 		return getDonVi();
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuDon() {
 		return getLinhVucDonThu();
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
 		return donCongDans;
 	}
@@ -495,11 +498,19 @@ public class Don extends Model<Don> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getListDonCongDan() {
 		return getDonCongDans();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
+		return getTaiLieuBangChungs();
+	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getDonId() {
 		return getId();
 	}
@@ -512,6 +523,7 @@ public class Don extends Model<Don> {
 		this.capCoQuanDangGiaiQuyet = capCoQuanDangGiaiQuyet;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
 	}

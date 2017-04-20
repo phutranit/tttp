@@ -3,11 +3,14 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "tailieubangchung")
@@ -101,4 +104,15 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.don = don;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getTaiLieuBangChungId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LoaiTaiLieu getLoaiTaiLieuTLBC() {
+		return getLoaiTaiLieu();
+	}
 }
