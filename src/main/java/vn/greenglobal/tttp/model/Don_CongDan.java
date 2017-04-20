@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -167,5 +166,10 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Transient
 	public CongDan getThongTinCongDan() {
 		return getCongDan();
+	}
+	
+	@Transient
+	public Don getThongTinDon() {
+		return getDon();
 	}
 }

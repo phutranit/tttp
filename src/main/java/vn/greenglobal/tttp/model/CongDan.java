@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -62,9 +63,11 @@ public class CongDan extends Model<CongDan> {
 	
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
+	@OrderBy("ngayTao DESC")
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD 
-
+	
 	public List<Don_CongDan> getDonCongDans() {
+		
 		return donCongDans;
 	}
 

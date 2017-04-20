@@ -107,18 +107,7 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	private Don_CongDan donCongDan; // TCD
-	@Transient
-	private List<Don_CongDan> donCongDanByPhanLoais = new ArrayList<Don_CongDan>(); // TCD	
 	
-	public List<Don_CongDan> getDonCongDanBiKhieuTos() {
-		for (Don_CongDan don_CongDan : donCongDanByPhanLoais) {
-			if(don_CongDan.getPhanLoaiCongDan().equals("DOI_TUONG_BI_KHIEU_TO")) {
-				donCongDanByPhanLoais.add(don_CongDan);
-			}
-		}
-		return donCongDanByPhanLoais;
-	}
-
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -478,11 +467,6 @@ public class Don extends Model<Don> {
 
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
-	}
-
-	@Transient
-	public List<Don_CongDan> getListDonCongDan() {
-		return getDonCongDans();
 	}
 
 	@Transient
