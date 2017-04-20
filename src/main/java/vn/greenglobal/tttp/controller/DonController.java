@@ -35,6 +35,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -44,6 +45,7 @@ public class DonController extends BaseController<Don> {
 
 	private static Log log = LogFactory.getLog(DonController.class);
 	private static DonService donService = new DonService();
+	private static XuLyDonService xuLyDonService = new XuLyDonService();
 	
 	@Autowired
 	private DonRepository repo;
@@ -110,7 +112,6 @@ public class DonController extends BaseController<Don> {
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
 	public ResponseEntity<Object> create(@RequestBody Don don,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi Don");
 		
 		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 	}
@@ -120,7 +121,6 @@ public class DonController extends BaseController<Don> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
 	public ResponseEntity<PersistentEntityResource> getDon(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get Don theo id: " + id);
 
 		Don don = repo.findOne(donService.predicateFindOne(id));
 		if (don == null) {
@@ -146,7 +146,6 @@ public class DonController extends BaseController<Don> {
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/dons/{id}")
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete Don theo id: " + id);
 
 		Don don = donService.deleteDon(repo, id);
 		if (don == null) {
