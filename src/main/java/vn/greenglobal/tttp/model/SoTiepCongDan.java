@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -60,22 +61,25 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private int soThuTuLuotTiep = 0;
 
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -208,6 +212,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
 
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
+
 	public String getDiaDiemGapLanhDao() {
 		return diaDiemGapLanhDao;
 	}
@@ -266,10 +278,30 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
 		this.soThuTuLuotTiep = soThuTuLuotTiep;
 	}
-	
+
 	@Transient
-	public List<CoQuanToChucTiepDan> getcoQuanToChucTiepDanSTCD() {
+	@ApiModelProperty(hidden = true)
+	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDanSTCD() {
 		return coQuanToChucTiepDans;
 	}
-	
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Don getDonSTCD() {
+		return getDon();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getSoLuotTiepStr() {
+		String out = "";
+		out += getSoThuTuLuotTiep() + "/";
+		if (getDon() != null) {
+			out += getDon().getTongSoLuotTCD();
+		} else {
+			out += "1";
+		}
+		return out;
+	}
+
 }

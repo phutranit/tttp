@@ -24,14 +24,12 @@ public class ToDanPhoService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QToDanPho.toDanPho.daXoa.eq(false)
-				.and(QToDanPho.toDanPho.id.eq(id));
+		return QToDanPho.toDanPho.daXoa.eq(false).and(QToDanPho.toDanPho.id.eq(id));
 	}
 
 	public boolean isExists(ToDanPhoRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QToDanPho.toDanPho.daXoa.eq(false)
-					.and(QToDanPho.toDanPho.id.eq(id));
+			Predicate predicate = QToDanPho.toDanPho.daXoa.eq(false).and(QToDanPho.toDanPho.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
@@ -39,18 +37,14 @@ public class ToDanPhoService {
 
 	public ToDanPho deleteToDanPho(ToDanPhoRepository repo, Long id) {
 		ToDanPho toDanPho = repo.findOne(predicateFindOne(id));
-		if(toDanPho!=null){
+
+		if (toDanPho != null) {
 			toDanPho.setDaXoa(true);
 		}
-		/*if (isExists(repo, id)) {
-			toDanPho = new ToDanPho();
-			toDanPho.setId(id);
-			toDanPho.setDaXoa(true);
-		}*/
+
 		return toDanPho;
 	}
 
-	
 	public boolean checkExistsData(ToDanPhoRepository repo, ToDanPho body) {
 		BooleanExpression predAll = QToDanPho.toDanPho.daXoa.eq(false);
 

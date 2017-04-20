@@ -29,6 +29,6 @@ public class CustomAuthorizer extends ProfileAuthorizer<CommonProfile> {
         System.out.println(profile);
         System.out.println(profile.getRoles());
         System.out.println(profile.getPermissions());
-        return true || StringUtils.startsWith(profile.getUsername(), "jle");
+        return true;
     }
 }

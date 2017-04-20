@@ -61,12 +61,12 @@ public class DonCongDanService {
 	}
 
 	public Don_CongDan deleteDonCongDan(DonCongDanRepository repo, Long id) {
-		Don_CongDan donCongDan = null;
-		if (isExists(repo, id)) {
-			donCongDan = new Don_CongDan();
-			donCongDan.setId(id);
+		Don_CongDan donCongDan = repo.findOne(predicateFindOne(id));
+		
+		if (donCongDan != null) {
 			donCongDan.setDaXoa(true);
 		}
+
 		return donCongDan;
 	}
 	

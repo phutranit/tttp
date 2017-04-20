@@ -31,12 +31,12 @@ public class LoaiTaiLieuService {
 	}
 
 	public LoaiTaiLieu deleteLoaiTaiLieu(LoaiTaiLieuRepository repo, Long id) {
-		LoaiTaiLieu loaiTaiLieu = null;
-		if (isExists(repo, id)) {
-			loaiTaiLieu = new LoaiTaiLieu();
-			loaiTaiLieu.setId(id);
+		LoaiTaiLieu loaiTaiLieu = repo.findOne(predicateFindOne(id));
+
+		if (loaiTaiLieu != null) {
 			loaiTaiLieu.setDaXoa(true);
 		}
+
 		return loaiTaiLieu;
 	}
 

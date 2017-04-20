@@ -32,12 +32,12 @@ public class CapDonViHanhChinhService {
 	}
 
 	public CapDonViHanhChinh deleteCapDonViHanhChinh(CapDonViHanhChinhRepository repo, Long id) {
-		CapDonViHanhChinh capDonViHanhChinh = null;
-		if (isExists(repo, id)) {
-			capDonViHanhChinh = new CapDonViHanhChinh();
-			capDonViHanhChinh.setId(id);
+		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(predicateFindOne(id));
+
+		if (capDonViHanhChinh != null) {
 			capDonViHanhChinh.setDaXoa(true);
 		}
+
 		return capDonViHanhChinh;
 	}
 
