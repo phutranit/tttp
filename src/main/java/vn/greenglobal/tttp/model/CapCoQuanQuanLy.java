@@ -18,9 +18,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1973333094118013160L;
 	
 	private String ma = "";

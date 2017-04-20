@@ -1,14 +1,7 @@
 package vn.greenglobal.tttp.service;
 
-import java.util.Comparator;
-
-import javax.persistence.criteria.Root;
-
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.NumberExpression;
 
-import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 

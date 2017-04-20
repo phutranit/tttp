@@ -18,8 +18,6 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.springframework.security.web.SecurityFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -119,12 +117,12 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
+						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
 								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
 								"http://192.168.1.242:9830", "192.168.1.242:9830")
 						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Type",
-								"authorization", "client-security-token")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+								"authorization", "client-security-token", "X-Application-Context", "Date")
 						.maxAge(3600);
 			}
 		};
