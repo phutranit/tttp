@@ -15,7 +15,7 @@ import vn.greenglobal.tttp.repository.NguoiDungRepository;
 @RestController
 @RepositoryRestController
 @Api(value = "nguoiDungs", description = "Người dùng")
-public class NguoiDungController extends BaseController<NguoiDung>{
+public class NguoiDungController extends TttpController<NguoiDung>{
 
 	private static Log log = LogFactory.getLog(NguoiDungController.class);
 	

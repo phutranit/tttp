@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "quocTichs", description = "Quốc Tịch")
-public class QuocTichController extends BaseController<QuocTich> {
+public class QuocTichController extends TttpController<QuocTich> {
 
 	@Autowired
 	private QuocTichRepository repo;

@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "toDanPhos", description = "Tổ dân phố")
-public class ToDanPhoController extends BaseController<ToDanPho> {
+public class ToDanPhoController extends TttpController<ToDanPho> {
 
 	@Autowired
 	private ToDanPhoRepository repo;

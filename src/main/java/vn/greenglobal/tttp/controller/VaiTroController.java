@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "vaiTros", description = "Vai trò")
-public class VaiTroController extends BaseController<VaiTro> {
+public class VaiTroController extends TttpController<VaiTro> {
 
 	@Autowired
 	VaiTroRepository repo;

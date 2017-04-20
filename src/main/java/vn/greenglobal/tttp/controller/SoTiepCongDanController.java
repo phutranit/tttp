@@ -46,7 +46,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "soTiepCongDans", description = "Sổ tiếp công dân")
 @RestController
-public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
+public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	private static Log log = LogFactory.getLog(SoTiepCongDanController.class);
 	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();

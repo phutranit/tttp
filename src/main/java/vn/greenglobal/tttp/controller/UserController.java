@@ -9,7 +9,7 @@ import vn.greenglobal.tttp.model.User;
 import vn.greenglobal.tttp.repository.UserRepository;
 
 @RepositoryRestController
-public class UserController extends BaseController<User>{
+public class UserController extends TttpController<User>{
 
 	public UserController(BaseRepository<User, ?> repo) {
 		super(repo);

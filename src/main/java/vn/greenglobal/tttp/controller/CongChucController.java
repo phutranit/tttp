@@ -42,7 +42,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "congChucs", description = "Công chức")
-public class CongChucController extends BaseController<CongChuc> {
+public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucRepository repo;
@@ -52,15 +52,6 @@ public class CongChucController extends BaseController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
-
-	@Autowired
-	public EntityManager em;
-
-	@Autowired
-	public PlatformTransactionManager transactionManager;
-
-	@Autowired
-	public TransactionTemplate transactioner;
 
 	public CongChucController(BaseRepository<CongChuc, Long> repo) {
 		super(repo);
@@ -72,7 +63,7 @@ public class CongChucController extends BaseController<CongChuc> {
 	public @ResponseBody PagedResources<CongChuc> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-
+		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -211,7 +202,7 @@ public class CongChucController extends BaseController<CongChuc> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
+		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());

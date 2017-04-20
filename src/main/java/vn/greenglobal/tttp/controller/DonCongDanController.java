@@ -36,7 +36,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "donCongDans", description = "Quan hệ giữa Đơn và Công Dân")
-public class DonCongDanController extends BaseController<Don_CongDan> {
+public class DonCongDanController extends TttpController<Don_CongDan> {
 
 	private static Log log = LogFactory.getLog(DonCongDanController.class);
 	private static DonCongDanService donCongDanService = new DonCongDanService();

@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "capCoQuanQuanLys", description = "Cấp Cơ Quan Quản Lý")
-public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
+public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 	@Autowired
 	private CapCoQuanQuanLyRepository repo;
