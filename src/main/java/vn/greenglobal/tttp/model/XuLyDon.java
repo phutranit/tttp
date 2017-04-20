@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -33,6 +34,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungYeuCauXuLy = "";
 	private String noiDungThongTinTrinhLanhDao = "";
 
+	@Enumerated(EnumType.STRING)
+	private ChucVuEnum chucVu;
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@Enumerated(EnumType.STRING)
@@ -132,5 +135,13 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setHuongXuLy(HuongXuLyXLDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
+	}
+	
+	public ChucVuEnum getChucVu() {
+		return chucVu;
+	}
+
+	public void setChucVu(ChucVuEnum chucVu) {
+		this.chucVu = chucVu;
 	}
 }
