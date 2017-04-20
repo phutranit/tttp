@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +37,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "thamQuyenGiaiQuyets", description = "Thẩm Quyền Giải Quyết")
 public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQuyet> {
 
-	private static Log log = LogFactory.getLog(ThamQuyenGiaiQuyetController.class);
-	private static ThamQuyenGiaiQuyetService thamQuyenGiaiQuyetService = new ThamQuyenGiaiQuyetService();
-
 	@Autowired
 	private ThamQuyenGiaiQuyetRepository repo;
+
+	@Autowired
+	private ThamQuyenGiaiQuyetService thamQuyenGiaiQuyetService;
 
 	public ThamQuyenGiaiQuyetController(BaseRepository<ThamQuyenGiaiQuyet, Long> repo) {
 		super(repo);
@@ -55,7 +53,6 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	public @ResponseBody PagedResources<ThamQuyenGiaiQuyet> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach ThamQuyenGiaiQuyet");
 
 		Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa, cha), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -68,7 +65,6 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			@ApiResponse(code = 201, message = "Thêm mới Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
 	public ResponseEntity<Object> create(@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi ThamQuyenGiaiQuyet");
 
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 				&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
@@ -82,14 +78,14 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@ApiOperation(value = "Lấy Thẩm Quyền Giải Quyết theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
-	public ResponseEntity<PersistentEntityResource> getThamQuyenGiaiQuyet(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get ThamQuyenGiaiQuyet theo id: " + id);
 
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(thamQuyenGiaiQuyetService.predicateFindOne(id));
 		if (thamQuyenGiaiQuyet == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
 		return new ResponseEntity<>(eass.toFullResource(thamQuyenGiaiQuyet), HttpStatus.OK);
 	}
 
@@ -99,10 +95,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 			@ApiResponse(code = 200, message = "Cập nhật Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
-		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
 		thamQuyenGiaiQuyet.setId(id);
-
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 				&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -121,13 +115,13 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@ApiOperation(value = "Xoá Thẩm Quyền Giải Quyết", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Thẩm Quyền Giải Quyết thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete ThamQuyenGiaiQuyet theo id: " + id);
 
-		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.deleteThamQuyenGiaiQuyet(repo, id);
+		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.delete(repo, id);
 		if (thamQuyenGiaiQuyet == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
 		repo.save(thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

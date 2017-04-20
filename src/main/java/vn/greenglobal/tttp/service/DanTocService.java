@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,45 +9,46 @@ import vn.greenglobal.tttp.model.DanToc;
 import vn.greenglobal.tttp.model.QDanToc;
 import vn.greenglobal.tttp.repository.DanTocRepository;
 
+@Component
 public class DanTocService {
 
+	BooleanExpression base = QDanToc.danToc.daXoa.eq(false);
+
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
-		BooleanExpression predAll = QDanToc.danToc.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QDanToc.danToc.ten.containsIgnoreCase(tuKhoa)
-					.or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
-					.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
+			predAll = predAll.and(
+					QDanToc.danToc.ten.containsIgnoreCase(tuKhoa).or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
+							.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
 		}
 
 		return predAll;
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QDanToc.danToc.daXoa.eq(false)
-				.and(QDanToc.danToc.id.eq(id));
+		return base.and(QDanToc.danToc.id.eq(id));
 	}
 
 	public boolean isExists(DanTocRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QDanToc.danToc.daXoa.eq(false)
-					.and(QDanToc.danToc.id.eq(id));
+			Predicate predicate = base.and(QDanToc.danToc.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
-	public DanToc deleteDanToc(DanTocRepository repo, Long id) {
-		DanToc danToc = null;
-		if (isExists(repo, id)) {
-			danToc = new DanToc();
-			danToc.setId(id);
+	public DanToc delete(DanTocRepository repo, Long id) {
+		DanToc danToc = repo.findOne(predicateFindOne(id));
+
+		if (danToc != null) {
 			danToc.setDaXoa(true);
 		}
+
 		return danToc;
 	}
-	
+
 	public boolean checkExistsData(DanTocRepository repo, DanToc body) {
-		BooleanExpression predAll = QDanToc.danToc.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QDanToc.danToc.id.ne(body.getId()));

@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +37,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "capCoQuanQuanLys", description = "Cấp Cơ Quan Quản Lý")
 public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 
-	private static Log log = LogFactory.getLog(CapCoQuanQuanLyController.class);
-	private static CapCoQuanQuanLyService capCoQuanQuanLyService = new CapCoQuanQuanLyService();
-
 	@Autowired
 	private CapCoQuanQuanLyRepository repo;
+
+	@Autowired
+	private CapCoQuanQuanLyService capCoQuanQuanLyService;
 
 	public CapCoQuanQuanLyController(BaseRepository<CapCoQuanQuanLy, ?> repo) {
 		super(repo);
@@ -55,8 +53,7 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	public @ResponseBody PagedResources<CapCoQuanQuanLy> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach CapCoQuanQuanLy");
-
+		
 		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -68,13 +65,13 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 			@ApiResponse(code = 201, message = "Thêm mới Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
 	public ResponseEntity<Object> create(@RequestBody CapCoQuanQuanLy capCoQuanQuanLy,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi CapCoQuanQuanLy");
-
+		
 		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
+		
 		return Utils.doSave(repo, capCoQuanQuanLy, eass, HttpStatus.CREATED);
 	}
 
@@ -82,14 +79,14 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@ApiOperation(value = "Lấy Cấp Cơ Quan Quản Lý theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
-	public ResponseEntity<PersistentEntityResource> getCapCoQuanQuanLy(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get CapCoQuanQuanLy theo id: " + id);
-
+		
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(capCoQuanQuanLyService.predicateFindOne(id));
 		if (capCoQuanQuanLy == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<>(eass.toFullResource(capCoQuanQuanLy), HttpStatus.OK);
 	}
 
@@ -99,10 +96,8 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 			@ApiResponse(code = 200, message = "Cập nhật Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
-		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
 
 		capCoQuanQuanLy.setId(id);
-
 		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -121,13 +116,13 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@ApiOperation(value = "Xoá Cấp Cơ Quan Quản Lý", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cấp Cơ Quan Quản Lý thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete CapCoQuanQuanLy theo id: " + id);
-
-		CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.deleteCapCoQuanQuanLy(repo, id);
+		
+		CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.delete(repo, id);
 		if (capCoQuanQuanLy == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+		
 		repo.save(capCoQuanQuanLy);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

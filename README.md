@@ -23,6 +23,12 @@ This README would normally document whatever steps are necessary to get your app
 * Code review
 * Other guidelines
 
+	- run devmode (autorestart): mvn spring-boot:run
+
+	- run devmode (autohotswap): MAVEN_OPTS="-XXaltjvm=dcevm -javaagent:$HOME/hotswap-agent.jar=autoHotswap=true" mvn tomcat7:run
+
+	- run testmode: mvn tomcat7:run
+
 ### Who do I talk to? ###
 
 * Repo owner or admin

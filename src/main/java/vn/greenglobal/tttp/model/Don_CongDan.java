@@ -3,11 +3,19 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
 @Table(name = "don_congdan")
@@ -19,18 +27,25 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	 */
 	private static final long serialVersionUID = -7123036795988588832L;
 	
+	@NotNull
 	@ManyToOne
 	private Don don;
+	@NotNull
 	@ManyToOne
 	private CongDan congDan;
 
-	// Phân loại người đứng đơn và loại đối tượng
-	private String phanLoai = "";
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
+	
+	// Phân loại người đứng đơn và loại đối tượng
+	@Enumerated(EnumType.STRING)
+	private LoaiNguoiDungDonEnum phanLoai;
+		
 	// Người đứng đơn, ủy quyền, khiếu tố
-	private String phanLoaiCongDan = "";
+	@Enumerated(EnumType.STRING)
+	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
+	
 	private String soTheLuatSu = "";
 
 	private boolean luatSu = false;
@@ -41,6 +56,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String donVi = "";
 	private String chucVu = "";
 
+	@ApiModelProperty(position = 1, required = true)
 	public Don getDon() {
 		return don;
 	}
@@ -49,6 +65,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public CongDan getCongDan() {
 		return congDan;
 	}
@@ -57,21 +74,23 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.congDan = congDan;
 	}
 
-	public String getPhanLoai() {
-		return phanLoai;
-	}
-
-	public void setPhanLoai(String phanLoai) {
-		this.phanLoai = phanLoai;
-	}
-
 	public String getTenCoQuan() {
 		return tenCoQuan;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
+	public LoaiNguoiDungDonEnum getPhanLoai() {
+		return phanLoai;
+	}
+
+	public void setPhanLoai(LoaiNguoiDungDonEnum phanLoai) {
+		this.phanLoai = phanLoai;
+	}
+	
 	public void setTenCoQuan(String tenCoQuan) {
 		this.tenCoQuan = tenCoQuan;
 	}
+	
 
 	public String getDiaChiCoQuan() {
 		return diaChiCoQuan;
@@ -89,11 +108,11 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.soDienThoai = soDienThoai;
 	}
 
-	public String getPhanLoaiCongDan() {
+	public PhanLoaiDonCongDanEnum getPhanLoaiCongDan() {
 		return phanLoaiCongDan;
 	}
 
-	public void setPhanLoaiCongDan(String phanLoaiCongDan) {
+	public void setPhanLoaiCongDan(PhanLoaiDonCongDanEnum phanLoaiCongDan) {
 		this.phanLoaiCongDan = phanLoaiCongDan;
 	}
 
@@ -145,4 +164,21 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.chucVu = chucVu;
 	}
 
+	@Transient
+	public CongDan getThongTinCongDan() {
+		return getCongDan();
+	}
+	
+	@Transient
+	public Don getThongTinDon() {
+		return getDon();
+	}
+	
+	@Transient
+	public LocalDateTime getNgayTiepNhan() {
+		if (getDon() != null) {
+			return getDon().getNgayTiepNhan();
+		}
+		return null;
+	}
 }

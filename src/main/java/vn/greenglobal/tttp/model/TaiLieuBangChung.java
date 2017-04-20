@@ -3,9 +3,14 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "tailieubangchung")
@@ -16,7 +21,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7863478663069074533L;
-	
+	@NotBlank
 	private String ten = "";
 	private String tinhTrangTaiLieu = "";
 	private String duongDan = "";
@@ -24,12 +29,14 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	private int soTrang = 0;
 
+	@NotNull
 	@ManyToOne
 	private LoaiTaiLieu loaiTaiLieu;
 	
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 	
+	@NotNull
 	@ManyToOne
 	private Don don;
 
@@ -97,4 +104,15 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.don = don;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getTaiLieuBangChungId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LoaiTaiLieu getLoaiTaiLieuTLBC() {
+		return getLoaiTaiLieu();
+	}
 }

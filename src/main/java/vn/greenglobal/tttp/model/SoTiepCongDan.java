@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,34 +13,43 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import vn.greenglobal.tttp.enums.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 
 @Entity
 @Table(name = "sotiepcongdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private static final long serialVersionUID = -6772485280557984436L;
 
+	@NotNull
 	@ManyToOne
 	private Don don;
+	@NotNull
 	@ManyToOne
 	private CongChuc canBoTiepDan;
+	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 
+	@NotNull
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-	
-	private String loaiTiepDan = "";
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	private String donViChuTri = "";
@@ -48,22 +58,30 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String diaDiemTiepDan = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
-	
+	@Transient
+	private String huongXuLyText = "";
+
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
 	private boolean yeuCauGapTrucTiepLanhDao = false;
-	
+
+	private int soThuTuLuotTiep = 0;
+
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
-	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiTiepDanEnum loaiTiepDan;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
-			@JoinColumn(name = "sotiepcongdan_id") }, inverseJoinColumns = {
-					@JoinColumn(name = "coquantochuctiepdan_id") })
+			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans;
+	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -73,6 +91,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -81,6 +100,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoTiepDan() {
 		return canBoTiepDan;
 	}
@@ -89,6 +109,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.canBoTiepDan = canBoTiepDan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonVi() {
 		return donVi;
 	}
@@ -119,14 +140,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setThoiHan(LocalDateTime thoiHan) {
 		this.thoiHan = thoiHan;
-	}
-
-	public String getLoaiTiepDan() {
-		return loaiTiepDan;
-	}
-
-	public void setLoaiTiepDan(String loaiTiepDan) {
-		this.loaiTiepDan = loaiTiepDan;
 	}
 
 	public String getNoiDungTiepCongDan() {
@@ -200,15 +213,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
 		this.choGiaiQuyet = choGiaiQuyet;
 	}
-	
-	public String getDiaDiemGapLanhDao() {
-		return diaDiemGapLanhDao;
-	}
 
-	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
-		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
-	}
-	
 	public boolean isYeuCauGapTrucTiepLanhDao() {
 		return yeuCauGapTrucTiepLanhDao;
 	}
@@ -216,7 +221,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
 		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
-	
+
+	public String getDiaDiemGapLanhDao() {
+		return diaDiemGapLanhDao;
+	}
+
+	public void setDiaDiemGapLanhDao(String diaDiemGapLanhDao) {
+		this.diaDiemGapLanhDao = diaDiemGapLanhDao;
+	}
+
 	public LocalDateTime getNgayHenGapLanhDao() {
 		return ngayHenGapLanhDao;
 	}
@@ -240,4 +253,57 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setHuongXuLy(HuongXuLyTCDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
 	}
+
+	public LoaiTiepDanEnum getLoaiTiepDan() {
+		return loaiTiepDan;
+	}
+
+	public void setLoaiTiepDan(LoaiTiepDanEnum loaiTiepDan) {
+		this.loaiTiepDan = loaiTiepDan;
+	}
+
+	public String getHuongXuLyText() {
+		return huongXuLyText;
+	}
+
+	public void setHuongXuLyText(String huongXuLyText) {
+		if (huongXuLy != null) {
+			huongXuLyText = huongXuLy.getText();
+		}
+		this.huongXuLyText = huongXuLyText;
+	}
+
+	public int getSoThuTuLuotTiep() {
+		return soThuTuLuotTiep;
+	}
+
+	public void setSoThuTuLuotTiep(int soThuTuLuotTiep) {
+		this.soThuTuLuotTiep = soThuTuLuotTiep;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDanSTCD() {
+		return coQuanToChucTiepDans;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Don getDonSTCD() {
+		return getDon();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getSoLuotTiepStr() {
+		String out = "";
+		out += getSoThuTuLuotTiep() + "/";
+		if (getDon() != null) {
+			out += getDon().getTongSoLuotTCD();
+		} else {
+			out += "1";
+		}
+		return out;
+	}
+
 }

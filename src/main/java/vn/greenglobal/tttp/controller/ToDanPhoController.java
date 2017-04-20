@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +37,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "toDanPhos", description = "Tổ dân phố")
 public class ToDanPhoController extends BaseController<ToDanPho> {
 
-	private static Log log = LogFactory.getLog(ToDanPhoController.class);
-	private static ToDanPhoService toDanPhoService = new ToDanPhoService();
-
 	@Autowired
 	private ToDanPhoRepository repo;
+
+	@Autowired
+	private ToDanPhoService toDanPhoService;
 
 	public ToDanPhoController(BaseRepository<ToDanPho, Long> repo) {
 		super(repo);
@@ -51,69 +49,72 @@ public class ToDanPhoController extends BaseController<ToDanPho> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos")
-	@ApiOperation(value = "Lấy danh sách Tổ Dân Phố", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Tổ Dân Phố", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<ToDanPho> getList(Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach ThamQuyenGiaiQuyet");
+			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			PersistentEntityResourceAssembler eass) {
 
 		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/toDanPhos")
-	@ApiOperation(value = "Thêm mới Tổ Dân Phố", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Tổ dân phố thành công", response = ToDanPho.class),
-			@ApiResponse(code = 201, message = "Thêm mới Tổ dân phố thành công", response = ToDanPho.class)})
-	public ResponseEntity<Object> create(@RequestBody ToDanPho toDanPho,
-			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi ThamQuyenGiaiQuyet");
-		
+	@ApiOperation(value = "Thêm mới Tổ Dân Phố", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới Tổ dân phố thành công", response = ToDanPho.class),
+			@ApiResponse(code = 201, message = "Thêm mới Tổ dân phố thành công", response = ToDanPho.class) })
+	public ResponseEntity<Object> create(@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
+
 		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, toDanPho, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos/{id}")
-	@ApiOperation(value = "Lấy Tổ Dân Phố theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Tổ Dân Phố thành công", response = ToDanPho.class) })
-	public ResponseEntity<PersistentEntityResource> getToDanPho(@PathVariable("id") long id,
+	@ApiOperation(value = "Lấy Tổ Dân Phố theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy Tổ Dân Phố thành công", response = ToDanPho.class) })
+	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get ThamQuyenGiaiQuyet theo id: " + id);
 
 		ToDanPho toDanPho = repo.findOne(toDanPhoService.predicateFindOne(id));
 		if (toDanPho == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<>(eass.toFullResource(toDanPho), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/toDanPhos/{id}")
-	@ApiOperation(value = "Cập nhật Tổ Dân Phố", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Tổ Dân Phố thành công", response = ToDanPho.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
-			@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
-		log.info("Update ThamQuyenGiaiQuyet theo id: " + id);
-
-		if (!toDanPhoService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+	@ApiOperation(value = "Cập nhật Tổ Dân Phố", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Tổ Dân Phố thành công", response = ToDanPho.class) })
+	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody ToDanPho toDanPho,
+			PersistentEntityResourceAssembler eass) {
 
 		toDanPho.setId(id);
+		if (!toDanPhoService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
 		return Utils.doSave(repo, toDanPho, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/toDanPhos/{id}")
-	@ApiOperation(value = "Xoá Thẩm Quyền Giải Quyết", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Thẩm Quyền Giải Quyết thành công") })
+	@ApiOperation(value = "Xoá Tổ Dân Phố", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Tổ Dân Phố thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete ThamQuyenGiaiQuyet theo id: " + id);
 
-		ToDanPho toDanPho = toDanPhoService.deleteToDanPho(repo, id);
+		ToDanPho toDanPho = toDanPhoService.delete(repo, id);
 		if (toDanPho == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+		
 		repo.save(toDanPho);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
