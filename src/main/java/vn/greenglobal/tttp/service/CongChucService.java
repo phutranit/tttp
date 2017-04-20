@@ -3,6 +3,8 @@ package vn.greenglobal.tttp.service;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.ChucVu;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.CongChucRepository;
