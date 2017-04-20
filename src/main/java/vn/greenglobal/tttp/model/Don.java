@@ -3,14 +3,14 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -97,7 +97,7 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-//	@JoinTable(name = "don_congd an", joinColumns = {
+//	@JoinTable(name = "don_congdan", joinColumns = {
 //			@JoinColumn(name = "congDan_id") }, inverseJoinColumns = {
 //					@JoinColumn(name = "don_id") })
 	@Fetch(value = FetchMode.SELECT)
@@ -109,18 +109,7 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	private Don_CongDan donCongDan; // TCD
-	@Transient
-	private List<Don_CongDan> donCongDanByPhanLoais = new ArrayList<Don_CongDan>(); // TCD	
 	
-	public List<Don_CongDan> getDonCongDanBiKhieuTos() {
-		for (Don_CongDan don_CongDan : donCongDanByPhanLoais) {
-			if(don_CongDan.getPhanLoaiCongDan().equals("DOI_TUONG_BI_KHIEU_TO")) {
-				donCongDanByPhanLoais.add(don_CongDan);
-			}
-		}
-		return donCongDanByPhanLoais;
-	}
-
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon; //TCD Enum
 	@Enumerated(EnumType.STRING)
@@ -492,11 +481,6 @@ public class Don extends Model<Don> {
 
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
-	}
-
-	@Transient
-	public List<Don_CongDan> getListDonCongDan() {
-		return getDonCongDans();
 	}
 
 	@Transient

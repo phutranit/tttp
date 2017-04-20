@@ -10,12 +10,14 @@ import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 
 public class DonCongDanService {
-
-
-	public  Predicate predicateFindAll(Long don, String phanLoai) {
-		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
+	
+	public  Predicate predicateFindAll(Long don, Long congDan, String phanLoai) {
+		Predicate predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
 		if (don != null && don > 0) {
 			predAll = QDon_CongDan.don_CongDan.don.id.eq(don);
+		}
+		if (congDan != null && congDan > 0) {
+			predAll = QDon_CongDan.don_CongDan.congDan.id.eq(congDan);
 		}
 		if (StringUtils.isNotBlank(phanLoai)) {
 			predAll = QDon_CongDan.don_CongDan.phanLoaiCongDan.stringValue().containsIgnoreCase(phanLoai);

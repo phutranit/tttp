@@ -47,15 +47,16 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
 		super(repo);
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans")
 	@ApiOperation(value = "Lấy danh sách Quan hệ giữa Đơn và Công Dân", position=1, produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody PagedResources<Don_CongDan> getList(Pageable pageable,
 			@RequestParam(value = "don", required = false) Long don,
+			@RequestParam(value = "congDan", required = false) Long congDan,
 			@RequestParam(value = "phanLoai", required = false) String phanLoai,
 			PersistentEntityResourceAssembler eass) {
-		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, phanLoai), pageable);
+		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
