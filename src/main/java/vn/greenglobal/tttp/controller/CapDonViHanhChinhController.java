@@ -39,7 +39,9 @@ import vn.greenglobal.tttp.util.Utils;
 public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChinh> {
 
 	private static Log log = LogFactory.getLog(CapDonViHanhChinhController.class);
-	private static CapDonViHanhChinhService capDonViHanhChinhService = new CapDonViHanhChinhService();
+	
+	@Autowired
+	CapDonViHanhChinhService capDonViHanhChinhService;
 
 	@Autowired
 	private CapDonViHanhChinhRepository repo;

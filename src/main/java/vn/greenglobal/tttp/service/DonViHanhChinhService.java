@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -9,6 +10,7 @@ import vn.greenglobal.tttp.model.DonViHanhChinh;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 
+@Component
 public class DonViHanhChinhService {
 	
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {

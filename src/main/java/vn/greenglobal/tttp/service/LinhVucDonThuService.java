@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.service;
 
 import com.querydsl.core.types.Predicate;
-
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.LinhVucDonThu;
