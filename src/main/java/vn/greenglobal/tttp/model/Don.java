@@ -3,14 +3,14 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,6 +31,8 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity
 @Table(name = "don")
@@ -49,7 +51,7 @@ public class Don extends Model<Don> {
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
-	private String trangThaiDon = ""; //TCD Enum
+
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
@@ -108,6 +110,10 @@ public class Don extends Model<Don> {
 	@Transient
 	private Don_CongDan donCongDan; // TCD
 	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiDon; //TCD Enum
+	@Enumerated(EnumType.STRING)
+	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
@@ -213,15 +219,7 @@ public class Don extends Model<Don> {
 	public void setGhiChuTiepCongDan(String ghiChuTiepCongDan) {
 		this.ghiChuTiepCongDan = ghiChuTiepCongDan;
 	}
-
-	public String getTrangThaiDon() {
-		return trangThaiDon;
-	}
-
-	public void setTrangThaiDon(String trangThaiDon) {
-		this.trangThaiDon = trangThaiDon;
-	}
-
+	
 	public String getLyDoDinhChi() {
 		return lyDoDinhChi;
 	}
@@ -351,6 +349,14 @@ public class Don extends Model<Don> {
 		this.loaiDon = loaiDon;
 	}
 
+	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
+		return quyTrinhXuLy;
+	}
+
+	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
+		this.quyTrinhXuLy = quyTrinhXuLy;
+	}
+
 	@ApiModelProperty(position = 3, required = true)
 	public LoaiDoiTuongEnum getLoaiDoiTuong() {
 		return loaiDoiTuong;
@@ -394,6 +400,14 @@ public class Don extends Model<Don> {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}
 
+	public TrangThaiDonEnum getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
+	}
+	
 	@ApiModelProperty(position = 6, required = true)
 	public LinhVucDonThu getLinhVucDonThu() {
 		return linhVucDonThu;

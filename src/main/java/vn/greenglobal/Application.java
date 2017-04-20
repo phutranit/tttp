@@ -31,7 +31,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -62,7 +61,6 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 @ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
-	private final Logger log = LoggerFactory.getLogger(Application.class);
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -120,9 +118,13 @@ public class Application extends SpringBootServletInitializer {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*").allowCredentials(true)
-						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-						.allowedHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+				registry.addMapping("/**")
+						.allowedOrigins("http://localhost", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
+								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
+								"http://192.168.1.242:9830", "192.168.1.242:9830")
+						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Type",
+								"authorization", "client-security-token")
 						.maxAge(3600);
 			}
 		};

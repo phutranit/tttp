@@ -55,8 +55,6 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 			@RequestParam(value = "don", required = false) Long don,
 			@RequestParam(value = "phanLoai", required = false) String phanLoai,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach DonCongDan");
-
 		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, phanLoai), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -67,7 +65,6 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 			@ApiResponse(code = 201, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class)})
 	public ResponseEntity<Object> create(@RequestBody Don_CongDan donCongDan,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi DonCongDan");
 		return Utils.doSave(repo, donCongDan, eass, HttpStatus.CREATED);
 	}
 
@@ -76,8 +73,6 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public ResponseEntity<PersistentEntityResource> getDonCongDan(@PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get DonCongDan theo id: " + id);
-
 		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
 		if (donCongDan == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -90,7 +85,6 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
-		log.info("Update DonCongDan theo id: " + id);
 		donCongDan.setId(id);		
 
 		if (!donCongDanService.isExists(repo, id)) {
@@ -103,8 +97,6 @@ public class DonCongDanController extends BaseController<Don_CongDan> {
 	@ApiOperation(value = "Xoá Quan hệ giữa Đơn và Công Dân", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		log.info("Delete DonCongDan theo id: " + id);
-
 		Don_CongDan donCongDan = donCongDanService.deleteDonCongDan(repo, id);
 		if (donCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
