@@ -7,5 +7,5 @@ import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 
 @RestResource(path = "capDonViHanhChinhs")
 public interface CapDonViHanhChinhRepository extends MutableRepo<CapDonViHanhChinh> {
-	
+
 }

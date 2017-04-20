@@ -18,11 +18,13 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "nguoidung")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class NguoiDung extends Model<NguoiDung> {
 
 	/**
@@ -40,15 +42,12 @@ public class NguoiDung extends Model<NguoiDung> {
 	private boolean active;
 
 	@ManyToMany
-	@JoinTable(name = "nguoidung_vaitro", 
-			joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), 
-			inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id")
-			)
+	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
 	private Set<VaiTro> vaiTros = new HashSet<>(0);;
 
 	public NguoiDung() {
 	}
-	
+
 	public NguoiDung(String tenDangNhap, String matKhau, boolean active) {
 		super();
 		this.tenDangNhap = tenDangNhap;
@@ -89,7 +88,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.hinhDaiDien = hinhDaiDien;
 	}
 
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	@JsonIgnore
 	public String getSalkey() {
 		return salkey;
@@ -126,7 +125,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		setSalkey(salkey);
 		setMatKhau(passHash);
 	}
-	
+
 	@Transient
 	public Long getNguoiDungId() {
 		return getId();

@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
 	private static final long serialVersionUID = -1973333094118013160L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -27,7 +27,7 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
 	@ManyToOne
 	private CapCoQuanQuanLy cha;
-	
+
 	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
@@ -36,7 +36,7 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	public void setMa(String ma) {
 		this.ma = ma;
 	}
-	
+
 	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
@@ -63,15 +63,15 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	public void setCha(CapCoQuanQuanLy cha) {
 		this.cha = cha;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getCapCoQuanQuanLyId() {
 		return getId();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public CapCoQuanQuanLy getCapCoQuanQuanLyCha() {
 		return getCha();
 	}

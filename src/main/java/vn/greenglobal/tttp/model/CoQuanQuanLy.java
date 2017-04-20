@@ -22,7 +22,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	 * 
 	 */
 	private static final long serialVersionUID = 7182349007861458999L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -42,7 +42,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public void setMa(String ma) {
 		this.ma = ma;
 	}
-	
+
 	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
@@ -70,7 +70,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 		this.cha = cha;
 	}
 
-	@ApiModelProperty(position = 5, required = true, example="{}")
+	@ApiModelProperty(position = 5, required = true, example = "{}")
 	public CapCoQuanQuanLy getCapCoQuanQuanLy() {
 		return capCoQuanQuanLy;
 	}
@@ -78,21 +78,21 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public void setCapCoQuanQuanLy(CapCoQuanQuanLy capCoQuanQuanLy) {
 		this.capCoQuanQuanLy = capCoQuanQuanLy;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getCoQuanQuanLyId() {
 		return getId();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getCoQuanQuanLyCha() {
 		return getCha();
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public CapCoQuanQuanLy getCapCoQuanQuanLyCQQL() {
 		return getCapCoQuanQuanLy();
 	}
