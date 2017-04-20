@@ -24,7 +24,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ChucVu;
@@ -61,12 +60,13 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
-
+		System.out.println(message.getMessage("get.byid"));
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
+	@ApiOperation(value = "Thêm mới Chức Vụ", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class),
 			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
