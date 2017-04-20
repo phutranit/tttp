@@ -7,13 +7,12 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.model.QChucVu;
-import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 
 @Component
 public class ChucVuService {
 
-	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
+	BooleanExpression base = QChucVu.chucVu.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
