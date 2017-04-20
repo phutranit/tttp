@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,7 +50,8 @@ public class TaiLieuBangChungController extends BaseController<TaiLieuBangChung>
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuBangChungs")
 	@ApiOperation(value = "Lấy danh sách Tài liệu bằng chứng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<TaiLieuBangChung> getList(Pageable pageable,
+	public @ResponseBody PagedResources<TaiLieuBangChung> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		Page<TaiLieuBangChung> page = repo.findAll(taiLieuBangChungService.predicateFindAll(), pageable);
@@ -61,15 +63,15 @@ public class TaiLieuBangChungController extends BaseController<TaiLieuBangChung>
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Tài liệu bằng chứng thành công", response = TaiLieuBangChung.class),
 			@ApiResponse(code = 201, message = "Thêm mới Tài liệu bằng chứng thành công", response = TaiLieuBangChung.class) })
-	public ResponseEntity<Object> create(@RequestBody TaiLieuBangChung taiLieuBangChung,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
 		if (StringUtils.isNotBlank(taiLieuBangChung.getTen())
 				&& taiLieuBangChungService.checkExistsData(repo, taiLieuBangChung)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		
+
 		return Utils.doSave(repo, taiLieuBangChung, eass, HttpStatus.CREATED);
 	}
 
@@ -77,14 +79,15 @@ public class TaiLieuBangChungController extends BaseController<TaiLieuBangChung>
 	@ApiOperation(value = "Lấy Tài liệu bằng chứng theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Tài liệu bằng chứng thành công", response = TaiLieuBangChung.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		TaiLieuBangChung taiLieuBangChung = repo.findOne(taiLieuBangChungService.predicateFindOne(id));
 		if (taiLieuBangChung == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		return new ResponseEntity<>(eass.toFullResource(taiLieuBangChung), HttpStatus.OK);
 	}
 
@@ -92,7 +95,8 @@ public class TaiLieuBangChungController extends BaseController<TaiLieuBangChung>
 	@ApiOperation(value = "Cập nhật Tài liệu bằng chứng", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Tài liệu bằng chứng thành công", response = TaiLieuBangChung.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
 		taiLieuBangChung.setId(id);
@@ -107,14 +111,15 @@ public class TaiLieuBangChungController extends BaseController<TaiLieuBangChung>
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuBangChungs/{id}")
 	@ApiOperation(value = "Xoá Tài liệu bằng chứng", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Tài liệu bằng chứng thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		TaiLieuBangChung taiLieuBangChung = taiLieuBangChungService.delete(repo, id);
 		if (taiLieuBangChung == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
+
 		repo.save(taiLieuBangChung);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

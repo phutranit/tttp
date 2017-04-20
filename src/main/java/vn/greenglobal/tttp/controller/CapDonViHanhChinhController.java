@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +50,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs")
 	@ApiOperation(value = "Lấy danh sách Cấp Đơn Vị Hành Chính", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CapDonViHanhChinh> getList(Pageable pageable,
+	public @ResponseBody PagedResources<CapDonViHanhChinh> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
 
 		Page<CapDonViHanhChinh> page = repo.findAll(capDonViHanhChinhService.predicateFindAll(ten), pageable);
@@ -61,8 +63,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class),
 			@ApiResponse(code = 201, message = "Thêm mới Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class) })
-	public ResponseEntity<Object> create(@RequestBody CapDonViHanhChinh capDonViHanhChinh,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody CapDonViHanhChinh capDonViHanhChinh, PersistentEntityResourceAssembler eass) {
 
 		if (capDonViHanhChinh.getTen() == null || "".equals(capDonViHanhChinh.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
@@ -82,7 +84,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@ApiOperation(value = "Lấy Cấp Đơn Vị Hành Chính theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(capDonViHanhChinhService.predicateFindOne(id));
@@ -96,7 +99,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@ApiOperation(value = "Cập nhật Cấp Đơn Vị Hành Chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Cấp Đơn Vị Hành Chính thành công", response = CapDonViHanhChinh.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CapDonViHanhChinh capDonViHanhChinh, PersistentEntityResourceAssembler eass) {
 
 		capDonViHanhChinh.setId(id);
@@ -122,7 +126,8 @@ public class CapDonViHanhChinhController extends BaseController<CapDonViHanhChin
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capDonViHanhChinhs/{id}")
 	@ApiOperation(value = "Xoá Cấp Đơn Vị Hành Chính", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cấp Đơn Vị Hành Chính thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		CapDonViHanhChinh capDonViHanhChinh = capDonViHanhChinhService.delete(repo, id);
 		if (capDonViHanhChinh == null) {

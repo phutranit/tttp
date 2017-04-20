@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +51,8 @@ public class DanTocController extends BaseController<DanToc> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/danTocs")
 	@ApiOperation(value = "Lấy danh sách Dân tộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<DanToc> getList(Pageable pageable,
+	public @ResponseBody PagedResources<DanToc> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
 
@@ -62,7 +64,8 @@ public class DanTocController extends BaseController<DanToc> {
 	@ApiOperation(value = "Thêm mới Dân tộc", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Dân tộc thành công", response = DanToc.class),
 			@ApiResponse(code = 201, message = "Thêm mới Dân tộc thành công", response = DanToc.class) })
-	public ResponseEntity<Object> create(@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
 
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
@@ -73,7 +76,8 @@ public class DanTocController extends BaseController<DanToc> {
 	@RequestMapping(method = RequestMethod.GET, value = "/danTocs/{id}")
 	@ApiOperation(value = "Lấy Dân tộc theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Dân tộc thành công", response = DanToc.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		DanToc danToc = repo.findOne(danTocService.predicateFindOne(id));
@@ -87,9 +91,10 @@ public class DanTocController extends BaseController<DanToc> {
 	@ApiOperation(value = "Cập nhật Dân tộc", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Dân tộc thành công", response = DanToc.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody DanToc danToc,
-			PersistentEntityResourceAssembler eass) {
-		
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody DanToc danToc, PersistentEntityResourceAssembler eass) {
+
 		danToc.setId(id);
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -106,7 +111,8 @@ public class DanTocController extends BaseController<DanToc> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/danTocs/{id}")
 	@ApiOperation(value = "Xoá Dân tộc", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Dân tộc thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		DanToc danToc = danTocService.delete(repo, id);
 		if (danToc == null) {

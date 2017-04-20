@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +24,7 @@ public class QuyenController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/quyens")
 	@ApiOperation(value = "Lấy danh sách Quyền", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getList() {
+	public @ResponseBody ResponseEntity<Object> getList(@RequestHeader(value = "Authorization", required = true) String authorization) {
 		
 		List<Map<String, Object>> quyenList = new ArrayList<>();
 		Map<String, Object> quyenObj = new HashMap<>();

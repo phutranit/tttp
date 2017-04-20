@@ -7,5 +7,5 @@ import vn.greenglobal.tttp.model.CongChuc;
 
 @RestResource(path = "congChucs")
 public interface CongChucRepository extends MutableRepo<CongChuc> {
-	
+
 }

@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +51,8 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros")
 	@ApiOperation(value = "Lấy danh sách Vai Trò", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<VaiTro> getList(Pageable pageable,
+	public @ResponseBody PagedResources<VaiTro> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
@@ -63,7 +65,8 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@ApiOperation(value = "Thêm mới Vai Trò", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Vai Trò thành công", response = VaiTro.class),
 			@ApiResponse(code = 201, message = "Thêm mới Vai trò thành công", response = VaiTro.class) })
-	public ResponseEntity<Object> create(@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -75,7 +78,8 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros/{id}")
 	@ApiOperation(value = "Lấy Vai Trò theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
-	public ResponseEntity<PersistentEntityResource> getVaiTro(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getVaiTro(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
@@ -89,8 +93,9 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@ApiOperation(value = "Cập nhật Vai Trò", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Vai Trò thành công", response = VaiTro.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody VaiTro vaiTro,
-			PersistentEntityResourceAssembler eass) {
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
 		vaiTro.setId(id);
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
@@ -109,7 +114,8 @@ public class VaiTroController extends BaseController<VaiTro> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/vaiTros/{id}")
 	@ApiOperation(value = "Xoá Vai Trò", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Vai Trò thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
 		if (vaiTro == null) {

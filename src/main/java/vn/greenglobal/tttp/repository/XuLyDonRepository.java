@@ -6,6 +6,6 @@ import vn.greenglobal.core.model.common.MutableRepo;
 import vn.greenglobal.tttp.model.XuLyDon;
 
 @RestResource(path = "xuLyDons")
-public interface XuLyDonRepository extends MutableRepo<XuLyDon>{
+public interface XuLyDonRepository extends MutableRepo<XuLyDon> {
 
 }

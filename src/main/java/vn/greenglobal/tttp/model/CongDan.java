@@ -19,16 +19,17 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "congdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class CongDan extends Model<CongDan> {
 
 	private static final long serialVersionUID = 2302822305956477280L;
-	
+
 	@NotBlank
 	private String hoVaTen = "";
 	private String soDienThoai = "";
@@ -44,31 +45,31 @@ public class CongDan extends Model<CongDan> {
 
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
-	
+
 	@ManyToOne
 	private DonViHanhChinh quanHuyen;
-	
+
 	@ManyToOne
 	private DonViHanhChinh phuongXa;
-	
+
 	@ManyToOne
 	private ToDanPho toDanPho;
-	
+
 	@NotNull
 	@ManyToOne
 	private QuocTich quocTich;
-	
+
 	@NotNull
 	@ManyToOne
 	private DanToc danToc;
-	
+
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OrderBy("ngayTao ASC")
-	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD 
-	
+	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
+
 	public List<Don_CongDan> getDonCongDans() {
-		
+
 		return donCongDans;
 	}
 
@@ -148,7 +149,7 @@ public class CongDan extends Model<CongDan> {
 		this.gioiTinh = gioiTinh;
 	}
 
-	@ApiModelProperty(position = 9, example="{}")
+	@ApiModelProperty(position = 9, example = "{}")
 	public DonViHanhChinh getTinhThanh() {
 		return tinhThanh;
 	}
@@ -157,7 +158,7 @@ public class CongDan extends Model<CongDan> {
 		this.tinhThanh = tinhThanh;
 	}
 
-	@ApiModelProperty(position = 10, example="{}")
+	@ApiModelProperty(position = 10, example = "{}")
 	public DonViHanhChinh getQuanHuyen() {
 		return quanHuyen;
 	}
@@ -166,7 +167,7 @@ public class CongDan extends Model<CongDan> {
 		this.quanHuyen = quanHuyen;
 	}
 
-	@ApiModelProperty(position = 11, example="{}")
+	@ApiModelProperty(position = 11, example = "{}")
 	public DonViHanhChinh getPhuongXa() {
 		return phuongXa;
 	}
@@ -175,7 +176,7 @@ public class CongDan extends Model<CongDan> {
 		this.phuongXa = phuongXa;
 	}
 
-	@ApiModelProperty(position = 12, example="{}")
+	@ApiModelProperty(position = 12, example = "{}")
 	public ToDanPho getToDanPho() {
 		return toDanPho;
 	}
@@ -184,7 +185,7 @@ public class CongDan extends Model<CongDan> {
 		this.toDanPho = toDanPho;
 	}
 
-	@ApiModelProperty(position = 13, example="{}")
+	@ApiModelProperty(position = 13, example = "{}")
 	public QuocTich getQuocTich() {
 		return quocTich;
 	}
@@ -193,7 +194,7 @@ public class CongDan extends Model<CongDan> {
 		this.quocTich = quocTich;
 	}
 
-	@ApiModelProperty(position = 14, example="{}")
+	@ApiModelProperty(position = 14, example = "{}")
 	public DanToc getDanToc() {
 		return danToc;
 	}
@@ -203,7 +204,7 @@ public class CongDan extends Model<CongDan> {
 	}
 
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getCongDanId() {
 		return getId();
 	}

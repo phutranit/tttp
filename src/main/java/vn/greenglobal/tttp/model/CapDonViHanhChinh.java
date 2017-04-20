@@ -8,19 +8,20 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "capdonvihanhchinh")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7857723975031698636L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -34,7 +35,7 @@ public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 	public void setMa(String ma) {
 		this.ma = ma;
 	}
-	
+
 	@ApiModelProperty(position = 2, required = true)
 	public String getTen() {
 		return ten;
@@ -52,9 +53,9 @@ public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
-	
+
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getCapDonViHanhChinhId() {
 		return getId();
 	}

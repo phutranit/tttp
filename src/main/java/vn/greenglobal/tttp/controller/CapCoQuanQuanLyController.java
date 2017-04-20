@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,10 +51,11 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys")
 	@ApiOperation(value = "Lấy danh sách Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CapCoQuanQuanLy> getList(Pageable pageable,
+	public @ResponseBody PagedResources<CapCoQuanQuanLy> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-		
+
 		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -63,15 +65,15 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class),
 			@ApiResponse(code = 201, message = "Thêm mới Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
-	public ResponseEntity<Object> create(@RequestBody CapCoQuanQuanLy capCoQuanQuanLy,
-			PersistentEntityResourceAssembler eass) {
-		
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
+
 		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		
+
 		return Utils.doSave(repo, capCoQuanQuanLy, eass, HttpStatus.CREATED);
 	}
 
@@ -79,14 +81,15 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@ApiOperation(value = "Lấy Cấp Cơ Quan Quản Lý theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		
+
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(capCoQuanQuanLyService.predicateFindOne(id));
 		if (capCoQuanQuanLy == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		return new ResponseEntity<>(eass.toFullResource(capCoQuanQuanLy), HttpStatus.OK);
 	}
 
@@ -94,7 +97,8 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@ApiOperation(value = "Cập nhật Cấp Cơ Quan Quản Lý", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Cấp Cơ Quan Quản Lý thành công", response = CapCoQuanQuanLy.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 
 		capCoQuanQuanLy.setId(id);
@@ -115,14 +119,15 @@ public class CapCoQuanQuanLyController extends BaseController<CapCoQuanQuanLy> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capCoQuanQuanLys/{id}")
 	@ApiOperation(value = "Xoá Cấp Cơ Quan Quản Lý", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cấp Cơ Quan Quản Lý thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
+
 		CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.delete(repo, id);
 		if (capCoQuanQuanLy == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
+
 		repo.save(capCoQuanQuanLy);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

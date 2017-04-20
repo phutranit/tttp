@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +50,8 @@ public class CongDanController extends BaseController<CongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans")
 	@ApiOperation(value = "Lấy danh sách Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CongDan> getList(Pageable pageable,
+	public @ResponseBody PagedResources<CongDan> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "tinhThanh", required = false) Long tinhThanh,
 			@RequestParam(value = "quanHuyen", required = false) Long quanHuyen,
@@ -66,14 +68,16 @@ public class CongDanController extends BaseController<CongDan> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Công Dân thành công", response = CongDan.class),
 			@ApiResponse(code = 201, message = "Thêm mới Công Dân thành công", response = CongDan.class) })
-	public ResponseEntity<Object> create(@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 		return Utils.doSave(repo, congDan, eass, HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDanBySuggests")
 	@ApiOperation(value = "Lấy danh sách Suggest Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CongDan> getCongDanBySuggests(Pageable pageable,
+	public @ResponseBody PagedResources<CongDan> getCongDanBySuggests(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "soCMNND", required = false) String soCMNND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
@@ -86,7 +90,8 @@ public class CongDanController extends BaseController<CongDan> {
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}")
 	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = CongDan.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		CongDan congDan = repo.findOne(congDanService.predicateFindOne(id));
@@ -100,8 +105,9 @@ public class CongDanController extends BaseController<CongDan> {
 	@ApiOperation(value = "Cập nhật Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Công Dân thành công", response = CongDan.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody CongDan congDan,
-			PersistentEntityResourceAssembler eass) {
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 
 		congDan.setId(id);
 		if (!congDanService.isExists(repo, id)) {
@@ -115,7 +121,8 @@ public class CongDanController extends BaseController<CongDan> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/congDans/{id}")
 	@ApiOperation(value = "Xoá Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Công Dân thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		CongDan CongDan = congDanService.delete(repo, id);
 		if (CongDan == null) {
