@@ -1,15 +1,21 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -53,6 +59,18 @@ public class CongDan extends Model<CongDan> {
 	@NotNull
 	@ManyToOne
 	private DanToc danToc;
+	
+	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD 
+
+	public List<Don_CongDan> getDonCongDans() {
+		return donCongDans;
+	}
+
+	public void setDonCongDans(List<Don_CongDan> donCongDans) {
+		this.donCongDans = donCongDans;
+	}
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getHoVaTen() {
