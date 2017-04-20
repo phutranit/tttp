@@ -72,13 +72,14 @@ public class DonController extends BaseController<Don> {
 			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
 			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
 			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
+			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			PersistentEntityResourceAssembler eass){
 		
 		log.info("Get list Don");
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
-				hanGiaiQuyetDenNgay, trinhTrangXuLy),pageable);
+				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon),pageable);
 			
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
 	}

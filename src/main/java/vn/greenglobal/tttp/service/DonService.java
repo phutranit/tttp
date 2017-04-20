@@ -27,9 +27,9 @@ public class DonService {
 			String tenNguoiDungDon, String cmndHoChieu, String phanLoaiDon, 
 			String tiepNhanTuNgay,String tiepNhanDenNgay, 
 			String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
-			String tinhTrangXuLy) {
+			String tinhTrangXuLy, boolean thanhLapDon) {
 		
-		BooleanExpression predAll = QDon.don.daXoa.eq(false);
+		BooleanExpression predAll = QDon.don.daXoa.eq(false).and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
 		if (StringUtils.isNotBlank(maDon)) {
 			
@@ -40,7 +40,6 @@ public class DonService {
 
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.
 					containsIgnoreCase(tenNguoiDungDon));
-
 		}
 		
 		if (StringUtils.isNotBlank(cmndHoChieu)) {
