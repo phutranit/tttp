@@ -9,7 +9,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "capdonvihanhchinh")

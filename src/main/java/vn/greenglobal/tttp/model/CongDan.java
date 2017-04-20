@@ -20,7 +20,6 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "congdan")

@@ -7,8 +7,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import lombok.ToString;
-
 @Entity
 @Table(name = "chungchihanhnghe")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)

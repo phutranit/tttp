@@ -19,7 +19,6 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "nguoidung")

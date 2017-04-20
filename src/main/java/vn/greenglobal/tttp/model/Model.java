@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.katharsis.resource.annotations.JsonApiId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @SuppressWarnings("rawtypes")
 @MappedSuperclass

@@ -3,8 +3,6 @@ package vn.greenglobal.tttp.service;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;

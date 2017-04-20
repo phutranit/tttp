@@ -1,17 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.pac4j.core.credentials.TokenCredentials;
-import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.http.client.direct.HeaderClient;
-import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
-import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
-import org.pac4j.jwt.config.signature.SignatureConfiguration;
-import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -39,14 +30,11 @@ import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ChucVu;
-import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.MessageByLocaleService;
 import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
-import vn.greenglobal.tttp.util.patch.Patch;
-import vn.greenglobal.tttp.util.patch.PatchRequestBody;
 
 @RestController
 @RepositoryRestController

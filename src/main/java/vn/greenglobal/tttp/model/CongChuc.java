@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.ToString;
 
 @Entity
 @Table(name = "congchuc")
