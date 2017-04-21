@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,6 +65,7 @@ public class DonController extends BaseController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"),
 	})
 	public @ResponseBody PagedResources<Don> getList(Pageable pageable,
+			@RequestHeader(value="Authorization", required = true) String authorization,
 			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
 			@RequestParam(value = "cmndHoChieu", required = false) String cmndHoChieu,
@@ -75,13 +77,20 @@ public class DonController extends BaseController<Don> {
 			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
 			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
+			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
+			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
+			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
+			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			PersistentEntityResourceAssembler eass){
 		
 		log.info("Get list Don");
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
-				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon),pageable);
+				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, 
+				canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro),pageable);
 			
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
 	}

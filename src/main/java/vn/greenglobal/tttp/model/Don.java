@@ -108,6 +108,10 @@ public class Don extends Model<Don> {
 	@Fetch(value = FetchMode.SELECT)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
 	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>(); // XLD
+	
 	@Transient
 	private Don_CongDan donCongDan; // TCD
 	
@@ -126,13 +130,22 @@ public class Don extends Model<Don> {
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
 	@Column(nullable=true)
 	@NotNull
-	@Enumerated(EnumType.STRING)
-	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+//	@Enumerated(EnumType.STRING)
+//	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+	//private String loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
 	
+	public List<XuLyDon> getXuLyDons() {
+		return xuLyDons;
+	}
+
+	public void setXuLyDons(List<XuLyDon> xuLyDons) {
+		this.xuLyDons = xuLyDons;
+	}
+
 	public Don_CongDan getDonCongDan() {
 		return donCongDan;
 	}
@@ -377,14 +390,23 @@ public class Don extends Model<Don> {
 		this.nguonTiepNhanDon = nguonTiepNhanDon;
 	}
 
-	@ApiModelProperty(position = 5, required = true)
-	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
-		return loaiNguoiDungDon;
-	}
-
-	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
-		this.loaiNguoiDungDon = loaiNguoiDungDon;
-	}
+//	@ApiModelProperty(position = 5, required = true)
+//	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
+//		return loaiNguoiDungDon;
+//	}
+//
+//	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
+//		this.loaiNguoiDungDon = loaiNguoiDungDon;
+//	}
+	
+//	@ApiModelProperty(position = 5, required = true)
+//	public String getLoaiNguoiDungDon() {
+//		return loaiNguoiDungDon;
+//	}
+//
+//	public void setLoaiNguoiDungDon(String loaiNguoiDungDon) {
+//		this.loaiNguoiDungDon = loaiNguoiDungDon;
+//	}
 
 	public HinhThucGiaiQuyetEnum getHinhThucDaGiaiQuyet() {
 		return hinhThucDaGiaiQuyet;

@@ -29,7 +29,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-
+	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
+	
 	private int thuTuThucHien = 0;
 
 	private String ghiChu = "";
@@ -45,6 +47,22 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
 	
+	public CoQuanQuanLy getPhongBanXuLy() {
+		return phongBanXuLy;
+	}
+
+	public void setPhongBanXuLy(CoQuanQuanLy phongBanXuLy) {
+		this.phongBanXuLy = phongBanXuLy;
+	}
+
+	public CoQuanQuanLy getCoQuanTiepNhan() {
+		return coQuanTiepNhan;
+	}
+
+	public void setCoQuanTiepNhan(CoQuanQuanLy coQuanTiepNhan) {
+		this.coQuanTiepNhan = coQuanTiepNhan;
+	}
+
 	public Don getDon() {
 		return don;
 	}
