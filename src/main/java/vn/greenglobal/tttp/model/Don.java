@@ -491,7 +491,8 @@ public class Don extends Model<Don> {
 		}
 		return donCongDan;
 	}
-	
+
+	@ApiModelProperty(hidden = true)
 	public int getTongSoLuotTCD() {
 		return tongSoLuotTCD;
 	}

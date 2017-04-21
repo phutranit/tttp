@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +56,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestParam(value = "don", required = false) Long don,
 			@RequestParam(value = "congDan", required = false) Long congDan,
 			@RequestParam(value = "phanLoai", required = false) String phanLoai,
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -65,6 +67,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class),
 			@ApiResponse(code = 201, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class)})
 	public ResponseEntity<Object> create(@RequestBody Don_CongDan donCongDan,
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		return Utils.doSave(repo, donCongDan, eass, HttpStatus.CREATED);
 	}
@@ -73,6 +76,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiOperation(value = "Lấy Quan hệ giữa Đơn và Công Dân theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public ResponseEntity<PersistentEntityResource> getDonCongDan(@PathVariable("id") long id,
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
 		if (donCongDan == null) {
@@ -85,7 +89,8 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiOperation(value = "Cập nhật Quan hệ giữa Đơn và Công Dân", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
-			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
+			@RequestBody Don_CongDan donCongDan, @RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass) {
 		donCongDan.setId(id);		
 
 		if (!donCongDanService.isExists(repo, id)) {
@@ -97,12 +102,13 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
 	@ApiOperation(value = "Xoá Quan hệ giữa Đơn và Công Dân", position=5, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		Don_CongDan donCongDan = donCongDanService.deleteDonCongDan(repo, id);
+	public ResponseEntity<Object> delete(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = true) String authorization) {
+		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
 		if (donCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		} else {
+			repo.delete(donCongDan);
 		}
-		repo.save(donCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
