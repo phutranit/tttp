@@ -60,6 +60,8 @@ public class LoginController {
 				commonProfile.addAttribute("username", user.getTenDangNhap());
 				String token = generator.generate(commonProfile);
 				result.put("token", token);
+				result.put("username", user.getTenDangNhap());
+				result.put("userId", user.getId());
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
