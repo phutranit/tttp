@@ -64,9 +64,11 @@ public class Don extends Model<Don> {
 	private boolean tuChoiTiepCongDan = false;
 	private boolean daGiaiQuyet = false;
 	private boolean daXuLy = false;
+	private boolean yeuCauGapLanhDao = false;
 	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
+	private LocalDateTime ngayLapDonGapLanhDaoTmp;
 
 	@OneToOne
 	private Don donLanTruoc;
@@ -251,6 +253,17 @@ public class Don extends Model<Don> {
 
 	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
 		this.ngayTiepNhan = ngayTiepNhan;
+	}
+
+	public LocalDateTime getNgayLapDonGapLanhDaoTmp() {
+		return ngayLapDonGapLanhDaoTmp;
+	}
+
+	public void setNgayLapDonGapLanhDaoTmp(LocalDateTime ngayLapDonGapLanhDaoTmp) {
+		if (ngayLapDonGapLanhDaoTmp == null) {
+			ngayLapDonGapLanhDaoTmp = getNgayTao();
+		}
+		this.ngayLapDonGapLanhDaoTmp = ngayLapDonGapLanhDaoTmp;
 	}
 
 	public String getHuongGiaiQuyetDaThucHien() {
@@ -540,4 +553,14 @@ public class Don extends Model<Don> {
 	public void setDaXuLy(boolean daXuLy) {
 		this.daXuLy = daXuLy;
 	}
+
+	@ApiModelProperty(hidden = true)
+	public boolean isYeuCauGapLanhDao() {
+		return yeuCauGapLanhDao;
+	}
+
+	public void setYeuCauGapLanhDao(boolean yeuCauGapLanhDao) {
+		this.yeuCauGapLanhDao = yeuCauGapLanhDao;
+	}
+	
 }
