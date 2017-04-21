@@ -159,6 +159,17 @@ public class DonService {
 		return don;
 	}
 	
+	public Don updateNgayLapDonGapLanhDao(DonRepository repo, Long id) {
+		
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+		}
+		return don;
+	}
+	
 	public Don deleteDon(DonRepository repo, Long id) {
 		Don don = repo.findOne(predicateFindOne(id));
 		
@@ -168,4 +179,6 @@ public class DonService {
 
 		return don;
 	}
+	
+	
 }

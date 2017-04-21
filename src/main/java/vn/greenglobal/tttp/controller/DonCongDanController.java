@@ -105,7 +105,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = {@ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
 	public ResponseEntity<Object> delete(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") Long id, ) {
+			@PathVariable("id") Long id) {
 		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
 		if (donCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
