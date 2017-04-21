@@ -39,10 +39,12 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String soDienThoai = "";
 	
 	// Phân loại người đứng đơn và loại đối tượng
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum phanLoai;
 		
 	// Người đứng đơn, ủy quyền, khiếu tố
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
 	
@@ -56,7 +58,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String donVi = "";
 	private String chucVu = "";
 
-	@ApiModelProperty(position = 1, required = true)
+	@ApiModelProperty(position = 3, required = true)
 	public Don getDon() {
 		return don;
 	}
@@ -65,7 +67,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
-	@ApiModelProperty(position = 2, required = true)
+	@ApiModelProperty(position = 4, required = true)
 	public CongDan getCongDan() {
 		return congDan;
 	}
@@ -78,7 +80,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		return tenCoQuan;
 	}
 
-	@ApiModelProperty(position = 2, required = true)
+	@ApiModelProperty(position = 1, required = true)
 	public LoaiNguoiDungDonEnum getPhanLoai() {
 		return phanLoai;
 	}
@@ -108,6 +110,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.soDienThoai = soDienThoai;
 	}
 
+	@ApiModelProperty(position = 2, required = true)
 	public PhanLoaiDonCongDanEnum getPhanLoaiCongDan() {
 		return phanLoaiCongDan;
 	}
@@ -116,6 +119,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.phanLoaiCongDan = phanLoaiCongDan;
 	}
 
+	@ApiModelProperty(position = 6)
 	public boolean isLuatSu() {
 		return luatSu;
 	}
@@ -147,7 +151,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public void setNoiCapTheLuatSu(String noiCapTheLuatSu) {
 		this.noiCapTheLuatSu = noiCapTheLuatSu;
 	}
-
+	
 	public String getDonVi() {
 		return donVi;
 	}
@@ -156,6 +160,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.donVi = donVi;
 	}
 
+	@ApiModelProperty(position = 5)
 	public String getChucVu() {
 		return chucVu;
 	}
@@ -165,15 +170,24 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public CongDan getThongTinCongDan() {
 		return getCongDan();
 	}
 	
 	@Transient
-	public Don getThongTinDon() {
-		return getDon();
+	@ApiModelProperty(hidden = true)
+	public Long getDonId() {
+		return getDon().getId();
 	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDonCongDanId() {
+		return getId();
+	}
+	
+	@ApiModelProperty(hidden = true)
 	@Transient
 	public LocalDateTime getNgayTiepNhan() {
 		if (getDon() != null) {

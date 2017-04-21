@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,7 +64,8 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"),
 	})
-	public @ResponseBody PagedResources<Don> getList(Pageable pageable,
+	public @ResponseBody PagedResources<Don> getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
 			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
 			@RequestParam(value = "cmndHoChieu", required = false) String cmndHoChieu,
@@ -110,8 +112,8 @@ public class DonController extends TttpController<Don> {
 	@ApiOperation(value = "Thêm mới Đơn", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
-	public ResponseEntity<Object> create(@RequestBody Don don,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Don don,PersistentEntityResourceAssembler eass) {
 		
 		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 	}
@@ -119,8 +121,8 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
 	@ApiOperation(value = "Lấy Đơn theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
-	public ResponseEntity<PersistentEntityResource> getDon(@PathVariable("id") long id,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<PersistentEntityResource> getDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		Don don = repo.findOne(donService.predicateFindOne(id));
 		if (don == null) {
@@ -132,9 +134,9 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.PATCH, value = "/dons/{id}")
 	@ApiOperation(value = "Cập nhật Đơn", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Đơn thành công", response = Don.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
-			@RequestBody Don don,
-			PersistentEntityResourceAssembler eass) {
+	public @ResponseBody ResponseEntity<Object> update(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id,
+			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 		log.info("Update Don theo id: " + id);
 		don.setId(id);
 		
@@ -145,7 +147,7 @@ public class DonController extends TttpController<Don> {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/dons/{id}")
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") Long id) {
 
 		Don don = donService.deleteDon(repo, id);
 		if (don == null) {

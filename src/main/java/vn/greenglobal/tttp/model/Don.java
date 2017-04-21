@@ -30,6 +30,7 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
@@ -67,6 +68,7 @@ public class Don extends Model<Don> {
 	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
+	private LocalDateTime ngayLapDonGapLanhDaoTmp;
 
 	@OneToOne
 	private Don donLanTruoc;
@@ -251,6 +253,17 @@ public class Don extends Model<Don> {
 
 	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
 		this.ngayTiepNhan = ngayTiepNhan;
+	}
+
+	public LocalDateTime getNgayLapDonGapLanhDaoTmp() {
+		return ngayLapDonGapLanhDaoTmp;
+	}
+
+	public void setNgayLapDonGapLanhDaoTmp(LocalDateTime ngayLapDonGapLanhDaoTmp) {
+		if (ngayLapDonGapLanhDaoTmp == null) {
+			ngayLapDonGapLanhDaoTmp = getNgayTao();
+		}
+		this.ngayLapDonGapLanhDaoTmp = ngayLapDonGapLanhDaoTmp;
 	}
 
 	public String getHuongGiaiQuyetDaThucHien() {
@@ -479,7 +492,8 @@ public class Don extends Model<Don> {
 		}
 		return donCongDan;
 	}
-	
+
+	@ApiModelProperty(hidden = true)
 	public int getTongSoLuotTCD() {
 		return tongSoLuotTCD;
 	}
@@ -487,11 +501,51 @@ public class Don extends Model<Don> {
 	public void setTongSoLuotTCD(int tongSoLuotTCD) {
 		this.tongSoLuotTCD = tongSoLuotTCD;
 	}
-
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public List<Don_CongDan> getListDonCongDan() {
-		return getDonCongDans();
+	public List<Don_CongDan> getListNguoiDungDon() {
+		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
+		for (Don_CongDan dcd : getDonCongDans()) {
+			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) {
+				list.add(dcd);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<Don_CongDan> getListThanhVienDoanDongNguoi() {
+		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
+		for (Don_CongDan dcd : getDonCongDans()) {
+			if (PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())) {
+				list.add(dcd);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Don_CongDan getNguoiDuocUyQuyen() {
+		for (Don_CongDan dcd : getDonCongDans()) {
+			if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan())) {
+				return dcd;
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Don_CongDan getDoiTuongBiKhieuTo() {
+		for (Don_CongDan dcd : getDonCongDans()) {
+			if (PhanLoaiDonCongDanEnum.DOI_TUONG_BI_KHIEU_TO.equals(dcd.getPhanLoaiCongDan())) {
+				return dcd;
+			}
+		}
+		return null;
 	}
 	
 	@Transient
@@ -540,4 +594,5 @@ public class Don extends Model<Don> {
 	public void setDaXuLy(boolean daXuLy) {
 		this.daXuLy = daXuLy;
 	}
+	
 }
