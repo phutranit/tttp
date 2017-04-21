@@ -174,6 +174,7 @@ public class CongChuc extends Model<CongChuc> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public NguoiDung getNguoiDungCongChuc() {
 		return getNguoiDung();
 	}
