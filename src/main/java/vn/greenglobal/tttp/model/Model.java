@@ -33,7 +33,7 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonApiId
 	private Long id;
 
-	private LocalDateTime ngayTao = LocalDateTime.now();
+	private LocalDateTime ngayTao;
 	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
@@ -61,8 +61,8 @@ public class Model<T extends Model<T>> implements Persistable {
 		return this.ngaySua;
 	}
 
-	public void setNgaySua(LocalDateTime ngaySua1) {
-		this.ngaySua = ngaySua1;
+	public void setNgaySua(LocalDateTime ngaySua) {
+		this.ngaySua = ngaySua;
 	}
 
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
@@ -71,8 +71,11 @@ public class Model<T extends Model<T>> implements Persistable {
 		return this.ngayTao;
 	}
 
-	public void setNgayTao(LocalDateTime ngayTao1) {
-		this.ngayTao = ngayTao1;
+	public void setNgayTao(LocalDateTime ngayTao) {
+		if (ngayTao == null) {
+			ngayTao = LocalDateTime.now();
+		}
+		this.ngayTao = ngayTao;
 	}
 
 	@ApiModelProperty(hidden = true)
