@@ -223,7 +223,6 @@ public class DonService {
 			}
 		}
 
-		predAll = predAll.and((Predicate) QDon.don.ngayLapDonGapLanhDaoTmp.desc());
 		return predAll;
 	}
 }
