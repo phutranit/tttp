@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -36,6 +38,7 @@ import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -52,6 +55,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@Autowired
 	private DonRepository repoDon;
+	
+	@Autowired
+	private DonService donService;
+	
+	@Autowired
+	private PagedResourcesAssembler<Don> assemblerDon;
 	
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
@@ -119,9 +128,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);		
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			if (HuongXuLyTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setDaXuLy(true);
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
-			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			} else if (HuongXuLyTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongXuLy())) {
 				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
 					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
 					soTiepCongDan.getDon().setDaXuLy(true);
@@ -133,8 +143,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 			}
 		}			
-		repoDon.save(soTiepCongDan.getDon());
-		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			repoDon.save(soTiepCongDan.getDon());
+		}
+		return output;
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
@@ -171,14 +185,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
 	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<SoTiepCongDan> getListHoSoVuViecYeuCauGapLanhDao(
+	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
 
-		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindTCDYeuCauGapLanhDao(tuNgay, denNgay),
+		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay),
 				pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
 
 }

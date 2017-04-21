@@ -43,11 +43,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private CongChuc canBoTiepDan;
 	@NotNull
 	@ManyToOne
-	private CoQuanQuanLy donVi;
+	private CoQuanQuanLy donViTiepDan;
 
 	@NotNull
 	private LocalDateTime ngayTiepDan;
-	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
 	private String noiDungTiepCongDan = "";
@@ -61,15 +60,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	private String huongXuLyText = "";
 
-	private boolean giaiQuyetNgay = false;
-	private boolean choGiaiQuyet = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
-
 	private int soThuTuLuotTiep = 0;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
@@ -116,12 +108,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@ApiModelProperty(example = "{}")
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
+	public CoQuanQuanLy getDonViTiepDan() {
+		return donViTiepDan;
 	}
 
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
+	public void setDonViTiepDan(CoQuanQuanLy donViTiepDan) {
+		this.donViTiepDan = donViTiepDan;
 	}
 
 	public LocalDateTime getNgayTiepDan() {
@@ -130,14 +122,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setNgayTiepDan(LocalDateTime ngayTiepDan) {
 		this.ngayTiepDan = ngayTiepDan;
-	}
-
-	public LocalDateTime getNgayTiepNhan() {
-		return ngayTiepNhan;
-	}
-
-	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
-		this.ngayTiepNhan = ngayTiepNhan;
 	}
 
 	public LocalDateTime getThoiHan() {
@@ -204,30 +188,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.noiDungBoSung = noiDungBoSung;
 	}
 
-	public boolean isGiaiQuyetNgay() {
-		return giaiQuyetNgay;
-	}
-
-	public void setGiaiQuyetNgay(boolean giaiQuyetNgay) {
-		this.giaiQuyetNgay = giaiQuyetNgay;
-	}
-
-	public boolean isChoGiaiQuyet() {
-		return choGiaiQuyet;
-	}
-
-	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
-		this.choGiaiQuyet = choGiaiQuyet;
-	}
-
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
-	}
-
 	public String getDiaDiemGapLanhDao() {
 		return diaDiemGapLanhDao;
 	}
@@ -242,14 +202,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
 		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
-	}
-
-	public HuongGiaiQuyetTCDEnum getHuongGiaiQuyet() {
-		return huongGiaiQuyet;
-	}
-
-	public void setHuongGiaiQuyet(HuongGiaiQuyetTCDEnum huongGiaiQuyet) {
-		this.huongGiaiQuyet = huongGiaiQuyet;
 	}
 
 	public HuongXuLyTCDEnum getHuongXuLy() {

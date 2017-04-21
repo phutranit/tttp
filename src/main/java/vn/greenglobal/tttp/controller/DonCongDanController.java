@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +24,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.Don_CongDan;
@@ -39,7 +36,6 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "donCongDans", description = "Quan hệ giữa Đơn và Công Dân")
 public class DonCongDanController extends TttpController<Don_CongDan> {
 
-	private static Log log = LogFactory.getLog(DonCongDanController.class);
 	private static DonCongDanService donCongDanService = new DonCongDanService();
 
 	@Autowired

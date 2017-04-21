@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -48,42 +47,18 @@ public class SoTiepCongDanService {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
 		} else {
 			if (StringUtils.isNotBlank(tuNgay)) {
 				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.after(dtTuNgay));
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.after(dtTuNgay));
 			}
 			if (StringUtils.isNotBlank(denNgay)) {
 				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.before(dtDenNgay));
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.before(dtDenNgay));
 			}
 		}
 
-		return predAll;
-	}
-
-	public Predicate predicateFindTCDYeuCauGapLanhDao(String tuNgay, String denNgay) {
-		BooleanExpression predAll = base
-				.and(QSoTiepCongDan.soTiepCongDan.yeuCauGapTrucTiepLanhDao.eq(true)
-						.or(QSoTiepCongDan.soTiepCongDan.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)))
-				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(false));
-		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
-			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
-		} else {
-			if (StringUtils.isNotBlank(tuNgay)) {
-				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.after(dtTuNgay));
-			}
-			if (StringUtils.isNotBlank(denNgay)) {
-				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.before(dtDenNgay));
-			}
-		}
-
-		predAll = predAll.and((Predicate) QSoTiepCongDan.soTiepCongDan.don.ngayLapDonGapLanhDaoTmp.desc());
 		return predAll;
 	}
 
