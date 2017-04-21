@@ -46,7 +46,7 @@ public class ChucVu extends Model<ChucVu> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getCapDonViHanhChinhId() {
+	public Long getChucVuId() {
 		return getId();
 	}
 }

@@ -10,6 +10,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -143,6 +144,17 @@ public class DonService {
 			don = new Don();
 			don.setId(id);
 			don.setHuongXuLyXLD(huongXuLyXLDEnum);
+		}
+		return don;
+	}
+	
+	public Don updateTrangThaiDon(DonRepository repo, Long id, 
+			TrangThaiDonEnum trangThaiDonEnum) {
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setTrangThaiDon(trangThaiDonEnum);
 		}
 		return don;
 	}
