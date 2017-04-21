@@ -1,9 +1,11 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -116,6 +118,23 @@ public class DonService {
 	
 	public Predicate predicateFindOne(Long id) {
 		return QDon.don.daXoa.eq(false).and(QDon.don.id.eq(id));
+	}
+	
+	public String getMaDonMoi(DonRepository repo) {
+		Predicate pred = QDon.don.daXoa.eq(false).and(QDon.don.ma.isNotEmpty());
+		OrderSpecifier<Long> sortOrder = QDon.don.ma.castToNum(Long.class).desc();
+		List<Don> list = (List<Don>) repo.findAll(pred,sortOrder);
+		if (list != null && list.size() > 0) {
+			Long maDonMoi = Long.parseLong(list.get(0).getMa()) + 1;
+			if (maDonMoi < 10) {
+				return "00" + maDonMoi;
+			} else if (maDonMoi < 100){
+				return "0" + maDonMoi;
+			} else {
+				return "" + maDonMoi;
+			}
+		}
+		return "001";
 	}
 
 	public boolean isExists(DonRepository repo, Long id) {
