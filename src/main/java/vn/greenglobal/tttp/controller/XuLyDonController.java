@@ -129,6 +129,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 					xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 					xuLyDonHienTai.setGhiChu(note);
+					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 					return Utils.doSave(repo, xuLyDonHienTai, eass, HttpStatus.CREATED);
 				} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY)) {
 					
@@ -224,8 +225,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					repo.save(xuLyDonHienTai);
 					xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 					xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
-					xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLy());
-					xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
+					xuLyDonTiepTheo.setCongChuc(xuLyDonHienTai.getCanBoXuLy());
+					xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 					xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
 					xuLyDonTiepTheo.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 					xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien()+1);
@@ -281,21 +282,41 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setGhiChu(note);
 						
 						// Cap nhat yeuCauGapLanhDao
+						
 						return Utils.doSave(repo, xuLyDonHienTai, eass, HttpStatus.CREATED);
-					} else if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)) {
+					} else {
 						
 						note = note + ChucVuEnum.TRUONG_PHONG.getText() + " " + xuLyDonHienTai.getPhongBanXuLy().getTen();
 						xuLyDonHienTai.setGhiChu(note);
-						repo.save(xuLyDonHienTai);
 						xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 						xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
+						xuLyDonTiepTheo.setCanBoXuLy(xuLyDonHienTai.getCongChuc());
 						xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 						xuLyDonTiepTheo.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 						xuLyDonTiepTheo.setHuongXuLy(xuLyDon.getHuongXuLy());
 						xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
-						xuLyDonTiepTheo.setCanBoXuLy(xuLyDonHienTai.getCongChuc());
-						return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
-					}
+						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien()+1);
+						
+						if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
+							
+							xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
+							repo.save(xuLyDonHienTai);
+							xuLyDonTiepTheo.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
+							return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
+						} else if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+							
+							xuLyDonHienTai.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
+							repo.save(xuLyDonHienTai);
+							xuLyDonTiepTheo.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
+							return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
+						} else if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN) || 
+								xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI) ||
+								xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)) {
+							
+							repo.save(xuLyDonHienTai);
+							return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
+						}
+					} 
 				}
 			}
 		}

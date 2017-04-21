@@ -30,6 +30,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne 
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
+	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 
 	private int thuTuThucHien = 0;
@@ -184,4 +186,13 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
 	}
+
+	public CoQuanQuanLy getCoQuanTiepNhan() {
+		return coQuanTiepNhan;
+	}
+
+	public void setCoQuanTiepNhan(CoQuanQuanLy coQuanTiepNhan) {
+		this.coQuanTiepNhan = coQuanTiepNhan;
+	}
+	
 }
