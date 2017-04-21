@@ -134,8 +134,8 @@ public class Don extends Model<Don> {
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
 	@Column(nullable=true)
 	@NotNull
-//	@Enumerated(EnumType.STRING)
-//	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+	@Enumerated(EnumType.STRING)
+	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 	//private String loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
@@ -405,14 +405,14 @@ public class Don extends Model<Don> {
 		this.nguonTiepNhanDon = nguonTiepNhanDon;
 	}
 
-//	@ApiModelProperty(position = 5, required = true)
-//	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
-//		return loaiNguoiDungDon;
-//	}
-//
-//	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
-//		this.loaiNguoiDungDon = loaiNguoiDungDon;
-//	}
+	@ApiModelProperty(position = 5, required = true)
+	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
+		return loaiNguoiDungDon;
+	}
+
+	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
+		this.loaiNguoiDungDon = loaiNguoiDungDon;
+	}
 	
 //	@ApiModelProperty(position = 5, required = true)
 //	public String getLoaiNguoiDungDon() {
