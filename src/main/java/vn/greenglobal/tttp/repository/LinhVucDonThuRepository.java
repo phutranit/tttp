@@ -7,5 +7,5 @@ import vn.greenglobal.tttp.model.LinhVucDonThu;
 
 @RestResource(path = "linhVucDonThus")
 public interface LinhVucDonThuRepository extends MutableRepo<LinhVucDonThu> {
-	
+
 }

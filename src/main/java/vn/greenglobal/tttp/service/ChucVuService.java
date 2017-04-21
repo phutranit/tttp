@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -7,10 +9,13 @@ import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.model.QChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 
+@Component
 public class ChucVuService {
 
+	BooleanExpression base = QChucVu.chucVu.daXoa.eq(false);
+
 	public Predicate predicateFindAll(String ten) {
-		BooleanExpression predAll = QChucVu.chucVu.daXoa.eq(false);
+		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QChucVu.chucVu.ten.eq(ten));
 		}
@@ -18,18 +23,18 @@ public class ChucVuService {
 	}
 
 	public Predicate predicateFindOne(Long id) {
-		return QChucVu.chucVu.daXoa.eq(false).and(QChucVu.chucVu.id.eq(id));
+		return base.and(QChucVu.chucVu.id.eq(id));
 	}
 
 	public boolean isExists(ChucVuRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QChucVu.chucVu.daXoa.eq(false).and(QChucVu.chucVu.id.eq(id));
+			Predicate predicate = base.and(QChucVu.chucVu.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
-	public ChucVu deleteChucVu(ChucVuRepository repo, Long id) {
+	public ChucVu delete(ChucVuRepository repo, Long id) {
 		ChucVu chucVu = repo.findOne(predicateFindOne(id));
 
 		if (chucVu != null) {
@@ -40,7 +45,7 @@ public class ChucVuService {
 	}
 
 	public boolean checkExistsData(ChucVuRepository repo, ChucVu body) {
-		BooleanExpression predAll = QChucVu.chucVu.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QChucVu.chucVu.id.ne(body.getId()));

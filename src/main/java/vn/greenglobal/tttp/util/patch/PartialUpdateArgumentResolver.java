@@ -24,61 +24,65 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PartialUpdateArgumentResolver implements HandlerMethodArgumentResolver{
+public class PartialUpdateArgumentResolver implements HandlerMethodArgumentResolver {
 
-	@Autowired ObjectMapper objectMapper;
-    @Autowired ApplicationContext context;
+	@Autowired
+	ObjectMapper objectMapper;
+	@Autowired
+	ApplicationContext context;
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        RequestMapping methodAnot = parameter.getMethodAnnotation(RequestMapping.class);
-        if( methodAnot == null ) return false;
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		RequestMapping methodAnot = parameter.getMethodAnnotation(RequestMapping.class);
+		if (methodAnot == null)
+			return false;
 
-        if( !Arrays.asList(methodAnot.method()).contains(RequestMethod.PATCH) ) return false;
+		if (!Arrays.asList(methodAnot.method()).contains(RequestMethod.PATCH))
+			return false;
 
-        return parameter.hasParameterAnnotation(PatchRequestBody.class);
-    }
+		return parameter.hasParameterAnnotation(PatchRequestBody.class);
+	}
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter,
-                                  ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) throws Exception {
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-        ServletServerHttpRequest req = createInputMessage(webRequest);
+		ServletServerHttpRequest req = createInputMessage(webRequest);
 
-        Patch patch = parameter.getMethodAnnotation(Patch.class);
-        Class serviceClass = patch.service();
-        Class idClass = patch.id();
-        Object service = context.getBean(serviceClass);
+		Patch patch = parameter.getMethodAnnotation(Patch.class);
+		Class serviceClass = patch.service();
+		Class idClass = patch.id();
+		@SuppressWarnings("unchecked")
+		Object service = context.getBean(serviceClass);
 
-        String idStr = getPathVariables(webRequest).get("id");
-        Object id = idClass.cast(idStr);
-        Method method = ReflectionUtils.findMethod(serviceClass, "find", idClass);
+		String idStr = getPathVariables(webRequest).get("id");
+		Object id = idClass.cast(idStr);
+		Method method = ReflectionUtils.findMethod(serviceClass, "find", idClass);
 
-        Object obj = ReflectionUtils.invokeMethod(method, service, id);
-        obj = readJavaType(obj, req);
-        return obj;
-    }
+		Object obj = ReflectionUtils.invokeMethod(method, service, id);
+		obj = readJavaType(obj, req);
+		return obj;
+	}
 
-    private Map<String, String> getPathVariables(NativeWebRequest webRequest) {
+	@SuppressWarnings("unchecked")
+	private Map<String, String> getPathVariables(NativeWebRequest webRequest) {
 
-        HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        return (Map<String, String>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-    }
+		HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+		return (Map<String, String>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+	}
 
-    protected ServletServerHttpRequest createInputMessage(NativeWebRequest webRequest) {
-        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        return new ServletServerHttpRequest(servletRequest);
-    }
+	protected ServletServerHttpRequest createInputMessage(NativeWebRequest webRequest) {
+		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+		return new ServletServerHttpRequest(servletRequest);
+	}
 
-    private Object readJavaType(Object object, HttpInputMessage inputMessage) {
-        try {
-            return this.objectMapper.readerForUpdating(object).readValue(inputMessage.getBody());
-        }
-        catch (IOException ex) {
-            throw new HttpMessageNotReadableException("Could not read document: " + ex.getMessage(), ex);
-        }
-    }
-    
+	private Object readJavaType(Object object, HttpInputMessage inputMessage) {
+		try {
+			return this.objectMapper.readerForUpdating(object).readValue(inputMessage.getBody());
+		} catch (IOException ex) {
+			throw new HttpMessageNotReadableException("Could not read document: " + ex.getMessage(), ex);
+		}
+	}
+
 }

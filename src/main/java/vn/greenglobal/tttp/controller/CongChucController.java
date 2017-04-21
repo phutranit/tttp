@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -42,7 +42,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "congChucs", description = "Công chức")
-public class CongChucController extends BaseController<CongChuc> {
+public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucRepository repo;
@@ -52,10 +52,10 @@ public class CongChucController extends BaseController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
-
+	
 	@Autowired
 	public EntityManager em;
-
+	
 	@Autowired
 	public PlatformTransactionManager transactionManager;
 
@@ -69,10 +69,11 @@ public class CongChucController extends BaseController<CongChuc> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congChucs")
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CongChuc> getList(Pageable pageable,
+	public @ResponseBody PagedResources<CongChuc> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
-
+		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -83,7 +84,8 @@ public class CongChucController extends BaseController<CongChuc> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Công Chức thành công", response = CongChuc.class),
 			@ApiResponse(code = 201, message = "Thêm mới Công Chức thành công", response = CongChuc.class) })
-	public ResponseEntity<Object> create(@RequestBody CongChuc congChuc, PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody CongChuc congChuc, PersistentEntityResourceAssembler eass) {
 
 		if (congChuc.getNguoiDung() == null) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
@@ -142,14 +144,15 @@ public class CongChucController extends BaseController<CongChuc> {
 	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/{id}")
 	@ApiOperation(value = "Lấy Công Chức theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Chức thành công", response = CongChuc.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		CongChuc congChuc = repo.findOne(congChucService.predicateFindOne(id));
 		if (congChuc == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		return new ResponseEntity<>(eass.toFullResource(congChuc), HttpStatus.OK);
 	}
 
@@ -158,8 +161,9 @@ public class CongChucController extends BaseController<CongChuc> {
 	@ApiOperation(value = "Cập nhật Công Chức", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Công Chức thành công", response = CongChuc.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id, @RequestBody CongChuc congChuc,
-			PersistentEntityResourceAssembler eass) {
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody CongChuc congChuc, PersistentEntityResourceAssembler eass) {
 
 		congChuc.setId(id);
 		if (congChuc.getNguoiDung() == null) {
@@ -225,7 +229,8 @@ public class CongChucController extends BaseController<CongChuc> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/congChucs/{id}")
 	@ApiOperation(value = "Xoá Công Chức", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Công Chức thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		CongChuc congChuc = congChucService.delete(repo, id);
 		if (congChuc == null) {

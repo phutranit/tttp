@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.*;
+import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
+import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -25,7 +33,8 @@ public class EnumController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/phanLoaiNguoiDungDons")
 	@ApiOperation(value = "Lấy danh sách Phân Loại Người Đứng Đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getPhanLoaiNguoiDungDons() {
+	public @ResponseBody ResponseEntity<Object> getPhanLoaiNguoiDungDons(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
@@ -51,7 +60,8 @@ public class EnumController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDonThus")
 	@ApiOperation(value = "Lấy danh sách Loại Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getLoaiDonThus() {
+	public @ResponseBody ResponseEntity<Object> getLoaiDonThus(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
@@ -82,7 +92,8 @@ public class EnumController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongs")
 	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongs() {
+	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
@@ -98,7 +109,8 @@ public class EnumController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý TCD", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyTCDs() {
+	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyTCDs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
@@ -130,47 +142,48 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/quyTrinhXuLyXLDs/giaoViec")
 	@ApiOperation(value = "Lấy danh sách Quy Trình Xử Lý Đơn XLD", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachQuyTrinhXuLyXLDs(
-			@RequestParam("chucVu")String chucVu) {
-		
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("chucVu") String chucVu) {
+
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
-		
+
 		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			phanLoaiList.add(phanLoaiObj);
-			
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DINH_CHI.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DINH_CHI.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DINH_CHI.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DINH_CHI.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
 
 		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			phanLoaiList.add(phanLoaiObj);
-		
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
-		
+
 		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
 			phanLoaiList.add(phanLoaiObj);
-		
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
-		
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("phanLoaiList", phanLoaiList);
 		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
@@ -179,55 +192,56 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/quyTrinhXuLyXLDs/deXuat")
 	@ApiOperation(value = "Lấy danh sách Quy Trình Xử Lý Đơn chuyển cho bộ phận giải quyết", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSach(
-			@RequestParam("chucVu")String chucVu) {
-		
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("chucVu") String chucVu) {
+
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
-		
+
 		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
 			phanLoaiList.add(phanLoaiObj);
-			
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
 
 		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
 			phanLoaiList.add(phanLoaiObj);
-		
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
-		
+
 		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
-			
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
 			phanLoaiList.add(phanLoaiObj);
-		
+
 			phanLoaiObj = new HashMap<>();
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			phanLoaiObj.put("ten",QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
+			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
 			phanLoaiList.add(phanLoaiObj);
 		}
-		
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("phanLoaiList", phanLoaiList);
 		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyXLDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
+	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(@RequestHeader(value = "Authorization", required = true) String authorization, 
 			@RequestParam("chucVu")String chucVu) {
 		
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
@@ -268,7 +282,7 @@ public class EnumController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTCDs() {
+	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTCDs(@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
@@ -279,6 +293,27 @@ public class EnumController {
 		phanLoaiObj = new HashMap<>();
 		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
 		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("phanLoaiList", phanLoaiList);
+
+		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
+	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetCuaLanhDaoTCDs(@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
+		Map<String, Object> phanLoaiObj = new HashMap<>();
+
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		phanLoaiObj = new HashMap<>();
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.name());
 		phanLoaiList.add(phanLoaiObj);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

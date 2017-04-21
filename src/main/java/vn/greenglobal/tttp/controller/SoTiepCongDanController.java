@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import javax.persistence.EntityManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +13,9 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,12 +26,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -46,7 +44,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "soTiepCongDans", description = "Sổ tiếp công dân")
 @RestController
-public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
+public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	private static Log log = LogFactory.getLog(SoTiepCongDanController.class);
 	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();
@@ -56,15 +54,9 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 
 	@Autowired
 	private DonRepository repoDon;
-
-	@Autowired
-	public EntityManager em;
 	
 	@Autowired
-	public PlatformTransactionManager transactionManager;
-	
-	@Autowired
-	public TransactionTemplate transactioner;
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
 
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
@@ -76,7 +68,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans")
 	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE, response = SoTiepCongDan.class)
-	public @ResponseBody PagedResources<SoTiepCongDan> getDanhSachTiepCongDans(Pageable pageable,
+	public @ResponseBody PagedResources<SoTiepCongDan> getDanhSachTiepCongDans(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
@@ -96,7 +89,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	@ApiOperation(value = "Lấy Tiếp Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy lượt Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
-	public ResponseEntity<PersistentEntityResource> getSoTiepCongDans(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getSoTiepCongDans(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		log.info("Get SoTiepCongDan theo id: " + id);
 		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
@@ -106,39 +100,51 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 		return new ResponseEntity<>(eass.toFullResource(soTiepCongDan), HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDans")
 	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class),
 			@ApiResponse(code = 201, message = "Thêm mới Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
-	public ResponseEntity<Object> createSoTiepCongDan(@RequestBody SoTiepCongDan soTiepCongDan,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> createSoTiepCongDan(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
 		log.info("Tao moi SoTiepCongDan");
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 			}
-		}
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
-			@Override
-			public Object doInTransaction(TransactionStatus arg0) {
-				Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
-				soTiepCongDan.setDon(don);
-				int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
-				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-				soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
-				repoDon.save(soTiepCongDan.getDon());
-				return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		}		
+		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+		soTiepCongDan.setDon(don);
+		int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+		soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
+		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);		
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
+				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
+					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
+					soTiepCongDan.getDon().setDaXuLy(true);
+					soTiepCongDan.getDon().setPhongBanGiaiQuyet(phongBan);
+					soTiepCongDan.getDon().setyKienXuLyDon(soTiepCongDan.getyKienXuLy());
+					soTiepCongDan.getDon().setGhiChuXuLyDon(soTiepCongDan.getGhiChuXuLy());
+				} else {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+				}
 			}
-		});
+		}			
+		repoDon.save(soTiepCongDan.getDon());
+		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
 	@ApiOperation(value = "Cập nhật Sổ Tiếp Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Sổ Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
 		log.info("Update SoTiepCongDan theo id: " + id);
 
@@ -154,7 +160,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 		log.info("Delete SoTiepCongDan theo id: " + id);
 
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
@@ -169,7 +176,8 @@ public class SoTiepCongDanController extends BaseController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
 	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<SoTiepCongDan> getListHoSoVuViecYeuCauGapLanhDao(Pageable pageable,
+	public @ResponseBody PagedResources<SoTiepCongDan> getListHoSoVuViecYeuCauGapLanhDao(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
 		log.info("Get danh sach HoSoVuViecYeuCauGapLanhDao");
