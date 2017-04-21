@@ -93,7 +93,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.tenCoQuan = tenCoQuan;
 	}
 	
-
 	public String getDiaChiCoQuan() {
 		return diaChiCoQuan;
 	}

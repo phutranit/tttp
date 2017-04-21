@@ -57,10 +57,6 @@ public class DonService {
 			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
 		}
 		
-		if (StringUtils.isNotBlank(vaiTro)) {
-			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().nguoiDung.vaiTros.any().quyen.eq(vaiTro));
-		}
-		
 		if (phongBanGiaiQuyetXLD != null) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
@@ -71,6 +67,19 @@ public class DonService {
 		
 		if (phongBanXuLyXLD != null) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
+		}
+		
+//		if (StringUtils.isNotBlank(vaiTro)) {
+//			predAll = predAll.and(QDon.don.xuLyDons.any().congChuc.nguoiDung.vaiTros.any().quyen.eq(vaiTro));
+//		}
+		
+		if (phongBanXuLyXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().donVi.id.eq(phongBanXuLyXLD));
+		}
+
+		if (phongBanXuLyXLD != null && StringUtils.isNotBlank(vaiTro)) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().donVi.id.eq(phongBanXuLyXLD))
+					.and(QDon.don.xuLyDons.any().canBoXuLy.nguoiDung.vaiTros.any().quyen.eq(vaiTro));
 		}
 		
 		if (coQuanTiepNhanXLD != null) {
