@@ -300,4 +300,25 @@ public class EnumController {
 
 		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
+	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetCuaLanhDaoTCDs(@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
+		Map<String, Object> phanLoaiObj = new HashMap<>();
+
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		phanLoaiObj = new HashMap<>();
+		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.getText());
+		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("phanLoaiList", phanLoaiList);
+
+		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
+	}
 }

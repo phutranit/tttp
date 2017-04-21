@@ -67,6 +67,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private int soThuTuLuotTiep = 0;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
 	@NotNull
@@ -75,6 +76,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
+	
+	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyet;
+	private String yKienXuLy = "";
+	private String ghiChuXuLy = "";
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
@@ -291,6 +297,33 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public Don getDonSTCD() {
 		return getDon();
+	}
+	
+	@Transient
+	public CoQuanQuanLy getPhongBanGiaiQuyet() {
+		return phongBanGiaiQuyet;
+	}
+
+	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
+		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	@Transient
+	public String getyKienXuLy() {
+		return yKienXuLy;
+	}
+
+	public void setyKienXuLy(String yKienXuLy) {
+		this.yKienXuLy = yKienXuLy;
+	}
+
+	@Transient
+	public String getGhiChuXuLy() {
+		return ghiChuXuLy;
+	}
+
+	public void setGhiChuXuLy(String ghiChuXuLy) {
+		this.ghiChuXuLy = ghiChuXuLy;
 	}
 
 	@Transient

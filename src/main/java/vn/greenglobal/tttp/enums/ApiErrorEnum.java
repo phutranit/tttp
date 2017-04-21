@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum ApiErrorEnum {
 
+	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phòng ban giải quyết không được để trống!"),
 	TEN_REQUIRED("Trường tên không được để trống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),

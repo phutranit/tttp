@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import javax.persistence.EntityManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +13,6 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,9 +28,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -56,15 +54,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@Autowired
 	private DonRepository repoDon;
-
+	
 	@Autowired
-	public EntityManager em;
-
-	@Autowired
-	public PlatformTransactionManager transactionManager;
-
-	@Autowired
-	public TransactionTemplate transactioner;
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
 
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
@@ -108,7 +100,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return new ResponseEntity<>(eass.toFullResource(soTiepCongDan), HttpStatus.OK);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/soTiepCongDans")
 	@ApiOperation(value = "Thêm mới Sổ Tiếp Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -122,19 +113,30 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 			}
-		}
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
-			@Override
-			public Object doInTransaction(TransactionStatus arg0) {
-				Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
-				soTiepCongDan.setDon(don);
-				int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
-				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-				soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
-				repoDon.save(soTiepCongDan.getDon());
-				return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		}		
+		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+		soTiepCongDan.setDon(don);
+		int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+		soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
+		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);		
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
+				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
+					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
+					soTiepCongDan.getDon().setDaXuLy(true);
+					soTiepCongDan.getDon().setPhongBanGiaiQuyet(phongBan);
+					soTiepCongDan.getDon().setyKienXuLyDon(soTiepCongDan.getyKienXuLy());
+					soTiepCongDan.getDon().setGhiChuXuLyDon(soTiepCongDan.getGhiChuXuLy());
+				} else {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+				}
 			}
-		});
+		}			
+		repoDon.save(soTiepCongDan.getDon());
+		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
