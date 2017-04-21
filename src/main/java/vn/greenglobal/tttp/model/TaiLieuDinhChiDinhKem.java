@@ -4,8 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import io.swagger.annotations.ApiModel;
+
 @Entity
 @Table(name = "tailieudinhkemdinhchi")
+@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class TaiLieuDinhChiDinhKem extends Model<TaiLieuDinhChiDinhKem> {
 	private static final long serialVersionUID = -9223009647319074416L;
 

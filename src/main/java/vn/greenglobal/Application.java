@@ -154,8 +154,7 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
 
-				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
-						"custom");
+				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
@@ -182,10 +181,6 @@ public class Application extends SpringBootServletInitializer {
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
-		// System.out.println(token);
-		// System.out.println(authenticator.validateTokenAndGetClaims(token));
-		// System.out.println(authenticator.validateToken(token));
-		// System.out.println(2);
 		return config;
 	}
 

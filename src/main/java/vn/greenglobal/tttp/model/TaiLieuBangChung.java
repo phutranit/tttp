@@ -10,11 +10,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "tailieubangchung")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	/**
@@ -32,10 +34,10 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	@NotNull
 	@ManyToOne
 	private LoaiTaiLieu loaiTaiLieu;
-	
+
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-	
+
 	@NotNull
 	@ManyToOne
 	private Don don;
@@ -109,7 +111,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	public Long getTaiLieuBangChungId() {
 		return getId();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public LoaiTaiLieu getLoaiTaiLieuTLBC() {

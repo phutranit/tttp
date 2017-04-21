@@ -26,7 +26,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne 
+	private CongChuc canBoXuLy;
+	@ManyToOne 
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
@@ -42,6 +46,16 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	@Enumerated(EnumType.STRING)
 	private ChucVuEnum chucVu;
+	@Enumerated(EnumType.STRING)
+	private ChucVuEnum chucVuGiaoViec;
+	public ChucVuEnum getChucVuGiaoViec() {
+		return chucVuGiaoViec;
+	}
+
+	public void setChucVuGiaoViec(ChucVuEnum chucVuGiaoViec) {
+		this.chucVuGiaoViec = chucVuGiaoViec;
+	}
+
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@Enumerated(EnumType.STRING)
@@ -174,4 +188,29 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setChucVu(ChucVuEnum chucVu) {
 		this.chucVu = chucVu;
 	}
+	
+	public CoQuanQuanLy getPhongBanXuLy() {
+		return phongBanXuLy;
+	}
+
+	public void setPhongBanXuLy(CoQuanQuanLy phongBanXuLy) {
+		this.phongBanXuLy = phongBanXuLy;
+	}
+	
+	public CongChuc getCanBoXuLy() {
+		return canBoXuLy;
+	}
+
+	public void setCanBoXuLy(CongChuc canBoXuLy) {
+		this.canBoXuLy = canBoXuLy;
+	}
+
+	public CoQuanQuanLy getCoQuanTiepNhan() {
+		return coQuanTiepNhan;
+	}
+
+	public void setCoQuanTiepNhan(CoQuanQuanLy coQuanTiepNhan) {
+		this.coQuanTiepNhan = coQuanTiepNhan;
+	}
+	
 }

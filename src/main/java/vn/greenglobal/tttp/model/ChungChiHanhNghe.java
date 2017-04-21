@@ -7,16 +7,19 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.annotations.ApiModel;
+
 @Entity
 @Table(name = "chungchihanhnghe")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class ChungChiHanhNghe extends Model<ChungChiHanhNghe> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3305792884790507318L;
-	
+
 	private String ma = "";
 	private String ten = "";
 	private String duongDan = "";

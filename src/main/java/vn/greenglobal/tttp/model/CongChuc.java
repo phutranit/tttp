@@ -14,11 +14,13 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "congchuc")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class CongChuc extends Model<CongChuc> {
 
 	/**
@@ -170,8 +172,9 @@ public class CongChuc extends Model<CongChuc> {
 	public void setNguoiDung(NguoiDung nguoiDung) {
 		this.nguoiDung = nguoiDung;
 	}
-	
+
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public NguoiDung getNguoiDungCongChuc() {
 		return getNguoiDung();
 	}

@@ -166,6 +166,28 @@ public class DonService {
 		return don;
 	}
 	
+	public Don updateTrangThaiDon(DonRepository repo, Long id, 
+			TrangThaiDonEnum trangThaiDonEnum) {
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setTrangThaiDon(trangThaiDonEnum);
+		}
+		return don;
+	}
+	
+	public Don updateNgayLapDonGapLanhDao(DonRepository repo, Long id) {
+		
+		Don don = null;
+		if (isExists(repo, id)) {
+			don = new Don();
+			don.setId(id);
+			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+		}
+		return don;
+	}
+	
 	public Don deleteDon(DonRepository repo, Long id) {
 		Don don = repo.findOne(predicateFindOne(id));
 		

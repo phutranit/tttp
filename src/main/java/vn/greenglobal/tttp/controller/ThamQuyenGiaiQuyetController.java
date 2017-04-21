@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "thamQuyenGiaiQuyets", description = "Thẩm Quyền Giải Quyết")
-public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQuyet> {
+public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQuyet> {
 
 	@Autowired
 	private ThamQuyenGiaiQuyetRepository repo;
@@ -50,7 +50,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/thamQuyenGiaiQuyets")
 	@ApiOperation(value = "Lấy danh sách Thẩm Quyền Giải Quyết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<ThamQuyenGiaiQuyet> getList(Pageable pageable,
+	public @ResponseBody PagedResources<ThamQuyenGiaiQuyet> getList(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
 
@@ -63,8 +64,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class),
 			@ApiResponse(code = 201, message = "Thêm mới Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
-	public ResponseEntity<Object> create(@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
 
 		if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 				&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
@@ -78,7 +79,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@ApiOperation(value = "Lấy Thẩm Quyền Giải Quyết theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
-	public ResponseEntity<PersistentEntityResource> getById(@PathVariable("id") long id,
+	public ResponseEntity<PersistentEntityResource> getById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(thamQuyenGiaiQuyetService.predicateFindOne(id));
@@ -93,7 +95,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@ApiOperation(value = "Cập nhật Thẩm Quyền Giải Quyết", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Thẩm Quyền Giải Quyết thành công", response = ThamQuyenGiaiQuyet.class) })
-	public @ResponseBody ResponseEntity<Object> update(@PathVariable("id") long id,
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ThamQuyenGiaiQuyet thamQuyenGiaiQuyet, PersistentEntityResourceAssembler eass) {
 
 		thamQuyenGiaiQuyet.setId(id);
@@ -114,7 +117,8 @@ public class ThamQuyenGiaiQuyetController extends BaseController<ThamQuyenGiaiQu
 	@RequestMapping(method = RequestMethod.DELETE, value = "/thamQuyenGiaiQuyets/{id}")
 	@ApiOperation(value = "Xoá Thẩm Quyền Giải Quyết", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Thẩm Quyền Giải Quyết thành công") })
-	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.delete(repo, id);
 		if (thamQuyenGiaiQuyet == null) {

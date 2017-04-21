@@ -61,16 +61,6 @@ public class DonCongDanService {
 		}
 		return false;
 	}
-
-	public Don_CongDan deleteDonCongDan(DonCongDanRepository repo, Long id) {
-		Don_CongDan donCongDan = repo.findOne(predicateFindOne(id));
-		
-		if (donCongDan != null) {
-			donCongDan.setDaXoa(true);
-		}
-
-		return donCongDan;
-	}
 	
 	public boolean checkExistsData(DonCongDanRepository repo, Don_CongDan body) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
