@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,26 +28,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.DonService;
-import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
-
-	private static Log log = LogFactory.getLog(DonController.class);
-	private static DonService donService = new DonService();
-	private static XuLyDonService xuLyDonService = new XuLyDonService();
 	
 	@Autowired
 	private DonRepository repo;
+	
+	@Autowired
+	private DonService donService;
 	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -85,8 +80,6 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
 			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			PersistentEntityResourceAssembler eass){
-		
-		log.info("Get list Don");
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
@@ -146,7 +139,6 @@ public class DonController extends TttpController<Don> {
 	public @ResponseBody ResponseEntity<Object> update(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-		log.info("Update Don theo id: " + id);
 		don.setId(id);
 		
 		if (!donService.isExists(repo, id)) {

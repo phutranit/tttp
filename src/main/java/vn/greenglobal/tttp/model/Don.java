@@ -67,6 +67,7 @@ public class Don extends Model<Don> {
 	private boolean tuChoiTiepCongDan = false;
 	private boolean daGiaiQuyet = false;
 	private boolean daXuLy = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
@@ -613,5 +614,13 @@ public class Don extends Model<Don> {
 
 	public void setDaXuLy(boolean daXuLy) {
 		this.daXuLy = daXuLy;
+	}
+
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 }
