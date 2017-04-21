@@ -43,7 +43,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private CongChuc canBoTiepDan;
 	@NotNull
 	@ManyToOne
-	private CoQuanQuanLy donVi;
+	private CoQuanQuanLy donViTiepDan;
 
 	@NotNull
 	private LocalDateTime ngayTiepDan;
@@ -115,12 +115,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@ApiModelProperty(example = "{}")
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
+	public CoQuanQuanLy getDonViTiepDan() {
+		return donViTiepDan;
 	}
 
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
+	public void setDonViTiepDan(CoQuanQuanLy donViTiepDan) {
+		this.donViTiepDan = donViTiepDan;
 	}
 
 	public LocalDateTime getNgayTiepDan() {

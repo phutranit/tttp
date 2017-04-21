@@ -128,6 +128,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+				soTiepCongDan.getDon().setDaXuLy(true);
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
 			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
 				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {

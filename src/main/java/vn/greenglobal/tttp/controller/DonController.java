@@ -116,7 +116,9 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don don,PersistentEntityResourceAssembler eass) {
-		
+		if (don.isThanhLapDon()) {
+			don.setMa(donService.getMaDonMoi(repo));
+		}
 		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 	}
 	
