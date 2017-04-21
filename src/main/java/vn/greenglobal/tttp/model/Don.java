@@ -64,7 +64,6 @@ public class Don extends Model<Don> {
 	private boolean tuChoiTiepCongDan = false;
 	private boolean daGiaiQuyet = false;
 	private boolean daXuLy = false;
-	private boolean yeuCauGapLanhDao = false;
 	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
@@ -552,15 +551,6 @@ public class Don extends Model<Don> {
 
 	public void setDaXuLy(boolean daXuLy) {
 		this.daXuLy = daXuLy;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public boolean isYeuCauGapLanhDao() {
-		return yeuCauGapLanhDao;
-	}
-
-	public void setYeuCauGapLanhDao(boolean yeuCauGapLanhDao) {
-		this.yeuCauGapLanhDao = yeuCauGapLanhDao;
 	}
 	
 }

@@ -44,10 +44,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "soTiepCongDans", description = "Sổ tiếp công dân")
 public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
-	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();
-
 	@Autowired
 	private SoTiepCongDanRepository repo;
+	
+	@Autowired
+	private SoTiepCongDanService soTiepCongDanService;
 
 	@Autowired
 	private DonRepository repoDon;
