@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -148,7 +149,7 @@ public class Application extends SpringBootServletInitializer {
 						"/swagger-ui.html", 
 						"/swagger-resources/configuration/ui",
 						"/swagger-resources/configuration/security",
-						"/webjars/**");
+						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override
