@@ -3,16 +3,17 @@ package vn.greenglobal.tttp.service;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
-import vn.greenglobal.tttp.enums.LoaiDonEnum;
-import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
-import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.*;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
+import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 
 /**
@@ -21,53 +22,70 @@ import vn.greenglobal.tttp.repository.DonRepository;
  *
  */
 public class DonService {
-
+	private static XuLyDonService xuLyDonService = new XuLyDonService();
+	
 	public Predicate predicateFindAll(String maDon, 
 			String tenNguoiDungDon, String cmndHoChieu, String phanLoaiDon, 
 			String tiepNhanTuNgay,String tiepNhanDenNgay, 
 			String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
-			String tinhTrangXuLy) {
+			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon,
+			Long phongBanGiaiQuyetXLD, Long canBoXuLyXLD, Long phongBanXuLyXLD, 
+			Long coQuanTiepNhanXLD, String vaiTro) {
 		
-		BooleanExpression predAll = QDon.don.daXoa.eq(false);
+		BooleanExpression predAll = QDon.don.daXoa.eq(false).and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
 		if (StringUtils.isNotBlank(maDon)) {
-			
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 		
 		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
-
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.
 					containsIgnoreCase(tenNguoiDungDon));
-
 		}
 		
 		if (StringUtils.isNotBlank(cmndHoChieu)) {
-		
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.
 					containsIgnoreCase(cmndHoChieu));
 		}
 	
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
-			
 			predAll = predAll.and(QDon.don.loaiDon.eq(
 					LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
 		
+		if (StringUtils.isNotBlank(trangThaiDon)) {
+			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
+		}
+		
+		if (StringUtils.isNotBlank(vaiTro)) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().nguoiDung.vaiTros.any().quyen.eq(vaiTro));
+		}
+		
+		if (phongBanGiaiQuyetXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
+		}
+		
+		if (canBoXuLyXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().congChuc.id.eq(canBoXuLyXLD));
+		}
+		
+		if (phongBanXuLyXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
+		}
+		
+		if (coQuanTiepNhanXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
+		}
+		
 		if (StringUtils.isNotBlank(tiepNhanTuNgay)) {
-
 			if (StringUtils.isNotBlank(tiepNhanDenNgay)) {
-				
-				predAll = predAll.and(QDon.don.ngayTiepNhan.between(
-						fixTuNgay(tiepNhanTuNgay),fixDenNgay(tiepNhanDenNgay)));
+				predAll = predAll
+						.and(QDon.don.ngayTiepNhan.between(fixTuNgay(tiepNhanTuNgay), fixDenNgay(tiepNhanDenNgay)));
 			} else {
-
-				predAll = predAll.and(QDon.don.ngayTiepNhan.year().eq(
-						LocalDateTime.parse(tiepNhanDenNgay).getYear()))
-						.and(QDon.don.ngayTiepNhan.month().eq(
-						LocalDateTime.parse(tiepNhanDenNgay).getMonthValue()))
-						.and(QDon.don.ngayTiepNhan.dayOfMonth().eq(
-						LocalDateTime.parse(tiepNhanDenNgay).getDayOfMonth()));
+				predAll = predAll.and(QDon.don.ngayTiepNhan.year().eq(LocalDateTime.parse(tiepNhanDenNgay).getYear()))
+						.and(QDon.don.ngayTiepNhan.month().eq(LocalDateTime.parse(tiepNhanDenNgay).getMonthValue()))
+						.and(QDon.don.ngayTiepNhan.dayOfMonth()
+								.eq(LocalDateTime.parse(tiepNhanDenNgay).getDayOfMonth()));
 			}
 		}
 		
@@ -179,6 +197,4 @@ public class DonService {
 
 		return don;
 	}
-	
-	
 }

@@ -64,6 +64,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"),
 	})
+	
 	public @ResponseBody PagedResources<Don> getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,
 			@RequestParam(value = "maDon", required = false) String maDon,
@@ -76,13 +77,21 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
 			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
 			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
+			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
+			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
+			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
+			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
+			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			PersistentEntityResourceAssembler eass){
 		
 		log.info("Get list Don");
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
-				hanGiaiQuyetDenNgay, trinhTrangXuLy),pageable);
+				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, 
+				canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro),pageable);
 			
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
 	}
