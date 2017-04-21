@@ -3,7 +3,9 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+//import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -62,6 +64,7 @@ public class Don extends Model<Don> {
 	private boolean thanhLapDon = false;
 	private boolean daGiaiQuyet = false;
 	private boolean daXuLy = false;
+	private boolean yeuCauGapTrucTiepLanhDao = false;
 	
 	@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -106,9 +109,13 @@ public class Don extends Model<Don> {
 	@Fetch(value = FetchMode.SELECT)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
 	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>(); // XLD
+	
 	@Transient
-	private Don_CongDan donCongDan; // TCD	
-
+	private Don_CongDan donCongDan; // TCD
+	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon; //TCD Enum
 	@Enumerated(EnumType.STRING)
@@ -122,14 +129,25 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
+	@Column(nullable=true)
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
+	//private String loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
-	
+
+	@ApiModelProperty(hidden = true)
+	public List<XuLyDon> getXuLyDons() {
+		return xuLyDons;
+	}
+
+	public void setXuLyDons(List<XuLyDon> xuLyDons) {
+		this.xuLyDons = xuLyDons;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getDonCongDan() {
 		return donCongDan;
@@ -372,6 +390,15 @@ public class Don extends Model<Don> {
 	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
 		this.loaiNguoiDungDon = loaiNguoiDungDon;
 	}
+	
+//	@ApiModelProperty(position = 5, required = true)
+//	public String getLoaiNguoiDungDon() {
+//		return loaiNguoiDungDon;
+//	}
+//
+//	public void setLoaiNguoiDungDon(String loaiNguoiDungDon) {
+//		this.loaiNguoiDungDon = loaiNguoiDungDon;
+//	}
 
 	@ApiModelProperty(position = 18)
 	public HinhThucGiaiQuyetEnum getHinhThucDaGiaiQuyet() {
@@ -436,19 +463,17 @@ public class Don extends Model<Don> {
 		this.tiepCongDans = tiepCongDans;
 	}
 
+
 	@Transient
-	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuDon() {
 		return getLinhVucDonThu();
 	}
 
 	@Transient
-	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
 	}
 
-	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
 		return donCongDans;
 	}
@@ -543,7 +568,6 @@ public class Don extends Model<Don> {
 		this.capCoQuanDangGiaiQuyet = capCoQuanDangGiaiQuyet;
 	}
 
-	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
 	}
@@ -569,5 +593,12 @@ public class Don extends Model<Don> {
 	public void setDaXuLy(boolean daXuLy) {
 		this.daXuLy = daXuLy;
 	}
-	
+
+	public boolean isYeuCauGapTrucTiepLanhDao() {
+		return yeuCauGapTrucTiepLanhDao;
+	}
+
+	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
+		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
+	}
 }

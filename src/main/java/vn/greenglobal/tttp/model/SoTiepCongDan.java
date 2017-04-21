@@ -63,7 +63,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private boolean giaiQuyetNgay = false;
 	private boolean choGiaiQuyet = false;
-	private boolean yeuCauGapTrucTiepLanhDao = false;
 
 	private int soThuTuLuotTiep = 0;
 
@@ -218,14 +217,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
 		this.choGiaiQuyet = choGiaiQuyet;
-	}
-
-	public boolean isYeuCauGapTrucTiepLanhDao() {
-		return yeuCauGapTrucTiepLanhDao;
-	}
-
-	public void setYeuCauGapTrucTiepLanhDao(boolean yeuCauGapTrucTiepLanhDao) {
-		this.yeuCauGapTrucTiepLanhDao = yeuCauGapTrucTiepLanhDao;
 	}
 
 	public String getDiaDiemGapLanhDao() {
