@@ -6,7 +6,8 @@ public enum HuongXuLyXLDEnum {
 	KHONG_DU_DIEU_KIEN_THU_LY("Không đủ điều kiện thụ lý"),
 	CHUYEN_DON("Chuyển đơn"),
 	TRA_DON_VA_HUONG_DAN("Trả đơn và hướng dẫn"),
-	LUU_DON_VA_THEO_DOI("Lưu đơn và theo dõi");
+	LUU_DON_VA_THEO_DOI("Lưu đơn và theo dõi"),
+	YEU_CAU_GAP_LANH_DAO("Yêu cầu gặp lãnh đạo");
 	
 	HuongXuLyXLDEnum(String text) {
 		this.text = text;
