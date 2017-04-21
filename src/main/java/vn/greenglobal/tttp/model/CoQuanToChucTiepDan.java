@@ -7,9 +7,12 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.annotations.ApiModel;
+
 @Entity
 @Table(name = "coquantochuctiepdan")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 
 	/**
@@ -44,10 +47,10 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	public void setChucVu(String chucVu) {
 		this.chucVu = chucVu;
 	}
-	
+
 	@Transient
 	public Long getCoQuanToChucTiepDanId() {
 		return getId();
 	}
-	
+
 }

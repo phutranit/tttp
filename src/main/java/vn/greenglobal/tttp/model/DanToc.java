@@ -8,18 +8,20 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "dantoc")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
+@ApiModel
 public class DanToc extends Model<DanToc> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7550664635055554646L;
-	
+
 	private String ma = "";
 	@NotBlank
 	private String ten = "";
@@ -74,7 +76,7 @@ public class DanToc extends Model<DanToc> {
 	}
 
 	@Transient
-	@ApiModelProperty(hidden=true)
+	@ApiModelProperty(hidden = true)
 	public Long getDanTocId() {
 		return getId();
 	}

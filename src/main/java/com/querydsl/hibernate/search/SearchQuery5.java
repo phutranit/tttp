@@ -127,19 +127,19 @@ public class SearchQuery5<T> implements SimpleQuery<SearchQuery5<T>>, Fetchable<
 		return queryMixin.limit(1).fetchOne();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public CloseableIterator<T> iterate() {
 		return new IteratorAdapter<T>(createQuery(false).iterate());
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<T> fetch() {
 		return createQuery(false).list();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public T fetchOne() {
 		return (T) createQuery(false).uniqueResult();
