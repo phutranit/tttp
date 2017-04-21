@@ -69,6 +69,7 @@ public class SoTiepCongDanService {
 
 	public Predicate predicateFindTCDYeuCauGapLanhDao(String tuNgay, String denNgay) {
 		BooleanExpression predAll = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false)
+				
 				.and(QSoTiepCongDan.soTiepCongDan.yeuCauGapTrucTiepLanhDao.eq(true))
 				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(false));
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
