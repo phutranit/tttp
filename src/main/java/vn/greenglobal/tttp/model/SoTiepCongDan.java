@@ -47,7 +47,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@NotNull
 	private LocalDateTime ngayTiepDan;
-	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
 	private String noiDungTiepCongDan = "";
@@ -61,14 +60,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	private String huongXuLyText = "";
 
-	private boolean giaiQuyetNgay = false;
-	private boolean choGiaiQuyet = false;
-
 	private int soThuTuLuotTiep = 0;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private HuongGiaiQuyetTCDEnum huongGiaiQuyet;
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
@@ -129,14 +122,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setNgayTiepDan(LocalDateTime ngayTiepDan) {
 		this.ngayTiepDan = ngayTiepDan;
-	}
-
-	public LocalDateTime getNgayTiepNhan() {
-		return ngayTiepNhan;
-	}
-
-	public void setNgayTiepNhan(LocalDateTime ngayTiepNhan) {
-		this.ngayTiepNhan = ngayTiepNhan;
 	}
 
 	public LocalDateTime getThoiHan() {
@@ -203,22 +188,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.noiDungBoSung = noiDungBoSung;
 	}
 
-	public boolean isGiaiQuyetNgay() {
-		return giaiQuyetNgay;
-	}
-
-	public void setGiaiQuyetNgay(boolean giaiQuyetNgay) {
-		this.giaiQuyetNgay = giaiQuyetNgay;
-	}
-
-	public boolean isChoGiaiQuyet() {
-		return choGiaiQuyet;
-	}
-
-	public void setChoGiaiQuyet(boolean choGiaiQuyet) {
-		this.choGiaiQuyet = choGiaiQuyet;
-	}
-
 	public String getDiaDiemGapLanhDao() {
 		return diaDiemGapLanhDao;
 	}
@@ -233,14 +202,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
 		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
-	}
-
-	public HuongGiaiQuyetTCDEnum getHuongGiaiQuyet() {
-		return huongGiaiQuyet;
-	}
-
-	public void setHuongGiaiQuyet(HuongGiaiQuyetTCDEnum huongGiaiQuyet) {
-		this.huongGiaiQuyet = huongGiaiQuyet;
 	}
 
 	public HuongXuLyTCDEnum getHuongXuLy() {

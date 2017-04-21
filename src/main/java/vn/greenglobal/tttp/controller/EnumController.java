@@ -280,26 +280,6 @@ public class EnumController {
 		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetTCDs")
-	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTCDs(@RequestHeader(value = "Authorization", required = true) String authorization) {
-		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
-		Map<String, Object> phanLoaiObj = new HashMap<>();
-
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
-		phanLoaiList.add(phanLoaiObj);
-
-		phanLoaiObj = new HashMap<>();
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
-		phanLoaiList.add(phanLoaiObj);
-
-		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
-		errorBody.put("phanLoaiList", phanLoaiList);
-
-		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
-	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -307,13 +287,13 @@ public class EnumController {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		phanLoaiObj.put("ten", HuongXuLyTCDEnum.GIAI_QUYET_NGAY.getText());
+		phanLoaiObj.put("giaTri", HuongXuLyTCDEnum.GIAI_QUYET_NGAY.name());
 		phanLoaiList.add(phanLoaiObj);
 
 		phanLoaiObj = new HashMap<>();
-		phanLoaiObj.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.getText());
-		phanLoaiObj.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI.name());
+		phanLoaiObj.put("ten", HuongXuLyTCDEnum.GIAO_DON_VI.getText());
+		phanLoaiObj.put("giaTri", HuongXuLyTCDEnum.GIAO_DON_VI.name());
 		phanLoaiList.add(phanLoaiObj);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
