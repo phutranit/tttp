@@ -62,7 +62,9 @@ public class Don extends Model<Don> {
 	@NotNull
 	private boolean thanhLapDon = false;
 	private boolean tuChoiTiepCongDan = false;
-
+	private boolean daGiaiQuyet = false;
+	private boolean daXuLy = false;
+	
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 
@@ -519,5 +521,23 @@ public class Don extends Model<Don> {
 
 	public void setTaiLieuBangChungs(List<TaiLieuBangChung> taiLieuBangChungs) {
 		this.taiLieuBangChungs = taiLieuBangChungs;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public boolean isDaGiaiQuyet() {
+		return daGiaiQuyet;
+	}
+
+	public void setDaGiaiQuyet(boolean daGiaiQuyet) {
+		this.daGiaiQuyet = daGiaiQuyet;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public boolean isDaXuLy() {
+		return daXuLy;
+	}
+
+	public void setDaXuLy(boolean daXuLy) {
+		this.daXuLy = daXuLy;
 	}
 }
