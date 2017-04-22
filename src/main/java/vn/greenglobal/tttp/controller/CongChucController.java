@@ -112,8 +112,8 @@ public class CongChucController extends TttpController<CongChuc> {
 					"Trường ngày sinh không được để trống!");
 		}
 
-		if (congChuc.getDonVi() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED", "Trường đơn vị không được để trống!");
+		if (congChuc.getCoQuanQuanLy() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED", "Trường cơ quan quản lý không được để trống!");
 		}
 
 		if (congChuc.getChucVu() == null) {
@@ -201,8 +201,8 @@ public class CongChucController extends TttpController<CongChuc> {
 					"Trường ngày sinh không được để trống!");
 		}
 
-		if (congChuc.getDonVi() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED", "Trường đơn vị không được để trống!");
+		if (congChuc.getCoQuanQuanLy() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED", "Trường cơ quan quản lý không được để trống!");
 		}
 
 		if (congChuc.getChucVu() == null) {
