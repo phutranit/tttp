@@ -60,9 +60,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, 
 			PersistentEntityResourceAssembler eass) {
-		LOG.info("create XLD");
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
-			LOG.info("XLD isExists");
 			XuLyDon xuLyDonHienTai = repo.findOne(xuLyDonService.predicateFindMax(
 					xuLyDon.getDon().getId()));
 			XuLyDon xuLyDonTiepTheo = new XuLyDon();
@@ -325,9 +323,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDon.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 		xuLyDon.setChucVu(ChucVuEnum.VAN_THU);
 		xuLyDon.setThuTuThucHien(0);
-		Don donDau = donService.updateTrangThaiDon(donrepo, xuLyDon.getDon().getId(), TrangThaiDonEnum.CHO_XU_LY);
-		LOG.info("donDau " +donDau.getMa() + "--  Id " +donDau.getId());
+		
+//		Don donDau = donService.updateTrangThaiDon(donrepo, xuLyDon.getDon().getId(), TrangThaiDonEnum.CHO_XU_LY);
+		Don donDau = donrepo.findOne(xuLyDon.getDon().getId());
+		donDau.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
 		donrepo.save(donDau);
+		
 		return Utils.doSave(repo, xuLyDon, eass, HttpStatus.CREATED);
 	}
 
