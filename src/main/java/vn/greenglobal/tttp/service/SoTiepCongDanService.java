@@ -79,4 +79,15 @@ public class SoTiepCongDanService {
 
 		return soTiepCongDan;
 	}
+	
+	public SoTiepCongDan cancelCuocTiepDanDinhKyCuaLanhDao(SoTiepCongDanRepository repo, Long id) {
+		SoTiepCongDan soTiepCongDan = repo.findOne(predicateFindOne(id));
+
+		if (soTiepCongDan != null) {
+			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(false);
+			soTiepCongDan.setDaXoa(true);
+		}
+
+		return soTiepCongDan;
+	}
 }
