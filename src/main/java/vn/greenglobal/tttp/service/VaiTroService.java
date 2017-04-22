@@ -53,7 +53,7 @@ public class VaiTroService {
 		}
 
 		predAll = predAll.and(QVaiTro.vaiTro.ten.eq(body.getTen()));
-		VaiTro vaiTro = repo.findOne(base);
+		VaiTro vaiTro = repo.findOne(predAll);
 
 		return vaiTro != null ? true : false;
 	}
