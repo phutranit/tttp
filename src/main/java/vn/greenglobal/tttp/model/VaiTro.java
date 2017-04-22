@@ -45,8 +45,9 @@ public class VaiTro extends Model<VaiTro> {
 	public void setQuyen(String quyen) {
 		this.quyen = quyen;
 	}
-	
+
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getVaiTroId() {
 		return getId();
 	}
