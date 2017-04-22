@@ -127,6 +127,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getNguoiDungId() {
 		return getId();
 	}
