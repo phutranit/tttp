@@ -47,15 +47,15 @@ public class SoTiepCongDanService {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
 		} else {
 			if (StringUtils.isNotBlank(tuNgay)) {
 				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.after(dtTuNgay));
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.after(dtTuNgay));
 			}
 			if (StringUtils.isNotBlank(denNgay)) {
 				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepNhan.before(dtDenNgay));
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.before(dtDenNgay));
 			}
 		}
 

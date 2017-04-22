@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -127,10 +128,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);		
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			if (HuongXuLyTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setDaXuLy(true);
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
-			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			} else if (HuongXuLyTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongXuLy())) {
 				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
 					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
 					soTiepCongDan.getDon().setDaXuLy(true);
@@ -142,8 +143,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 			}
 		}			
-		repoDon.save(soTiepCongDan.getDon());
-		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			repoDon.save(soTiepCongDan.getDon());
+		}
+		return output;
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
