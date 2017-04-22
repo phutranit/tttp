@@ -100,7 +100,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/chucVus/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/chucVus/{id}")
 	@ApiOperation(value = "Cập nhật Chức Vụ", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Chức Vụ thành công", response = ChucVu.class) })
