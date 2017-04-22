@@ -1,26 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.persistence.Transient;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
-import org.docx4j.model.datastorage.migration.VariablePrepare;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +12,6 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -66,87 +45,6 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 	public CapCoQuanQuanLyController(BaseRepository<CapCoQuanQuanLy, ?> repo) {
 		super(repo);
-	}
-	
-	private WordprocessingMLPackage wordMLPackage;
-	private ByteArrayOutputStream out = new ByteArrayOutputStream();
-	
-	@Transient
-	public WordprocessingMLPackage getWordMLPackage() {
-		return wordMLPackage;
-	}
-
-	public void setWordMLPackage(WordprocessingMLPackage wordMLPackage) {
-		this.wordMLPackage = wordMLPackage;
-	}
-	
-	@Transient
-	public ByteArrayOutputStream getOut() {
-		return out;
-	}
-
-	public void setOut(ByteArrayOutputStream out) {
-		this.out = out;
-	}
-	
-	public void variableReplace(final HashMap<String, String> mappings) throws Exception {
-		VariablePrepare.prepare(getWordMLPackage());
-		getWordMLPackage().getMainDocumentPart().variableReplace(mappings);
-	}
-
-	public void complete() throws Docx4JException {
-		setWordMLPackage(getWordMLPackage().getMainDocumentPart().convertAltChunks());
-		getWordMLPackage().save(getOut());
-	}
-
-	@RequestMapping(value = "/word", method = RequestMethod.GET)
-	public void exportWord(HttpServletResponse response) {
-		try {
-//			File file = null;
-//			
-//			file = new File("/root/Desktop/PHIEU_YEU_CAU_TRIEN_KHAI_CAP_NHAT_UNG_DUNG_GOP_Y_24032017.docx");
-			File file = new File("/root/Desktop/van_ban_chuyen_phan_anh.doc");
-			if (!file.exists()) {
-				String errorMessage = "Sorry. The file you are looking for does not exist";
-				OutputStream outputStream = response.getOutputStream();
-				outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
-				outputStream.close();
-				return;
-			}
-
-			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-			if (mimeType == null) {
-				mimeType = "application/octet-stream";
-			}
-
-			response.setContentType(mimeType);
-			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
-			response.setContentLength((int) file.length());
-
-			InputStream inputStream = null;
-			
-			out = new ByteArrayOutputStream();
-			HashMap<String, String> mappings = new HashMap<String, String>();
-			    
-			
-			mappings.put("donViXuLy", "123");
-
-			setWordMLPackage(WordprocessingMLPackage.load(file));
-			System.out.println("word 1");
-			variableReplace(mappings);
-			System.out.println("word 2");
-			complete();
-			System.out.println("word 3");
-			getOut().close();
-			System.out.println("word 4");
-			
-//			new ByteArrayInputStream(getOut().toByteArray()
-			inputStream = new BufferedInputStream(new ByteArrayInputStream(getOut().toByteArray()));
-			FileCopyUtils.copy(inputStream, response.getOutputStream());
-			System.out.println("word 5");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

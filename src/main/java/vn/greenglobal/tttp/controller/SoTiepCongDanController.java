@@ -1,5 +1,9 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +31,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
@@ -194,5 +197,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDan/word")
+	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWord(HttpServletResponse response) {
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("donViXuLy", "test");
+		Utils.exportWord(response, "../word/van_ban_chuyen_phan_anh.doc", mappings);
+	}
+	
 }
