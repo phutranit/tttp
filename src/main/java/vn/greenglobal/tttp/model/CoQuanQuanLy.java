@@ -40,6 +40,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 
 	@ManyToOne
 	private CapCoQuanQuanLy capCoQuanQuanLy;
+	
+	@ManyToOne
+	private DonViHanhChinh donViHanhChinh;
 
 	@OneToMany(mappedBy = "donVi", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -98,6 +101,15 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 		this.capCoQuanQuanLy = capCoQuanQuanLy;
 	}
 
+	@ApiModelProperty(position = 6, required = true, example = "{}")
+	public DonViHanhChinh getDonViHanhChinh() {
+		return donViHanhChinh;
+	}
+
+	public void setDonViHanhChinh(DonViHanhChinh donViHanhChinh) {
+		this.donViHanhChinh = donViHanhChinh;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getCoQuanQuanLyId() {
@@ -114,6 +126,11 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	@ApiModelProperty(hidden = true)
 	public CapCoQuanQuanLy getCapCoQuanQuanLyCQQL() {
 		return getCapCoQuanQuanLy();
+	}
+	
+	@Transient
+	public DonViHanhChinh getDonViHanhChinhCQQL() {
+		return getDonViHanhChinh();
 	}
 
 }
