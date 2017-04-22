@@ -123,13 +123,13 @@ public class Application extends SpringBootServletInitializer {
 								"http://192.168.1.242:9830", "192.168.1.242:9830")
 						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
 						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length", "username", "password",
-								"authorization", "client-security-token", "X-Application-Context", "Date")
+								"authorization", "client-security-token", "X-Application-Context", "Date", "Content-Disposition")
 						.maxAge(3600);
 			}
 		};
 	}
 
-	@Bean
+//	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
