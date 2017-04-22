@@ -198,12 +198,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDan/word")
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/word")
 	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWord(HttpServletResponse response) {
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("donViXuLy", "test");
-		Utils.exportWord(response, "../word/van_ban_chuyen_phan_anh.doc", mappings);
+		Utils.exportWord(response, "word/van_ban_chuyen_phan_anh.doc", mappings);
 	}
 	
 }
