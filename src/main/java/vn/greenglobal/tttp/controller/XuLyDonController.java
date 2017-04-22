@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -9,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +39,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "xuLyDons", description = "Xử lý đơn")
 public class XuLyDonController extends TttpController<XuLyDon> {
-
+	public static transient final Logger LOG = LogManager.getLogger(XuLyDonController.class.getName());
 	private static XuLyDonService xuLyDonService = new XuLyDonService();
 	private static DonService donService = new DonService();
 
@@ -54,11 +57,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thanh công", response = XuLyDon.class) })
-	public ResponseEntity<Object> create(@RequestBody XuLyDon xuLyDon, 
+	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody XuLyDon xuLyDon, 
 			PersistentEntityResourceAssembler eass) {
-		
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
-
 			XuLyDon xuLyDonHienTai = repo.findOne(xuLyDonService.predicateFindMax(
 					xuLyDon.getDon().getId()));
 			XuLyDon xuLyDonTiepTheo = new XuLyDon();
@@ -321,8 +323,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDon.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 		xuLyDon.setChucVu(ChucVuEnum.VAN_THU);
 		xuLyDon.setThuTuThucHien(0);
-		Don donDau = donService.updateTrangThaiDon(donrepo, xuLyDon.getDon().getId(), TrangThaiDonEnum.CHO_XU_LY);
+		
+//		Don donDau = donService.updateTrangThaiDon(donrepo, xuLyDon.getDon().getId(), TrangThaiDonEnum.CHO_XU_LY);
+		Don donDau = donrepo.findOne(xuLyDon.getDon().getId());
+		donDau.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
 		donrepo.save(donDau);
+		
 		return Utils.doSave(repo, xuLyDon, eass, HttpStatus.CREATED);
 	}
 
