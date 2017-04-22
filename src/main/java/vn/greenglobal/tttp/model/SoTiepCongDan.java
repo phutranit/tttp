@@ -250,7 +250,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return getDon();
 	}
 
-	@Transient
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
 	}
