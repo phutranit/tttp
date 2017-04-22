@@ -46,7 +46,7 @@ public class CongChuc extends Model<CongChuc> {
 
 	@NotNull
 	@ManyToOne
-	private CoQuanQuanLy donVi;
+	private CoQuanQuanLy coQuanQuanLy;
 
 	@NotNull
 	@ManyToOne
@@ -146,16 +146,16 @@ public class CongChuc extends Model<CongChuc> {
 		this.gioiTinh = gioiTinh;
 	}
 
-	@ApiModelProperty(position = 10, required = true)
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
+	@ApiModelProperty(position = 10, required = true, example = "{}")
+	public CoQuanQuanLy getCoQuanQuanLy() {
+		return coQuanQuanLy;
 	}
 
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
+	public void setCoQuanQuanLy(CoQuanQuanLy coQuanQuanLy) {
+		this.coQuanQuanLy = coQuanQuanLy;
 	}
 
-	@ApiModelProperty(position = 11)
+	@ApiModelProperty(position = 11, example = "{}")
 	public ChucVu getChucVu() {
 		return chucVu;
 	}
@@ -177,5 +177,17 @@ public class CongChuc extends Model<CongChuc> {
 	@ApiModelProperty(hidden = true)
 	public NguoiDung getNguoiDungCongChuc() {
 		return getNguoiDung();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ChucVu getChucVuCongChuc() {
+		return getChucVu();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonViCongChuc() {
+		return getCoQuanQuanLy();
 	}
 }
