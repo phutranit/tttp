@@ -49,6 +49,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private ChucVuEnum chucVu;
 	@Enumerated(EnumType.STRING)
 	private ChucVuEnum chucVuGiaoViec;
+	
+	@ApiModelProperty(position = 8)
 	public ChucVuEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
 	}
@@ -62,6 +64,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
 	
+	@ApiModelProperty(example = "{}", position = 7)
 	public CoQuanQuanLy getCoQuanTiepNhan() {
 		return coQuanTiepNhan;
 	}
@@ -70,7 +73,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.coQuanTiepNhan = coQuanTiepNhan;
 	}
 
-	@ApiModelProperty(example = "{}")
+	@ApiModelProperty(example = "{}", position = 1)
 	public Don getDon() {
 		return don;
 	}
@@ -79,6 +82,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(example = "{}", position = 14)
 	public CongChuc getCongChuc() {
 		return congChuc;
 	}
@@ -87,6 +91,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.congChuc = congChuc;
 	}
 
+	@ApiModelProperty(position = 9)
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
 		return thamQuyenGiaiQuyet;
 	}
@@ -95,6 +100,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thamQuyenGiaiQuyet = thamQuyenGiaiQuyet;
 	}
 
+	@ApiModelProperty(example = "{}", position = 6)
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
 	}
@@ -103,6 +109,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public int getThuTuThucHien() {
 		return thuTuThucHien;
 	}
@@ -111,6 +118,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thuTuThucHien = thuTuThucHien;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public String getGhiChu() {
 		return ghiChu;
 	}
@@ -119,6 +127,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.ghiChu = ghiChu;
 	}
 
+	@ApiModelProperty(position = 4)
 	public String getyKienXuLy() {
 		return yKienXuLy;
 	}
@@ -127,6 +136,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.yKienXuLy = yKienXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
 	}
@@ -135,6 +145,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.moTaTrangThai = moTaTrangThai;
 	}
 
+	@ApiModelProperty(example = "{}", position = 18)
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
 	}
@@ -143,14 +154,17 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
+	@ApiModelProperty(example = "{}", position = 19)
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
 	
+	@ApiModelProperty(position = 13, example = "{}")
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
 	}
 
+	@ApiModelProperty(position = 12)
 	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
@@ -159,6 +173,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
 	}
 
+	@ApiModelProperty(position = 5)
 	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
 		return quyTrinhXuLy;
 	}
@@ -167,6 +182,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.quyTrinhXuLy = quyTrinhXuLy;
 	}
 
+	@ApiModelProperty(position = 10)
 	public HuongXuLyXLDEnum getHuongXuLy() {
 		return huongXuLy;
 	}
@@ -175,6 +191,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.huongXuLy = huongXuLy;
 	}
 	
+	@ApiModelProperty(position = 2)
 	public ChucVuEnum getChucVu() {
 		return chucVu;
 	}
@@ -183,6 +200,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.chucVu = chucVu;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 3)
 	public CoQuanQuanLy getPhongBanXuLy() {
 		return phongBanXuLy;
 	}
@@ -191,6 +209,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanXuLy = phongBanXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 15)
 	public CongChuc getCanBoXuLy() {
 		return canBoXuLy;
 	}

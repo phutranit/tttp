@@ -70,15 +70,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestBody XuLyDon xuLyDon, 
 			PersistentEntityResourceAssembler eass) {
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
+			
 			//XuLyDon xuLyDonHienTai = repo.findOne((Predicate)xuLyDonService.predicateFindMax(repo, xuLyDon.getDon().getDonId()));
 			XuLyDon xuLyDonHienTai = xuLyDonService.predicateFindMax(repo, xuLyDon.getDon().getDonId());
-			
 			XuLyDon xuLyDonTiepTheo = new XuLyDon();
 			String note = "";
 			String chucVuCuaXuLyDon = "";
 			
 			//Xac dinh vao tro cua nguoi dung
-			
 			if (xuLyDonHienTai.getCongChuc() != null) {
 				CongChuc congChuc = congChucRepo.findOne(xuLyDonHienTai.getCongChuc().getId());
 				NguoiDung nguoiDung = congChuc.getNguoiDung();
@@ -97,8 +96,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			if(StringUtils.isNotBlank(chucVuCuaXuLyDon)) {
 				if (chucVuCuaXuLyDon.equals(ChucVuEnum.VAN_THU.name())) {
+					System.out.println("VAN THU");
 					if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
-						
 						// Add ghiChu
 						note = ChucVuEnum.VAN_THU.getText().toString() + " " + QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText().toString()  + " "
 								+ xuLyDonHienTai.getPhongBanXuLy().getTen().toString() ;
@@ -126,7 +125,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 						// Add ghiChu
 						if (xuLyDon.getCanBoXuLyChiDinh().equals(null)) {
-							
 							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText() + " "
 									+ xuLyDon.getPhongBanXuLy().getTen();
 //							xuLyDonHienTai.setGhiChu(note);
@@ -134,7 +132,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
 							return Utils.doSave(repo, xuLyDonTiepTheo, eass, HttpStatus.CREATED);
 						} else {
-							
 							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText() + " "
 									+ xuLyDon.getCanBoXuLyChiDinh().getHoVaTen() + " " + xuLyDon.getPhongBanXuLy().getTen();
 //							xuLyDonHienTai.setGhiChu(note);
@@ -354,7 +351,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDon.setThuTuThucHien(0);
 		xuLyDon.setCongChuc(null);
 		xuLyDon.setQuyTrinhXuLy(null);
-		Don donDau = donrepo.findOne(xuLyDon.getDon().getId());
+		long donId = xuLyDon.getDon().getId();
+//		Don donDau = donrepo.findOne(donId);
+		Don donDau = donrepo.findOne(donService.predicateFindOne(donId));
 		donDau.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
 		donrepo.save(donDau);
 		
