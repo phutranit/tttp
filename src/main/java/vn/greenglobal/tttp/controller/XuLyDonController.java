@@ -69,9 +69,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, 
 			PersistentEntityResourceAssembler eass) {
-		LOG.info("create XLD");
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
-			LOG.info("XLD isExists");
 			//XuLyDon xuLyDonHienTai = repo.findOne((Predicate)xuLyDonService.predicateFindMax(repo, xuLyDon.getDon().getDonId()));
 			XuLyDon xuLyDonHienTai = xuLyDonService.predicateFindMax(repo, xuLyDon.getDon().getDonId());
 			
@@ -80,22 +78,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			String chucVuCuaXuLyDon = "";
 			
 			//Xac dinh vao tro cua nguoi dung
-			LOG.info("xuLyDonHienTai " +xuLyDonHienTai.getId());
 			
 			if (xuLyDonHienTai.getCongChuc() != null) {
-				LOG.info("cong chuc " +xuLyDonHienTai.getCongChuc().getId());
 				CongChuc congChuc = congChucRepo.findOne(xuLyDonHienTai.getCongChuc().getId());
 				NguoiDung nguoiDung = congChuc.getNguoiDung();
-				LOG.info("nguoi dung " +nguoiDung);
 				if (nguoiDung != null) {
-					LOG.info("nguoi dung " +nguoiDung);
 					for (VaiTro vaiTro : nguoiDung.getVaiTros()) {
-						LOG.info("vaiTro " +vaiTro);
 						String quyen = vaiTro.getQuyen().trim();
-						LOG.info("quyen " +quyen);
-						LOG.info("cv enum " +ChucVuEnum.VAN_THU);
 						if (quyen.equals(ChucVuEnum.VAN_THU.name())) {
-							LOG.info("GG");
 							chucVuCuaXuLyDon = vaiTro.getQuyen();
 							break;
 						}
@@ -105,11 +95,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				chucVuCuaXuLyDon = xuLyDonHienTai.getChucVu().name();
 			}
 			
-			LOG.info("== vai tro XLD == : " +chucVuCuaXuLyDon);
 			if(StringUtils.isNotBlank(chucVuCuaXuLyDon)) {
-				LOG.info("van thu HIEN TAI : " +xuLyDonHienTai);
 				if (chucVuCuaXuLyDon.equals(ChucVuEnum.VAN_THU.name())) {
-					LOG.info("van thu ");
 					if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
 						
 						// Add ghiChu
@@ -128,7 +115,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					}
 					
 				} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.LANH_DAO.name())) {
-					LOG.info("lanh dao ");
 					if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.GIAO_VIEC)) {
 						
 						xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());

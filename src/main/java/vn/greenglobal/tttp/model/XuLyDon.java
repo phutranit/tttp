@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -69,6 +70,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.coQuanTiepNhan = coQuanTiepNhan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
