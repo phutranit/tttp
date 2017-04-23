@@ -121,9 +121,9 @@ public class Application extends SpringBootServletInitializer {
 						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
 								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
 								"http://192.168.1.242:9830", "192.168.1.242:9830")
-						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"authorization", "client-security-token", "X-Application-Context", "Date")
+						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length", "username", "password",
+								"authorization", "client-security-token", "X-Application-Context", "Date", "Content-Disposition")
 						.maxAge(3600);
 			}
 		};

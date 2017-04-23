@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -43,6 +44,12 @@ public class VaiTro extends Model<VaiTro> {
 
 	public void setQuyen(String quyen) {
 		this.quyen = quyen;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getVaiTroId() {
+		return getId();
 	}
 
 }
