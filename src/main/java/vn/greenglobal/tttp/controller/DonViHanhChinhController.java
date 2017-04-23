@@ -77,9 +77,13 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			PersistentEntityResourceAssembler eass) {
 
 		Page<DonViHanhChinh> page = null;
-		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_TINH_THANH_PHO"));
-		if (thamSo != null) {
-			page = repo.findAll(donViHanhChinhService.predicateFindAll("", null, new Long(thamSo.getGiaTri().toString())),
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_TINH"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO_TRUC_THUOC_TW"));
+		ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO-TRUC_THUOC_TINH"));
+		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null) {
+			page = repo.findAll(
+					donViHanhChinhService.predicateFindCapTinhThanhPho(new Long(thamSoOne.getGiaTri().toString()),
+							new Long(thamSoTwo.getGiaTri().toString()), new Long(thamSoThree.getGiaTri().toString())),
 					pageable);
 		}
 
@@ -95,15 +99,16 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			PersistentEntityResourceAssembler eass) {
 
 		Page<DonViHanhChinh> page = null;
-		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN_HUYEN"));
-		if (thamSo != null) {
-			page = repo.findAll(donViHanhChinhService.predicateFindAll("", cha, new Long(thamSo.getGiaTri().toString())),
-					pageable);
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_HUYEN"));
+		if (thamSoOne != null && thamSoOne != null) {
+			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
+					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capPhuongXa")
 	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Phường Xã", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -113,10 +118,11 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			PersistentEntityResourceAssembler eass) {
 
 		Page<DonViHanhChinh> page = null;
-		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_PHUONG_XA"));
-		if (thamSo != null) {
-			page = repo.findAll(donViHanhChinhService.predicateFindAll("", cha, new Long(thamSo.getGiaTri().toString())),
-					pageable);
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_PHUONG"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_XA"));
+		if (thamSoOne != null && thamSoOne != null) {
+			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
+					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
