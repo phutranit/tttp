@@ -78,13 +78,13 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "vaiTro", required = false) String vaiTro,
+			@RequestParam(value = "chucVu", required = false) String chucVu,
 			PersistentEntityResourceAssembler eass){
 		
 		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
 				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
 				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, 
-				canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro),pageable);
+				canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu),pageable);
 			
 		return assembler.toResource(pageData, (ResourceAssembler) eass);
 	}

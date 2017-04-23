@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -35,7 +36,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	
 	private int thuTuThucHien = 0;
-
+	
+	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
