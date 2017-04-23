@@ -209,4 +209,34 @@ public class CongDan extends Model<CongDan> {
 	public Long getCongDanId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getTinhThanhCongDan() {
+		return getTinhThanh();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getQuanHuyenCongDan() {
+		return getQuanHuyen();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getPhuongXaCongDan() {
+		return getPhuongXa();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ToDanPho getToDanPhoCongDan() {
+		return getToDanPho();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DanToc getDanTocCongDan() {
+		return getDanToc();
+	}
 }
