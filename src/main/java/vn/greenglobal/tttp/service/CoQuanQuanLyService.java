@@ -15,6 +15,7 @@ public class CoQuanQuanLyService {
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
+
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
@@ -37,6 +38,23 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 
+	public Predicate predicateFindPhongBanOrCoQuan(Long id, Long idCoQuan, boolean isPhongBan) {
+		
+		// Get list PhongBan of CoQuanQuanLy
+		BooleanExpression predData = base.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id));
+		
+		if (isPhongBan) {
+			predData = predData.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(idCoQuan));
+		} else {
+			CoQuanQuanLy cq = new CoQuanQuanLy();
+			cq = null;
+			predData = predData.and(QCoQuanQuanLy.coQuanQuanLy.cha.eq(cq));
+		}
+		
+		return predData;
+	}
+	
+	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}

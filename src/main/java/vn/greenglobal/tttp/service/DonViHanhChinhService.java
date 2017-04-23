@@ -17,7 +17,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
+		if (StringUtils.isNotBlank(ten)) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten)
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
 		}
