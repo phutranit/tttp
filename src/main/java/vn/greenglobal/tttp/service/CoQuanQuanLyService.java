@@ -14,47 +14,34 @@ public class CoQuanQuanLyService {
 	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
+	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh,Boolean notCha) {
 
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
+		if (tuKhoa != null && !"".equals(tuKhoa) && !notCha) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
 					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa))
 					.or(QCoQuanQuanLy.coQuanQuanLy.moTa.containsIgnoreCase(tuKhoa)));
 		}
 
-		if (cha != null && cha > 0) {
+		if (cha != null && cha > 0 && !notCha) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha));
 		}
 
-		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0) {
+		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 && !notCha) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(cha));
 		}
 		
-		if (donViHanhChinh != null && donViHanhChinh > 0) {
+		if (donViHanhChinh != null && donViHanhChinh > 0 && !notCha) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
+		}
+		
+		if (donViHanhChinh == null && capCoQuanQuanLy == null && cha == null && notCha) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.isNull());
 		}
 
 		return predAll;
 	}
 
-	public Predicate predicateFindPhongBanOrCoQuan(Long id, Long idCoQuan, boolean isPhongBan) {
-		
-		// Get list PhongBan of CoQuanQuanLy
-		BooleanExpression predData = base.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id));
-		
-		if (isPhongBan) {
-			predData = predData.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(idCoQuan));
-		} else {
-			CoQuanQuanLy cq = new CoQuanQuanLy();
-			cq = null;
-			predData = predData.and(QCoQuanQuanLy.coQuanQuanLy.cha.eq(cq));
-		}
-		
-		return predData;
-	}
-	
-	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}

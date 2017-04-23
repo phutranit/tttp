@@ -58,9 +58,10 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "cha", required = false) Long cha,
 			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			@RequestParam(value = "notCha", required = false, defaultValue = "false") Boolean notCha,
 			PersistentEntityResourceAssembler eass) {
 
-		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh),
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, notCha),
 				pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -130,39 +131,5 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		}
 		repo.save(coQuanQuanLy);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBans")
-	@ApiOperation(value = "Lấy danh sách phòng ban thuộc cơ quan", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 204, message = "Lấy danh sách phòng ban thuộc cơ quan thành công") })
-	public @ResponseBody PagedResources<CapCoQuanQuanLy> getPhongBans(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") Long id,
-			@PageableDefault(page = 0 ,value = Integer.MAX_VALUE) Pageable pageable,
-			PersistentEntityResourceAssembler eass) {
-		
-		CoQuanQuanLy coQuanQuanLy =  repo.findOne(coQuanQuanLyService.predicateFindOne(id));
-		repo.findAll(coQuanQuanLyService.predicateFindPhongBanOrCoQuan(id, coQuanQuanLy.getCha().getId(), true));
-		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanOrCoQuan(id, coQuanQuanLy.getCha().getId(), true),
-				pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/coQuans")
-	@ApiOperation(value = "Lấy danh sách cơ quan", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 204, message = "Lấy danh sách cơ quan thành công") })
-	public @ResponseBody PagedResources<CapCoQuanQuanLy> getCoQuan(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") Long id,
-			@PageableDefault(page = 0 ,value = Integer.MAX_VALUE) Pageable pageable,
-			PersistentEntityResourceAssembler eass) {
-		
-		CoQuanQuanLy coQuanQuanLy =  repo.findOne(coQuanQuanLyService.predicateFindOne(id));
-		repo.findAll(coQuanQuanLyService.predicateFindPhongBanOrCoQuan(id, coQuanQuanLy.getCha().getId(), false));
-		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanOrCoQuan(id, coQuanQuanLy.getCha().getId(), true),
-				pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
