@@ -66,6 +66,7 @@ public class CongDan extends Model<CongDan> {
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OrderBy("ngayTao ASC")
+	@ApiModelProperty(hidden = true)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 
 	public List<Don_CongDan> getDonCongDans() {

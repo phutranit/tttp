@@ -110,6 +110,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	}
 	
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public DonViHanhChinh getDonViHanhChinhCQQL() {
 		return getDonViHanhChinh();
 	}
