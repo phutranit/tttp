@@ -24,7 +24,7 @@ public class DonService {
 	public Predicate predicateFindAll(String maDon, String tenNguoiDungDon, String cmndHoChieu, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
-			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String vaiTro) {
+			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 
@@ -62,16 +62,12 @@ public class DonService {
 			predAll = predAll.and(QDon.don.xuLyDons.any().congChuc.id.eq(canBoXuLyXLD));
 		}
 		
-//		if (StringUtils.isNotBlank(vaiTro)) {
-//			predAll = predAll.and(QDon.don.xuLyDons.any().congChuc.nguoiDung.vaiTros.any().quyen.eq(vaiTro));
-//		}
-		
-//		if (phongBanXuLyXLD != null) {
-//			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().coQuanQuanLy.id.eq(phongBanXuLyXLD));
-//		}
-//
+		if (phongBanXuLyXLD != null) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
+		}
+
 //		if (phongBanXuLyXLD != null && StringUtils.isNotBlank(vaiTro)) {
-//			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().coQuanQuanLy.id.eq(phongBanXuLyXLD))
+//			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
 //					.and(QDon.don.xuLyDons.any().canBoXuLy.nguoiDung.vaiTros.any().quyen.eq(vaiTro));
 //		}
 		
@@ -89,6 +85,10 @@ public class DonService {
 						.and(QDon.don.ngayTiepNhan.dayOfMonth()
 								.eq(LocalDateTime.parse(tiepNhanDenNgay).getDayOfMonth()));
 			}
+		}
+		
+		if (StringUtils.isNotBlank(chucVu)) {
+			predAll = predAll.and(QDon.don.xuLyDons.any().chucVu.stringValue().eq(chucVu));
 		}
 
 		// thoiHanGiaiQuyet ????

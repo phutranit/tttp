@@ -3,10 +3,12 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -35,7 +37,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	
 	private int thuTuThucHien = 0;
-
+	
+	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
@@ -67,6 +70,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.coQuanTiepNhan = coQuanTiepNhan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
