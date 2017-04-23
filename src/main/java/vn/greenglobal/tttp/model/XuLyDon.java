@@ -3,10 +3,12 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -35,7 +37,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	
 	private int thuTuThucHien = 0;
-
+	
+	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
@@ -59,6 +62,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
 	
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanTiepNhan() {
 		return coQuanTiepNhan;
 	}
@@ -67,6 +71,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.coQuanTiepNhan = coQuanTiepNhan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -75,6 +80,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.don = don;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CongChuc getCongChuc() {
 		return congChuc;
 	}
@@ -83,6 +89,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.congChuc = congChuc;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
 		return thamQuyenGiaiQuyet;
 	}
@@ -91,6 +98,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thamQuyenGiaiQuyet = thamQuyenGiaiQuyet;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
 	}
@@ -143,6 +151,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		return noiDungYeuCauXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
 	}
@@ -179,6 +188,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.chucVu = chucVu;
 	}
 	
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getPhongBanXuLy() {
 		return phongBanXuLy;
 	}
@@ -187,6 +197,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanXuLy = phongBanXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoXuLy() {
 		return canBoXuLy;
 	}

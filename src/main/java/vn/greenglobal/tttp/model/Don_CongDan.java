@@ -58,7 +58,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String donVi = "";
 	private String chucVu = "";
 
-	@ApiModelProperty(position = 3, required = true)
+	@ApiModelProperty(position = 3, required = true, example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -67,7 +67,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
-	@ApiModelProperty(position = 4, required = true)
+	@ApiModelProperty(position = 4, required = true, example = "{}")
 	public CongDan getCongDan() {
 		return congDan;
 	}

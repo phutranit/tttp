@@ -82,6 +82,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.soTrang = soTrang;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public LoaiTaiLieu getLoaiTaiLieu() {
 		return loaiTaiLieu;
 	}
@@ -90,6 +91,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.loaiTaiLieu = loaiTaiLieu;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public SoTiepCongDan getSoTiepCongDan() {
 		return soTiepCongDan;
 	}
@@ -98,6 +100,7 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.soTiepCongDan = soTiepCongDan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}

@@ -244,13 +244,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return coQuanToChucTiepDans;
 	}
 
-	@Transient
 	@ApiModelProperty(hidden = true)
 	public Don getDonSTCD() {
 		return getDon();
 	}
 
-	@Transient
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
 	}
@@ -259,7 +258,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
-	@Transient
 	public String getyKienXuLy() {
 		return yKienXuLy;
 	}
@@ -268,7 +266,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.yKienXuLy = yKienXuLy;
 	}
 
-	@Transient
 	public String getGhiChuXuLy() {
 		return ghiChuXuLy;
 	}

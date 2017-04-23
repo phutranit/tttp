@@ -1,19 +1,12 @@
 package vn.greenglobal.tttp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
@@ -43,18 +36,6 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	
 	@ManyToOne
 	private DonViHanhChinh donViHanhChinh;
-
-	@OneToMany(mappedBy = "donVi", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	private List<CongChuc> congChucs = new ArrayList<CongChuc>(); // XLD
-	
-	public List<CongChuc> getCongChucs() {
-		return congChucs;
-	}
-
-	public void setCongChucs(List<CongChuc> congChucs) {
-		this.congChucs = congChucs;
-	}
 	
 	@ApiModelProperty(position = 1)
 	public String getMa() {
@@ -129,6 +110,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	}
 	
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public DonViHanhChinh getDonViHanhChinhCQQL() {
 		return getDonViHanhChinh();
 	}

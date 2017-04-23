@@ -66,6 +66,7 @@ public class CongDan extends Model<CongDan> {
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OrderBy("ngayTao ASC")
+	@ApiModelProperty(hidden = true)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 
 	public List<Don_CongDan> getDonCongDans() {
@@ -207,5 +208,35 @@ public class CongDan extends Model<CongDan> {
 	@ApiModelProperty(hidden = true)
 	public Long getCongDanId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getTinhThanhCongDan() {
+		return getTinhThanh();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getQuanHuyenCongDan() {
+		return getQuanHuyen();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DonViHanhChinh getPhuongXaCongDan() {
+		return getPhuongXa();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ToDanPho getToDanPhoCongDan() {
+		return getToDanPho();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DanToc getDanTocCongDan() {
+		return getDanToc();
 	}
 }
