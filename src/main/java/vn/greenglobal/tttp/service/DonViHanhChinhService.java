@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -33,17 +32,37 @@ public class DonViHanhChinhService {
 		return predAll;
 	}
 
-	public Predicate predicateFindTinhThanhPho(String ten, Long capDonViHanhChinh) {
+	public Predicate predicateFindCapTinhThanhPho(Long capTinh, Long capThanhPhoTrucThuocTW,
+			Long capThanhPhoTrucThuocTinh) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(ten)) {
-			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten)
-					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
+
+		if (capTinh != null && capTinh > 0 & capThanhPhoTrucThuocTW != null
+				&& capThanhPhoTrucThuocTW > 0 & capThanhPhoTrucThuocTinh != null && capThanhPhoTrucThuocTinh > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capTinh)
+					.or(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capThanhPhoTrucThuocTW))
+					.or(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capThanhPhoTrucThuocTinh)));
 		}
 
-		predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.isNull());
+		return predAll;
+	}
 
-		if (capDonViHanhChinh != null && capDonViHanhChinh > 0) {
-			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
+	public Predicate predicateFindCapQuanHuyen(Long cha, Long capQuan, Long capHuyen) {
+		BooleanExpression predAll = base;
+
+		if (capQuan != null && capQuan > 0 && capHuyen != null && capHuyen > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capQuan)
+					.or(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capHuyen)));
+		}
+
+		return predAll;
+	}
+
+	public Predicate predicateFindCapPhuongXa(Long cha, Long capPhuong, Long capXa) {
+		BooleanExpression predAll = base;
+
+		if (capPhuong != null && capPhuong > 0 && capXa != null && capXa > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capPhuong)
+					.or(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capXa)));
 		}
 
 		return predAll;

@@ -64,6 +64,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
 	
+
 	@ApiModelProperty(example = "{}", position = 7)
 	public CoQuanQuanLy getCoQuanTiepNhan() {
 		return coQuanTiepNhan;
@@ -91,7 +92,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.congChuc = congChuc;
 	}
 
-	@ApiModelProperty(position = 9)
+
+	@ApiModelProperty(example = "{}")
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
 		return thamQuyenGiaiQuyet;
 	}
