@@ -49,6 +49,10 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapQuanHuyen(Long cha, Long capQuan, Long capHuyen) {
 		BooleanExpression predAll = base;
+		
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
+		}
 
 		if (capQuan != null && capQuan > 0 && capHuyen != null && capHuyen > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capQuan)
@@ -60,6 +64,10 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapPhuongXa(Long cha, Long capPhuong, Long capXa) {
 		BooleanExpression predAll = base;
+		
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
+		}
 
 		if (capPhuong != null && capPhuong > 0 && capXa != null && capXa > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capPhuong)
