@@ -244,6 +244,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return coQuanToChucTiepDans;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Don getDonSTCD() {
 		return getDon();
 	}
