@@ -239,4 +239,17 @@ public class CongDan extends Model<CongDan> {
 	public DanToc getDanTocCongDan() {
 		return getDanToc();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTenDiaChiSoCMND() {
+		String out = getHoVaTen();
+		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
+			out += " - " + getDiaChi();
+		}
+		if (getSoCMNDHoChieu() != null && !getSoCMNDHoChieu().isEmpty()) {
+			out += " - " + getSoCMNDHoChieu();
+		}
+		return out;
+	}
 }
