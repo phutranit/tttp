@@ -67,8 +67,13 @@ public class Utils {
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
 	}
 
-	public static <T> ResponseEntity<Object> doSave(JpaRepository<T, ?> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+	@SuppressWarnings("rawtypes")
+	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		try {
+			if (!obj.isNew()) {
+				obj.setNgayTao(repository.findOne(obj.getId()).getNgayTao());
+				obj.setNgaySua(LocalDateTime.now());
+			}
 			obj = repository.save(obj);
 		} catch (ConstraintViolationException e) {
 			return returnError(e);
@@ -131,13 +136,14 @@ public class Utils {
 			
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
-			response.setContentLength((int) file.length());
-
+			
 			wordMLPackage = WordprocessingMLPackage.load(file);
 			VariablePrepare.prepare(wordMLPackage);
 			wordMLPackage.getMainDocumentPart().variableReplace(mappings);
 			wordMLPackage = wordMLPackage.getMainDocumentPart().convertAltChunks();
 			wordMLPackage.save(out);
+			
+			response.setContentLength((int) out.size());
 			out.close();
 
 			inputStream = new BufferedInputStream(new ByteArrayInputStream(out.toByteArray()));

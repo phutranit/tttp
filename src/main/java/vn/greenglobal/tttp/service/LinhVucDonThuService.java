@@ -56,8 +56,7 @@ public class LinhVucDonThuService {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen())
-				.or(QLinhVucDonThu.linhVucDonThu.ma.eq(body.getMa())));
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen()));
 		LinhVucDonThu linhVucDonThu = repo.findOne(predAll);
 
 		return linhVucDonThu != null ? true : false;
