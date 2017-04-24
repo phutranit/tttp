@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -16,7 +17,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
+		if (StringUtils.isNotBlank(ten)) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten)
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
 		}
@@ -48,6 +49,10 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapQuanHuyen(Long cha, Long capQuan, Long capHuyen) {
 		BooleanExpression predAll = base;
+		
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
+		}
 
 		if (capQuan != null && capQuan > 0 && capHuyen != null && capHuyen > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capQuan)
@@ -59,6 +64,10 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapPhuongXa(Long cha, Long capPhuong, Long capXa) {
 		BooleanExpression predAll = base;
+		
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
+		}
 
 		if (capPhuong != null && capPhuong > 0 && capXa != null && capXa > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capPhuong)
