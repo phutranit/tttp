@@ -68,13 +68,14 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTao() {
+		System.out.println("ngayTao: " + ngayTao);
+		if (ngayTao == null) {
+			ngayTao = LocalDateTime.now();
+		}
 		return this.ngayTao;
 	}
 
 	public void setNgayTao(LocalDateTime ngayTao) {
-		if (ngayTao == null) {
-			ngayTao = LocalDateTime.now();
-		}
 		this.ngayTao = ngayTao;
 	}
 

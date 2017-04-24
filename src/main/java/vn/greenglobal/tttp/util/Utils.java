@@ -131,13 +131,14 @@ public class Utils {
 			
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
-			response.setContentLength((int) file.length());
-
+			
 			wordMLPackage = WordprocessingMLPackage.load(file);
 			VariablePrepare.prepare(wordMLPackage);
 			wordMLPackage.getMainDocumentPart().variableReplace(mappings);
 			wordMLPackage = wordMLPackage.getMainDocumentPart().convertAltChunks();
 			wordMLPackage.save(out);
+			
+			response.setContentLength((int) out.size());
 			out.close();
 
 			inputStream = new BufferedInputStream(new ByteArrayInputStream(out.toByteArray()));
