@@ -216,11 +216,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/word")
 	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWord(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public void exportWord(
 			HttpServletResponse response) {
 		HashMap<String, String> mappings = new HashMap<String, String>();
-		mappings.put("donViXuLy", "test");
-		Utils.exportWord(response, "word/van_ban_chuyen_phan_anh.doc", mappings);
+		mappings.put("hoVaTen", "hoVaTenTest");
+		mappings.put("soCMND", "soCMNDTest");
+		mappings.put("ngayCap", "ngayCapTest");
+		mappings.put("noiCap", "noiCapTest");
+		mappings.put("diaChi", "diaChiTest");
+		mappings.put("diaDiemTiepDan", "diaDiemTiepDanTest");
+		mappings.put("thoiGianTiepDan", "thoiGianTiepDanTest");
+		mappings.put("ngayHenTiepCongDan", "ngayHenTiepCongDanTest");
+		Utils.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
 	}
 
 }
