@@ -118,7 +118,6 @@ public class CongChuc extends Model<CongChuc> {
 		this.email = email;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(position = 7, required = true)
 	public LocalDateTime getNgaySinh() {
 		return ngaySinh;
