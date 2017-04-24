@@ -12,8 +12,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -170,6 +168,12 @@ public class CongChuc extends Model<CongChuc> {
 
 	public void setNguoiDung(NguoiDung nguoiDung) {
 		this.nguoiDung = nguoiDung;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getCongChucId() {
+		return getId();
 	}
 
 	@Transient
