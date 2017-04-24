@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -60,6 +61,10 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 
+	static final long EXPIRATIONTIME = 864_000_000; // 10 days
+	static final String TOKEN_PREFIX = "Bearer";
+	static final String HEADER_STRING = "Authorization";
+  
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
@@ -108,6 +113,7 @@ public class Application extends SpringBootServletInitializer {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
+			System.out.println(":::::"+beanNames.length +" beans");
 		};
 	}
 
@@ -120,9 +126,9 @@ public class Application extends SpringBootServletInitializer {
 						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
 								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
 								"http://192.168.1.242:9830", "192.168.1.242:9830")
-						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"authorization", "client-security-token", "X-Application-Context", "Date")
+						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length", "username", "password",
+								"authorization", "client-security-token", "X-Application-Context", "Date", "Content-Disposition")
 						.maxAge(3600);
 			}
 		};
@@ -133,14 +139,12 @@ public class Application extends SpringBootServletInitializer {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
-						"ACTUATOR");
-
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
 			}
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/login", 
+				sec.ignoring().antMatchers("/login", "/logout",
 						"/v2/api-docs", 
 						"/configuration/ui", 
 						"/configuration/security", 
@@ -148,7 +152,7 @@ public class Application extends SpringBootServletInitializer {
 						"/swagger-ui.html", 
 						"/swagger-resources/configuration/ui",
 						"/swagger-resources/configuration/security",
-						"/webjars/**");
+						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override
@@ -158,7 +162,10 @@ public class Application extends SpringBootServletInitializer {
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
-				http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+				http.authorizeRequests()
+						.anyRequest().authenticated()
+						.and().httpBasic()
+						.and().csrf().disable();
 
 			}
 		};
@@ -174,7 +181,7 @@ public class Application extends SpringBootServletInitializer {
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
 		authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		HeaderClient headerClient = new HeaderClient("Authorization", "Bearer ", authenticator);
+		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX+" ", authenticator);
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);

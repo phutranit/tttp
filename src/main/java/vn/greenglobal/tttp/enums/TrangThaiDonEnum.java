@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.enums;
 
 public enum TrangThaiDonEnum {
-
 	DINH_CHI("Đình chỉ"), 
 	DA_CHUYEN("Đã chuyển"), 
 	DANG_XU_LY("Đang xử lý"), 

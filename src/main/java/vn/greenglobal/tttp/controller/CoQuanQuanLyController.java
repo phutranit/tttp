@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -56,9 +57,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha,
 			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
+			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			@RequestParam(value = "notCha", required = false, defaultValue = "false") Boolean notCha,
 			PersistentEntityResourceAssembler eass) {
 
-		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy),
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, notCha),
 				pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}

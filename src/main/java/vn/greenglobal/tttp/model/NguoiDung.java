@@ -43,7 +43,7 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
-	private Set<VaiTro> vaiTros = new HashSet<>(0);;
+	private Set<VaiTro> vaiTros = new HashSet<>(0);
 
 	public NguoiDung() {
 	}
@@ -127,6 +127,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getNguoiDungId() {
 		return getId();
 	}

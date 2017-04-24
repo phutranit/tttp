@@ -27,8 +27,11 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.DonViHanhChinhService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -40,7 +43,13 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	private DonViHanhChinhRepository repo;
 
 	@Autowired
+	private ThamSoRepository repoThamSo;
+
+	@Autowired
 	DonViHanhChinhService donViHanhChinhService;
+
+	@Autowired
+	ThamSoService thamSoService;
 
 	public DonViHanhChinhController(BaseRepository<DonViHanhChinh, Long> repo) {
 		super(repo);
@@ -57,6 +66,65 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 
 		Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh),
 				pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capTinhThanhPho")
+	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Tỉnh Thành Phố", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapTinhThanhPho(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<DonViHanhChinh> page = null;
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_TINH"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO_TRUC_THUOC_TW"));
+		ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO-TRUC_THUOC_TINH"));
+		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null) {
+			page = repo.findAll(
+					donViHanhChinhService.predicateFindCapTinhThanhPho(new Long(thamSoOne.getGiaTri().toString()),
+							new Long(thamSoTwo.getGiaTri().toString()), new Long(thamSoThree.getGiaTri().toString())),
+					pageable);
+		}
+
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capQuanHuyen")
+	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Quận Huyện", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapQuanHuyen(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "cha", required = false) Long cha, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<DonViHanhChinh> page = null;
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_HUYEN"));
+		if (thamSoOne != null && thamSoOne != null) {
+			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
+					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
+		}
+
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capPhuongXa")
+	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Phường Xã", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapPhuongXa(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "cha", required = false) Long cha, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<DonViHanhChinh> page = null;
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_PHUONG"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_XA"));
+		if (thamSoOne != null && thamSoOne != null) {
+			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
+					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
+		}
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 

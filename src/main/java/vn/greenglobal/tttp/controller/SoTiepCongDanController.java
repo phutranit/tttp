@@ -1,13 +1,16 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -28,7 +31,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -38,23 +41,30 @@ import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
+@RestController
 @RepositoryRestController
 @Api(value = "soTiepCongDans", description = "Sổ tiếp công dân")
-@RestController
 public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
-
-	private static Log log = LogFactory.getLog(SoTiepCongDanController.class);
-	private static SoTiepCongDanService soTiepCongDanService = new SoTiepCongDanService();
 
 	@Autowired
 	private SoTiepCongDanRepository repo;
 
 	@Autowired
+	private SoTiepCongDanService soTiepCongDanService;
+
+	@Autowired
 	private DonRepository repoDon;
-	
+
+	@Autowired
+	private DonService donService;
+
+	@Autowired
+	private PagedResourcesAssembler<Don> assemblerDon;
+
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
 
@@ -77,11 +87,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach Tiep Cong Dan");
+
 		boolean thanhLapDon = false;
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
 				tuNgay, denNgay, loaiTiepCongDan, thanhLapDon), pageable);
-		log.info("-- page " + page.getNumberOfElements());
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
@@ -92,7 +102,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public ResponseEntity<PersistentEntityResource> getSoTiepCongDans(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		log.info("Get SoTiepCongDan theo id: " + id);
+
 		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 		if (soTiepCongDan == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -108,22 +118,23 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public ResponseEntity<Object> createSoTiepCongDan(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
-		log.info("Tao moi SoTiepCongDan");
+
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 			}
-		}		
+		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		soTiepCongDan.setDon(don);
 		int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
 		soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);		
-		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan()) 
+		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			if (HuongXuLyTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setDaXuLy(true);
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
-			} else if (HuongGiaiQuyetTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongGiaiQuyet())) {
+			} else if (HuongXuLyTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongXuLy())) {
 				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
 					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
 					soTiepCongDan.getDon().setDaXuLy(true);
@@ -131,12 +142,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					soTiepCongDan.getDon().setyKienXuLyDon(soTiepCongDan.getyKienXuLy());
 					soTiepCongDan.getDon().setGhiChuXuLyDon(soTiepCongDan.getGhiChuXuLy());
 				} else {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+							ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
+							ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
 				}
 			}
-		}			
-		repoDon.save(soTiepCongDan.getDon());
-		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		}
+
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			repoDon.save(soTiepCongDan.getDon());
+		}
+		return output;
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}")
@@ -146,10 +163,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
-		log.info("Update SoTiepCongDan theo id: " + id);
 
 		soTiepCongDan.setId(id);
-
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
 		}
@@ -162,7 +177,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-		log.info("Delete SoTiepCongDan theo id: " + id);
 
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
 		if (soTiepCongDan == null) {
@@ -175,16 +189,38 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
-	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<SoTiepCongDan> getListHoSoVuViecYeuCauGapLanhDao(
+	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
-		log.info("Get danh sach HoSoVuViecYeuCauGapLanhDao");
 
-		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindTCDYeuCauGapLanhDao(tuNgay, denNgay),
-				pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
+		return assemblerDon.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
+	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
+	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
+
+		SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
+		if (soTiepCongDan == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		repo.save(soTiepCongDan);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/word")
+	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWord(@RequestHeader(value = "Authorization", required = true) String authorization,
+			HttpServletResponse response) {
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("donViXuLy", "test");
+		Utils.exportWord(response, "word/van_ban_chuyen_phan_anh.doc", mappings);
 	}
 
 }

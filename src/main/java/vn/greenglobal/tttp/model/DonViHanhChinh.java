@@ -92,4 +92,11 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	public DonViHanhChinh getDonViHanhChinhCha() {
 		return getCha();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CapDonViHanhChinh getCapDonViHanhChinhDVHC() {
+		return getCapDonViHanhChinh();
+	}
+	
 }

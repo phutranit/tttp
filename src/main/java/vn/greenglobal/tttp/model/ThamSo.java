@@ -12,18 +12,17 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "chucvu")
+@Table(name = "thamso")
 @Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
-public class ChucVu extends Model<ChucVu> {
+public class ThamSo extends Model<ThamSo> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3975638610686661750L;
+	private static final long serialVersionUID = -1973333094118013160L;
 
 	@NotBlank
 	private String ten = "";
+	@NotBlank
+	private String giaTri = "";
 	private String moTa = "";
 
 	@ApiModelProperty(position = 1, required = true)
@@ -35,7 +34,16 @@ public class ChucVu extends Model<ChucVu> {
 		this.ten = ten;
 	}
 
-	@ApiModelProperty(position = 2)
+	@ApiModelProperty(position = 2, required = true)
+	public String getGiaTri() {
+		return giaTri;
+	}
+
+	public void setGiaTri(String giaTri) {
+		this.giaTri = giaTri;
+	}
+
+	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
 	}
@@ -46,7 +54,8 @@ public class ChucVu extends Model<ChucVu> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getChucVuId() {
+	public Long getThamSoId() {
 		return getId();
 	}
+
 }
