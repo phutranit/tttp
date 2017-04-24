@@ -61,6 +61,10 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 
+	static final long EXPIRATIONTIME = 864_000_000; // 10 days
+	static final String TOKEN_PREFIX = "Bearer";
+	static final String HEADER_STRING = "Authorization";
+  
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
@@ -177,7 +181,7 @@ public class Application extends SpringBootServletInitializer {
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
 		authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		HeaderClient headerClient = new HeaderClient("Authorization", "Bearer ", authenticator);
+		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX+" ", authenticator);
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
