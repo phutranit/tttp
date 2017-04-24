@@ -23,8 +23,8 @@ public class SoTiepCongDanService {
 	}
 
 	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay,
-			String denNgay, String loaiTiepCongDan, boolean thanhLapDon) {
-		BooleanExpression predAll = base.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(thanhLapDon));
+			String denNgay, String loaiTiepCongDan) {
+		BooleanExpression predAll = base;
 
 		if (StringUtils.isNotBlank(tuKhoa)) {
 			predAll = predAll

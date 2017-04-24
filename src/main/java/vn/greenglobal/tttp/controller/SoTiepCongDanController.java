@@ -88,10 +88,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
-			@RequestParam(value = "thanhLapDon", required = false) boolean thanhLapDon,
 			PersistentEntityResourceAssembler eass) {
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan, thanhLapDon), pageable);
+				tuNgay, denNgay, loaiTiepCongDan), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -199,11 +198,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
-	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
@@ -217,18 +217,32 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/word")
 	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWord(
+	public void exportWord(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "diaDiemTiepCongDan", required = false) String diaDiemTiepCongDan,
+			@RequestParam(value = "thoiGianTiepCongDan", required = false) String thoiGianTiepCongDan,
+			@RequestParam(value = "ngayHenTiepCongDan", required = false) String ngayHenTiepCongDan,
 			HttpServletResponse response) {
 		System.out.println("xuat file word");
 		HashMap<String, String> mappings = new HashMap<String, String>();
-		mappings.put("donViXuLy", "test");
-		Utils.exportWord(response, "word/van_ban_chuyen_phan_anh.doc", mappings);
+		mappings.put("hoVaTen", hoVaTen);
+		mappings.put("soCMND", soCMND);
+		mappings.put("ngayCap", ngayCap);
+		mappings.put("noiCap", noiCap);
+		mappings.put("diaChi", diaChi);
+		mappings.put("diaDiemTiepCongDan", diaDiemTiepCongDan);
+		mappings.put("thoiGianTiepCongDan", thoiGianTiepCongDan);
+		mappings.put("ngayHenTiepCongDan", ngayHenTiepCongDan);
+		Utils.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
-	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExcel(HttpServletResponse response) throws IOException {
-		System.out.println("xuat file excel");
 		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", repo.findAll(), "Danh sách sổ tiếp dân");
 	}
 }
