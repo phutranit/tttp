@@ -71,7 +71,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.tenDangNhap = tenDangNhap;
 	}
 
-	
+//	@JsonIgnore
 	public String getMatKhau() {
 		return matKhau;
 	}
