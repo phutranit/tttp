@@ -20,6 +20,15 @@ public class VaiTro extends Model<VaiTro> {
 
 	private static final long serialVersionUID = -1541840816380863516L;
 
+	public static final String VANTHU = "vanthu";
+	public static final String CHUYENVIEN = "chuyenvien";
+	public static final String TRUONGPHONG = "truongphong";
+	public static final String LANHDAO = "lanhdao";
+	
+	public static final String[] VAITRO_DEFAULTS = { VANTHU, CHUYENVIEN, TRUONGPHONG, LANHDAO };
+
+	
+	
 	@NotBlank
 	private String ten = "";
 	@Lob

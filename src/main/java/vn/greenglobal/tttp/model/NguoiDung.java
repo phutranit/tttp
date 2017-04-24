@@ -131,4 +131,6 @@ public class NguoiDung extends Model<NguoiDung> {
 	public Long getNguoiDungId() {
 		return getId();
 	}
+	
+	
 }
