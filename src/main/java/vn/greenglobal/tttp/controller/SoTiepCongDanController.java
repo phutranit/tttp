@@ -86,9 +86,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
+			@RequestParam(value = "thanhLapDon", required = false) boolean thanhLapDon,
 			PersistentEntityResourceAssembler eass) {
-
-		boolean thanhLapDon = false;
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
 				tuNgay, denNgay, loaiTiepCongDan, thanhLapDon), pageable);
 
