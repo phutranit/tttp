@@ -109,6 +109,7 @@ public class Application extends SpringBootServletInitializer {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
+			System.out.println(":::::"+beanNames.length +" beans");
 		};
 	}
 
@@ -134,14 +135,12 @@ public class Application extends SpringBootServletInitializer {
 		return new WebSecurityConfigurerAdapter() {
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
-						"ACTUATOR");
-
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
 			}
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/login", 
+				sec.ignoring().antMatchers("/login", "/logout",
 						"/v2/api-docs", 
 						"/configuration/ui", 
 						"/configuration/security", 
@@ -159,7 +158,10 @@ public class Application extends SpringBootServletInitializer {
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
-				http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+				http.authorizeRequests()
+						.anyRequest().authenticated()
+						.and().httpBasic()
+						.and().csrf().disable();
 
 			}
 		};

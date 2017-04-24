@@ -18,9 +18,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class VaiTro extends Model<VaiTro> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1541840816380863516L;
 
 	@NotBlank

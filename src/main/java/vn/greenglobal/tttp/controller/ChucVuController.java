@@ -29,20 +29,12 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
-import vn.greenglobal.tttp.util.MessageByLocaleService;
-import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
 @Api(value = "chucVus", description = "Chức Vụ")
 public class ChucVuController extends TttpController<ChucVu> {
-
-	@Autowired
-	ProfileUtils profileUtil;
-
-	@Autowired
-	MessageByLocaleService message;
 
 	@Autowired
 	private ChucVuRepository repo;
@@ -60,7 +52,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
-		System.out.println(message.getMessage("get.byid"));
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
