@@ -1,6 +1,13 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -27,13 +34,14 @@ public class VaiTro extends Model<VaiTro> {
 	
 	public static final String[] VAITRO_DEFAULTS = { VANTHU, CHUYENVIEN, TRUONGPHONG, LANHDAO };
 
-	
-	
 	@NotBlank
 	private String ten = "";
 	@Lob
 	private String quyen = "";
 
+	private Set<String> quyens = new HashSet<>();
+	
+	
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
@@ -52,6 +60,17 @@ public class VaiTro extends Model<VaiTro> {
 		this.quyen = quyen;
 	}
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@CollectionTable(name = "vaitro_quyen", joinColumns = {@JoinColumn(name = "vaitro_id")})
+	public Set<String> getQuyens() {
+		return quyens;
+	}
+	
+	public void setQuyens(final Set<String> dsChoPhep) {
+		quyens = dsChoPhep;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getVaiTroId() {
@@ -59,3 +78,4 @@ public class VaiTro extends Model<VaiTro> {
 	}
 
 }
+

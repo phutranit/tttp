@@ -70,11 +70,11 @@ public class LoginController {
 				generator.setSignatureConfiguration(secretSignatureConfiguration);
 				generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 				CommonProfile commonProfile = new CommonProfile();
-				//commonProfile.addRole(null);
-				//commonProfile.addPermission(null);
 				commonProfile.addAttribute("username", username);
 				if(user!=null){
 					commonProfile.setId(user.getId());
+					//commonProfile.addRole(user.getVaiTros());
+					//commonProfile.addPermission(null);
 				}
 				String token = generator.generate(commonProfile);
 				result.put("token", token);

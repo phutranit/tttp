@@ -4,13 +4,20 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.SimpleAccountRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
@@ -40,11 +47,13 @@ public class NguoiDung extends Model<NguoiDung> {
 	private String salkey = "";
 
 	private boolean active;
-
+	
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
 	private Set<VaiTro> vaiTros = new HashSet<>(0);
-
+	private Set<String> quyens = new HashSet<>(0);
+	private Set<String> tatCaQuyens = new HashSet<>();
+	
 	public NguoiDung() {
 	}
 
@@ -113,7 +122,40 @@ public class NguoiDung extends Model<NguoiDung> {
 	public void setVaiTros(Set<VaiTro> vaiTros) {
 		this.vaiTros = vaiTros;
 	}
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@CollectionTable(name = "nguoidung_quyen", joinColumns = {@JoinColumn(name = "nguoidung_id")})
+	public Set<String> getQuyens() {
+		return quyens;
+	}
+	
+	public void setQuyens(final Set<String> dsChoPhep) {
+		quyens = dsChoPhep;
+	}
+	
+	@Transient
+	public Set<String> getTatCaQuyens() {
+		if (tatCaQuyens.isEmpty()) {
+			tatCaQuyens.addAll(quyens);
+			for (VaiTro vaiTro : vaiTros) {
+				tatCaQuyens.add(vaiTro.getTen());
+				tatCaQuyens.addAll(vaiTro.getQuyens());
+			}
+		}
+		return tatCaQuyens;
+	}
 
+	
+	private Quyen quyen = new Quyen(new SimpleAccountRealm() {
+		@Override
+		protected AuthorizationInfo getAuthorizationInfo(final PrincipalCollection arg0) {
+			final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+			info.setStringPermissions(getTatCaQuyens());
+			return info;
+		}
+	});
+	
 	public void updatePassword(String pass) {
 		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
 		String salkey = getSalkey();
