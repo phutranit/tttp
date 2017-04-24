@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -16,7 +17,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
+		if (StringUtils.isNotBlank(ten)) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten)
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
 		}
