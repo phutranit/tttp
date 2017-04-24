@@ -11,7 +11,8 @@ public enum QuyTrinhXuLyDonEnum {
 	DE_XUAT_GIAO_VIEC_LAI("Đề xuất giao việc lại"),
 	DE_XUAT_HUONG_XU_LY("Đề xuất hướng xử lý"),
 	DINH_CHI("Đình chỉ"),
-	THU_HOI_DON("Thu hồi đơn");
+	THU_HOI_DON("Thu hồi đơn"),
+	TRA_DON("Trả đơn");
 	
 	QuyTrinhXuLyDonEnum(String text) {
 		this.text = text;
