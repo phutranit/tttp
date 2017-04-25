@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 
 @Entity
 @Table(name = "nguoidung")
@@ -184,6 +185,10 @@ public class NguoiDung extends Model<NguoiDung> {
 	public boolean checkQuyen(String resource, String action){
 		
 		return true;
+	}
+	
+	public boolean checkQuyen(QuyenEnum quyen){
+		return getQuyen().getRealm().isPermitted(null, quyen.name().toLowerCase().replace("_", ":"));
 	}
 	
 	@Transient
