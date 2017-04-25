@@ -97,7 +97,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			if (StringUtils.isNotBlank(chucVuCuaXuLyDon)) {
 				if (chucVuCuaXuLyDon.equals(ChucVuEnum.VAN_THU.name())) {
 					System.out.println("VAN THU");
-
 					if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
 						// Add ghiChu
 						System.out.println("TRINH_LANH_DAO");

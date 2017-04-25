@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,8 +100,8 @@ public class Utils {
 	
 	public static LocalDateTime fixTuNgay(String tuNgayCurrent) {
 		// Fix tuNgay
-		//LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
+		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+//		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
 		tuNgay = LocalDateTime.of(tuNgay.getYear(),
 				tuNgay.getMonth(),tuNgay.getDayOfMonth(),0,0,0);
 		return tuNgay;
@@ -108,7 +109,8 @@ public class Utils {
 	
 	public static LocalDateTime fixDenNgay(String denNgayCurrent) {
 		// Fix denNgay
-		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent);
+		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+//		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent);
 		denNgay = LocalDateTime.of(denNgay.getYear(),
 				denNgay.getMonth(),denNgay.getDayOfMonth(),23,59,59);
 		return denNgay;
