@@ -18,6 +18,7 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.springframework.security.web.SecurityFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -38,6 +39,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,11 +53,12 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
+import vn.greenglobal.tttp.model.Quyen;
 
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
-@EnableWebSecurity
+//@EnableWebSecurity
 @Controller
 @ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
@@ -109,6 +112,8 @@ public class Application extends SpringBootServletInitializer {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
+			System.out.println(":::::"+beanNames.length +" beans");
+			System.out.println(VAITRO_XEM);
 		};
 	}
 
@@ -132,16 +137,15 @@ public class Application extends SpringBootServletInitializer {
 //	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
+		    
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
-						"ACTUATOR");
-
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
 			}
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/login", 
+				sec.ignoring().antMatchers("/login", "/logout",
 						"/v2/api-docs", 
 						"/configuration/ui", 
 						"/configuration/security", 
@@ -159,7 +163,11 @@ public class Application extends SpringBootServletInitializer {
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
-				http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+				http.authorizeRequests()
+					.anyRequest().authenticated()
+					.and().httpBasic()
+					.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
+					.and().csrf().disable();
 
 			}
 		};
@@ -175,7 +183,7 @@ public class Application extends SpringBootServletInitializer {
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
 		authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		HeaderClient headerClient = new HeaderClient("Authorization", "Bearer ", authenticator);
+		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX+" ", authenticator);
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
@@ -199,4 +207,64 @@ public class Application extends SpringBootServletInitializer {
 		messageSource.setCacheSeconds(3600); // refresh cache once per hour
 		return messageSource;
 	}
+	
+	static final long EXPIRATIONTIME = 864_000_000; // 10 days
+	static final String TOKEN_PREFIX = "Bearer";
+	static final String HEADER_STRING = "Authorization";
+  
+	@Value("${action.xem:xem}")
+	public String XEM = "";
+	@Value("${action.lietke:lietke}")
+	public String LIETKE = ""; 
+	@Value("${action.sua:sua}")
+	public String SUA = "";
+	@Value("${action.xoa:xoa}")
+	public String XOA = "";
+	@Value("${action.them:them}")
+	public String THEM = ""; 
+	@Value("${action.gui:gui}")
+	public String GUI = "";
+	@Value("${action.duyet:duyet}")
+	public String DUYET = "";
+	@Value("${action.export:export}")
+	public String EXPORT = ""; 
+	
+	@Value("${resource.nguoidung:nguoidung}")
+	public String NGUOIDUNG = "";
+	@Value("${resource.vaitro:vaitro}")
+	public String VAITRO = "";
+	
+	public char CHAR_CACH = ':';
+	public String CACH = CHAR_CACH + "";
+	
+	@Value("${resource.vaitro}" + ":" + "${action.xem}")
+	public String VAITRO_XEM;
+	@Value("${resource.vaitro}" + ":" + "${action.them}")
+	public String VAITRO_THEM = "";
+	@Value("${resource.vaitro}" + ":" + "${action.lietke}")
+	public String VAITRO_LIETKE = "";
+	@Value("${resource.vaitro}" + ":" + "${action.xoa}")
+	public String VAITRO_XOA = "";
+	@Value("${resource.vaitro}" + ":" + "${action.sua}")
+	public String VAITRO_SUA = "";
+	
+	@Value("${resource.nguoidung}" + ":" + "${action.xem}")
+	public String NGUOIDUNG_XEM = "";
+	@Value("${resource.nguoidung}" + ":" + "${action.them}")
+	public String NGUOIDUNG_THEM = "";
+	@Value("${resource.nguoidung}" + ":" + "${action.lietke}")
+	public String NGUOIDUNG_LIETKE = "";
+	@Value("${resource.nguoidung}" + ":" + "${action.xoa}")
+	public String NGUOIDUNG_XOA = "";
+	@Value("${resource.nguoidung}" + ":" + "${action.sua}")
+	public String NGUOIDUNG_SUA = "";
+	
+	public String[] getRESOURCES() {
+		return new String[] { NGUOIDUNG, VAITRO };
+	}
+
+	public String[] getACTIONS() {
+		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
+	}
+	
 }
