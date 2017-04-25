@@ -163,9 +163,9 @@ public class CongChucController extends TttpController<CongChuc> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CongChuc congChuc, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+//		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_SUA) == null) {
+//			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//		}
 		
 		congChuc.setId(id);
 		if (congChuc.getNguoiDung() == null) {
