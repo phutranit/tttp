@@ -131,4 +131,10 @@ public class NguoiDung extends Model<NguoiDung> {
 	public Long getNguoiDungId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Set<VaiTro> getVaiTroNguoiDung() {
+		return getVaiTros();
+	}
 }

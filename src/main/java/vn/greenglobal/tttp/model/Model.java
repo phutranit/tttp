@@ -34,7 +34,7 @@ public class Model<T extends Model<T>> implements Persistable {
 	private Long id;
 
 	private LocalDateTime ngayTao;
-	private LocalDateTime ngaySua = LocalDateTime.now();;
+	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
 

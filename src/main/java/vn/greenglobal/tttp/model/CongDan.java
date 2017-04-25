@@ -239,4 +239,11 @@ public class CongDan extends Model<CongDan> {
 	public DanToc getDanTocCongDan() {
 		return getDanToc();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public QuocTich getQuocTichCongDan() {
+		return getQuocTich();
+	}
+	
 }
