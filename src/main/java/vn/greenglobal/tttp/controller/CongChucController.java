@@ -52,15 +52,6 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
-	
-	@Autowired
-	public EntityManager em;
-	
-	@Autowired
-	public PlatformTransactionManager transactionManager;
-
-	@Autowired
-	public TransactionTemplate transactioner;
 
 	public CongChucController(BaseRepository<CongChuc, Long> repo) {
 		super(repo);

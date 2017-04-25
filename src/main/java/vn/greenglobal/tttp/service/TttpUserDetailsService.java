@@ -18,10 +18,10 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 
-@Service("userDetailsService")
-public class TttpUserDetailsService implements UserDetailsService {
+//@Service("userDetailsService")
+public class TttpUserDetailsService{
 
-	@Autowired
+	/*@Autowired
 	private NguoiDungRepository nguoiDungRepository;
 
 	@Override
@@ -45,5 +45,5 @@ public class TttpUserDetailsService implements UserDetailsService {
 		}
 		List<GrantedAuthority> Result = new ArrayList<>(setAuths);
 		return Result;
-	}
+	}*/
 }

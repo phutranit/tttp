@@ -34,8 +34,12 @@ public class ProfileUtils {
 			secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 			authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
 			profile = authenticator.validateToken(token);
-			NguoiDung user = nguoiDungRepository.findByTenDangNhap(String.valueOf(profile.getAttribute("username")));
-			return user;
+			if(profile!=null){
+				NguoiDung user = nguoiDungRepository.findByTenDangNhap(String.valueOf(profile.getAttribute("username")));
+				System.out.println("vaitro"+user.getVaiTros());
+				System.out.println("quyen"+user.getQuyens());
+				return user;
+			}
 		}
 		return null;
 	}
