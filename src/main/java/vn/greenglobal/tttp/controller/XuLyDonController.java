@@ -4,11 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,6 +38,7 @@ import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.XuLyDonService;
+import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -65,6 +68,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thanh công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
+		
+		NguoiDung user = profileUtil.getUserInfo(authorization);
+		
+		
 		
 		if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
 
@@ -193,7 +200,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 						don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 						don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-						donRepo.save(don);
+						Utils.save(donRepo, don);
 						return Utils.doSave(repo, xuLyDonHienTai, eass, HttpStatus.CREATED);
 					} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY)) {
 
