@@ -16,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -28,7 +26,6 @@ import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 
 @Entity
 @Table(name = "sotiepcongdan")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
