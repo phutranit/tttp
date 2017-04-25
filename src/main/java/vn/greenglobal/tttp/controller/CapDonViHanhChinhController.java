@@ -75,8 +75,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		repo.save(capDonViHanhChinh);
-		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.CREATED);
+		return Utils.doSave(repo, capDonViHanhChinh, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs/{id}")
@@ -118,8 +117,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(capDonViHanhChinh);
-		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
+		return Utils.doSave(repo, capDonViHanhChinh, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capDonViHanhChinhs/{id}")
@@ -133,7 +131,8 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(capDonViHanhChinh);
+		
+		Utils.save(repo, capDonViHanhChinh);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

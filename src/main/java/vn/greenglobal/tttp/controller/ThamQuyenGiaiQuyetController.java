@@ -126,7 +126,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(thamQuyenGiaiQuyet);
+		Utils.save(repo, thamQuyenGiaiQuyet);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

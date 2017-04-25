@@ -119,7 +119,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(taiLieuBangChung);
+		Utils.save(repo, taiLieuBangChung);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

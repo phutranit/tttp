@@ -127,7 +127,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(capCoQuanQuanLy);
+		Utils.save(repo, capCoQuanQuanLy);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

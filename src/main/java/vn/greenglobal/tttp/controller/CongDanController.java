@@ -123,12 +123,13 @@ public class CongDanController extends TttpController<CongDan> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		CongDan CongDan = congDanService.delete(repo, id);
-		if (CongDan == null) {
+		CongDan congDan = congDanService.delete(repo, id);
+		if (congDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(CongDan);
+		
+		Utils.save(repo, congDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

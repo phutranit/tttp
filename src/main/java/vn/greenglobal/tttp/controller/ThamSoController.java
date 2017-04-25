@@ -120,7 +120,8 @@ public class ThamSoController extends TttpController<ThamSo> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(thamSo);
+		
+		Utils.save(repo, thamSo);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

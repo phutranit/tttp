@@ -118,7 +118,8 @@ public class DanTocController extends TttpController<DanToc> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(danToc);
+		
+		Utils.save(repo, danToc);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -120,7 +120,8 @@ public class VaiTroController extends TttpController<VaiTro> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(vaiTro);
+		
+		Utils.save(repo, vaiTro);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
