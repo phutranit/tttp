@@ -36,9 +36,13 @@ public class VaiTro extends Model<VaiTro> {
 
 	@NotBlank
 	private String ten = "";
-	@Lob
+	//@Lob
+	@Transient
 	private String quyen = "";
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@CollectionTable(name = "vaitro_quyen", joinColumns = {@JoinColumn(name = "vaitro_id")})
 	private Set<String> quyens = new HashSet<>();
 	
 	
@@ -60,9 +64,6 @@ public class VaiTro extends Model<VaiTro> {
 		this.quyen = quyen;
 	}
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-	@CollectionTable(name = "vaitro_quyen", joinColumns = {@JoinColumn(name = "vaitro_id")})
 	public Set<String> getQuyens() {
 		return quyens;
 	}

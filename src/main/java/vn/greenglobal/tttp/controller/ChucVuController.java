@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.ChucVu;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.Utils;
@@ -52,6 +53,8 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public @ResponseBody PagedResources<ChucVu> getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
+		NguoiDung nd = profileUtil.getUserInfo(authorization);
+		System.out.println("nd:"+nd);
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -83,7 +86,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public ResponseEntity<PersistentEntityResource> getById(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-
 		ChucVu chucVu = repo.findOne(chucVuService.predicateFindOne(id));
 		if (chucVu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

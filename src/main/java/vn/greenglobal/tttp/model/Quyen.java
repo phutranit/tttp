@@ -39,6 +39,7 @@ public class Quyen extends HashMap<String, Boolean> {
 
 	@Override
 	public Boolean get(Object key_) {
+		System.out.println("key_:"+key_);
 		if (key_ == null) {
 			return false;
 		}
@@ -49,7 +50,11 @@ public class Quyen extends HashMap<String, Boolean> {
 		if (id != 0) {
 			key += CACH + id;
 		}
+		System.out.println("key:"+key);
 		boolean result = realm.isPermitted(null, key.replace('_', CHAR_CACH));
 		return result;
 	}
+	
+	
+	
 }

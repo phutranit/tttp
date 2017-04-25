@@ -36,6 +36,8 @@ public class ProfileUtils {
 			profile = authenticator.validateToken(token);
 			if(profile!=null){
 				NguoiDung user = nguoiDungRepository.findByTenDangNhap(String.valueOf(profile.getAttribute("username")));
+				System.out.println("vaitro"+user.getVaiTros());
+				System.out.println("quyen"+user.getQuyens());
 				return user;
 			}
 		}
