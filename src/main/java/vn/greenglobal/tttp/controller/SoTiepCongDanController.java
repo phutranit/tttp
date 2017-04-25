@@ -122,7 +122,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
 			}
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
@@ -152,7 +152,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-			repoDon.save(soTiepCongDan.getDon());
+			Utils.save(repoDon, soTiepCongDan.getDon());
 		}
 		return output;
 	}
@@ -167,7 +167,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		soTiepCongDan.setId(id);
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
 		}
 
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.OK);
@@ -184,7 +184,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(soTiepCongDan);
+		
+		Utils.save(repo, soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -212,7 +213,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(soTiepCongDan);
+		
+		Utils.save(repo, soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -228,7 +230,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "thoiGianTiepCongDan", required = false) String thoiGianTiepCongDan,
 			@RequestParam(value = "ngayHenTiepCongDan", required = false) String ngayHenTiepCongDan,
 			HttpServletResponse response) {
-		System.out.println("xuat file word");
+
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("hoVaTen", hoVaTen);
 		mappings.put("soCMND", soCMND);

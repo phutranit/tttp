@@ -98,9 +98,6 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-	// @JoinTable(name = "don_congdan", joinColumns = {
-	// @JoinColumn(name = "congDan_id") }, inverseJoinColumns = {
-	// @JoinColumn(name = "don_id") })
 	@Fetch(value = FetchMode.SELECT)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 
@@ -398,15 +395,6 @@ public class Don extends Model<Don> {
 	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
 		this.loaiNguoiDungDon = loaiNguoiDungDon;
 	}
-
-	// @ApiModelProperty(position = 5, required = true)
-	// public String getLoaiNguoiDungDon() {
-	// return loaiNguoiDungDon;
-	// }
-	//
-	// public void setLoaiNguoiDungDon(String loaiNguoiDungDon) {
-	// this.loaiNguoiDungDon = loaiNguoiDungDon;
-	// }
 
 	@ApiModelProperty(position = 18)
 	public HinhThucGiaiQuyetEnum getHinhThucDaGiaiQuyet() {

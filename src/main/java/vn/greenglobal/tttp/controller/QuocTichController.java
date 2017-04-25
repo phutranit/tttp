@@ -122,7 +122,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(quocTich);
+		Utils.save(repo, quocTich);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
