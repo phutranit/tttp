@@ -92,6 +92,12 @@ public enum QuyenEnum {
 	VAITRO_SUA("Chỉnh sửa"),
 	VAITRO_XOA("Xoá"),
 	
+	DON_LIETKE("Liệt kê"),
+	DON_XEM("Xem"),
+	DON_THEM("Thêm mới"),
+	DON_SUA("Chỉnh sửa"),
+	DON_XOA("Xoá"),
+	
 	XULYDON_LIETKE("Liệt kê"),
 	XULYDON_XEM("Xem"),
 	XULYDON_THEM("Thêm mới"),
