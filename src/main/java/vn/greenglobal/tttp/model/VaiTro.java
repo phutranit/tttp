@@ -60,7 +60,7 @@ public class VaiTro extends Model<VaiTro> {
 	public String getQuyen() {
 		quyen = StringUtils.collectionToCommaDelimitedString(getQuyens());
 		if(quyen!=null && !quyen.isEmpty()){
-			quyen = quyen.toUpperCase();
+			quyen = quyen.toUpperCase().replaceAll(":", "_");
 		}
 		return quyen;
 	}
