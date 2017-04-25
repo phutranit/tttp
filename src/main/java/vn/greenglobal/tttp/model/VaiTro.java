@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.util.StringUtils;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,6 +58,10 @@ public class VaiTro extends Model<VaiTro> {
 
 	@ApiModelProperty(position = 2, required = true)
 	public String getQuyen() {
+		quyen = StringUtils.collectionToCommaDelimitedString(getQuyens());
+		if(quyen!=null && !quyen.isEmpty()){
+			quyen = quyen.toUpperCase();
+		}
 		return quyen;
 	}
 
@@ -69,6 +75,13 @@ public class VaiTro extends Model<VaiTro> {
 	
 	public void setQuyens(final Set<String> dsChoPhep) {
 		quyens = dsChoPhep;
+	}
+	
+	public void setQuyens(String quyens) {
+		if(quyens!=null && !quyens.isEmpty()){
+			Set<String> temp = new HashSet<>(Arrays.asList(quyens.toLowerCase()));
+			setQuyens(temp);
+		}
 	}
 	
 	@Transient
