@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,7 @@ import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
+import vn.greenglobal.tttp.util.ExcelUtil;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -225,6 +227,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "thoiGianTiepCongDan", required = false) String thoiGianTiepCongDan,
 			@RequestParam(value = "ngayHenTiepCongDan", required = false) String ngayHenTiepCongDan,
 			HttpServletResponse response) {
+		System.out.println("xuat file word");
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("hoVaTen", hoVaTen);
 		mappings.put("soCMND", soCMND);
@@ -237,4 +240,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		Utils.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
+	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportExcel(HttpServletResponse response) throws IOException {
+		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", repo.findAll(), "Danh sách sổ tiếp dân");
+	}
 }
