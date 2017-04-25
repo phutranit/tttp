@@ -79,7 +79,7 @@ public class VaiTro extends Model<VaiTro> {
 
 	public void setQuyens(String quyens) {
 		if (quyens != null && !quyens.isEmpty()) {
-			Set<String> temp = new HashSet<>(Arrays.asList(quyens.toLowerCase()));
+			Set<String> temp = new HashSet<>(Arrays.asList(quyens.toLowerCase().replaceAll("_", ":")));
 			setQuyens(temp);
 		}
 	}
