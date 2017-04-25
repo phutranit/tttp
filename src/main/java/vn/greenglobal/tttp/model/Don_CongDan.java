@@ -10,16 +10,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
 @Table(name = "don_congdan")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don_CongDan extends Model<Don_CongDan> {
 
 	/**

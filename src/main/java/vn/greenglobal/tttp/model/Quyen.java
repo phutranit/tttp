@@ -13,8 +13,9 @@ public class Quyen extends HashMap<String, Boolean> {
 
 	private long id;
 	private String resource = "";
+	@SuppressWarnings("unused")
 	private NguoiDung nguoiTao;
-	
+
 	public Quyen(AuthorizingRealm realm_) {
 		realm = realm_;
 	}
@@ -39,7 +40,7 @@ public class Quyen extends HashMap<String, Boolean> {
 
 	@Override
 	public Boolean get(Object key_) {
-		System.out.println("key_:"+key_);
+		System.out.println("key_:" + key_);
 		if (key_ == null) {
 			return false;
 		}
@@ -50,11 +51,9 @@ public class Quyen extends HashMap<String, Boolean> {
 		if (id != 0) {
 			key += CACH + id;
 		}
-		System.out.println("key:"+key);
+		System.out.println("key:" + key);
 		boolean result = realm.isPermitted(null, key.replace('_', CHAR_CACH));
 		return result;
 	}
-	
-	
-	
+
 }

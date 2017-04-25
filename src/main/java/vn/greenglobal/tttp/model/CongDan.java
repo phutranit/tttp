@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -24,7 +22,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "congdan")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class CongDan extends Model<CongDan> {
 

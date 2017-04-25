@@ -4,14 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import io.swagger.annotations.ApiModel;
 
 @Entity
 @Table(name = "coquantochuctiepdan")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 
