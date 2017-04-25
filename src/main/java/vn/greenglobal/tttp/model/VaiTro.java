@@ -61,13 +61,14 @@ public class VaiTro extends Model<VaiTro> {
 	public String getQuyen() {
 		quyen = StringUtils.collectionToCommaDelimitedString(getQuyens());
 		if(quyen!=null && !quyen.isEmpty()){
-			quyen = quyen.toUpperCase();
+			quyen = quyen.toUpperCase().replaceAll(":", "_");
 		}
 		return quyen;
 	}
 
 	public void setQuyen(String quyen) {
 		this.quyen = quyen;
+		setQuyens(quyen);
 	}
 
 	public Set<String> getQuyens() {

@@ -134,7 +134,7 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-//	@Bean
+	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 		    
@@ -165,7 +165,7 @@ public class Application extends SpringBootServletInitializer {
 
 				http.authorizeRequests()
 					.anyRequest().authenticated()
-					.and().httpBasic()
+					//.and().httpBasic()
 					.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
 					.and().csrf().disable();
 
