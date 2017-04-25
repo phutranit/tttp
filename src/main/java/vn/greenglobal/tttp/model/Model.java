@@ -34,9 +34,12 @@ public class Model<T extends Model<T>> implements Persistable {
 	private Long id;
 
 	private LocalDateTime ngayTao;
-	private LocalDateTime ngaySua = LocalDateTime.now();;
+	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
+	
+	private CongChuc nguoiTao;
+	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {
 		return this == o || o != null && getClass().isAssignableFrom(o.getClass()) && getId() != null
@@ -96,6 +99,36 @@ public class Model<T extends Model<T>> implements Persistable {
 	@Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this);
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiTao() {
+		return nguoiTao;
+	}
+
+	public void setNguoiTao(CongChuc nguoiTao) {
+		this.nguoiTao = nguoiTao;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiSua() {
+		return nguoiSua;
+	}
+
+	public void setNguoiSua(CongChuc nguoiSua) {
+		this.nguoiSua = nguoiSua;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiTao() {
+		return getNguoiTao();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiSua() {
+		return getNguoiSua();
 	}
 
 }

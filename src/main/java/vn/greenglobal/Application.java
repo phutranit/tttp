@@ -134,7 +134,7 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	@Bean
+//	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
 		    

@@ -186,4 +186,10 @@ public class NguoiDung extends Model<NguoiDung> {
 		return true;
 	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Set<VaiTro> getVaiTroNguoiDung() {
+		return getVaiTros();
+	}
+	
 }
