@@ -102,7 +102,7 @@ public enum QuyenEnum {
 	XULYDON_XEM("Xem"),
 	XULYDON_THEM("Thêm mới"),
 	XULYDON_SUA("Chỉnh sửa"),
-	XULYDON_XOA("Xoá");
+	XULYDON_XOA("Xoá"),
 
 	THAMSO_LIETKE("Liệt kê"),
 	THAMSO_XEM("Xem"),
