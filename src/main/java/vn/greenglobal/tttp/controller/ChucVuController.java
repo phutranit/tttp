@@ -76,8 +76,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		repo.save(chucVu);
-		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.CREATED);
+		return Utils.doSave(repo, chucVu, eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/chucVus/{id}")
@@ -117,8 +116,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(chucVu);
-		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
+		return Utils.doSave(repo, chucVu, eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/chucVus/{id}")
@@ -133,7 +131,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(chucVu);
+		Utils.save(repo, chucVu);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
