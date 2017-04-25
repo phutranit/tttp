@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -242,7 +243,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcel(HttpServletResponse response) throws IOException {
-		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", repo.findAll(), "Danh sách sổ tiếp dân");
+	public void exportExcel(HttpServletResponse response, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
+		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", 
+				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
+				tuNgay, denNgay, loaiTiepCongDan)), "Danh sách sổ tiếp dân");
 	}
 }
