@@ -124,7 +124,8 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(linhVucDonThu);
+		
+		Utils.save(repo, linhVucDonThu);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

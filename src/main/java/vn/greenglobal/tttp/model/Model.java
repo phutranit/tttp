@@ -12,10 +12,7 @@ import javax.persistence.MappedSuperclass;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Persistable;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-//import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.katharsis.resource.annotations.JsonApiId;
 import io.swagger.annotations.ApiModel;
@@ -33,10 +30,13 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonApiId
 	private Long id;
 
-	private LocalDateTime ngayTao;
+	private LocalDateTime ngayTao = LocalDateTime.now();
 	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
+	
+	private CongChuc nguoiTao;
+	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {
 		return this == o || o != null && getClass().isAssignableFrom(o.getClass()) && getId() != null
@@ -55,7 +55,8 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.id = id;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+	
+//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgaySua() {
 		return this.ngaySua;
@@ -65,12 +66,9 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.ngaySua = ngaySua;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTao() {
-		if (ngayTao == null && isNew()) {
-			ngayTao = LocalDateTime.now();
-		}
 		return this.ngayTao;
 	}
 
@@ -90,12 +88,42 @@ public class Model<T extends Model<T>> implements Persistable {
 
 	@Transient
 	public boolean isNew() {
-		return id == null;
+		return id == null || id == 0;
 	}
 
 	@Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this);
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiTao() {
+		return nguoiTao;
+	}
+
+	public void setNguoiTao(CongChuc nguoiTao) {
+		this.nguoiTao = nguoiTao;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiSua() {
+		return nguoiSua;
+	}
+
+	public void setNguoiSua(CongChuc nguoiSua) {
+		this.nguoiSua = nguoiSua;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiTao() {
+		return getNguoiTao();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiSua() {
+		return getNguoiSua();
 	}
 
 }

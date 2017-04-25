@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -121,7 +122,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-				repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
 			}
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
@@ -151,7 +152,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-			repoDon.save(soTiepCongDan.getDon());
+			Utils.save(repoDon, soTiepCongDan.getDon());
 		}
 		return output;
 	}
@@ -166,7 +167,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		soTiepCongDan.setId(id);
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			repoCoQuanToChucTiepDan.save(coQuanToChucTiepDan);
+			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
 		}
 
 		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.OK);
@@ -183,7 +184,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(soTiepCongDan);
+		
+		Utils.save(repo, soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -211,7 +213,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(soTiepCongDan);
+		
+		Utils.save(repo, soTiepCongDan);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -227,7 +230,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "thoiGianTiepCongDan", required = false) String thoiGianTiepCongDan,
 			@RequestParam(value = "ngayHenTiepCongDan", required = false) String ngayHenTiepCongDan,
 			HttpServletResponse response) {
-		System.out.println("xuat file word");
+
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("hoVaTen", hoVaTen);
 		mappings.put("soCMND", soCMND);
@@ -242,7 +245,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcel(HttpServletResponse response) throws IOException {
-		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", repo.findAll(), "Danh sách sổ tiếp dân");
+	public void exportExcel(HttpServletResponse response, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
+		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", 
+				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
+				tuNgay, denNgay, loaiTiepCongDan)), "Danh sách sổ tiếp dân");
 	}
 }

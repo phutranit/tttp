@@ -156,7 +156,8 @@ public class DonController extends TttpController<Don> {
 		if (don == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(don);
+		
+		Utils.save(repo, don);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

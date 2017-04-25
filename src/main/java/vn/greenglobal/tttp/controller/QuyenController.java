@@ -30,92 +30,92 @@ public class QuyenController {
 		Map<String, Object> quyenObj = new HashMap<>();
 		
 		quyenObj.put("tenChucNang","Thẩm quyền giải quyết");
-		quyenObj.put("tenQuyen", QuyenEnum.THAM_QUYEN_GIAI_QUYET_LIET_KE.getText() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_XEM.getText() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_THEM.getText() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_CHINH_SUA.getText() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.THAM_QUYEN_GIAI_QUYET_LIET_KE.name() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_XEM.name() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_THEM.name() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_CHINH_SUA.name() + "," + QuyenEnum.THAM_QUYEN_GIAI_QUYET_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.THAMQUYENGIAIQUYET_LIETKE.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XEM.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_THEM.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_SUA.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THAMQUYENGIAIQUYET_LIETKE.name() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XEM.name() + "," + QuyenEnum.THAMQUYENGIAIQUYET_THEM.name() + "," + QuyenEnum.THAMQUYENGIAIQUYET_SUA.name() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Vụ việc");
-		quyenObj.put("tenQuyen", QuyenEnum.VU_VIEC_LIET_KE.getText() + "," + QuyenEnum.VU_VIEC_XEM.getText() + "," + QuyenEnum.VU_VIEC_THEM.getText() + "," + QuyenEnum.VU_VIEC_CHINH_SUA.getText() + "," + QuyenEnum.VU_VIEC_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.VU_VIEC_LIET_KE.name() + "," + QuyenEnum.VU_VIEC_XEM.name() + "," + QuyenEnum.VU_VIEC_THEM.name() + "," + QuyenEnum.VU_VIEC_CHINH_SUA.name() + "," + QuyenEnum.VU_VIEC_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.VUVIEC_LIETKE.getText() + "," + QuyenEnum.VUVIEC_XEM.getText() + "," + QuyenEnum.VUVIEC_THEM.getText() + "," + QuyenEnum.VUVIEC_SUA.getText() + "," + QuyenEnum.VUVIEC_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.VUVIEC_LIETKE.name() + "," + QuyenEnum.VUVIEC_XEM.name() + "," + QuyenEnum.VUVIEC_THEM.name() + "," + QuyenEnum.VUVIEC_SUA.name() + "," + QuyenEnum.VUVIEC_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Loại tài liệu");
-		quyenObj.put("tenQuyen", QuyenEnum.LOAI_TAI_LIEU_LIET_KE.getText() + "," + QuyenEnum.LOAI_TAI_LIEU_XEM.getText() + "," + QuyenEnum.LOAI_TAI_LIEU_THEM.getText() + "," + QuyenEnum.LOAI_TAI_LIEU_CHINH_SUA.getText() + "," + QuyenEnum.LOAI_TAI_LIEU_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.LOAI_TAI_LIEU_LIET_KE.name() + "," + QuyenEnum.LOAI_TAI_LIEU_XEM.name() + "," + QuyenEnum.LOAI_TAI_LIEU_THEM.name() + "," + QuyenEnum.LOAI_TAI_LIEU_CHINH_SUA.name() + "," + QuyenEnum.LOAI_TAI_LIEU_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.LOAITAILIEU_LIETKE.getText() + "," + QuyenEnum.LOAITAILIEU_XEM.getText() + "," + QuyenEnum.LOAITAILIEU_THEM.getText() + "," + QuyenEnum.LOAITAILIEU_SUA.getText() + "," + QuyenEnum.LOAITAILIEU_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.LOAITAILIEU_LIETKE.name() + "," + QuyenEnum.LOAITAILIEU_XEM.name() + "," + QuyenEnum.LOAITAILIEU_THEM.name() + "," + QuyenEnum.LOAITAILIEU_SUA.name() + "," + QuyenEnum.LOAITAILIEU_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Chức vụ");
-		quyenObj.put("tenQuyen", QuyenEnum.CHUC_VU_LIET_KE.getText() + "," + QuyenEnum.CHUC_VU_XEM.getText() + "," + QuyenEnum.CHUC_VU_THEM.getText() + "," + QuyenEnum.CHUC_VU_CHINH_SUA.getText() + "," + QuyenEnum.CHUC_VU_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CHUC_VU_LIET_KE.name() + "," + QuyenEnum.CHUC_VU_XEM.name() + "," + QuyenEnum.CHUC_VU_THEM.name() + "," + QuyenEnum.CHUC_VU_CHINH_SUA.name() + "," + QuyenEnum.CHUC_VU_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.CHUCVU_LIETKE.getText() + "," + QuyenEnum.CHUCVU_XEM.getText() + "," + QuyenEnum.CHUCVU_THEM.getText() + "," + QuyenEnum.CHUCVU_SUA.getText() + "," + QuyenEnum.CHUCVU_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CHUCVU_LIETKE.name() + "," + QuyenEnum.CHUCVU_XEM.name() + "," + QuyenEnum.CHUCVU_THEM.name() + "," + QuyenEnum.CHUCVU_SUA.name() + "," + QuyenEnum.CHUCVU_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Quốc tịch");
-		quyenObj.put("tenQuyen", QuyenEnum.QUOC_TICH_LIET_KE.getText() + "," + QuyenEnum.QUOC_TICH_XEM.getText() + "," + QuyenEnum.QUOC_TICH_THEM.getText() + "," + QuyenEnum.QUOC_TICH_CHINH_SUA.getText() + "," + QuyenEnum.QUOC_TICH_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.QUOC_TICH_LIET_KE.name() + "," + QuyenEnum.QUOC_TICH_XEM.name() + "," + QuyenEnum.QUOC_TICH_THEM.name() + "," + QuyenEnum.QUOC_TICH_CHINH_SUA.name() + "," + QuyenEnum.QUOC_TICH_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.QUOCTICH_LIETKE.getText() + "," + QuyenEnum.QUOCTICH_XEM.getText() + "," + QuyenEnum.QUOCTICH_THEM.getText() + "," + QuyenEnum.QUOCTICH_SUA.getText() + "," + QuyenEnum.QUOCTICH_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.QUOCTICH_LIETKE.name() + "," + QuyenEnum.QUOCTICH_XEM.name() + "," + QuyenEnum.QUOCTICH_THEM.name() + "," + QuyenEnum.QUOCTICH_SUA.name() + "," + QuyenEnum.QUOCTICH_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Cấp đơn vị hành chính");
-		quyenObj.put("tenQuyen", QuyenEnum.CAP_DON_VI_HANH_CHINH_LIET_KE.getText() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_XEM.getText() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_THEM.getText() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_CHINH_SUA.getText() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CAP_DON_VI_HANH_CHINH_LIET_KE.name() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_XEM.name() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_THEM.name() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_CHINH_SUA.name() + "," + QuyenEnum.CAP_DON_VI_HANH_CHINH_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.CAPDONVIHANHCHINH_LIETKE.getText() + "," + QuyenEnum.CAPDONVIHANHCHINH_XEM.getText() + "," + QuyenEnum.CAPDONVIHANHCHINH_THEM.getText() + "," + QuyenEnum.CAPDONVIHANHCHINH_SUA.getText() + "," + QuyenEnum.CAPDONVIHANHCHINH_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CAPDONVIHANHCHINH_LIETKE.name() + "," + QuyenEnum.CAPDONVIHANHCHINH_XEM.name() + "," + QuyenEnum.CAPDONVIHANHCHINH_THEM.name() + "," + QuyenEnum.CAPDONVIHANHCHINH_SUA.name() + "," + QuyenEnum.CAPDONVIHANHCHINH_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Đơn vị hành chính");
-		quyenObj.put("tenQuyen", QuyenEnum.DON_VI_HANH_CHINH_LIET_KE.getText() + "," + QuyenEnum.DON_VI_HANH_CHINH_XEM.getText() + "," + QuyenEnum.DON_VI_HANH_CHINH_THEM.getText() + "," + QuyenEnum.DON_VI_HANH_CHINH_CHINH_SUA.getText() + "," + QuyenEnum.DON_VI_HANH_CHINH_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.DON_VI_HANH_CHINH_LIET_KE.name() + "," + QuyenEnum.DON_VI_HANH_CHINH_XEM.name() + "," + QuyenEnum.DON_VI_HANH_CHINH_THEM.name() + "," + QuyenEnum.DON_VI_HANH_CHINH_CHINH_SUA.name() + "," + QuyenEnum.DON_VI_HANH_CHINH_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.DONVIHANHCHINH_LIETKE.getText() + "," + QuyenEnum.DONVIHANHCHINH_XEM.getText() + "," + QuyenEnum.DONVIHANHCHINH_THEM.getText() + "," + QuyenEnum.DONVIHANHCHINH_SUA.getText() + "," + QuyenEnum.DONVIHANHCHINH_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.DONVIHANHCHINH_LIETKE.name() + "," + QuyenEnum.DONVIHANHCHINH_XEM.name() + "," + QuyenEnum.DONVIHANHCHINH_THEM.name() + "," + QuyenEnum.DONVIHANHCHINH_SUA.name() + "," + QuyenEnum.DONVIHANHCHINH_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Cấp cơ quan quản lý");
-		quyenObj.put("tenQuyen", QuyenEnum.CAP_CO_QUAN_QUAN_LY_LIET_KE.getText() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_XEM.getText() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_THEM.getText() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_CHINH_SUA.getText() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CAP_CO_QUAN_QUAN_LY_LIET_KE.name() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_XEM.name() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_THEM.name() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_CHINH_SUA.name() + "," + QuyenEnum.CAP_CO_QUAN_QUAN_LY_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.CAPCOQUANQUANLY_LIETKE.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_XEM.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_THEM.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_SUA.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CAPCOQUANQUANLY_LIETKE.name() + "," + QuyenEnum.CAPCOQUANQUANLY_XEM.name() + "," + QuyenEnum.CAPCOQUANQUANLY_THEM.name() + "," + QuyenEnum.CAPCOQUANQUANLY_SUA.name() + "," + QuyenEnum.CAPCOQUANQUANLY_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Cơ quan quản lý");
-		quyenObj.put("tenQuyen", QuyenEnum.CO_QUAN_QUAN_LY_LIET_KE.getText() + "," + QuyenEnum.CO_QUAN_QUAN_LY_XEM.getText() + "," + QuyenEnum.CO_QUAN_QUAN_LY_THEM.getText() + "," + QuyenEnum.CO_QUAN_QUAN_LY_CHINH_SUA.getText() + "," + QuyenEnum.CO_QUAN_QUAN_LY_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CO_QUAN_QUAN_LY_LIET_KE.name() + "," + QuyenEnum.CO_QUAN_QUAN_LY_XEM.name() + "," + QuyenEnum.CO_QUAN_QUAN_LY_THEM.name() + "," + QuyenEnum.CO_QUAN_QUAN_LY_CHINH_SUA.name() + "," + QuyenEnum.CO_QUAN_QUAN_LY_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.COQUANQUANLY_LIETKE.getText() + "," + QuyenEnum.COQUANQUANLY_XEM.getText() + "," + QuyenEnum.COQUANQUANLY_THEM.getText() + "," + QuyenEnum.COQUANQUANLY_SUA.getText() + "," + QuyenEnum.COQUANQUANLY_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.COQUANQUANLY_LIETKE.name() + "," + QuyenEnum.COQUANQUANLY_XEM.name() + "," + QuyenEnum.COQUANQUANLY_THEM.name() + "," + QuyenEnum.COQUANQUANLY_SUA.name() + "," + QuyenEnum.COQUANQUANLY_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Tổ dân phố");
-		quyenObj.put("tenQuyen", QuyenEnum.TO_DAN_PHO_LIET_KE.getText() + "," + QuyenEnum.TO_DAN_PHO_XEM.getText() + "," + QuyenEnum.TO_DAN_PHO_THEM.getText() + "," + QuyenEnum.TO_DAN_PHO_CHINH_SUA.getText() + "," + QuyenEnum.TO_DAN_PHO_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.TO_DAN_PHO_LIET_KE.name() + "," + QuyenEnum.TO_DAN_PHO_XEM.name() + "," + QuyenEnum.TO_DAN_PHO_THEM.name() + "," + QuyenEnum.TO_DAN_PHO_CHINH_SUA.name() + "," + QuyenEnum.TO_DAN_PHO_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.TODANPHO_LIETKE.getText() + "," + QuyenEnum.TODANPHO_XEM.getText() + "," + QuyenEnum.TODANPHO_THEM.getText() + "," + QuyenEnum.TODANPHO_SUA.getText() + "," + QuyenEnum.TODANPHO_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.TODANPHO_LIETKE.name() + "," + QuyenEnum.TODANPHO_XEM.name() + "," + QuyenEnum.TODANPHO_THEM.name() + "," + QuyenEnum.TODANPHO_SUA.name() + "," + QuyenEnum.TODANPHO_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Dân tộc");
-		quyenObj.put("tenQuyen", QuyenEnum.DAN_TOC_LIET_KE.getText() + "," + QuyenEnum.DAN_TOC_XEM.getText() + "," + QuyenEnum.DAN_TOC_THEM.getText() + "," + QuyenEnum.DAN_TOC_CHINH_SUA.getText() + "," + QuyenEnum.DAN_TOC_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.DAN_TOC_LIET_KE.name() + "," + QuyenEnum.DAN_TOC_XEM.name() + "," + QuyenEnum.DAN_TOC_THEM.name() + "," + QuyenEnum.DAN_TOC_CHINH_SUA.name() + "," + QuyenEnum.DAN_TOC_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.DANTOC_LIETKE.getText() + "," + QuyenEnum.DANTOC_XEM.getText() + "," + QuyenEnum.DANTOC_THEM.getText() + "," + QuyenEnum.DANTOC_SUA.getText() + "," + QuyenEnum.DANTOC_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.DANTOC_LIETKE.name() + "," + QuyenEnum.DANTOC_XEM.name() + "," + QuyenEnum.DANTOC_THEM.name() + "," + QuyenEnum.DANTOC_SUA.name() + "," + QuyenEnum.DANTOC_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Lĩnh vực đơn thư");
-		quyenObj.put("tenQuyen", QuyenEnum.LINH_VUC_DON_THU_LIET_KE.getText() + "," + QuyenEnum.LINH_VUC_DON_THU_XEM.getText() + "," + QuyenEnum.LINH_VUC_DON_THU_THEM.getText() + "," + QuyenEnum.LINH_VUC_DON_THU_CHINH_SUA.getText() + "," + QuyenEnum.LINH_VUC_DON_THU_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.LINH_VUC_DON_THU_LIET_KE.name() + "," + QuyenEnum.LINH_VUC_DON_THU_XEM.name() + "," + QuyenEnum.LINH_VUC_DON_THU_THEM.name() + "," + QuyenEnum.LINH_VUC_DON_THU_CHINH_SUA.name() + "," + QuyenEnum.LINH_VUC_DON_THU_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.LINHVUCDONTHU_LIETKE.getText() + "," + QuyenEnum.LINHVUCDONTHU_XEM.getText() + "," + QuyenEnum.LINHVUCDONTHU_THEM.getText() + "," + QuyenEnum.LINHVUCDONTHU_SUA.getText() + "," + QuyenEnum.LINHVUCDONTHU_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.LINHVUCDONTHU_LIETKE.name() + "," + QuyenEnum.LINHVUCDONTHU_XEM.name() + "," + QuyenEnum.LINHVUCDONTHU_THEM.name() + "," + QuyenEnum.LINHVUCDONTHU_SUA.name() + "," + QuyenEnum.LINHVUCDONTHU_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Công chức");
-		quyenObj.put("tenQuyen", QuyenEnum.CONG_CHUC_LIET_KE.getText() + "," + QuyenEnum.CONG_CHUC_XEM.getText() + "," + QuyenEnum.CONG_CHUC_THEM.getText() + "," + QuyenEnum.CONG_CHUC_CHINH_SUA.getText() + "," + QuyenEnum.CONG_CHUC_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CONG_CHUC_LIET_KE.name() + "," + QuyenEnum.CONG_CHUC_XEM.name() + "," + QuyenEnum.CONG_CHUC_THEM.name() + "," + QuyenEnum.CONG_CHUC_CHINH_SUA.name() + "," + QuyenEnum.CONG_CHUC_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.CONGCHUC_LIETKE.getText() + "," + QuyenEnum.CONGCHUC_XEM.getText() + "," + QuyenEnum.CONGCHUC_THEM.getText() + "," + QuyenEnum.CONGCHUC_SUA.getText() + "," + QuyenEnum.CONGCHUC_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CONGCHUC_LIETKE.name() + "," + QuyenEnum.CONGCHUC_XEM.name() + "," + QuyenEnum.CONGCHUC_THEM.name() + "," + QuyenEnum.CONGCHUC_SUA.name() + "," + QuyenEnum.CONGCHUC_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Công dân");
-		quyenObj.put("tenQuyen", QuyenEnum.CONG_DAN_LIET_KE.getText() + "," + QuyenEnum.CONG_DAN_XEM.getText() + "," + QuyenEnum.CONG_DAN_THEM.getText() + "," + QuyenEnum.CONG_DAN_CHINH_SUA.getText() + "," + QuyenEnum.CONG_DAN_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.CONG_DAN_LIET_KE.name() + "," + QuyenEnum.CONG_DAN_XEM.name() + "," + QuyenEnum.CONG_DAN_THEM.name() + "," + QuyenEnum.CONG_DAN_CHINH_SUA.name() + "," + QuyenEnum.CONG_DAN_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.CONGDAN_LIETKE.getText() + "," + QuyenEnum.CONGDAN_XEM.getText() + "," + QuyenEnum.CONGDAN_THEM.getText() + "," + QuyenEnum.CONGDAN_SUA.getText() + "," + QuyenEnum.CONGDAN_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CONGDAN_LIETKE.name() + "," + QuyenEnum.CONGDAN_XEM.name() + "," + QuyenEnum.CONGDAN_THEM.name() + "," + QuyenEnum.CONGDAN_SUA.name() + "," + QuyenEnum.CONGDAN_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Vai trò");
-		quyenObj.put("tenQuyen", QuyenEnum.VAI_TRO_LIET_KE.getText() + "," + QuyenEnum.VAI_TRO_XEM.getText() + "," + QuyenEnum.VAI_TRO_THEM.getText() + "," + QuyenEnum.VAI_TRO_CHINH_SUA.getText() + "," + QuyenEnum.VAI_TRO_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.VAI_TRO_LIET_KE.name() + "," + QuyenEnum.VAI_TRO_XEM.name() + "," + QuyenEnum.VAI_TRO_THEM.name() + "," + QuyenEnum.VAI_TRO_CHINH_SUA.name() + "," + QuyenEnum.VAI_TRO_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.VAITRO_LIETKE.getText() + "," + QuyenEnum.VAITRO_XEM.getText() + "," + QuyenEnum.VAITRO_THEM.getText() + "," + QuyenEnum.VAITRO_SUA.getText() + "," + QuyenEnum.VAITRO_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.VAITRO_LIETKE.name() + "," + QuyenEnum.VAITRO_XEM.name() + "," + QuyenEnum.VAITRO_THEM.name() + "," + QuyenEnum.VAITRO_SUA.name() + "," + QuyenEnum.VAITRO_XOA.name());
 		quyenList.add(quyenObj);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

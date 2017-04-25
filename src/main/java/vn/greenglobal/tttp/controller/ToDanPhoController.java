@@ -120,7 +120,7 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(toDanPho);
+		Utils.save(repo, toDanPho);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
