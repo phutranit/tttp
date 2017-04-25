@@ -242,6 +242,10 @@ public class CongDan extends Model<CongDan> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public QuocTich getQuocTichCongDan() {
+		return getQuocTich();
+	}
+	
 	public String getTenDiaChiSoCMND() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
