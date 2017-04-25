@@ -61,7 +61,7 @@ import vn.greenglobal.tttp.model.Quyen;
 //@EnableWebSecurity
 @Controller
 @ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
-		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp", "vn.greenglobal.tttp.security" })
+		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 
 	@Override
