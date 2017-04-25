@@ -32,7 +32,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.Model;
+import vn.greenglobal.tttp.model.NguoiDung;
 
 public class Utils {
 
@@ -167,5 +169,13 @@ public class Utils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static NguoiDung quyenValidate(ProfileUtils profileUtil, String authorization, QuyenEnum quyen) {
+		NguoiDung nguoiDung = profileUtil.getUserInfo(authorization);
+		if (nguoiDung != null && nguoiDung.checkQuyen(quyen)) {
+			return nguoiDung;
+		}
+		return null;
 	}
 }
