@@ -31,7 +31,6 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 
 @Entity
 @Table(name = "nguoidung")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class NguoiDung extends Model<NguoiDung> {
 

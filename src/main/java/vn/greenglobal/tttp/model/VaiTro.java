@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "vaitro")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class VaiTro extends Model<VaiTro> {
 
