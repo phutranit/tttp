@@ -135,7 +135,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-				repoNguoiDung.save(congChuc.getNguoiDung());
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung());
 				return Utils.doSave(repo, congChuc, eass, HttpStatus.CREATED);
 			}
 		});
@@ -219,7 +219,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-				repoNguoiDung.save(congChuc.getNguoiDung());
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung());
 				return Utils.doSave(repo, congChuc, eass, HttpStatus.CREATED);
 			}
 
@@ -238,7 +238,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(congChuc);
+		Utils.save(repo, congChuc);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

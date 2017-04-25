@@ -124,7 +124,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(loaiTaiLieu);
+		Utils.save(repo, loaiTaiLieu);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

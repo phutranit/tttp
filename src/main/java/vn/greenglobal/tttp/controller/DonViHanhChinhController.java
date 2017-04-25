@@ -183,7 +183,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		repo.save(donViHanhChinh);
+		Utils.save(repo, donViHanhChinh);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

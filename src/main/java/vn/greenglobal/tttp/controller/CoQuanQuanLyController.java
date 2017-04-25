@@ -128,7 +128,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		repo.save(coQuanQuanLy);
+		
+		Utils.save(repo, coQuanQuanLy);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
