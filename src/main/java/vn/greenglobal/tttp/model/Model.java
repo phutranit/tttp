@@ -37,6 +37,9 @@ public class Model<T extends Model<T>> implements Persistable {
 	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
+	
+	private CongChuc nguoiTao;
+	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {
 		return this == o || o != null && getClass().isAssignableFrom(o.getClass()) && getId() != null
@@ -68,8 +71,7 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTao() {
-		System.out.println("ngayTao: " + ngayTao);
-		if (ngayTao == null) {
+		if (ngayTao == null && isNew()) {
 			ngayTao = LocalDateTime.now();
 		}
 		return this.ngayTao;
@@ -97,6 +99,36 @@ public class Model<T extends Model<T>> implements Persistable {
 	@Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this);
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiTao() {
+		return nguoiTao;
+	}
+
+	public void setNguoiTao(CongChuc nguoiTao) {
+		this.nguoiTao = nguoiTao;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getNguoiSua() {
+		return nguoiSua;
+	}
+
+	public void setNguoiSua(CongChuc nguoiSua) {
+		this.nguoiSua = nguoiSua;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiTao() {
+		return getNguoiTao();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public CongChuc getThongTinNguoiSua() {
+		return getNguoiSua();
 	}
 
 }

@@ -93,8 +93,8 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
