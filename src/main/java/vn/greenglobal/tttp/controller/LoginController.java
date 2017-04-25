@@ -33,8 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -48,8 +51,13 @@ public class LoginController {
     Config config;
 	
 	@Autowired
-	NguoiDungRepository repo;
+	NguoiDungRepository nguoiDungRepository;
 
+	@Autowired
+	CongChucRepository congChucRepository;
+	@Autowired
+	CongChucService congChucService;
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public @ResponseBody ResponseEntity<Object> login(
 			@RequestHeader(value = "Username", required = true) String username,
@@ -57,13 +65,7 @@ public class LoginController {
 		Map<String, Object> result = new HashMap<>();
 		NguoiDung user;
 		if (username != null && !username.isEmpty()) {
-			user = repo.findByTenDangNhap(username);
-			System.out.println(user);
-			if(user!=null){
-				
-				System.out.println(user.getQuyen().getRealm().isPermitted(null, QuyenEnum.VAITRO_XEM.name().toLowerCase().replace("_", ":")));
-				System.out.println(user.getQuyen().getRealm().isPermitted(null, "nguoidung:sua"));
-			};
+			user = nguoiDungRepository.findByTenDangNhap(username);
 			if (user != null || username.equals("tttp")) {
 				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
@@ -85,6 +87,10 @@ public class LoginController {
 					result.put("userId", user.getId());
 					result.put("roles", user.getVaiTros());
 					//result.put("permission", user.getQuyens());
+					CongChuc congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+					if(congChuc!=null){
+						result.put("congChucId", congChuc.getId());
+					}
 				}
 				
 				return new ResponseEntity<>(result, HttpStatus.OK);

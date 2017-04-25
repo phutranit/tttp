@@ -26,6 +26,10 @@ public class CongChucService {
 		return base.and(QCongChuc.congChuc.id.eq(id));
 	}
 
+	public Predicate predicateFindByNguoiDungId(long id) {
+		return base.and(QCongChuc.congChuc.nguoiDung.id.eq(id));
+	}
+	
 	public boolean isExists(CongChucRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = base.and(QCongChuc.congChuc.id.eq(id));
@@ -56,4 +60,6 @@ public class CongChucService {
 
 		return congChuc != null ? true : false;
 	}
+	
+	
 }
