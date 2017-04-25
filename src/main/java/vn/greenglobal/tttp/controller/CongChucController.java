@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import javax.persistence.EntityManager;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,10 +12,8 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -206,7 +202,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
+		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
