@@ -90,7 +90,13 @@ public enum QuyenEnum {
 	VAITRO_XEM("Xem"),
 	VAITRO_THEM("Thêm mới"),
 	VAITRO_SUA("Chỉnh sửa"),
-	VAITRO_XOA("Xoá");
+	VAITRO_XOA("Xoá"),
+	
+	THAMSO_LIETKE("Liệt kê"),
+	THAMSO_XEM("Xem"),
+	THAMSO_THEM("Thêm mới"),
+	THAMSO_SUA("Chỉnh sửa"),
+	THAMSO_XOA("Xoá");
 
 	QuyenEnum(String text) {
 		this.text = text;
