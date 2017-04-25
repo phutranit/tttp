@@ -13,6 +13,7 @@ public class Quyen extends HashMap<String, Boolean> {
 
 	private long id;
 	private String resource = "";
+	@SuppressWarnings("unused")
 	private NguoiDung nguoiTao;
 	
 	public Quyen(AuthorizingRealm realm_) {

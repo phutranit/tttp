@@ -4,10 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +25,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.VaiTroService;
@@ -50,11 +49,15 @@ public class VaiTroController extends TttpController<VaiTro> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros")
 	@ApiOperation(value = "Lấy danh sách Vai Trò", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<VaiTro> getList(
+	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<VaiTro> page = repo.findAll(vaiTroService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -66,6 +69,10 @@ public class VaiTroController extends TttpController<VaiTro> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
@@ -76,10 +83,14 @@ public class VaiTroController extends TttpController<VaiTro> {
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros/{id}")
 	@ApiOperation(value = "Lấy Vai Trò theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
-	public ResponseEntity<PersistentEntityResource> getVaiTro(
+	public ResponseEntity<Object> getById(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
 		if (vaiTro == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -95,6 +106,10 @@ public class VaiTroController extends TttpController<VaiTro> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		vaiTro.setId(id);
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -115,6 +130,10 @@ public class VaiTroController extends TttpController<VaiTro> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
 		if (vaiTro == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
