@@ -51,12 +51,12 @@ public class NguoiDung extends Model<NguoiDung> {
 	
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
-	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
+	private Set<VaiTro> vaiTros = new HashSet<>();
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "nguoidung_quyen", joinColumns = {@JoinColumn(name = "nguoidung_id", referencedColumnName = "id")})
-	private Set<String> quyens;// = new HashSet<>(0);
+	private Set<String> quyens = new HashSet<>();
 	
 	@Transient
 	private Set<String> tatCaQuyens = new HashSet<>();
@@ -139,6 +139,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 	
 	public Set<String> getTatCaQuyens() {
+		System.out.println("getTatCaQuyens");
 		if (tatCaQuyens.isEmpty()) {
 			tatCaQuyens.addAll(quyens);
 			for (VaiTro vaiTro : vaiTros) {
@@ -179,7 +180,14 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 
 	public Quyen getQuyen() {
-		return quyen;
+		return quyen = new Quyen(new SimpleAccountRealm() {
+			@Override
+			protected AuthorizationInfo getAuthorizationInfo(final PrincipalCollection arg0) {
+				final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+				info.setStringPermissions(getTatCaQuyens());
+				return info;
+			}
+		});
 	}
 	
 	public boolean checkQuyen(String resource, String action){
@@ -188,7 +196,8 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 	
 	public boolean checkQuyen(QuyenEnum quyen){
-		return getQuyen().getRealm().isPermitted(null, quyen.name().toLowerCase().replace("_", ":"));
+		return getQuyen().getRealm().isPermitted(null, "vuviec"); 
+				//quyen.name().toLowerCase().replace("_", ":"));
 	}
 	
 	@Transient

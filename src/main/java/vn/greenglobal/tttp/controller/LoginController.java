@@ -66,6 +66,9 @@ public class LoginController {
 		NguoiDung user;
 		if (username != null && !username.isEmpty()) {
 			user = nguoiDungRepository.findByTenDangNhap(username);
+			System.out.println("VUVIEC_XEM"+user.getQuyen().getRealm().isPermitted(null, QuyenEnum.VUVIEC_XEM.name().toLowerCase().replace("_", ":")));
+			System.out.println("VUVIEC_THEM"+user.checkQuyen(QuyenEnum.VUVIEC_THEM));
+			
 			if (user != null || username.equals("tttp")) {
 				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);

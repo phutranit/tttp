@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
@@ -54,7 +55,8 @@ public class ChucVuController extends TttpController<ChucVu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
 		NguoiDung nd = profileUtil.getUserInfo(authorization);
-		System.out.println("nd:"+nd);
+		System.out.println("check nd:"+nd.checkQuyen(QuyenEnum.VAITRO_XEM));
+		
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
