@@ -4,10 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +25,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
 import vn.greenglobal.tttp.service.LoaiTaiLieuService;
@@ -50,10 +49,14 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus")
 	@ApiOperation(value = "Lấy danh sách Loại Tài Liệu", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<LoaiTaiLieu> getList(
+	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuQuyetService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -66,6 +69,10 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
 				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -78,10 +85,14 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	@ApiOperation(value = "Lấy Loại Tài Liệu theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Loại Tài Liệu thành công", response = LoaiTaiLieu.class) })
-	public ResponseEntity<PersistentEntityResource> getById(
+	public ResponseEntity<Object> getById(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuQuyetService.predicateFindOne(id));
 		if (loaiTaiLieu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -97,6 +108,10 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		loaiTaiLieu.setId(id);
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
 				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
@@ -118,6 +133,10 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuQuyetService.delete(repo, id);
 		if (loaiTaiLieu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

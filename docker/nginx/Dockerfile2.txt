@@ -1,8 +1,8 @@
-FROM alpine:3.5
+FROM alpine:3.4
 
 MAINTAINER Dmitriy Belyaev "dimabelyaev27@gmail.com"
 
-ENV NGINX_VERSION 1.13.0
+ENV NGINX_VERSION 1.10.2
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && CONFIG="\
@@ -78,7 +78,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && rm nginx.tar.gz \
     && mkdir /usr/src/upload \
     && cd /usr/src/upload \
-    && curl -fSLO https://github.com/Caltalys/nginx-upload-module/archive/2.2.zip \
+    && curl -fSLO https://github.com/vkholodkov/nginx-upload-module/archive/2.2.zip \
     && unzip 2.2.zip \
     && mkdir -p /usr/src/progress \
     && cd /usr/src/progress \

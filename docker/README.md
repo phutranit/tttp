@@ -6,6 +6,8 @@ sudo docker build --tag=tttp-phpadmin:1.0 myphpadmin/
 
 sudo docker build --tag=tttp-server:1.0 server/
 
+sudo docker build --tag=tttp-nginx:1.0 nginx/
+
 #Run docker (run containers)
 
 # Run Mariadb server
@@ -19,6 +21,10 @@ sudo docker build --tag=tttp-server:1.0 server/
 # Run Phpmyadmin
 
 sudo docker run -d --name=tttp-phpadmin --link tttp-mariadb:tttpdb -p 9000:80 tttp-phpadmin:1.0
+
+# Run Nginx
+
+sudo docker run -d --name=tttp-nginx -v /home/tttpdata/file:/var/www -p 8089:80 tttp-nginx:1.0
 
 # Run api server
 

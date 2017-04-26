@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "vaitro")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class VaiTro extends Model<VaiTro> {
 
@@ -69,6 +68,7 @@ public class VaiTro extends Model<VaiTro> {
 		setQuyens(quyen);
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Set<String> getQuyens() {
 		return quyens;
 	}

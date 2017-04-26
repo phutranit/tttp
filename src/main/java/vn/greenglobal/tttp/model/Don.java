@@ -3,15 +3,12 @@ package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-//import javax.persistence.JoinColumn;
-//import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -38,7 +33,6 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity
 @Table(name = "don")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Don extends Model<Don> {
 
 	private static final long serialVersionUID = 8736658787648062250L;
@@ -86,8 +80,6 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
-	@ManyToOne
-	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
@@ -196,7 +188,6 @@ public class Don extends Model<Don> {
 		this.soNguoi = soNguoi;
 	}
 
-	@ApiModelProperty(position = 8)
 	public boolean isCoUyQuyen() {
 		return coUyQuyen;
 	}
@@ -297,22 +288,13 @@ public class Don extends Model<Don> {
 		this.ghiChuXuLyDon = ghiChuXuLyDon;
 	}
 
-	@ApiModelProperty(position = 15, example="{}")
+	@ApiModelProperty(position = 26, example="{}")
 	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
 		return coQuanDaGiaiQuyet;
 	}
 
 	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
 		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
-	}
-
-	@ApiModelProperty(position = 14, example="{}")
-	public CapCoQuanQuanLy getCapCoQuanDaGiaiQuyet() {
-		return capCoQuanDaGiaiQuyet;
-	}
-
-	public void setCapCoQuanDaGiaiQuyet(CapCoQuanQuanLy capCoQuanDaGiaiQuyet) {
-		this.capCoQuanDaGiaiQuyet = capCoQuanDaGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -441,7 +423,7 @@ public class Don extends Model<Don> {
 		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(position = 7, example="{}")
+	@ApiModelProperty(position = 8, example="{}")
 	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
 		return chiTietLinhVucDonThuChiTiet;
 	}
@@ -469,6 +451,12 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LinhVucDonThu getChiTieitLinhVucDonThuChiTietDon() {
+		return getChiTietLinhVucDonThuChiTiet();
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -598,6 +586,11 @@ public class Don extends Model<Don> {
 
 	public void setThanhLapTiepDanGapLanhDao(boolean thanhLapTiepDanGapLanhDao) {
 		this.thanhLapTiepDanGapLanhDao = thanhLapTiepDanGapLanhDao;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getCoQuanDaGiaiQuyetDon() {
+		return getCoQuanDaGiaiQuyet();
 	}
 
 }

@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +32,6 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 
 @Entity
 @Table(name = "nguoidung")
-@Cache(region = "danhmuc", usage = CacheConcurrencyStrategy.READ_WRITE)
 @ApiModel
 public class NguoiDung extends Model<NguoiDung> {
 
@@ -48,19 +48,20 @@ public class NguoiDung extends Model<NguoiDung> {
 	private String salkey = "";
 
 	private boolean active;
-	
+
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
-	private Set<VaiTro> vaiTros = new HashSet<>();
-	
+	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
+
 	@ElementCollection(fetch = FetchType.EAGER)
-	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-	@CollectionTable(name = "nguoidung_quyen", joinColumns = {@JoinColumn(name = "nguoidung_id", referencedColumnName = "id")})
-	private Set<String> quyens = new HashSet<>();
-	
+	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@CollectionTable(name = "nguoidung_quyen", joinColumns = {
+			@JoinColumn(name = "nguoidung_id", referencedColumnName = "id") })
+	private Set<String> quyens;// = new HashSet<>(0);
+
 	@Transient
 	private Set<String> tatCaQuyens = new HashSet<>();
-	
+
 	public NguoiDung() {
 	}
 
@@ -87,7 +88,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.tenDangNhap = tenDangNhap;
 	}
 
-//	@JsonIgnore
+	// @JsonIgnore
 	public String getMatKhau() {
 		return matKhau;
 	}
@@ -129,25 +130,28 @@ public class NguoiDung extends Model<NguoiDung> {
 	public void setVaiTros(Set<VaiTro> vaiTros) {
 		this.vaiTros = vaiTros;
 	}
-	
+
+	@ApiModelProperty(hidden = true)
 	public Set<String> getQuyens() {
 		return quyens;
 	}
-	
+
 	public void setQuyens(final Set<String> dsChoPhep) {
 		quyens = dsChoPhep;
 	}
-	
+
+	@JsonIgnore
 	public Set<String> getTatCaQuyens() {
 		System.out.println("getTatCaQuyens");
 		if (tatCaQuyens.isEmpty()) {
 			tatCaQuyens.addAll(quyens);
 			for (VaiTro vaiTro : vaiTros) {
 				tatCaQuyens.add(vaiTro.getTen());
-				tatCaQuyens.addAll(vaiTro.getQuyens());
+				for (String str : vaiTro.getQuyens()) {
+					tatCaQuyens.addAll(Arrays.asList(str.split(",")));
+				}
 			}
 		}
-		System.out.println(tatCaQuyens);
 		return tatCaQuyens;
 	}
 
@@ -160,7 +164,7 @@ public class NguoiDung extends Model<NguoiDung> {
 			return info;
 		}
 	});
-	
+
 	public void updatePassword(String pass) {
 		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
 		String salkey = getSalkey();
@@ -179,6 +183,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		return getId();
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Quyen getQuyen() {
 		return quyen = new Quyen(new SimpleAccountRealm() {
 			@Override
@@ -189,21 +194,20 @@ public class NguoiDung extends Model<NguoiDung> {
 			}
 		});
 	}
-	
-	public boolean checkQuyen(String resource, String action){
-		
+
+	@Deprecated
+	public boolean checkQuyen(String resource, String action) {
 		return true;
 	}
-	
-	public boolean checkQuyen(QuyenEnum quyen){
-		return getQuyen().getRealm().isPermitted(null, "vuviec"); 
-				//quyen.name().toLowerCase().replace("_", ":"));
+
+	public boolean checkQuyen(QuyenEnum quyen) {
+		return getQuyen().getRealm().isPermitted(null, quyen.name().toLowerCase().replace('_', ':'));
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Set<VaiTro> getVaiTroNguoiDung() {
 		return getVaiTros();
 	}
-	
+
 }

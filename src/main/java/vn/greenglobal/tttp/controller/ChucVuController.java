@@ -3,10 +3,8 @@ package vn.greenglobal.tttp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +26,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ChucVu;
-import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.Utils;
@@ -51,11 +48,12 @@ public class ChucVuController extends TttpController<ChucVu> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/chucVus")
 	@ApiOperation(value = "Lấy danh sách Chức Vụ", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<ChucVu> getList(
+	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "ten", required = false) String ten, PersistentEntityResourceAssembler eass) {
-		NguoiDung nd = profileUtil.getUserInfo(authorization);
-		System.out.println("check nd:"+nd.checkQuyen(QuyenEnum.VAITRO_XEM));
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		
 		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -68,6 +66,10 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody ChucVu chucVu, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
 					ApiErrorEnum.TEN_REQUIRED.getText());
@@ -84,9 +86,14 @@ public class ChucVuController extends TttpController<ChucVu> {
 	@RequestMapping(method = RequestMethod.GET, value = "/chucVus/{id}")
 	@ApiOperation(value = "Lấy Chức Vụ theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Chức Vụ thành công", response = ChucVu.class) })
-	public ResponseEntity<PersistentEntityResource> getById(
+	public ResponseEntity<Object> getById(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		ChucVu chucVu = repo.findOne(chucVuService.predicateFindOne(id));
 		if (chucVu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,6 +109,10 @@ public class ChucVuController extends TttpController<ChucVu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ChucVu chucVu, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		chucVu.setId(id);
 		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
@@ -127,6 +138,10 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		ChucVu chucVu = chucVuService.delete(repo, id);
 		if (chucVu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

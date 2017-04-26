@@ -66,9 +66,6 @@ public class LoginController {
 		NguoiDung user;
 		if (username != null && !username.isEmpty()) {
 			user = nguoiDungRepository.findByTenDangNhap(username);
-			System.out.println("VUVIEC_XEM"+user.getQuyen().getRealm().isPermitted(null, QuyenEnum.VUVIEC_XEM.name().toLowerCase().replace("_", ":")));
-			System.out.println("VUVIEC_THEM"+user.checkQuyen(QuyenEnum.VUVIEC_THEM));
-			
 			if (user != null || username.equals("tttp")) {
 				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
@@ -80,8 +77,6 @@ public class LoginController {
 				commonProfile.addAttribute("username", username);
 				if(user!=null){
 					commonProfile.setId(user.getId());
-					//commonProfile.addRole(user.getVaiTros());
-					//commonProfile.addPermission(null);
 				}
 				String token = generator.generate(commonProfile);
 				result.put("token", token);
@@ -89,7 +84,6 @@ public class LoginController {
 				if(user!=null){
 					result.put("userId", user.getId());
 					result.put("roles", user.getVaiTros());
-					//result.put("permission", user.getQuyens());
 					CongChuc congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
 					if(congChuc!=null){
 						result.put("congChucId", congChuc.getId());

@@ -1,29 +1,67 @@
 package vn.greenglobal.tttp.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import vn.greenglobal.tttp.util.upload.StorageFileNotFoundException;
-import vn.greenglobal.tttp.util.upload.StorageService;
+import io.swagger.annotations.Api;
+import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.model.DocumentMetaData;
+import vn.greenglobal.tttp.util.RestServieResourceFacade;
 
-public class FileUploadController {
+@RestController
+@Api(value = "document", description = "File upload")
+public class FileUploadController extends TttpController<DocumentMetaData>{
 
-	private final StorageService storageService;
+	public FileUploadController(BaseRepository<DocumentMetaData, ?> repo) {
+		super(repo);
+	}
+
+	@Autowired
+    RestServieResourceFacade restServieResourceFacade;
+
+    @RequestMapping(value = "/documents/files/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity<?> upload(
+    		@RequestHeader(value = "Authorization", required = true) String authorization,
+    		@RequestPart(value = "file", required = true) MultipartFile file) throws IOException {
+
+        if (!file.isEmpty()) {
+            restServieResourceFacade.upload(file);
+            Resource fileResource = restServieResourceFacade.download(file.getOriginalFilename());
+            return new ResponseEntity<>(fileResource.getURL(), new HttpHeaders(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+    
+    
+    //@ResponseBody
+    @RequestMapping(value = "/documents/files/{filename:.+}", method = RequestMethod.GET)
+    public ResponseEntity<File> serveFile(
+    		@RequestHeader(value = "Authorization", required = true) String authorization,
+    		@PathVariable String filename) throws IOException {
+        Resource fileResource = restServieResourceFacade.download(filename);//storageService.loadAsResource(filename);
+        System.out.println("uri:"+fileResource.getURI());
+        System.out.println("url:"+fileResource.getURL());
+        File file = new File(fileResource.getURI());
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file+"\"")
+                .body(file);
+    }
+    
+	/*private final StorageService storageService;
 
     @Autowired
     public FileUploadController(StorageService storageService) {
@@ -44,16 +82,7 @@ public class FileUploadController {
         return "uploadForm";
     }
 
-    @GetMapping("/files/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
-                .body(file);
-    }
+    
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
@@ -69,6 +98,6 @@ public class FileUploadController {
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
-    }
+    }*/
     
 }
