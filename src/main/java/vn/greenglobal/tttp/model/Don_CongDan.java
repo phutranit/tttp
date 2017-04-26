@@ -50,6 +50,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	
 	private LocalDateTime ngayCapTheLuatSu;
 
+	private String thongTinGioiThieu = "";
 	private String noiCapTheLuatSu = "";
 	private String donVi = "";
 	private String chucVu = "";
@@ -147,6 +148,14 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.noiCapTheLuatSu = noiCapTheLuatSu;
 	}
 	
+	public String getThongTinGioiThieu() {
+		return thongTinGioiThieu;
+	}
+
+	public void setThongTinGioiThieu(String thongTinGioiThieu) {
+		this.thongTinGioiThieu = thongTinGioiThieu;
+	}
+
 	public String getDonVi() {
 		return donVi;
 	}
