@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -66,9 +67,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
+//		CommonProfile profile = new CommonProfile();
+//		String str = () profile.getAttribute("congChuc");
 		
 		NguoiDung nguoiDungu = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
-		if (nguoiDungu != null) {
+//		if (nguoiDungu != null) {
+		if (true) {
 			if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
 
 				XuLyDon xuLyDonHienTai = xuLyDonService.predicateFindMax(repo, xuLyDon.getDon().getDonId());
@@ -326,7 +330,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.CAN_BO.name())) {
 						System.out.println("CAN_BO");
 						if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI)) {
-							
+							System.out.println("CAN_BO DE_XUAT_GIAO_VIEC_LAI");
 							note = ChucVuEnum.CAN_BO.getText() + " " + QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText()
 									+ " " + ChucVuEnum.TRUONG_PHONG.getText() + " "
 									+ xuLyDonHienTai.getPhongBanXuLy().getTen();
@@ -353,9 +357,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								note = note + ChucVuEnum.LANH_DAO.getText() + " "
 										+ xuLyDonHienTai.getPhongBanXuLy().getTen();
 								// xuLyDonHienTai.setGhiChu(note);
-
+								
 								// Cap nhat yeuCauGapLanhDao
 								Don donDau = donService.updateNgayLapDonGapLanhDao(donRepo, xuLyDon.getDon().getId());
+								
 								Utils.save(donRepo, donDau);
 								return Utils.doSave(repo, xuLyDonHienTai, eass, HttpStatus.CREATED);
 							} else {

@@ -212,6 +212,7 @@ public class DonService {
 		if (isExists(repo, id)) {
 			don = new Don();
 			don.setId(id);
+			don.setYeuCauGapTrucTiepLanhDao(true);
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 		}
 		return don;
