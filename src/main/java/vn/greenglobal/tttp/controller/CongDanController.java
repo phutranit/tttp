@@ -78,7 +78,7 @@ public class CongDanController extends TttpController<CongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		return Utils.doSave(repo, congDan, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -131,7 +131,7 @@ public class CongDanController extends TttpController<CongDan> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, congDan, eass, HttpStatus.OK);
+		return Utils.doSave(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/congDans/{id}")
@@ -150,7 +150,7 @@ public class CongDanController extends TttpController<CongDan> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, congDan);
+		Utils.save(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

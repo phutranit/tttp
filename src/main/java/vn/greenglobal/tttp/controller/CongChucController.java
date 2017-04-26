@@ -131,8 +131,8 @@ public class CongChucController extends TttpController<CongChuc> {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-				Utils.save(repoNguoiDung, congChuc.getNguoiDung());
-				return Utils.doSave(repo, congChuc, eass, HttpStatus.CREATED);
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 			}
 		});
 	}
@@ -224,8 +224,8 @@ public class CongChucController extends TttpController<CongChuc> {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-				Utils.save(repoNguoiDung, congChuc.getNguoiDung());
-				return Utils.doSave(repo, congChuc, eass, HttpStatus.CREATED);
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 			}
 
 		});
@@ -247,7 +247,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, congChuc);
+		Utils.save(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

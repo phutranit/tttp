@@ -76,7 +76,7 @@ public class DanTocController extends TttpController<DanToc> {
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
-		return Utils.doSave(repo, danToc, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, danToc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/danTocs/{id}")
@@ -119,7 +119,7 @@ public class DanTocController extends TttpController<DanToc> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		return Utils.doSave(repo, danToc, eass, HttpStatus.OK);
+		return Utils.doSave(repo, danToc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/danTocs/{id}")
@@ -138,7 +138,7 @@ public class DanTocController extends TttpController<DanToc> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, danToc);
+		Utils.save(repo, danToc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

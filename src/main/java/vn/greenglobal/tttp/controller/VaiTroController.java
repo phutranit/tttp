@@ -77,7 +77,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		return Utils.doSave(repo, vaiTro, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros/{id}")
@@ -121,7 +121,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, vaiTro, eass, HttpStatus.OK);
+		return Utils.doSave(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/vaiTros/{id}")
@@ -140,7 +140,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, vaiTro);
+		Utils.save(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

@@ -77,7 +77,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		return Utils.doSave(repo, quocTich, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, quocTich, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/quocTichs/{id}")
@@ -122,7 +122,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, quocTich, eass, HttpStatus.OK);
+		return Utils.doSave(repo, quocTich, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/quocTichs/{id}")
@@ -141,7 +141,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, quocTich);
+		Utils.save(repo, quocTich, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

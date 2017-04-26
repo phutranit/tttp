@@ -455,7 +455,7 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public LinhVucDonThu getChiTieitLinhVucDonThuChiTietDon() {
+	public LinhVucDonThu getChiTietLinhVucDonThuChiTietDon() {
 		return getChiTietLinhVucDonThuChiTiet();
 	}
 
@@ -546,6 +546,7 @@ public class Don extends Model<Don> {
 		return getId();
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
 	}

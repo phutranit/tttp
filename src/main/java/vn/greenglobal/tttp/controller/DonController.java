@@ -123,7 +123,7 @@ public class DonController extends TttpController<Don> {
 			if (don.isThanhLapDon()) {
 				don.setMa(donService.getMaDonMoi(repo));
 			}
-			return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
+			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
@@ -160,7 +160,7 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
+			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -178,7 +178,7 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			Utils.save(repo, don);
+			Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),

@@ -100,43 +100,44 @@ public class Utils {
 			obj.setNgaySua(LocalDateTime.now());
 			obj.setNguoiTao(o.getNguoiTao());
 			obj.setNguoiSua(cc);
-		}
-		obj.setNguoiTao(cc);
-		obj.setNguoiSua(obj.getNguoiTao());
-		obj = repository.save(obj);
-		return obj;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
-		try {
-			obj = save(repository, obj);
-		} catch (ConstraintViolationException e) {
-			return returnError(e);
-		} catch (Exception e) {
-			System.out.println("doSave -> " + e.getCause());
-			if (e.getCause() instanceof ConstraintViolationException)
-				return returnError((ConstraintViolationException) e.getCause());
-			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
-				return returnError((ConstraintViolationException) e.getCause().getCause());
-			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
-				return returnError((ConstraintViolationException) e.getCause().getCause());
-			throw e;
-		}
-		return new ResponseEntity<>(eass.toFullResource(obj), status);
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj) {
-		if (!obj.isNew()) {
-			T o = repository.findOne(obj.getId());
-			obj.setNgayTao(o.getNgayTao());
-			obj.setNgaySua(LocalDateTime.now());
-			obj.setNguoiTao(o.getNguoiTao());
+		} else {
+			obj.setNguoiTao(cc);
+			obj.setNguoiSua(obj.getNguoiTao());
 		}
 		obj = repository.save(obj);
 		return obj;
 	}
+	
+//	@SuppressWarnings("rawtypes")
+//	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+//		try {
+//			obj = save(repository, obj);
+//		} catch (ConstraintViolationException e) {
+//			return returnError(e);
+//		} catch (Exception e) {
+//			System.out.println("doSave -> " + e.getCause());
+//			if (e.getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause());
+//			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause().getCause());
+//			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause().getCause());
+//			throw e;
+//		}
+//		return new ResponseEntity<>(eass.toFullResource(obj), status);
+//	}
+//	
+//	@SuppressWarnings("rawtypes")
+//	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj) {
+//		if (!obj.isNew()) {
+//			T o = repository.findOne(obj.getId());
+//			obj.setNgayTao(o.getNgayTao());
+//			obj.setNgaySua(LocalDateTime.now());
+//			obj.setNguoiTao(o.getNguoiTao());
+//		}
+//		obj = repository.save(obj);
+//		return obj;
+//	}
 	
 	public static boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
