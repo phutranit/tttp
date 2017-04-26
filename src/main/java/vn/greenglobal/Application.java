@@ -143,6 +143,8 @@ public class Application extends SpringBootServletInitializer {
 			public void configure(WebSecurity sec) throws Exception {
 				sec.ignoring().antMatchers("/login", "/logout",
 						"/v2/api-docs", 
+						"/soTiepCongDans/excel",
+						"/soTiepCongDans/word",
 						"/configuration/ui", 
 						"/configuration/security", 
 						"/swagger-resources", 
