@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -34,8 +35,9 @@ public class Model<T extends Model<T>> implements Persistable {
 	private LocalDateTime ngaySua = LocalDateTime.now();
 
 	private boolean daXoa;
-	
+	@ManyToOne
 	private CongChuc nguoiTao;
+	@ManyToOne
 	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {
@@ -112,18 +114,6 @@ public class Model<T extends Model<T>> implements Persistable {
 
 	public void setNguoiSua(CongChuc nguoiSua) {
 		this.nguoiSua = nguoiSua;
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public CongChuc getThongTinNguoiTao() {
-		return getNguoiTao();
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public CongChuc getThongTinNguoiSua() {
-		return getNguoiSua();
 	}
 
 }

@@ -80,7 +80,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		return Utils.doSave(repo, capCoQuanQuanLy, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, capCoQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/{id}")
@@ -127,7 +127,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, capCoQuanQuanLy, eass, HttpStatus.OK);
+		return Utils.doSave(repo, capCoQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capCoQuanQuanLys/{id}")
@@ -146,7 +146,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, capCoQuanQuanLy);
+		Utils.save(repo, capCoQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -128,7 +128,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
+				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
@@ -142,9 +142,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			soTiepCongDan.getDon().setDaGiaiQuyet(true);
 		}
 
-		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-			Utils.save(repoDon, soTiepCongDan.getDon());
+			Utils.save(repoDon, soTiepCongDan.getDon(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 		return output;
 	}
@@ -161,10 +161,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 		soTiepCongDan.setId(id);
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
+			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 
-		return Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.OK);
+		return Utils.doSave(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
@@ -181,7 +181,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, soTiepCongDan);
+		Utils.save(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -214,7 +214,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, soTiepCongDan);
+		Utils.save(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

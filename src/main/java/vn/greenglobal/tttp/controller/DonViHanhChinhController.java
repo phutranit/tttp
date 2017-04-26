@@ -144,7 +144,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, donViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/{id}")
@@ -185,7 +185,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, donViHanhChinh, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, donViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donViHanhChinhs/{id}")
@@ -204,7 +204,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, donViHanhChinh);
+		Utils.save(repo, donViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
