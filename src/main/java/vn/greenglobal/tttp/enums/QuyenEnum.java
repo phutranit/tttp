@@ -98,6 +98,12 @@ public enum QuyenEnum {
 	DON_SUA("Chỉnh sửa"),
 	DON_XOA("Xoá"),
 	
+	SOTIEPCONGDAN_LIETKE("Liệt kê"),
+	SOTIEPCONGDAN_XEM("Xem"),
+	SOTIEPCONGDAN_THEM("Thêm mới"),
+	SOTIEPCONGDAN_SUA("Chỉnh sửa"),
+	SOTIEPCONGDAN_XOA("Xoá"),
+	
 	XULYDON_LIETKE("Liệt kê"),
 	XULYDON_XEM("Xem"),
 	XULYDON_THEM("Thêm mới"),
