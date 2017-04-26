@@ -7,7 +7,7 @@ public enum HuongXuLyTCDEnum {
 	TRA_DON_VA_HUONG_DAN("Trả đơn và hướng dẫn"),
 	TU_CHOI("Từ chối"),
 	GIAI_QUYET_NGAY("Giải quyết ngay"),
-	GIAO_DON_VI("Giao cho các đơn vị kiểm tra và đề xuất");
+	CHO_GIAI_QUYET("Chờ giải quyết");
 
 	HuongXuLyTCDEnum(String text) {
 		this.text = text;
