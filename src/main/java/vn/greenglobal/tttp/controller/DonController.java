@@ -7,10 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +28,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.util.Utils;
@@ -39,30 +39,26 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
-	
+
 	@Autowired
 	private DonRepository repo;
-	
+
 	@Autowired
 	private DonService donService;
-	
+
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/dons")
 	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
-			@ApiResponse(code = 400, message = "Param không đúng kiểu"),
-	})
-	
-	public @ResponseBody PagedResources<Don> getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable,
-			@RequestParam(value = "maDon", required = false) String maDon,
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
 			@RequestParam(value = "cmndHoChieu", required = false) String cmndHoChieu,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
@@ -78,26 +74,31 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "chucVu", required = false) String chucVu,
-			PersistentEntityResourceAssembler eass){
-		
-		Page<Don> pageData =  repo.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, 
-				nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, hanGiaiQuyetTuNgay, 
-				hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, 
-				canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu),pageable);
-			
-		return assembler.toResource(pageData, (ResourceAssembler) eass);
+			@RequestParam(value = "chucVu", required = false) String chucVu, PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		if (nguoiDung != null) {
+
+			Page<Don> pageData = repo
+					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
+							tiepNhanDenNgay, hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon,
+							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu),
+							pageable);
+			return assembler.toResource(pageData, (ResourceAssembler) eass);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
-	
-	public boolean CheckInputDateTime (String tuNgay, String denNgay) {
-		
+
+	public boolean CheckInputDateTime(String tuNgay, String denNgay) {
+
 		if (StringUtils.isNotBlank(tuNgay)) {
 			try {
 				LocalDateTime.parse(denNgay);
 			} catch (DateTimeParseException ex) {
 				return false;
 			}
-			if (StringUtils.isNotBlank(tuNgay)){
+			if (StringUtils.isNotBlank(tuNgay)) {
 				try {
 					LocalDateTime.parse(denNgay);
 				} catch (DateTimeParseException ex) {
@@ -109,55 +110,80 @@ public class DonController extends TttpController<Don> {
 		}
 		return true;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/dons")
-	@ApiOperation(value = "Thêm mới Đơn", position=2, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
-			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class)})
+	@ApiOperation(value = "Thêm mới Đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
+			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestBody Don don,PersistentEntityResourceAssembler eass) {
-		if (don.isThanhLapDon()) {
-			don.setMa(donService.getMaDonMoi(repo));
+			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		if (nguoiDung != null) {
+
+			if (don.isThanhLapDon()) {
+				don.setMa(donService.getMaDonMoi(repo));
+			}
+			return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 		}
-		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
-	@ApiOperation(value = "Lấy Đơn theo Id", position=3, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
-	public ResponseEntity<PersistentEntityResource> getDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+	@ApiOperation(value = "Lấy Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
+	public ResponseEntity<Object> getDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		Don don = repo.findOne(donService.predicateFindOne(id));
-		if (don == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_XEM);
+		if (nguoiDung != null) {
+			Don don = repo.findOne(donService.predicateFindOne(id));
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/dons/{id}")
-	@ApiOperation(value = "Cập nhật Đơn", position=4, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Cập nhật Đơn thành công", response = Don.class) })
-	public @ResponseBody ResponseEntity<Object> update(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") long id,
+	@ApiOperation(value = "Cập nhật Đơn", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật Đơn thành công", response = Don.class) })
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-		don.setId(id);
-		
-		if (!donService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		if (nguoiDung != null) {
+
+			if (!donService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
 		}
-		return Utils.doSave(repo, don, eass, HttpStatus.CREATED);
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/dons/{id}")
-	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") Long id) {
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
 
-		Don don = donService.deleteDon(repo, id);
-		if (don == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_XOA);
+		if (nguoiDung != null) {
+
+			Don don = donService.deleteDon(repo, id);
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			Utils.save(repo, don);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		
-		Utils.save(repo, don);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 }
