@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -38,6 +41,7 @@ import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
@@ -245,14 +249,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcel(HttpServletResponse response, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
-			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
+	public void exportExcel(@RequestHeader(value = "Authorization", required = true) String authorization,
+			HttpServletResponse response, 
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
+		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", 
-				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan)), "Danh sách sổ tiếp dân");
+				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("", null, null,
+				tuNgay, denNgay, loaiTiepCongDan), order), "Danh sách sổ tiếp dân");
 	}
 }
