@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 
@@ -70,13 +72,9 @@ public class Utils {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		try {
-			if (!obj.isNew()) {
-				obj.setNgayTao(repository.findOne(obj.getId()).getNgayTao());
-				obj.setNgaySua(LocalDateTime.now());
-			}
-			obj = repository.save(obj);
+			obj = save(repository, obj, congChucId);
 		} catch (ConstraintViolationException e) {
 			return returnError(e);
 		} catch (Exception e) {
@@ -93,14 +91,53 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj) {
+	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj, Long congChucId) {
+		CongChuc cc = new CongChuc();
+		cc.setId(congChucId);
 		if (!obj.isNew()) {
-			obj.setNgayTao(repository.findOne(obj.getId()).getNgayTao());
+			T o = repository.findOne(obj.getId());
+			obj.setNgayTao(o.getNgayTao());
 			obj.setNgaySua(LocalDateTime.now());
+			obj.setNguoiTao(o.getNguoiTao());
+			obj.setNguoiSua(cc);
+		} else {
+			obj.setNguoiTao(cc);
+			obj.setNguoiSua(obj.getNguoiTao());
 		}
 		obj = repository.save(obj);
 		return obj;
 	}
+	
+//	@SuppressWarnings("rawtypes")
+//	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
+//		try {
+//			obj = save(repository, obj);
+//		} catch (ConstraintViolationException e) {
+//			return returnError(e);
+//		} catch (Exception e) {
+//			System.out.println("doSave -> " + e.getCause());
+//			if (e.getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause());
+//			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause().getCause());
+//			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+//				return returnError((ConstraintViolationException) e.getCause().getCause());
+//			throw e;
+//		}
+//		return new ResponseEntity<>(eass.toFullResource(obj), status);
+//	}
+//	
+//	@SuppressWarnings("rawtypes")
+//	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj) {
+//		if (!obj.isNew()) {
+//			T o = repository.findOne(obj.getId());
+//			obj.setNgayTao(o.getNgayTao());
+//			obj.setNgaySua(LocalDateTime.now());
+//			obj.setNguoiTao(o.getNguoiTao());
+//		}
+//		obj = repository.save(obj);
+//		return obj;
+//	}
 	
 	public static boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
@@ -111,8 +148,8 @@ public class Utils {
 	
 	public static LocalDateTime fixTuNgay(String tuNgayCurrent) {
 		// Fix tuNgay
-		//LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
+		ZonedDateTime zdt = ZonedDateTime.parse(tuNgayCurrent);
+		LocalDateTime tuNgay = zdt.toLocalDateTime();
 		tuNgay = LocalDateTime.of(tuNgay.getYear(),
 				tuNgay.getMonth(),tuNgay.getDayOfMonth(),0,0,0);
 		return tuNgay;
@@ -120,7 +157,8 @@ public class Utils {
 	
 	public static LocalDateTime fixDenNgay(String denNgayCurrent) {
 		// Fix denNgay
-		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent);
+		ZonedDateTime zdt = ZonedDateTime.parse(denNgayCurrent);
+		LocalDateTime denNgay = zdt.toLocalDateTime();
 		denNgay = LocalDateTime.of(denNgay.getYear(),
 				denNgay.getMonth(),denNgay.getDayOfMonth(),23,59,59);
 		return denNgay;

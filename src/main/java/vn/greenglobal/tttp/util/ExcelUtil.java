@@ -161,13 +161,16 @@ public class ExcelUtil {
 			String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 		try {
+			
+		CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "","CENTER");
+		CellStyle cellLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
 		Cell c = null;
 		// New Sheet
 		Sheet sheet1 = null;
 		sheet1 = wb.createSheet(sheetName);
-		sheet1.createFreezePane(0, 4);
+		sheet1.createFreezePane(0, 3);
 		// Row and column indexes
 		int idx = 0;
 		// Generate column headings
@@ -176,7 +179,8 @@ public class ExcelUtil {
 		c = row.createCell(0);
 		c.setCellValue(title.toUpperCase());
 		c.setCellStyle(setBorderAndFont(wb, 0, true, 14, "BLUE", "CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+		row.setHeight((short)800);
+		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
 		
 		// set column width
 		sheet1.setColumnWidth(0, 6 * 256);
@@ -186,10 +190,8 @@ public class ExcelUtil {
 		sheet1.setColumnWidth(4, 15 * 256);
 		sheet1.setColumnWidth(5, 15 * 256);
 		sheet1.setColumnWidth(6, 15 * 256);
-		sheet1.setColumnWidth(7, 15 * 256);
+		sheet1.setColumnWidth(7, 10 * 256);
 		sheet1.setColumnWidth(8, 15 * 256);
-		sheet1.setColumnWidth(9, 20 * 256);
-		sheet1.setColumnWidth(9, 15 * 256);
 		// Generate rows header of grid
 		idx++;
 		row = sheet1.createRow(idx);
@@ -200,96 +202,65 @@ public class ExcelUtil {
 		idx++;
 		row = sheet1.createRow(idx);
 		idx++;
-		
+		row.setHeight((short)800);
 		c = row.createCell(0);			
 		c.setCellValue("STT");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 0, 0));
+		c.setCellStyle(cellCenter);
 		c = row.createCell(1);
-		c.setCellValue("Ngày tiếp");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 1, 1));
+		c.setCellValue("Ngày tiếp nhận");
+		c.setCellStyle(cellCenter);
 		c = row.createCell(2);
-		c.setCellValue("Họ và tên - Địa chỉ - CMND/Hộ chiếu của công dân");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));	
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 2, 2));
+		c.setCellValue("Người đứng đơn");
+		c.setCellStyle(cellCenter);	
 		c = row.createCell(3);
-		c.setCellValue("Nội dung đơn thư/vụ việc");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 3, 3));
+		c.setCellValue("Tóm tắt nội dung");
+		c.setCellStyle(cellCenter);
 		c = row.createCell(4);
-		c.setCellValue("Phân loại đơn, số người");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 4, 4));
+		c.setCellValue("Phân loại đơn/số người");
+		c.setCellStyle(cellCenter);
 		c = row.createCell(5);
 		c.setCellValue("Cơ quan đã giải quyết");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 5, 5));
+		c.setCellStyle(cellCenter);
 		c = row.createCell(6);
 		c.setCellValue("Hướng xử lý");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx-1, 6, 8));
-		c = row.createCell(9);
-		c.setCellValue("Theo dõi kết quả giải quyết");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 9,9));
-		c = row.createCell(10);
-		c.setCellValue("Ghi chú");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		sheet1.addMergedRegion(new CellRangeAddress(idx-1, idx, 10, 10));
-		
-		row = sheet1.createRow(idx);
-		row.setHeight((short)1000);
-		
-		c = row.createCell(6);
-		c.setCellValue("Thụ lý để giải quyết");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		
+		c.setCellStyle(cellCenter);
 		c = row.createCell(7);
-		c.setCellValue("Trả đơn và hướng dẫn");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
+		c.setCellValue("Lượt tiếp");
+		c.setCellStyle(cellCenter);
 		c = row.createCell(8);
-		c.setCellValue("Chuyển đơn đến cơ quan, tổ chức, đơn vị có thẩm quyền");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
-		idx++;
-		
-		
+		c.setCellValue("Cán bộ tiếp dân");
+		c.setCellStyle(cellCenter);
 		int i = 1;
 		for (SoTiepCongDan tcd: list) {
 			row = sheet1.createRow(idx);
+			row.setHeight((short)500);
 			c = row.createCell(0);			
 			c.setCellValue(i);
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));				
+			c.setCellStyle(cellCenter);				
 			c = row.createCell(1);
 			c.setCellValue(tcd.getNgayTiepDan().format(formatter));
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));				
+			c.setCellStyle(cellCenter);				
 			c = row.createCell(2);
 			c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND());
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));		
+			c.setCellStyle(cellLeft);		
 			c = row.createCell(3);			
 			c.setCellValue(tcd.getDon().getNoiDung());
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));	
+			c.setCellStyle(cellLeft);	
 			c = row.createCell(4);			
 			c.setCellValue(tcd.getDon().getLoaiDon().getText() + "/" + tcd.getDon().getSoNguoi());
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));	
+			c.setCellStyle(cellCenter);	
 			c = row.createCell(5);			
 			c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null ? tcd.getDon().getCoQuanDaGiaiQuyet().getTen() : "");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
+			c.setCellStyle(cellLeft);
 			c = row.createCell(6);			
-			c.setCellValue("");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
+			c.setCellValue(tcd.getHuongXuLy() != null ? tcd.getHuongXuLy().getText() : "");
+			c.setCellStyle(cellCenter);
 			c = row.createCell(7);			
-			c.setCellValue("");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
+			c.setCellValue(tcd.getSoLuotTiepStr());
+			c.setCellStyle(cellCenter);
 			c = row.createCell(8);			
-			c.setCellValue("");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
-			c = row.createCell(9);			
-			c.setCellValue("");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
-			c = row.createCell(10);			
-			c.setCellValue("");
-			c.setCellStyle(setBorderAndFont(wb, 1, false, 11, "","LEFT"));
+			c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
+			c.setCellStyle(cellCenter);
 			i++;
 			idx++;
 		}

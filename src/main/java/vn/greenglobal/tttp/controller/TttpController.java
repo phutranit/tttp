@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import vn.greenglobal.core.model.common.BaseController;
 import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.util.MessageByLocaleService;
 import vn.greenglobal.tttp.util.ProfileUtils;
 
@@ -14,6 +15,9 @@ public class TttpController<T> extends BaseController<T> {
 	
 	@Autowired
 	MessageByLocaleService message;
+	
+	@Autowired
+	CongChucRepository repoCC;
 	
 	
 	public TttpController(BaseRepository<T, ?> repo) {

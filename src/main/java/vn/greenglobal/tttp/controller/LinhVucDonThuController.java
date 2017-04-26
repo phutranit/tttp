@@ -78,7 +78,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 				&& linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
 		}
-		return Utils.doSave(repo, linhVucDonThu, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, linhVucDonThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/{id}")
@@ -125,7 +125,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, linhVucDonThu, eass, HttpStatus.OK);
+		return Utils.doSave(repo, linhVucDonThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/linhVucDonThus/{id}")
@@ -144,7 +144,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, linhVucDonThu);
+		Utils.save(repo, linhVucDonThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

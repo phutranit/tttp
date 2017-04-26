@@ -1,13 +1,17 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.NguoiDungRepository;
 
 @Component
 public class CongChucService {
@@ -61,5 +65,22 @@ public class CongChucService {
 		return congChuc != null ? true : false;
 	}
 	
+	public void bootstrapCongChuc(CongChucRepository repo, NguoiDungRepository repoNguoiDung) {
+		System.out.println("bootstrapCongChuc");
+		List<CongChuc> list = (List<CongChuc>) repo.findAll(base);
+		if (list.size() == 0) {
+			NguoiDung nguoiDung = new NguoiDung();
+			nguoiDung.setTenDangNhap("admin");
+			nguoiDung.updatePassword("tttp@123");
+			nguoiDung.getQuyens().add("*");
+			nguoiDung.setActive(true);
+			NguoiDung nguoiDungNew = repoNguoiDung.save(nguoiDung);
+			CongChuc congChuc = new CongChuc();
+			congChuc.setHoVaTen("Super Admin");
+			congChuc.setEmail("admin@liferay.com");
+			congChuc.setNguoiDung(nguoiDungNew);
+			repo.save(congChuc);
+		}
+	}
 	
 }

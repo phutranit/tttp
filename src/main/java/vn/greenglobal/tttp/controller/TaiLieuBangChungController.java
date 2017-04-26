@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,13 +64,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
-		if (StringUtils.isNotBlank(taiLieuBangChung.getTen())
-				&& taiLieuBangChungService.checkExistsData(repo, taiLieuBangChung)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
-
-		return Utils.doSave(repo, taiLieuBangChung, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, taiLieuBangChung, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuBangChungs/{id}")
@@ -104,7 +97,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, taiLieuBangChung, eass, HttpStatus.OK);
+		return Utils.doSave(repo, taiLieuBangChung, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuBangChungs/{id}")
@@ -119,7 +112,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, taiLieuBangChung);
+		Utils.save(repo, taiLieuBangChung, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

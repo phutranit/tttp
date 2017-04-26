@@ -21,12 +21,12 @@ public class ProfileUtils {
 
 	@Autowired
 	NguoiDungRepository nguoiDungRepository;
-	
+
 	private CommonProfile profile;
 	private SignatureConfiguration secretSignatureConfiguration;
 	private SecretEncryptionConfiguration secretEncryptionConfiguration;
 	private JwtAuthenticator authenticator;
-	
+
 	public NguoiDung getUserInfo(String authHeader) {
 		CommonProfile profile = getCommonProfile(authHeader);
 		if(profile!=null){
@@ -35,7 +35,7 @@ public class ProfileUtils {
 		}
 		return null;
 	}
-	
+
 	public CommonProfile getCommonProfile(String authHeader) {
 		if (authHeader != null && authHeader.startsWith("Bearer")) {
 			String token = StringUtils.substringAfter(authHeader, " ");

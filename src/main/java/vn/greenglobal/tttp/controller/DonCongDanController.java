@@ -66,7 +66,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	public ResponseEntity<Object> create(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
-		return Utils.doSave(repo, donCongDan, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans/{id}")
@@ -93,7 +93,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		if (!donCongDanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		return Utils.doSave(repo, donCongDan, eass, HttpStatus.OK);
+		return Utils.doSave(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
