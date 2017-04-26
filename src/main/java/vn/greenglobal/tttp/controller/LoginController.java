@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -115,6 +114,7 @@ public class LoginController {
 				ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}*/
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, value="/logout")
     public void logout(
     		@RequestHeader(value = "Authorization", required = true)final String authorization,
@@ -124,6 +124,7 @@ public class LoginController {
 		final J2EContext context = new J2EContext(request, response);
 		
 		LogoutLogic<Object, J2EContext> logoutLogic = config.getLogoutLogic();
+		@SuppressWarnings("rawtypes")
 		final Function<WebContext, ProfileManager> profileManagerFactory = (Function<WebContext, ProfileManager>) config.getProfileManagerFactory();
         System.out.println(logoutLogic);
 		System.out.println("profileManagerFactory:"+profileManagerFactory);
