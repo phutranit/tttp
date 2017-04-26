@@ -94,6 +94,7 @@ public class LoginController {
 				
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
+				congChucService.bootstrapCongChuc(congChucRepository, nguoiDungRepository);
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
