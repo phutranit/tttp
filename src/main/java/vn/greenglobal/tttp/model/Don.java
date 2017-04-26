@@ -81,8 +81,6 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
-	private CapCoQuanQuanLy capCoQuanDaGiaiQuyet;
-	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
@@ -300,15 +298,6 @@ public class Don extends Model<Don> {
 		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
 	}
 
-	@ApiModelProperty(position = 14, example="{}")
-	public CapCoQuanQuanLy getCapCoQuanDaGiaiQuyet() {
-		return capCoQuanDaGiaiQuyet;
-	}
-
-	public void setCapCoQuanDaGiaiQuyet(CapCoQuanQuanLy capCoQuanDaGiaiQuyet) {
-		this.capCoQuanDaGiaiQuyet = capCoQuanDaGiaiQuyet;
-	}
-
 	@ApiModelProperty(example = "{}")
 	public Don getDonLanTruoc() {
 		return donLanTruoc;
@@ -464,6 +453,12 @@ public class Don extends Model<Don> {
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LinhVucDonThu getChiTieitLinhVucDonThuChiTietDon() {
+		return getChiTietLinhVucDonThuChiTiet();
+	}
 
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
@@ -592,6 +587,11 @@ public class Don extends Model<Don> {
 
 	public void setThanhLapTiepDanGapLanhDao(boolean thanhLapTiepDanGapLanhDao) {
 		this.thanhLapTiepDanGapLanhDao = thanhLapTiepDanGapLanhDao;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getCoQuanDaGiaiQuyetDon() {
+		return getCoQuanDaGiaiQuyet();
 	}
 
 }
