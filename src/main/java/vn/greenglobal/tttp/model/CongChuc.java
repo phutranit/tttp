@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -33,17 +34,14 @@ public class CongChuc extends Model<CongChuc> {
 	@NotBlank
 	private String email = "";
 
-	@NotNull
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
-	private boolean gioiTinh;
+	private boolean gioiTinh;	
 
-	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
-
-	@NotNull
+	
 	@ManyToOne
 	private ChucVu chucVu;
 

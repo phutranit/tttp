@@ -57,7 +57,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "nguoidung_quyen", joinColumns = {
 			@JoinColumn(name = "nguoidung_id", referencedColumnName = "id") })
-	private Set<String> quyens;// = new HashSet<>(0);
+	private Set<String> quyens = new HashSet<>();
 
 	@Transient
 	private Set<String> tatCaQuyens = new HashSet<>();
