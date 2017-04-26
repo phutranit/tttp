@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,11 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,8 +35,10 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -75,7 +78,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans")
 	@ApiOperation(value = "Lấy danh sách Tiếp Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE, response = SoTiepCongDan.class)
-	public @ResponseBody PagedResources<SoTiepCongDan> getDanhSachTiepCongDans(
+	public @ResponseBody Object getDanhSachTiepCongDans(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
@@ -84,6 +87,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
 				tuNgay, denNgay, loaiTiepCongDan), pageable);
 
@@ -94,10 +101,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiOperation(value = "Lấy Tiếp Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy lượt Tiếp Công Dân thành công", response = SoTiepCongDan.class) })
-	public ResponseEntity<PersistentEntityResource> getSoTiepCongDans(
+	public ResponseEntity<Object> getSoTiepCongDans(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 		if (soTiepCongDan == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,7 +123,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public ResponseEntity<Object> createSoTiepCongDan(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
-
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
@@ -144,7 +156,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
-
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		soTiepCongDan.setId(id);
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan);
@@ -158,7 +172,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -172,11 +188,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
 	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<Don> getListHoSoVuViecYeuCauGapLanhDao(
+	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
-
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
@@ -187,7 +205,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -225,14 +245,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcel(HttpServletResponse response, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
-			@RequestParam(value = "huongXuLy", required = false) String huongXuLy,
+	public void exportExcel(@RequestHeader(value = "Authorization", required = true) String authorization,
+			HttpServletResponse response, 
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
+		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", 
-				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan)), "Danh sách sổ tiếp dân");
+				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("", null, null,
+				tuNgay, denNgay, loaiTiepCongDan), order), "Danh sách sổ tiếp dân");
 	}
 }
