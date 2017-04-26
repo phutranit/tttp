@@ -18,10 +18,11 @@ public class XuLyDonService {
 	BooleanExpression base = QXuLyDon.xuLyDon.daXoa.eq(false);
 	
 	public XuLyDon predicateFindMax(XuLyDonRepository repo, Long id) {
-		QXuLyDon qXuLyDon = QXuLyDon.xuLyDon;
-		BooleanExpression where = base.and(qXuLyDon.don.id.eq(id));
-		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
-		Iterable<XuLyDon> results = repo.findAll(where, sortOrder);
+		
+		QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
+		OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();
+		Iterable<XuLyDon> results = repo.findAll(where, sortOrder);	
 		return Iterables.get(results, 0);
 	}
 	
