@@ -77,8 +77,20 @@ public class DonService {
 		if (coQuanTiepNhanXLD != null) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
 		}
-
-		if (StringUtils.isNotBlank(tiepNhanTuNgay)) {
+		
+		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
+			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.between(tuNgay, denNgay));
+		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.before(denNgay));
+		} else if (StringUtils.isNotBlank(tiepNhanTuNgay)  && StringUtils.isBlank(tiepNhanDenNgay)) {
+			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
+		}
+		
+		/*if (StringUtils.isNotBlank(tiepNhanTuNgay)) {
 			if (StringUtils.isNotBlank(tiepNhanDenNgay)) {
 				predAll = predAll
 						.and(QDon.don.ngayTiepNhan.between(fixTuNgay(tiepNhanTuNgay), fixDenNgay(tiepNhanDenNgay)));
@@ -88,7 +100,7 @@ public class DonService {
 						.and(QDon.don.ngayTiepNhan.dayOfMonth()
 								.eq(LocalDateTime.parse(tiepNhanDenNgay).getDayOfMonth()));
 			}
-		}
+		}*/
 		
 		if (StringUtils.isNotBlank(chucVu)) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().chucVu.stringValue().eq(chucVu));
