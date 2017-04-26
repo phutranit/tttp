@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,15 +34,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
-import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -72,9 +67,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@Autowired
 	private PagedResourcesAssembler<Don> assemblerDon;
-
-	@Autowired
-	private CoQuanQuanLyRepository repoCoQuanQuanLy;
 
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
@@ -146,22 +138,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongXuLyTCDEnum.GIAI_QUYET_NGAY.equals(soTiepCongDan.getHuongXuLy())) {
-				soTiepCongDan.getDon().setDaXuLy(true);
-				soTiepCongDan.getDon().setDaGiaiQuyet(true);
-			} else if (HuongXuLyTCDEnum.GIAO_DON_VI.equals(soTiepCongDan.getHuongXuLy())) {
-				if (soTiepCongDan.getPhongBanGiaiQuyet() != null && soTiepCongDan.getPhongBanGiaiQuyet().getId() > 0) {
-					CoQuanQuanLy phongBan = repoCoQuanQuanLy.findOne(soTiepCongDan.getPhongBanGiaiQuyet().getId());
-					soTiepCongDan.getDon().setDaXuLy(true);
-					soTiepCongDan.getDon().setPhongBanGiaiQuyet(phongBan);
-					soTiepCongDan.getDon().setyKienXuLyDon(soTiepCongDan.getyKienXuLy());
-					soTiepCongDan.getDon().setGhiChuXuLyDon(soTiepCongDan.getGhiChuXuLy());
-				} else {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-							ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
-							ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
-				}
-			}
+			soTiepCongDan.getDon().setDaXuLy(true);
+			soTiepCongDan.getDon().setDaGiaiQuyet(true);
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, eass, HttpStatus.CREATED);

@@ -84,7 +84,9 @@ public class CongChucController extends TttpController<CongChuc> {
 		if (congChuc.getNguoiDung() == null) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
 					"Thông tin đăng nhập không được để trống!");
-		} else {
+		} 
+		else {
+			System.out.println("mk : " +congChuc.getNguoiDung().getMatKhau());
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "MATKHAU_REQUIRED",
 						"Trường mật khẩu không được để trống!");
@@ -98,7 +100,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HOVATEN_REQUIRED",
-					"Trường mật khẩu không được để trống!");
+					"Trường Họ và tên không được để trống!");
 		}
 
 		if (congChuc.getNgaySinh() == null) {
@@ -171,7 +173,8 @@ public class CongChucController extends TttpController<CongChuc> {
 		if (congChuc.getNguoiDung() == null) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
 					"Thông tin đăng nhập không được để trống!");
-		} else {
+		} 
+		/*else {
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "MATKHAU_REQUIRED",
 						"Trường mật khẩu không được để trống!");
@@ -181,7 +184,7 @@ public class CongChucController extends TttpController<CongChuc> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TENDANGNHAP_REQUIRED",
 						"Trường tên đăng nhập không được để trống!");
 			}
-		}
+		}*/
 
 		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "EMAIL_INVALID", "Trường email không đúng định dạng!");
@@ -195,7 +198,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HOVATEN_REQUIRED",
-					"Trường mật khẩu không được để trống!");
+					"Trường Họ và tên không được để trống!");
 		}
 
 		if (congChuc.getNgaySinh() == null) {
