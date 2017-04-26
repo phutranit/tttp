@@ -131,6 +131,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.vaiTros = vaiTros;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Set<String> getQuyens() {
 		return quyens;
 	}
@@ -182,6 +183,7 @@ public class NguoiDung extends Model<NguoiDung> {
 		return getId();
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Quyen getQuyen() {
 		return quyen;
 	}

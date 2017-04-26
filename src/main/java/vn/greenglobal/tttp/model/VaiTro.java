@@ -68,6 +68,7 @@ public class VaiTro extends Model<VaiTro> {
 		setQuyens(quyen);
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Set<String> getQuyens() {
 		return quyens;
 	}

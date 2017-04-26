@@ -464,6 +464,12 @@ public class Don extends Model<Don> {
 	public LinhVucDonThu getLinhVucDonThuChiTietDon() {
 		return getLinhVucDonThuChiTiet();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LinhVucDonThu getChiTieitLinhVucDonThuChiTietDon() {
+		return getChiTietLinhVucDonThuChiTiet();
+	}
 
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
