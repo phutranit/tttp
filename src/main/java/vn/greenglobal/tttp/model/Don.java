@@ -188,7 +188,6 @@ public class Don extends Model<Don> {
 		this.soNguoi = soNguoi;
 	}
 
-	@ApiModelProperty(position = 8)
 	public boolean isCoUyQuyen() {
 		return coUyQuyen;
 	}
@@ -289,7 +288,7 @@ public class Don extends Model<Don> {
 		this.ghiChuXuLyDon = ghiChuXuLyDon;
 	}
 
-	@ApiModelProperty(position = 15, example="{}")
+	@ApiModelProperty(position = 26, example="{}")
 	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
 		return coQuanDaGiaiQuyet;
 	}
@@ -424,7 +423,7 @@ public class Don extends Model<Don> {
 		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(position = 7, example="{}")
+	@ApiModelProperty(position = 8, example="{}")
 	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
 		return chiTietLinhVucDonThuChiTiet;
 	}
