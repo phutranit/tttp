@@ -82,7 +82,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		return Utils.doSave(repo, capDonViHanhChinh, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, capDonViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs/{id}")
@@ -132,7 +132,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, capDonViHanhChinh, eass, HttpStatus.OK);
+		return Utils.doSave(repo, capDonViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capDonViHanhChinhs/{id}")
@@ -151,7 +151,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, capDonViHanhChinh);
+		Utils.save(repo, capDonViHanhChinh, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

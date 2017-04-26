@@ -83,7 +83,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		return Utils.doSave(repo, coQuanQuanLy, eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, coQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/{id}")
@@ -128,7 +128,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, coQuanQuanLy, eass, HttpStatus.OK);
+		return Utils.doSave(repo, coQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/coQuanQuanLys/{id}")
@@ -147,7 +147,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		Utils.save(repo, coQuanQuanLy);
+		Utils.save(repo, coQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
