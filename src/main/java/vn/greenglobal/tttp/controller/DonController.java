@@ -80,7 +80,6 @@ public class DonController extends TttpController<Don> {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
 		if (nguoiDung != null) {
-
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
 							tiepNhanDenNgay, hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon,
@@ -92,7 +91,7 @@ public class DonController extends TttpController<Don> {
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
-	public boolean CheckInputDateTime(String tuNgay, String denNgay) {
+	public boolean checkInputDateTime(String tuNgay, String denNgay) {
 
 		if (StringUtils.isNotBlank(tuNgay)) {
 			try {
@@ -156,10 +155,9 @@ public class DonController extends TttpController<Don> {
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		if (nguoiDung != null) {
-
+			don.setId(id);
 			if (!donService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());

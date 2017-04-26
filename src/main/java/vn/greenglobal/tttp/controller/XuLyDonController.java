@@ -63,6 +63,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		super(repo);
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons")
+	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 		
