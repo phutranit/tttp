@@ -292,8 +292,8 @@ public class EnumController {
 		phanLoaiList.add(phanLoaiObj);
 
 		phanLoaiObj = new HashMap<>();
-		phanLoaiObj.put("ten", HuongXuLyTCDEnum.GIAO_DON_VI.getText());
-		phanLoaiObj.put("giaTri", HuongXuLyTCDEnum.GIAO_DON_VI.name());
+		phanLoaiObj.put("ten", HuongXuLyTCDEnum.CHO_GIAI_QUYET.getText());
+		phanLoaiObj.put("giaTri", HuongXuLyTCDEnum.CHO_GIAI_QUYET.name());
 		phanLoaiList.add(phanLoaiObj);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
