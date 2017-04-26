@@ -47,8 +47,8 @@ public class LoginController {
 	private String salt;
 
 	@Autowired
-    Config config;
-	
+	Config config;
+
 	@Autowired
 	NguoiDungRepository nguoiDungRepository;
 
@@ -56,42 +56,44 @@ public class LoginController {
 	CongChucRepository congChucRepository;
 	@Autowired
 	CongChucService congChucService;
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public @ResponseBody ResponseEntity<Object> login(
 			@RequestHeader(value = "Username", required = true) String username,
 			@RequestHeader(value = "Password", required = true) String password) {
 		Map<String, Object> result = new HashMap<>();
 		NguoiDung user;
+		CongChuc congChuc = null;
 		if (username != null && !username.isEmpty()) {
 			user = nguoiDungRepository.findByTenDangNhap(username);
 			if (user != null || username.equals("tttp")) {
 				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
-				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
+				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(
+						salt);
 
 				final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
 				generator.setSignatureConfiguration(secretSignatureConfiguration);
 				generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 				CommonProfile commonProfile = new CommonProfile();
 				commonProfile.addAttribute("username", username);
-				if(user!=null){
+				if (user != null) {
 					commonProfile.setId(user.getId());
-					//commonProfile.addRole(user.getVaiTros());
-					//commonProfile.addPermission(null);
+					congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+					if (congChuc != null) {
+						commonProfile.addAttribute("congChucId", congChuc.getId());
+					}
 				}
 				String token = generator.generate(commonProfile);
 				result.put("token", token);
 				result.put("username", username);
-				if(user!=null){
+				if (user != null) {
 					result.put("userId", user.getId());
 					result.put("roles", user.getVaiTros());
-					//result.put("permission", user.getQuyens());
-					CongChuc congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
-					if(congChuc!=null){
+					if (congChuc != null) {
 						result.put("congChucId", congChuc.getId());
 					}
 				}
-				
+
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			} else {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -101,42 +103,45 @@ public class LoginController {
 		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 				ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
-	
-	/*@RequestMapping(method = RequestMethod.POST, value = "/logout")
-	public @ResponseBody ResponseEntity<Object> logout(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
-			HttpServletRequest request, HttpServletResponse response, Authentication auth) {
-		Map<String, Object> result = new HashMap<>();
-		NguoiDung user;
-		System.out.println("auth:"+auth);
-		
-		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-				ApiErrorEnum.DATA_NOT_FOUND.getText());
-	}*/
-	
+
+	/*
+	 * @RequestMapping(method = RequestMethod.POST, value = "/logout")
+	 * public @ResponseBody ResponseEntity<Object> logout(
+	 * 
+	 * @RequestHeader(value = "Authorization", required = true) String
+	 * authorization, HttpServletRequest request, HttpServletResponse response,
+	 * Authentication auth) { Map<String, Object> result = new HashMap<>();
+	 * NguoiDung user; System.out.println("auth:"+auth);
+	 * 
+	 * return Utils.responseErrors(HttpStatus.NOT_FOUND,
+	 * ApiErrorEnum.DATA_NOT_FOUND.name(),
+	 * ApiErrorEnum.DATA_NOT_FOUND.getText()); }
+	 */
+
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method = RequestMethod.POST, value="/logout")
-    public void logout(
-    		@RequestHeader(value = "Authorization", required = true)final String authorization,
-    		final HttpServletRequest request, final HttpServletResponse response) {
+	@RequestMapping(method = RequestMethod.POST, value = "/logout")
+	public void logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
+			final HttpServletRequest request, final HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("auth:"+auth);
+		System.out.println("auth:" + auth);
 		final J2EContext context = new J2EContext(request, response);
-		
+
 		LogoutLogic<Object, J2EContext> logoutLogic = config.getLogoutLogic();
 		@SuppressWarnings("rawtypes")
-		final Function<WebContext, ProfileManager> profileManagerFactory = (Function<WebContext, ProfileManager>) config.getProfileManagerFactory();
-        System.out.println(logoutLogic);
-		System.out.println("profileManagerFactory:"+profileManagerFactory);
+		final Function<WebContext, ProfileManager> profileManagerFactory = (Function<WebContext, ProfileManager>) config
+				.getProfileManagerFactory();
+		System.out.println(logoutLogic);
+		System.out.println("profileManagerFactory:" + profileManagerFactory);
 		ProfileManager<CommonProfile> profileManager = null;
 		final List<CommonProfile> profiles;
-		if(profileManagerFactory!=null){
+		if (profileManagerFactory != null) {
 			profileManager = profileManagerFactory.apply(context);
 			profiles = profileManager.getAll(true);
-			System.out.println("profiles:"+profiles);
+			System.out.println("profiles:" + profiles);
 		}
-		 
-		//logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, null, null, true, true, true);
-        
+
+		// logoutLogic.perform(context, config,
+		// J2ENopHttpActionAdapter.INSTANCE, null, null, true, true, true);
+
 	}
 }

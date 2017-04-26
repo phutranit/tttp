@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 
@@ -71,13 +72,45 @@ public class Utils {
 	}
 
 	@SuppressWarnings("rawtypes")
+	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		try {
+			obj = save(repository, obj, congChucId);
+		} catch (ConstraintViolationException e) {
+			return returnError(e);
+		} catch (Exception e) {
+			System.out.println("doSave -> " + e.getCause());
+			if (e.getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause());
+			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause().getCause());
+			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+				return returnError((ConstraintViolationException) e.getCause().getCause());
+			throw e;
+		}
+		return new ResponseEntity<>(eass.toFullResource(obj), status);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj, Long congChucId) {
+		CongChuc cc = new CongChuc();
+		cc.setId(congChucId);
+		if (!obj.isNew()) {
+			T o = repository.findOne(obj.getId());
+			obj.setNgayTao(o.getNgayTao());
+			obj.setNgaySua(LocalDateTime.now());
+			obj.setNguoiTao(o.getNguoiTao());
+			obj.setNguoiSua(cc);
+		}
+		obj.setNguoiTao(cc);
+		obj.setNguoiSua(obj.getNguoiTao());
+		obj = repository.save(obj);
+		return obj;
+	}
+	
+	@SuppressWarnings("rawtypes")
 	public static <T extends Model> ResponseEntity<Object> doSave(JpaRepository<T, Long> repository, T obj, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		try {
-			if (!obj.isNew()) {
-				obj.setNgayTao(repository.findOne(obj.getId()).getNgayTao());
-				obj.setNgaySua(LocalDateTime.now());
-			}
-			obj = repository.save(obj);
+			obj = save(repository, obj);
 		} catch (ConstraintViolationException e) {
 			return returnError(e);
 		} catch (Exception e) {
@@ -96,8 +129,10 @@ public class Utils {
 	@SuppressWarnings("rawtypes")
 	public static <T extends Model> T save(JpaRepository<T, Long> repository, T obj) {
 		if (!obj.isNew()) {
-			obj.setNgayTao(repository.findOne(obj.getId()).getNgayTao());
+			T o = repository.findOne(obj.getId());
+			obj.setNgayTao(o.getNgayTao());
 			obj.setNgaySua(LocalDateTime.now());
+			obj.setNguoiTao(o.getNguoiTao());
 		}
 		obj = repository.save(obj);
 		return obj;
