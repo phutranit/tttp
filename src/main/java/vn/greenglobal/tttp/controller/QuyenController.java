@@ -118,6 +118,18 @@ public class QuyenController {
 		quyenObj.put("giaTriQuyen", QuyenEnum.VAITRO_LIETKE.name() + "," + QuyenEnum.VAITRO_XEM.name() + "," + QuyenEnum.VAITRO_THEM.name() + "," + QuyenEnum.VAITRO_SUA.name() + "," + QuyenEnum.VAITRO_XOA.name());
 		quyenList.add(quyenObj);
 		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Đơn");
+		quyenObj.put("tenQuyen", QuyenEnum.DON_LIETKE.getText() + "," + QuyenEnum.DON_XEM.getText() + "," + QuyenEnum.DON_THEM.getText() + "," + QuyenEnum.DON_SUA.getText() + "," + QuyenEnum.DON_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.DON_LIETKE.name() + "," + QuyenEnum.DON_XEM.name() + "," + QuyenEnum.DON_THEM.name() + "," + QuyenEnum.DON_SUA.name() + "," + QuyenEnum.DON_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Sổ tiếp công dân");
+		quyenObj.put("tenQuyen", QuyenEnum.SOTIEPCONGDAN_LIETKE.getText() + "," + QuyenEnum.SOTIEPCONGDAN_XEM.getText() + "," + QuyenEnum.SOTIEPCONGDAN_THEM.getText() + "," + QuyenEnum.SOTIEPCONGDAN_SUA.getText() + "," + QuyenEnum.SOTIEPCONGDAN_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.SOTIEPCONGDAN_LIETKE.name() + "," + QuyenEnum.SOTIEPCONGDAN_XEM.name() + "," + QuyenEnum.SOTIEPCONGDAN_THEM.name() + "," + QuyenEnum.SOTIEPCONGDAN_SUA.name() + "," + QuyenEnum.SOTIEPCONGDAN_XOA.name());
+		quyenList.add(quyenObj);
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("quyenList", quyenList);
 
