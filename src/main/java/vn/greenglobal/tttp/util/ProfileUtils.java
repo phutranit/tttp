@@ -49,18 +49,4 @@ public class ProfileUtils {
 		}
 		return null;
 	}
-	
-	public CommonProfile getCommonProfile(String authHeader) {
-		if (authHeader != null && authHeader.startsWith("Bearer")) {
-			String token = StringUtils.substringAfter(authHeader, " ");
-			secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
-			secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
-			authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
-			profile = authenticator.validateToken(token);
-			if (profile != null) {
-				return profile;
-			}
-		}
-		return null;
-	}
 }
