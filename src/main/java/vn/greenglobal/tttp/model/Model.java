@@ -13,7 +13,9 @@ import javax.persistence.MappedSuperclass;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Persistable;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import io.katharsis.resource.annotations.JsonApiId;
 import io.swagger.annotations.ApiModel;
@@ -36,8 +38,10 @@ public class Model<T extends Model<T>> implements Persistable {
 
 	private boolean daXoa;
 	@ManyToOne
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 	private CongChuc nguoiTao;
 	@ManyToOne
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {

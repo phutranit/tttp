@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -294,6 +295,45 @@ public class EnumController {
 		phanLoaiObj = new HashMap<>();
 		phanLoaiObj.put("ten", HuongXuLyTCDEnum.CHO_GIAI_QUYET.getText());
 		phanLoaiObj.put("giaTri", HuongXuLyTCDEnum.CHO_GIAI_QUYET.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("phanLoaiList", phanLoaiList);
+
+		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucDaGiaiQuyet")
+	@ApiOperation(value = "Lấy danh sách Hình Thức Giải Quyết", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachHinhThucGiaiQuyets(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
+		Map<String, Object> phanLoaiObj = new HashMap<>();
+
+		phanLoaiObj.put("ten", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.getText());
+		phanLoaiObj.put("giaTri", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.name());
+		phanLoaiList.add(phanLoaiObj);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("phanLoaiList", phanLoaiList);
+
+		return new ResponseEntity<>(phanLoaiList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongBiKhieuTos")
+	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng Bị Khiếu Tố", position = 10, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiDoiTuongKhieuTos(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
+		Map<String, Object> phanLoaiObj = new HashMap<>();
+
+		phanLoaiObj.put("ten", LoaiNguoiDungDonEnum.CA_NHAN.getText());
+		phanLoaiObj.put("giaTri", LoaiNguoiDungDonEnum.CA_NHAN.name());
+		phanLoaiList.add(phanLoaiObj);
+		
+		phanLoaiObj = new HashMap<>();
+		phanLoaiObj.put("ten", LoaiNguoiDungDonEnum.CO_QUAN_TO_CHUC.getText());
+		phanLoaiObj.put("giaTri", LoaiNguoiDungDonEnum.CO_QUAN_TO_CHUC.name());
 		phanLoaiList.add(phanLoaiObj);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
