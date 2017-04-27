@@ -140,7 +140,7 @@ public class DonController extends TttpController<Don> {
 			Don donNew = Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			XuLyDon xuLyDon = new XuLyDon();
 			xuLyDon.setDon(donNew);
-			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyID").toString());
+			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			if (idCoQuanQuanLy == 0 ) {
 				xuLyDon.setPhongBanGiaiQuyet(null);
 			} else {
