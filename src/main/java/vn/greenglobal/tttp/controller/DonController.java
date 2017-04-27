@@ -22,17 +22,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.classic.pattern.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.ChucVuEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -42,6 +50,12 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private DonRepository repo;
+
+	@Autowired
+	private XuLyDonRepository xuLyRepo;
+	
+	@Autowired
+	private CoQuanQuanLyRepository coQuanQuanLyRepo;
 
 	@Autowired
 	private DonService donService;
@@ -123,6 +137,25 @@ public class DonController extends TttpController<Don> {
 			if (don.isThanhLapDon()) {
 				don.setMa(donService.getMaDonMoi(repo));
 			}
+			
+			Don donNew = Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			XuLyDon xuLyDon = new XuLyDon();
+			xuLyDon.setDon(donNew);
+			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyID").toString());
+			if (idCoQuanQuanLy == 0 ) {
+				xuLyDon.setPhongBanGiaiQuyet(null);
+			} else {
+				xuLyDon.setPhongBanGiaiQuyet(coQuanQuanLyRepo.findOne(
+						QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).
+						and(QCoQuanQuanLy.coQuanQuanLy.id.eq(idCoQuanQuanLy))));
+			}
+			// Add new record for VAN_THU
+			xuLyDon.setChucVu(ChucVuEnum.VAN_THU);
+			xuLyDon.setThuTuThucHien(0);
+			xuLyDon.setCongChuc(null);
+			xuLyDon.setQuyTrinhXuLy(null);
+			Utils.save(xuLyRepo,xuLyDon,new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			don.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
 			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -160,7 +193,9 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+			return Utils.doSave(repo, don,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -178,7 +213,8 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repo, don,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
