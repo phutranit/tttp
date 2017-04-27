@@ -28,7 +28,7 @@ public class CoQuanQuanLyService {
 		}
 
 		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 && !notCha) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(cha));
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
 		}
 		
 		if (donViHanhChinh != null && donViHanhChinh > 0 && !notCha) {
