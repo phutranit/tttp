@@ -505,7 +505,8 @@ public class Don extends Model<Don> {
 	public List<Don_CongDan> getListThanhVienDoanDongNguoi() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())) {
+			if (PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())
+					|| PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) {
 				list.add(dcd);
 			}
 		}

@@ -50,7 +50,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String donViChuTri = "";
 	private String donViPhoiHop = "";
 	private String trangThaiKetQua = "";
-	private String diaDiemTiepDan = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
 	@Transient
@@ -168,14 +167,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.trangThaiKetQua = trangThaiKetQua;
 	}
 
-	public String getDiaDiemTiepDan() {
-		return diaDiemTiepDan;
-	}
-
-	public void setDiaDiemTiepDan(String diaDiemTiepDan) {
-		this.diaDiemTiepDan = diaDiemTiepDan;
-	}
-
 	public String getNoiDungBoSung() {
 		return noiDungBoSung;
 	}
@@ -216,6 +207,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.loaiTiepDan = loaiTiepDan;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public String getHuongXuLyText() {
 		return huongXuLyText;
 	}
