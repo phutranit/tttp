@@ -121,7 +121,6 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
-	// private String loaiNguoiDungDon;
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
@@ -241,14 +240,12 @@ public class Don extends Model<Don> {
 		this.ngayTiepNhan = ngayTiepNhan;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayLapDonGapLanhDaoTmp() {
 		return ngayLapDonGapLanhDaoTmp;
 	}
 
 	public void setNgayLapDonGapLanhDaoTmp(LocalDateTime ngayLapDonGapLanhDaoTmp) {
-		if (ngayLapDonGapLanhDaoTmp == null) {
-			ngayLapDonGapLanhDaoTmp = getNgayTao();
-		}
 		this.ngayLapDonGapLanhDaoTmp = ngayLapDonGapLanhDaoTmp;
 	}
 
