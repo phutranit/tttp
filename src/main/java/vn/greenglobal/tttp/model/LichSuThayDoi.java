@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -58,6 +58,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 		this.idDoiTuong = idDoiTuong;
 	}
 
+	@JsonIgnore
 	public String getChiTietThayDoi() {
 		return chiTietThayDoi;
 	}
@@ -67,7 +68,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	}
 	
 	@Transient
-	public List<PropertyChangeObject> getListLichSuThayDoi() {
+	public List<PropertyChangeObject> getListThongTinThayDoi() {
 		JsonParser jsonParser = new JsonParser();
 		JsonArray jsonArr = (JsonArray)jsonParser.parse(getChiTietThayDoi());
         Gson googleJson = new Gson();		
@@ -110,5 +111,20 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
         	}
         }      
         return temp3;
+	}
+	
+	@Transient
+	public Long getLichSuThayDoiId() {
+		return getId();
+	}
+	
+	@Transient
+	public String getHoTenCongChucThayDoi() {
+		return getNguoiTao().getHoVaTen();
+	}
+	
+	@Transient
+	public String getDonViCongChucThayDoi() {
+		return getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getTen() : ""; 
 	}
 }

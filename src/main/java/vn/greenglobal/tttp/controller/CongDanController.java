@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -50,7 +52,13 @@ public class CongDanController extends TttpController<CongDan> {
 
 	@Autowired
 	private CongDanService congDanService;
+	
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
 
+	@Autowired
+	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
+	
 	public CongDanController(BaseRepository<CongDan, Long> repo) {
 		super(repo);
 	}
@@ -120,6 +128,32 @@ public class CongDanController extends TttpController<CongDan> {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(eass.toFullResource(congDan), HttpStatus.OK);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSu")
+	@ApiOperation(value = "Lấy Lịch sử thay đổi của Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Lịch sử thay đổi của Công Dân thành công", response = LichSuThayDoi.class) })
+	public PagedResources<Object> getLichSuThayDoiCongDan(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,@PathVariable("id") long id,
+			PersistentEntityResourceAssembler eass) {		
+		Page<LichSuThayDoi> page = repoLichSu.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.CONG_DAN, id),
+				pageable);
+		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSu/{idLichSu}")
+	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = LichSuThayDoi.class) })
+	public ResponseEntity<Object> getLichSuById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,@PathVariable("idLichSu") long idLichSu,
+			PersistentEntityResourceAssembler eass) {
+
+		LichSuThayDoi lichSuThayDoi = repoLichSu.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
+		if (lichSuThayDoi == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/congDans/{id}")
