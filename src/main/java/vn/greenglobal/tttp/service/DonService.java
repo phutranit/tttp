@@ -123,16 +123,13 @@ public class DonService {
 		 */
 
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
-
-			predAll = predAll
-					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+			predAll = predAll.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
 
 		return predAll;
 	}
 
 	public LocalDateTime fixTuNgay(String tuNgayCurrent) {
-
 		// Fix tuNgay
 		LocalDateTime tuNgay = LocalDateTime.parse(tuNgayCurrent);
 		tuNgay = LocalDateTime.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth(), 0, 0, 0);
@@ -140,7 +137,6 @@ public class DonService {
 	}
 
 	public LocalDateTime fixDenNgay(String denNgayCurrent) {
-
 		// Fix denNgay
 		LocalDateTime denNgay = LocalDateTime.parse(denNgayCurrent);
 		denNgay = LocalDateTime.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth(), 23, 59, 59);
@@ -207,7 +203,6 @@ public class DonService {
 	}
 
 	public Don updateNgayLapDonGapLanhDao(DonRepository repo, Long id) {
-
 		Don don = null;
 		if (isExists(repo, id)) {
 			don = new Don();
@@ -230,9 +225,8 @@ public class DonService {
 
 	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay) {
 		BooleanExpression predAll = base
-				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true)
-						.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)))
-				.and(QDon.don.thanhLapDon.eq(false));
+				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
+				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)));
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);

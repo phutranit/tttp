@@ -135,11 +135,12 @@ public class DonController extends TttpController<Don> {
 			if (don.isThanhLapDon()) {
 				don.setMa(donService.getMaDonMoi(repo));
 			}
+			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			
 			Don donNew = Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			XuLyDon xuLyDon = new XuLyDon();
 			xuLyDon.setDon(donNew);
-			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyID").toString());
+			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			if (idCoQuanQuanLy == 0 ) {
 				xuLyDon.setPhongBanGiaiQuyet(null);
 			} else {
@@ -153,7 +154,7 @@ public class DonController extends TttpController<Don> {
 			xuLyDon.setCongChuc(null);
 			xuLyDon.setQuyTrinhXuLy(null);
 			Utils.save(xuLyRepo,xuLyDon,new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			don.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
+			donNew.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
 			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -190,6 +191,10 @@ public class DonController extends TttpController<Don> {
 			if (!donService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			Don donOld = repo.findOne(id);
+			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
+				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			}
 			return Utils.doSave(repo, don,
 					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
