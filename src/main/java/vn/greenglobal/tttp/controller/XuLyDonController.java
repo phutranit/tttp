@@ -28,6 +28,7 @@ import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -84,10 +85,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					NguoiDung nguoiDung = congChuc.getNguoiDung();
 					if (nguoiDung != null) {
 						for (VaiTro vaiTro : nguoiDung.getVaiTros()) {
-							String quyen = vaiTro.getQuyen().trim();
-							if (quyen.equals(ChucVuEnum.VAN_THU.name()) || quyen.equals(ChucVuEnum.LANH_DAO.name())
-									|| quyen.equals(ChucVuEnum.TRUONG_PHONG.name())
-									|| quyen.equals(ChucVuEnum.CAN_BO.name())) {
+							String tenVaiTro = vaiTro.getTen().trim();
+							if (tenVaiTro.equals(ChucVuEnum.VAN_THU.name()) || tenVaiTro.equals(ChucVuEnum.LANH_DAO.name())
+									|| tenVaiTro.equals(ChucVuEnum.TRUONG_PHONG.name())
+									|| tenVaiTro.equals(ChucVuEnum.CAN_BO.name())) {
 								chucVuCuaXuLyDon = vaiTro.getQuyen();
 								break;
 							}
@@ -98,6 +99,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 
 				if (StringUtils.isNotBlank(chucVuCuaXuLyDon)) {
+					//set trang thai xu ly don hien tai
+					xuLyDonHienTai.setTrangThaiXuLyDon(TrangThaiXuLyDonEnum.DA_XU_LY);
+					//set trang thai xu ly don tiep theo 
+					xuLyDonTiepTheo.setTrangThaiXuLyDon(TrangThaiXuLyDonEnum.DANG_XU_LY);
 					
 					if (chucVuCuaXuLyDon.equals(ChucVuEnum.VAN_THU.name())) {
 						if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
@@ -110,6 +115,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+							xuLyDonHienTai.setTrangThaiXuLyDon(TrangThaiXuLyDonEnum.DA_XU_LY);
+							
 							if (xuLyDon.getDon().getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) {
 								
 								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -127,6 +134,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setChucVu(ChucVuEnum.LANH_DAO);
 								xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 								xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+								
 								return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 							}
 						}
