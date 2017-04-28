@@ -67,14 +67,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
-		NguoiDung ks = getProfileUtil().getUserInfo(authorization);
-		for (VaiTro vaiTro : ks.getVaiTros()) {
-			System.out.println("vai tro" +vaiTro.getTen());
-		}
-		System.out.println("congChuc " +ks);
-		for (String q : ks.getQuyens()) {
-			System.out.println("quyen " +q);
-		}
 		NguoiDung nguoiDungu = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
 		
 		if (nguoiDungu != null) {
