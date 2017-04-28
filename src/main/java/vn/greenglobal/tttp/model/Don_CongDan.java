@@ -33,11 +33,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
-	
-	// Phân loại người đứng đơn và loại đối tượng
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private LoaiNguoiDungDonEnum phanLoai;
 		
 	// Người đứng đơn, ủy quyền, khiếu tố
 	@NotNull
@@ -77,15 +72,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		return tenCoQuan;
 	}
 
-	@ApiModelProperty(position = 1, required = true)
-	public LoaiNguoiDungDonEnum getPhanLoai() {
-		return phanLoai;
-	}
-
-	public void setPhanLoai(LoaiNguoiDungDonEnum phanLoai) {
-		this.phanLoai = phanLoai;
-	}
-	
 	public void setTenCoQuan(String tenCoQuan) {
 		this.tenCoQuan = tenCoQuan;
 	}

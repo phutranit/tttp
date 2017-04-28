@@ -1,13 +1,18 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCapCoQuanQuanLy;
+import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 
 @Component
 public class CapCoQuanQuanLyService {
@@ -63,6 +68,20 @@ public class CapCoQuanQuanLyService {
 		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predAll);
 
 		return capCoQuanQuanLy != null ? true : false;
+	}
+
+	public boolean checkUsedData(CapCoQuanQuanLyRepository repo, CoQuanQuanLyRepository repoCoQuanQuanLy, Long id) {
+		List<CapCoQuanQuanLy> capCoQuanQuanLyList = (List<CapCoQuanQuanLy>) repo
+				.findAll(base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.cha.id.eq(id)));
+		List<CoQuanQuanLy> coQuanQuanLyList = (List<CoQuanQuanLy>) repoCoQuanQuanLy.findAll(
+				QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(id)));
+
+		if ((capCoQuanQuanLyList != null && capCoQuanQuanLyList.size() > 0)
+				|| (coQuanQuanLyList != null && coQuanQuanLyList.size() > 0)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

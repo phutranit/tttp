@@ -28,6 +28,8 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
+import vn.greenglobal.tttp.repository.TaiLieuBangChungRepository;
+import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.service.LoaiTaiLieuService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -40,7 +42,13 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	private LoaiTaiLieuRepository repo;
 
 	@Autowired
-	private LoaiTaiLieuService loaiTaiLieuQuyetService;
+	private LoaiTaiLieuService loaiTaiLieuService;
+	
+	@Autowired
+	private TaiLieuBangChungRepository taiLieuBangChungRepository;
+	
+	@Autowired
+	private TaiLieuVanThuRepository taiLieuVanThuRepository;
 
 	public LoaiTaiLieuController(BaseRepository<LoaiTaiLieu, Long> repo) {
 		super(repo);
@@ -57,7 +65,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuQuyetService.predicateFindAll(tuKhoa), pageable);
+		Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
@@ -74,7 +82,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		}
 		
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
-				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
+				&& loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
@@ -93,7 +101,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuQuyetService.predicateFindOne(id));
+		LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuService.predicateFindOne(id));
 		if (loaiTaiLieu == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -114,12 +122,12 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		
 		loaiTaiLieu.setId(id);
 		if (StringUtils.isNotBlank(loaiTaiLieu.getTen())
-				&& loaiTaiLieuQuyetService.checkExistsData(repo, loaiTaiLieu)) {
+				&& loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 
-		if (!loaiTaiLieuQuyetService.isExists(repo, id)) {
+		if (!loaiTaiLieuService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
@@ -137,7 +145,11 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuQuyetService.delete(repo, id);
+		if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
+		}
+		
+		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuService.delete(repo, id);
 		if (loaiTaiLieu == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());

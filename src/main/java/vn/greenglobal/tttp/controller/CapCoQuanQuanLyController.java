@@ -28,6 +28,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.service.CapCoQuanQuanLyService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -41,6 +42,9 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 	@Autowired
 	private CapCoQuanQuanLyService capCoQuanQuanLyService;
+	
+	@Autowired
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
 
 	public CapCoQuanQuanLyController(BaseRepository<CapCoQuanQuanLy, ?> repo) {
 		super(repo);
@@ -138,6 +142,10 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (capCoQuanQuanLyService.checkUsedData(repo, repoCoQuanQuanLy, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.delete(repo, id);
