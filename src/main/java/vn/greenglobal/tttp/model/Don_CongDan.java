@@ -17,9 +17,6 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 @Table(name = "don_congdan")
 public class Don_CongDan extends Model<Don_CongDan> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7123036795988588832L;
 	
 	@NotNull
