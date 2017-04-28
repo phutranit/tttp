@@ -15,11 +15,8 @@ public class LichSuThayDoiService {
 
 	public Predicate predicateFindAll(DoiTuongThayDoiEnum doiTuongThayDoi, Long idDoiTuong) {
 		BooleanExpression predAll = base;
-		
-			predAll = predAll.and(
-					QLichSuThayDoi.lichSuThayDoi.doiTuongThayDoi.eq(doiTuongThayDoi)).and(QLichSuThayDoi.lichSuThayDoi.idDoiTuong.eq(idDoiTuong));
-			
-
+		predAll = predAll.and(QLichSuThayDoi.lichSuThayDoi.doiTuongThayDoi.eq(doiTuongThayDoi))
+				.and(QLichSuThayDoi.lichSuThayDoi.idDoiTuong.eq(idDoiTuong));
 		return predAll;
 	}
 	

@@ -131,7 +131,7 @@ public class CongDanController extends TttpController<CongDan> {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSu")
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSus")
 	@ApiOperation(value = "Lấy Lịch sử thay đổi của Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Lịch sử thay đổi của Công Dân thành công", response = LichSuThayDoi.class) })
 	public PagedResources<Object> getLichSuThayDoiCongDan(
@@ -142,7 +142,7 @@ public class CongDanController extends TttpController<CongDan> {
 		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSu/{idLichSu}")
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSus/{idLichSu}")
 	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = LichSuThayDoi.class) })
 	public ResponseEntity<Object> getLichSuById(
