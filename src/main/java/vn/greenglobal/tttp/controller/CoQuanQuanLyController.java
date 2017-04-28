@@ -28,6 +28,10 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -41,6 +45,18 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 	@Autowired
 	private CoQuanQuanLyService coQuanQuanLyService;
+	
+	@Autowired
+	private CongChucRepository congChucRepository;
+	
+	@Autowired
+	private DonRepository donRepository;
+	
+	@Autowired
+	private SoTiepCongDanRepository soTiepCongDanRepository;
+	
+	@Autowired
+	private XuLyDonRepository xuLyDonRepository;
 
 	public CoQuanQuanLyController(BaseRepository<CoQuanQuanLy, Long> repo) {
 		super(repo);
@@ -139,6 +155,10 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (coQuanQuanLyService.checkUsedData(repo, congChucRepository, donRepository, soTiepCongDanRepository, xuLyDonRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		CoQuanQuanLy coQuanQuanLy = coQuanQuanLyService.delete(repo, id);

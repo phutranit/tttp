@@ -28,8 +28,11 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.ToDanPhoRepository;
 import vn.greenglobal.tttp.service.DonViHanhChinhService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
@@ -43,13 +46,22 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	private DonViHanhChinhRepository repo;
 
 	@Autowired
+	private DonViHanhChinhService donViHanhChinhService;
+
+	@Autowired
 	private ThamSoRepository repoThamSo;
-
+	
 	@Autowired
-	DonViHanhChinhService donViHanhChinhService;
-
+	private ThamSoService thamSoService;
+	
 	@Autowired
-	ThamSoService thamSoService;
+	private CoQuanQuanLyRepository coQuanQuanLyRepository;
+	
+	@Autowired
+	private ToDanPhoRepository toDanPhoRepository;
+	
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	public DonViHanhChinhController(BaseRepository<DonViHanhChinh, Long> repo) {
 		super(repo);
@@ -196,6 +208,10 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (donViHanhChinhService.checkUsedData(repo, coQuanQuanLyRepository, toDanPhoRepository, congDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		DonViHanhChinh donViHanhChinh = donViHanhChinhService.delete(repo, id);

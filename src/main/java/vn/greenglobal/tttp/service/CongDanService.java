@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -7,8 +9,11 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.QCongDan;
+import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.repository.CongDanRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 
 @Component
 public class CongDanService {
@@ -76,6 +81,17 @@ public class CongDanService {
 		}
 
 		return congDan;
+	}
+	
+	public boolean checkUsedData(DonCongDanRepository donCongDanRepository, Long id) {
+		List<Don_CongDan> donCongDanList = (List<Don_CongDan>) donCongDanRepository
+				.findAll(QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.congDan.id.eq(id)));
+
+		if (donCongDanList != null && donCongDanList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

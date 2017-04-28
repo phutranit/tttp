@@ -27,7 +27,9 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.ThamQuyenGiaiQuyetService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -41,6 +43,12 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 
 	@Autowired
 	private ThamQuyenGiaiQuyetService thamQuyenGiaiQuyetService;
+	
+	@Autowired
+	private DonRepository donRepository;
+	
+	@Autowired
+	private XuLyDonRepository xuLyDonRepository;
 
 	public ThamQuyenGiaiQuyetController(BaseRepository<ThamQuyenGiaiQuyet, Long> repo) {
 		super(repo);
@@ -137,6 +145,10 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (thamQuyenGiaiQuyetService.checkUsedData(repo, donRepository, xuLyDonRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.delete(repo, id);

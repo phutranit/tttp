@@ -1,12 +1,17 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.model.QVaiTro;
 import vn.greenglobal.tttp.model.VaiTro;
+import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 
 @Component
@@ -37,17 +42,17 @@ public class VaiTroService {
 
 	public VaiTro delete(VaiTroRepository repo, Long id) {
 		VaiTro vaiTro = repo.findOne(predicateFindOne(id));
-		
+
 		if (vaiTro != null) {
 			vaiTro.setDaXoa(true);
 		}
-		
+
 		return vaiTro;
 	}
 
 	public boolean checkExistsData(VaiTroRepository repo, VaiTro body) {
 		BooleanExpression predAll = base;
-		
+
 		if (!body.isNew()) {
 			predAll = predAll.and(QVaiTro.vaiTro.id.ne(body.getId()));
 		}
@@ -56,6 +61,19 @@ public class VaiTroService {
 		VaiTro vaiTro = repo.findOne(predAll);
 
 		return vaiTro != null ? true : false;
+	}
+
+	public boolean checkUsedData(NguoiDungRepository nguoiDungRepository, Long id) {
+		VaiTro vaiTro = new VaiTro();
+		vaiTro.setId(id);
+		List<NguoiDung> nguoiDungList = (List<NguoiDung>) nguoiDungRepository
+				.findAll(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.vaiTros.contains(vaiTro)));
+
+		if (nguoiDungList != null && nguoiDungList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

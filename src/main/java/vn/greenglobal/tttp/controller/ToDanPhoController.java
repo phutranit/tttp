@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ToDanPho;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
 import vn.greenglobal.tttp.service.ToDanPhoService;
 import vn.greenglobal.tttp.util.Utils;
@@ -41,6 +42,9 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 
 	@Autowired
 	private ToDanPhoService toDanPhoService;
+	
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	public ToDanPhoController(BaseRepository<ToDanPho, Long> repo) {
 		super(repo);
@@ -131,6 +135,10 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (toDanPhoService.checkUsedData(congDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		ToDanPho toDanPho = toDanPhoService.delete(repo, id);

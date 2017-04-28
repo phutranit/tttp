@@ -1,17 +1,22 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QQuocTich;
 import vn.greenglobal.tttp.model.QuocTich;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 
 @Component
 public class QuocTichService {
-	
+
 	BooleanExpression base = QQuocTich.quocTich.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
@@ -57,6 +62,17 @@ public class QuocTichService {
 		QuocTich quocTich = repo.findOne(predAll);
 
 		return quocTich != null ? true : false;
+	}
+
+	public boolean checkUsedData(CongDanRepository congDanRepository, Long id) {
+		List<CongDan> congDanList = (List<CongDan>) congDanRepository
+				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.quocTich.id.eq(id)));
+
+		if (congDanList != null && congDanList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
