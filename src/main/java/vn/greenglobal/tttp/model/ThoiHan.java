@@ -6,8 +6,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
@@ -21,7 +19,7 @@ public class ThoiHan extends Model<ThoiHan> {
 	 * 
 	 */
 	private static final long serialVersionUID = -5794847516802209604L;
-	@NotBlank
+	
 	private int soNgay = 0;
 	@NotNull
 	@Enumerated(EnumType.STRING)
