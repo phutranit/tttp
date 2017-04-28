@@ -1,10 +1,14 @@
 package vn.greenglobal.tttp.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "tailieuvanthu")
@@ -16,7 +20,7 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private String duongDan = "";
 	private String tenFile = "";
 	private String soQuyetDinh = "";
-	private String ngayQuyetDinh = "";
+	private LocalDateTime ngayQuyetDinh;
 
 	@ManyToOne
 	private LoaiTaiLieu loaiTaiLieu;
@@ -59,14 +63,15 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.soQuyetDinh = soQuyetDinh;
 	}
 
-	public String getNgayQuyetDinh() {
+	public LocalDateTime getNgayQuyetDinh() {
 		return ngayQuyetDinh;
 	}
 
-	public void setNgayQuyetDinh(String ngayQuyetDinh) {
+	public void setNgayQuyetDinh(LocalDateTime ngayQuyetDinh) {
 		this.ngayQuyetDinh = ngayQuyetDinh;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public LoaiTaiLieu getLoaiTaiLieu() {
 		return loaiTaiLieu;
 	}
@@ -75,6 +80,7 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.loaiTaiLieu = loaiTaiLieu;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public SoTiepCongDan getSoTiepCongDan() {
 		return soTiepCongDan;
 	}
@@ -83,6 +89,7 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.soTiepCongDan = soTiepCongDan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -91,4 +98,15 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.don = don;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getTaiLieuVanThuId() {
+		return getId();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LoaiTaiLieu getLoaiTaiLieuTLVT() {
+		return getLoaiTaiLieu();
+	}
 }
