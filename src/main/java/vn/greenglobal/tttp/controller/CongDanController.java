@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +27,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.repository.CongDanRepository;
+import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -38,6 +44,9 @@ public class CongDanController extends TttpController<CongDan> {
 
 	@Autowired
 	private CongDanRepository repo;
+	
+	@Autowired
+	private LichSuThayDoiRepository repoLichSu;
 
 	@Autowired
 	private CongDanService congDanService;
@@ -124,13 +133,19 @@ public class CongDanController extends TttpController<CongDan> {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_SUA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
 		congDan.setId(id);
 		if (!congDanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
+		CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
+		List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
+		LichSuThayDoi lichSu = new LichSuThayDoi();
+		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
+		lichSu.setIdDoiTuong(id);
+		lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
+		lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+		Utils.save(repoLichSu, lichSu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return Utils.doSave(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 

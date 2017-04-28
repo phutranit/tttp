@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,8 +28,10 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	 */
 	private static final long serialVersionUID = -7570594530357424037L;
 	private String noiDung = "";
+	@Lob
 	private String chiTietThayDoi = "";
-	private DoiTuongThayDoiEnum doiTuong;
+	@Enumerated(EnumType.STRING)
+	private DoiTuongThayDoiEnum doiTuongThayDoi;
 	private Long idDoiTuong;
 	
 	public String getNoiDung() {
@@ -38,25 +41,23 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
 	}
-
-	@Enumerated(EnumType.STRING)
-	public DoiTuongThayDoiEnum getDoiTuong() {
-		return doiTuong;
-	}
-
-	public void setDoiTuong(DoiTuongThayDoiEnum doiTuong) {
-		this.doiTuong = doiTuong;
-	}
-
+	
 	public Long getIdDoiTuong() {
 		return idDoiTuong;
+	}
+	
+	public DoiTuongThayDoiEnum getDoiTuongThayDoi() {
+		return doiTuongThayDoi;
+	}
+
+	public void setDoiTuongThayDoi(DoiTuongThayDoiEnum doiTuongThayDoi) {
+		this.doiTuongThayDoi = doiTuongThayDoi;
 	}
 
 	public void setIdDoiTuong(Long idDoiTuong) {
 		this.idDoiTuong = idDoiTuong;
 	}
 
-	@Lob
 	public String getChiTietThayDoi() {
 		return chiTietThayDoi;
 	}
