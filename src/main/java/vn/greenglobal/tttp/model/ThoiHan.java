@@ -19,7 +19,7 @@ public class ThoiHan extends Model<ThoiHan> {
 	 * 
 	 */
 	private static final long serialVersionUID = -5794847516802209604L;
-	
+
 	private int soNgay = 0;
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -42,7 +42,7 @@ public class ThoiHan extends Model<ThoiHan> {
 	public void setLoaiThoiHanEnum(LoaiThoiHanEnum loaiThoiHanEnum) {
 		this.loaiThoiHanEnum = loaiThoiHanEnum;
 	}
-	
+
 	public Long getThoiHanId() {
 		return getId();
 	}

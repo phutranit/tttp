@@ -42,7 +42,7 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 
 	@Autowired
 	private ToDanPhoService toDanPhoService;
-	
+
 	@Autowired
 	private CongDanRepository congDanRepository;
 
@@ -53,16 +53,16 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos")
 	@ApiOperation(value = "Lấy danh sách Tổ Dân Phố", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -76,28 +76,31 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		return Utils.doSave(repo, toDanPho, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, toDanPho,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos/{id}")
 	@ApiOperation(value = "Lấy Tổ Dân Phố theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Tổ Dân Phố thành công", response = ToDanPho.class) })
-	public ResponseEntity<Object> getById(
-			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		ToDanPho toDanPho = repo.findOne(toDanPhoService.predicateFindOne(id));
 		if (toDanPho == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -115,16 +118,19 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		toDanPho.setId(id);
 		if (!toDanPhoService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, toDanPho, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+		return Utils.doSave(repo, toDanPho,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/toDanPhos/{id}")
@@ -134,20 +140,23 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@PathVariable("id") Long id) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		if (toDanPhoService.checkUsedData(congDanRepository, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText());
 		}
-		
+
 		ToDanPho toDanPho = toDanPhoService.delete(repo, id);
 		if (toDanPho == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, toDanPho, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		Utils.save(repo, toDanPho,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

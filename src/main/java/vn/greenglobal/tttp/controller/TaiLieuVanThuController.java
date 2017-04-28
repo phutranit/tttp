@@ -64,7 +64,9 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
 
-		return Utils.doSave(repo, taiLieuVanThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, taiLieuVanThu,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuVanThus/{id}")
@@ -97,7 +99,9 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, taiLieuVanThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+		return Utils.doSave(repo, taiLieuVanThu,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/{id}")
@@ -112,7 +116,8 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, taiLieuVanThu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		Utils.save(repo, taiLieuVanThu,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

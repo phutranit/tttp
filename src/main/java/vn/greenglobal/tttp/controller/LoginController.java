@@ -81,7 +81,8 @@ public class LoginController {
 					congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
 					if (congChuc != null) {
 						commonProfile.addAttribute("congChucId", congChuc.getId());
-						commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getId() : 0);
+						commonProfile.addAttribute("coQuanQuanLyId",
+								congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getId() : 0);
 					}
 				}
 				String token = generator.generate(commonProfile);

@@ -38,10 +38,10 @@ public class Model<T extends Model<T>> implements Persistable {
 
 	private boolean daXoa;
 	@ManyToOne
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	private CongChuc nguoiTao;
 	@ManyToOne
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	private CongChuc nguoiSua;
 
 	public boolean equals(Object o) {
@@ -61,8 +61,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.id = id;
 	}
 
-	
-//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+	// @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgaySua() {
 		return this.ngaySua;
@@ -72,7 +71,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.ngaySua = ngaySua;
 	}
 
-//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
+	// @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTao() {
 		return this.ngayTao;

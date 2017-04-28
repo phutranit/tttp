@@ -76,7 +76,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
-	
+
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
@@ -267,7 +267,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setGhiChuXuLy(String ghiChuXuLy) {
 		this.ghiChuXuLy = ghiChuXuLy;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getTaiLieuVanThus() {
 		return taiLieuVanThus;
@@ -276,7 +276,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
 		this.taiLieuVanThus = taiLieuVanThus;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {

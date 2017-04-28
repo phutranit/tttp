@@ -21,8 +21,8 @@ import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 
 @Entity
 @Table(name = "lichsuthaydoi")
-public class LichSuThayDoi extends Model<LichSuThayDoi>{
-	
+public class LichSuThayDoi extends Model<LichSuThayDoi> {
+
 	/**
 	 * 
 	 */
@@ -33,7 +33,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	@Enumerated(EnumType.STRING)
 	private DoiTuongThayDoiEnum doiTuongThayDoi;
 	private Long idDoiTuong;
-	
+
 	public String getNoiDung() {
 		return noiDung;
 	}
@@ -41,11 +41,11 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
 	}
-	
+
 	public Long getIdDoiTuong() {
 		return idDoiTuong;
 	}
-	
+
 	public DoiTuongThayDoiEnum getDoiTuongThayDoi() {
 		return doiTuongThayDoi;
 	}
@@ -66,65 +66,66 @@ public class LichSuThayDoi extends Model<LichSuThayDoi>{
 	public void setChiTietThayDoi(String chiTietThayDoi) {
 		this.chiTietThayDoi = chiTietThayDoi;
 	}
-	
+
 	@Transient
 	public List<PropertyChangeObject> getListThongTinThayDoi() {
 		JsonParser jsonParser = new JsonParser();
-		JsonArray jsonArr = (JsonArray)jsonParser.parse(getChiTietThayDoi());
-        Gson googleJson = new Gson();		
-		Type listType = new TypeToken<List<PropertyChangeObject>>(){
-			private static final long serialVersionUID = -4281837007133110440L;}.getType();
-        List<PropertyChangeObject> list = googleJson.fromJson(jsonArr.toString(), listType);
-        List<PropertyChangeObject> temp = new ArrayList<PropertyChangeObject>();
-        for (PropertyChangeObject obj : list) {
-        	boolean flag = false;
-        	for (PropertyChangeObject obj2 : temp) {
-        		if (obj.getPropertyName().equals(obj2.getPropertyName())) {
-        			obj2.setNewValue(obj.getNewValue());
-        			flag = true;
-        			break;
-        		}
-        	}
-        	if (!flag) {
-        		temp.add(obj);
-        	}
-        }        
-        List<PropertyChangeObject> temp2 = new ArrayList<PropertyChangeObject>();
-        temp2.addAll(list);
-        for (PropertyChangeObject obj : list) {
-        	if (obj.getNewValue().equals(obj.getOldValue())) {
-        		temp2.remove(obj);
-        	}
-        }        
-        List<PropertyChangeObject> temp3 = new ArrayList<PropertyChangeObject>();
-        for (PropertyChangeObject obj : temp2) {
-        	boolean flag = false;
-        	for (PropertyChangeObject obj2 : temp3) {
-        		if (obj.getPropertyName().equals(obj2.getPropertyName())) {
-        			obj2.setNewValue(obj.getNewValue());
-        			flag = true;
-        			break;
-        		}
-        	}
-        	if (!flag) {
-        		temp3.add(obj);
-        	}
-        }      
-        return temp3;
+		JsonArray jsonArr = (JsonArray) jsonParser.parse(getChiTietThayDoi());
+		Gson googleJson = new Gson();
+		Type listType = new TypeToken<List<PropertyChangeObject>>() {
+			private static final long serialVersionUID = -4281837007133110440L;
+		}.getType();
+		List<PropertyChangeObject> list = googleJson.fromJson(jsonArr.toString(), listType);
+		List<PropertyChangeObject> temp = new ArrayList<PropertyChangeObject>();
+		for (PropertyChangeObject obj : list) {
+			boolean flag = false;
+			for (PropertyChangeObject obj2 : temp) {
+				if (obj.getPropertyName().equals(obj2.getPropertyName())) {
+					obj2.setNewValue(obj.getNewValue());
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				temp.add(obj);
+			}
+		}
+		List<PropertyChangeObject> temp2 = new ArrayList<PropertyChangeObject>();
+		temp2.addAll(list);
+		for (PropertyChangeObject obj : list) {
+			if (obj.getNewValue().equals(obj.getOldValue())) {
+				temp2.remove(obj);
+			}
+		}
+		List<PropertyChangeObject> temp3 = new ArrayList<PropertyChangeObject>();
+		for (PropertyChangeObject obj : temp2) {
+			boolean flag = false;
+			for (PropertyChangeObject obj2 : temp3) {
+				if (obj.getPropertyName().equals(obj2.getPropertyName())) {
+					obj2.setNewValue(obj.getNewValue());
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				temp3.add(obj);
+			}
+		}
+		return temp3;
 	}
-	
+
 	@Transient
 	public Long getLichSuThayDoiId() {
 		return getId();
 	}
-	
+
 	@Transient
 	public String getHoTenCongChucThayDoi() {
 		return getNguoiTao().getHoVaTen();
 	}
-	
+
 	@Transient
 	public String getDonViCongChucThayDoi() {
-		return getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getTen() : ""; 
+		return getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getTen() : "";
 	}
 }

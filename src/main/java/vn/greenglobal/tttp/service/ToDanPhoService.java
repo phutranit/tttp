@@ -67,11 +67,11 @@ public class ToDanPhoService {
 
 		return toDanPho != null ? true : false;
 	}
-	
+
 	public boolean checkUsedData(CongDanRepository congDanRepository, Long id) {
 		List<CongDan> congDanList = (List<CongDan>) congDanRepository
 				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.toDanPho.id.eq(id)));
-		
+
 		if (congDanList != null && congDanList.size() > 0) {
 			return true;
 		}
