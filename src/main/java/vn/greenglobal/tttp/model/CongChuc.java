@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -178,13 +180,25 @@ public class CongChuc extends Model<CongChuc> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public ChucVu getChucVuCongChuc() {
-		return getChucVu();
+	public Map<String, String> getChucVuCongChuc() {
+		if(getChucVu() != null){
+			Map<String, String> map = new HashMap<>();
+			map.put("chucVuId", getChucVu().getId().toString());
+			map.put("ten", getChucVu().getTen());
+			return map;
+		}
+		return null;
 	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public CoQuanQuanLy getDonViCongChuc() {
-		return getCoQuanQuanLy();
+	public Map<String, String> getDonViCongChuc() {
+		if(getCoQuanQuanLy() != null){
+			Map<String, String> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId().toString());
+			map.put("ten", getCoQuanQuanLy().getTen());
+			return map;
+		}
+		return null;
 	}
 }
