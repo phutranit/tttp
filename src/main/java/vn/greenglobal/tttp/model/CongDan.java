@@ -208,11 +208,11 @@ public class CongDan extends Model<CongDan> {
 	public Long getCongDanId() {
 		return getId();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getTinhThanhCongDan() {
-		if(getTinhThanh() != null){
+		if (getTinhThanh() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("donViHanhChinhId", getTinhThanh().getId().toString());
 			map.put("ten", getTinhThanh().getTen());
@@ -220,11 +220,11 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getQuanHuyenCongDan() {
-		if(getQuanHuyen() != null){
+		if (getQuanHuyen() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("donViHanhChinhId", getQuanHuyen().getId().toString());
 			map.put("ten", getQuanHuyen().getTen());
@@ -232,11 +232,11 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getPhuongXaCongDan() {
-		if(getPhuongXa() != null){
+		if (getPhuongXa() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("donViHanhChinhId", getPhuongXa().getId().toString());
 			map.put("ten", getPhuongXa().getTen());
@@ -244,24 +244,24 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getToDanPhoCongDan() {
-		if(getToDanPho() != null){
+		if (getToDanPho() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("toDanPhoId", getToDanPho().getId().toString());
 			map.put("ten", getToDanPho().getTen());
 			return map;
 		}
 		return null;
-		
+
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getDanTocCongDan() {
-		if(getDanToc() != null){
+		if (getDanToc() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("danTocId", getDanToc().getId().toString());
 			map.put("ten", getDanToc().getTen());
@@ -269,11 +269,11 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getQuocTichCongDan() {
-		if(getQuocTich() != null){
+		if (getQuocTich() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("quocTichId", getQuocTich().getId().toString());
 			map.put("ten", getQuocTich().getTen());
@@ -281,7 +281,7 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	public String getTenDiaChiSoCMND() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {

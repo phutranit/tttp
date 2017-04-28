@@ -303,7 +303,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucDaGiaiQuyet")
 	@ApiOperation(value = "Lấy danh sách Hình Thức Giải Quyết", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHinhThucGiaiQuyets(
@@ -320,7 +320,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongBiKhieuTos")
 	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng Bị Khiếu Tố", position = 10, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiDoiTuongKhieuTos(
@@ -331,7 +331,7 @@ public class EnumController {
 		object.put("ten", LoaiNguoiDungDonEnum.CA_NHAN.getText());
 		object.put("giaTri", LoaiNguoiDungDonEnum.CA_NHAN.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", LoaiNguoiDungDonEnum.CO_QUAN_TO_CHUC.getText());
 		object.put("giaTri", LoaiNguoiDungDonEnum.CO_QUAN_TO_CHUC.name());
@@ -342,7 +342,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiThoiHans")
 	@ApiOperation(value = "Lấy danh sách Loại Thời Hạn", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiThoiHan(
@@ -353,17 +353,17 @@ public class EnumController {
 		object.put("ten", LoaiThoiHanEnum.THOIHAN_XULYDON.getText());
 		object.put("giaTri", LoaiThoiHanEnum.THOIHAN_XULYDON.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", LoaiThoiHanEnum.THOIHAN_GIAIQUYETKHIEUNAI.getText());
 		object.put("giaTri", LoaiThoiHanEnum.THOIHAN_GIAIQUYETKHIEUNAI.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", LoaiThoiHanEnum.THOIHAN_GIAIQUYETTOCAO.getText());
 		object.put("giaTri", LoaiThoiHanEnum.THOIHAN_GIAIQUYETTOCAO.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", LoaiThoiHanEnum.THOIHAN_KIENNGHIPHANANH.getText());
 		object.put("giaTri", LoaiThoiHanEnum.THOIHAN_KIENNGHIPHANANH.name());
@@ -374,5 +374,5 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 }

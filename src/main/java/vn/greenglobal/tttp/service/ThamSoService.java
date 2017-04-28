@@ -23,7 +23,7 @@ public class ThamSoService {
 
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindTen(String ten) {
 		return base.and(QThamSo.thamSo.ten.eq(ten));
 	}

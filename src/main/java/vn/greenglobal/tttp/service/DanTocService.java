@@ -64,7 +64,7 @@ public class DanTocService {
 
 		return danToc != null ? true : false;
 	}
-	
+
 	public boolean checkUsedData(CongDanRepository congDanRepository, Long id) {
 		List<CongDan> danTocList = (List<CongDan>) congDanRepository
 				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.danToc.id.eq(id)));

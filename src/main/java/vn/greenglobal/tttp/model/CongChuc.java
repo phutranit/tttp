@@ -38,11 +38,11 @@ public class CongChuc extends Model<CongChuc> {
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
-	private boolean gioiTinh;	
+	private boolean gioiTinh;
 
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
-	
+
 	@ManyToOne
 	private ChucVu chucVu;
 
@@ -165,7 +165,7 @@ public class CongChuc extends Model<CongChuc> {
 	public void setNguoiDung(NguoiDung nguoiDung) {
 		this.nguoiDung = nguoiDung;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getCongChucId() {
@@ -177,11 +177,11 @@ public class CongChuc extends Model<CongChuc> {
 	public NguoiDung getNguoiDungCongChuc() {
 		return getNguoiDung();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getChucVuCongChuc() {
-		if(getChucVu() != null){
+		if (getChucVu() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("chucVuId", getChucVu().getId().toString());
 			map.put("ten", getChucVu().getTen());
@@ -189,11 +189,11 @@ public class CongChuc extends Model<CongChuc> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, String> getDonViCongChuc() {
-		if(getCoQuanQuanLy() != null){
+		if (getCoQuanQuanLy() != null) {
 			Map<String, String> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId().toString());
 			map.put("ten", getCoQuanQuanLy().getTen());

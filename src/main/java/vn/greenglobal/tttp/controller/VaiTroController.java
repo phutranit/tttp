@@ -42,7 +42,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 
 	@Autowired
 	private VaiTroService vaiTroService;
-	
+
 	@Autowired
 	private NguoiDungRepository nguoiDungRepository;
 
@@ -53,15 +53,15 @@ public class VaiTroController extends TttpController<VaiTro> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros")
 	@ApiOperation(value = "Lấy danh sách Vai Trò", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		Page<VaiTro> page = repo.findAll(vaiTroService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -74,27 +74,30 @@ public class VaiTroController extends TttpController<VaiTro> {
 			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-		return Utils.doSave(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, vaiTro,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/vaiTros/{id}")
 	@ApiOperation(value = "Lấy Vai Trò theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Vai Trò thành công", response = VaiTro.class) })
-	public ResponseEntity<Object> getById(
-			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
 		if (vaiTro == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -111,9 +114,10 @@ public class VaiTroController extends TttpController<VaiTro> {
 			@RequestBody VaiTro vaiTro, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		vaiTro.setId(id);
 		if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
@@ -125,7 +129,9 @@ public class VaiTroController extends TttpController<VaiTro> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+		return Utils.doSave(repo, vaiTro,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/vaiTros/{id}")
@@ -135,20 +141,23 @@ public class VaiTroController extends TttpController<VaiTro> {
 			@PathVariable("id") Long id) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		if (vaiTroService.checkUsedData(nguoiDungRepository, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText());
 		}
-		
+
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
 		if (vaiTro == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
-		Utils.save(repo, vaiTro, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+
+		Utils.save(repo, vaiTro,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

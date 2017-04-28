@@ -32,11 +32,11 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	@ManyToOne
 	@NotNull
 	private CapCoQuanQuanLy capCoQuanQuanLy;
-	
+
 	@ManyToOne
 	@NotNull
 	private DonViHanhChinh donViHanhChinh;
-	
+
 	@ApiModelProperty(position = 1)
 	public String getMa() {
 		return ma;
@@ -108,7 +108,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public CapCoQuanQuanLy getCapCoQuanQuanLyCQQL() {
 		return getCapCoQuanQuanLy();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public DonViHanhChinh getDonViHanhChinhCQQL() {

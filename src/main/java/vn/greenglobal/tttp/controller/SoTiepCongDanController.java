@@ -88,9 +88,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
 				tuNgay, denNgay, loaiTiepCongDan), pageable);
 
@@ -106,7 +107,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 		if (soTiepCongDan == null) {
@@ -124,11 +126,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
@@ -142,9 +146,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			soTiepCongDan.getDon().setDaGiaiQuyet(true);
 		}
 
-		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-			Utils.save(repoDon, soTiepCongDan.getDon(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repoDon, soTiepCongDan.getDon(),
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 		return output;
 	}
@@ -157,14 +164,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody SoTiepCongDan soTiepCongDan, PersistentEntityResourceAssembler eass) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		soTiepCongDan.setId(id);
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 
-		return Utils.doSave(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+		return Utils.doSave(repo, soTiepCongDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
@@ -173,15 +184,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
-		Utils.save(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+
+		Utils.save(repo, soTiepCongDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -193,7 +206,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
@@ -206,15 +220,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
-		Utils.save(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+
+		Utils.save(repo, soTiepCongDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -245,14 +261,15 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcel(
-			HttpServletResponse response, 
+	public void exportExcel(HttpServletResponse response,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
-		ExcelUtil.exportDanhSachTiepDan(response, "fileName", "sheetName", 
-				(List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("", null, null,
-				tuNgay, denNgay, loaiTiepCongDan), order), "Danh sách sổ tiếp dân");
+		ExcelUtil
+				.exportDanhSachTiepDan(response,
+						"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
+								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+						"Danh sách sổ tiếp dân");
 	}
 }

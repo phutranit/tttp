@@ -18,7 +18,7 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 public class Don_CongDan extends Model<Don_CongDan> {
 
 	private static final long serialVersionUID = -7123036795988588832L;
-	
+
 	@NotNull
 	@ManyToOne
 	private Don don;
@@ -29,16 +29,16 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
-		
+
 	// Người đứng đơn, ủy quyền, khiếu tố
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
-	
+
 	private String soTheLuatSu = "";
 
 	private boolean luatSu = false;
-	
+
 	private LocalDateTime ngayCapTheLuatSu;
 
 	private String thongTinGioiThieu = "";
@@ -71,7 +71,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public void setTenCoQuan(String tenCoQuan) {
 		this.tenCoQuan = tenCoQuan;
 	}
-	
+
 	public String getDiaChiCoQuan() {
 		return diaChiCoQuan;
 	}
@@ -129,7 +129,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public void setNoiCapTheLuatSu(String noiCapTheLuatSu) {
 		this.noiCapTheLuatSu = noiCapTheLuatSu;
 	}
-	
+
 	public String getThongTinGioiThieu() {
 		return thongTinGioiThieu;
 	}
@@ -160,19 +160,19 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public CongDan getThongTinCongDan() {
 		return getCongDan();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getDonId() {
 		return getDon().getId();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getDonCongDanId() {
 		return getId();
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public LocalDateTime getNgayTiepNhan() {

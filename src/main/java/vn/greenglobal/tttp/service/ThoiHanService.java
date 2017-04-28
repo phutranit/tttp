@@ -16,9 +16,9 @@ public class ThoiHanService {
 
 	public Predicate predicateFindAll(String soNgay, String loaiThoiHan) {
 		BooleanExpression predAll = base;
-		
+
 		int num = soNgay != null ? new Integer(soNgay) : 0;
-		
+
 		if (num > 0) {
 			predAll = predAll.and(QThoiHan.thoiHan.soNgay.eq(num));
 		}
