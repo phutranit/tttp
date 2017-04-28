@@ -49,7 +49,7 @@ public class ThoiHanController extends TttpController<ThoiHan> {
 	@RequestMapping(method = RequestMethod.GET, value = "/thoiHans")
 	@ApiOperation(value = "Lấy danh sách Thời Hạn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "soNgay", required = false) int soNgay,
+			Pageable pageable, @RequestParam(value = "soNgay", required = false) String soNgay,
 			@RequestParam(value = "loaiThoiHan", required = false) String loaiThoiHan,
 			PersistentEntityResourceAssembler eass) {
 
