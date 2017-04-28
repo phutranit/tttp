@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.DanToc;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DanTocRepository;
 import vn.greenglobal.tttp.service.DanTocService;
 import vn.greenglobal.tttp.util.Utils;
@@ -41,6 +42,9 @@ public class DanTocController extends TttpController<DanToc> {
 
 	@Autowired
 	private DanTocService danTocService;
+	
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	public DanTocController(BaseRepository<DanToc, Long> repo) {
 		super(repo);
@@ -130,6 +134,10 @@ public class DanTocController extends TttpController<DanToc> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (danTocService.checkUsedData(congDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		DanToc danToc = danTocService.delete(repo, id);

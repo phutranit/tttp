@@ -27,6 +27,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
+import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.service.CapDonViHanhChinhService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -40,6 +41,9 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 
 	@Autowired
 	private CapDonViHanhChinhService capDonViHanhChinhService;
+	
+	@Autowired
+	private DonViHanhChinhRepository repoDonViHanhChinh;
 
 	public CapDonViHanhChinhController(BaseRepository<CapDonViHanhChinh, Long> repo) {
 		super(repo);
@@ -143,6 +147,10 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (capDonViHanhChinhService.checkUsedData(repo, repoDonViHanhChinh, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		CapDonViHanhChinh capDonViHanhChinh = capDonViHanhChinhService.delete(repo, id);

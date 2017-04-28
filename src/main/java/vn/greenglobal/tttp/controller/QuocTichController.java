@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.QuocTich;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 import vn.greenglobal.tttp.service.QuocTichService;
 import vn.greenglobal.tttp.util.Utils;
@@ -41,6 +42,8 @@ public class QuocTichController extends TttpController<QuocTich> {
 
 	@Autowired
 	private QuocTichService quocTichService;
+	
+	private CongDanRepository congDanRepository;
 
 	public QuocTichController(BaseRepository<QuocTich, Long> repo) {
 		super(repo);
@@ -133,6 +136,10 @@ public class QuocTichController extends TttpController<QuocTich> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (quocTichService.checkUsedData(congDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		QuocTich quocTich = quocTichService.delete(repo, id);

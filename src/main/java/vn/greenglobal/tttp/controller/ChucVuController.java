@@ -27,6 +27,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ChucVu;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -40,6 +41,9 @@ public class ChucVuController extends TttpController<ChucVu> {
 
 	@Autowired
 	private ChucVuService chucVuService;
+	
+	@Autowired
+	private CongChucRepository repoCongChuc;
 
 	public ChucVuController(BaseRepository<ChucVu, Long> repo) {
 		super(repo);
@@ -141,6 +145,10 @@ public class ChucVuController extends TttpController<ChucVu> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (chucVuService.checkUsedData(repoCongChuc, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		ChucVu chucVu = chucVuService.delete(repo, id);

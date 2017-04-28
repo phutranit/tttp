@@ -1,14 +1,25 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
+import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
+import vn.greenglobal.tttp.model.QToDanPho;
+import vn.greenglobal.tttp.model.ToDanPho;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
+import vn.greenglobal.tttp.repository.ToDanPhoRepository;
 
 @Component
 public class DonViHanhChinhService {
@@ -49,7 +60,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapQuanHuyen(Long cha, Long capQuan, Long capHuyen) {
 		BooleanExpression predAll = base;
-		
+
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
 		}
@@ -64,7 +75,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindCapPhuongXa(Long cha, Long capPhuong, Long capXa) {
 		BooleanExpression predAll = base;
-		
+
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(cha));
 		}
@@ -110,6 +121,28 @@ public class DonViHanhChinhService {
 		DonViHanhChinh donViHanhChinh = repo.findOne(predAll);
 
 		return donViHanhChinh != null ? true : false;
+	}
+
+	public boolean checkUsedData(DonViHanhChinhRepository repo, CoQuanQuanLyRepository coQuanQuanLyRepository,
+			ToDanPhoRepository toDanPhoRepository, CongDanRepository congDanRepository, Long id) {
+		List<DonViHanhChinh> donViHanhChinhList = (List<DonViHanhChinh>) repo
+				.findAll(base.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(id)));
+		List<CoQuanQuanLy> coQuanQuanLyList = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(
+				QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(id)));
+		List<ToDanPho> toDanPhoList = (List<ToDanPho>) toDanPhoRepository.findAll(
+				QToDanPho.toDanPho.daXoa.eq(false).and(QToDanPho.toDanPho.donViHanhChinh.id.eq(id)));
+		List<CongDan> congDanList = (List<CongDan>) congDanRepository
+				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.tinhThanh.id.eq(id))
+						.or(QCongDan.congDan.quanHuyen.id.eq(id)).or(QCongDan.congDan.phuongXa.id.eq(id)));
+
+		if ((donViHanhChinhList != null && donViHanhChinhList.size() > 0)
+				|| (coQuanQuanLyList != null && coQuanQuanLyList.size() > 0)
+				|| (congDanList != null && congDanList.size() > 0)
+				|| (toDanPhoList != null && toDanPhoList.size() > 0)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

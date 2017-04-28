@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.VaiTro;
+import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.VaiTroService;
 import vn.greenglobal.tttp.util.Utils;
@@ -37,10 +38,13 @@ import vn.greenglobal.tttp.util.Utils;
 public class VaiTroController extends TttpController<VaiTro> {
 
 	@Autowired
-	VaiTroRepository repo;
+	private VaiTroRepository repo;
 
 	@Autowired
-	VaiTroService vaiTroService;
+	private VaiTroService vaiTroService;
+	
+	@Autowired
+	private NguoiDungRepository nguoiDungRepository;
 
 	public VaiTroController(BaseRepository<VaiTro, Long> repo) {
 		super(repo);
@@ -132,6 +136,10 @@ public class VaiTroController extends TttpController<VaiTro> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (vaiTroService.checkUsedData(nguoiDungRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		VaiTro vaiTro = vaiTroService.delete(repo, id);
