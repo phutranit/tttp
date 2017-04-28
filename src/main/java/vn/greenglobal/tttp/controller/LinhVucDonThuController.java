@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.service.LinhVucDonThuService;
 import vn.greenglobal.tttp.util.Utils;
@@ -41,6 +42,9 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 
 	@Autowired
 	private LinhVucDonThuService linhVucDonThuService;
+	
+	@Autowired
+	private DonRepository donRepository;
 
 	public LinhVucDonThuController(BaseRepository<LinhVucDonThu, Long> repo) {
 		super(repo);
@@ -136,6 +140,10 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (linhVucDonThuService.checkUsedData(repo, donRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		LinhVucDonThu linhVucDonThu = linhVucDonThuService.delete(repo, id);

@@ -1,13 +1,21 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QThamQuyenGiaiQuyet;
+import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
+import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 
 @Component
 public class ThamQuyenGiaiQuyetService {
@@ -61,6 +69,23 @@ public class ThamQuyenGiaiQuyetService {
 		ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(predAll);
 
 		return thamQuyenGiaiQuyet != null ? true : false;
+	}
+
+	public boolean checkUsedData(ThamQuyenGiaiQuyetRepository repo, DonRepository donRepository,
+			XuLyDonRepository xuLyDonRepository, Long id) {
+		List<ThamQuyenGiaiQuyet> thamQuyenGiaiQuyetList = (List<ThamQuyenGiaiQuyet>) repo
+				.findAll(base.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(id)));
+		List<Don> donList = (List<Don>) donRepository
+				.findAll(QDon.don.daXoa.eq(false).and(QDon.don.thamQuyenGiaiQuyet.id.eq(id)));
+		List<XuLyDon> xuLyDonList = (List<XuLyDon>) xuLyDonRepository
+				.findAll(QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.thamQuyenGiaiQuyet.id.eq(id)));
+
+		if ((thamQuyenGiaiQuyetList != null && thamQuyenGiaiQuyetList.size() > 0)
+				|| (donList != null && donList.size() > 0) || (xuLyDonList != null && xuLyDonList.size() > 0)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

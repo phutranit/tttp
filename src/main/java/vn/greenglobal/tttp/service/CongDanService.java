@@ -14,15 +14,18 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.DanToc;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
+import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QCongDan;
+import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QuocTich;
 import vn.greenglobal.tttp.model.ToDanPho;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DanTocRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
-import vn.greenglobal.tttp.model.PropertyChangeObject;
 
 @Component
 public class CongDanService {
@@ -150,6 +153,17 @@ public class CongDanService {
 		}
 
 		return congDan;
+	}
+	
+	public boolean checkUsedData(DonCongDanRepository donCongDanRepository, Long id) {
+		List<Don_CongDan> donCongDanList = (List<Don_CongDan>) donCongDanRepository
+				.findAll(QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.congDan.id.eq(id)));
+
+		if (donCongDanList != null && donCongDanList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

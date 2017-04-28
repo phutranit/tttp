@@ -34,6 +34,7 @@ import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.repository.CongDanRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
@@ -53,6 +54,9 @@ public class CongDanController extends TttpController<CongDan> {
 	@Autowired
 	private CongDanService congDanService;
 	
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+
 	@Autowired
 	private LichSuThayDoiService lichSuThayDoiService;
 
@@ -191,6 +195,10 @@ public class CongDanController extends TttpController<CongDan> {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		if (congDanService.checkUsedData(donCongDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(), ApiErrorEnum.DATA_USED.getText());
 		}
 		
 		CongDan congDan = congDanService.delete(repo, id);

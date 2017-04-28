@@ -36,10 +36,11 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "donCongDans", description = "Quan hệ giữa Đơn và Công Dân")
 public class DonCongDanController extends TttpController<Don_CongDan> {
 
-	private static DonCongDanService donCongDanService = new DonCongDanService();
-
 	@Autowired
 	private DonCongDanRepository repo;
+	
+	@Autowired
+	private DonCongDanService donCongDanService;
 
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
 		super(repo);
