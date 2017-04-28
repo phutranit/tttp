@@ -14,10 +14,13 @@ public class ThoiHanService {
 
 	BooleanExpression base = QThoiHan.thoiHan.daXoa.eq(false);
 
-	public Predicate predicateFindAll(int soNgay, String loaiThoiHan) {
+	public Predicate predicateFindAll(String soNgay, String loaiThoiHan) {
 		BooleanExpression predAll = base;
-		if (soNgay > 0) {
-			predAll = predAll.and(QThoiHan.thoiHan.soNgay.eq(soNgay));
+		
+		int num = soNgay != null ? new Integer(soNgay) : 0;
+		
+		if (num > 0) {
+			predAll = predAll.and(QThoiHan.thoiHan.soNgay.eq(num));
 		}
 
 		if (loaiThoiHan != null && !"".equals(loaiThoiHan)) {
