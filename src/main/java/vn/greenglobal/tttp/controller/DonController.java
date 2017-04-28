@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
@@ -130,17 +131,33 @@ public class DonController extends TttpController<Don> {
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		
 		if (nguoiDung != null) {
 
-			if (don.isThanhLapDon()) {
-				don.setMa(donService.getMaDonMoi(repo));
-			}
+			if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+				don.setDiaChiCoQuanBKT("");
+				don.setSoDienThoaiCoQuanBKT("");
+				don.setTenCoQuanBKT("");
+				don.setTinhThanhCoQuanBKT(null);
+				don.setQuanHuyenCoQuanBKT(null);
+				don.setPhuongXaCoQuanBKT(null);
+				don.setToDanPhoCoQuanBKT(null);
+			} 
+//			if (don.isThanhLapDon()) {
+//				don.setMa(donService.getMaDonMoi(repo));
+//			}
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			
 			Don donNew = Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			XuLyDon xuLyDon = new XuLyDon();
 			xuLyDon.setDon(donNew);
-			Long idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			Long idCoQuanQuanLy = 0L;
+			try {
+				idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 			if (idCoQuanQuanLy == 0 ) {
 				xuLyDon.setPhongBanGiaiQuyet(null);
 			} else {
@@ -188,6 +205,17 @@ public class DonController extends TttpController<Don> {
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		if (nguoiDung != null) {
 			don.setId(id);
+			
+			if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+				don.setDiaChiCoQuanBKT("");
+				don.setSoDienThoaiCoQuanBKT("");
+				don.setTenCoQuanBKT("");
+				don.setTinhThanhCoQuanBKT(null);
+				don.setQuanHuyenCoQuanBKT(null);
+				don.setPhuongXaCoQuanBKT(null);
+				don.setToDanPhoCoQuanBKT(null);
+			}
+			
 			if (!donService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
