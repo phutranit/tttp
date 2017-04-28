@@ -68,6 +68,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 		NguoiDung ks = getProfileUtil().getUserInfo(authorization);
+		for (VaiTro vaiTro : ks.getVaiTros()) {
+			System.out.println("vai tro" +vaiTro.getTen());
+		}
 		System.out.println("congChuc " +ks);
 		for (String q : ks.getQuyens()) {
 			System.out.println("quyen " +q);
