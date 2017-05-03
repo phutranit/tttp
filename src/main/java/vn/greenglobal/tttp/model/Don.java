@@ -50,7 +50,8 @@ public class Don extends Model<Don> {
 
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
-
+	private String nguonDonText = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
 	private int soNguoi;
@@ -781,5 +782,14 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+
+	@Transient
+	public String getNguonDonText() {
+		return nguonDonText;
+	}
+
+	public void setNguonDonText(String nguonDonText) {
+		this.nguonDonText = nguonDonText;
 	}
 }
