@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -166,7 +166,7 @@ public class DonController extends TttpController<Don> {
 						and(QCoQuanQuanLy.coQuanQuanLy.id.eq(idCoQuanQuanLy))));
 			}
 			// Add new record for VAN_THU
-			xuLyDon.setChucVu(ChucVuEnum.VAN_THU);
+			xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
 			xuLyDon.setThuTuThucHien(0);
 			xuLyDon.setCongChuc(null);
 			xuLyDon.setQuyTrinhXuLy(null);
