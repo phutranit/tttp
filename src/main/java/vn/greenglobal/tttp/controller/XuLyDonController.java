@@ -383,9 +383,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									eass, HttpStatus.CREATED);
 						}
 					} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.CAN_BO.name())) {
-						System.out.println("CAN_BO");
 						if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI)) {
-							System.out.println("CAN_BO DE_XUAT_GIAO_VIEC_LAI");
 							note = ChucVuEnum.CAN_BO.getText() + " " + QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText()
 									+ " " + ChucVuEnum.TRUONG_PHONG.getText() + " "
 									+ xuLyDonHienTai.getPhongBanXuLy().getTen();
@@ -402,7 +400,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY)) {
-							System.out.println("CAN_BO DE_XUAT_HUONG_XU_LY");
 							note = ChucVuEnum.CAN_BO.getText() + " " + QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText()
 									+ " " + xuLyDon.getHuongXuLy().getText() + " ";
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
