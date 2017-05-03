@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -30,17 +30,21 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanXuLy;
-	@ManyToOne
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
-	private CoQuanQuanLy coQuanTiepNhan;
+	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-
+	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
+	@ManyToOne
+	private CoQuanQuanLy coQuanChuyenDon;
+	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
+
+	
 
 	@Lob
 	private String ghiChu = "";
@@ -50,16 +54,16 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungThongTinTrinhLanhDao = "";
 
 	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVu;
+	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVuGiaoViec;
-
+	private VaiTroEnum chucVuGiaoViec;
 	@ApiModelProperty(position = 8)
-	public ChucVuEnum getChucVuGiaoViec() {
+	
+	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
 	}
 
-	public void setChucVuGiaoViec(ChucVuEnum chucVuGiaoViec) {
+	public void setChucVuGiaoViec(VaiTroEnum chucVuGiaoViec) {
 		this.chucVuGiaoViec = chucVuGiaoViec;
 	}
 
@@ -196,11 +200,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	@ApiModelProperty(position = 2)
-	public ChucVuEnum getChucVu() {
+	public VaiTroEnum getChucVu() {
 		return chucVu;
 	}
 
-	public void setChucVu(ChucVuEnum chucVu) {
+	public void setChucVu(VaiTroEnum chucVu) {
 		this.chucVu = chucVu;
 	}
 
@@ -220,6 +224,22 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
+	}
+	
+	public CoQuanQuanLy getCoQuanChuyenDon() {
+		return coQuanChuyenDon;
+	}
+
+	public void setCoQuanChuyenDon(CoQuanQuanLy coQuanChuyenDon) {
+		this.coQuanChuyenDon = coQuanChuyenDon;
+	}
+
+	public boolean isDonChuyen() {
+		return isDonChuyen;
+	}
+
+	public void setDonChuyen(boolean isDonChuyen) {
+		this.isDonChuyen = isDonChuyen;
 	}
 	
 	@Transient
