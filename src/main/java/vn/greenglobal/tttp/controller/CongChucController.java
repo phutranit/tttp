@@ -28,7 +28,9 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.service.CongChucService;
@@ -65,6 +67,29 @@ public class CongChucController extends TttpController<CongChuc> {
 		}
 
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/lanhDaoTiepCongDans")
+	@ApiOperation(value = "Lấy danh sách Lãnh đạo tiếp công dân", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListDanhSachLanhDaoTCD(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		CongChuc congChuc = repo.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		CoQuanQuanLy donVi = null;
+		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
+			if ("006".equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getMa())) {
+				donVi = congChuc.getCoQuanQuanLy().getCha();
+			} else {
+				donVi = congChuc.getCoQuanQuanLy();
+			}
+		}
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindLanhDaoTiepCongDan(donVi), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
@@ -128,7 +153,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					"Tên đăng nhập đã tồn tại trong hệ thống!");
 		}
 
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
+		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());

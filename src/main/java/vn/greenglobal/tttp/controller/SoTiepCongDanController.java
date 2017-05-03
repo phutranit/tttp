@@ -233,7 +233,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
-
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
@@ -23,6 +24,13 @@ public class CongChucService {
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
+		return predAll;
+	}
+	
+	public Predicate predicateFindLanhDaoTiepCongDan(CoQuanQuanLy donVi) {
+		System.out.println("predicateFindLanhDaoTiepCongDan");
+		BooleanExpression predAll = base.and(QCongChuc.congChuc.chucVu.laLanhDao.eq(true));
+		predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.eq(donVi));
 		return predAll;
 	}
 
@@ -82,5 +90,4 @@ public class CongChucService {
 			repo.save(congChuc);
 		}
 	}
-
 }
