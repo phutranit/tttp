@@ -79,7 +79,7 @@ public class SoTiepCongDanService {
 
 		return soTiepCongDan;
 	}
-	
+
 	public SoTiepCongDan cancelCuocTiepDanDinhKyCuaLanhDao(SoTiepCongDanRepository repo, Long id) {
 		SoTiepCongDan soTiepCongDan = repo.findOne(predicateFindOne(id));
 

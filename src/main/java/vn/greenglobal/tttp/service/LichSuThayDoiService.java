@@ -19,7 +19,7 @@ public class LichSuThayDoiService {
 				.and(QLichSuThayDoi.lichSuThayDoi.idDoiTuong.eq(idDoiTuong));
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QLichSuThayDoi.lichSuThayDoi.id.eq(id));
 	}

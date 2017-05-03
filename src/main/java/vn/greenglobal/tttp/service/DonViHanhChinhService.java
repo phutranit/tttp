@@ -129,8 +129,8 @@ public class DonViHanhChinhService {
 				.findAll(base.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(id)));
 		List<CoQuanQuanLy> coQuanQuanLyList = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(
 				QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(id)));
-		List<ToDanPho> toDanPhoList = (List<ToDanPho>) toDanPhoRepository.findAll(
-				QToDanPho.toDanPho.daXoa.eq(false).and(QToDanPho.toDanPho.donViHanhChinh.id.eq(id)));
+		List<ToDanPho> toDanPhoList = (List<ToDanPho>) toDanPhoRepository
+				.findAll(QToDanPho.toDanPho.daXoa.eq(false).and(QToDanPho.toDanPho.donViHanhChinh.id.eq(id)));
 		List<CongDan> congDanList = (List<CongDan>) congDanRepository
 				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.tinhThanh.id.eq(id))
 						.or(QCongDan.congDan.quanHuyen.id.eq(id)).or(QCongDan.congDan.phuongXa.id.eq(id)));

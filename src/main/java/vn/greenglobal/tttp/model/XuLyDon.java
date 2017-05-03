@@ -28,17 +28,17 @@ public class XuLyDon extends Model<XuLyDon> {
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanXuLy;
-	@ManyToOne 
+	@ManyToOne
 	private CongChuc canBoXuLy;
-	@ManyToOne 
+	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-	
+
 	private int thuTuThucHien = 0;
-	
+
 	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
@@ -75,7 +75,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
-	
 
 	@ApiModelProperty(example = "{}", position = 7)
 	public CoQuanQuanLy getCoQuanTiepNhan() {
@@ -103,7 +102,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
 	}
-
 
 	@ApiModelProperty(example = "{}")
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
@@ -149,7 +147,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setyKienXuLy(String yKienXuLy) {
 		this.yKienXuLy = yKienXuLy;
 	}
-	
+
 	@ApiModelProperty(example = "{}", position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
@@ -172,7 +170,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
-	
+
 	@ApiModelProperty(position = 13, example = "{}")
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
@@ -204,7 +202,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setHuongXuLy(HuongXuLyXLDEnum huongXuLy) {
 		this.huongXuLy = huongXuLy;
 	}
-	
+
 	@ApiModelProperty(position = 2)
 	public ChucVuEnum getChucVu() {
 		return chucVu;
@@ -213,7 +211,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setChucVu(ChucVuEnum chucVu) {
 		this.chucVu = chucVu;
 	}
-	
+
 	@ApiModelProperty(example = "{}", position = 3)
 	public CoQuanQuanLy getPhongBanXuLy() {
 		return phongBanXuLy;
@@ -222,7 +220,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setPhongBanXuLy(CoQuanQuanLy phongBanXuLy) {
 		this.phongBanXuLy = phongBanXuLy;
 	}
-	
+
 	@ApiModelProperty(example = "{}", position = 15)
 	public CongChuc getCanBoXuLy() {
 		return canBoXuLy;

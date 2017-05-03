@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -75,6 +76,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
+
+	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -261,6 +266,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setGhiChuXuLy(String ghiChuXuLy) {
 		this.ghiChuXuLy = ghiChuXuLy;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
+	}
+
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		return getTaiLieuVanThus();
 	}
 
 	@Transient
