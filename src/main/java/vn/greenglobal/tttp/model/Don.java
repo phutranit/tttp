@@ -786,6 +786,10 @@ public class Don extends Model<Don> {
 
 	@Transient
 	public String getNguonDonText() {
+		if(nguonTiepNhanDon != null) {
+			nguonDonText = nguonTiepNhanDon.getText();
+		}
+		
 		return nguonDonText;
 	}
 
