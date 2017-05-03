@@ -15,11 +15,12 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 public class XuLyDonService {
 	public static transient final Logger LOG = LogManager.getLogger(XuLyDonService.class.getName());
 
-	BooleanExpression base = QXuLyDon.xuLyDon.daXoa.eq(false);
+	QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
+	BooleanExpression base = xuLyDon.daXoa.eq(false);
 	
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
 		
-		QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
+		
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
 		if (repo.exists(where)) {
 			

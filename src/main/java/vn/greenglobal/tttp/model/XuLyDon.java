@@ -30,17 +30,21 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanXuLy;
-	@ManyToOne
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
-	private CoQuanQuanLy coQuanTiepNhan;
+	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-
+	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
+	@ManyToOne
+	private CoQuanQuanLy coQuanChuyenDon;
+	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
+
+	
 
 	@Lob
 	private String ghiChu = "";
@@ -220,6 +224,22 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
+	}
+	
+	public CoQuanQuanLy getCoQuanChuyenDon() {
+		return coQuanChuyenDon;
+	}
+
+	public void setCoQuanChuyenDon(CoQuanQuanLy coQuanChuyenDon) {
+		this.coQuanChuyenDon = coQuanChuyenDon;
+	}
+
+	public boolean isDonChuyen() {
+		return isDonChuyen;
+	}
+
+	public void setDonChuyen(boolean isDonChuyen) {
+		this.isDonChuyen = isDonChuyen;
 	}
 	
 	@Transient
