@@ -134,6 +134,11 @@ public class EnumController {
 		object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
 		object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
 		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HuongXuLyTCDEnum.GAP_LANH_DAO.getText());
+		object.put("giaTri", HuongXuLyTCDEnum.GAP_LANH_DAO.name());
+		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
