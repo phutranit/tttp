@@ -211,10 +211,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getTinhThanhCongDan() {
+	public Map<String, Object> getTinhThanhCongDan() {
 		if (getTinhThanh() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getTinhThanh().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getTinhThanh().getId());
 			map.put("ten", getTinhThanh().getTen());
 			return map;
 		}
@@ -223,10 +223,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getQuanHuyenCongDan() {
+	public Map<String, Object> getQuanHuyenCongDan() {
 		if (getQuanHuyen() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getQuanHuyen().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getQuanHuyen().getId());
 			map.put("ten", getQuanHuyen().getTen());
 			return map;
 		}
@@ -235,10 +235,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getPhuongXaCongDan() {
+	public Map<String, Object> getPhuongXaCongDan() {
 		if (getPhuongXa() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getPhuongXa().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getPhuongXa().getId());
 			map.put("ten", getPhuongXa().getTen());
 			return map;
 		}
@@ -247,10 +247,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getToDanPhoCongDan() {
+	public Map<String, Object> getToDanPhoCongDan() {
 		if (getToDanPho() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("toDanPhoId", getToDanPho().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("toDanPhoId", getToDanPho().getId());
 			map.put("ten", getToDanPho().getTen());
 			return map;
 		}
@@ -260,10 +260,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getDanTocCongDan() {
+	public Map<String, Object> getDanTocCongDan() {
 		if (getDanToc() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("danTocId", getDanToc().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("danTocId", getDanToc().getId());
 			map.put("ten", getDanToc().getTen());
 			return map;
 		}
@@ -272,10 +272,10 @@ public class CongDan extends Model<CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getQuocTichCongDan() {
+	public Map<String, Object> getQuocTichCongDan() {
 		if (getQuocTich() != null) {
-			Map<String, String> map = new HashMap<>();
-			map.put("quocTichId", getQuocTich().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("quocTichId", getQuocTich().getId());
 			map.put("ten", getQuocTich().getTen());
 			return map;
 		}
@@ -291,5 +291,31 @@ public class CongDan extends Model<CongDan> {
 			out += " - " + getSoCMNDHoChieu();
 		}
 		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("nhanVienId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("nhanVienId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
 	}
 }
