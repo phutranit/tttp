@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -10,7 +8,6 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +39,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "xuLyDons", description = "Xử lý đơn")
 public class XuLyDonController extends TttpController<XuLyDon> {
-	public static transient final Logger LOG = LogManager.getLogger(XuLyDonController.class.getName());
+	
 	private static XuLyDonService xuLyDonService = new XuLyDonService();
 	private static DonService donService = new DonService();
 
@@ -99,6 +96,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
 						xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 						xuLyDonHienTai.setGhiChu(note);
+						Utils.save(repo, xuLyDonHienTai, congChucId);
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						if (xuLyDonHienTai.isDonChuyen()) {
+							
+							xuLyDonTiepTheo.setDonChuyen(true);
+							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+						}
 						
 					} else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.DINH_CHI)) {
 					

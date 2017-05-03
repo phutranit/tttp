@@ -29,7 +29,6 @@ public class CongChuc extends Model<CongChuc> {
 	@NotBlank
 	private String hoVaTen = "";
 	private String soCMNDHoCHieu = "";
-	private String noiCap = "";
 	private String diaChi = "";
 	private String dienThoai = "";
 	@NotBlank
@@ -42,6 +41,9 @@ public class CongChuc extends Model<CongChuc> {
 
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
+	
+	@ManyToOne
+	private CoQuanQuanLy noiCapCMND;
 
 	@ManyToOne
 	private ChucVu chucVu;
@@ -76,13 +78,13 @@ public class CongChuc extends Model<CongChuc> {
 		this.soCMNDHoCHieu = soCMNDHoCHieu;
 	}
 
-	@ApiModelProperty(position = 3)
-	public String getNoiCap() {
-		return noiCap;
+	@ApiModelProperty(position = 3, required = true, example = "{}")
+	public CoQuanQuanLy getNoiCapCMND() {
+		return noiCapCMND;
 	}
 
-	public void setNoiCap(String noiCap) {
-		this.noiCap = noiCap;
+	public void setNoiCapCMND(CoQuanQuanLy noiCapCMND) {
+		this.noiCapCMND = noiCapCMND;
 	}
 
 	@ApiModelProperty(position = 4)
@@ -197,6 +199,18 @@ public class CongChuc extends Model<CongChuc> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId());
 			map.put("ten", getCoQuanQuanLy().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNoiCapCMNDInfo() {
+		if (getNoiCapCMND() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNoiCapCMND().getId());
+			map.put("ten", getNoiCapCMND().getTen());
 			return map;
 		}
 		return null;
