@@ -14,35 +14,37 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.DanToc;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
+import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QCongDan;
+import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QuocTich;
 import vn.greenglobal.tttp.model.ToDanPho;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DanTocRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
-import vn.greenglobal.tttp.model.PropertyChangeObject;
 
 @Component
 public class CongDanService {
-	
+
 	@Autowired
 	private DanTocRepository danTocRepo;
-	
+
 	@Autowired
 	private QuocTichRepository quocTichRepo;
-	
+
 	@Autowired
 	private DonViHanhChinhRepository donViHanhChinhRepo;
-	
+
 	@Autowired
 	private ToDanPhoRepository toDanPhoRepo;
-	
+
 	BooleanExpression base = QCongDan.congDan.daXoa.eq(false);
-	
-	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, 
-			Long phuongXa, Long toDanPho) {
+
+	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, Long phuongXa, Long toDanPho) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa)
@@ -67,7 +69,7 @@ public class CongDanService {
 		}
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindCongDanBySuggests(String tuKhoa, String soCMND, String diaChi) {
 		BooleanExpression predAll = base;
 		if (StringUtils.isNotBlank(tuKhoa)) {
@@ -81,51 +83,69 @@ public class CongDanService {
 		}
 		return predAll;
 	}
-	
+
 	public List<PropertyChangeObject> getListThayDoi(CongDan congDanNew, CongDan congDanOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		if (congDanNew.getHoVaTen() != null && !congDanNew.getHoVaTen().isEmpty() && !congDanNew.getHoVaTen().equals(congDanOld.getHoVaTen())) {
+		if (congDanNew.getHoVaTen() != null && !congDanNew.getHoVaTen().isEmpty()
+				&& !congDanNew.getHoVaTen().equals(congDanOld.getHoVaTen())) {
 			list.add(new PropertyChangeObject("Họ và tên", congDanOld.getHoVaTen(), congDanNew.getHoVaTen()));
 		}
-		if (congDanNew.getSoDienThoai() != null && !congDanNew.getSoDienThoai().isEmpty() && !congDanNew.getSoDienThoai().equals(congDanOld.getSoDienThoai())) {
-			list.add(new PropertyChangeObject("Số điện thoại", congDanOld.getSoDienThoai(), congDanNew.getSoDienThoai()));
+		if (congDanNew.getSoDienThoai() != null && !congDanNew.getSoDienThoai().isEmpty()
+				&& !congDanNew.getSoDienThoai().equals(congDanOld.getSoDienThoai())) {
+			list.add(new PropertyChangeObject("Số điện thoại", congDanOld.getSoDienThoai(),
+					congDanNew.getSoDienThoai()));
 		}
-		if (congDanNew.getSoCMNDHoChieu() != null && !congDanNew.getSoCMNDHoChieu().isEmpty() && !congDanNew.getSoCMNDHoChieu().equals(congDanOld.getSoCMNDHoChieu())) {
-			list.add(new PropertyChangeObject("Số CMND/Hộ chiếu", congDanOld.getSoCMNDHoChieu(), congDanNew.getSoCMNDHoChieu()));
+		if (congDanNew.getSoCMNDHoChieu() != null && !congDanNew.getSoCMNDHoChieu().isEmpty()
+				&& !congDanNew.getSoCMNDHoChieu().equals(congDanOld.getSoCMNDHoChieu())) {
+			list.add(new PropertyChangeObject("Số CMND/Hộ chiếu", congDanOld.getSoCMNDHoChieu(),
+					congDanNew.getSoCMNDHoChieu()));
 		}
-		if (congDanNew.getDiaChi() != null && !congDanNew.getDiaChi().isEmpty() && !congDanNew.getDiaChi().equals(congDanOld.getDiaChi())) {
+		if (congDanNew.getDiaChi() != null && !congDanNew.getDiaChi().isEmpty()
+				&& !congDanNew.getDiaChi().equals(congDanOld.getDiaChi())) {
 			list.add(new PropertyChangeObject("Địa chỉ", congDanOld.getDiaChi(), congDanNew.getDiaChi()));
 		}
-		if (congDanNew.getNgaySinh() != null && !congDanOld.getNgaySinh().format(formatter).equals(congDanNew.getNgaySinh().format(formatter))) {
-			list.add(new PropertyChangeObject("Ngày sinh", congDanOld.getNgaySinh().format(formatter), congDanNew.getNgaySinh().format(formatter)));
+		if (congDanNew.getNgaySinh() != null
+				&& !congDanOld.getNgaySinh().format(formatter).equals(congDanNew.getNgaySinh().format(formatter))) {
+			list.add(new PropertyChangeObject("Ngày sinh", congDanOld.getNgaySinh().format(formatter),
+					congDanNew.getNgaySinh().format(formatter)));
 		}
 		if (congDanNew.isGioiTinh() != congDanOld.isGioiTinh()) {
-			list.add(new PropertyChangeObject("Giới tính", congDanOld.isGioiTinh() ? "Nam" : "Nữ", congDanNew.isGioiTinh() ? "Nam" : "Nữ"));
+			list.add(new PropertyChangeObject("Giới tính", congDanOld.isGioiTinh() ? "Nam" : "Nữ",
+					congDanNew.isGioiTinh() ? "Nam" : "Nữ"));
 		}
 		if (congDanNew.getDanToc() != null && congDanNew.getDanToc() != congDanOld.getDanToc()) {
 			DanToc danTocNew = danTocRepo.findOne(congDanNew.getDanToc().getId());
-			list.add(new PropertyChangeObject("Dân tộc", congDanOld.getDanToc() != null ? congDanOld.getDanToc().getTen() : "", danTocNew.getTen()));
+			list.add(new PropertyChangeObject("Dân tộc",
+					congDanOld.getDanToc() != null ? congDanOld.getDanToc().getTen() : "", danTocNew.getTen()));
 		}
 		if (congDanNew.getQuocTich() != null && congDanNew.getQuocTich() != congDanOld.getQuocTich()) {
 			QuocTich quocTichNew = quocTichRepo.findOne(congDanNew.getQuocTich().getId());
-			list.add(new PropertyChangeObject("Quốc tịch", congDanOld.getQuocTich() != null ? congDanOld.getQuocTich().getTen() : "", quocTichNew.getTen()));
+			list.add(new PropertyChangeObject("Quốc tịch",
+					congDanOld.getQuocTich() != null ? congDanOld.getQuocTich().getTen() : "", quocTichNew.getTen()));
 		}
 		if (congDanNew.getTinhThanh() != null && congDanNew.getTinhThanh() != congDanOld.getTinhThanh()) {
 			DonViHanhChinh donViHanhChinhNew = donViHanhChinhRepo.findOne(congDanNew.getTinhThanh().getId());
-			list.add(new PropertyChangeObject("Tỉnh thành", congDanOld.getTinhThanh() != null ? congDanOld.getTinhThanh().getTen() : "", donViHanhChinhNew.getTen()));
+			list.add(new PropertyChangeObject("Tỉnh thành",
+					congDanOld.getTinhThanh() != null ? congDanOld.getTinhThanh().getTen() : "",
+					donViHanhChinhNew.getTen()));
 		}
 		if (congDanNew.getQuanHuyen() != null && congDanNew.getQuanHuyen() != congDanOld.getQuanHuyen()) {
 			DonViHanhChinh donViHanhChinhNew = donViHanhChinhRepo.findOne(congDanNew.getQuanHuyen().getId());
-			list.add(new PropertyChangeObject("Quận huyện", congDanOld.getQuanHuyen() != null ? congDanOld.getQuanHuyen().getTen() : "", donViHanhChinhNew.getTen()));
+			list.add(new PropertyChangeObject("Quận huyện",
+					congDanOld.getQuanHuyen() != null ? congDanOld.getQuanHuyen().getTen() : "",
+					donViHanhChinhNew.getTen()));
 		}
 		if (congDanNew.getPhuongXa() != null && congDanNew.getPhuongXa() != congDanOld.getPhuongXa()) {
 			DonViHanhChinh donViHanhChinhNew = donViHanhChinhRepo.findOne(congDanNew.getPhuongXa().getId());
-			list.add(new PropertyChangeObject("Phường xã", congDanOld.getPhuongXa() != null ? congDanOld.getPhuongXa().getTen() : "", donViHanhChinhNew.getTen()));
+			list.add(new PropertyChangeObject("Phường xã",
+					congDanOld.getPhuongXa() != null ? congDanOld.getPhuongXa().getTen() : "",
+					donViHanhChinhNew.getTen()));
 		}
 		if (congDanNew.getToDanPho() != null && congDanNew.getToDanPho() != congDanOld.getToDanPho()) {
 			ToDanPho toDanPhoNew = toDanPhoRepo.findOne(congDanNew.getToDanPho().getId());
-			list.add(new PropertyChangeObject("Thôn tổ", congDanOld.getToDanPho() != null ? congDanOld.getToDanPho().getTen() : "", toDanPhoNew.getTen()));
+			list.add(new PropertyChangeObject("Thôn tổ",
+					congDanOld.getToDanPho() != null ? congDanOld.getToDanPho().getTen() : "", toDanPhoNew.getTen()));
 		}
 		return list;
 	}
@@ -150,6 +170,17 @@ public class CongDanService {
 		}
 
 		return congDan;
+	}
+
+	public boolean checkUsedData(DonCongDanRepository donCongDanRepository, Long id) {
+		List<Don_CongDan> donCongDanList = (List<Don_CongDan>) donCongDanRepository
+				.findAll(QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.congDan.id.eq(id)));
+
+		if (donCongDanList != null && donCongDanList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

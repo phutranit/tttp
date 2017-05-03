@@ -25,148 +25,126 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
-import vn.greenglobal.tttp.model.ChucVu;
-import vn.greenglobal.tttp.repository.ChucVuRepository;
-import vn.greenglobal.tttp.repository.CongChucRepository;
-import vn.greenglobal.tttp.service.ChucVuService;
+import vn.greenglobal.tttp.model.ThoiHan;
+import vn.greenglobal.tttp.repository.ThoiHanRepository;
+import vn.greenglobal.tttp.service.ThoiHanService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "chucVus", description = "Chức Vụ")
-public class ChucVuController extends TttpController<ChucVu> {
+@Api(value = "thoiHans", description = "Thời hạn")
+public class ThoiHanController extends TttpController<ThoiHan> {
 
 	@Autowired
-	private ChucVuRepository repo;
+	private ThoiHanRepository repo;
 
 	@Autowired
-	private ChucVuService chucVuService;
+	private ThoiHanService thoiHanService;
 
-	@Autowired
-	private CongChucRepository repoCongChuc;
-
-	public ChucVuController(BaseRepository<ChucVu, Long> repo) {
+	public ThoiHanController(BaseRepository<ThoiHan, Long> repo) {
 		super(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/chucVus")
-	@ApiOperation(value = "Lấy danh sách Chức Vụ", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/thoiHans")
+	@ApiOperation(value = "Lấy danh sách Thời Hạn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
+			Pageable pageable, @RequestParam(value = "soNgay", required = false) String soNgay,
+			@RequestParam(value = "loaiThoiHan", required = false) String loaiThoiHan,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THOIHAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
+		Page<ThoiHan> page = repo.findAll(thoiHanService.predicateFindAll(soNgay, loaiThoiHan), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/chucVus")
-	@ApiOperation(value = "Thêm mới Chức Vụ", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class),
-			@ApiResponse(code = 201, message = "Thêm mới Chức Vụ thành công", response = ChucVu.class) })
+	@RequestMapping(method = RequestMethod.POST, value = "/thoiHans")
+	@ApiOperation(value = "Thêm mới Thời Hạn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới Thời Hạn thành công", response = ThoiHan.class),
+			@ApiResponse(code = 201, message = "Thêm mới Thời Hạn thành công", response = ThoiHan.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestBody ChucVu chucVu, PersistentEntityResourceAssembler eass) {
+			@RequestBody ThoiHan thoiHan, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_THEM) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THOIHAN_THEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
-		if (chucVuService.checkExistsData(repo, chucVu)) {
+		if (thoiHan.getSoNgay() > 0 && thoiHanService.checkExistsData(repo, thoiHan)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
-
-		return Utils.doSave(repo, chucVu,
+		return Utils.doSave(repo, thoiHan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/chucVus/{id}")
-	@ApiOperation(value = "Lấy Chức Vụ theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Chức Vụ thành công", response = ChucVu.class) })
+	@RequestMapping(method = RequestMethod.GET, value = "/thoiHans/{id}")
+	@ApiOperation(value = "Lấy Thời Hạn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Thời Hạn thành công", response = ThoiHan.class) })
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XEM) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THOIHAN_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		ChucVu chucVu = repo.findOne(chucVuService.predicateFindOne(id));
-		if (chucVu == null) {
+		ThoiHan thoiHan = repo.findOne(thoiHanService.predicateFindOne(id));
+		if (thoiHan == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(eass.toFullResource(chucVu), HttpStatus.OK);
+
+		return new ResponseEntity<>(eass.toFullResource(thoiHan), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/chucVus/{id}")
-	@ApiOperation(value = "Cập nhật Chức Vụ", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PATCH, value = "/thoiHans/{id}")
+	@ApiOperation(value = "Cập nhật Thời Hạn", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Cập nhật Chức Vụ thành công", response = ChucVu.class) })
+			@ApiResponse(code = 200, message = "Cập nhật Thời Hạn thành công", response = ThoiHan.class) })
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
-			@RequestBody ChucVu chucVu, PersistentEntityResourceAssembler eass) {
+			@RequestBody ThoiHan thoiHan, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_SUA) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THOIHAN_SUA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		chucVu.setId(id);
-		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
-		if (chucVuService.checkExistsData(repo, chucVu)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
-
-		if (!chucVuService.isExists(repo, id)) {
+		thoiHan.setId(id);
+		if (!thoiHanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		return Utils.doSave(repo, chucVu,
+		return Utils.doSave(repo, thoiHan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/chucVus/{id}")
-	@ApiOperation(value = "Xoá Chức Vụ", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Chức Vụ thành công") })
+	@RequestMapping(method = RequestMethod.DELETE, value = "/thoiHans/{id}")
+	@ApiOperation(value = "Xoá Thời Hạn", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Thời Hạn thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XOA) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THOIHAN_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (chucVuService.checkUsedData(repoCongChuc, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-					ApiErrorEnum.DATA_USED.getText());
-		}
-
-		ChucVu chucVu = chucVuService.delete(repo, id);
-		if (chucVu == null) {
+		ThoiHan thoiHan = thoiHanService.delete(repo, id);
+		if (thoiHan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, chucVu,
+		Utils.save(repo, thoiHan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

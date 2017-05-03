@@ -8,21 +8,21 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MessageByLocaleServiceImpl implements MessageByLocaleService{
+public class MessageByLocaleServiceImpl implements MessageByLocaleService {
 
 	@Autowired
-    private MessageSource messageSource;
+	private MessageSource messageSource;
 
 	Locale locale = LocaleContextHolder.getLocale();
-	
-    @Override
-    public String getMessage(String id) {
-        return messageSource.getMessage(id,null,locale);
-    }
+
+	@Override
+	public String getMessage(String id) {
+		return messageSource.getMessage(id, null, locale);
+	}
 
 	@Override
 	public String getMessage(String id, Object[] params) {
-		return messageSource.getMessage(id, params,locale);
+		return messageSource.getMessage(id, params, locale);
 	}
 
 }

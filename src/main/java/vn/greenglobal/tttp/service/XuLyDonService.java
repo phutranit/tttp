@@ -14,7 +14,7 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 
 public class XuLyDonService {
 	public static transient final Logger LOG = LogManager.getLogger(XuLyDonService.class.getName());
-	
+
 	BooleanExpression base = QXuLyDon.xuLyDon.daXoa.eq(false);
 	
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
@@ -29,13 +29,13 @@ public class XuLyDonService {
 		}
 		return null;
 	}
-	
+
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QXuLyDon.xuLyDon.id.eq(id));
 	}
-	
+
 	public boolean isExists(XuLyDonRepository repo, Long id) {
-		Predicate predicate = base.and(QXuLyDon.xuLyDon.don .id.eq(id));
+		Predicate predicate = base.and(QXuLyDon.xuLyDon.don.id.eq(id));
 		return repo.exists(predicate);
 	}
 }

@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -89,11 +92,36 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	public DonViHanhChinh getDonViHanhChinhCha() {
 		return getCha();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public CapDonViHanhChinh getCapDonViHanhChinhDVHC() {
 		return getCapDonViHanhChinh();
 	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("nhanVienId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("nhanVienId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
 }

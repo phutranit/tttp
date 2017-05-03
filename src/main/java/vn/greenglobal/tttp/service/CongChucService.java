@@ -33,7 +33,7 @@ public class CongChucService {
 	public Predicate predicateFindByNguoiDungId(long id) {
 		return base.and(QCongChuc.congChuc.nguoiDung.id.eq(id));
 	}
-	
+
 	public boolean isExists(CongChucRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = base.and(QCongChuc.congChuc.id.eq(id));
@@ -64,7 +64,7 @@ public class CongChucService {
 
 		return congChuc != null ? true : false;
 	}
-	
+
 	public void bootstrapCongChuc(CongChucRepository repo, NguoiDungRepository repoNguoiDung) {
 		System.out.println("bootstrapCongChuc");
 		List<CongChuc> list = (List<CongChuc>) repo.findAll(base);
@@ -82,5 +82,5 @@ public class CongChucService {
 			repo.save(congChuc);
 		}
 	}
-	
+
 }

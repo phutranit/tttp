@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -7,11 +9,17 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.model.QLoaiTaiLieu;
+import vn.greenglobal.tttp.model.QTaiLieuBangChung;
+import vn.greenglobal.tttp.model.QTaiLieuVanThu;
+import vn.greenglobal.tttp.model.TaiLieuBangChung;
+import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
+import vn.greenglobal.tttp.repository.TaiLieuBangChungRepository;
+import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 
 @Component
 public class LoaiTaiLieuService {
-	
+
 	BooleanExpression base = QLoaiTaiLieu.loaiTaiLieu.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
@@ -56,6 +64,22 @@ public class LoaiTaiLieuService {
 		LoaiTaiLieu loaiTaiLieu = repo.findOne(predAll);
 
 		return loaiTaiLieu != null ? true : false;
+	}
+
+	public boolean checkUsedData(TaiLieuBangChungRepository taiLieuBangChungRepository,
+			TaiLieuVanThuRepository taiLieuVanThuRepository, Long id) {
+		List<TaiLieuBangChung> taiLieuBangChungList = (List<TaiLieuBangChung>) taiLieuBangChungRepository
+				.findAll(QTaiLieuBangChung.taiLieuBangChung.daXoa.eq(false)
+						.and(QTaiLieuBangChung.taiLieuBangChung.loaiTaiLieu.id.eq(id)));
+		List<TaiLieuVanThu> taiLieuVanThuList = (List<TaiLieuVanThu>) taiLieuVanThuRepository.findAll(
+				QTaiLieuVanThu.taiLieuVanThu.daXoa.eq(false).and(QTaiLieuVanThu.taiLieuVanThu.loaiTaiLieu.id.eq(id)));
+
+		if ((taiLieuBangChungList != null && taiLieuBangChungList.size() > 0)
+				|| (taiLieuVanThuList != null && taiLieuVanThuList.size() > 0)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

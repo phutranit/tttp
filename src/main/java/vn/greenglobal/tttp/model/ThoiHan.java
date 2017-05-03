@@ -1,62 +1,55 @@
 package vn.greenglobal.tttp.model;
 
+import java.beans.Transient;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 
 @Entity
-@Table(name = "capdonvihanhchinh")
+@Table(name = "thoihan")
 @ApiModel
-public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
+public class ThoiHan extends Model<ThoiHan> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7857723975031698636L;
+	private static final long serialVersionUID = -5794847516802209604L;
 
-	private String ma = "";
-	@NotBlank
-	private String ten = "";
-	private String moTa = "";
+	private int soNgay = 0;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiThoiHanEnum loaiThoiHanEnum;
 
 	@ApiModelProperty(position = 1)
-	public String getMa() {
-		return ma;
+	public int getSoNgay() {
+		return soNgay;
 	}
 
-	public void setMa(String ma) {
-		this.ma = ma;
+	public void setSoNgay(int soNgay) {
+		this.soNgay = soNgay;
 	}
 
-	@ApiModelProperty(position = 2, required = true)
-	public String getTen() {
-		return ten;
+	@ApiModelProperty(position = 1)
+	public LoaiThoiHanEnum getLoaiThoiHanEnum() {
+		return loaiThoiHanEnum;
 	}
 
-	public void setTen(String ten) {
-		this.ten = ten;
-	}
-
-	@ApiModelProperty(position = 3)
-	public String getMoTa() {
-		return moTa;
-	}
-
-	public void setMoTa(String moTa) {
-		this.moTa = moTa;
+	public void setLoaiThoiHanEnum(LoaiThoiHanEnum loaiThoiHanEnum) {
+		this.loaiThoiHanEnum = loaiThoiHanEnum;
 	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getCapDonViHanhChinhId() {
+	public Long getThoiHanId() {
 		return getId();
 	}
 
