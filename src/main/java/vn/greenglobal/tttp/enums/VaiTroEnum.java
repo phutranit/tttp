@@ -1,13 +1,13 @@
 package vn.greenglobal.tttp.enums;
 
-public enum ChucVuEnum {
+public enum VaiTroEnum {
 
 	LANH_DAO("Lãnh đạo"),
 	TRUONG_PHONG("Trưởng phòng"),
-	CAN_BO("Cán bộ"),
+	CHUYEN_VIEN("Chuyên viên"),
 	VAN_THU("Văn thư");
 	
-	ChucVuEnum(String text) {
+	VaiTroEnum(String text) {
 		this.text = text;
 	}
 

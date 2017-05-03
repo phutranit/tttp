@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
@@ -150,7 +150,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
@@ -162,7 +162,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
@@ -174,7 +174,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
@@ -200,7 +200,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
@@ -212,7 +212,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
@@ -224,7 +224,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
@@ -250,7 +250,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());

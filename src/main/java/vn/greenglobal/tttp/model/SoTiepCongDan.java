@@ -55,6 +55,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String trangThaiKetQua = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
+	private boolean hoanThanhTCDLanhDao;
+	
 	@Transient
 	private String huongXuLyText = "";
 
@@ -124,6 +126,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setNgayTiepDan(LocalDateTime ngayTiepDan) {
 		this.ngayTiepDan = ngayTiepDan;
+	}
+
+	public boolean isHoanThanhTCDLanhDao() {
+		return hoanThanhTCDLanhDao;
+	}
+
+	public void setHoanThanhTCDLanhDao(boolean hoanThanhTCDLanhDao) {
+		this.hoanThanhTCDLanhDao = hoanThanhTCDLanhDao;
 	}
 
 	public LocalDateTime getThoiHan() {
@@ -305,7 +315,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -318,9 +328,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTinhTrangXuLyLanhDaoStr() {
+		return isHoanThanhTCDLanhDao() ? "Hoàn thành" : "Đang xử lý";
 	}
 }

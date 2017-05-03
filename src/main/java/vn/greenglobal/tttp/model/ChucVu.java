@@ -25,6 +25,7 @@ public class ChucVu extends Model<ChucVu> {
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
+	private boolean laLanhDao;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -43,6 +44,15 @@ public class ChucVu extends Model<ChucVu> {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
+	
+	
+	public boolean isLaLanhDao() {
+		return laLanhDao;
+	}
+
+	public void setLaLanhDao(boolean laLanhDao) {
+		this.laLanhDao = laLanhDao;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -57,7 +67,7 @@ public class ChucVu extends Model<ChucVu> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -70,7 +80,7 @@ public class ChucVu extends Model<ChucVu> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
