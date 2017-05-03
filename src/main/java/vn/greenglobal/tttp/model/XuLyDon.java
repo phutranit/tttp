@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity
 @Table(name = "xulydon")
@@ -44,8 +45,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
 
-	
-
 	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
@@ -72,6 +71,17 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLy;
 
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiDon;
+
+	public TrangThaiDonEnum getTrangThaiDon() {
+		return trangThaiDon;
+	}
+
+	public void setTrangThaiXuLyDon(TrangThaiDonEnum trangThaiDon) {
+		this.trangThaiDon = trangThaiDon;
+	}
+	
 	@ApiModelProperty(example = "{}", position = 7)
 	public CoQuanQuanLy getCoQuanTiepNhan() {
 		return coQuanTiepNhan;
