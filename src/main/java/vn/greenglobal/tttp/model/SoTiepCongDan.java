@@ -336,6 +336,18 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoTiepDanInfo() {
+		if (getCanBoTiepDan() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("congChucId", getCanBoTiepDan() != null ? getCanBoTiepDan().getId() : 0);
+			map.put("hoVaTen", getCanBoTiepDan() != null ? getCanBoTiepDan().getHoVaTen() : "");
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
 		return isHoanThanhTCDLanhDao() ? "Hoàn thành" : "Đang xử lý";
 	}
