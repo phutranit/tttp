@@ -125,7 +125,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -138,7 +138,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
