@@ -116,7 +116,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
-							xuLyDonHienTai.setTrangThaiXuLyDon(TrangThaiXuLyDonEnum.DA_XU_LY);
 							
 							if (xuLyDon.getDon().getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) {
 
