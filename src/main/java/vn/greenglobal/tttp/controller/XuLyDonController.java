@@ -96,6 +96,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
 						xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 						xuLyDonHienTai.setGhiChu(note);
+						Utils.save(repo, xuLyDonHienTai, congChucId);
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						if (xuLyDonHienTai.isDonChuyen()) {
+							
+							xuLyDonTiepTheo.setDonChuyen(true);
+							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+						}
 						
 					} else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.DINH_CHI)) {
 					
