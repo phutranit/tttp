@@ -50,8 +50,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayHenGapLanhDao;
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
-	private String donViChuTri = "";
-	private String donViPhoiHop = "";
+	@ManyToOne
+	private CoQuanQuanLy donViChuTri;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "sotiepcongdan_has_donviphoihop", joinColumns = {
+			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "coQuanQuanLy_id") })
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
@@ -160,20 +167,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.ketQuaGiaiQuyet = ketQuaGiaiQuyet;
 	}
 
-	public String getDonViChuTri() {
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getDonViChuTri() {
 		return donViChuTri;
 	}
 
-	public void setDonViChuTri(String donViChuTri) {
+	public void setDonViChuTri(CoQuanQuanLy donViChuTri) {
 		this.donViChuTri = donViChuTri;
 	}
 
-	public String getDonViPhoiHop() {
-		return donViPhoiHop;
+	public List<CoQuanQuanLy> getDonViPhoiHops() {
+		return donViPhoiHops;
 	}
 
-	public void setDonViPhoiHop(String donViPhoiHop) {
-		this.donViPhoiHop = donViPhoiHop;
+	public void setDonViPhoiHops(List<CoQuanQuanLy> donViPhoiHops) {
+		this.donViPhoiHops = donViPhoiHops;
 	}
 
 	public String getTrangThaiKetQua() {
