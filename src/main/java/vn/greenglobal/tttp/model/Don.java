@@ -458,10 +458,10 @@ public class Don extends Model<Don> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getLinhVucDonThuDon() {
+	public Map<String, Object> getLinhVucDonThuDon() {
 		if(getLinhVucDonThu() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("linhVucDonThuId", getLinhVucDonThu().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("linhVucDonThuId", getLinhVucDonThu().getId());
 			map.put("ten", getLinhVucDonThu().getTen());
 			return map;
 		}
@@ -470,10 +470,10 @@ public class Don extends Model<Don> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getLinhVucDonThuChiTietDon() {
+	public Map<String, Object> getLinhVucDonThuChiTietDon() {
 		if(getLinhVucDonThuChiTiet() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("linhVucDonThuId", getLinhVucDonThuChiTiet().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("linhVucDonThuId", getLinhVucDonThuChiTiet().getId());
 			map.put("ten", getLinhVucDonThuChiTiet().getTen());
 			return map;
 		}
@@ -482,10 +482,10 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, String> getChiTietLinhVucDonThuChiTietDon() {
+	public Map<String, Object> getChiTietLinhVucDonThuChiTietDon() {
 		if(getChiTietLinhVucDonThuChiTiet() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId());
 			map.put("ten", getChiTietLinhVucDonThuChiTiet().getTen());
 			return map;
 		}
@@ -699,10 +699,10 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
-	public Map<String, String> getCoQuanDaGiaiQuyetDon() {
+	public Map<String, Object> getCoQuanDaGiaiQuyetDon() {
 		if(getCoQuanDaGiaiQuyet() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
 			return map;
 		}
@@ -711,10 +711,10 @@ public class Don extends Model<Don> {
 
 	@ApiModelProperty(hidden = true)
 	@Transient
-	public Map<String, String> getTinhThanhCoQuanBKTInfo() {
+	public Map<String, Object> getTinhThanhCoQuanBKTInfo() {
 		if(getTinhThanhCoQuanBKT() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getTinhThanhCoQuanBKT().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getTinhThanhCoQuanBKT().getId());
 			map.put("ten", getTinhThanhCoQuanBKT().getTen());
 			return map;
 		}
@@ -723,10 +723,10 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
-	public Map<String, String> getQuanHuyenCoQuanBKTInfo() {
+	public Map<String, Object> getQuanHuyenCoQuanBKTInfo() {
 		if(getQuanHuyenCoQuanBKT() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getQuanHuyenCoQuanBKT().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getQuanHuyenCoQuanBKT().getId());
 			map.put("ten", getQuanHuyenCoQuanBKT().getTen());
 			return map;
 		}
@@ -735,10 +735,10 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
-	public Map<String, String> getPhuongXaCoQuanBKTInfo() {
+	public Map<String, Object> getPhuongXaCoQuanBKTInfo() {
 		if(getPhuongXaCoQuanBKT() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("donViHanhChinhId", getPhuongXaCoQuanBKT().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getPhuongXaCoQuanBKT().getId());
 			map.put("ten", getPhuongXaCoQuanBKT().getTen());
 			return map;
 		}
@@ -747,11 +747,37 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
-	public Map<String, String> getToDanPhoCoQuanBKTInfo() {
+	public Map<String, Object> getToDanPhoCoQuanBKTInfo() {
 		if(getToDanPhoCoQuanBKT() != null){
-			Map<String, String> map = new HashMap<>();
-			map.put("toDanPhoId", getToDanPhoCoQuanBKT().getId().toString());
+			Map<String, Object> map = new HashMap<>();
+			map.put("toDanPhoId", getToDanPhoCoQuanBKT().getId());
 			map.put("ten", getToDanPhoCoQuanBKT().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : "0");
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("nhanVienId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : "0");
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("nhanVienId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
