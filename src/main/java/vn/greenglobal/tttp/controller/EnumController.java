@@ -134,7 +134,7 @@ public class EnumController {
 		object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
 		object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", HuongXuLyTCDEnum.GAP_LANH_DAO.getText());
 		object.put("giaTri", HuongXuLyTCDEnum.GAP_LANH_DAO.name());
@@ -156,7 +156,6 @@ public class EnumController {
 		Map<String, Object> object = new HashMap<>();
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
-
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
@@ -168,7 +167,6 @@ public class EnumController {
 		}
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
-
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
@@ -180,7 +178,6 @@ public class EnumController {
 		}
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
-
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
 			list.add(object);
@@ -303,7 +300,7 @@ public class EnumController {
 		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
 		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
 		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
