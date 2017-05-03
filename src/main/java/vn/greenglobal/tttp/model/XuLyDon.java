@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -46,16 +46,16 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungThongTinTrinhLanhDao = "";
 
 	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVu;
+	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVuGiaoViec;
+	private VaiTroEnum chucVuGiaoViec;
 	
 	@ApiModelProperty(position = 8)
-	public ChucVuEnum getChucVuGiaoViec() {
+	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
 	}
 
-	public void setChucVuGiaoViec(ChucVuEnum chucVuGiaoViec) {
+	public void setChucVuGiaoViec(VaiTroEnum chucVuGiaoViec) {
 		this.chucVuGiaoViec = chucVuGiaoViec;
 	}
 
@@ -194,11 +194,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 	
 	@ApiModelProperty(position = 2)
-	public ChucVuEnum getChucVu() {
+	public VaiTroEnum getChucVu() {
 		return chucVu;
 	}
 
-	public void setChucVu(ChucVuEnum chucVu) {
+	public void setChucVu(VaiTroEnum chucVu) {
 		this.chucVu = chucVu;
 	}
 	

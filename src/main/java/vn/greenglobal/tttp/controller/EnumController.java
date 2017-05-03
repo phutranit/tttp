@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
@@ -148,7 +148,7 @@ public class EnumController {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
@@ -160,7 +160,7 @@ public class EnumController {
 			phanLoaiList.add(phanLoaiObj);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
@@ -172,7 +172,7 @@ public class EnumController {
 			phanLoaiList.add(phanLoaiObj);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
@@ -198,7 +198,7 @@ public class EnumController {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
@@ -210,7 +210,7 @@ public class EnumController {
 			phanLoaiList.add(phanLoaiObj);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
@@ -222,7 +222,7 @@ public class EnumController {
 			phanLoaiList.add(phanLoaiObj);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
 			phanLoaiObj.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
@@ -248,7 +248,7 @@ public class EnumController {
 		List<Map<String, Object>> phanLoaiList = new ArrayList<>();
 		Map<String, Object> phanLoaiObj = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			phanLoaiObj.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
 			phanLoaiObj.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
