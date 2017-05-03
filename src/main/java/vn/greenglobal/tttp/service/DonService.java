@@ -50,7 +50,7 @@ public class DonService {
 
 		if (StringUtils.isNotBlank(trangThaiDon)) {
 //			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
-			predAll = predAll.and(QDon.don.xuLyDons.any().trangThaiXuLyDon.eq(TrangThaiXuLyDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
+			predAll = predAll.and(QDon.don.xuLyDons.any().trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
 		}
 
 		// if (StringUtils.isNotBlank(vaiTro)) {
