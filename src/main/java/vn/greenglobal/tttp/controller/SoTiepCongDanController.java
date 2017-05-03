@@ -149,7 +149,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			} else {
 				soTiepCongDan.getDon().setDaXuLy(true);
 			}
-		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())){
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
@@ -186,18 +186,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 			soTiepCongDan.setDon(don);
 		}
-		
+
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
-			} 
-		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())){
+			}
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
 		}
-		
+
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
@@ -242,7 +242,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
