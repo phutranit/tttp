@@ -78,7 +78,7 @@ public class CongChuc extends Model<CongChuc> {
 		this.soCMNDHoCHieu = soCMNDHoCHieu;
 	}
 
-	@ApiModelProperty(position = 3, required = true, example = "{}")
+	@ApiModelProperty(position = 3, example = "{}")
 	public CoQuanQuanLy getNoiCapCMND() {
 		return noiCapCMND;
 	}
