@@ -34,6 +34,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -148,6 +150,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			} else {
 				soTiepCongDan.getDon().setDaXuLy(true);
 			}
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())){
+			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
+			}
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
@@ -187,6 +193,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
 			} 
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())){
+			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
+			}
 		}
 		
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
@@ -199,7 +209,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return output;
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -234,7 +244,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(
