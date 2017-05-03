@@ -121,7 +121,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi> {
 
 	@Transient
 	public String getHoTenCongChucThayDoi() {
-		return getNguoiTao().getHoVaTen();
+		return getNguoiTao() != null ? getNguoiTao().getHoVaTen() : "";
 	}
 
 	@Transient
