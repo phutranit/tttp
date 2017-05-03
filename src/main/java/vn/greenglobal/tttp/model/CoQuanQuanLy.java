@@ -33,6 +33,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	private CoQuanQuanLy cha;
 
 	@ManyToOne
+	private LoaiCoQuanQuanLy loaiCoQuanQuanLy;
+	
+	@ManyToOne
 	@NotNull
 	private CapCoQuanQuanLy capCoQuanQuanLy;
 
@@ -75,8 +78,17 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public void setCha(CoQuanQuanLy cha) {
 		this.cha = cha;
 	}
-
+	
 	@ApiModelProperty(position = 5, required = true, example = "{}")
+	public LoaiCoQuanQuanLy getLoaiCoQuanQuanLy() {
+		return loaiCoQuanQuanLy;
+	}
+
+	public void setLoaiCoQuanQuanLy(LoaiCoQuanQuanLy loaiCoQuanQuanLy) {
+		this.loaiCoQuanQuanLy = loaiCoQuanQuanLy;
+	}
+
+	@ApiModelProperty(position = 6, required = true, example = "{}")
 	public CapCoQuanQuanLy getCapCoQuanQuanLy() {
 		return capCoQuanQuanLy;
 	}
@@ -85,7 +97,7 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 		this.capCoQuanQuanLy = capCoQuanQuanLy;
 	}
 
-	@ApiModelProperty(position = 6, required = true, example = "{}")
+	@ApiModelProperty(position = 7, required = true, example = "{}")
 	public DonViHanhChinh getDonViHanhChinh() {
 		return donViHanhChinh;
 	}
@@ -104,6 +116,12 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getCoQuanQuanLyCha() {
 		return getCha();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LoaiCoQuanQuanLy getLoaiCoQuanQuanLyInfo() {
+		return getLoaiCoQuanQuanLy();
 	}
 
 	@Transient
