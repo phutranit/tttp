@@ -37,7 +37,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "xuLyDons", description = "Xá»­ lÃ½ Ä‘Æ¡n")
+@Api(value = "xuLyDons",  description = "Xử lý đơn")
 public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	private static XuLyDonService xuLyDonService = new XuLyDonService();
@@ -60,9 +60,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons")
-	@ApiOperation(value = "Quy trÃ¬nh xá»­ lÃ½ Ä‘Æ¡n", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "ThÃªm quy trÃ¬nh xá»­ lÃ½ Ä‘Æ¡n thÃ nh cÃ´ng", response = XuLyDon.class) })
+			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
