@@ -57,8 +57,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVuGiaoViec;
-	@ApiModelProperty(position = 8)
 	
+	@ApiModelProperty(position = 8)
 	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
 	}
