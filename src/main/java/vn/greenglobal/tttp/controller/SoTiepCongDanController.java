@@ -142,8 +142,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			soTiepCongDan.getDon().setDaXuLy(true);
-			soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
+				soTiepCongDan.getDon().setDaXuLy(true);
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			} else {
+				soTiepCongDan.getDon().setDaXuLy(true);
+			}
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
@@ -173,9 +177,26 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 
-		return Utils.doSave(repo, soTiepCongDan,
+		if (soTiepCongDan.getDon() != null) {
+			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+			soTiepCongDan.setDon(don);
+		}
+		
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
+				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			} 
+		}
+		
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+				HttpStatus.CREATED);
+		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			Utils.save(repoDon, soTiepCongDan.getDon(),
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}
+		return output;
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
@@ -212,7 +233,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
-
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
