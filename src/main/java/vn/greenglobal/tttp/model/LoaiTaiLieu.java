@@ -55,7 +55,7 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : "0");
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("nhanVienId", getNguoiTao().getId());
 			return map;
@@ -68,7 +68,7 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	public Map<String, Object> getNguoiSuaInfo() {
 		if (getNguoiSua() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : "0");
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("nhanVienId", getNguoiSua().getId());
 			return map;
