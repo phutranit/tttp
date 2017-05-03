@@ -13,10 +13,9 @@ import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
-import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 
 @Entity
 @Table(name = "xulydon")
@@ -31,17 +30,21 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanXuLy;
-	@ManyToOne
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
-	private CoQuanQuanLy coQuanTiepNhan;
+	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-
+	@ManyToOne
+	private CoQuanQuanLy coQuanTiepNhan;
+	@ManyToOne
+	private CoQuanQuanLy coQuanChuyenDon;
+	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
+
+	
 
 	@Lob
 	private String ghiChu = "";
@@ -49,29 +52,18 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String moTaTrangThai = "";
 	private String noiDungYeuCauXuLy = "";
 	private String noiDungThongTinTrinhLanhDao = "";
-	
-	
-	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVu;
-	@Enumerated(EnumType.STRING)
-	private ChucVuEnum chucVuGiaoViec;
-	@Enumerated(EnumType.STRING)
-	private TrangThaiXuLyDonEnum trangThaiXuLyDon;
 
-	public TrangThaiXuLyDonEnum getTrangThaiXuLyDon() {
-		return trangThaiXuLyDon;
-	}
-
-	public void setTrangThaiXuLyDon(TrangThaiXuLyDonEnum trangThaiXuLyDon) {
-		this.trangThaiXuLyDon = trangThaiXuLyDon;
-	}
-
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu;
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVuGiaoViec;
 	@ApiModelProperty(position = 8)
-	public ChucVuEnum getChucVuGiaoViec() {
+	
+	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
 	}
 
-	public void setChucVuGiaoViec(ChucVuEnum chucVuGiaoViec) {
+	public void setChucVuGiaoViec(VaiTroEnum chucVuGiaoViec) {
 		this.chucVuGiaoViec = chucVuGiaoViec;
 	}
 
@@ -208,11 +200,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	@ApiModelProperty(position = 2)
-	public ChucVuEnum getChucVu() {
+	public VaiTroEnum getChucVu() {
 		return chucVu;
 	}
 
-	public void setChucVu(ChucVuEnum chucVu) {
+	public void setChucVu(VaiTroEnum chucVu) {
 		this.chucVu = chucVu;
 	}
 
@@ -234,6 +226,22 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.canBoXuLy = canBoXuLy;
 	}
 	
+	public CoQuanQuanLy getCoQuanChuyenDon() {
+		return coQuanChuyenDon;
+	}
+
+	public void setCoQuanChuyenDon(CoQuanQuanLy coQuanChuyenDon) {
+		this.coQuanChuyenDon = coQuanChuyenDon;
+	}
+
+	public boolean isDonChuyen() {
+		return isDonChuyen;
+	}
+
+	public void setDonChuyen(boolean isDonChuyen) {
+		this.isDonChuyen = isDonChuyen;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
@@ -241,7 +249,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("congChucId", getNguoiTao().getId());
+			map.put("nhanVienId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -254,7 +262,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("congChucId", getNguoiSua().getId());
+			map.put("nhanVienId", getNguoiSua().getId());
 			return map;
 		}
 		return null;

@@ -197,7 +197,6 @@ public class Don extends Model<Don> {
 	}
 	
 
-	@ApiModelProperty(position = 23)
 	public int getSoNguoi() {
 		return soNguoi;
 	}
