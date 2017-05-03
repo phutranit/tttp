@@ -54,6 +54,16 @@ public class CoQuanQuanLyService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllByName(String ten) {
+
+		BooleanExpression predAll = base;
+		if (ten != null && !"".equals(ten)) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(ten));
+		}
+
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));

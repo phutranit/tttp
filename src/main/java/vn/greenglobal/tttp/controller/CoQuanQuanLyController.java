@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,6 +31,8 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -72,7 +78,6 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			@RequestParam(value = "notCha", required = false, defaultValue = "false") Boolean notCha,
 			PersistentEntityResourceAssembler eass) {
-
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -80,6 +85,15 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 		Page<CoQuanQuanLy> page = repo.findAll(
 				coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, notCha), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/listDonViTimKiems")
+	@ApiOperation(value = "Lấy danh sách Cơ quan quản lý bằng cách tìm kiếm tên", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListDonViByName(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllByName(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
