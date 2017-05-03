@@ -30,7 +30,6 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.service.CongChucService;
@@ -69,7 +68,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/lanhDaoTiepCongDans")
 	@ApiOperation(value = "Lấy danh sách Lãnh đạo tiếp công dân", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,7 +79,8 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		CongChuc congChuc = repo.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		CongChuc congChuc = repo
+				.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
 			if ("006".equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getMa())) {
