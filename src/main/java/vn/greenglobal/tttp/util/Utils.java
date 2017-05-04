@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +41,9 @@ import vn.greenglobal.tttp.model.NguoiDung;
 
 public class Utils {
 
+	private static final int SATURDAY = 6;
+    private static final int SUNDAY = 7;
+	
 	public static void copyValues(Model<?> source, Model<?> target, Iterable<String> properties) {
 		BeanWrapper src = new BeanWrapperImpl(source);
 		BeanWrapper trg = new BeanWrapperImpl(target);
@@ -166,7 +171,7 @@ public class Utils {
 		// Fix tuNgay
 		ZonedDateTime zdt = ZonedDateTime.parse(tuNgayCurrent);
 		LocalDateTime tuNgay = zdt.toLocalDateTime();
-		tuNgay = LocalDateTime.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth(), 0, 0, 0);
+		tuNgay = LocalDateTime.of(LocalDate.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth()), LocalTime.MIN);
 		return tuNgay;
 	}
 
@@ -174,10 +179,42 @@ public class Utils {
 		// Fix denNgay
 		ZonedDateTime zdt = ZonedDateTime.parse(denNgayCurrent);
 		LocalDateTime denNgay = zdt.toLocalDateTime();
-		denNgay = LocalDateTime.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth(), 23, 59, 59);
+		denNgay = LocalDateTime.of(LocalDate.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth()), LocalTime.MAX);
 		return denNgay;
 	}
 
+	public static LocalDateTime convertNumberToLocalDateTime (LocalDateTime ngayBatDau, Long soNgayXuLy) {
+		
+		long i = 1; 
+		LocalDateTime ngayKetThuc = ngayBatDau;
+		while (i < soNgayXuLy) {
+			ngayKetThuc = ngayKetThuc.plusDays(1);
+			if (ngayKetThuc.getDayOfWeek().getValue() == SATURDAY || ngayKetThuc.getDayOfWeek().getValue() == SUNDAY) {
+				continue;
+			} 
+			i++;
+		}
+		ngayKetThuc = LocalDateTime.of(LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()), LocalTime.MAX);
+		return ngayKetThuc;
+	}
+
+	public static Long convertLocalDateTimeToNumber (LocalDateTime ngayKetThuc) {
+		
+		long soNgayXuLy = 0;
+		LocalDateTime ngayHienTai = LocalDateTime.now();
+		ngayHienTai = LocalDateTime.of(LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()), LocalTime.MAX);
+		while (ngayHienTai.compareTo(ngayKetThuc) != 0) {
+			
+			ngayHienTai = ngayHienTai.plusDays(1);
+			if (ngayHienTai.getDayOfWeek().getValue() == SATURDAY || ngayHienTai.getDayOfWeek().getValue() == SUNDAY) {
+				continue;
+			} 
+			soNgayXuLy++;
+		}
+		
+		return soNgayXuLy;
+	}
+	
 	public static void exportWord(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
 		try {
 			WordprocessingMLPackage wordMLPackage;
