@@ -2,12 +2,9 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,12 +31,7 @@ import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
-import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
-import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
-import vn.greenglobal.tttp.util.ProfileUtils;
-import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "don")
@@ -788,6 +780,46 @@ public class Don extends Model<Don> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDaGiaiQuyetInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			CoQuanQuanLy coQuanDaGiaiQuyet = null;
+			if(getCoQuanDaGiaiQuyet() != null) {
+				coQuanDaGiaiQuyet = getCoQuanDaGiaiQuyet();
+				if(coQuanDaGiaiQuyet.getCha() != null) {
+					coQuanDaGiaiQuyet = coQuanDaGiaiQuyet.getCha();
+				}
+			}
+			map.put("coQuanQuanLyId", coQuanDaGiaiQuyet != null ? coQuanDaGiaiQuyet.getId() : 0);
+			map.put("ten", coQuanDaGiaiQuyet != null  ? coQuanDaGiaiQuyet.getTen() : "");
+			map.put("capCoQuanQuanLyId", coQuanDaGiaiQuyet != null ? coQuanDaGiaiQuyet.getCapCoQuanQuanLy().getId() : 0);
+			map.put("tenCapCoQuanQuanLy", coQuanDaGiaiQuyet != null  ? coQuanDaGiaiQuyet.getCapCoQuanQuanLy().getTen() : "");
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDangQuyetInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			CoQuanQuanLy coQuanDangGiaiQuyet = null;
+			if(getPhongBanGiaiQuyet() != null) {
+				coQuanDangGiaiQuyet = getPhongBanGiaiQuyet();
+				if(coQuanDangGiaiQuyet.getCha() != null) {
+					coQuanDangGiaiQuyet = coQuanDangGiaiQuyet.getCha();
+				}
+			}
+			map.put("coQuanQuanLyId", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getId() : 0);
+			map.put("ten", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getTen() : "");
 			return map;
 		}
 		return null;

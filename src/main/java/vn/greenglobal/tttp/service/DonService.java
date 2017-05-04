@@ -23,7 +23,16 @@ import vn.greenglobal.tttp.util.Utils;
 public class DonService {
 
 	BooleanExpression base = QDon.don.daXoa.eq(false);
-
+	
+	public Predicate predicateFindByCongDan(Long id) {
+		BooleanExpression predAll = base.and(QDon.don.daXoa.eq(false));;
+		if(id > 0) {
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.id.eq(id));
+		}
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String maDon, String tenNguoiDungDon, String cmndHoChieu, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
