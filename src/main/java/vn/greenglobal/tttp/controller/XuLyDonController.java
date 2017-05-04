@@ -96,7 +96,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 
-				if (StringUtils.equals(vaiTroNguoiDungHienTai.toLowerCase(), VaiTroEnum.VAN_THU.name())) {
+				if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
 					
 					// vai tro VAN_THU
 					// set thong tin nguoi thuc hien va quy trinh xu ly
@@ -138,7 +138,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} 
-				} else if (StringUtils.equals(vaiTroNguoiDungHienTai.toLowerCase(), VaiTroEnum.CHUYEN_VIEN.name())) {
+				} else if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.CHUYEN_VIEN.name())) {
 					
 					// vai tro CHUYEN_VIEN
 					xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
@@ -258,7 +258,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} 
 					}
-				} else if (StringUtils.equals(vaiTroNguoiDungHienTai.toLowerCase(), VaiTroEnum.TRUONG_PHONG.name())) {
+				} else if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.TRUONG_PHONG.name())) {
 					
 					// vai tro TRUONG_PHONG
 					xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
@@ -310,7 +310,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
-				} else if (StringUtils.equals(vaiTroNguoiDungHienTai.toLowerCase(), VaiTroEnum.LANH_DAO.name())) {
+				} else if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.LANH_DAO.name())) {
 					
 					// vai tro LANH_DAO
 					xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
