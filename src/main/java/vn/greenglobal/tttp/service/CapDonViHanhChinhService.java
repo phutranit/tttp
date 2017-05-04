@@ -9,7 +9,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
-import vn.greenglobal.tttp.model.QCapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCapDonViHanhChinh;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
@@ -64,16 +63,12 @@ public class CapDonViHanhChinhService {
 		return capDonViHanhChinh != null ? true : false;
 	}
 
-	public boolean checkUsedData(CapDonViHanhChinhRepository repo, DonViHanhChinhRepository repoDonViHanhChinh,
-			Long id) {
-		List<CapDonViHanhChinh> capCoQuanQuanLyList = (List<CapDonViHanhChinh>) repo
-				.findAll(base.and(QCapCoQuanQuanLy.capCoQuanQuanLy.cha.id.eq(id)));
+	public boolean checkUsedData(DonViHanhChinhRepository repoDonViHanhChinh, Long id) {
 		List<DonViHanhChinh> coQuanQuanLyList = (List<DonViHanhChinh>) repoDonViHanhChinh
 				.findAll(QDonViHanhChinh.donViHanhChinh.daXoa.eq(false)
 						.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(id)));
 
-		if ((capCoQuanQuanLyList != null && capCoQuanQuanLyList.size() > 0)
-				|| (coQuanQuanLyList != null && coQuanQuanLyList.size() > 0)) {
+		if (coQuanQuanLyList != null && coQuanQuanLyList.size() > 0) {
 			return true;
 		}
 
