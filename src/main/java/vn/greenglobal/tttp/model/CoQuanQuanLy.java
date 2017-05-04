@@ -129,8 +129,14 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public LoaiCoQuanQuanLy getLoaiCoQuanQuanLyInfo() {
-		return getLoaiCoQuanQuanLy();
+	public Map<String, Object> getLoaiCoQuanQuanLyInfo() {
+		if (getLoaiCoQuanQuanLy() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiCoQuanQuanLy().getTen());
+			map.put("loaiCoQuanQuanLyId", getLoaiCoQuanQuanLy().getId());
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
