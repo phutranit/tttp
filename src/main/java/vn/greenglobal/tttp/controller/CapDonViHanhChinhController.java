@@ -157,7 +157,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (capDonViHanhChinhService.checkUsedData(repo, repoDonViHanhChinh, id)) {
+		if (capDonViHanhChinhService.checkUsedData(repoDonViHanhChinh, id)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
 					ApiErrorEnum.DATA_USED.getText());
 		}

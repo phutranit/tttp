@@ -114,8 +114,17 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public CoQuanQuanLy getCoQuanQuanLyCha() {
-		return getCha();
+	public Map<String, Object> getCoQuanQuanLyCha() {
+		if (getCha() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ma", getCha().getMa());
+			map.put("ten", getCha().getTen());
+			map.put("coQuanQuanLyId", getCha().getId());
+			map.put("capCoQuanQuanLyId", getCha().getCapCoQuanQuanLy() != null ? getCha().getCapCoQuanQuanLy().getId() : 0);
+			map.put("donViHanhChinhId", getCha().getDonViHanhChinh() != null ? getCha().getDonViHanhChinh().getId() : 0);
+			return map;
+		}
+		return null;
 	}
 	
 	@Transient
@@ -126,14 +135,28 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public CapCoQuanQuanLy getCapCoQuanQuanLyCQQL() {
-		return getCapCoQuanQuanLy();
+	public Map<String, Object> getCapCoQuanQuanLyCQQL() {
+		if (getCapCoQuanQuanLy() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ma", getCapCoQuanQuanLy().getMa());
+			map.put("ten", getCapCoQuanQuanLy().getTen());
+			map.put("capCoQuanQuanLyId", getCapCoQuanQuanLy().getId());
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public DonViHanhChinh getDonViHanhChinhCQQL() {
-		return getDonViHanhChinh();
+	public Map<String, Object> getDonViHanhChinhCQQL() {
+		if (getDonViHanhChinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ma", getCapCoQuanQuanLy().getMa());
+			map.put("ten", getCapCoQuanQuanLy().getTen());
+			map.put("donViHanhChinhId", getCapCoQuanQuanLy().getId());
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
