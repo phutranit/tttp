@@ -404,5 +404,37 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiVaiTros")
+	@ApiOperation(value = "Lấy danh sách Loại Vai Trò", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiVaiTro(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", VaiTroEnum.LANH_DAO.getText());
+		object.put("giaTri", VaiTroEnum.LANH_DAO.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.TRUONG_PHONG.getText());
+		object.put("giaTri", VaiTroEnum.TRUONG_PHONG.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.CHUYEN_VIEN.getText());
+		object.put("giaTri", VaiTroEnum.CHUYEN_VIEN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.VAN_THU.getText());
+		object.put("giaTri", VaiTroEnum.VAN_THU.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 
 }
