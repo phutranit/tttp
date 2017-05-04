@@ -4,6 +4,7 @@ import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Persistable;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -27,7 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Model<T extends Model<T>> implements Persistable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonApiId

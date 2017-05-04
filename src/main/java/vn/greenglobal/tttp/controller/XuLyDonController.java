@@ -37,7 +37,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "xuLyDons", description = "Xử lý đơn")
+@Api(value = "xuLyDons",  description = "Xử lý đơn")
 public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	private static XuLyDonService xuLyDonService = new XuLyDonService();
@@ -593,8 +593,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	// "/xuLyDons/{id}/thuHoi")
 	// @ApiOperation(value = "Thu hồi đơn", position = 2, produces =
 	// MediaType.APPLICATION_JSON_VALUE)
-	// @ApiResponses(value = { @ApiResponse(code = 202, message = "Thu hồi đơn
-	// thành công", response = XuLyDon.class) })
+	// @ApiResponses(value = { @ApiResponse(code = 202, message = "Thu há»“i Ä‘Æ¡n
+	// thÃ nh cÃ´ng", response = XuLyDon.class) })
 	// public ResponseEntity<Object> thuHoiDon(@RequestHeader(value =
 	// "Authorization", required = true) String authorization,
 	// @RequestBody XuLyDon xuLyDon, @PathVariable("id") Long id,
@@ -688,7 +688,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	// @ApiOperation(value = "Quy trình rút đơn", position = 1, produces =
 	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	// @ApiResponses(value = {
-	// @ApiResponse(code = 202, message = "Đình chỉ đơn thanh công", response =
+	// @ApiResponse(code = 202, message = "Rút đơn thành công", response =
 	// XuLyDon.class) })
 	// public ResponseEntity<Object> rutDon(@RequestBody XuLyDon xuLyDon,
 	// @PathVariable("id") Long id,

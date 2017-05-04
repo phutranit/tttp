@@ -78,7 +78,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		return trangThaiDon;
 	}
 
-	public void setTrangThaiXuLyDon(TrangThaiDonEnum trangThaiDon) {
+	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
 	
@@ -259,7 +259,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("congChucId", getNguoiTao().getId());
+			map.put("nhanVienId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -272,7 +272,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("congChucId", getNguoiSua().getId());
+			map.put("nhanVienId", getNguoiSua().getId());
 			return map;
 		}
 		return null;

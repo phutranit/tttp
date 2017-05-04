@@ -90,6 +90,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "chucVu", required = false) String chucVu, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+				
 		if (nguoiDung != null) {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
