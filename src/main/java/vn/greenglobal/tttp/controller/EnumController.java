@@ -26,6 +26,7 @@ import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -178,8 +179,8 @@ public class EnumController {
 		}
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
@@ -228,8 +229,8 @@ public class EnumController {
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
@@ -321,6 +322,27 @@ public class EnumController {
 
 		object.put("ten", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.getText());
 		object.put("giaTri", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiTepDinhKems")
+	@ApiOperation(value = "Lấy danh sách Loại tệp đính kèm", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiTepDinhKems(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiTepDinhKemEnum.QUYET_DINH.getText());
+		object.put("giaTri", LoaiTepDinhKemEnum.QUYET_DINH.name());
+		list.add(object);
+		
+		object.put("ten", LoaiTepDinhKemEnum.KHAC.getText());
+		object.put("giaTri", LoaiTepDinhKemEnum.KHAC.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

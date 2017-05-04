@@ -5,12 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 
 @Entity
 @Table(name = "tailieuvanthu")
@@ -18,18 +24,20 @@ import io.swagger.annotations.ApiModelProperty;
 public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private static final long serialVersionUID = -9223009647319074416L;
 
+	@NotBlank
 	private String ten = "";
 	private String duongDan = "";
 	private String tenFile = "";
 	private String soQuyetDinh = "";
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiTepDinhKemEnum loaiTepDinhKem;
 	private LocalDateTime ngayQuyetDinh;
-
-	@ManyToOne
-	private LoaiTaiLieu loaiTaiLieu;
 
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 
+	@NotNull
 	@ManyToOne
 	private Don don;
 
@@ -74,15 +82,6 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	}
 
 	@ApiModelProperty(example = "{}")
-	public LoaiTaiLieu getLoaiTaiLieu() {
-		return loaiTaiLieu;
-	}
-
-	public void setLoaiTaiLieu(LoaiTaiLieu loaiTaiLieu) {
-		this.loaiTaiLieu = loaiTaiLieu;
-	}
-
-	@ApiModelProperty(example = "{}")
 	public SoTiepCongDan getSoTiepCongDan() {
 		return soTiepCongDan;
 	}
@@ -99,6 +98,20 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	public void setDon(Don don) {
 		this.don = don;
 	}
+	
+	public LoaiTepDinhKemEnum getLoaiTepDinhKem() {
+		return loaiTepDinhKem;
+	}
+
+	public void setLoaiTepDinhKem(LoaiTepDinhKemEnum loaiTepDinhKem) {
+		this.loaiTepDinhKem = loaiTepDinhKem;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getLoaiTepDinhKemText() {
+		return getLoaiTepDinhKem() != null ? getLoaiTepDinhKem().getText() : "";
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -106,12 +119,6 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		return getId();
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public LoaiTaiLieu getLoaiTaiLieuTLVT() {
-		return getLoaiTaiLieu();
-	}
-	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
