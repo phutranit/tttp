@@ -15,16 +15,15 @@ import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 
 public final class WordUtil {
-	
+
 	public static void replaceTable(String[] placeholders, List<Map<String, String>> textToAdd,
 			WordprocessingMLPackage template, int footerRows) {
-		List<Object> tables = getAllElementFromObject(
-				template.getMainDocumentPart(), Tbl.class);
+		List<Object> tables = getAllElementFromObject(template.getMainDocumentPart(), Tbl.class);
 
 		// 1. find the table
 		Tbl tempTable = getTemplateTable(tables, placeholders[0]);
 		if (tempTable == null) {
-			//System.out.println(placeholders[0]+" not found");
+			// System.out.println(placeholders[0]+" not found");
 			return;
 		}
 		List<Object> rows = getAllElementFromObject(tempTable, Tr.class);
@@ -36,7 +35,7 @@ public final class WordUtil {
 				// 2 and 3 are done in this method
 				addRowToTable(tempTable, templateRow, replacements, footerRows);
 			}
-		
+
 			// 4. remove the template row
 			tempTable.getContent().remove(templateRow);
 			if (textToAdd.isEmpty()) {
@@ -44,9 +43,8 @@ public final class WordUtil {
 			}
 		}
 	}
-	
-	public static List<Object> getAllElementFromObject(final Object value,
-			Class<?> toSearch) {
+
+	public static List<Object> getAllElementFromObject(final Object value, Class<?> toSearch) {
 		List<Object> result = new ArrayList<Object>();
 		Object obj = value;
 		if (obj instanceof JAXBElement) {
@@ -63,24 +61,23 @@ public final class WordUtil {
 		}
 		return result;
 	}
-	
+
 	private static Tbl getTemplateTable(List<Object> tables, String templateKey) {
 		for (Iterator<Object> iterator = tables.iterator(); iterator.hasNext();) {
 			Object tbl = iterator.next();
 			List<?> textElements = getAllElementFromObject(tbl, Text.class);
 			for (Object text : textElements) {
 				Text textElement = (Text) text;
-				if (textElement.getValue() != null
-						&& textElement.getValue().equals(templateKey)) {
+				if (textElement.getValue() != null && textElement.getValue().equals(templateKey)) {
 					return (Tbl) tbl;
 				}
 			}
 		}
 		return null;
 	}
-	
-	private static void addRowToTable(Tbl reviewtable, Tr templateRow,
-			Map<String, String> replacements, int footerRows) {
+
+	private static void addRowToTable(Tbl reviewtable, Tr templateRow, Map<String, String> replacements,
+			int footerRows) {
 		Tr workingRow = XmlUtils.deepCopy(templateRow);
 		List<?> textElements = getAllElementFromObject(workingRow, Text.class);
 		for (Object object : textElements) {
@@ -90,6 +87,6 @@ public final class WordUtil {
 				text.setValue(replacementValue);
 			}
 		}
-		reviewtable.getContent().add(reviewtable.getContent().size()-footerRows, workingRow);
+		reviewtable.getContent().add(reviewtable.getContent().size() - footerRows, workingRow);
 	}
 }

@@ -2,7 +2,9 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -50,7 +53,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String donViChuTri = "";
 	private String donViPhoiHop = "";
 	private String trangThaiKetQua = "";
-	private String diaDiemTiepDan = "";
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
 	@Transient
@@ -76,6 +78,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
+
+	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -168,14 +174,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.trangThaiKetQua = trangThaiKetQua;
 	}
 
-	public String getDiaDiemTiepDan() {
-		return diaDiemTiepDan;
-	}
-
-	public void setDiaDiemTiepDan(String diaDiemTiepDan) {
-		this.diaDiemTiepDan = diaDiemTiepDan;
-	}
-
 	public String getNoiDungBoSung() {
 		return noiDungBoSung;
 	}
@@ -216,6 +214,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.loaiTiepDan = loaiTiepDan;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public String getHuongXuLyText() {
 		return huongXuLyText;
 	}
@@ -271,6 +270,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		this.ghiChuXuLy = ghiChuXuLy;
 	}
 
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
+	}
+
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		return getTaiLieuVanThus();
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getSoLuotTiepStr() {
@@ -284,4 +298,29 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return out;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("nhanVienId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("nhanVienId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
 }

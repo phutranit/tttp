@@ -66,7 +66,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
-		
+
 		NguoiDung nguoiDungu = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
 		if (nguoiDungu != null) {
 			if (xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
@@ -96,36 +96,48 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 
 				if (StringUtils.isNotBlank(chucVuCuaXuLyDon)) {
-					
+
 					if (chucVuCuaXuLyDon.equals(ChucVuEnum.VAN_THU.name())) {
 						if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
-							
+
 							// Add note
-							note = ChucVuEnum.VAN_THU.getText() + " " + quyTrinhXuLy + " " 
-							+ ChucVuEnum.LANH_DAO.getText() + " đơn " 
-							+ xuLyDon.getDon().getTrangThaiDon().getText().toLowerCase();
+							note = ChucVuEnum.VAN_THU.getText() + " " + quyTrinhXuLy + " "
+									+ ChucVuEnum.LANH_DAO.getText() + " đơn "
+									+ xuLyDon.getDon().getTrangThaiDon().getText().toLowerCase();
 							xuLyDonHienTai.setGhiChu(note.toString());
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 							if (xuLyDon.getDon().getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) {
-								
-								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								xuLyDonTiepTheo.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+
+								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization)
+										.getAttribute("congChucId").toString()));
+								xuLyDonTiepTheo
+										.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 								xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 								xuLyDonTiepTheo.setChucVu(ChucVuEnum.LANH_DAO);
 								xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 								xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-								return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+								return Utils
+										.doSave(repo, xuLyDonTiepTheo,
+												new Long(profileUtil.getCommonProfile(authorization)
+														.getAttribute("congChucId").toString()),
+												eass, HttpStatus.CREATED);
 							} else if (xuLyDon.getDon().getTrangThaiDon().equals(TrangThaiDonEnum.CHO_XU_LY)) {
-								
-								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								xuLyDonTiepTheo.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+
+								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization)
+										.getAttribute("congChucId").toString()));
+								xuLyDonTiepTheo
+										.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 								xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 								xuLyDonTiepTheo.setChucVu(ChucVuEnum.LANH_DAO);
 								xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 								xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-								return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+								return Utils
+										.doSave(repo, xuLyDonTiepTheo,
+												new Long(profileUtil.getCommonProfile(authorization)
+														.getAttribute("congChucId").toString()),
+												eass, HttpStatus.CREATED);
 							}
 						}
 
@@ -149,22 +161,32 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 							// Add ghiChu
 							if (xuLyDon.getCanBoXuLyChiDinh() == null) {
-								note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText() + " "
-										+ xuLyDon.getPhongBanXuLy().getTen();
+								note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText()
+										+ " " + xuLyDon.getPhongBanXuLy().getTen();
 								// xuLyDonHienTai.setGhiChu(note);
-								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization)
+										.getAttribute("congChucId").toString()));
 								xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
-								return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+								return Utils
+										.doSave(repo, xuLyDonTiepTheo,
+												new Long(profileUtil.getCommonProfile(authorization)
+														.getAttribute("congChucId").toString()),
+												eass, HttpStatus.CREATED);
 							} else {
-								note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText() + " "
-										+ xuLyDon.getCanBoXuLyChiDinh().getHoVaTen() + " "
+								note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText()
+										+ " " + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen() + " "
 										+ xuLyDon.getPhongBanXuLy().getTen();
 								xuLyDonHienTai.setGhiChu(note);
-								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization)
+										.getAttribute("congChucId").toString()));
 								xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
 								xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
 								xuLyDonTiepTheo.setChucVuGiaoViec(ChucVuEnum.LANH_DAO);
-								return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+								return Utils
+										.doSave(repo, xuLyDonTiepTheo,
+												new Long(profileUtil.getCommonProfile(authorization)
+														.getAttribute("congChucId").toString()),
+												eass, HttpStatus.CREATED);
 							}
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET)) {
 
@@ -181,12 +203,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 							Don donDau = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 							donDau.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
-							Utils.save(donRepo, donDau, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							return Utils.doSave(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							Utils.save(donRepo, donDau, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							return Utils.doSave(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DUYET)) {
-						
-							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.DUYET.getText().toLowerCase()
-									+ " " + xuLyDonHienTai.getHuongXuLy().getText().toLowerCase() + " " + xuLyDonHienTai.getPhongBanXuLy().getTen().toLowerCase();
+
+							note = ChucVuEnum.LANH_DAO.getText() + " "
+									+ QuyTrinhXuLyDonEnum.DUYET.getText().toLowerCase() + " "
+									+ xuLyDonHienTai.getHuongXuLy().getText().toLowerCase() + " "
+									+ xuLyDonHienTai.getPhongBanXuLy().getTen().toLowerCase();
 							xuLyDonHienTai.setGhiChu(note);
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
@@ -194,13 +221,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 							don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 							don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-							Utils.save(donRepo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							return Utils.doSave(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							Utils.save(donRepo, don, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							return Utils.doSave(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY)) {
 
 							// Case Don da xu ly
-							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText()
-									+ " " + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen() + " "
+							note = ChucVuEnum.LANH_DAO.getText() + " "
+									+ QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText() + " "
+									+ xuLyDon.getCanBoXuLyChiDinh().getHoVaTen() + " "
 									+ xuLyDon.getPhongBanXuLy().getTen();
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
@@ -208,40 +239,50 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 							xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 							// xuLyDonHienTai.setGhiChu(note);
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
 							xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 							xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI)) {
 
-							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText()
-									+ " " + xuLyDon.getPhongBanXuLy().getTen();
+							note = ChucVuEnum.LANH_DAO.getText() + " "
+									+ QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText() + " "
+									+ xuLyDon.getPhongBanXuLy().getTen();
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 							// xuLyDonHienTai.setGhiChu(note);
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 							xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DINH_CHI)) {
 
 							Don donDau = donService.updateTrangThaiDon(donRepo, xuLyDon.getDon().getId(),
 									TrangThaiDonEnum.DINH_CHI);
-							Utils.save(donRepo, donDau, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(donRepo, donDau, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							note = ChucVuEnum.LANH_DAO.getText() + " " + QuyTrinhXuLyDonEnum.DINH_CHI.getText();
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 							// xuLyDonHienTai.setGhiChu(note);
-							return Utils.doSave(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						}
 
 					} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.TRUONG_PHONG.name())) {
@@ -255,16 +296,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 							xuLyDonHienTai.setGhiChu(note);
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.LANH_DAO);
 							xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.GIAO_VIEC)) {
 
-							note = ChucVuEnum.TRUONG_PHONG.getText() + " " + QuyTrinhXuLyDonEnum.GIAO_VIEC.getText().toLowerCase() + " "
+							note = ChucVuEnum.TRUONG_PHONG.getText() + " "
+									+ QuyTrinhXuLyDonEnum.GIAO_VIEC.getText().toLowerCase() + " "
 									+ xuLyDon.getCanBoXuLyChiDinh().getHoVaTen()
 									+ xuLyDonHienTai.getPhongBanXuLy().getTen();
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
@@ -272,7 +317,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 							xuLyDonHienTai.setGhiChu(note);
 							xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
@@ -280,7 +326,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setChucVuGiaoViec(ChucVuEnum.TRUONG_PHONG);
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI)) {
 
 							note = ChucVuEnum.TRUONG_PHONG.getText() + " "
@@ -292,7 +340,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							// xuLyDonHienTai.setGhiChu(note);
 							xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
 							xuLyDonTiepTheo.setCongChuc(xuLyDonHienTai.getCanBoXuLy());
@@ -301,16 +350,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 							xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO)) {
 
-							note = ChucVuEnum.TRUONG_PHONG.getText() + " " + QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText()
-									+ " " + xuLyDonHienTai.getPhongBanXuLy().getTen();
+							note = ChucVuEnum.TRUONG_PHONG.getText() + " "
+									+ QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText() + " "
+									+ xuLyDonHienTai.getPhongBanXuLy().getTen();
 							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 							xuLyDonHienTai.setGhiChu(note);
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.LANH_DAO);
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
@@ -319,24 +372,30 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 							xuLyDonTiepTheo.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 							xuLyDonTiepTheo.setCanBoXuLy(xuLyDonHienTai.getCanBoXuLy());
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						}
 					} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.CAN_BO.name())) {
 
 						if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI)) {
 
-							note = ChucVuEnum.CAN_BO.getText() + " " + QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText()
-									+ " " + ChucVuEnum.TRUONG_PHONG.getText() + " "
+							note = ChucVuEnum.CAN_BO.getText() + " "
+									+ QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText() + " "
+									+ ChucVuEnum.TRUONG_PHONG.getText() + " "
 									+ xuLyDonHienTai.getPhongBanXuLy().getTen();
 							xuLyDonHienTai.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 							xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 							// xuLyDonHienTai.setGhiChu(note);
-							Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							Utils.save(repo, xuLyDonHienTai, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 							xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
 							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 							xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+							return Utils.doSave(repo, xuLyDonTiepTheo, new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+									eass, HttpStatus.CREATED);
 						} else if (xuLyDon.getQuyTrinhXuLy().equals(QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY)) {
 
 							note = ChucVuEnum.CAN_BO.getText() + " " + QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText()
@@ -354,8 +413,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 								// Cap nhat yeuCauGapLanhDao
 								Don donDau = donService.updateNgayLapDonGapLanhDao(donRepo, xuLyDon.getDon().getId());
-								Utils.save(donRepo, donDau, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								return Utils.doSave(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+								Utils.save(donRepo, donDau, new Long(profileUtil.getCommonProfile(authorization)
+										.getAttribute("congChucId").toString()));
+								return Utils
+										.doSave(repo, xuLyDonHienTai,
+												new Long(profileUtil.getCommonProfile(authorization)
+														.getAttribute("congChucId").toString()),
+												eass, HttpStatus.CREATED);
 							} else {
 
 								note = note + ChucVuEnum.TRUONG_PHONG.getText() + " "
@@ -374,21 +438,36 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
 
 									xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
-									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil
+											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									xuLyDonTiepTheo.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
-									return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+									return Utils
+											.doSave(repo, xuLyDonTiepTheo,
+													new Long(profileUtil.getCommonProfile(authorization)
+															.getAttribute("congChucId").toString()),
+													eass, HttpStatus.CREATED);
 								} else if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
 
 									xuLyDonHienTai.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
-									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil
+											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									xuLyDonTiepTheo.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
-									return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+									return Utils
+											.doSave(repo, xuLyDonTiepTheo,
+													new Long(profileUtil.getCommonProfile(authorization)
+															.getAttribute("congChucId").toString()),
+													eass, HttpStatus.CREATED);
 								} else if (xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
 										|| xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)
 										|| xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)) {
 
-									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-									return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+									Utils.save(repo, xuLyDonHienTai, new Long(profileUtil
+											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									return Utils
+											.doSave(repo, xuLyDonTiepTheo,
+													new Long(profileUtil.getCommonProfile(authorization)
+															.getAttribute("congChucId").toString()),
+													eass, HttpStatus.CREATED);
 								}
 							}
 						}
@@ -406,20 +485,24 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			// Don donDau = donRepo.findOne(donId);
 			Don donDau = donRepo.findOne(donService.predicateFindOne(donId));
 			donDau.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
-			Utils.save(donRepo, donDau, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(donRepo, donDau,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 
-			return Utils.doSave(repo, xuLyDon, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+			return Utils.doSave(repo, xuLyDon,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
 		}
-			
-		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/{id}/thuHoi")
 	@ApiOperation(value = "Thu hồi đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Thu hồi đơn thành công", response = XuLyDon.class) })
-	public ResponseEntity<Object> thuHoiDon(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestBody XuLyDon xuLyDon, @PathVariable("id") Long id,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> thuHoiDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestBody XuLyDon xuLyDon,
+			@PathVariable("id") Long id, PersistentEntityResourceAssembler eass) {
 
 		if (!xuLyDonService.isExists(repo, xuLyDon.getDon().getId())) {
 
@@ -454,7 +537,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 				xuLyDonCu.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 				xuLyDonCu.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
-				Utils.save(repo, xuLyDonCu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repo, xuLyDonCu,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 				xuLyDonHienTai.setChucVu(ChucVuEnum.TRUONG_PHONG);
 				xuLyDonHienTai.setDon(xuLyDon.getDon());
@@ -462,29 +546,36 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonHienTai.setPhongBanXuLy(xuLyDonCu.getPhongBanXuLy());
 				xuLyDonHienTai.setCanBoXuLy(xuLyDonCu.getCanBoXuLy());
 				xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.THU_HOI_DON);
-				Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repo, xuLyDonHienTai,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 				xuLyDonTiepTheo.setChucVu(ChucVuEnum.TRUONG_PHONG);
 				xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonCu.getPhongBanXuLy());
 				xuLyDonTiepTheo.setCanBoXuLy(xuLyDonCu.getCanBoXuLy());
-				return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+				return Utils.doSave(repo, xuLyDonTiepTheo,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+						eass, HttpStatus.CREATED);
 			} else if (chucVuCuaXuLyDon.equals(ChucVuEnum.TRUONG_PHONG.name())) {
 
 				xuLyDonCu.setQuyTrinhXuLy(xuLyDon.getQuyTrinhXuLy());
 				xuLyDonCu.setyKienXuLy(xuLyDon.getyKienXuLy());
-				Utils.save(repo, xuLyDonCu, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repo, xuLyDonCu,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
 				xuLyDonHienTai.setChucVu(ChucVuEnum.CAN_BO);
 				xuLyDonHienTai.setDon(xuLyDon.getDon());
 				xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 				xuLyDonHienTai.setPhongBanXuLy(xuLyDonCu.getPhongBanXuLy());
 				xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.THU_HOI_DON);
-				Utils.save(repo, xuLyDonHienTai, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repo, xuLyDonHienTai,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				xuLyDonTiepTheo.setDon(xuLyDon.getDon());
 				xuLyDonTiepTheo.setCongChuc(xuLyDon.getCongChuc());
 				xuLyDonTiepTheo.setChucVu(ChucVuEnum.CAN_BO);
 				xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonCu.getPhongBanXuLy());
-				return Utils.doSave(repo, xuLyDonTiepTheo, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+				return Utils.doSave(repo, xuLyDonTiepTheo,
+						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+						eass, HttpStatus.CREATED);
 			}
 		}
 

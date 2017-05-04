@@ -1,12 +1,17 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QLinhVucDonThu;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 
 @Component
@@ -61,4 +66,20 @@ public class LinhVucDonThuService {
 
 		return linhVucDonThu != null ? true : false;
 	}
+
+	public boolean checkUsedData(LinhVucDonThuRepository repo, DonRepository donRepository, Long id) {
+		List<LinhVucDonThu> linhVucDonThuList = (List<LinhVucDonThu>) repo
+				.findAll(base.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(id)));
+		List<Don> donList = (List<Don>) donRepository.findAll(QDon.don.daXoa.eq(false)
+				.and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
+				.or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
+
+		if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) || (donList != null && donList.size() > 0)
+				|| (donList != null && donList.size() > 0)) {
+			return true;
+		}
+
+		return false;
+	}
+
 }

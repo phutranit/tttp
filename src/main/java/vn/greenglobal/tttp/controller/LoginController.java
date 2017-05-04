@@ -78,13 +78,12 @@ public class LoginController {
 				commonProfile.addAttribute("username", username);
 				if (user != null) {
 					commonProfile.setId(user.getId());
-<<<<<<< HEAD
-=======
 					congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
 					if (congChuc != null) {
 						commonProfile.addAttribute("congChucId", congChuc.getId());
+						commonProfile.addAttribute("coQuanQuanLyId",
+								congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getId() : 0);
 					}
->>>>>>> 5f95ba7779521e53319c8f18fed3573d837540ee
 				}
 				String token = generator.generate(commonProfile);
 				result.put("token", token);
@@ -92,12 +91,9 @@ public class LoginController {
 				if (user != null) {
 					result.put("userId", user.getId());
 					result.put("roles", user.getVaiTros());
-<<<<<<< HEAD
-					CongChuc congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+					congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
 					if(congChuc!=null){
-=======
-					if (congChuc != null) {
->>>>>>> 5f95ba7779521e53319c8f18fed3573d837540ee
+
 						result.put("congChucId", congChuc.getId());
 					}
 				}

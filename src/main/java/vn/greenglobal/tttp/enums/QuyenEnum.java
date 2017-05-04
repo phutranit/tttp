@@ -114,7 +114,13 @@ public enum QuyenEnum {
 	THAMSO_XEM("Xem"),
 	THAMSO_THEM("Thêm mới"),
 	THAMSO_SUA("Chỉnh sửa"),
-	THAMSO_XOA("Xoá");
+	THAMSO_XOA("Xoá"),
+	
+	THOIHAN_LIETKE("Liệt kê"),
+	THOIHAN_XEM("Xem"),
+	THOIHAN_THEM("Thêm mới"),
+	THOIHAN_SUA("Chỉnh sửa"),
+	THOIHAN_XOA("Xoá");
 
 	QuyenEnum(String text) {
 		this.text = text;

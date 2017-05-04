@@ -14,7 +14,7 @@ sudo docker build --tag=tttp-nginx:1.0 nginx/
 
 1. sudo docker run -d --name=tttp-mariadb -v /home/tttpdata/mariadb:/var/lib/mysql -p 3306:3306 tttp-mariadb:1.0
 
-2. sudo docker exec -ti tttp-mariadb bash
+2. sudo docker exec -it tttp-mariadb bash
 
 3. mysql -u root < /home/mysql/dump/tttp.sql
 
@@ -24,13 +24,20 @@ sudo docker run -d --name=tttp-phpadmin --link tttp-mariadb:tttpdb -p 9000:80 tt
 
 # Run Nginx
 
+*Open the port on which docker daemon listens so the firewall does not block it
+
+firewall-cmd --permanent --zone=trusted --add-interface=docker0
+
+firewall-cmd --permanent --zone=trusted --add-port=4243/tcp
+
+
 sudo docker run -d --name=tttp-nginx -v /home/tttpdata/file:/var/www -p 8089:80 tttp-nginx:1.0
 
 # Run api server
 
 1. sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 --link=tttp-mariadb:tttpdb tttp-server:1.0
 
-2. sudo docker exec -ti tttp-server bash
+2. sudo docker exec -it tttp-server bash
 
 3. mvn spring-boot:run
 

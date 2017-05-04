@@ -1,10 +1,13 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -25,10 +28,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.repository.CongDanRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -40,7 +49,19 @@ public class CongDanController extends TttpController<CongDan> {
 	private CongDanRepository repo;
 
 	@Autowired
+	private LichSuThayDoiRepository repoLichSu;
+
+	@Autowired
 	private CongDanService congDanService;
+
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
+
+	@Autowired
+	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
 
 	public CongDanController(BaseRepository<CongDan, Long> repo) {
 		super(repo);
@@ -49,18 +70,18 @@ public class CongDanController extends TttpController<CongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans")
 	@ApiOperation(value = "Lấy danh sách Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "tinhThanh", required = false) Long tinhThanh,
 			@RequestParam(value = "quanHuyen", required = false) Long quanHuyen,
 			@RequestParam(value = "phuongXa", required = false) Long phuongXa,
 			@RequestParam(value = "toDanPho", required = false) Long toDanPho, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		Page<CongDan> page = repo
 				.findAll(congDanService.predicateFindAll(tuKhoa, tinhThanh, quanHuyen, phuongXa, toDanPho), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -73,12 +94,15 @@ public class CongDanController extends TttpController<CongDan> {
 			@ApiResponse(code = 201, message = "Thêm mới Công Dân thành công", response = CongDan.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
-		
+
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
-		return Utils.doSave(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+
+		return Utils.doSave(repo, congDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -98,19 +122,47 @@ public class CongDanController extends TttpController<CongDan> {
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}")
 	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = CongDan.class) })
-	public ResponseEntity<Object> getById(
-			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
-			PersistentEntityResourceAssembler eass) {
+	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
 		CongDan congDan = repo.findOne(congDanService.predicateFindOne(id));
 		if (congDan == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(eass.toFullResource(congDan), HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSus")
+	@ApiOperation(value = "Lấy Lịch sử thay đổi của Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy Lịch sử thay đổi của Công Dân thành công", response = LichSuThayDoi.class) })
+	public PagedResources<Object> getLichSuThayDoiCongDan(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+		Page<LichSuThayDoi> page = repoLichSu
+				.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.CONG_DAN, id), pageable);
+		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSus/{idLichSu}")
+	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = LichSuThayDoi.class) })
+	public ResponseEntity<Object> getLichSuById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@PathVariable("idLichSu") long idLichSu, PersistentEntityResourceAssembler eass) {
+
+		LichSuThayDoi lichSuThayDoi = repoLichSu.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
+		if (lichSuThayDoi == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/congDans/{id}")
@@ -122,16 +174,26 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
 		congDan.setId(id);
 		if (!congDanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
-		return Utils.doSave(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+		CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
+		List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
+		LichSuThayDoi lichSu = new LichSuThayDoi();
+		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
+		lichSu.setIdDoiTuong(id);
+		lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
+		lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+		Utils.save(repoLichSu, lichSu,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return Utils.doSave(repo, congDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/congDans/{id}")
@@ -141,16 +203,23 @@ public class CongDanController extends TttpController<CongDan> {
 			@PathVariable("id") Long id) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		
+
+		if (congDanService.checkUsedData(donCongDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText());
+		}
+
 		CongDan congDan = congDanService.delete(repo, id);
 		if (congDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
-		Utils.save(repo, congDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+
+		Utils.save(repo, congDan,
+				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

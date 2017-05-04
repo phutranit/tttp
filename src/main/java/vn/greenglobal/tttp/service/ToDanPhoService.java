@@ -1,12 +1,17 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QToDanPho;
 import vn.greenglobal.tttp.model.ToDanPho;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
 
 @Component
@@ -61,6 +66,17 @@ public class ToDanPhoService {
 		ToDanPho toDanPho = repo.findOne(predAll);
 
 		return toDanPho != null ? true : false;
+	}
+
+	public boolean checkUsedData(CongDanRepository congDanRepository, Long id) {
+		List<CongDan> congDanList = (List<CongDan>) congDanRepository
+				.findAll(QCongDan.congDan.daXoa.eq(false).and(QCongDan.congDan.toDanPho.id.eq(id)));
+
+		if (congDanList != null && congDanList.size() > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

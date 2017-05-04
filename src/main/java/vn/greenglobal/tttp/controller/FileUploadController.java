@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +33,7 @@ public class FileUploadController extends TttpController<DocumentMetaData>{
 	@Autowired
     RestServieResourceFacade restServieResourceFacade;
 
-    @RequestMapping(value = "/documents/files/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @RequestMapping(value = "/documents/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public ResponseEntity<?> upload(
     		@RequestHeader(value = "Authorization", required = true) String authorization,
     		@RequestPart(value = "file", required = true) MultipartFile file) throws IOException {
@@ -45,10 +46,16 @@ public class FileUploadController extends TttpController<DocumentMetaData>{
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
     
+    @RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadFile(
+    		@RequestHeader(value = "filename", required = false) String name) {
+    	System.out.println("name:"+name);
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+    }
     
     //@ResponseBody
     @RequestMapping(value = "/documents/files/{filename:.+}", method = RequestMethod.GET)
-    public ResponseEntity<File> serveFile(
+    public ResponseEntity<Object> serveFile(
     		@RequestHeader(value = "Authorization", required = true) String authorization,
     		@PathVariable String filename) throws IOException {
         Resource fileResource = restServieResourceFacade.download(filename);//storageService.loadAsResource(filename);
@@ -57,8 +64,9 @@ public class FileUploadController extends TttpController<DocumentMetaData>{
         File file = new File(fileResource.getURI());
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file+"\"")
-                .body(file);
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileResource.getURI()+"\"")
+                .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileResource.contentLength()))
+                .build();
     }
     
 	/*private final StorageService storageService;

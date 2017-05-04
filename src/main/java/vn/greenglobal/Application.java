@@ -2,12 +2,9 @@ package vn.greenglobal;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.HttpServletRequest;
 
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
@@ -42,9 +39,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -59,7 +53,6 @@ import vn.greenglobal.tttp.util.upload.StorageProperties;
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableConfigurationProperties(StorageProperties.class)
-//@EnableWebSecurity
 @Controller
 @ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
@@ -104,7 +97,7 @@ public class Application extends SpringBootServletInitializer {
 		return Collections.singletonMap("response", result);
 	}*/
 
-	@Bean
+	//@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			System.out.println("Let's inspect the beans provided by Spring Boot:");
@@ -123,12 +116,15 @@ public class Application extends SpringBootServletInitializer {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "test-thanhtratp.greenglobal.vn",
-								"test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830",
-								"http://192.168.1.242:9830", "192.168.1.242:9830")
-						.allowCredentials(true).allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length", "username", "password",
-								"authorization", "client-security-token", "X-Application-Context", "Date", "Content-Disposition")
+						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000",
+								"test-thanhtratp.greenglobal.vn", "test-thanhtratp.greenglobal.vn:9830",
+								"http://test-thanhtratp.greenglobal.vn:9830", "http://192.168.1.242:9830",
+								"192.168.1.242:9830")
+						.allowCredentials(true)
+						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+								"username", "password", "authorization", "client-security-token",
+								"X-Application-Context", "Date", "Content-Disposition")
 						.maxAge(3600);
 			}
 		};
@@ -137,39 +133,35 @@ public class Application extends SpringBootServletInitializer {
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
 		return new WebSecurityConfigurerAdapter() {
-		    
+
 			@Override
 			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN", "ACTUATOR");
+				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
+						"ACTUATOR");
 			}
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/login", "/logout",
-						"/v2/api-docs", 
-						"/soTiepCongDans/excel",
-						"/soTiepCongDans/word",
-						"/configuration/ui", 
-						"/configuration/security", 
-						"/swagger-resources", 
-						"/swagger-ui.html", 
-						"/swagger-resources/configuration/ui",
-						"/swagger-resources/configuration/security",
-						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
+				sec.ignoring()
+						.antMatchers("/login", "/logout","/uploadfile", "/v2/api-docs", "/soTiepCongDans/excel",
+								"/soTiepCongDans/word", "/configuration/ui", "/configuration/security",
+								"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
+								"/swagger-resources/configuration/security", "/webjars/**")
+						.antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
 
-				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient", "custom");
+				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
+						"custom");
 				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
 						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
-				http.authorizeRequests()
-					.anyRequest().authenticated()
-					//.and().httpBasic()
-					.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
-					.and().csrf().disable();
+				http.authorizeRequests().anyRequest().authenticated()
+						// .and().httpBasic()
+						.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
+						.and().csrf().disable();
 
 			}
 		};
@@ -182,7 +174,7 @@ public class Application extends SpringBootServletInitializer {
 		final JwtAuthenticator authenticator = new JwtAuthenticator();
 		authenticator.setSignatureConfiguration(secretSignatureConfiguration);
 		authenticator.setEncryptionConfiguration(secretEncryptionConfiguration);
-		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX+" ", authenticator);
+		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX + " ", authenticator);
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
 		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
@@ -206,7 +198,6 @@ public class Application extends SpringBootServletInitializer {
 		messageSource.setCacheSeconds(3600); // refresh cache once per hour
 		return messageSource;
 	}
-	
 	@Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
@@ -228,32 +219,31 @@ public class Application extends SpringBootServletInitializer {
 	@Value("${spring.http.multipart.max-request-size:54000KB}")
 	private String maxRequestSize;
 	
-	
 	@Value("${action.xem:xem}")
 	public String XEM = "";
 	@Value("${action.lietke:lietke}")
-	public String LIETKE = ""; 
+	public String LIETKE = "";
 	@Value("${action.sua:sua}")
 	public String SUA = "";
 	@Value("${action.xoa:xoa}")
 	public String XOA = "";
 	@Value("${action.them:them}")
-	public String THEM = ""; 
+	public String THEM = "";
 	@Value("${action.gui:gui}")
 	public String GUI = "";
 	@Value("${action.duyet:duyet}")
 	public String DUYET = "";
 	@Value("${action.export:export}")
-	public String EXPORT = ""; 
-	
+	public String EXPORT = "";
+
 	@Value("${resource.nguoidung:nguoidung}")
 	public String NGUOIDUNG = "";
 	@Value("${resource.vaitro:vaitro}")
 	public String VAITRO = "";
-	
+
 	public char CHAR_CACH = ':';
 	public String CACH = CHAR_CACH + "";
-	
+
 	@Value("${resource.vaitro}" + ":" + "${action.xem}")
 	public String VAITRO_XEM;
 	@Value("${resource.vaitro}" + ":" + "${action.them}")
@@ -264,7 +254,7 @@ public class Application extends SpringBootServletInitializer {
 	public String VAITRO_XOA = "";
 	@Value("${resource.vaitro}" + ":" + "${action.sua}")
 	public String VAITRO_SUA = "";
-	
+
 	@Value("${resource.nguoidung}" + ":" + "${action.xem}")
 	public String NGUOIDUNG_XEM = "";
 	@Value("${resource.nguoidung}" + ":" + "${action.them}")
@@ -275,7 +265,7 @@ public class Application extends SpringBootServletInitializer {
 	public String NGUOIDUNG_XOA = "";
 	@Value("${resource.nguoidung}" + ":" + "${action.sua}")
 	public String NGUOIDUNG_SUA = "";
-	
+
 	public String[] getRESOURCES() {
 		return new String[] { NGUOIDUNG, VAITRO };
 	}
@@ -283,5 +273,5 @@ public class Application extends SpringBootServletInitializer {
 	public String[] getACTIONS() {
 		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
 	}
-	
+
 }
