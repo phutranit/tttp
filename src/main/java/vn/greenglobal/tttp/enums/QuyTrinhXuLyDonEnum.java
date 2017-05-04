@@ -2,6 +2,8 @@ package vn.greenglobal.tttp.enums;
 
 public enum QuyTrinhXuLyDonEnum {
 	
+	THU_LY("Thụ lý"),
+	KHONG_THU_LY("Không thụ lý"),
 	GIAO_VIEC("Giao việc"),
 	CHUYEN_BO_PHAN_GIAI_QUYET("Chuyển bộ phận giải quyết"),
 	CHUYEN_CAN_BO_XU_LY("Chuyển cán bộ xử lý"),
