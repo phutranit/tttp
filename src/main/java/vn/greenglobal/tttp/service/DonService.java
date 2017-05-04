@@ -47,16 +47,6 @@ public class DonService {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
 
-		if (StringUtils.isNotBlank(trangThaiDon)) {
-//			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
-			predAll = predAll.and(QDon.don.xuLyDons.any().trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
-		}
-
-		// if (StringUtils.isNotBlank(vaiTro)) {
-		// predAll = predAll
-		// .and(QDon.don.xuLyDons.any().phongBanXuLy.congChucs.any().nguoiDung.vaiTros.any().quyen.eq(vaiTro));
-		// }
-
 		if (phongBanGiaiQuyetXLD != null) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
@@ -68,7 +58,12 @@ public class DonService {
 		if (phongBanXuLyXLD != null) {
 			predAll = predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
-
+		
+		if (StringUtils.isNotBlank(trangThaiDon)) {
+			System.out.println("trangThaiDon " +trangThaiDon);
+			predAll = predAll.and(QDon.don.xuLyDons.any().trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
+		}
+		
 		// if (phongBanXuLyXLD != null && StringUtils.isNotBlank(vaiTro)) {
 		// predAll =
 		// predAll.and(QDon.don.xuLyDons.any().phongBanXuLy.id.eq(phongBanXuLyXLD));
