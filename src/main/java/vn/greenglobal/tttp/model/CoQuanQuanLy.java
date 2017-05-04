@@ -129,8 +129,14 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public LoaiCoQuanQuanLy getLoaiCoQuanQuanLyInfo() {
-		return getLoaiCoQuanQuanLy();
+	public Map<String, Object> getLoaiCoQuanQuanLyInfo() {
+		if (getLoaiCoQuanQuanLy() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiCoQuanQuanLy().getTen());
+			map.put("loaiCoQuanQuanLyId", getLoaiCoQuanQuanLy().getId());
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
@@ -151,9 +157,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public Map<String, Object> getDonViHanhChinhCQQL() {
 		if (getDonViHanhChinh() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("ma", getCapCoQuanQuanLy().getMa());
-			map.put("ten", getCapCoQuanQuanLy().getTen());
-			map.put("donViHanhChinhId", getCapCoQuanQuanLy().getId());
+			map.put("ma", getDonViHanhChinh().getMa());
+			map.put("ten", getDonViHanhChinh().getTen());
+			map.put("donViHanhChinhId", getDonViHanhChinh().getId());
 			return map;
 		}
 		return null;

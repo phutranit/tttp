@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -285,6 +286,8 @@ public class CongDan extends Model<CongDan> {
 		return null;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public String getTenDiaChiSoCMND() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
@@ -332,5 +335,17 @@ public class CongDan extends Model<CongDan> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public int getSoDonThu() {
+		int soDonThu = 0;
+		List<Don_CongDan> _donCongDans = new ArrayList<Don_CongDan>();
+		_donCongDans.addAll(donCongDans);
+		if(_donCongDans.size() > 0) {
+			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList()).size();
+		}
+		return soDonThu;
 	}
 }

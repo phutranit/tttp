@@ -38,7 +38,7 @@ public class ThoiHan extends Model<ThoiHan> {
 		this.soNgay = soNgay;
 	}
 
-	@ApiModelProperty(position = 1)
+	@ApiModelProperty(position = 2)
 	public LoaiThoiHanEnum getLoaiThoiHanEnum() {
 		return loaiThoiHanEnum;
 	}
