@@ -69,7 +69,6 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
-			System.out.println("trangThaiDon " +trangThaiDon);
 			predAll = predAll.and(QDon.don.xuLyDons.any().trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
 		}
 		

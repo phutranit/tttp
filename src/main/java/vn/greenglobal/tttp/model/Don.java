@@ -785,26 +785,11 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCoQuanDaGiaiQuyetInfo() {
-		if (getNguoiSua() != null) {
-			Map<String, Object> map = new HashMap<>();
-			CoQuanQuanLy coQuanDaGiaiQuyet = null;
-			if(getCoQuanDaGiaiQuyet() != null) {
-				coQuanDaGiaiQuyet = getCoQuanDaGiaiQuyet();
-				if(coQuanDaGiaiQuyet.getCha() != null) {
-					coQuanDaGiaiQuyet = coQuanDaGiaiQuyet.getCha();
-				}
-			}
-			map.put("coQuanQuanLyId", coQuanDaGiaiQuyet != null ? coQuanDaGiaiQuyet.getId() : 0);
-			map.put("ten", coQuanDaGiaiQuyet != null  ? coQuanDaGiaiQuyet.getTen() : "");
-			map.put("capCoQuanQuanLyId", coQuanDaGiaiQuyet != null ? coQuanDaGiaiQuyet.getCapCoQuanQuanLy().getId() : 0);
-			map.put("tenCapCoQuanQuanLy", coQuanDaGiaiQuyet != null  ? coQuanDaGiaiQuyet.getCapCoQuanQuanLy().getTen() : "");
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public CoQuanQuanLy getCoQuanDaGiaiQuyetInfo() {
+//		return getCoQuanDaGiaiQuyet();
+//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
