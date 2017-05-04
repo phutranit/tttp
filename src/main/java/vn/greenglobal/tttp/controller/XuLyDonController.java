@@ -197,7 +197,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //
 //							// Add note
 //							note = ChucVuEnum.VAN_THU.getText() + " " + quyTrinhXuLy + " "
-//									+ ChucVuEnum.LANH_DAO.getText() + " Ä‘Æ¡n "
+//									+ ChucVuEnum.LANH_DAO.getText() + " đơn "
 //									+ xuLyDon.getDon().getTrangThaiDon().getText().toLowerCase();
 //							xuLyDonHienTai.setGhiChu(note.toString());
 //							xuLyDonHienTai.setCongChuc(xuLyDon.getCongChuc());
@@ -591,7 +591,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	// @RequestMapping(method = RequestMethod.PATCH, value =
 	// "/xuLyDons/{id}/thuHoi")
-	// @ApiOperation(value = "Thu há»“i Ä‘Æ¡n", position = 2, produces =
+	// @ApiOperation(value = "Thu hồi đơn", position = 2, produces =
 	// MediaType.APPLICATION_JSON_VALUE)
 	// @ApiResponses(value = { @ApiResponse(code = 202, message = "Thu há»“i Ä‘Æ¡n
 	// thÃ nh cÃ´ng", response = XuLyDon.class) })
@@ -685,10 +685,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	// @RequestMapping(method = RequestMethod.PATCH, value =
 	// "/xuLyDons/{id}/dinhchi")
-	// @ApiOperation(value = "Quy trÃ¬nh rÃºt Ä‘Æ¡n", position = 1, produces =
+	// @ApiOperation(value = "Quy trình rút đơn", position = 1, produces =
 	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	// @ApiResponses(value = {
-	// @ApiResponse(code = 202, message = "ÄÃ¬nh chá»‰ Ä‘Æ¡n thanh cÃ´ng", response =
+	// @ApiResponse(code = 202, message = "Rút đơn thành công", response =
 	// XuLyDon.class) })
 	// public ResponseEntity<Object> rutDon(@RequestBody XuLyDon xuLyDon,
 	// @PathVariable("id") Long id,
@@ -733,7 +733,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	// ApiErrorEnum.DATA_NOT_FOUND.getText());
 	// }
 	//
-	// don.setLyDoDinhChi("RÃºt Ä‘Æ¡n");
+	// don.setLyDoDinhChi("Rút đơn");
 	// Utils.save(donRepo, don);
 	// if (xuLyDonService.isExists(repo, id)) {
 	//

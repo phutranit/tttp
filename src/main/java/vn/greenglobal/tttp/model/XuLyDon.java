@@ -78,7 +78,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		return trangThaiDon;
 	}
 
-	public void setTrangThaiXuLyDon(TrangThaiDonEnum trangThaiDon) {
+	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
 	
