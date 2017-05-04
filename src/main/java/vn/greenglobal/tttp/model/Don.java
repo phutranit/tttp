@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -784,12 +785,37 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public CoQuanQuanLy getCoQuanDaGiaiQuyetInfo() {
+//		return getCoQuanDaGiaiQuyet();
+//	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDangQuyetInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			CoQuanQuanLy coQuanDangGiaiQuyet = null;
+			if(getPhongBanGiaiQuyet() != null) {
+				coQuanDangGiaiQuyet = getPhongBanGiaiQuyet();
+				if(coQuanDangGiaiQuyet.getCha() != null) {
+					coQuanDangGiaiQuyet = coQuanDangGiaiQuyet.getCha();
+				}
+			}
+			map.put("coQuanQuanLyId", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getId() : 0);
+			map.put("ten", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getTen() : "");
+			return map;
+		}
+		return null;
+	}
+	
 	public String getNguonDonText() {
 		nguonDonText = nguonTiepNhanDon.getText();
 
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu);
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
 			if (xld.isDonChuyen()) {
 				nguonDonText = xld.getCoQuanTiepNhan().getTen();
 			}
