@@ -178,8 +178,8 @@ public class EnumController {
 		}
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
@@ -228,8 +228,8 @@ public class EnumController {
 
 		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
