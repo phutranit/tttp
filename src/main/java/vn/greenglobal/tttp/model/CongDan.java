@@ -285,6 +285,8 @@ public class CongDan extends Model<CongDan> {
 		return null;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public String getTenDiaChiSoCMND() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
