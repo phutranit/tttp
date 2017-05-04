@@ -46,7 +46,7 @@ public class LoaiCoQuanQuanLy extends Model<LoaiCoQuanQuanLy> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getChucVuId() {
+	public Long getLoaiCoQuanQuanLyId() {
 		return getId();
 	}
 	
