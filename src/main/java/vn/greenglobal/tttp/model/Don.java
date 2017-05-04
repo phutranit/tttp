@@ -58,6 +58,8 @@ public class Don extends Model<Don> {
 
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
+	
+	@Transient
 	private String nguonDonText = "";
 	
 	private int soLanKhieuNaiToCao = 0;
@@ -791,7 +793,6 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@Transient
 	public String getNguonDonText() {
 		nguonDonText = nguonTiepNhanDon.getText();
 
