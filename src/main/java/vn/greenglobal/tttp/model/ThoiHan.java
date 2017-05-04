@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.model;
 
-import java.beans.Transient;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
@@ -38,7 +38,7 @@ public class ThoiHan extends Model<ThoiHan> {
 		this.soNgay = soNgay;
 	}
 
-	@ApiModelProperty(position = 1)
+	@ApiModelProperty(position = 2)
 	public LoaiThoiHanEnum getLoaiThoiHanEnum() {
 		return loaiThoiHanEnum;
 	}
@@ -60,7 +60,7 @@ public class ThoiHan extends Model<ThoiHan> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -73,7 +73,7 @@ public class ThoiHan extends Model<ThoiHan> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;

@@ -50,7 +50,10 @@ public class Don extends Model<Don> {
 
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
-
+	
+	@Transient
+	private String nguonDonText = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
 	private int soNguoi;
@@ -196,7 +199,6 @@ public class Don extends Model<Don> {
 	}
 	
 
-	@ApiModelProperty(position = 23)
 	public int getSoNguoi() {
 		return soNguoi;
 	}
@@ -764,7 +766,7 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -777,9 +779,51 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
+	}
+	
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public CoQuanQuanLy getCoQuanDaGiaiQuyetInfo() {
+//		return getCoQuanDaGiaiQuyet();
+//	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDangQuyetInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			CoQuanQuanLy coQuanDangGiaiQuyet = null;
+			if(getPhongBanGiaiQuyet() != null) {
+				coQuanDangGiaiQuyet = getPhongBanGiaiQuyet();
+				if(coQuanDangGiaiQuyet.getCha() != null) {
+					coQuanDangGiaiQuyet = coQuanDangGiaiQuyet.getCha();
+				}
+			}
+			map.put("coQuanQuanLyId", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getId() : 0);
+			map.put("ten", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getTen() : "");
+			return map;
+		}
+		return null;
+	}
+	
+	public String getNguonDonText() {
+		nguonDonText = nguonTiepNhanDon.getText();
+
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			if (xld.isDonChuyen()) {
+				nguonDonText = xld.getCoQuanTiepNhan().getTen();
+			}
+		}
+		return nguonDonText;
+	}
+
+	public void setNguonDonText(String nguonDonText) {
+		this.nguonDonText = nguonDonText;
 	}
 }

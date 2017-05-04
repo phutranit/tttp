@@ -54,6 +54,27 @@ public class CoQuanQuanLyService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllByName(String ten) {
+
+		BooleanExpression predAll = base;
+		if (ten != null && !"".equals(ten)) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(ten));
+		}
+
+		return predAll;
+	}
+
+	public Predicate predicateFindNoiCapCMND(Long capCoQuanQuanLy, Long loaiCoQuanQuanLy) {
+		BooleanExpression predAll = base;
+
+		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 & loaiCoQuanQuanLy != null && loaiCoQuanQuanLy > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy)
+					.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.eq(loaiCoQuanQuanLy)));
+		}
+
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));

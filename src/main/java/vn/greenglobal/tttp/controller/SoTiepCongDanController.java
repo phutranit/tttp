@@ -34,6 +34,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
@@ -142,8 +143,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-			soTiepCongDan.getDon().setDaXuLy(true);
-			soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
+				soTiepCongDan.getDon().setDaXuLy(true);
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			} else {
+				soTiepCongDan.getDon().setDaXuLy(true);
+			}
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
+			}
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
@@ -173,12 +182,33 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}
 
-		return Utils.doSave(repo, soTiepCongDan,
+		if (soTiepCongDan.getDon() != null) {
+			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+			soTiepCongDan.setDon(don);
+		}
+
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
+				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
+				soTiepCongDan.getDon().setDaGiaiQuyet(true);
+			}
+		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
+			}
+		}
+
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+				HttpStatus.CREATED);
+		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			Utils.save(repoDon, soTiepCongDan.getDon(),
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}
+		return output;
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -213,7 +243,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return assemblerDon.toResource(page, (ResourceAssembler) eass);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDan/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(

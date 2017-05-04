@@ -10,9 +10,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.model.QLoaiTaiLieu;
 import vn.greenglobal.tttp.model.QTaiLieuBangChung;
-import vn.greenglobal.tttp.model.QTaiLieuVanThu;
 import vn.greenglobal.tttp.model.TaiLieuBangChung;
-import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
 import vn.greenglobal.tttp.repository.TaiLieuBangChungRepository;
 import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
@@ -71,11 +69,8 @@ public class LoaiTaiLieuService {
 		List<TaiLieuBangChung> taiLieuBangChungList = (List<TaiLieuBangChung>) taiLieuBangChungRepository
 				.findAll(QTaiLieuBangChung.taiLieuBangChung.daXoa.eq(false)
 						.and(QTaiLieuBangChung.taiLieuBangChung.loaiTaiLieu.id.eq(id)));
-		List<TaiLieuVanThu> taiLieuVanThuList = (List<TaiLieuVanThu>) taiLieuVanThuRepository.findAll(
-				QTaiLieuVanThu.taiLieuVanThu.daXoa.eq(false).and(QTaiLieuVanThu.taiLieuVanThu.loaiTaiLieu.id.eq(id)));
 
-		if ((taiLieuBangChungList != null && taiLieuBangChungList.size() > 0)
-				|| (taiLieuVanThuList != null && taiLieuVanThuList.size() > 0)) {
+		if (taiLieuBangChungList != null && taiLieuBangChungList.size() > 0) {
 			return true;
 		}
 

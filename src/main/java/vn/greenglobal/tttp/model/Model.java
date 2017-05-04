@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Model<T extends Model<T>> implements Persistable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonApiId

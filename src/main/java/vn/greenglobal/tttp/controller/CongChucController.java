@@ -28,10 +28,14 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -47,6 +51,12 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
+
+	@Autowired
+	private ThamSoRepository repoThamSo;
+
+	@Autowired
+	private ThamSoService thamSoService;
 
 	public CongChucController(BaseRepository<CongChuc, Long> repo) {
 		super(repo);
@@ -69,6 +79,30 @@ public class CongChucController extends TttpController<CongChuc> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/lanhDaoTiepCongDans")
+	@ApiOperation(value = "Lấy danh sách Lãnh đạo tiếp công dân", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListDanhSachLanhDaoTCD(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		CongChuc congChuc = repo.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+		CoQuanQuanLy donVi = null;
+		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+				donVi = congChuc.getCoQuanQuanLy().getCha();
+			} else {
+				donVi = congChuc.getCoQuanQuanLy();
+			}
+		}
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindLanhDaoTiepCongDan(donVi), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/congChucs")
 	@ApiOperation(value = "Thêm mới Công Chức", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -86,7 +120,6 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
 					"Thông tin đăng nhập không được để trống!");
 		} else {
-			System.out.println("mk : " + congChuc.getNguoiDung().getMatKhau());
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "MATKHAU_REQUIRED",
 						"Trường mật khẩu không được để trống!");
@@ -128,7 +161,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					"Tên đăng nhập đã tồn tại trong hệ thống!");
 		}
 
-		return (ResponseEntity<Object>) transactioner.execute(new TransactionCallback() {
+		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());

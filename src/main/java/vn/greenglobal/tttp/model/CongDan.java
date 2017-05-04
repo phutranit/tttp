@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,6 @@ public class CongDan extends Model<CongDan> {
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
-	private String noiCap = "";
 	private String diaChi = "";
 
 	@NotNull
@@ -61,6 +61,9 @@ public class CongDan extends Model<CongDan> {
 	@NotNull
 	@ManyToOne
 	private DanToc danToc;
+	
+	@ManyToOne
+	private CoQuanQuanLy noiCapCMND;
 
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -104,14 +107,15 @@ public class CongDan extends Model<CongDan> {
 		this.soCMNDHoChieu = soCMNDHoChieu;
 	}
 
-	@ApiModelProperty(position = 4)
-	public String getNoiCap() {
-		return noiCap;
+	@ApiModelProperty(position = 4, required = true, example = "{}")
+	public CoQuanQuanLy getNoiCapCMND() {
+		return noiCapCMND;
 	}
 
-	public void setNoiCap(String noiCap) {
-		this.noiCap = noiCap;
+	public void setNoiCapCMND(CoQuanQuanLy noiCapCMND) {
+		this.noiCapCMND = noiCapCMND;
 	}
+	
 
 	@ApiModelProperty(position = 5)
 	public String getDiaChi() {
@@ -282,6 +286,8 @@ public class CongDan extends Model<CongDan> {
 		return null;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public String getTenDiaChiSoCMND() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
@@ -295,12 +301,24 @@ public class CongDan extends Model<CongDan> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNoiCapCMNDInfo() {
+		if (getNoiCapCMND() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNoiCapCMND().getId());
+			map.put("ten", getNoiCapCMND().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -313,9 +331,21 @@ public class CongDan extends Model<CongDan> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public int getSoDonThu() {
+		int soDonThu = 0;
+		List<Don_CongDan> _donCongDans = new ArrayList<Don_CongDan>();
+		_donCongDans.addAll(donCongDans);
+		if(_donCongDans.size() > 0) {
+			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList()).size();
+		}
+		return soDonThu;
 	}
 }

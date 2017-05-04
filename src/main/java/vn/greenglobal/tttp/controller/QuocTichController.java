@@ -43,6 +43,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 	@Autowired
 	private QuocTichService quocTichService;
 
+	@Autowired
 	private CongDanRepository congDanRepository;
 
 	public QuocTichController(BaseRepository<QuocTich, Long> repo) {
@@ -140,7 +141,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Quốc Tịch thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-
+		
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());

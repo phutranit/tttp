@@ -18,13 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.ChucVuEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
@@ -134,6 +136,11 @@ public class EnumController {
 		object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
 		list.add(object);
 
+		object = new HashMap<>();
+		object.put("ten", HuongXuLyTCDEnum.GAP_LANH_DAO.getText());
+		object.put("giaTri", HuongXuLyTCDEnum.GAP_LANH_DAO.name());
+		list.add(object);
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
@@ -149,8 +156,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
-
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
@@ -161,8 +167,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
-
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
@@ -173,10 +178,9 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
-
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
@@ -199,7 +203,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
@@ -211,7 +215,7 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
 			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
@@ -223,10 +227,10 @@ public class EnumController {
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.CAN_BO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
 
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_HUONG_XU_LY.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
@@ -249,7 +253,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, ChucVuEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
@@ -289,13 +293,18 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", HuongXuLyTCDEnum.GIAI_QUYET_NGAY.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.GIAI_QUYET_NGAY.name());
+		object.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
 		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.CHO_GIAI_QUYET.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.CHO_GIAI_QUYET.name());
+		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -313,6 +322,27 @@ public class EnumController {
 
 		object.put("ten", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.getText());
 		object.put("giaTri", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiTepDinhKems")
+	@ApiOperation(value = "Lấy danh sách Loại tệp đính kèm", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiTepDinhKems(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiTepDinhKemEnum.QUYET_DINH.getText());
+		object.put("giaTri", LoaiTepDinhKemEnum.QUYET_DINH.name());
+		list.add(object);
+		
+		object.put("ten", LoaiTepDinhKemEnum.KHAC.getText());
+		object.put("giaTri", LoaiTepDinhKemEnum.KHAC.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -367,6 +397,38 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiThoiHanEnum.THOIHAN_KIENNGHIPHANANH.getText());
 		object.put("giaTri", LoaiThoiHanEnum.THOIHAN_KIENNGHIPHANANH.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiVaiTros")
+	@ApiOperation(value = "Lấy danh sách Loại Vai Trò", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiVaiTro(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", VaiTroEnum.LANH_DAO.getText());
+		object.put("giaTri", VaiTroEnum.LANH_DAO.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.TRUONG_PHONG.getText());
+		object.put("giaTri", VaiTroEnum.TRUONG_PHONG.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.CHUYEN_VIEN.getText());
+		object.put("giaTri", VaiTroEnum.CHUYEN_VIEN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", VaiTroEnum.VAN_THU.getText());
+		object.put("giaTri", VaiTroEnum.VAN_THU.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

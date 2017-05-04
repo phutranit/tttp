@@ -29,7 +29,6 @@ public class CongChuc extends Model<CongChuc> {
 	@NotBlank
 	private String hoVaTen = "";
 	private String soCMNDHoCHieu = "";
-	private String noiCap = "";
 	private String diaChi = "";
 	private String dienThoai = "";
 	@NotBlank
@@ -42,6 +41,9 @@ public class CongChuc extends Model<CongChuc> {
 
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
+	
+	@ManyToOne
+	private CoQuanQuanLy noiCapCMND;
 
 	@ManyToOne
 	private ChucVu chucVu;
@@ -76,13 +78,13 @@ public class CongChuc extends Model<CongChuc> {
 		this.soCMNDHoCHieu = soCMNDHoCHieu;
 	}
 
-	@ApiModelProperty(position = 3)
-	public String getNoiCap() {
-		return noiCap;
+	@ApiModelProperty(position = 3, example = "{}")
+	public CoQuanQuanLy getNoiCapCMND() {
+		return noiCapCMND;
 	}
 
-	public void setNoiCap(String noiCap) {
-		this.noiCap = noiCap;
+	public void setNoiCapCMND(CoQuanQuanLy noiCapCMND) {
+		this.noiCapCMND = noiCapCMND;
 	}
 
 	@ApiModelProperty(position = 4)
@@ -204,12 +206,24 @@ public class CongChuc extends Model<CongChuc> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNoiCapCMNDInfo() {
+		if (getNoiCapCMND() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNoiCapCMND().getId());
+			map.put("ten", getNoiCapCMND().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("nhanVienId", getNguoiTao().getId());
+			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -222,7 +236,7 @@ public class CongChuc extends Model<CongChuc> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("nhanVienId", getNguoiSua().getId());
+			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
