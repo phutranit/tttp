@@ -31,12 +31,15 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
+import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -56,7 +59,16 @@ public class CongDanController extends TttpController<CongDan> {
 
 	@Autowired
 	private DonCongDanRepository donCongDanRepository;
-
+	
+	@Autowired
+	private DonRepository donRepository;
+	
+	@Autowired
+	private DonService donService;
+	
+	@Autowired
+	protected PagedResourcesAssembler<Don> donAssembler;
+	
 	@Autowired
 	private LichSuThayDoiService lichSuThayDoiService;
 
@@ -118,7 +130,18 @@ public class CongDanController extends TttpController<CongDan> {
 				pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/danhSachDons")
+	@ApiOperation(value = "Lấy Danh sách đơn của Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Danh sách đơn của Công dân thành công", response = Don.class) })
+	public PagedResources<Object> getDanhSachDonsByCongDan(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
+		Page<Don> page = donRepository.findAll(donService.predicateFindByCongDan(id), pageable);
+		return donAssembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}")
 	@ApiOperation(value = "Lấy Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Dân thành công", response = CongDan.class) })

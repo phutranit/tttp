@@ -157,9 +157,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	public Map<String, Object> getDonViHanhChinhCQQL() {
 		if (getDonViHanhChinh() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("ma", getCapCoQuanQuanLy().getMa());
-			map.put("ten", getCapCoQuanQuanLy().getTen());
-			map.put("donViHanhChinhId", getCapCoQuanQuanLy().getId());
+			map.put("ma", getDonViHanhChinh().getMa());
+			map.put("ten", getDonViHanhChinh().getTen());
+			map.put("donViHanhChinhId", getDonViHanhChinh().getId());
 			return map;
 		}
 		return null;
