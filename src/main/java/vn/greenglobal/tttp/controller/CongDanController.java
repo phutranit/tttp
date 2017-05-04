@@ -134,7 +134,7 @@ public class CongDanController extends TttpController<CongDan> {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/danhSachDons")
 	@ApiOperation(value = "Lấy Danh sách đơn của Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Danh sách đơn của Công dân thành công", response = CongDan.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Danh sách đơn của Công dân thành công", response = Don.class) })
 	public PagedResources<Object> getDanhSachDonsByCongDan(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
