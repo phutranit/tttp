@@ -4,9 +4,9 @@ public enum NguonTiepNhanDonEnum {
 
 	TRUC_TIEP("Trực tiếp"),
 	BUU_CHINH("Bưu chính"),
-	DON_VI_KHAC("Đơn vị khác"),
-	NGUON_KHAC("Nguồn khác"),
-	CO_QUAN_KHAC("Cơ quan khác"),
+//	DON_VI_KHAC("Đơn vị khác"),
+//	NGUON_KHAC("Nguồn khác"),
+//	CO_QUAN_KHAC("Cơ quan khác"),
 	LANH_DAO_TINH_THANH_PHO("Lãnh đạo Tỉnh/Thành phố");
 
 	NguonTiepNhanDonEnum(String text) {

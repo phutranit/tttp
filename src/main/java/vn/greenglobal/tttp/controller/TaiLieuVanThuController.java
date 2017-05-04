@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.service.TaiLieuVanThuService;
@@ -63,7 +64,19 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@ApiResponse(code = 201, message = "Thêm mới Tài liệu văn thư thành công", response = TaiLieuVanThu.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
-
+		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+					"Loại tệp đính kèm không được để trống!");
+		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+						"Số quyết định không được để trống!");
+			}
+			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+						"Ngày quyết định không được để trống!");
+			}
+		}
 		return Utils.doSave(repo, taiLieuVanThu,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
@@ -97,6 +110,20 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 		if (!taiLieuVanThuService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		
+		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+					"Loại tệp đính kèm không được để trống!");
+		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+						"Số quyết định không được để trống!");
+			}
+			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+						"Ngày quyết định không được để trống!");
+			}
 		}
 
 		return Utils.doSave(repo, taiLieuVanThu,

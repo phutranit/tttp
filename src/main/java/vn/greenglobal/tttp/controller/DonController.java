@@ -90,6 +90,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "chucVu", required = false) String chucVu, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+				
 		if (nguoiDung != null) {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
@@ -159,14 +160,15 @@ public class DonController extends TttpController<Don> {
 			}
 			
 			if (idCoQuanQuanLy == 0 ) {
-				xuLyDon.setPhongBanGiaiQuyet(null);
+				xuLyDon.setPhongBanXuLy(null);
 			} else {
-				xuLyDon.setPhongBanGiaiQuyet(coQuanQuanLyRepo.findOne(
+				xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(
 						QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).
 						and(QCoQuanQuanLy.coQuanQuanLy.id.eq(idCoQuanQuanLy))));
 			}
 			// Add new record for VAN_THU
 			xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
+			xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 			xuLyDon.setThuTuThucHien(0);
 			xuLyDon.setCongChuc(null);
 			xuLyDon.setQuyTrinhXuLy(null);

@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.model;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne
+	private CoQuanQuanLy phongBanXuLyChiDinh;
+	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy coQuanTiepNhan;
@@ -45,6 +48,57 @@ public class XuLyDon extends Model<XuLyDon> {
 	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
 
+	private LocalDateTime thoiHanXuLy;
+	
+	private LocalDateTime ngayHenGapLanhDao;
+	
+	private String diaDiem;
+	
+	private LocalDateTime ngayQuyetDinhDinhChi;
+	
+	private String soQuyetDinhDinhChi;
+	
+	
+	public LocalDateTime getNgayQuyetDinhDinhChi() {
+		return ngayQuyetDinhDinhChi;
+	}
+
+	public void setNgayQuyetDinhDinhChi(LocalDateTime ngayQuyetDinhDinhChi) {
+		this.ngayQuyetDinhDinhChi = ngayQuyetDinhDinhChi;
+	}
+
+	public String getSoQuyetDinhDinhChi() {
+		return soQuyetDinhDinhChi;
+	}
+
+	public void setSoQuyetDinhDinhChi(String soQuyetDinhDinhChi) {
+		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
+	}
+
+	public LocalDateTime getNgayHenGapLanhDao() {
+		return ngayHenGapLanhDao;
+	}
+
+	public void setNgayHenGapLanhDao(LocalDateTime ngayHenGapLanhDao) {
+		this.ngayHenGapLanhDao = ngayHenGapLanhDao;
+	}
+
+	public String getDiaDiem() {
+		return diaDiem;
+	}
+
+	public void setDiaDiem(String diaDiem) {
+		this.diaDiem = diaDiem;
+	}
+
+	public LocalDateTime getThoiHanXuLy() {
+		return thoiHanXuLy;
+	}
+
+	public void setThoiHanXuLy(LocalDateTime thoiHanXuLy) {
+		this.thoiHanXuLy = thoiHanXuLy;
+	}
+	
 	@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
@@ -78,7 +132,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		return trangThaiDon;
 	}
 
-	public void setTrangThaiXuLyDon(TrangThaiDonEnum trangThaiDon) {
+	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
 	
@@ -252,6 +306,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.isDonChuyen = isDonChuyen;
 	}
 	
+	public CoQuanQuanLy getPhongBanXuLyChiDinh() {
+		return phongBanXuLyChiDinh;
+	}
+
+	public void setPhongBanXuLyChiDinh(CoQuanQuanLy phongBanXuLyChiDinh) {
+		this.phongBanXuLyChiDinh = phongBanXuLyChiDinh;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
@@ -259,7 +321,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
-			map.put("congChucId", getNguoiTao().getId());
+			map.put("nhanVienId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
@@ -272,7 +334,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
-			map.put("congChucId", getNguoiSua().getId());
+			map.put("nhanVienId", getNguoiSua().getId());
 			return map;
 		}
 		return null;

@@ -2,9 +2,12 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +34,12 @@ import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "don")
@@ -50,7 +58,10 @@ public class Don extends Model<Don> {
 
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
-
+	
+	@Transient
+	private String nguonDonText = "";
+	
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
 	private int soNguoi;
@@ -780,5 +791,22 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	public String getNguonDonText() {
+		nguonDonText = nguonTiepNhanDon.getText();
+
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu);
+			if (xld.isDonChuyen()) {
+				nguonDonText = xld.getCoQuanTiepNhan().getTen();
+			}
+		}
+		return nguonDonText;
+	}
+
+	public void setNguonDonText(String nguonDonText) {
+		this.nguonDonText = nguonDonText;
 	}
 }
