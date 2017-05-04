@@ -24,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 
@@ -75,6 +76,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
+	
+	@Enumerated(EnumType.STRING)
+	private HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao;
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -230,6 +234,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setLoaiTiepDan(LoaiTiepDanEnum loaiTiepDan) {
 		this.loaiTiepDan = loaiTiepDan;
+	}
+	
+	public HuongGiaiQuyetTCDEnum getHuongGiaiQuyetTCDLanhDao() {
+		return huongGiaiQuyetTCDLanhDao;
+	}
+
+	public void setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao) {
+		this.huongGiaiQuyetTCDLanhDao = huongGiaiQuyetTCDLanhDao;
 	}
 
 	@ApiModelProperty(hidden = true)

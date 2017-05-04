@@ -143,6 +143,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
+						"Hướng giải quyết không được để trống!");
+			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaXuLy(true);
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
@@ -150,7 +154,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setDaXuLy(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
 		}
@@ -189,11 +193,15 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
+						"Hướng giải quyết không được để trống!");
+			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-			if (HuongXuLyTCDEnum.GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
 		}
@@ -264,8 +272,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/word")
-	@ApiOperation(value = "Xuất file word", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHen")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWord(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
@@ -294,12 +302,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public void exportExcel(HttpServletResponse response,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan) throws IOException {
+			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
-		ExcelUtil
-				.exportDanhSachTiepDan(response,
-						"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
-								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
-						"Danh sách sổ tiếp dân");
+		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(loaiTiepCongDan)) {
+			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
+					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
+							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+					"Danh sách sổ tiếp dân");
+		} else if (LoaiTiepDanEnum.DINH_KY.equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.equals(loaiTiepCongDan)) {
+			ExcelUtil.exportDanhSachTiepDanLanhDao(response,
+					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
+							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+					"Danh sách sổ tiếp dân định kỳ");
+		}
+		
 	}
 }
