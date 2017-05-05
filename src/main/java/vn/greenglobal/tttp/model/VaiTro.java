@@ -51,7 +51,7 @@ public class VaiTro extends Model<VaiTro> {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private VaiTroEnum vaiTroEnum;
+	private VaiTroEnum loaiVaiTro;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -77,12 +77,12 @@ public class VaiTro extends Model<VaiTro> {
 	}
 	
 	@ApiModelProperty(position = 3)
-	public VaiTroEnum getVaiTroEnum() {
-		return vaiTroEnum;
+	public VaiTroEnum getLoaiVaiTro() {
+		return loaiVaiTro;
 	}
 
-	public void setVaiTroEnum(VaiTroEnum vaiTroEnum) {
-		this.vaiTroEnum = vaiTroEnum;
+	public void setLoaiVaiTro(VaiTroEnum loaiVaiTro) {
+		this.loaiVaiTro = loaiVaiTro;
 	}
 
 	@ApiModelProperty(hidden = true)

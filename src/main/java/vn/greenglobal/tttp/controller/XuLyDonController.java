@@ -1,10 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
-import java.time.LocalDateTime;
-import java.time.chrono.Chronology;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.XYNumericFunction;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.classic.pattern.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,7 +26,6 @@ import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.VaiTro;
@@ -88,7 +82,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
 				
 				// Thay alias
-				String vaiTroNguoiDungHienTai = vaiTro.getVaiTroEnum().name();
+				String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 				
 				// Thong tin xu ly don
 				QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
@@ -400,12 +394,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
 				
 				// Thay alias
-				String vaiTroNguoiDungHienTai = vaiTro.getVaiTroEnum().name();
+				String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 				
 				// Thong tin xu ly don
-				// String note = vaiTroNguoiDungHienTai + " " + quyTrinhXuLy.getText().toLowerCase() + " ";
 				Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 
 				if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
 					
