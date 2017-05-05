@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,11 +31,13 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -90,7 +93,6 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "chucVu", required = false) String chucVu, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
-				
 		if (nguoiDung != null) {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
@@ -131,10 +133,15 @@ public class DonController extends TttpController<Don> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		
-		if (nguoiDung != null) {
-
+		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && 
+				commonProfile.containsAttribute("coQuanQuanLyId")) {
+			
+			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			
 			if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
 				don.setDiaChiCoQuanBKT("");
 				don.setSoDienThoaiCoQuanBKT("");
@@ -143,40 +150,24 @@ public class DonController extends TttpController<Don> {
 				don.setQuanHuyenCoQuanBKT(null);
 				don.setPhuongXaCoQuanBKT(null);
 				don.setToDanPhoCoQuanBKT(null);
-			} 
+			}
 //			if (don.isThanhLapDon()) {
 //				don.setMa(donService.getMaDonMoi(repo));
 //			}
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
-			
-			Don donNew = Utils.save(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Don donMoi = Utils.save(repo, don, congChucId);
 			XuLyDon xuLyDon = new XuLyDon();
-			xuLyDon.setDon(donNew);
-			Long idCoQuanQuanLy = 0L;
-			try {
-				idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			if (idCoQuanQuanLy == 0 ) {
-				xuLyDon.setPhongBanXuLy(null);
-			} else {
-				xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(
-						QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).
-						and(QCoQuanQuanLy.coQuanQuanLy.id.eq(idCoQuanQuanLy))));
-			}
-			// Add new record for VAN_THU
+			xuLyDon.setDon(donMoi);
 			xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
+			xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 			xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 			xuLyDon.setThuTuThucHien(0);
-			xuLyDon.setCongChuc(null);
-			xuLyDon.setQuyTrinhXuLy(null);
-			Utils.save(xuLyRepo,xuLyDon,new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			donNew.setTrangThaiDon(TrangThaiDonEnum.CHO_XU_LY);
-			return Utils.doSave(repo, don, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+			Utils.save(xuLyRepo,xuLyDon, congChucId);
+			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+			return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
