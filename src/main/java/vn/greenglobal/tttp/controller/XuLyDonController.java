@@ -397,7 +397,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 				
 				// Thong tin xu ly don
-				// String note = vaiTroNguoiDungHienTai + " " + quyTrinhXuLy.getText().toLowerCase() + " ";
 				Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 				if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
