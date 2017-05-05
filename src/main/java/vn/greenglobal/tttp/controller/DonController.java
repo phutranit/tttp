@@ -95,7 +95,7 @@ public class DonController extends TttpController<Don> {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
 							tiepNhanDenNgay, hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon,
-							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu),
+							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu, xuLyRepo),
 							pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
@@ -157,6 +157,7 @@ public class DonController extends TttpController<Don> {
 				idCoQuanQuanLy = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			} catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 			}
 			
 			if (idCoQuanQuanLy == 0 ) {
