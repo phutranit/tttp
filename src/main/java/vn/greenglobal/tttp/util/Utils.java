@@ -40,7 +40,7 @@ import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 
 public class Utils {
-
+	
 	private static final int SATURDAY = 6;
     private static final int SUNDAY = 7;
 	

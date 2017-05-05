@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
@@ -46,8 +44,8 @@ public class VaiTro extends Model<VaiTro> {
 	@Transient
 	private String quyen = "";
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "vaitro_quyen", joinColumns = { @JoinColumn(name = "vaitro_id") })
 	private Set<String> quyens = new HashSet<>();
 	
