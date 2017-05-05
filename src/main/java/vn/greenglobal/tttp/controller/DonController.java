@@ -31,13 +31,11 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
-import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
-import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -97,7 +95,7 @@ public class DonController extends TttpController<Don> {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tenNguoiDungDon, nguonDon, phanLoaiDon, tiepNhanTuNgay,
 							tiepNhanDenNgay, hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon,
-							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu),
+							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu, xuLyRepo),
 							pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
@@ -134,40 +132,40 @@ public class DonController extends TttpController<Don> {
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
-		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
-		
-		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && 
-				commonProfile.containsAttribute("coQuanQuanLyId")) {
-			
-			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
-			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
-			
-			if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-				don.setDiaChiCoQuanBKT("");
-				don.setSoDienThoaiCoQuanBKT("");
-				don.setTenCoQuanBKT("");
-				don.setTinhThanhCoQuanBKT(null);
-				don.setQuanHuyenCoQuanBKT(null);
-				don.setPhuongXaCoQuanBKT(null);
-				don.setToDanPhoCoQuanBKT(null);
-			}
-//			if (don.isThanhLapDon()) {
-//				don.setMa(donService.getMaDonMoi(repo));
-//			}
-			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
-			Don donMoi = Utils.save(repo, don, congChucId);
-			XuLyDon xuLyDon = new XuLyDon();
-			xuLyDon.setDon(donMoi);
-			xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
-			xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
-			xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-			xuLyDon.setThuTuThucHien(0);
-			Utils.save(xuLyRepo,xuLyDon, congChucId);
-			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-			return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
-		}
-		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		  CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		  
+		  if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && 
+		    commonProfile.containsAttribute("coQuanQuanLyId")) {
+		   
+		   Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
+		   Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
+		   
+		   if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+		    don.setDiaChiCoQuanBKT("");
+		    don.setSoDienThoaiCoQuanBKT("");
+		    don.setTenCoQuanBKT("");
+		    don.setTinhThanhCoQuanBKT(null);
+		    don.setQuanHuyenCoQuanBKT(null);
+		    don.setPhuongXaCoQuanBKT(null);
+		    don.setToDanPhoCoQuanBKT(null);
+		   }
+		//   if (don.isThanhLapDon()) {
+//		    don.setMa(donService.getMaDonMoi(repo));
+		//   }
+		   don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+		   Don donMoi = Utils.save(repo, don, congChucId);
+		   XuLyDon xuLyDon = new XuLyDon();
+		   xuLyDon.setDon(donMoi);
+		   xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
+		   xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+		   xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+		   xuLyDon.setThuTuThucHien(0);
+		   Utils.save(xuLyRepo,xuLyDon, congChucId);
+		   donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+		   return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
+		  }
+		  return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+		    ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
