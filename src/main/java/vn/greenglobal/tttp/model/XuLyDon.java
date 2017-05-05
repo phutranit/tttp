@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -47,17 +48,22 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean isDonChuyen = false;
 	private int thuTuThucHien = 0;
-
 	private LocalDateTime thoiHanXuLy;
-	
 	private LocalDateTime ngayHenGapLanhDao;
-	
 	private String diaDiem;
-	
 	private LocalDateTime ngayQuyetDinhDinhChi;
-	
 	private String soQuyetDinhDinhChi;
 	
+	@Transient
+	private Long soNgayXuLy;
+	
+	public Long getSoNgayXuLy() {
+		return soNgayXuLy;
+	}
+
+	public void setSoNgayXuLy(long soNgayXuLy) { 
+		this.soNgayXuLy = soNgayXuLy;
+	}
 	
 	public LocalDateTime getNgayQuyetDinhDinhChi() {
 		return ngayQuyetDinhDinhChi;
@@ -325,6 +331,12 @@ public class XuLyDon extends Model<XuLyDon> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getNgayConLai() {
+		return Utils.convertLocalDateTimeToNumber(this.getThoiHanXuLy());
 	}
 	
 	@Transient

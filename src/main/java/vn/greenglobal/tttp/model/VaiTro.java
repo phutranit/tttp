@@ -9,18 +9,20 @@ import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 
 @Entity
 @Table(name = "vaitro")
@@ -42,10 +44,14 @@ public class VaiTro extends Model<VaiTro> {
 	@Transient
 	private String quyen = "";
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "vaitro_quyen", joinColumns = { @JoinColumn(name = "vaitro_id") })
 	private Set<String> quyens = new HashSet<>();
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum loaiVaiTro;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -68,6 +74,15 @@ public class VaiTro extends Model<VaiTro> {
 	public void setQuyen(String quyen) {
 		this.quyen = quyen;
 		setQuyens(quyen);
+	}
+	
+	@ApiModelProperty(position = 3)
+	public VaiTroEnum getLoaiVaiTro() {
+		return loaiVaiTro;
+	}
+
+	public void setLoaiVaiTro(VaiTroEnum loaiVaiTro) {
+		this.loaiVaiTro = loaiVaiTro;
 	}
 
 	@ApiModelProperty(hidden = true)

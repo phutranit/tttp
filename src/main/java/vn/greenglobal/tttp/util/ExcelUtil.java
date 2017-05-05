@@ -150,7 +150,7 @@ public class ExcelUtil {
 		c.setCellStyle(setBorderAndFont(wb, 0, true, 11, "", "LEFT"));
 	}
 
-	public static void exportDanhSachTiepDan(HttpServletResponse response, String fileName, String sheetName,
+	public static void exportDanhSachTiepDanThuongXuyen(HttpServletResponse response, String fileName, String sheetName,
 			List<SoTiepCongDan> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -255,6 +255,140 @@ public class ExcelUtil {
 				c = row.createCell(8);
 				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
 				c.setCellStyle(cellCenter);
+				i++;
+				idx++;
+			}
+
+			idx++;
+			// createNoteRow(wb, sheet1, idx);
+			idx++;
+
+			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+			wb.write(fileOut);
+			// System.out.println("fileName: " + fileName);
+			String mimeType = "application/octet-stream";
+			response.setContentType(mimeType);
+			response.setHeader("Content-Disposition",
+					String.format("attachment; filename=\"" + fileName + ".xlsx" + "\""));
+			response.setContentLength((int) fileOut.size());
+
+			InputStream inputStream = new ByteArrayInputStream(fileOut.toByteArray());
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
+			response.flushBuffer();
+			inputStream.close();
+		} finally {
+			wb.close();
+
+		}
+	}
+	
+	public static void exportDanhSachTiepDanLanhDao(HttpServletResponse response, String fileName, String sheetName,
+			List<SoTiepCongDan> list, String title) throws IOException {
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		try {
+
+			CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "", "CENTER");
+			CellStyle cellLeft = setBorderAndFont(wb, 1, false, 11, "", "LEFT");
+			Cell c = null;
+			// New Sheet
+			Sheet sheet1 = null;
+			sheet1 = wb.createSheet(sheetName);
+			sheet1.createFreezePane(0, 3);
+			// Row and column indexes
+			int idx = 0;
+			// Generate column headings
+			Row row;
+			row = sheet1.createRow(idx);
+			c = row.createCell(0);
+			c.setCellValue(title.toUpperCase());
+			c.setCellStyle(setBorderAndFont(wb, 0, true, 14, "BLUE", "CENTER"));
+			row.setHeight((short) 800);
+			sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
+
+			// set column width
+			sheet1.setColumnWidth(0, 6 * 256);
+			sheet1.setColumnWidth(1, 17 * 256);
+			sheet1.setColumnWidth(2, 25 * 256);
+			sheet1.setColumnWidth(3, 25 * 256);
+			sheet1.setColumnWidth(4, 15 * 256);
+			sheet1.setColumnWidth(5, 15 * 256);
+			sheet1.setColumnWidth(6, 15 * 256);
+			sheet1.setColumnWidth(7, 10 * 256);
+			sheet1.setColumnWidth(8, 15 * 256);
+			// Generate rows header of grid
+			idx++;
+			row = sheet1.createRow(idx);
+			c = row.createCell(0);
+			c.setCellValue("");
+			c.setCellStyle(setBorderAndFont(wb, 0, false, 12, "", "LEFT"));
+			sheet1.addMergedRegion(new CellRangeAddress(1, 1, 0, 6));
+			idx++;
+			row = sheet1.createRow(idx);
+			idx++;
+			row.setHeight((short) 800);
+			c = row.createCell(0);
+			c.setCellValue("STT");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(1);
+			c.setCellValue("Ngày tiếp công dân");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(2);
+			c.setCellValue("Lãnh đạo tiếp dân");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(3);
+			c.setCellValue("Người đứng đơn");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(4);
+			c.setCellValue("Tóm tắt nội dung");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(5);
+			c.setCellValue("Phân loại đơn/Số người");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(6);
+			c.setCellValue("Cơ quan đã giải quyết");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(7);
+			c.setCellValue("Kết quả tiếp dân");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(8);
+			c.setCellValue("Tình trạng xử lý");
+			c.setCellStyle(cellCenter);
+			
+			int i = 1;
+			for (SoTiepCongDan tcd : list) {
+				row = sheet1.createRow(idx);
+				row.setHeight((short) 500);
+				c = row.createCell(0);
+				c.setCellValue(i);
+				c.setCellStyle(cellCenter);
+				c = row.createCell(1);
+				c.setCellValue(tcd.getNgayTiepDan().format(formatter));
+				c.setCellStyle(cellCenter);
+				c = row.createCell(2);
+				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
+				c.setCellStyle(cellCenter);
+				c = row.createCell(3);
+				c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND());
+				c.setCellStyle(cellLeft);
+				c = row.createCell(4);
+				c.setCellValue(tcd.getDon().getNoiDung());
+				c.setCellStyle(cellLeft);
+				c = row.createCell(5);
+				c.setCellValue(tcd.getDon().getLoaiDon().getText() + "/" + tcd.getDon().getSoNguoi());
+				c.setCellStyle(cellCenter);
+				c = row.createCell(6);
+				c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null
+						? tcd.getDon().getCoQuanDaGiaiQuyet().getTen() : "");
+				c.setCellStyle(cellLeft);
+				c = row.createCell(7);
+				c.setCellValue(tcd.getHuongGiaiQuyetTCDLanhDao() != null ? tcd.getHuongGiaiQuyetTCDLanhDao().getText() : "");
+				c.setCellStyle(cellCenter);
+				c = row.createCell(8);
+				c.setCellValue(tcd.getTinhTrangXuLyLanhDaoStr());
+				c.setCellStyle(cellCenter);
+				
 				i++;
 				idx++;
 			}
