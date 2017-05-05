@@ -87,7 +87,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
 				
 				// Thay alias
-				String vaiTroNguoiDungHienTai = vaiTro.getVaiTroEnum().name();
+				String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 				
 				// Thong tin xu ly don
 				QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
