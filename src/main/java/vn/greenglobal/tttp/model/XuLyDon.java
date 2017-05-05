@@ -351,13 +351,4 @@ public class XuLyDon extends Model<XuLyDon> {
 		}
 		return null;
 	}
-	
-	@Transient
-	public Long getPhongBanXuLyId() {
-		long id = 0;
-		if(getPhongBanXuLy() != null) {
-			id = getPhongBanXuLy().getId();
-		}
-		return id;
-	}
 }
