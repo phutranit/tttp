@@ -29,7 +29,7 @@ public class ProfileUtils {
 
 	public NguoiDung getUserInfo(String authHeader) {
 		CommonProfile profile = getCommonProfile(authHeader);
-		if (profile != null) {
+		if(profile!=null){
 			NguoiDung user = nguoiDungRepository.findByTenDangNhap(String.valueOf(profile.getAttribute("username")));
 			return user;
 		}
@@ -43,10 +43,11 @@ public class ProfileUtils {
 			secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 			authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
 			profile = authenticator.validateToken(token);
-			if (profile != null) {
+			if(profile!=null){
 				return profile;
 			}
 		}
 		return null;
 	}
+	
 }

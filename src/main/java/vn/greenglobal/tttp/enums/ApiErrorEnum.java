@@ -9,7 +9,8 @@ public enum ApiErrorEnum {
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
-	DATA_INCORRECT("Dữ liệu không đúng");
+	DATA_INCORRECT("Dữ liệu không đúng"),
+	USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!");
 	
 	ApiErrorEnum(String text) {
 		this.text = text;

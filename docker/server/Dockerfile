@@ -19,6 +19,7 @@ WORKDIR /var/www/tttp-api
 RUN git checkout develop
 RUN git pull origin develop
 RUN mvn dependency:resolve
+RUN mvn spring-boot:run
 #RUN ls ./target/
 #RUN sh -c "cp /var/www/tttp-api/target/tttp-api-1.0.0.war /opt/tomcat/webapps/ROOT.war"
 #ADD run.sh /var/www/run.sh

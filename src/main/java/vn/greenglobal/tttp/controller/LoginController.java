@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
@@ -66,36 +68,43 @@ public class LoginController {
 		CongChuc congChuc = null;
 		if (username != null && !username.isEmpty()) {
 			user = nguoiDungRepository.findByTenDangNhap(username);
-			if (user != null || username.equals("tttp")) {
-				final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
-				final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(
-						salt);
+			if (user != null) {
+				if(user.checkPassword(password)){
+					final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+					final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(
+							salt);
 
-				final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
-				generator.setSignatureConfiguration(secretSignatureConfiguration);
-				generator.setEncryptionConfiguration(secretEncryptionConfiguration);
-				CommonProfile commonProfile = new CommonProfile();
-				commonProfile.addAttribute("username", username);
-				if (user != null) { 
-					commonProfile.setId(user.getId());
-					congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
-					if (congChuc != null) {
-						commonProfile.addAttribute("congChucId", congChuc.getId());
-						commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
+					final JwtGenerator<CommonProfile> generator = new JwtGenerator<>();
+					generator.setSignatureConfiguration(secretSignatureConfiguration);
+					generator.setEncryptionConfiguration(secretEncryptionConfiguration);
+					CommonProfile commonProfile = new CommonProfile();
+					commonProfile.addAttribute("username", username);
+					if (user != null) { 
+						commonProfile.setId(user.getId());
+						congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+						if (congChuc != null) {
+							commonProfile.addAttribute("congChucId", congChuc.getId());
+							commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
+						}
 					}
-				}
-				String token = generator.generate(commonProfile);
-				result.put("token", token);
-				result.put("username", username);
-				if (user != null) {
-					result.put("userId", user.getId());
-					result.put("roles", user.getVaiTros());
-					if (congChuc != null) {
-						result.put("congChucId", congChuc.getId());
+					String token = generator.generate(commonProfile);
+					result.put("token", token);
+					result.put("username", username);
+					if (user != null) {
+						result.put("userId", user.getId());
+						result.put("roles", user.getVaiTros());
+						congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+						if(congChuc!=null){
+							result.put("congChucId", congChuc.getId());
+						}
 					}
-				}
 
-				return new ResponseEntity<>(result, HttpStatus.OK);
+					return new ResponseEntity<>(result, HttpStatus.OK);
+				} else {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_PASSWORD_INCORRECT.name(),
+							ApiErrorEnum.USER_PASSWORD_INCORRECT.getText());
+				}
+				
 			} else {
 				congChucService.bootstrapCongChuc(congChucRepository, nguoiDungRepository);
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

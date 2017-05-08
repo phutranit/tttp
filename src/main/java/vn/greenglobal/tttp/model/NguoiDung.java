@@ -23,6 +23,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,7 +49,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	private String salkey = "";
 
 	private boolean active;
-
+	
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
 	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
@@ -142,9 +143,9 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@JsonIgnore
 	public Set<String> getTatCaQuyens() {
+		System.out.println("getTatCaQuyens");
 		if (tatCaQuyens.isEmpty()) {
 			tatCaQuyens.addAll(quyens);
-			tatCaQuyens.add("vaitro:lietke");
 			for (VaiTro vaiTro : vaiTros) {
 				tatCaQuyens.add(vaiTro.getTen());
 				for (String str : vaiTro.getQuyens()) {
@@ -166,13 +167,13 @@ public class NguoiDung extends Model<NguoiDung> {
 	});
 
 	public void updatePassword(String pass) {
+		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
 		String salkey = getSalkey();
 		if (salkey == null || salkey.equals("")) {
 			salkey = encryptor.encryptPassword((new Date()).toString());
 		}
-		String passNoHash = pass + salkey;
-		String passHash = encryptor.encryptPassword(passNoHash);
+		String passHash = md5PasswordEncoder.encodePassword(pass, salkey);
 		setSalkey(salkey);
 		setMatKhau(passHash);
 	}
@@ -185,11 +186,18 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@ApiModelProperty(hidden = true)
 	public Quyen getQuyen() {
-		return quyen;
+		return quyen = new Quyen(new SimpleAccountRealm() {
+			@Override
+			protected AuthorizationInfo getAuthorizationInfo(final PrincipalCollection arg0) {
+				final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+				info.setStringPermissions(getTatCaQuyens());
+				return info;
+			}
+		});
 	}
 
+	@Deprecated
 	public boolean checkQuyen(String resource, String action) {
-
 		return true;
 	}
 
@@ -201,6 +209,15 @@ public class NguoiDung extends Model<NguoiDung> {
 	@ApiModelProperty(hidden = true)
 	public Set<VaiTro> getVaiTroNguoiDung() {
 		return getVaiTros();
+	}
+
+	public boolean checkPassword(String password) {
+		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+		String salkey = getSalkey();
+		if (salkey == null || salkey.equals("")) {
+			return false;
+		}
+		return md5PasswordEncoder.isPasswordValid(getMatKhau(), password, getSalkey());
 	}
 
 }

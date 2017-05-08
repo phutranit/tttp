@@ -2,11 +2,9 @@ package vn.greenglobal;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.MultipartConfigElement;
 
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
@@ -25,6 +23,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,9 +39,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -50,11 +47,12 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
+import vn.greenglobal.tttp.util.upload.StorageProperties;
 
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
-// @EnableWebSecurity
+@EnableConfigurationProperties(StorageProperties.class)
 @Controller
 @ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
@@ -68,7 +66,7 @@ public class Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
+/*
 	@RequestMapping(method = RequestMethod.POST, value = "/upload", produces = "application/json")
 	@ResponseBody
 	public Object upload(HttpServletRequest req) {
@@ -97,7 +95,7 @@ public class Application extends SpringBootServletInitializer {
 			result += s + " = " + req.getHeader(s) + "; ";
 		}
 		return Collections.singletonMap("response", result);
-	}
+	}*/
 
 	//@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -108,8 +106,7 @@ public class Application extends SpringBootServletInitializer {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
-			System.out.println(":::::" + beanNames.length + " beans");
-			System.out.println(VAITRO_XEM);
+			System.out.println(":::::"+beanNames.length +" beans");
 		};
 	}
 
@@ -170,9 +167,6 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	@Value("${salt}")
-	private String salt;
-
 	@Bean
 	public Config configPac4j() throws ParseException {
 		final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
@@ -204,11 +198,27 @@ public class Application extends SpringBootServletInitializer {
 		messageSource.setCacheSeconds(3600); // refresh cache once per hour
 		return messageSource;
 	}
-
+	@Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(maxFileSize);
+        factory.setMaxRequestSize(maxRequestSize);
+        return factory.createMultipartConfig();
+    }
+	
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
-
+  
+	@Value("${salt}")
+	private String salt;
+	
+	@Value("${spring.http.multipart.max-file-size:54000KB}")
+	private String maxFileSize;
+	
+	@Value("${spring.http.multipart.max-request-size:54000KB}")
+	private String maxRequestSize;
+	
 	@Value("${action.xem:xem}")
 	public String XEM = "";
 	@Value("${action.lietke:lietke}")

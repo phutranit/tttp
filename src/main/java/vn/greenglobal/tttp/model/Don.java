@@ -65,6 +65,8 @@ public class Don extends Model<Don> {
 	private boolean daXuLy = false;
 	private boolean yeuCauGapTrucTiepLanhDao = false;
 	private boolean thanhLapTiepDanGapLanhDao = false;
+	private boolean boSungThongTinBiKhieuTo = false;
+	private boolean coThongTinCoQuanDaGiaiQuyet = false;	
 
 	@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -126,7 +128,7 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
-	@NotNull
+	
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiBiKhieuTo;
 	@Enumerated(EnumType.STRING)
@@ -218,6 +220,22 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(position = 9)
 	public boolean isThanhLapDon() {
 		return thanhLapDon;
+	}
+	
+	public boolean isBoSungThongTinBiKhieuTo() {
+		return boSungThongTinBiKhieuTo;
+	}
+
+	public void setBoSungThongTinBiKhieuTo(boolean boSungThongTinBiKhieuTo) {
+		this.boSungThongTinBiKhieuTo = boSungThongTinBiKhieuTo;
+	}
+
+	public boolean isCoThongTinCoQuanDaGiaiQuyet() {
+		return coThongTinCoQuanDaGiaiQuyet;
+	}
+
+	public void setCoThongTinCoQuanDaGiaiQuyet(boolean coThongTinCoQuanDaGiaiQuyet) {
+		this.coThongTinCoQuanDaGiaiQuyet = coThongTinCoQuanDaGiaiQuyet;
 	}
 
 	public void setThanhLapDon(boolean thanhLapDon) {
@@ -810,6 +828,7 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	public String getNguonDonText() {
 		nguonDonText = nguonTiepNhanDon.getText();
 
