@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
@@ -46,14 +44,14 @@ public class VaiTro extends Model<VaiTro> {
 	@Transient
 	private String quyen = "";
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "vaitro_quyen", joinColumns = { @JoinColumn(name = "vaitro_id") })
 	private Set<String> quyens = new HashSet<>();
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private VaiTroEnum vaiTroEnum;
+	private VaiTroEnum loaiVaiTro;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -79,12 +77,12 @@ public class VaiTro extends Model<VaiTro> {
 	}
 	
 	@ApiModelProperty(position = 3)
-	public VaiTroEnum getVaiTroEnum() {
-		return vaiTroEnum;
+	public VaiTroEnum getLoaiVaiTro() {
+		return loaiVaiTro;
 	}
 
-	public void setVaiTroEnum(VaiTroEnum vaiTroEnum) {
-		this.vaiTroEnum = vaiTroEnum;
+	public void setLoaiVaiTro(VaiTroEnum loaiVaiTro) {
+		this.loaiVaiTro = loaiVaiTro;
 	}
 
 	@ApiModelProperty(hidden = true)

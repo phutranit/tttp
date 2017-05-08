@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "loaiCoQuanQuanLy")
+@Table(name = "loaicoquanquanly")
 @ApiModel
 public class LoaiCoQuanQuanLy extends Model<LoaiCoQuanQuanLy> {
 

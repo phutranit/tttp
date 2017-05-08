@@ -23,6 +23,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -166,13 +167,13 @@ public class NguoiDung extends Model<NguoiDung> {
 	});
 
 	public void updatePassword(String pass) {
+		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
 		String salkey = getSalkey();
 		if (salkey == null || salkey.equals("")) {
 			salkey = encryptor.encryptPassword((new Date()).toString());
 		}
-		String passNoHash = pass + salkey;
-		String passHash = encryptor.encryptPassword(passNoHash);
+		String passHash = md5PasswordEncoder.encodePassword(pass, salkey);
 		setSalkey(salkey);
 		setMatKhau(passHash);
 	}
@@ -211,14 +212,12 @@ public class NguoiDung extends Model<NguoiDung> {
 	}
 
 	public boolean checkPassword(String password) {
-		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 		String salkey = getSalkey();
 		if (salkey == null || salkey.equals("")) {
 			return false;
 		}
-		String passNoHash = password + salkey;
-		String passHash = encryptor.encryptPassword(passNoHash);
-		return passHash.equals(getMatKhau());
+		return md5PasswordEncoder.isPasswordValid(getMatKhau(), password, getSalkey());
 	}
 
 }
