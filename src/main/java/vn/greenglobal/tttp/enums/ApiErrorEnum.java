@@ -8,8 +8,9 @@ public enum ApiErrorEnum {
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
-	DATA_USED("Dữ liệu này đang được sử dụng!");
-
+	DATA_USED("Dữ liệu này đang được sử dụng!"),
+	DATA_INCORRECT("Dữ liệu không đúng");
+	
 	ApiErrorEnum(String text) {
 		this.text = text;
 	}
