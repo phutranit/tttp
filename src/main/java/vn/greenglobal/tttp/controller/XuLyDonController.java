@@ -1,5 +1,10 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -375,7 +381,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons")
-	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Quy trình xử lý đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Lưu lại quy trình chuyển đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> save(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -444,6 +450,101 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
+	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordPhieuDeXuatThuLy(
+			//@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDon", required = true) String loaiDon,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			HttpServletResponse response) {
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("loaiDon", loaiDon.toUpperCase());
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("diaChi", diaChi);
+		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai")
+	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordPhieuKhongDuDieuKienThuLy(
+			//@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "lyDoDinhChi", required = false) String lyDoDinhChi,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("diaChi", diaChi);
+		mappings.put("noiDung", noiDung);
+		mappings.put("lyDoDinhChi", lyDoDinhChi);
+		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai")
+	@ApiOperation(value = "In phiếu trả đơn và hướng dẫn khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordKhieuNaiTraDonVaHuongDan(
+			//@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("noiDung", noiDung);
+		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh")
+	@ApiOperation(value = "In phiếu chuyển đơn kiến nghị phản ánh", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordChuyenDonKienNghiPhanAnh(
+			//@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("diaChi", diaChi);
+		mappings.put("noiDung", noiDung);
+		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+		Utils.exportWord(response, "word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx", mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonToCao")
+	@ApiOperation(value = "In phiếu chuyển đơn tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordChuyenDonToCao(
+			//@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("diaChi", diaChi);
+		mappings.put("noiDung", noiDung);
+		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
 	}
 }
 
