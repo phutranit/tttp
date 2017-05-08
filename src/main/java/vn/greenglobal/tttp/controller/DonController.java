@@ -140,15 +140,31 @@ public class DonController extends TttpController<Don> {
 		   Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
 		   Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
 		   
-		   if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-		    don.setDiaChiCoQuanBKT("");
-		    don.setSoDienThoaiCoQuanBKT("");
-		    don.setTenCoQuanBKT("");
-		    don.setTinhThanhCoQuanBKT(null);
-		    don.setQuanHuyenCoQuanBKT(null);
-		    don.setPhuongXaCoQuanBKT(null);
-		    don.setToDanPhoCoQuanBKT(null);
+		   if (don.isBoSungThongTinBiKhieuTo()) {
+			   if (don.getLoaiNguoiBiKhieuTo() == null) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
+							"Trường loaiNguoiBiKhieuTo không được để trống!");
+			   }
+			   if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+				   don.setDiaChiCoQuanBKT("");
+				   don.setSoDienThoaiCoQuanBKT("");
+				   don.setTenCoQuanBKT("");
+				   don.setTinhThanhCoQuanBKT(null);
+				   don.setQuanHuyenCoQuanBKT(null);
+				   don.setPhuongXaCoQuanBKT(null);
+				   don.setToDanPhoCoQuanBKT(null);
+			   }
+		   } else {
+			   don.setDiaChiCoQuanBKT("");
+			   don.setSoDienThoaiCoQuanBKT("");
+			   don.setTenCoQuanBKT("");
+			   don.setTinhThanhCoQuanBKT(null);
+			   don.setQuanHuyenCoQuanBKT(null);
+			   don.setPhuongXaCoQuanBKT(null);
+			   don.setToDanPhoCoQuanBKT(null);
 		   }
+		   
+		   
 		//   if (don.isThanhLapDon()) {
 //		    don.setMa(donService.getMaDonMoi(repo));
 		//   }
@@ -197,15 +213,29 @@ public class DonController extends TttpController<Don> {
 		if (nguoiDung != null) {
 			don.setId(id);
 			
-			if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-				don.setDiaChiCoQuanBKT("");
-				don.setSoDienThoaiCoQuanBKT("");
-				don.setTenCoQuanBKT("");
-				don.setTinhThanhCoQuanBKT(null);
-				don.setQuanHuyenCoQuanBKT(null);
-				don.setPhuongXaCoQuanBKT(null);
-				don.setToDanPhoCoQuanBKT(null);
-			}
+			if (don.isBoSungThongTinBiKhieuTo()) {
+				   if (don.getLoaiNguoiBiKhieuTo() == null) {
+						return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
+								"Trường loaiNguoiBiKhieuTo không được để trống!");
+				   }
+				   if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+					   don.setDiaChiCoQuanBKT("");
+					   don.setSoDienThoaiCoQuanBKT("");
+					   don.setTenCoQuanBKT("");
+					   don.setTinhThanhCoQuanBKT(null);
+					   don.setQuanHuyenCoQuanBKT(null);
+					   don.setPhuongXaCoQuanBKT(null);
+					   don.setToDanPhoCoQuanBKT(null);
+				   }
+			   } else {
+				   don.setDiaChiCoQuanBKT("");
+				   don.setSoDienThoaiCoQuanBKT("");
+				   don.setTenCoQuanBKT("");
+				   don.setTinhThanhCoQuanBKT(null);
+				   don.setQuanHuyenCoQuanBKT(null);
+				   don.setPhuongXaCoQuanBKT(null);
+				   don.setToDanPhoCoQuanBKT(null);
+			   }
 			
 			if (!donService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
