@@ -48,7 +48,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	private String salkey = "";
 
 	private boolean active;
-
+	
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
 	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
@@ -208,6 +208,17 @@ public class NguoiDung extends Model<NguoiDung> {
 	@ApiModelProperty(hidden = true)
 	public Set<VaiTro> getVaiTroNguoiDung() {
 		return getVaiTros();
+	}
+
+	public boolean checkPassword(String password) {
+		BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+		String salkey = getSalkey();
+		if (salkey == null || salkey.equals("")) {
+			return false;
+		}
+		String passNoHash = password + salkey;
+		String passHash = encryptor.encryptPassword(passNoHash);
+		return passHash.equals(getMatKhau());
 	}
 
 }

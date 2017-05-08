@@ -1,8 +1,8 @@
-FROM alpine:3.5
+FROM alpine:3.4
 
 MAINTAINER Dmitriy Belyaev "dimabelyaev27@gmail.com"
 
-ENV NGINX_VERSION 1.13.0
+ENV NGINX_VERSION 1.10.2
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && CONFIG="\
@@ -77,7 +77,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && rm nginx.tar.gz \
     && mkdir /usr/src/upload \
     && cd /usr/src/upload \
-    && curl -fSLO https://github.com/Caltalys/nginx-upload-module/archive/2.2.zip \
+    && curl -fSLO https://github.com/vkholodkov/nginx-upload-module/archive/2.2.zip \
     && unzip 2.2.zip \
     && mkdir -p /usr/src/progress \
     && cd /usr/src/progress \
@@ -97,7 +97,6 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && rm -rf /etc/nginx/html/ \
     && mkdir /etc/nginx/conf.d/ \
     && mkdir -p /usr/share/nginx/html/ \
-    && mkdir -p /usr/share/nginx/html/upload/ \
     && install -m644 html/index.html /usr/share/nginx/html/ \
     && install -m644 html/50x.html /usr/share/nginx/html/ \
     && install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
@@ -136,8 +135,10 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
+COPY index.php /usr/share/nginx/html/index.php
 
-EXPOSE 80 443
+RUN mkdir /tmp/uploads 
+
+EXPOSE 8001 443
 
 CMD ["nginx", "-g", "daemon off;"]
