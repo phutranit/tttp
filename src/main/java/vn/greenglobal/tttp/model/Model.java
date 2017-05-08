@@ -101,6 +101,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		return ReflectionToStringBuilder.toString(this);
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public CongChuc getNguoiTao() {
 		return nguoiTao;
@@ -110,6 +111,7 @@ public class Model<T extends Model<T>> implements Persistable {
 		this.nguoiTao = nguoiTao;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public CongChuc getNguoiSua() {
 		return nguoiSua;
