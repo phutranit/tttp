@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,25 +17,25 @@ import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
 public class FileUploadService {
 
 	@Value("${file.repository}")
-    private String fileStorageLocation;
+	private String fileStorageLocation;
 
-    @Autowired
-    DocumentFileSystemService documentFileSystemService;
+	@Autowired
+	DocumentFileSystemService documentFileSystemService;
 
-    @Autowired
-    DocumentMetaDataRepository documentRepository;
+	@Autowired
+	DocumentMetaDataRepository documentRepository;
 
-    public void upload(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        byte[] content = file.getBytes();
-        Document document = new Document(fileName, content);
-        DocumentMetaData documentMetaData = new DocumentMetaData(fileName, fileStorageLocation, LocalDateTime.now());
-        documentFileSystemService.add(document);
-        documentRepository.save(documentMetaData);
-    }
+	public void upload(MultipartFile file) throws IOException {
+		String fileName = file.getOriginalFilename();
+		byte[] content = file.getBytes();
+		Document document = new Document(fileName, content);
+		DocumentMetaData documentMetaData = new DocumentMetaData(fileName, fileStorageLocation, LocalDateTime.now());
+		documentFileSystemService.add(document);
+		documentRepository.save(documentMetaData);
+	}
 
 	public Resource download(String filename) {
 		return documentFileSystemService.loadAsResource(filename);
 	}
-    
+
 }

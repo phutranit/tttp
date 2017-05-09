@@ -44,7 +44,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @Api(value = "auth", description = "")
-public class LoginController {
+public class AuthController {
 
 	@Value("${salt}")
 	private String salt;

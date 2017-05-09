@@ -66,38 +66,31 @@ public class Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-/*
-	@RequestMapping(method = RequestMethod.POST, value = "/upload", produces = "application/json")
-	@ResponseBody
-	public Object upload(HttpServletRequest req) {
-		System.out.println("//file");
-		System.out.println(req);
-		Enumeration<String> hd = req.getHeaderNames();
-		String result = "";
-		for (; hd.hasMoreElements();) {
-			String s = hd.nextElement();
-			System.out.println(s + " = " + req.getHeader(s));
-			result += s + " = " + req.getHeader(s) + "; ";
-		}
-		return Collections.singletonMap("response", result);
-	}
+	/*
+	 * @RequestMapping(method = RequestMethod.POST, value = "/upload", produces
+	 * = "application/json")
+	 * 
+	 * @ResponseBody public Object upload(HttpServletRequest req) {
+	 * System.out.println("//file"); System.out.println(req);
+	 * Enumeration<String> hd = req.getHeaderNames(); String result = ""; for (;
+	 * hd.hasMoreElements();) { String s = hd.nextElement();
+	 * System.out.println(s + " = " + req.getHeader(s)); result += s + " = " +
+	 * req.getHeader(s) + "; "; } return Collections.singletonMap("response",
+	 * result); }
+	 * 
+	 * @RequestMapping(method = RequestMethod.POST, value = "/authenticate",
+	 * produces = "application/json")
+	 * 
+	 * @ResponseBody public Object authenticate(HttpServletRequest req) {
+	 * System.out.println("//authenticate"); System.out.println(req);
+	 * Enumeration<String> hd = req.getHeaderNames(); String result = ""; for (;
+	 * hd.hasMoreElements();) { String s = hd.nextElement();
+	 * System.out.println(s + " = " + req.getHeader(s)); result += s + " = " +
+	 * req.getHeader(s) + "; "; } return Collections.singletonMap("response",
+	 * result); }
+	 */
 
-	@RequestMapping(method = RequestMethod.POST, value = "/authenticate", produces = "application/json")
-	@ResponseBody
-	public Object authenticate(HttpServletRequest req) {
-		System.out.println("//authenticate");
-		System.out.println(req);
-		Enumeration<String> hd = req.getHeaderNames();
-		String result = "";
-		for (; hd.hasMoreElements();) {
-			String s = hd.nextElement();
-			System.out.println(s + " = " + req.getHeader(s));
-			result += s + " = " + req.getHeader(s) + "; ";
-		}
-		return Collections.singletonMap("response", result);
-	}*/
-
-	//@Bean
+	// @Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			System.out.println("Let's inspect the beans provided by Spring Boot:");
@@ -106,7 +99,7 @@ public class Application extends SpringBootServletInitializer {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
-			System.out.println(":::::"+beanNames.length +" beans");
+			System.out.println(":::::" + beanNames.length + " beans");
 		};
 	}
 
@@ -142,11 +135,12 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring()
-						.antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/excel","/xuLyDons/inPhieuDeXuatThuLy",
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLy","/soTiepCongDans/word", "/configuration/ui", "/configuration/security",
-								"/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai","/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
-								"/xuLyDons/inPhieuChuyenDonToCao","/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh","/swagger-resources/configuration/security", "/webjars/**")
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/excel",
+						"/xuLyDons/inPhieuDeXuatThuLy", "/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word",
+						"/configuration/ui", "/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
+						"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
+						"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
+						"/swagger-resources/configuration/security", "/webjars/**")
 						.antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -198,27 +192,28 @@ public class Application extends SpringBootServletInitializer {
 		messageSource.setCacheSeconds(3600); // refresh cache once per hour
 		return messageSource;
 	}
+
 	@Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize(maxFileSize);
-        factory.setMaxRequestSize(maxRequestSize);
-        return factory.createMultipartConfig();
-    }
-	
+	public MultipartConfigElement multipartConfigElement() {
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setMaxFileSize(maxFileSize);
+		factory.setMaxRequestSize(maxRequestSize);
+		return factory.createMultipartConfig();
+	}
+
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
-  
+
 	@Value("${salt}")
 	private String salt;
-	
+
 	@Value("${spring.http.multipart.max-file-size:54000KB}")
 	private String maxFileSize;
-	
+
 	@Value("${spring.http.multipart.max-request-size:54000KB}")
 	private String maxRequestSize;
-	
+
 	@Value("${action.xem:xem}")
 	public String XEM = "";
 	@Value("${action.lietke:lietke}")
