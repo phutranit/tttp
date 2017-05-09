@@ -78,11 +78,6 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (loaiCoQuanQuanLy.getTen() == null || "".equals(loaiCoQuanQuanLy.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
@@ -126,11 +121,6 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 		}
 
 		loaiCoQuanQuanLy.setId(id);
-		if (loaiCoQuanQuanLy.getTen() == null || "".equals(loaiCoQuanQuanLy.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());

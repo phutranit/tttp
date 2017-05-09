@@ -68,17 +68,11 @@ public class Utils {
 		ConstraintViolation<?> vio = e.getConstraintViolations().iterator().next();
 		System.out.println("returnError -> " + vio);
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-					vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED",
-					"Trường " + vio.getPropertyPath() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-					vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL",
-					"Trường " + vio.getPropertyPath() + " không được NULL!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL!");
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-					vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE",
-					"Trường " + vio.getPropertyPath() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
 	}
 
@@ -95,8 +89,7 @@ public class Utils {
 				return returnError((ConstraintViolationException) e.getCause());
 			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause().getCause());
-			if (e.getCause() != null && e.getCause().getCause() != null
-					&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause().getCause());
 			throw e;
 		}
@@ -184,7 +177,6 @@ public class Utils {
 	}
 
 	public static LocalDateTime convertNumberToLocalDateTime (LocalDateTime ngayBatDau, Long soNgayXuLy) {
-		
 		long i = 1; 
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		while (i < soNgayXuLy) {
@@ -199,12 +191,10 @@ public class Utils {
 	}
 
 	public static Long convertLocalDateTimeToNumber (LocalDateTime ngayKetThuc) {
-		
 		long soNgayXuLy = 0;
 		LocalDateTime ngayHienTai = LocalDateTime.now();
 		ngayHienTai = LocalDateTime.of(LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()), LocalTime.MAX);
 		while (ngayHienTai.compareTo(ngayKetThuc) != 0) {
-			
 			ngayHienTai = ngayHienTai.plusDays(1);
 			if (ngayHienTai.getDayOfWeek().getValue() == SATURDAY || ngayHienTai.getDayOfWeek().getValue() == SUNDAY) {
 				continue;

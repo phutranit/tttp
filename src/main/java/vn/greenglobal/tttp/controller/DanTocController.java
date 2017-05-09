@@ -79,7 +79,7 @@ public class DanTocController extends TttpController<DanToc> {
 		}
 
 		if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, danToc,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
