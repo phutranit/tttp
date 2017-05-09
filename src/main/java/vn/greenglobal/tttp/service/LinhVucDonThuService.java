@@ -19,14 +19,18 @@ public class LinhVucDonThuService {
 
 	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long cha) {
+	public Predicate predicateFindAll(String tuKhoa, String cha) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa));
 		}
 
-		if (cha != null && cha > 0) {
-			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(cha));
+		if (!"".equals(cha) && cha != null) {
+			if ("null".equals(cha)) {
+				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.isNull());
+			} else if (new Long(cha) > 0) {
+				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(new Long(cha)));
+			}
 		}
 
 		return predAll;

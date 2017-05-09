@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.util;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -13,14 +12,12 @@ import vn.greenglobal.tttp.service.FileUploadService;
 @Component
 public class RestServieResourceFacade {
 
-    private static final Logger LOG = Logger.getLogger(RestServieResourceFacade.class);
+	@Autowired
+	FileUploadService fileUploadService;
 
-    @Autowired
-    FileUploadService fileUploadService;
-
-    public void upload(MultipartFile file) throws IOException {
-        fileUploadService.upload(file);
-    }
+	public void upload(MultipartFile file) throws IOException {
+		fileUploadService.upload(file);
+	}
 
 	public Resource download(String filename) throws IOException {
 		return fileUploadService.download(filename);
