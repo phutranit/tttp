@@ -167,25 +167,23 @@ public class LoginController {
 		if (user != null) {
 			commonProfile.setId(user.getId());
 			congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
+			
 			if (congChuc != null) {
 				commonProfile.addAttribute("congChucId", congChuc.getId());
 				commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 				commonProfile.addAttribute("loaiVaiTro",
 						user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
+				
+				result.put("congChucId", congChuc.getId());
+				result.put("coQuanQuanLyId", congChuc.getId());
+				result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
 			}
-		}
-
-		String token = generator.generate(commonProfile);
-		result.put("token", token);
-		result.put("username", user.getTenDangNhap());
-
-		if (user != null) {
+			
+			String token = generator.generate(commonProfile);
+			result.put("token", token);
+			result.put("username", user.getTenDangNhap());
 			result.put("userId", user.getId());
 			result.put("roles", user.getVaiTros());
-			congChuc = congChucRepository.findOne(congChucService.predicateFindByNguoiDungId(user.getId()));
-			if (congChuc != null) {
-				result.put("congChucId", congChuc.getId());
-			}
 		}
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
