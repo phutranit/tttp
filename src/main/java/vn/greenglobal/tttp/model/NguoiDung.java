@@ -2,7 +2,9 @@ package vn.greenglobal.tttp.model;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -12,8 +14,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -48,8 +52,12 @@ public class NguoiDung extends Model<NguoiDung> {
 	private String hinhDaiDien = "";
 	private String salkey = "";
 
+	@NotNull
+	@ManyToOne
+	private VaiTro vaiTroMacDinh;
+
 	private boolean active;
-	
+
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
 	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
@@ -89,7 +97,6 @@ public class NguoiDung extends Model<NguoiDung> {
 		this.tenDangNhap = tenDangNhap;
 	}
 
-	// @JsonIgnore
 	public String getMatKhau() {
 		return matKhau;
 	}
@@ -143,7 +150,6 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@JsonIgnore
 	public Set<String> getTatCaQuyens() {
-		System.out.println("getTatCaQuyens");
 		if (tatCaQuyens.isEmpty()) {
 			tatCaQuyens.addAll(quyens);
 			for (VaiTro vaiTro : vaiTros) {
@@ -218,6 +224,47 @@ public class NguoiDung extends Model<NguoiDung> {
 			return false;
 		}
 		return md5PasswordEncoder.isPasswordValid(getMatKhau(), password, getSalkey());
+	}
+
+	@ApiModelProperty(example = "{}")
+	public VaiTro getVaiTroMacDinh() {
+		return vaiTroMacDinh;
+	}
+
+	public void setVaiTroMacDinh(VaiTro vaiTroMacDinh) {
+		this.vaiTroMacDinh = vaiTroMacDinh;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public VaiTro getVaiTroMacDinhInfo() {
+		return getVaiTroMacDinh();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("congChucId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
 	}
 
 }

@@ -117,48 +117,38 @@ public class CongChucController extends TttpController<CongChuc> {
 		}
 
 		if (congChuc.getNguoiDung() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
-					"Thông tin đăng nhập không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
 		} else {
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "MATKHAU_REQUIRED",
-						"Trường mật khẩu không được để trống!");
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
 			}
-			if (congChuc.getNguoiDung().getTenDangNhap() == null
-					|| congChuc.getNguoiDung().getTenDangNhap().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TENDANGNHAP_REQUIRED",
-						"Trường tên đăng nhập không được để trống!");
+			if (congChuc.getNguoiDung().getTenDangNhap() == null | congChuc.getNguoiDung().getTenDangNhap().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_REQUIRED.name(), ApiErrorEnum.TENDANGNHAP_REQUIRED.getText());
 			}
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HOVATEN_REQUIRED",
-					"Trường Họ và tên không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
 		}
 
 		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYSINH_REQUIRED",
-					"Trường ngày sinh không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED",
-					"Trường cơ quan quản lý không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.COQUANQUANLY_REQUIRED.name(), ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
 		}
 
 		if (congChuc.getChucVu() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "CHUCVU_REQUIRED",
-					"Trường chức vụ không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 		}
 
 		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "EMAIL_INVALID", "Trường email không đúng định dạng!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 		}
 
-		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap())
-				&& congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TENDANGNHAP_EXISTS",
-					"Tên đăng nhập đã tồn tại trong hệ thống!");
+		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap()) && congChucService.checkExistsData(repo, congChuc)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
 		}
 
 		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
@@ -209,8 +199,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 		congChuc.setId(id);
 		if (congChuc.getNguoiDung() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "THONGTINDANGNHAP_REQUIRED",
-					"Thông tin đăng nhập không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
 		}
 		/*
 		 * else { if (congChuc.getNguoiDung().getMatKhau() == null ||
@@ -224,38 +213,32 @@ public class CongChucController extends TttpController<CongChuc> {
 		 */
 
 		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "EMAIL_INVALID", "Trường email không đúng định dạng!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 		}
 
 		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap())
 				&& congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TENDANGNHAP_EXISTS",
-					"Tên đăng nhập đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HOVATEN_REQUIRED",
-					"Trường Họ và tên không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
 		}
 
 		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYSINH_REQUIRED",
-					"Trường ngày sinh không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "DONVI_REQUIRED",
-					"Trường cơ quan quản lý không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.COQUANQUANLY_REQUIRED.name(), ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
 		}
 
 		if (congChuc.getChucVu() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "CHUCVU_REQUIRED",
-					"Trường chức vụ không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 		}
 
 		if (!congChucService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
 		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {

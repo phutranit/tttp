@@ -3,14 +3,26 @@ package vn.greenglobal.tttp.enums;
 public enum ApiErrorEnum {
 
 	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phòng ban giải quyết không được để trống!"),
-	TEN_REQUIRED("Trường tên không được để trống!"),
+	HOVATEN_REQUIRED("Trường Họ và tên không được để trống!"),
+	NGAYSINH_REQUIRED("Trường ngày sinh không được để trống!"),
+	COQUANQUANLY_REQUIRED("Trường cơ quan quản lý không được để trống!"),
+	CHUCVU_REQUIRED("Trường chức vụ không được để trống!"),
+	MATKHAU_REQUIRED("Trường mật khẩu không được để trống!"),
+	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống!"),
+	
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
+	
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
+	
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
 	DATA_INCORRECT("Dữ liệu không đúng"),
-	USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!");
+	
+	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
+	USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
+	EMAIL_INVALID("Trường email không đúng định dạng!"),
+	THONGTINDANGNHAP_REQUIRED("Thông tin đăng nhập không được để trống!");
 	
 	ApiErrorEnum(String text) {
 		this.text = text;

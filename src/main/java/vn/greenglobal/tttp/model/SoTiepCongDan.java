@@ -95,6 +95,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
+	
+	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;
@@ -308,6 +312,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
 		this.taiLieuVanThus = taiLieuVanThus;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
+		return taiLieuBangChungs;
+	}
+
+	public void setTaiLieuBangChungs(List<TaiLieuBangChung> taiLieuBangChungs) {
+		this.taiLieuBangChungs = taiLieuBangChungs;
+	}
 
 	@ApiModelProperty(hidden = true)
 	@Transient
@@ -370,5 +383,17 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
 		return isHoanThanhTCDLanhDao() ? "Hoàn thành" : "Đang xử lý";
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getTaiLieuBangChungBoSungs() {
+		return getTaiLieuBangChungs();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getSoTiepCongDanId() {
+		return getId();
 	}
 }
