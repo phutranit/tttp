@@ -1,13 +1,5 @@
 package vn.greenglobal.tttp.util;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,14 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.docx4j.model.datastorage.migration.VariablePrepare;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -32,8 +21,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
-
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Model;
@@ -203,49 +190,6 @@ public class Utils {
 		}
 		
 		return soNgayXuLy;
-	}
-	
-	public static void exportWord(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
-		try {
-			WordprocessingMLPackage wordMLPackage;
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			InputStream inputStream = null;
-			File file = new File(pathFile);
-
-			if (!file.exists()) {
-				String errorMessage = "Sorry. The file you are looking for does not exist";
-				OutputStream outputStream = response.getOutputStream();
-				outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
-				outputStream.close();
-				return;
-			}
-
-			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-			if (mimeType == null) {
-				mimeType = "application/octet-stream";
-			}
-
-			response.setContentType(mimeType);
-			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
-
-			wordMLPackage = WordprocessingMLPackage.load(file);
-			VariablePrepare.prepare(wordMLPackage);
-			wordMLPackage.getMainDocumentPart().variableReplace(mappings);
-			wordMLPackage = wordMLPackage.getMainDocumentPart().convertAltChunks();
-			wordMLPackage.save(out);
-
-			response.setContentLength((int) out.size());
-			out.close();
-
-			inputStream = new BufferedInputStream(new ByteArrayInputStream(out.toByteArray()));
-			FileCopyUtils.copy(inputStream, response.getOutputStream());
-
-			response.flushBuffer();
-			inputStream.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static NguoiDung quyenValidate(ProfileUtils profileUtil, String authorization, QuyenEnum quyen) {

@@ -42,6 +42,7 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
+import vn.greenglobal.tttp.util.WordUtil;
 
 @RestController
 @RepositoryRestController
@@ -527,7 +528,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("diaChi", diaChi);
-		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai")
@@ -547,7 +548,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("lyDoDinhChi", lyDoDinhChi);
-		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai")
@@ -566,7 +567,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh")
@@ -587,7 +588,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		Utils.exportWord(response, "word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx",
+		WordUtil.exportWord(response, "word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx",
 				mappings);
 	}
 
@@ -609,6 +610,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		Utils.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
 	}
 }

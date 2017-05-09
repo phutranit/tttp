@@ -10,3 +10,7 @@ target
 /.settings/
 /run.sh
 /.apt_generated/
+/deploytttpapi
+/exportwar
+/run
+/viewlogtttpapi

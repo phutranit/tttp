@@ -48,6 +48,7 @@ import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.util.ExcelUtil;
 import vn.greenglobal.tttp.util.Utils;
+import vn.greenglobal.tttp.util.WordUtil;
 
 @RestController
 @RepositoryRestController
@@ -294,7 +295,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		mappings.put("diaDiemTiepCongDan", diaDiemTiepCongDan);
 		mappings.put("thoiGianTiepCongDan", thoiGianTiepCongDan);
 		mappings.put("ngayHenTiepCongDan", ngayHenTiepCongDan);
-		Utils.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
+		WordUtil.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
@@ -310,11 +311,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.equals(loaiTiepCongDan)) {
-			ExcelUtil.exportDanhSachTiepDanLanhDao(response,
-					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
-							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
+					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
+							null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
-		
+
 	}
 }
