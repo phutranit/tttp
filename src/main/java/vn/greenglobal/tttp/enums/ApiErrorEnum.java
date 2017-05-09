@@ -17,7 +17,6 @@ public enum ApiErrorEnum {
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
 	
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
-	DATA_INCORRECT("Dữ liệu không đúng"),
 	
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
