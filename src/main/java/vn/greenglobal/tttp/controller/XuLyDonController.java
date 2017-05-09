@@ -418,6 +418,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Lưu lại quy trình chuyển đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> save(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
