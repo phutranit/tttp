@@ -191,6 +191,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 							don.setNgayLapDonGapLanhDaoTmp(xuLyDon.getNgayHenGapLanhDao());
+							xuLyDonHienTai.setGhiChu(note);
 							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
@@ -217,6 +218,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setDonChuyen(true);
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
+							xuLyDonHienTai.setGhiChu(note);
 							Utils.save(repo, xuLyDonHienTai, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
@@ -243,6 +245,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setDonChuyen(true);
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
+							xuLyDonHienTai.setGhiChu(note);
 							Utils.save(repo, xuLyDonHienTai, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
@@ -269,6 +272,32 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setDonChuyen(true);
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
+							xuLyDonHienTai.setGhiChu(note);
+							Utils.save(repo, xuLyDonHienTai, congChucId);
+							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
+							//van thu tra don
+							XuLyDon xuLyDonTiepTheo = new XuLyDon();
+							note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " "
+							+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+							//
+							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
+							xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
+							xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
+							//
+							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+							xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+							xuLyDonTiepTheo.setThoiHanXuLy(xuLyDonHienTai.getThoiHanXuLy());
+							xuLyDonTiepTheo.setHuongXuLy(huongXuLyXLD);
+							xuLyDonTiepTheo.setCanBoXuLy(xuLyDonHienTai.getCongChuc());
+							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
+							xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+								
+							note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim(); 
+							xuLyDonTiepTheo.setDonChuyen(true);
+							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+							xuLyDonHienTai.setGhiChu(note);
+							
 							Utils.save(repo, xuLyDonHienTai, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						}
@@ -402,6 +431,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Lưu lại quy trình chuyển đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> save(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
@@ -458,6 +488,19 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					} else if (huongXuLyXLDEnum.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
+						//van thu tra don
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo.setDon(don);
+						xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
+						xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+						xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+						xuLyDonTiepTheo.setDaXoa(true);
+						xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
+						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						Utils.save(donRepo, don, congChucId);
+						Utils.save(repo, xuLyDonHienTai, congChucId);
+						return  Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
 				}
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
