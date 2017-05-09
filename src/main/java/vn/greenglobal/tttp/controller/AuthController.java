@@ -38,7 +38,9 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.VaiTroService;
 import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -63,6 +65,12 @@ public class AuthController {
 
 	@Autowired
 	CongChucService congChucService;
+	
+	@Autowired
+	VaiTroRepository vaiTroRepository;
+
+	@Autowired
+	VaiTroService vaiTroService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(
@@ -142,8 +150,7 @@ public class AuthController {
 		NguoiDung user = profileUtil.getUserInfo(authorization);
 
 		if (user != null) {
-			VaiTro vaiTroMacDinh = new VaiTro();
-			vaiTroMacDinh.setId(vaiTroMacDinhId);
+			VaiTro vaiTroMacDinh = vaiTroRepository.findOne(vaiTroService.predicateFindOne(vaiTroMacDinhId));
 			user.setVaiTroMacDinh(vaiTroMacDinh);
 			return returnUser(result, user);
 		}
