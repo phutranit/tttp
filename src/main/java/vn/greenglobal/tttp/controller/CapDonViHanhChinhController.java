@@ -78,11 +78,6 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (capDonViHanhChinh.getTen() == null || "".equals(capDonViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
@@ -126,11 +121,6 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 		}
 
 		capDonViHanhChinh.setId(id);
-		if (capDonViHanhChinh.getTen() == null || "".equals(capDonViHanhChinh.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());

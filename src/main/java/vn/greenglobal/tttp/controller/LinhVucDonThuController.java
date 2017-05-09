@@ -81,7 +81,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 
 		if (StringUtils.isNotBlank(linhVucDonThu.getTen())
 				&& linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "TEN_EXISTS", "Tên đã tồn tại trong hệ thống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, linhVucDonThu,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,

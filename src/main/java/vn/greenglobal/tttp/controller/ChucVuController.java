@@ -77,11 +77,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (chucVuService.checkExistsData(repo, chucVu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
@@ -124,11 +119,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 		}
 
 		chucVu.setId(id);
-		if (chucVu.getTen() == null || "".equals(chucVu.getTen())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_REQUIRED.name(),
-					ApiErrorEnum.TEN_REQUIRED.getText());
-		}
-
 		if (chucVuService.checkExistsData(repo, chucVu)) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
