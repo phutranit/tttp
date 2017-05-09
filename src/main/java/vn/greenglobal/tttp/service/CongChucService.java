@@ -28,7 +28,7 @@ public class CongChucService {
 	}
 	
 	public Predicate predicateFindLanhDaoTiepCongDan(CoQuanQuanLy donVi) {
-		BooleanExpression predAll = base.and(QCongChuc.congChuc.chucVu.laLanhDao.eq(true));
+		BooleanExpression predAll = base.and(QCongChuc.congChuc.chucVu.lanhDao.eq(true));
 		if (donVi != null) {
 			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.eq(donVi));
 		}

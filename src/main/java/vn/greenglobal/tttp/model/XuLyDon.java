@@ -46,7 +46,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
-	private boolean isDonChuyen = false;
+	private boolean donChuyen = false;
 	private int thuTuThucHien = 0;
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
@@ -305,11 +305,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	public boolean isDonChuyen() {
-		return isDonChuyen;
+		return donChuyen;
 	}
 
-	public void setDonChuyen(boolean isDonChuyen) {
-		this.isDonChuyen = isDonChuyen;
+	public void setDonChuyen(boolean donChuyen) {
+		this.donChuyen = donChuyen;
 	}
 	
 	public CoQuanQuanLy getPhongBanXuLyChiDinh() {
