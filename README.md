@@ -1,21 +1,71 @@
-# README #
+# Thanh Tra - API
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Setup development environment
 
-### What is this repository for? ###
+###Requirement
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven 3.0+](https://maven.apache.org/download.cgi)
+* [Eclipse for java EE IDE](https://www.eclipse.org/downloads/)
+* [Docker](https://docs.docker.com/engine/getstarted/step_one/)
 
-### How do I get set up? ###
+### Build Docker Images
+Make sure you are in `dockerize` directory. Do following command for building docker images
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+1\. MariaDB
+
+Build comtainer image
+```sh
+sudo docker build --tag=javacore-user-mariadb:1.0 mariadb/
+```
+
+2\. API Server
+```sh## Setup development environment
+
+###Requirement
+
+* [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven 3.0+](https://maven.apache.org/download.cgi)
+* [Eclipse for java EE IDE](https://www.eclipse.org/downloads/)
+* [Docker](https://docs.docker.com/engine/getstarted/step_one/)
+
+### Build Docker Images
+Make sure you are in `dockerize` directory. Do following command for building docker images
+
+1\. MariaDB
+
+sudo docker build --tag=javacore-user-server:1.0 server/
+```
+
+### Running and stopping the container images
+1\. Run MariaDB container first
+```sh
+sudo docker run -d --name=javacore-user-mariadb -p 4306:3306 javacore-user-mariadb:1.0
+```
+Docker allows us to restart a container with a single command:
+
+```
+#!sh
+docker restart javacore-user-mariadb
+
+docker start javacore-user-mariadb
+
+docker stopt javacore-user-mariadb
+```
+
+To destroy a container, perhaps because the image does not suit our needs, we can stop it and then run
+```
+#!sh
+docker rm javacore-user-mariadb
+```
+
+To access the container via Bash, we will run this command:
+```
+#!sh
+docker exec -it javacore-user-mariadb bash
+```
+
+To connect to MariaDB from outside (HeidiSQl/MySql Workbench) we use port which define in the docker run command, here is **4306** (*-p 4306:3306*)
 
 ### Contribution guidelines ###
 
