@@ -41,7 +41,7 @@ public class DonService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll(String maDon, String tenNguoiDungDon, String cmndHoChieu, String phanLoaiDon,
+	public Predicate predicateFindAll(String maDon, String tuKhoa, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, XuLyDonRepository xuLyRepo) {
@@ -53,12 +53,9 @@ public class DonService {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tenNguoiDungDon));
-		}
-
-		if (StringUtils.isNotBlank(cmndHoChieu)) {
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(cmndHoChieu));
+		if (StringUtils.isNotBlank(tuKhoa)) {
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
+					.or(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
 		}
 
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
