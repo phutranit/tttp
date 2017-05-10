@@ -16,6 +16,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -41,7 +42,7 @@ public class DonService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll(String maDon, String tuKhoa, String phanLoaiDon,
+	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, XuLyDonRepository xuLyRepo) {
@@ -58,6 +59,10 @@ public class DonService {
 					.or(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
 		}
 
+		if (StringUtils.isNotBlank(nguonDon)) {
+			predAll = predAll.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+		}
+		
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
