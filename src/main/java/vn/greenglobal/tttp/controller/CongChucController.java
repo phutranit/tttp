@@ -117,10 +117,10 @@ public class CongChucController extends TttpController<CongChuc> {
 		}
 
 		if (congChuc.getNguoiDung() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.name(), ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
 		} else {
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MATKHAU_REQUIRED.name(), ApiErrorEnum.MATKHAU_REQUIRED.getText());
 			}
 			if (congChuc.getNguoiDung().getTenDangNhap() == null | congChuc.getNguoiDung().getTenDangNhap().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_REQUIRED.name(), ApiErrorEnum.TENDANGNHAP_REQUIRED.getText());
@@ -199,7 +199,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 		congChuc.setId(id);
 		if (congChuc.getNguoiDung() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.name(), ApiErrorEnum.THONGTINDANGNHAP_REQUIRED.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.name(), ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
 		}
 		/*
 		 * else { if (congChuc.getNguoiDung().getMatKhau() == null ||

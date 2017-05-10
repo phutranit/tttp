@@ -85,8 +85,8 @@ public class AuthController {
 				if (user.checkPassword(password)) {
 					return returnUser(result, user);
 				} else {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_PASSWORD_INCORRECT.name(),
-							ApiErrorEnum.USER_PASSWORD_INCORRECT.getText());
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOGIN_USER_PASSWORD_INCORRECT.name(),
+							ApiErrorEnum.LOGIN_USER_PASSWORD_INCORRECT.getText());
 				}
 			} else {
 				congChucService.bootstrapCongChuc(congChucRepository, nguoiDungRepository);
