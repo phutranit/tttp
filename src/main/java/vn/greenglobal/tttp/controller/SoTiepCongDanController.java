@@ -305,17 +305,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
-		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(loaiTiepCongDan)) {
+		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân");
-		} else if (LoaiTiepDanEnum.DINH_KY.equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.equals(loaiTiepCongDan)) {
+		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 							null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
-
 	}
 }
