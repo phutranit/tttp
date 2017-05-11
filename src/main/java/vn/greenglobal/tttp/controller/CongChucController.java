@@ -30,6 +30,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
@@ -244,12 +245,14 @@ public class CongChucController extends TttpController<CongChuc> {
 		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
-				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-				Utils.save(repoNguoiDung, congChuc.getNguoiDung(),
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				return Utils.doSave(repo, congChuc,
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-						eass, HttpStatus.CREATED);
+				if (congChuc.getNguoiDung().getMatKhau() != null && !"".equals(congChuc.getNguoiDung().getMatKhau())) {
+					congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
+				} else {
+					NguoiDung nd = repoNguoiDung.findOne(congChuc.getNguoiDung().getId());
+					congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
+				}
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 			}
 
 		});
