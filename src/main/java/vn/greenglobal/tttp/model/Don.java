@@ -32,7 +32,6 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
-import vn.greenglobal.tttp.util.FlowMethodCollection;
 
 @Entity
 @Table(name = "don")
