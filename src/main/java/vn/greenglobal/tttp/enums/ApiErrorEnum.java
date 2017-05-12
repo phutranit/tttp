@@ -9,19 +9,20 @@ public enum ApiErrorEnum {
 	CHUCVU_REQUIRED("Trường chức vụ không được để trống!"),
 	MATKHAU_REQUIRED("Trường mật khẩu không được để trống!"),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống!"),
-	
+	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
-	
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
-	
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
-	
-	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
-	USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
 	EMAIL_INVALID("Trường email không đúng định dạng!"),
-	THONGTINDANGNHAP_REQUIRED("Thông tin đăng nhập không được để trống!");
+	
+	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
+	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!");
+	
+	
+	
+	
 	
 	ApiErrorEnum(String text) {
 		this.text = text;

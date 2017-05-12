@@ -1,21 +1,50 @@
-# README #
+# Thanh Tra - API
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Setup development environment
 
-### What is this repository for? ###
+* [JDK 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven 3.0+](https://maven.apache.org/download.cgi)
+* [Eclipse for java EE IDE](https://www.eclipse.org/downloads/)
+* [Docker](https://docs.docker.com/engine/getstarted/step_one/)
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Build Docker Images
+Make sure you are in `docke` directory. Do following command for building docker images
 
-### How do I get set up? ###
+1\. MariaDB
+```
+sudo docker build --tag=tttp-server:1.0 server/
+```
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Running and stopping the container images
+
+1\. Run MariaDB container first
+
+```
+sudo docker run -d --name=tttp-mariadb -p 4306:3306 tttp-mariadb:1.0
+```
+
+Docker allows us to restart a container with a single command:
+
+```
+docker restart tttp-mariadb
+
+docker start tttp-mariadb
+
+docker stop tttp-mariadb
+```
+
+To destroy a container, perhaps because the image does not suit our needs, we can stop it and then run
+```
+docker rm tttp-mariadb
+```
+
+To access the container via Bash, we will run this command:
+
+```
+docker exec -it tttp-mariadb bash
+```
+
+To connect to MariaDB from outside (HeidiSQl/MySql Workbench) we use port which define in the docker run command, here is **4306** (*-p 4306:3306*)
 
 ### Contribution guidelines ###
 

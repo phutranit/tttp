@@ -45,7 +45,6 @@ public class VaiTro extends Model<VaiTro> {
 	private String quyen = "";
 
 	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@CollectionTable(name = "vaitro_quyen", joinColumns = { @JoinColumn(name = "vaitro_id") })
 	private Set<String> quyens = new HashSet<>();
 	

@@ -28,6 +28,7 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
+import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 
 @RestController
@@ -243,17 +244,38 @@ public class EnumController {
 		errorBody.put("list", list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/nguonTiepNhanDons")
+	@ApiOperation(value = "Lấy danh sách tất cả Nguồn Tiếp Nhận Đơn", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachNguonTiepNhanDons(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
 
-	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyXLDs")
-	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		for (NguonTiepNhanDonEnum nguonTiepNhanDon : NguonTiepNhanDonEnum.values()) {
+			object.put("ten", nguonTiepNhanDon.getText());
+			object.put("giaTri", nguonTiepNhanDon.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyXLDs/vaiTro")
+	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý Đơn XLD theo Vai Trò", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam("chucVu") String chucVu) {
+			@RequestParam("vaiTro") String vaiTro) {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.getText())) {
 
 			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
@@ -280,6 +302,27 @@ public class EnumController {
 			list.add(object);
 		}
 
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLys")
+	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
+			object.put("ten", hxl.getText());
+			object.put("giaTri", hxl.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 

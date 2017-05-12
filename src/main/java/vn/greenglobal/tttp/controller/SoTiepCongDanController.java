@@ -34,6 +34,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
@@ -131,7 +132,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		if (soTiepCongDan != null && soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
+		
+		if (soTiepCongDan != null && !soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan,
 						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -142,6 +144,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
 		soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
+		
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
+			soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
+			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
+			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
+		}
+		
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
@@ -305,17 +314,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
-		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(loaiTiepCongDan)) {
+		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân");
-		} else if (LoaiTiepDanEnum.DINH_KY.equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.equals(loaiTiepCongDan)) {
+		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 							null, null, tuNgay, denNgay, loaiTiepCongDan), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
-
 	}
 }

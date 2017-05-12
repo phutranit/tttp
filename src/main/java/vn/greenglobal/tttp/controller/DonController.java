@@ -31,13 +31,16 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
@@ -57,6 +60,9 @@ public class DonController extends TttpController<Don> {
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepo;
 
+	@Autowired
+	private CongChucRepository congChucRepo;
+	
 	@Autowired
 	private DonService donService;
 
@@ -87,14 +93,14 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "chucVu", required = false) String chucVu, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
 		if (nguoiDung != null) {
 			Page<Don> pageData = repo
 					.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay,
 							tiepNhanDenNgay, hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon,
-							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, chucVu, xuLyRepo),
+							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo),
 							pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
@@ -169,6 +175,8 @@ public class DonController extends TttpController<Don> {
 		//   }
 		   don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 		   Don donMoi = Utils.save(repo, don, congChucId);
+		   
+		   //Them xu ly don
 		   XuLyDon xuLyDon = new XuLyDon();
 		   xuLyDon.setDon(donMoi);
 		   xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
@@ -182,7 +190,105 @@ public class DonController extends TttpController<Don> {
 		  return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 		    ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/dons/taoDonMoiVaTrinhDon")
+	@ApiOperation(value = "Thêm mới Đơn và đồng thời Trình Đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Đơn thành công", response = Don.class),
+			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class) })
+	public ResponseEntity<Object> taoDonMoiVaTrinhDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestBody Don don,
+			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+
+		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
+				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
+
+			// Xac dinh vai tro cua nguoi dung (Nhieu vai tro cho 1 nguoi)
+			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
+
+			// Thay alias
+			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
+
+			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
+
+			QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
+			String note = vaiTroNguoiDungHienTai + " " + quyTrinhXuLy.getText().toLowerCase() + " ";
+
+			if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
+				if (don.isBoSungThongTinBiKhieuTo()) {
+					if (don.getLoaiNguoiBiKhieuTo() == null) {
+						return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
+								"Trường loaiNguoiBiKhieuTo không được để trống!");
+					}
+					if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
+						don.setDiaChiCoQuanBKT("");
+						don.setSoDienThoaiCoQuanBKT("");
+						don.setTenCoQuanBKT("");
+						don.setTinhThanhCoQuanBKT(null);
+						don.setQuanHuyenCoQuanBKT(null);
+						don.setPhuongXaCoQuanBKT(null);
+						don.setToDanPhoCoQuanBKT(null);
+					}
+				} else {
+					don.setDiaChiCoQuanBKT("");
+					don.setSoDienThoaiCoQuanBKT("");
+					don.setTenCoQuanBKT("");
+					don.setTinhThanhCoQuanBKT(null);
+					don.setQuanHuyenCoQuanBKT(null);
+					don.setPhuongXaCoQuanBKT(null);
+					don.setToDanPhoCoQuanBKT(null);
+				}
+				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+				Don donMoi = Utils.save(repo, don, congChucId);
+
+				// Them xu ly don hien tai
+				XuLyDon xuLyDonHienTai = new XuLyDon();
+				xuLyDonHienTai.setDon(donMoi);
+				xuLyDonHienTai.setChucVu(VaiTroEnum.VAN_THU);
+				xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+				xuLyDonHienTai.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+				xuLyDonHienTai.setThuTuThucHien(0);
+
+				// Them xu ly don tiep theo
+				XuLyDon xuLyDonTiepTheo = new XuLyDon();
+				note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
+						+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
+				xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+				xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+				xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+				xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+				
+				xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+				xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
+				xuLyDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
+				xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
+				xuLyDonTiepTheo.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+				xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+
+				// xuLyDonTiepTheo.setThoiHanXuLy();
+				if (xuLyDonHienTai.isDonChuyen()) {
+					note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
+					xuLyDonTiepTheo.setDonChuyen(true);
+					xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+				}
+				
+				xuLyDonHienTai.setGhiChu(note);
+				Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
+				Utils.save(xuLyRepo, xuLyDonTiepTheo, congChucId);
+				
+				donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
+			}
+			
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
 	@ApiOperation(value = "Lấy Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })

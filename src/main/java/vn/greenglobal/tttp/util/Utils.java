@@ -1,13 +1,18 @@
 package vn.greenglobal.tttp.util;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -15,14 +20,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.reflections.Reflections;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 
@@ -163,6 +171,7 @@ public class Utils {
 		return denNgay;
 	}
 
+	@FlowMethodCollection
 	public static LocalDateTime convertNumberToLocalDateTime (LocalDateTime ngayBatDau, Long soNgayXuLy) {
 		long i = 1; 
 		LocalDateTime ngayKetThuc = ngayBatDau;
@@ -177,6 +186,7 @@ public class Utils {
 		return ngayKetThuc;
 	}
 
+	@FlowMethodCollection
 	public static Long convertLocalDateTimeToNumber (LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
 		LocalDateTime ngayHienTai = LocalDateTime.now();
@@ -192,11 +202,32 @@ public class Utils {
 		return soNgayXuLy;
 	}
 
+	@FlowMethodCollection
 	public static NguoiDung quyenValidate(ProfileUtils profileUtil, String authorization, QuyenEnum quyen) {
 		NguoiDung nguoiDung = profileUtil.getUserInfo(authorization);
 		if (nguoiDung != null && nguoiDung.checkQuyen(quyen)) {
 			return nguoiDung;
 		}
 		return null;
+	}
+	
+	public static List<Method> getMethodsAnnotatedWith(final Class<?> ...types) {
+	    final List<Method> methods = new ArrayList<Method>();
+	    for (Class<?> clasz : types) {
+	    	Class<?> klass = clasz;
+	 	    final List<Method> allMethods = new ArrayList<Method>(Arrays.asList(klass.getDeclaredMethods()));      
+	 	    for (final Method method : allMethods) {
+	             if (method.isAnnotationPresent(FlowMethodCollection.class)) {
+	            	 System.out.println(method.getName());
+	                 methods.add(method);
+	             }
+	         }
+		}
+	    return methods;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(getMethodsAnnotatedWith(Utils.class));
+		System.out.println(getMethodsAnnotatedWith(new Class<?>[] { Utils.class, Don.class}));
 	}
 }
