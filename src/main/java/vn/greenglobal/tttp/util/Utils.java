@@ -171,6 +171,7 @@ public class Utils {
 		return denNgay;
 	}
 
+	@FlowMethodCollection
 	public static LocalDateTime convertNumberToLocalDateTime (LocalDateTime ngayBatDau, Long soNgayXuLy) {
 		long i = 1; 
 		LocalDateTime ngayKetThuc = ngayBatDau;
@@ -185,6 +186,7 @@ public class Utils {
 		return ngayKetThuc;
 	}
 
+	@FlowMethodCollection
 	public static Long convertLocalDateTimeToNumber (LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
 		LocalDateTime ngayHienTai = LocalDateTime.now();
@@ -216,6 +218,7 @@ public class Utils {
 	 	    final List<Method> allMethods = new ArrayList<Method>(Arrays.asList(klass.getDeclaredMethods()));      
 	 	    for (final Method method : allMethods) {
 	             if (method.isAnnotationPresent(FlowMethodCollection.class)) {
+	            	 System.out.println(method.getName());
 	                 methods.add(method);
 	             }
 	         }
@@ -223,8 +226,8 @@ public class Utils {
 	    return methods;
 	}
 	
-	/*public static void main(String[] args) {
-		getMethodsAnnotatedWith(Utils.class);
-		getMethodsAnnotatedWith(new Class<?>[] { Utils.class, Don.class});
-	}*/
+	public static void main(String[] args) {
+		System.out.println(getMethodsAnnotatedWith(Utils.class));
+		System.out.println(getMethodsAnnotatedWith(new Class<?>[] { Utils.class, Don.class}));
+	}
 }
