@@ -71,6 +71,12 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Loại cơ quan quản lý");
+		quyenObj.put("tenQuyen", QuyenEnum.LOAICOQUANQUANLY_LIETKE.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_XEM.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_THEM.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_SUA.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.LOAICOQUANQUANLY_LIETKE.name() + "," + QuyenEnum.LOAICOQUANQUANLY_XEM.name() + "," + QuyenEnum.LOAICOQUANQUANLY_THEM.name() + "," + QuyenEnum.LOAICOQUANQUANLY_SUA.name() + "," + QuyenEnum.LOAICOQUANQUANLY_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Cấp cơ quan quản lý");
 		quyenObj.put("tenQuyen", QuyenEnum.CAPCOQUANQUANLY_LIETKE.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_XEM.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_THEM.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_SUA.getText() + "," + QuyenEnum.CAPCOQUANQUANLY_XOA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.CAPCOQUANQUANLY_LIETKE.name() + "," + QuyenEnum.CAPCOQUANQUANLY_XEM.name() + "," + QuyenEnum.CAPCOQUANQUANLY_THEM.name() + "," + QuyenEnum.CAPCOQUANQUANLY_SUA.name() + "," + QuyenEnum.CAPCOQUANQUANLY_XOA.name());
@@ -119,15 +125,27 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
-		quyenObj.put("tenChucNang","Đơn");
-		quyenObj.put("tenQuyen", QuyenEnum.DON_LIETKE.getText() + "," + QuyenEnum.DON_XEM.getText() + "," + QuyenEnum.DON_THEM.getText() + "," + QuyenEnum.DON_SUA.getText() + "," + QuyenEnum.DON_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.DON_LIETKE.name() + "," + QuyenEnum.DON_XEM.name() + "," + QuyenEnum.DON_THEM.name() + "," + QuyenEnum.DON_SUA.name() + "," + QuyenEnum.DON_XOA.name());
+		quyenObj.put("tenChucNang","Thời hạn");
+		quyenObj.put("tenQuyen", QuyenEnum.THOIHAN_LIETKE.getText() + "," + QuyenEnum.THOIHAN_XEM.getText() + "," + QuyenEnum.THOIHAN_THEM.getText() + "," + QuyenEnum.THOIHAN_SUA.getText() + "," + QuyenEnum.THOIHAN_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THOIHAN_LIETKE.name() + "," + QuyenEnum.THOIHAN_XEM.name() + "," + QuyenEnum.THOIHAN_THEM.name() + "," + QuyenEnum.THOIHAN_SUA.name() + "," + QuyenEnum.THOIHAN_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Tham số");
+		quyenObj.put("tenQuyen", QuyenEnum.THAMSO_LIETKE.getText() + "," + QuyenEnum.THAMSO_XEM.getText() + "," + QuyenEnum.THAMSO_THEM.getText() + "," + QuyenEnum.THAMSO_SUA.getText() + "," + QuyenEnum.THAMSO_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THAMSO_LIETKE.name() + "," + QuyenEnum.THAMSO_XEM.name() + "," + QuyenEnum.THAMSO_THEM.name() + "," + QuyenEnum.THAMSO_SUA.name() + "," + QuyenEnum.THAMSO_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Sổ tiếp công dân");
 		quyenObj.put("tenQuyen", QuyenEnum.SOTIEPCONGDAN_LIETKE.getText() + "," + QuyenEnum.SOTIEPCONGDAN_XEM.getText() + "," + QuyenEnum.SOTIEPCONGDAN_THEM.getText() + "," + QuyenEnum.SOTIEPCONGDAN_SUA.getText() + "," + QuyenEnum.SOTIEPCONGDAN_XOA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.SOTIEPCONGDAN_LIETKE.name() + "," + QuyenEnum.SOTIEPCONGDAN_XEM.name() + "," + QuyenEnum.SOTIEPCONGDAN_THEM.name() + "," + QuyenEnum.SOTIEPCONGDAN_SUA.name() + "," + QuyenEnum.SOTIEPCONGDAN_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Đơn");
+		quyenObj.put("tenQuyen", QuyenEnum.DON_LIETKE.getText() + "," + QuyenEnum.DON_XEM.getText() + "," + QuyenEnum.DON_THEM.getText() + "," + QuyenEnum.DON_SUA.getText() + "," + QuyenEnum.DON_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.DON_LIETKE.name() + "," + QuyenEnum.DON_XEM.name() + "," + QuyenEnum.DON_THEM.name() + "," + QuyenEnum.DON_SUA.name() + "," + QuyenEnum.DON_XOA.name());
 		quyenList.add(quyenObj);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

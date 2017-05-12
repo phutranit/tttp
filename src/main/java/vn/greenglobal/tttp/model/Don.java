@@ -32,7 +32,6 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
-import vn.greenglobal.tttp.util.FlowMethodCollection;
 
 @Entity
 @Table(name = "don")
@@ -846,5 +845,11 @@ public class Don extends Model<Don> {
 
 	public void setNguonDonText(String nguonDonText) {
 		this.nguonDonText = nguonDonText;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
+		return getThamQuyenGiaiQuyet();
 	}
 }

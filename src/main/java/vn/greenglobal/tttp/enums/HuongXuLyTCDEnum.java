@@ -1,7 +1,8 @@
 package vn.greenglobal.tttp.enums;
 
 public enum HuongXuLyTCDEnum {
-
+	
+	KHOI_TAO("Khởi tạo"),
 	TIEP_NHAN_DON("Tiếp nhận đơn"),
 	BO_SUNG_THONG_TIN("Bổ sung thông tin"),
 	TRA_DON_VA_HUONG_DAN("Trả đơn và hướng dẫn"),

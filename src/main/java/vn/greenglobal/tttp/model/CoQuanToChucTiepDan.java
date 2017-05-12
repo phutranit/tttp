@@ -49,6 +49,7 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	}
 
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getCoQuanToChucTiepDanId() {
 		return getId();
 	}
