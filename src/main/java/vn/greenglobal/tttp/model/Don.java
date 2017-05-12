@@ -846,4 +846,10 @@ public class Don extends Model<Don> {
 	public void setNguonDonText(String nguonDonText) {
 		this.nguonDonText = nguonDonText;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
+		return getThamQuyenGiaiQuyet();
+	}
 }
