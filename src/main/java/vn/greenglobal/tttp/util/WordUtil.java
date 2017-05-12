@@ -112,6 +112,7 @@ public final class WordUtil {
 			File file = new File(pathFile);
 
 			if (!file.exists()) {
+				System.out.println(file);
 				String errorMessage = "Sorry. The file you are looking for does not exist";
 				OutputStream outputStream = response.getOutputStream();
 				outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
