@@ -234,7 +234,7 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getNgayTiepDan().format(formatter));
 				c.setCellStyle(cellCenter);
 				c = row.createCell(2);
-				c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND());
+				c.setCellValue(tcd.getDon().getListNguoiDungDon().size() > 0 ? tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND() : "");
 				c.setCellStyle(cellLeft);
 				c = row.createCell(3);
 				c.setCellValue(tcd.getDon().getNoiDung());
@@ -398,7 +398,6 @@ public class ExcelUtil {
 
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
 			wb.write(fileOut);
-			// System.out.println("fileName: " + fileName);
 			String mimeType = "application/octet-stream";
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition",
