@@ -55,7 +55,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
-	@ApiModelProperty(position = 4, required = true, example = "{}")
+	@ApiModelProperty(position = 4, required = true)
 	public CongDan getCongDan() {
 		return congDan;
 	}
@@ -173,8 +173,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		return getId();
 	}
 
-	@ApiModelProperty(hidden = true)
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTiepNhan() {
 		if (getDon() != null) {
 			return getDon().getNgayTiepNhan();
