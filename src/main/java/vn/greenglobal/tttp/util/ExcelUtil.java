@@ -265,7 +265,6 @@ public class ExcelUtil {
 
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
 			wb.write(fileOut);
-			// System.out.println("fileName: " + fileName);
 			String mimeType = "application/octet-stream";
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition",
