@@ -35,7 +35,6 @@ public final class WordUtil {
 		// 1. find the table
 		Tbl tempTable = getTemplateTable(tables, placeholders[0]);
 		if (tempTable == null) {
-			// System.out.println(placeholders[0]+" not found");
 			return;
 		}
 		List<Object> rows = getAllElementFromObject(tempTable, Tr.class);
@@ -112,7 +111,6 @@ public final class WordUtil {
 			File file = new File(pathFile);
 
 			if (!file.exists()) {
-				System.out.println(file);
 				String errorMessage = "Sorry. The file you are looking for does not exist";
 				OutputStream outputStream = response.getOutputStream();
 				outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
