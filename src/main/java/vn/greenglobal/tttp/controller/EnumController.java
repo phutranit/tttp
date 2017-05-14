@@ -384,6 +384,7 @@ public class EnumController {
 		object.put("giaTri", LoaiTepDinhKemEnum.QUYET_DINH.name());
 		list.add(object);
 		
+		object = new HashMap<>();
 		object.put("ten", LoaiTepDinhKemEnum.KHAC.getText());
 		object.put("giaTri", LoaiTepDinhKemEnum.KHAC.name());
 		list.add(object);
