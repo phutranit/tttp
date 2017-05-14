@@ -75,7 +75,6 @@ public class CongChucService {
 	}
 
 	public void bootstrapCongChuc(CongChucRepository repo, NguoiDungRepository repoNguoiDung) {
-		System.out.println("bootstrapCongChuc");
 		List<CongChuc> list = (List<CongChuc>) repo.findAll(base);
 		if (list.size() == 0) {
 			NguoiDung nguoiDung = new NguoiDung();

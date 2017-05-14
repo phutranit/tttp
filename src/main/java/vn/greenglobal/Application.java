@@ -135,7 +135,7 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/excel",
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen", "/soTiepCongDans/excel",
 						"/xuLyDons/inPhieuDeXuatThuLy", "/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word",
 						"/configuration/ui", "/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
 						"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
