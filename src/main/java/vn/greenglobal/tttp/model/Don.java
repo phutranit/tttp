@@ -153,6 +153,8 @@ public class Don extends Model<Don> {
 	private State currentState;
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
+	@ManyToOne
+	private Form currentForm;
 
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
@@ -625,6 +627,15 @@ public class Don extends Model<Don> {
 
 	public void setProcessType(ProcessTypeEnum processType) {
 		this.processType = processType;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public Form getCurrentForm() {
+		return currentForm;
+	}
+
+	public void setCurrentForm(Form currentForm) {
+		this.currentForm = currentForm;
 	}
 
 	@ApiModelProperty(hidden = true)
