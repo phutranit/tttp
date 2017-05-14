@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -23,6 +24,8 @@ public class Process extends Model<Process>{
 	@ManyToOne
 	private VaiTro vaiTro;
 	private boolean owner;
+	@OneToOne
+	private Process cha;
 	
 	public String getTenQuyTrinh() {
 		return tenQuyTrinh;
@@ -62,5 +65,13 @@ public class Process extends Model<Process>{
 
 	public void setOwner(boolean owner) {
 		this.owner = owner;
+	}
+
+	public Process getCha() {
+		return cha;
+	}
+
+	public void setCha(Process cha) {
+		this.cha = cha;
 	}
 }
