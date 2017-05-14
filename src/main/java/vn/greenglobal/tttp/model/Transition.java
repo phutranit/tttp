@@ -14,9 +14,6 @@ public class Transition extends Model<Transition>{
 
 	private static final long serialVersionUID = -1388936774978057856L;
 
-	private String ten;
-	private String ghiChu;
-	
 	@ManyToOne
 	private Process process;
 	@ManyToOne
@@ -26,22 +23,6 @@ public class Transition extends Model<Transition>{
 	@ManyToOne
 	private Form form;
 	
-	public String getTen() {
-		return ten;
-	}
-	
-	public void setTen(String ten) {
-		this.ten = ten;
-	}
-
-	public String getGhiChu() {
-		return ghiChu;
-	}
-
-	public void setGhiChu(String ghiChu) {
-		this.ghiChu = ghiChu;
-	}
-
 	public State getCurrentState() {
 		return currentState;
 	}
