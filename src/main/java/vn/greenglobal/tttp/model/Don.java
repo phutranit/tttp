@@ -736,8 +736,8 @@ public class Don extends Model<Don> {
 			Map<String, Object> mapCapCoQuanQuanLy = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
-			mapCapCoQuanQuanLy.put("capCoQuanQuanLyId", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getId());
-			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen());
+			mapCapCoQuanQuanLy.put("capCoQuanQuanLyId", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getId() : "");
+			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ?  getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen() : "");
 			map.put("capCoQuanQuanLyInfo", mapCapCoQuanQuanLy);
 			return map;
 		}
