@@ -30,6 +30,7 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
@@ -147,6 +148,11 @@ public class Don extends Model<Don> {
 	private DonViHanhChinh phuongXaCoQuanBKT;
 	@ManyToOne
 	private ToDanPho toDanPhoCoQuanBKT;
+	
+	@ManyToOne
+	private State currentState;
+	@Enumerated(EnumType.STRING)
+	private ProcessTypeEnum processType;
 
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
@@ -601,6 +607,24 @@ public class Don extends Model<Don> {
 			}
 		}
 		return donCongDan;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public State getCurrentState() {
+		return currentState;
+	}
+
+	public void setCurrentState(State currentState) {
+		this.currentState = currentState;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public ProcessTypeEnum getProcessType() {
+		return processType;
+	}
+
+	public void setProcessType(ProcessTypeEnum processType) {
+		this.processType = processType;
 	}
 
 	@ApiModelProperty(hidden = true)
