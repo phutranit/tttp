@@ -37,6 +37,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
+import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -103,6 +104,30 @@ public class DonController extends TttpController<Don> {
 							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo),
 							pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/listNextStates")
+	@ApiOperation(value = "Lấy danh sách Next State", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "userId", required = false) String userId,
+			@RequestParam(value = "processType", required = false) String processType,
+			@RequestParam(value = "currentState", required = false) State currentState,
+			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		if (nguoiDung != null) {
+			//Page<State> pageData = repo
+					//.findAll(donService.predicateFindAll(maDon, tuKhoa, vaiTro, xuLyRepo),pageable);
+			//return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
