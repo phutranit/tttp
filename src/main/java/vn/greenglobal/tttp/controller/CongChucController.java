@@ -250,6 +250,7 @@ public class CongChucController extends TttpController<CongChuc> {
 				} else {
 					NguoiDung nd = repoNguoiDung.findOne(congChuc.getNguoiDung().getId());
 					congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
+					congChuc.getNguoiDung().setSalkey(nd.getSalkey());
 				}
 				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
