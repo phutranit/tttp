@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -8,6 +10,7 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
 @Table(name = "wf_process")
@@ -26,6 +29,8 @@ public class Process extends Model<Process>{
 	private boolean owner;
 	@OneToOne
 	private Process cha;
+	@Enumerated(EnumType.STRING)
+	private ProcessTypeEnum processType;
 	
 	public String getTenQuyTrinh() {
 		return tenQuyTrinh;
