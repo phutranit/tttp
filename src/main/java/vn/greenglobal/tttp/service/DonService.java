@@ -98,7 +98,6 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
-			System.out.println("trangThaiDon " +trangThaiDon);
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
 
