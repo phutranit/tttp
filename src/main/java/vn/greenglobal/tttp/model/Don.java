@@ -876,7 +876,9 @@ public class Don extends Model<Don> {
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
 			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
+			if (xld.getThoiHanXuLy() != null) {
+				thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
+			}
 		}
 		return thoiHan;
 	}
