@@ -250,13 +250,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@ApiModelProperty(hidden = true)
 	public String getHuongXuLyText() {
+		if (getHuongXuLy() != null) {
+			huongXuLyText = getHuongXuLy().getText();
+		}
 		return huongXuLyText;
 	}
 
 	public void setHuongXuLyText(String huongXuLyText) {
-		if (huongXuLy != null) {
-			huongXuLyText = huongXuLy.getText();
-		}
 		this.huongXuLyText = huongXuLyText;
 	}
 
