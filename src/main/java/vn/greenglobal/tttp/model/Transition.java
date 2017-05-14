@@ -19,9 +19,12 @@ public class Transition extends Model<Transition>{
 	
 	@ManyToOne
 	private Process process;
-	
+	@ManyToOne
 	private State currentState;
+	@ManyToOne
 	private State nextState;
+	@ManyToOne
+	private Form form;
 	
 	public String getTen() {
 		return ten;
@@ -54,5 +57,12 @@ public class Transition extends Model<Transition>{
 	public void setNextState(State nextState) {
 		this.nextState = nextState;
 	}
-	
+
+	public Form getForm() {
+		return form;
+	}
+
+	public void setForm(Form form) {
+		this.form = form;
+	}
 }
