@@ -33,6 +33,7 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "don")
@@ -78,6 +79,8 @@ public class Don extends Model<Don> {
 	private Don donLanTruoc;
 	@ManyToOne
 	private CongChuc canBoXuLy;
+	@ManyToOne
+	private CongChuc canBoXuLyPhanHeXLD;
 	@NotNull
 	@ManyToOne
 	private LinhVucDonThu linhVucDonThu;
@@ -355,6 +358,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
+	}
+	
+	@ApiModelProperty(position = 11, example = "{}")
+	public CongChuc getCanBoXuLyPhanHeXLD() {
+		return canBoXuLyPhanHeXLD;
+	}
+
+	public void setCanBoXuLyPhanHeXLD(CongChuc canBoXuLyPhanHeXLD) {
+		this.canBoXuLyPhanHeXLD = canBoXuLyPhanHeXLD;
 	}
 
 	@ApiModelProperty(position = 16, example = "{}")
@@ -890,5 +902,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
 		return getThamQuyenGiaiQuyet();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public long getThoiHanXuLyDon() {
+		long thoiHan = 0;
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
+		}
+		return thoiHan;
 	}
 }
