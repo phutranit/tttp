@@ -11,12 +11,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
@@ -54,13 +56,36 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private String soQuyetDinhDinhChi;
 	
+	@NotNull
+	@ManyToOne
+	private State nextState;
+	@NotNull
+	@ManyToOne
+	private Form nextForm;
+	
 	@Transient
 	private Long soNgayXuLy;
 	
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}
+	
+	public State getNextState() {
+		return nextState;
+	}
+	
+	public void setNextState(State nextState) {
+		this.nextState = nextState;
+	}
 
+	public Form getNextForm() {
+		return nextForm;
+	}
+
+	public void setNextForm(Form nextForm) {
+		this.nextForm = nextForm;
+	}
+	
 	public void setSoNgayXuLy(long soNgayXuLy) { 
 		this.soNgayXuLy = soNgayXuLy;
 	}
