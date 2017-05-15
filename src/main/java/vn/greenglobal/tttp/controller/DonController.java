@@ -1,11 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
@@ -14,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,24 +35,31 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
-import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
-import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QSoTiepCongDan;
-import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.model.QProcess;
+import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
-import vn.greenglobal.tttp.util.ExcelUtil;
+import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -74,6 +79,28 @@ public class DonController extends TttpController<Don> {
 	@Autowired
 	private CongChucRepository congChucRepo;
 	
+	@Autowired
+	private ThamSoRepository repoThamSo;
+	
+	@Autowired
+	private ProcessRepository repoProcess;
+
+	@Autowired
+	private ThamSoService thamSoService;
+	
+	@Autowired
+	private TransitionRepository repoTransition;
+
+	@Autowired
+	private StateRepository repoState;
+	
+	@Autowired
+	private StateService serviceState;
+
+
+	@Autowired
+	protected PagedResourcesAssembler<State> assemblerState;
+		
 	@Autowired
 	private DonService donService;
 
@@ -115,6 +142,64 @@ public class DonController extends TttpController<Don> {
 							trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo),
 							pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/listNextStates")
+	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "nguoiTaoId", required = false) Long nguoiTaoId,
+			@RequestParam(value = "processType", required = true) String processType,
+			@RequestParam(value = "currentStateId", required = true) Long currentStateId,
+			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		if (nguoiDung != null) {
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			CongChuc congChuc = congChucRepo.findOne(congChucId);
+			
+			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true : congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
+			
+			BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
+			
+			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			CoQuanQuanLy donVi = null;
+			if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
+				if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+					donVi = congChuc.getCoQuanQuanLy().getCha();
+				} else {
+					donVi = congChuc.getCoQuanQuanLy();
+				}
+			}
+			System.out.println("VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))): " + VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro)));
+			processQuery = processQuery.and(QProcess.process.vaiTro.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
+			//processQuery = processQuery.and(QProcess.process.coQuanQuanLy.eq(donVi));
+			//processQuery = processQuery.and(QProcess.process.owner.eq(isOwner));
+			//processQuery = processQuery.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
+			
+			List<Process> listProcess = (List<Process>) repoProcess.findAll(processQuery);
+			
+			for (Process p : listProcess) {
+				System.out.println("process: " + p.getTenQuyTrinh() + "; " + p.getVaiTro().getLoaiVaiTro().toString() + "; " + p.getCoQuanQuanLy().getTen());
+			}
+			
+			Process process = repoProcess.findOne(processQuery);
+			
+			if (process == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+			} 
+			Page<State> pageData = repoState.findAll(serviceState.predicateFindAll(currentStateId, process, repoTransition),pageable);
+			return assemblerState.toResource(pageData, (ResourceAssembler) eass);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
