@@ -35,7 +35,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
-import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -47,7 +46,6 @@ import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
-import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -61,7 +59,6 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
-import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -119,7 +116,8 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			Pageable pageable, 
+			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
@@ -476,4 +474,32 @@ public class DonController extends TttpController<Don> {
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
+	
+	/*@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
+	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportExcel(HttpServletResponse response,
+			@RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "nguonDon", required = false) String nguonDon,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
+			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
+			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
+			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
+			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
+			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
+			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
+			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
+			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
+			@RequestParam(value = "vaiTro", required = true) String vaiTro) throws IOException {
+		
+		OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
+		
+		ExcelUtil.exportDanhSachXuLyDon(response,
+				"fileName", "sheetName", (List<Don>) repo.predicateFindAll(donService
+						.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+				"Danh sách sổ tiếp dân");
+	}*/
 }
