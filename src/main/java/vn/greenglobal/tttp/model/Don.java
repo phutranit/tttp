@@ -45,10 +45,10 @@ public class Don extends Model<Don> {
 	private String ma = "";
 	@NotBlank
 	@Lob
-	private String noiDung = "";
+	private String noiDung = " ";
 	private String yeuCauCuaCongDan = "";
 	@Lob
-	private String huongGiaiQuyetDaThucHien = "";
+	private String huongGiaiQuyetDaThucHien = " ";
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
@@ -195,7 +195,11 @@ public class Don extends Model<Don> {
 	}
 
 	public void setNoiDung(String noiDung) {
-		this.noiDung = noiDung;
+		if (noiDung != null && noiDung.length() == 0) {
+			this.noiDung = " ";
+		} else {
+			this.noiDung = noiDung;
+		}		
 	}
 
 	public String getYeuCauCuaCongDan() {
@@ -306,7 +310,11 @@ public class Don extends Model<Don> {
 	}
 
 	public void setHuongGiaiQuyetDaThucHien(String huongGiaiQuyetDaThucHien) {
-		this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		if (huongGiaiQuyetDaThucHien != null && huongGiaiQuyetDaThucHien.length() == 0) {
+			this.huongGiaiQuyetDaThucHien = " ";
+		} else {
+			this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		}
 	}
 
 	@ApiModelProperty(position = 17)
