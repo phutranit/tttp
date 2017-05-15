@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -49,6 +50,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
+	@Lob
 	private String noiDungTiepCongDan = "";
 	private String ketQuaGiaiQuyet = "";
 	@ManyToOne
@@ -61,6 +63,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
+	@Lob
 	private String noiDungBoSung = "";
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
