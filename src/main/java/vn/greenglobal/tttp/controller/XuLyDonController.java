@@ -130,7 +130,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 						}
 						xuLyDonHienTai.setGhiChu(note);
+						//set don
+						Don don = donRepo.findOne(donId);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 						Utils.save(repo, xuLyDonHienTai, congChucId);
+						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} 
 					/*else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.DINH_CHI)) {
@@ -154,6 +158,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 						don.setHuongXuLyXLD(huongXuLyXLD);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 						
 						xuLyDonTiepTheo.setDon(don);
 						xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanTiepNhan());
@@ -165,7 +170,54 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						Utils.save(repo, xuLyDonHienTai, congChucId);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-					} 
+					} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
+						//van thu tra don
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+						don.setHuongXuLyXLD(huongXuLyXLD);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
+						xuLyDonTiepTheo.setDon(don);
+						xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
+						xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+						xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+						xuLyDonTiepTheo.setDaXoa(true);
+						xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
+						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						Utils.save(donRepo, don, congChucId);
+						Utils.save(repo, xuLyDonHienTai, congChucId);
+						return  Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					}
+					
+					//Hoan thanh
+					else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
+						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						
+						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+						don.setHuongXuLyXLD(huongXuLyXLD);
+						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
+						don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
+						Utils.save(donRepo, don, congChucId);
+						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
+							|| huongXuLyXLD.equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)
+							|| huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)) {
+						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						
+						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
+						Utils.save(donRepo, don, congChucId);
+						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					}
 				} else if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.CHUYEN_VIEN.name())) {
 
 					// vai tro CHUYEN_VIEN
