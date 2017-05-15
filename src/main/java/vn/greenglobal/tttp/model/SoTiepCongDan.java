@@ -51,7 +51,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
 	@Lob
-	private String noiDungTiepCongDan = "";
+	private String noiDungTiepCongDan = " ";
 	private String ketQuaGiaiQuyet = "";
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;
@@ -64,7 +64,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
 	@Lob
-	private String noiDungBoSung = "";
+	private String noiDungBoSung = " ";
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
 	
@@ -167,7 +167,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungTiepCongDan(String noiDungTiepCongDan) {
-		this.noiDungTiepCongDan = noiDungTiepCongDan;
+		if (noiDungTiepCongDan != null && noiDungTiepCongDan.length() == 0) {
+			this.noiDungTiepCongDan = " ";
+		} else {
+			this.noiDungTiepCongDan = noiDungTiepCongDan;
+		}
 	}
 
 	public String getKetQuaGiaiQuyet() {
@@ -208,7 +212,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungBoSung(String noiDungBoSung) {
-		this.noiDungBoSung = noiDungBoSung;
+		if (noiDungBoSung != null && noiDungBoSung.length() == 0) {
+			this.noiDungBoSung = " ";
+		} else {
+			this.noiDungBoSung = noiDungBoSung;
+		}
 	}
 
 	public String getDiaDiemGapLanhDao() {
