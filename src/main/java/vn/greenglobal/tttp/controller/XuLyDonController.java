@@ -246,7 +246,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 						}
 						xuLyDonHienTai.setGhiChu(note);
+						//set don
+						Don don = donRepo.findOne(donId);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
 						Utils.save(repo, xuLyDonHienTai, congChucId);
+						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU)) {
 
@@ -265,6 +270,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 							don.setNgayLapDonGapLanhDaoTmp(xuLyDon.getNgayHenGapLanhDao());
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
 							xuLyDonHienTai.setGhiChu(note);
 							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
@@ -293,7 +300,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
 							xuLyDonHienTai.setGhiChu(note);
+							//set don
+							Don don = donRepo.findOne(donId);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
 							Utils.save(repo, xuLyDonHienTai, congChucId);
+							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
 
@@ -320,7 +332,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
 							xuLyDonHienTai.setGhiChu(note);
+							//set don
+							Don don = donRepo.findOne(donId);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
 							Utils.save(repo, xuLyDonHienTai, congChucId);
+							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
 								|| huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
@@ -347,7 +364,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							}
 							xuLyDonHienTai.setGhiChu(note);
+							//set don
+							Don don = donRepo.findOne(donId);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
 							Utils.save(repo, xuLyDonHienTai, congChucId);
+							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
 							//van thu tra don
@@ -371,8 +393,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setDonChuyen(true);
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 							xuLyDonHienTai.setGhiChu(note);
+							//set don
+							Don don = donRepo.findOne(donId);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 							
 							Utils.save(repo, xuLyDonHienTai, congChucId);
+							Utils.save(donRepo, don, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						}
 					}
@@ -404,7 +430,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 						}
 						xuLyDonHienTai.setGhiChu(note);
+						//set don
+						Don don = donRepo.findOne(donId);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
 						Utils.save(repo, xuLyDonHienTai, congChucId);
+						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.GIAO_VIEC)) {
 
@@ -430,7 +461,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 						}
 						xuLyDonHienTai.setGhiChu(note);
+						//set don
+						Don don = donRepo.findOne(donId);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
 						Utils.save(repo, xuLyDonHienTai, congChucId);
+						Utils.save(donRepo, don, congChucId);
 						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
@@ -478,7 +514,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 						}
 						xuLyDonHienTai.setGhiChu(note);
+						//set don
+						Don don = donRepo.findOne(donId);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
 						Utils.save(repo, xuLyDonHienTai, congChucId);
+						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
 					/*else if (quyTrinhXuLy.equals(QuyTrinhXuLyDonEnum.DINH_CHI)) {
@@ -539,6 +580,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 						don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 						don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
@@ -547,6 +590,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 						don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
@@ -559,6 +603,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setDaXoa(true);
 						xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
 						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 						Utils.save(donRepo, don, congChucId);
 						Utils.save(repo, xuLyDonHienTai, congChucId);
 						return  Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
@@ -614,6 +659,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					don.setLyDoDinhChi(xuLyDon.getyKienXuLy());
 					don.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 					don.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
+					don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 					Utils.save(donRepo, don, congChucId);
 					return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 				}
@@ -630,8 +676,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
 	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuDeXuatThuLy(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
@@ -641,14 +685,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("diaChi", diaChi);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai")
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLy(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChi", required = false) String diaChi,
@@ -661,14 +703,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("lyDoDinhChi", lyDoDinhChi);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai")
 	@ApiOperation(value = "In phiếu trả đơn và hướng dẫn khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordKhieuNaiTraDonVaHuongDan(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
@@ -680,14 +720,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh")
 	@ApiOperation(value = "In phiếu chuyển đơn kiến nghị phản ánh", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordChuyenDonKienNghiPhanAnh(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChi", required = false) String diaChi,
@@ -701,15 +739,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx",
-				mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonToCao")
 	@ApiOperation(value = "In phiếu chuyển đơn tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordChuyenDonToCao(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChi", required = false) String diaChi,
@@ -723,6 +758,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 	}
 }

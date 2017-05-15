@@ -18,8 +18,8 @@ public enum ApiErrorEnum {
 	EMAIL_INVALID("Trường email không đúng định dạng!"),
 	
 	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
-	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!");
-	
+	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!"),
+	PROCESS_NOT_FOUND("Không tìm thấy process!");
 	
 	
 	

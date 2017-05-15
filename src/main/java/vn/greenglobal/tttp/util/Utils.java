@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.util;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,18 +8,14 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.reflections.Reflections;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,15 +25,14 @@ import org.springframework.http.ResponseEntity;
 
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 
 public class Utils {
-	
+
 	private static final int SATURDAY = 6;
-    private static final int SUNDAY = 7;
-	
+	private static final int SUNDAY = 7;
+
 	public static void copyValues(Model<?> source, Model<?> target, Iterable<String> properties) {
 		BeanWrapper src = new BeanWrapperImpl(source);
 		BeanWrapper trg = new BeanWrapperImpl(target);
@@ -63,11 +57,17 @@ public class Utils {
 		ConstraintViolation<?> vio = e.getConstraintViolations().iterator().next();
 		System.out.println("returnError -> " + vio);
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+					vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+					vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL!");
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+					vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
 	}
 
@@ -84,7 +84,8 @@ public class Utils {
 				return returnError((ConstraintViolationException) e.getCause());
 			if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause().getCause());
-			if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+			if (e.getCause() != null && e.getCause().getCause() != null
+					&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
 				return returnError((ConstraintViolationException) e.getCause().getCause());
 			throw e;
 		}
@@ -159,7 +160,8 @@ public class Utils {
 		// Fix tuNgay
 		ZonedDateTime zdt = ZonedDateTime.parse(tuNgayCurrent);
 		LocalDateTime tuNgay = zdt.toLocalDateTime();
-		tuNgay = LocalDateTime.of(LocalDate.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth()), LocalTime.MIN);
+		tuNgay = LocalDateTime.of(LocalDate.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth()),
+				LocalTime.MIN);
 		return tuNgay;
 	}
 
@@ -167,40 +169,47 @@ public class Utils {
 		// Fix denNgay
 		ZonedDateTime zdt = ZonedDateTime.parse(denNgayCurrent);
 		LocalDateTime denNgay = zdt.toLocalDateTime();
-		denNgay = LocalDateTime.of(LocalDate.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth()), LocalTime.MAX);
+		denNgay = LocalDateTime.of(LocalDate.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth()),
+				LocalTime.MAX);
 		return denNgay;
 	}
 
-	public static LocalDateTime convertNumberToLocalDateTime (LocalDateTime ngayBatDau, Long soNgayXuLy) {
-		long i = 1; 
+	public static LocalDateTime convertNumberToLocalDateTime(LocalDateTime ngayBatDau, Long soNgayXuLy) {
+		long i = 1;
+
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		while (i < soNgayXuLy) {
 			ngayKetThuc = ngayKetThuc.plusDays(1);
 			if (ngayKetThuc.getDayOfWeek().getValue() == SATURDAY || ngayKetThuc.getDayOfWeek().getValue() == SUNDAY) {
 				continue;
-			} 
+			}
 			i++;
 		}
-		ngayKetThuc = LocalDateTime.of(LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()), LocalTime.MAX);
+		ngayKetThuc = LocalDateTime.of(
+				LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
+				LocalTime.MAX);
 		return ngayKetThuc;
 	}
 
-	public static Long convertLocalDateTimeToNumber (LocalDateTime ngayKetThuc) {
+	public static Long convertLocalDateTimeToNumber(LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
 		LocalDateTime ngayHienTai = LocalDateTime.now();
-		ngayHienTai = LocalDateTime.of(LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()), LocalTime.MAX);
-		while (ngayHienTai.compareTo(ngayKetThuc) != 0) {
+		ngayHienTai = LocalDateTime.of(
+				LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()),
+				LocalTime.MAX);
+		int check = ngayHienTai.compareTo(ngayKetThuc);
+		while (check < 0) {
 			ngayHienTai = ngayHienTai.plusDays(1);
+			check += ngayHienTai.compareTo(ngayKetThuc);
 			if (ngayHienTai.getDayOfWeek().getValue() == SATURDAY || ngayHienTai.getDayOfWeek().getValue() == SUNDAY) {
 				continue;
-			} 
+			}
 			soNgayXuLy++;
 		}
-		
+		System.out.println("soNgayXuLy " +soNgayXuLy);
 		return soNgayXuLy;
 	}
 
-	@FlowMethodCollection
 	public static NguoiDung quyenValidate(ProfileUtils profileUtil, String authorization, QuyenEnum quyen) {
 		NguoiDung nguoiDung = profileUtil.getUserInfo(authorization);
 		if (nguoiDung != null && nguoiDung.checkQuyen(quyen)) {
@@ -209,22 +218,23 @@ public class Utils {
 		return null;
 	}
 	
-	public static List<Method> getMethodsAnnotatedWith(final Class<?> ...types) {
-	    final List<Method> methods = new ArrayList<Method>();
-	    for (Class<?> clasz : types) {
-	    	Class<?> klass = clasz;
-	 	    final List<Method> allMethods = new ArrayList<Method>(Arrays.asList(klass.getDeclaredMethods()));      
-	 	    for (final Method method : allMethods) {
-	             if (method.isAnnotationPresent(FlowMethodCollection.class)) {
-	                 methods.add(method);
-	             }
-	         }
+	public static List<Method> getMethodsAnnotatedWith(final Class<?>... types) {
+		final List<Method> methods = new ArrayList<Method>();
+		for (Class<?> clasz : types) {
+			Class<?> klass = clasz;
+			final List<Method> allMethods = new ArrayList<Method>(Arrays.asList(klass.getDeclaredMethods()));
+			for (final Method method : allMethods) {
+				if (method.isAnnotationPresent(FlowMethodCollection.class)) {
+					methods.add(method);
+				}
+			}
 		}
-	    return methods;
+		return methods;
 	}
 	
-	/*public static void main(String[] args) {
-		getMethodsAnnotatedWith(Utils.class);
-		getMethodsAnnotatedWith(new Class<?>[] { Utils.class, Don.class});
-	}*/
+	/*
+	 * public static void main(String[] args) {
+	 * getMethodsAnnotatedWith(Utils.class); getMethodsAnnotatedWith(new
+	 * Class<?>[] { Utils.class, Don.class}); }
+	 */
 }

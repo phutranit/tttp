@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +14,8 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,7 +31,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.medial.Medial_DonCongDan;
+import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Delete;
+import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Post_Patch;
+import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.util.Utils;
@@ -41,6 +51,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 	@Autowired
 	private DonCongDanService donCongDanService;
+
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
 		super(repo);
@@ -60,7 +73,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/donCongDans")
-	@ApiOperation(value = "Thêm mới Quan hệ giữa Đơn và Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Thêm mới quan hệ giữa Đơn và Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class),
 			@ApiResponse(code = 201, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
@@ -69,6 +82,42 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		return Utils.doSave(repo, donCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.POST, value = "/donCongDans/multi")
+	@ApiOperation(value = "Thêm mới nhiều quan hệ giữa Đơn và Công Dân", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới nhiều quan hệ giữa Đơn và Công Dân thành công", response = Medial_DonCongDan_Post_Patch.class),
+			@ApiResponse(code = 201, message = "Thêm mới nhiều quan hệ giữa Đơn và Công Dân thành công", response = Medial_DonCongDan_Post_Patch.class) })
+	public ResponseEntity<Object> createMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getDonCongDans().size() > 0) {
+						for (Don_CongDan donCongDan : params.getDonCongDans()) {
+							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							if (congDan != null) {
+								donCongDan.getCongDan().setId(congDan.getId());
+								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil
+										.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDonCongDans().add(dcd);
+							}
+						}
+					}
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+				}
+			});
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans/{id}")
@@ -86,9 +135,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/donCongDans/{id}")
-	@ApiOperation(value = "Cập nhật Quan hệ giữa Đơn và Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Cập nhật quan hệ giữa Đơn và Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Cập nhật Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
+			@ApiResponse(code = 200, message = "Cập nhật quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public @ResponseBody ResponseEntity<Object> update(@RequestBody Don_CongDan donCongDan,
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
@@ -101,6 +150,39 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		return Utils.doSave(repo, donCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.PATCH, value = "/donCongDans/multi")
+	@ApiOperation(value = "Cập nhật nhiều quan hệ giữa Đơn và Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật nhiều quan hệ giữa Đơn và Công Dân thành công", response = Medial_DonCongDan_Post_Patch.class) })
+	public @ResponseBody ResponseEntity<Object> updateMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getDonCongDans().size() > 0) {
+						for (Don_CongDan donCongDan : params.getDonCongDans()) {
+							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							if (congDan != null) {
+								donCongDan.getCongDan().setId(congDan.getId());
+								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil
+										.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDonCongDans().add(dcd);
+							}
+						}
+					}
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+				}
+			});
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
@@ -117,4 +199,28 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/multi")
+	@ApiOperation(value = "Xoá nhiều quan hệ giữa Đơn và Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá nhiều quan hệ giữa Đơn và Công Dân thành công") })
+	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_DonCongDan_Delete params) {
+		
+		List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
+		if (params != null && params.getDonCongDans().size() > 0) {
+			for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
+				Don_CongDan dcd = repo.findOne(donCongDanService.predicateFindOne(donCongDan.getId()));
+				if (dcd == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				}
+				listDelete.add(dcd);
+			}
+			for (Don_CongDan donCongDan : listDelete) {
+				repo.delete(donCongDan);
+			}
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
 }

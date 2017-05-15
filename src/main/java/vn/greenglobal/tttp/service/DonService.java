@@ -42,6 +42,8 @@ public class DonService {
 		return predAll;
 	}
 	
+	
+	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
@@ -66,7 +68,7 @@ public class DonService {
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
-
+		
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			predAll = predAll.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
@@ -98,7 +100,7 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDon))));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
 
 		if (coQuanTiepNhanXLD != null) {

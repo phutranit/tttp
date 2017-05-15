@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -49,7 +50,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-	private String noiDungTiepCongDan = "";
+	@Lob
+	private String noiDungTiepCongDan = " ";
 	private String ketQuaGiaiQuyet = "";
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;
@@ -61,7 +63,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
-	private String noiDungBoSung = "";
+	@Lob
+	private String noiDungBoSung = " ";
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
 	
@@ -164,7 +167,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungTiepCongDan(String noiDungTiepCongDan) {
-		this.noiDungTiepCongDan = noiDungTiepCongDan;
+		if (noiDungTiepCongDan != null && noiDungTiepCongDan.length() == 0) {
+			this.noiDungTiepCongDan = " ";
+		} else {
+			this.noiDungTiepCongDan = noiDungTiepCongDan;
+		}
 	}
 
 	public String getKetQuaGiaiQuyet() {
@@ -205,7 +212,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungBoSung(String noiDungBoSung) {
-		this.noiDungBoSung = noiDungBoSung;
+		if (noiDungBoSung != null && noiDungBoSung.length() == 0) {
+			this.noiDungBoSung = " ";
+		} else {
+			this.noiDungBoSung = noiDungBoSung;
+		}
 	}
 
 	public String getDiaDiemGapLanhDao() {
@@ -250,13 +261,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@ApiModelProperty(hidden = true)
 	public String getHuongXuLyText() {
+		if (getHuongXuLy() != null) {
+			huongXuLyText = getHuongXuLy().getText();
+		}
 		return huongXuLyText;
 	}
 
 	public void setHuongXuLyText(String huongXuLyText) {
-		if (huongXuLy != null) {
-			huongXuLyText = huongXuLy.getText();
-		}
 		this.huongXuLyText = huongXuLyText;
 	}
 

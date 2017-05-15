@@ -7,23 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "coquantochuctiepdan")
+@Table(name = "wf_form")
 @ApiModel
-public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
+public class Form extends Model<Form> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4101233843699537605L;
+	private static final long serialVersionUID = -3975638610686661750L;
 
+	@NotBlank
 	private String ten = "";
-	private String nguoiDaiDien = "";
-	private String chucVu = "";
+	@NotBlank
+	private String alias = "";
 
+	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
 	}
@@ -32,28 +36,22 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		this.ten = ten;
 	}
 
-	public String getNguoiDaiDien() {
-		return nguoiDaiDien;
+	@ApiModelProperty(position = 2, required = true)
+	public String getAlias() {
+		return alias;
 	}
 
-	public void setNguoiDaiDien(String nguoiDaiDien) {
-		this.nguoiDaiDien = nguoiDaiDien;
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
-	public String getChucVu() {
-		return chucVu;
-	}
-
-	public void setChucVu(String chucVu) {
-		this.chucVu = chucVu;
-	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getCoQuanToChucTiepDanId() {
+	public Long getFormId() {
 		return getId();
 	}
-
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {

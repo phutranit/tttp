@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -30,8 +31,10 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "don")
@@ -41,9 +44,11 @@ public class Don extends Model<Don> {
 
 	private String ma = "";
 	@NotBlank
-	private String noiDung = "";
+	@Lob
+	private String noiDung = " ";
 	private String yeuCauCuaCongDan = "";
-	private String huongGiaiQuyetDaThucHien = "";
+	@Lob
+	private String huongGiaiQuyetDaThucHien = " ";
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
@@ -77,6 +82,8 @@ public class Don extends Model<Don> {
 	private Don donLanTruoc;
 	@ManyToOne
 	private CongChuc canBoXuLy;
+	@ManyToOne
+	private CongChuc canBoXuLyPhanHeXLD;
 	@NotNull
 	@ManyToOne
 	private LinhVucDonThu linhVucDonThu;
@@ -147,6 +154,13 @@ public class Don extends Model<Don> {
 	private DonViHanhChinh phuongXaCoQuanBKT;
 	@ManyToOne
 	private ToDanPho toDanPhoCoQuanBKT;
+	
+	@ManyToOne
+	private State currentState;
+	@Enumerated(EnumType.STRING)
+	private ProcessTypeEnum processType;
+	@ManyToOne
+	private Form currentForm;
 
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
@@ -181,7 +195,11 @@ public class Don extends Model<Don> {
 	}
 
 	public void setNoiDung(String noiDung) {
-		this.noiDung = noiDung;
+		if (noiDung != null && noiDung.length() == 0) {
+			this.noiDung = " ";
+		} else {
+			this.noiDung = noiDung;
+		}		
 	}
 
 	public String getYeuCauCuaCongDan() {
@@ -292,7 +310,11 @@ public class Don extends Model<Don> {
 	}
 
 	public void setHuongGiaiQuyetDaThucHien(String huongGiaiQuyetDaThucHien) {
-		this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		if (huongGiaiQuyetDaThucHien != null && huongGiaiQuyetDaThucHien.length() == 0) {
+			this.huongGiaiQuyetDaThucHien = " ";
+		} else {
+			this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		}
 	}
 
 	@ApiModelProperty(position = 17)
@@ -347,6 +369,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
+	}
+	
+	@ApiModelProperty(position = 11, example = "{}")
+	public CongChuc getCanBoXuLyPhanHeXLD() {
+		return canBoXuLyPhanHeXLD;
+	}
+
+	public void setCanBoXuLyPhanHeXLD(CongChuc canBoXuLyPhanHeXLD) {
+		this.canBoXuLyPhanHeXLD = canBoXuLyPhanHeXLD;
 	}
 
 	@ApiModelProperty(position = 16, example = "{}")
@@ -602,6 +633,33 @@ public class Don extends Model<Don> {
 		}
 		return donCongDan;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	public State getCurrentState() {
+		return currentState;
+	}
+
+	public void setCurrentState(State currentState) {
+		this.currentState = currentState;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public ProcessTypeEnum getProcessType() {
+		return processType;
+	}
+
+	public void setProcessType(ProcessTypeEnum processType) {
+		this.processType = processType;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public Form getCurrentForm() {
+		return currentForm;
+	}
+
+	public void setCurrentForm(Form currentForm) {
+		this.currentForm = currentForm;
+	}
 
 	@ApiModelProperty(hidden = true)
 	public int getTongSoLuotTCD() {
@@ -721,8 +779,12 @@ public class Don extends Model<Don> {
 	public Map<String, Object> getCoQuanDaGiaiQuyetDon() {
 		if (getCoQuanDaGiaiQuyet() != null) {
 			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapCapCoQuanQuanLy = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
+			mapCapCoQuanQuanLy.put("capCoQuanQuanLyId", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getId() : "");
+			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ?  getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen() : "");
+			map.put("capCoQuanQuanLyInfo", mapCapCoQuanQuanLy);
 			return map;
 		}
 		return null;
@@ -845,5 +907,25 @@ public class Don extends Model<Don> {
 
 	public void setNguonDonText(String nguonDonText) {
 		this.nguonDonText = nguonDonText;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
+		return getThamQuyenGiaiQuyet();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public long getThoiHanXuLyDon() {
+		long thoiHan = 0;
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			if (xld.getThoiHanXuLy() != null) {
+				thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
+			}
+		}
+		return thoiHan;
 	}
 }

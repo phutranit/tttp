@@ -284,8 +284,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHen")
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWord(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+	public void exportWord(@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
 			@RequestParam(value = "noiCap", required = false) String noiCap,
@@ -304,7 +303,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		mappings.put("diaDiemTiepCongDan", diaDiemTiepCongDan);
 		mappings.put("thoiGianTiepCongDan", thoiGianTiepCongDan);
 		mappings.put("ngayHenTiepCongDan", ngayHenTiepCongDan);
-		WordUtil.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HEN.doc").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")

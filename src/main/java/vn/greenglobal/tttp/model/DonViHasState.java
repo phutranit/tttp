@@ -4,54 +4,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
-@Table(name = "coquantochuctiepdan")
+@Table(name = "wf_donvi_has_state")
 @ApiModel
-public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
+public class DonViHasState extends Model<DonViHasState> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4101233843699537605L;
+	private static final long serialVersionUID = -3975638610686661750L;
 
-	private String ten = "";
-	private String nguoiDaiDien = "";
-	private String chucVu = "";
-
-	public String getTen() {
-		return ten;
+	@ManyToOne
+	private CoQuanQuanLy coQuanQuanLy;
+	@ManyToOne
+	private State state;
+	@Enumerated(EnumType.STRING)
+	private ProcessTypeEnum processType;
+	private int soThuTu;
+	
+	public CoQuanQuanLy getCoQuanQuanLy() {
+		return coQuanQuanLy;
 	}
 
-	public void setTen(String ten) {
-		this.ten = ten;
+	public void setCoQuanQuanLy(CoQuanQuanLy coQuanQuanLy) {
+		this.coQuanQuanLy = coQuanQuanLy;
 	}
 
-	public String getNguoiDaiDien() {
-		return nguoiDaiDien;
+	public State getState() {
+		return state;
 	}
 
-	public void setNguoiDaiDien(String nguoiDaiDien) {
-		this.nguoiDaiDien = nguoiDaiDien;
+	public void setState(State state) {
+		this.state = state;
 	}
 
-	public String getChucVu() {
-		return chucVu;
+	public ProcessTypeEnum getProcessType() {
+		return processType;
 	}
 
-	public void setChucVu(String chucVu) {
-		this.chucVu = chucVu;
+	public void setProcessType(ProcessTypeEnum processType) {
+		this.processType = processType;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getCoQuanToChucTiepDanId() {
-		return getId();
+	public int getSoThuTu() {
+		return soThuTu;
+	}
+
+	public void setSoThuTu(int soThuTu) {
+		this.soThuTu = soThuTu;
 	}
 
 	@Transient

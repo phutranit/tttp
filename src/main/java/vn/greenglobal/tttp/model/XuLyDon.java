@@ -106,7 +106,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 	
 	@Lob
-	private String ghiChu = "";
+	private String ghiChu = " ";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
 	private String noiDungYeuCauXuLy = "";
@@ -202,7 +202,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	public void setGhiChu(String ghiChu) {
-		this.ghiChu = ghiChu;
+		if (ghiChu != null && ghiChu.length() ==0) {
+			this.ghiChu = " ";
+		} else {
+			this.ghiChu = ghiChu;
+		}
 	}
 
 	@ApiModelProperty(position = 4)
