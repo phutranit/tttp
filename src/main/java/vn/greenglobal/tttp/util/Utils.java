@@ -206,7 +206,7 @@ public class Utils {
 			}
 			soNgayXuLy++;
 		}
-		
+		System.out.println("soNgayXuLy " +soNgayXuLy);
 		return soNgayXuLy;
 	}
 
