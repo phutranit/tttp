@@ -197,14 +197,16 @@ public class Utils {
 		ngayHienTai = LocalDateTime.of(
 				LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()),
 				LocalTime.MAX);
-		while (ngayHienTai.compareTo(ngayKetThuc) != 0) {
+		int check = ngayHienTai.compareTo(ngayKetThuc);
+		while (check < 0) {
 			ngayHienTai = ngayHienTai.plusDays(1);
+			check += ngayHienTai.compareTo(ngayKetThuc);
 			if (ngayHienTai.getDayOfWeek().getValue() == SATURDAY || ngayHienTai.getDayOfWeek().getValue() == SUNDAY) {
 				continue;
 			}
 			soNgayXuLy++;
 		}
-
+		
 		return soNgayXuLy;
 	}
 
