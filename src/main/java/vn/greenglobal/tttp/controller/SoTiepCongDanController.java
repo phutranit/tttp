@@ -303,7 +303,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		mappings.put("diaDiemTiepCongDan", diaDiemTiepCongDan);
 		mappings.put("thoiGianTiepCongDan", thoiGianTiepCongDan);
 		mappings.put("ngayHenTiepCongDan", ngayHenTiepCongDan);
-		WordUtil.exportWord(response, "word/tiepcongdan/TCD_PHIEU_HEN.doc", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HEN.doc").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
