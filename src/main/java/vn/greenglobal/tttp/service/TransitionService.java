@@ -11,6 +11,7 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
@@ -24,6 +25,17 @@ public class TransitionService {
 
 	BooleanExpression base = QTransition.transition.daXoa.eq(false);
 
+	public Predicate predicatePrivileged(State currentState, State nextState, Process process) {
+		BooleanExpression predAll = base;
+		
+		predAll = predAll
+				.and(QTransition.transition.process.eq(process))
+				.and(QTransition.transition.currentState.eq(currentState))
+				.and(QTransition.transition.currentState.eq(nextState));
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(long congChucId, long nguoiTaoId, String vaiTro, String processType, 
 			State currentState, CongChucRepository congChucRepo, ProcessRepository processRepo, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
 		BooleanExpression predAll = base;
@@ -48,9 +60,9 @@ public class TransitionService {
 			.and(QProcess.process.owner.eq(isOwner))
 			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
 		
-		vn.greenglobal.tttp.model.Process process = processRepo.findOne(processQuery);
+		Process process = processRepo.findOne(processQuery);
 		
-		predAll.and(QTransition.transition.process.eq(process)).and(QTransition.transition.currentState.eq(currentState));
+		predAll = predAll.and(QTransition.transition.process.eq(process)).and(QTransition.transition.currentState.eq(currentState));
 		return predAll;
 	}
 

@@ -42,6 +42,7 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -49,10 +50,12 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.util.WordUtil;
@@ -71,6 +74,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@Autowired
 	private DonRepository donRepo;
+	
+	@Autowired
+	private TransitionRepository transitionRepo;
+	
+	@Autowired
+	private TransitionService transitionService;
 	
 	@Autowired
 	private ThamSoRepository repoThamSo;
@@ -122,7 +131,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 			}
 			
+			Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), xuLyDon.getNextState(), process));
 			
+			if (transition == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+						ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+			}
 			
 			XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
 			

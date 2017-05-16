@@ -16,11 +16,10 @@ public enum ApiErrorEnum {
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
 	EMAIL_INVALID("Trường email không đúng định dạng!"),
-	
 	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!"),
-	PROCESS_NOT_FOUND("Không tìm thấy process!");
-	
+	PROCESS_NOT_FOUND("Không tìm thấy process!"),
+	TRANSITION_FORBIDDEN("Quy trình không đúng!");
 	
 	
 	
