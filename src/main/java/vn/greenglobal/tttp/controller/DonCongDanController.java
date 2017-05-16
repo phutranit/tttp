@@ -208,14 +208,14 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
 		if (params != null && params.getDonCongDans().size() > 0) {
 			for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
-				Don_CongDan dcd = repo.findOne(donCongDanService.predicateFindOne(donCongDan.getId()));
+				Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
 				if (dcd == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				listDelete.add(dcd);
 			}
 			for (Don_CongDan donCongDan : listDelete) {
-				repo.delete(donCongDan);
+				Utils.save(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		
