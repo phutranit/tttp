@@ -98,7 +98,7 @@ public class XuLyDonFunctions {
 	
 	
 	//van thu >> ket thuc : chuyenDon
-	public XuLyDon vanThuChuyenDon(XuLyDon xuLyDon, Long congChucId) {
+	public static XuLyDon vanThuChuyenDon(XuLyDon xuLyDon, Long congChucId) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
@@ -688,7 +688,7 @@ public class XuLyDonFunctions {
 		return xuLyDonHienTai;
 	}
 	
-	public XuLyDon vanThuTraLaiDonKhongDungThamQuyen(XuLyDon xuLyDon, String note, Long congChucId) {
+	public static XuLyDon vanThuTraLaiDonKhongDungThamQuyen(XuLyDon xuLyDon, Long congChucId) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
@@ -708,7 +708,7 @@ public class XuLyDonFunctions {
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
-		return xuLyDonHienTai;
+		return xuLyDonTiepTheo;
 	}
 	
 	/*public XuLyDon vanThuTraLaiDonKhongDungThamQuyen(XuLyDon xuLyDon, String note, Long congChucId) {

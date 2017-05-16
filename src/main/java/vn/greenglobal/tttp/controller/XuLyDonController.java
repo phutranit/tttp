@@ -70,7 +70,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		super(repo);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons2")
+	@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons")
 	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
@@ -132,7 +132,32 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else if (FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.equals(nextState)) {
 					
 				} else if (FlowStateEnum.KET_THUC.equals(nextState)) {
-					
+					HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
+					if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.vanThuChuyenDon(xuLyDonHienTai, congChucId);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.equals(huongXuLyXLD) && xuLyDonHienTai.isDonChuyen()) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.vanThuTraLaiDonKhongDungThamQuyen(xuLyDonHienTai, congChucId);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
+						xuLyDonHienTai = XuLyDonFunctions.vanThuTraLaiDonKhongDungThamQuyen(xuLyDonHienTai, congChucId);
+						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD) 
+							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						
+						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+						don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
+						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						
+						Utils.save(donRepo, don, congChucId);
+						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					} 
 				}
 			}
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -143,7 +168,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 	
-		@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons")
+		@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons2")
 		@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 		@ApiResponses(value = {
 				@ApiResponse(code = 202, message = "Thêm quy trình xử lý đơn thành công", response = XuLyDon.class) })
@@ -245,7 +270,54 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							Utils.save(donRepo, don, congChucId);
 							Utils.save(repo, xuLyDonHienTai, congChucId);
 							return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-						} 
+						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) && xuLyDonHienTai.isDonChuyen()) {
+							//van thu tra don
+							XuLyDon xuLyDonTiepTheo = new XuLyDon();
+							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+							don.setHuongXuLyXLD(huongXuLyXLD);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
+							xuLyDonTiepTheo.setDon(don);
+							xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
+							xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+							xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+							xuLyDonTiepTheo.setDaXoa(true);
+							xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
+							don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							Utils.save(donRepo, don, congChucId);
+							Utils.save(repo, xuLyDonHienTai, congChucId);
+							return  Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						}
+						
+						//Hoan thanh
+						else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
+							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+							
+							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+							don.setHuongXuLyXLD(huongXuLyXLD);
+							don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+							don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
+							don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
+							Utils.save(donRepo, don, congChucId);
+							return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+						} else if (huongXuLyXLD.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
+								|| huongXuLyXLD.equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)
+								|| huongXuLyXLD.equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)) {
+							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+							
+							Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
+							don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+							don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
+							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+							
+							Utils.save(donRepo, don, congChucId);
+							return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+						}
 					} else if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.CHUYEN_VIEN.name())) {
 
 						// vai tro CHUYEN_VIEN
