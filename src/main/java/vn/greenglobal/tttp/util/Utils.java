@@ -24,9 +24,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.ThamSo;
 
 public class Utils {
 
@@ -237,4 +239,15 @@ public class Utils {
 	 * getMethodsAnnotatedWith(Utils.class); getMethodsAnnotatedWith(new
 	 * Class<?>[] { Utils.class, Don.class}); }
 	 */
+	
+	public static CoQuanQuanLy getDonViByCongChuc(CongChuc congChuc, ThamSo thamSo) {
+		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+				return congChuc.getCoQuanQuanLy().getCha();
+			} else {
+				return congChuc.getCoQuanQuanLy();
+			}
+		}
+		return null;
+	}
 }

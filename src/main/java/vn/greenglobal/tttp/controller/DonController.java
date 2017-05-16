@@ -35,6 +35,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -57,6 +58,7 @@ import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.model.Process;
@@ -87,6 +89,9 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@Autowired
+	private ProcessService processService;
 	
 	@Autowired
 	private TransitionRepository repoTransition;
@@ -168,31 +173,10 @@ public class DonController extends TttpController<Don> {
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 			
 			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true : congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
+						
+			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
 			
-			BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
-			
-			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
-			CoQuanQuanLy donVi = null;
-			if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
-				if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
-					donVi = congChuc.getCoQuanQuanLy().getCha();
-				} else {
-					donVi = congChuc.getCoQuanQuanLy();
-				}
-			}
-			System.out.println("VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))): " + VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro)));
-			processQuery = processQuery.and(QProcess.process.vaiTro.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
-			//processQuery = processQuery.and(QProcess.process.coQuanQuanLy.eq(donVi));
-			//processQuery = processQuery.and(QProcess.process.owner.eq(isOwner));
-			//processQuery = processQuery.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
-			
-			List<Process> listProcess = (List<Process>) repoProcess.findAll(processQuery);
-			
-			for (Process p : listProcess) {
-				System.out.println("process: " + p.getTenQuyTrinh() + "; " + p.getVaiTro().getLoaiVaiTro().toString() + "; " + p.getCoQuanQuanLy().getTen());
-			}
-			
-			Process process = repoProcess.findOne(processQuery);
+			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
 			
 			if (process == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),

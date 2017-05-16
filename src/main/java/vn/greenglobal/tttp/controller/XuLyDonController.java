@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,21 +29,30 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.util.WordUtil;
@@ -60,6 +71,18 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@Autowired
 	private DonRepository donRepo;
+	
+	@Autowired
+	private ThamSoRepository repoThamSo;
+	
+	@Autowired
+	private ProcessRepository repoProcess;
+
+	@Autowired
+	private ThamSoService thamSoService;
+	
+	@Autowired
+	private ProcessService processService;
 
 	@Autowired
 	private CongChucRepository congChucRepo;
@@ -79,21 +102,36 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && commonProfile.containsAttribute("coQuanQuanLyId")) {
 			Long donId = xuLyDon.getDon().getId();
+			Don don = donRepo.findOne(donId);
+			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
+
+			// Thay alias
+			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			CongChuc congChuc = congChucRepo.findOne(congChucId);
+			
+			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
+			
+			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
+			
+			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
+			
+			if (process == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+			}
+			
+			
+			
 			XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
 			
 			if (xuLyDonHienTai != null) {
 				
-				// Xac dinh vai tro cua nguoi dung (Nhieu vai tro cho 1 nguoi)
-				VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
-
-				// Thay alias
-				String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 				FlowStateEnum nextState = xuLyDon.getNextState().getType();
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + xuLyDon.getNextState().getGhiChu() + " ";
-				Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-				
 				
 				if (FlowStateEnum.BAT_DAU.equals(nextState)) {
 					
@@ -175,7 +213,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 						
-						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 						don.setTrangThaiDon(TrangThaiDonEnum.DINH_CHI);
 						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
