@@ -110,8 +110,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && commonProfile.containsAttribute("coQuanQuanLyId")) {
+			if (xuLyDon.getDon() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
+						ApiErrorEnum.DON_REQUIRED.getText());
+			}
+			if (xuLyDon.getNextState() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEXT_STATE_REQUIRED.name(),
+						ApiErrorEnum.NEXT_STATE_REQUIRED.getText());
+			}
 			Long donId = xuLyDon.getDon().getId();
 			Don don = donRepo.findOne(donId);
+			if (don.getProcessType() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
+						ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
+			}
 			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
 
 			// Thay alias
@@ -123,8 +135,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 			
 			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
-			
+			System.out.println("vaiTroNguoiDungHienTai: " + vaiTroNguoiDungHienTai);
+			System.out.println("donVi: " + donVi.getTen());
+			System.out.println("isOwner: " + isOwner);
+			System.out.println("don.processType: " + don.getProcessType());
 			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
+			
+			if (process == null && isOwner) {
+				process = repoProcess.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, false, don.getProcessType()));
+			}
 			
 			if (process == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),

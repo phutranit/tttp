@@ -8,6 +8,7 @@ public enum ApiErrorEnum {
 	COQUANQUANLY_REQUIRED("Trường cơ quan quản lý không được để trống!"),
 	CHUCVU_REQUIRED("Trường chức vụ không được để trống!"),
 	MATKHAU_REQUIRED("Trường mật khẩu không được để trống!"),
+	DON_REQUIRED("Trường đơn không được để trống!"),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống!"),
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
@@ -19,6 +20,8 @@ public enum ApiErrorEnum {
 	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!"),
 	PROCESS_NOT_FOUND("Không tìm thấy process!"),
+	PROCESS_TYPE_REQUIRED("Trường processType không được để trống!"),
+	NEXT_STATE_REQUIRED("Trường nextState không được để trống!"),
 	TRANSITION_FORBIDDEN("Quy trình không đúng!");
 	
 	

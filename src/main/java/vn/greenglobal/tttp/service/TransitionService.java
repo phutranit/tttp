@@ -27,11 +27,10 @@ public class TransitionService {
 
 	public Predicate predicatePrivileged(State currentState, State nextState, Process process) {
 		BooleanExpression predAll = base;
-		
 		predAll = predAll
 				.and(QTransition.transition.process.eq(process))
-				.and(QTransition.transition.currentState.eq(currentState))
-				.and(QTransition.transition.currentState.eq(nextState));
+				.and(QTransition.transition.currentState.id.eq(currentState.getId()))
+				.and(QTransition.transition.nextState.id.eq(nextState.getId()));
 		
 		return predAll;
 	}
