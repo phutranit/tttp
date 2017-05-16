@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -101,18 +103,22 @@ public class Don extends Model<Don> {
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>(); // XLD
 
 	@Transient
@@ -154,7 +160,7 @@ public class Don extends Model<Don> {
 	private DonViHanhChinh phuongXaCoQuanBKT;
 	@ManyToOne
 	private ToDanPho toDanPhoCoQuanBKT;
-	
+
 	@ManyToOne
 	private State currentState;
 	@Enumerated(EnumType.STRING)
@@ -199,7 +205,7 @@ public class Don extends Model<Don> {
 			this.noiDung = " ";
 		} else {
 			this.noiDung = noiDung;
-		}		
+		}
 	}
 
 	public String getYeuCauCuaCongDan() {
@@ -370,7 +376,7 @@ public class Don extends Model<Don> {
 	public void setCanBoXuLy(CongChuc canBoXuLy) {
 		this.canBoXuLy = canBoXuLy;
 	}
-	
+
 	@ApiModelProperty(position = 11, example = "{}")
 	public CongChuc getCanBoXuLyPhanHeXLD() {
 		return canBoXuLyPhanHeXLD;
@@ -633,7 +639,7 @@ public class Don extends Model<Don> {
 		}
 		return donCongDan;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	public State getCurrentState() {
 		return currentState;
@@ -651,7 +657,7 @@ public class Don extends Model<Don> {
 	public void setProcessType(ProcessTypeEnum processType) {
 		this.processType = processType;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	public Form getCurrentForm() {
 		return currentForm;
@@ -675,7 +681,7 @@ public class Don extends Model<Don> {
 	public List<Don_CongDan> getListNguoiDungDon() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) {
+			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 				list.add(dcd);
 			}
 		}
@@ -687,8 +693,8 @@ public class Don extends Model<Don> {
 	public List<Don_CongDan> getListThanhVienDoanDongNguoi() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())
-					|| PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) {
+			if ((PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())
+					|| PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) && !dcd.isDaXoa()) {
 				list.add(dcd);
 			}
 		}
@@ -699,7 +705,7 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getNguoiDuocUyQuyen() {
 		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan())) {
+			if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 				return dcd;
 			}
 		}
@@ -711,7 +717,7 @@ public class Don extends Model<Don> {
 	public Don_CongDan getDoiTuongBiKhieuTo() {
 		if (LoaiNguoiDungDonEnum.CA_NHAN.equals(getLoaiNguoiBiKhieuTo())) {
 			for (Don_CongDan dcd : getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.DOI_TUONG_BI_KHIEU_TO.equals(dcd.getPhanLoaiCongDan())) {
+				if (PhanLoaiDonCongDanEnum.DOI_TUONG_BI_KHIEU_TO.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 					return dcd;
 				}
 			}
@@ -782,8 +788,10 @@ public class Don extends Model<Don> {
 			Map<String, Object> mapCapCoQuanQuanLy = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
-			mapCapCoQuanQuanLy.put("capCoQuanQuanLyId", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getId() : "");
-			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null ?  getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen() : "");
+			mapCapCoQuanQuanLy.put("capCoQuanQuanLyId", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null
+					? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getId() : "");
+			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null
+					? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen() : "");
 			map.put("capCoQuanQuanLyInfo", mapCapCoQuanQuanLy);
 			return map;
 		}
@@ -866,12 +874,6 @@ public class Don extends Model<Don> {
 		return null;
 	}
 
-	// @Transient
-	// @ApiModelProperty(hidden = true)
-	// public CoQuanQuanLy getCoQuanDaGiaiQuyetInfo() {
-	// return getCoQuanDaGiaiQuyet();
-	// }
-
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCoQuanDangQuyetInfo() {
@@ -908,17 +910,17 @@ public class Don extends Model<Don> {
 	public void setNguonDonText(String nguonDonText) {
 		this.nguonDonText = nguonDonText;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
 		return getThamQuyenGiaiQuyet();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public long getThoiHanXuLyDon() {
-		long thoiHan = 0;
+		long thoiHan = -1;
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
 			XuLyDon xld = xuLyDons.get(thuTu - 1);
@@ -927,5 +929,79 @@ public class Don extends Model<Don> {
 			}
 		}
 		return thoiHan;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getNoiDungVaHanXuLy() {
+		String nd = getNoiDung();
+		Long hanXuLy = getThoiHanXuLyDon();
+		String out = "";
+		if (nd != null && !nd.isEmpty()) {
+			out += " - " + nd;
+		}
+		if (hanXuLy != null) {
+			out += "\n - " + "Còn " +hanXuLy +" ngày";
+		}
+		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getPhanLoaiDonSoNguoi() {
+		String nd = getLoaiDon().getText();
+		Long hanXuLy = getThoiHanXuLyDon();
+		String out = "";
+		if (nd != null && !nd.isEmpty()) {
+			out += " - " + nd;
+		}
+		if (hanXuLy != null) {
+			out += "\n - " + "Còn " +hanXuLy +" ngày";
+		}
+		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTinhTrangXuLyText() {
+		TrangThaiDonEnum ttd = getTrangThaiDon();
+		QuyTrinhXuLyDonEnum qtxl = getQuyTrinhXuLy();
+		String out = "- ";
+		if (ttd != null) {
+			out += ttd.name().equalsIgnoreCase(TrangThaiDonEnum.DANG_XU_LY.name())  ? "Đang giải quyết" : "Hoàn thành";
+		}
+		if (qtxl != null) {
+			out += "\n - " + qtxl.getText();
+		}
+		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTrangThaiDonText() {
+		String out = "";
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			TrangThaiDonEnum ttd = xld.getTrangThaiDon();
+			if (ttd != null) {
+				out += ttd.name().equalsIgnoreCase(TrangThaiDonEnum.DANG_XU_LY.name())  ? "Đang giải quyết" : "Hoàn thành";
+			}
+		}
+		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getQuyTrinhXuLyText() {
+		String out = "";
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			if (xld.getQuyTrinhXuLy() != null) {
+				out = xld.getQuyTrinhXuLy().getText();
+			}
+		}
+		return out;
 	}
 }

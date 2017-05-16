@@ -99,20 +99,6 @@ public class AuthController {
 				ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
 
-	/*
-	 * @RequestMapping(method = RequestMethod.POST, value = "/logout")
-	 * public @ResponseBody ResponseEntity<Object> logout(
-	 * 
-	 * @RequestHeader(value = "Authorization", required = true) String
-	 * authorization, HttpServletRequest request, HttpServletResponse response,
-	 * Authentication auth) { Map<String, Object> result = new HashMap<>();
-	 * NguoiDung user; System.out.println("auth:"+auth);
-	 * 
-	 * return Utils.responseErrors(HttpStatus.NOT_FOUND,
-	 * ApiErrorEnum.DATA_NOT_FOUND.name(),
-	 * ApiErrorEnum.DATA_NOT_FOUND.getText()); }
-	 */
-
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
 	public void logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
@@ -134,9 +120,6 @@ public class AuthController {
 			profiles = profileManager.getAll(true);
 			System.out.println("profiles:" + profiles);
 		}
-
-		// logoutLogic.perform(context, config,
-		// J2ENopHttpActionAdapter.INSTANCE, null, null, true, true, true);
 
 	}
 
@@ -182,7 +165,7 @@ public class AuthController {
 						user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
 
 				result.put("congChucId", congChuc.getId());
-				result.put("coQuanQuanLyId", congChuc.getId());
+				result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 				result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
 			}
 

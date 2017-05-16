@@ -18,3 +18,5 @@ target
 /deploytttpapitest
 /viewlogtttpapidev
 /viewlogtttpapitest
+/post.sh
+/postout

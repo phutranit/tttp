@@ -19,14 +19,20 @@ public class CongChucService {
 
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa) {
+	public Predicate predicateFindAll(String tuKhoa, Long coQuanQuanLyId) {
 		BooleanExpression predAll = base;
+		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
+
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindLanhDaoTiepCongDan(CoQuanQuanLy donVi) {
 		BooleanExpression predAll = base.and(QCongChuc.congChuc.chucVu.lanhDao.eq(true));
 		if (donVi != null) {
