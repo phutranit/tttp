@@ -728,7 +728,13 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
-		return getTaiLieuBangChungs();
+		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
+		for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+			if (!tlbc.isDaXoa()) {
+				list.add(tlbc);
+			}
+		}
+		return list;
 	}
 
 	@Transient
