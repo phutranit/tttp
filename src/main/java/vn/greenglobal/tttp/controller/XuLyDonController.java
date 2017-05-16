@@ -137,7 +137,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonHienTai.setHuongXuLy(huongXuLyXLD);
 					xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 					if (HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.equals(huongXuLyXLD)) {
-						
+						xuLyDonHienTai = XuLyDonFunctions.chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDonHienTai, congChucId, note);
+						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = XuLyDonFunctions.chuyenVienChuyenChoVanThuDeXuatThuLy(xuLyDonHienTai, congChucId, note);

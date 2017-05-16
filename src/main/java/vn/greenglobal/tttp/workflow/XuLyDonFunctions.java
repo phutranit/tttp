@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.workflow;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -400,17 +401,9 @@ public class XuLyDonFunctions {
 	
 	
 	
-	public XuLyDon chuyenVienChuyenChoVanThuYeuCauGapLanhDao(XuLyDon xuLyDon, String note, Long congChucId) {
+	public static XuLyDon chuyenVienChuyenChoVanThuYeuCauGapLanhDao(XuLyDon xuLyDon, Long congChucId, String note) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
-//		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
-		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
-		// huongXuLy
-		note = note + huongXuLyXLD.getText().toLowerCase().trim() + " ";
-		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
-		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO);
-		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
 		CoQuanQuanLy coQuanQuanLy = xuLyDonHienTai.getPhongBanXuLy().getCha();
 		note = note + VaiTroEnum.LANH_DAO.getText() + coQuanQuanLy.getTen().toLowerCase().trim();
@@ -420,9 +413,10 @@ public class XuLyDonFunctions {
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 		don.setNgayLapDonGapLanhDaoTmp(xuLyDon.getNgayHenGapLanhDao());
+		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+		
 		xuLyDonHienTai.setGhiChu(note);
 		Utils.save(donRepo, don, congChucId);
-		
 		return xuLyDonHienTai;
 	}
 	
