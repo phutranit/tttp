@@ -66,6 +66,26 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Transient
 	private Long soNgayXuLy;
 	
+	//@Enumerated(EnumType.STRING)
+	//private QuyTrinhXuLyDonEnum quyTrinhXuLy;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyXLDEnum huongXuLy;
+
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiDon;
+	
+	@Lob
+	private String ghiChu = "";
+	private String yKienXuLy = "";
+	private String moTaTrangThai = "";
+	private String noiDungYeuCauXuLy = "";
+	private String noiDungThongTinTrinhLanhDao = "";
+
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu;
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVuGiaoViec;
+	
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}
@@ -130,18 +150,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
-	@Lob
-	private String ghiChu = "";
-	private String yKienXuLy = "";
-	private String moTaTrangThai = "";
-	private String noiDungYeuCauXuLy = "";
-	private String noiDungThongTinTrinhLanhDao = "";
-
-	@Enumerated(EnumType.STRING)
-	private VaiTroEnum chucVu;
-	@Enumerated(EnumType.STRING)
-	private VaiTroEnum chucVuGiaoViec;
-	
 	@ApiModelProperty(position = 8)
 	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
@@ -150,15 +158,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setChucVuGiaoViec(VaiTroEnum chucVuGiaoViec) {
 		this.chucVuGiaoViec = chucVuGiaoViec;
 	}
-
-	@Enumerated(EnumType.STRING)
-	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
-	@Enumerated(EnumType.STRING)
-	private HuongXuLyXLDEnum huongXuLy;
-
-	@Enumerated(EnumType.STRING)
-	private TrangThaiDonEnum trangThaiDon;
-
+	
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
 	}
@@ -276,14 +276,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
 	}
 
-	@ApiModelProperty(position = 5)
-	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
-		return quyTrinhXuLy;
-	}
-
-	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
-		this.quyTrinhXuLy = quyTrinhXuLy;
-	}
+//	@ApiModelProperty(position = 5)
+//	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
+//		return quyTrinhXuLy;
+//	}
+//
+//	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
+//		this.quyTrinhXuLy = quyTrinhXuLy;
+//	}
 
 	@ApiModelProperty(position = 10)
 	public HuongXuLyXLDEnum getHuongXuLy() {

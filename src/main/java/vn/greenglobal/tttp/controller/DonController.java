@@ -311,8 +311,8 @@ public class DonController extends TttpController<Don> {
 			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
 			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
 
-			QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
-			String note = vaiTroNguoiDungHienTai + " " + quyTrinhXuLy.getText().toLowerCase() + " ";
+			State state = xuLyDon.getNextState();
+			String note = vaiTroNguoiDungHienTai + " " + state.getGhiChu() + " ";
 
 			if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
 				if (don.isBoSungThongTinBiKhieuTo()) {
@@ -353,7 +353,7 @@ public class DonController extends TttpController<Don> {
 				XuLyDon xuLyDonTiepTheo = new XuLyDon();
 				note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
 						+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
-				xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+				xuLyDonHienTai.setNextState(state);
 				xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 				xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 				xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));

@@ -60,9 +60,8 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
 		note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
 				+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
@@ -104,10 +103,9 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 		don.setHuongXuLyXLD(huongXuLyXLD);
@@ -151,9 +149,8 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
 		note = note + VaiTroEnum.TRUONG_PHONG.getText().toLowerCase().trim() + " "
 				+ xuLyDonHienTai.getPhongBanXuLy().getTen().trim() + " ";
@@ -270,9 +267,8 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
 		CoQuanQuanLy coQuanQuanLy = xuLyDonHienTai.getPhongBanXuLy().getCha();
 		note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase().trim() + " "
@@ -308,9 +304,8 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
 		note = note + VaiTroEnum.CHUYEN_VIEN.getText().toLowerCase().trim() + " "
 				+ xuLyDonHienTai.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
@@ -349,9 +344,8 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
 		xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
 		xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
@@ -425,7 +419,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.DE_XUAT_THU_LY);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
@@ -467,7 +461,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.CHUYEN_DON);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
@@ -509,7 +503,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
@@ -549,7 +543,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
@@ -584,7 +578,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
@@ -619,7 +613,7 @@ public class XuLyDonFunctions {
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU);
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
