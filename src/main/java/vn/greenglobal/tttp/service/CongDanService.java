@@ -87,25 +87,25 @@ public class CongDanService {
 	public List<PropertyChangeObject> getListThayDoi(CongDan congDanNew, CongDan congDanOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		if (congDanNew.getHoVaTen() != null && !congDanNew.getHoVaTen().isEmpty()
+		if (congDanNew.getHoVaTen() != null && !congDanNew.getHoVaTen().isEmpty() && congDanOld.getHoVaTen() != null
 				&& !congDanNew.getHoVaTen().equals(congDanOld.getHoVaTen())) {
 			list.add(new PropertyChangeObject("Họ và tên", congDanOld.getHoVaTen(), congDanNew.getHoVaTen()));
 		}
-		if (congDanNew.getSoDienThoai() != null && !congDanNew.getSoDienThoai().isEmpty()
+		if (congDanNew.getSoDienThoai() != null && !congDanNew.getSoDienThoai().isEmpty() && congDanOld.getSoDienThoai() != null
 				&& !congDanNew.getSoDienThoai().equals(congDanOld.getSoDienThoai())) {
 			list.add(new PropertyChangeObject("Số điện thoại", congDanOld.getSoDienThoai(),
 					congDanNew.getSoDienThoai()));
 		}
-		if (congDanNew.getSoCMNDHoChieu() != null && !congDanNew.getSoCMNDHoChieu().isEmpty()
+		if (congDanNew.getSoCMNDHoChieu() != null && !congDanNew.getSoCMNDHoChieu().isEmpty() && congDanOld.getSoCMNDHoChieu() != null
 				&& !congDanNew.getSoCMNDHoChieu().equals(congDanOld.getSoCMNDHoChieu())) {
 			list.add(new PropertyChangeObject("Số CMND/Hộ chiếu", congDanOld.getSoCMNDHoChieu(),
 					congDanNew.getSoCMNDHoChieu()));
 		}
-		if (congDanNew.getDiaChi() != null && !congDanNew.getDiaChi().isEmpty()
+		if (congDanNew.getDiaChi() != null && !congDanNew.getDiaChi().isEmpty() && congDanOld.getDiaChi() != null
 				&& !congDanNew.getDiaChi().equals(congDanOld.getDiaChi())) {
 			list.add(new PropertyChangeObject("Địa chỉ", congDanOld.getDiaChi(), congDanNew.getDiaChi()));
 		}
-		if (congDanNew.getNgaySinh() != null
+		if (congDanNew.getNgaySinh() != null && congDanOld.getNgaySinh() != null && congDanOld.getNgaySinh() != null
 				&& !congDanOld.getNgaySinh().format(formatter).equals(congDanNew.getNgaySinh().format(formatter))) {
 			list.add(new PropertyChangeObject("Ngày sinh", congDanOld.getNgaySinh().format(formatter),
 					congDanNew.getNgaySinh().format(formatter)));

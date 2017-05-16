@@ -190,13 +190,12 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
-		if (donCongDan == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		} else {
-			repo.delete(donCongDan);
+		Don_CongDan dcd = donCongDanService.delete(repo, id);
+		if (dcd == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
+		Utils.save(repo, dcd, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -209,14 +208,14 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
 		if (params != null && params.getDonCongDans().size() > 0) {
 			for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
-				Don_CongDan dcd = repo.findOne(donCongDanService.predicateFindOne(donCongDan.getId()));
+				Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
 				if (dcd == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				listDelete.add(dcd);
 			}
 			for (Don_CongDan donCongDan : listDelete) {
-				repo.delete(donCongDan);
+				Utils.save(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		

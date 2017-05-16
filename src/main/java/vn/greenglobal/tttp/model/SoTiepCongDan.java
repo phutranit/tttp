@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -60,7 +62,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@JoinTable(name = "sotiepcongdan_has_donviphoihop", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanQuanLy_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
 	@Lob
@@ -92,15 +95,18 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
 
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
 	
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {

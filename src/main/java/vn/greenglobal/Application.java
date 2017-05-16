@@ -16,6 +16,7 @@ import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.springframework.security.web.SecurityFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -47,6 +48,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
 @SpringBootApplication
@@ -58,6 +60,12 @@ import vn.greenglobal.tttp.util.upload.StorageProperties;
 		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 
+	public static Application app;
+
+	public Application() {
+		app = this;
+	}
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
@@ -66,29 +74,6 @@ public class Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	/*
-	 * @RequestMapping(method = RequestMethod.POST, value = "/upload", produces
-	 * = "application/json")
-	 * 
-	 * @ResponseBody public Object upload(HttpServletRequest req) {
-	 * System.out.println("//file"); System.out.println(req);
-	 * Enumeration<String> hd = req.getHeaderNames(); String result = ""; for (;
-	 * hd.hasMoreElements();) { String s = hd.nextElement();
-	 * System.out.println(s + " = " + req.getHeader(s)); result += s + " = " +
-	 * req.getHeader(s) + "; "; } return Collections.singletonMap("response",
-	 * result); }
-	 * 
-	 * @RequestMapping(method = RequestMethod.POST, value = "/authenticate",
-	 * produces = "application/json")
-	 * 
-	 * @ResponseBody public Object authenticate(HttpServletRequest req) {
-	 * System.out.println("//authenticate"); System.out.println(req);
-	 * Enumeration<String> hd = req.getHeaderNames(); String result = ""; for (;
-	 * hd.hasMoreElements();) { String s = hd.nextElement();
-	 * System.out.println(s + " = " + req.getHeader(s)); result += s + " = " +
-	 * req.getHeader(s) + "; "; } return Collections.singletonMap("response",
-	 * result); }
-	 */
 
 	// @Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -135,12 +120,14 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen", "/soTiepCongDans/excel",
-						"/xuLyDons/inPhieuDeXuatThuLy", "/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word",
-						"/configuration/ui", "/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
-						"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
-						"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
-						"/swagger-resources/configuration/security", "/webjars/**")
+				sec.ignoring()
+						.antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen",
+								"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy",
+								"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
+								"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
+								"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
+								"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
+								"/swagger-resources/configuration/security", "/webjars/**")
 						.antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -267,6 +254,13 @@ public class Application extends SpringBootServletInitializer {
 
 	public String[] getACTIONS() {
 		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
+	}
+
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+
+	public DonCongDanRepository getDonCongDanRepository() {
+		return donCongDanRepository;
 	}
 
 }
