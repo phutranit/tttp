@@ -131,6 +131,32 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					
 				} else if (FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.equals(nextState)) {
 					
+					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
+					// huongXuLy
+					note = note + huongXuLyXLD.getText().toLowerCase().trim() + " ";
+					xuLyDonHienTai.setHuongXuLy(huongXuLyXLD);
+					xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
+					if (HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.equals(huongXuLyXLD)) {
+						
+					} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.chuyenVienChuyenChoVanThuDeXuatThuLy(xuLyDonHienTai, congChucId, note);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.chuyenVienChuyenDon(xuLyDonHienTai, congChucId, note);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.chuyenVienXuLyKhongDuDieuKienThuLy(xuLyDonHienTai, congChucId, note);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					} else if (HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.equals(huongXuLyXLD) && xuLyDonHienTai.isDonChuyen()) {
+						XuLyDon xuLyDonTiepTheo = new XuLyDon();
+						xuLyDonTiepTheo = XuLyDonFunctions.chuyenVienTraLaiDonKhongDungThamQuyen(xuLyDonHienTai, congChucId, note);
+						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					}
 				} else if (FlowStateEnum.KET_THUC.equals(nextState)) {
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
 					if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
