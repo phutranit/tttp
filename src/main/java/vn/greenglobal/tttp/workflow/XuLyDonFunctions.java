@@ -338,62 +338,7 @@ public class XuLyDonFunctions {
 		
 		return xuLyDonTiepTheo;
 	}
-	
-	public static XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, Long congChucId, String note) { 
-		Long donId = xuLyDon.getDon().getId();
-		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
-		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		
-		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
-		
-		xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
-		xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-		xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
-				xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
-		xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
-				xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
-		// xuLyDonHienTai.setThoiHanXuLy(thoiHanXuLy);
-		xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
-		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
-		xuLyDonTiepTheo.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
-		// xuLyDonTiepTheo.setThoiHanXuLy(thoiHanXuLy);
-		xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-		if (xuLyDon.getCanBoXuLyChiDinh() == null) {
-
-			note = note + xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
-			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
-		} else {
-
-			note = note + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen().trim() + " "
-					+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
-			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-			xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
-			xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
-		}
-
-		if (xuLyDonHienTai.isDonChuyen()) {
-
-			note = note + "đơn chuyển từ "
-					+ xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
-			xuLyDonTiepTheo.setDonChuyen(true);
-			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
-		}
-		xuLyDonHienTai.setGhiChu(note);
-		Don don = donRepo.findOne(donId);
-		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
-		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
-		Utils.save(donRepo, don, congChucId);
-		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
-		
-		return xuLyDonTiepTheo;
-	}
-	
-	
 	
 	public static XuLyDon chuyenVienChuyenChoVanThuYeuCauGapLanhDao(XuLyDon xuLyDon, Long congChucId, String note) {
 		Long donId = xuLyDon.getDon().getId();

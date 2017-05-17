@@ -49,11 +49,13 @@ import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
@@ -92,6 +94,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@Autowired
 	private ProcessService processService;
+	
+	@Autowired
+	private StateRepository repoState;
+	
+	@Autowired
+	private XuLyDonRepository xuLyDonRepo;
+	
+	@Autowired
+	private StateService stateService;
 
 	@Autowired
 	private CongChucRepository congChucRepo;
@@ -118,8 +129,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEXT_STATE_REQUIRED.name(),
 						ApiErrorEnum.NEXT_STATE_REQUIRED.getText());
 			}
+			State nextStage = repoState.findOne(stateService.predicateFindOne(xuLyDon.getNextState().getId()));
 			Long donId = xuLyDon.getDon().getId();
-			Don don = donRepo.findOne(donId);
+			System.out.println("donId: " + donId);
+			Don don = donRepo.findOne(donService.predicateFindOne(donId));
 			if (don.getProcessType() == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
 						ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
@@ -135,10 +148,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 			
 			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
-			System.out.println("vaiTroNguoiDungHienTai: " + vaiTroNguoiDungHienTai);
-			System.out.println("donVi: " + donVi.getTen());
-			System.out.println("isOwner: " + isOwner);
-			System.out.println("don.processType: " + don.getProcessType());
 			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
 			
 			if (process == null && isOwner) {
@@ -160,8 +169,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
 			
 			if (xuLyDonHienTai != null) {
-				
-				FlowStateEnum nextState = xuLyDon.getNextState().getType();
+				FlowStateEnum nextState = nextStage.getType();
+				System.out.println("nextState: " + nextState);
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + xuLyDon.getNextState().getGhiChu() + " ";
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -177,7 +186,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState) || FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
 					
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
-					xuLyDonTiepTheo = XuLyDonFunctions.lanhDaoGiaoViec(xuLyDonHienTai, congChucId, note);
+					xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDonHienTai, congChucId, note);
 					return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 				
 				} else if (FlowStateEnum.TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI.equals(nextState)) {
@@ -253,6 +262,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} 
+				} else {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_INVALID.name(),
+							ApiErrorEnum.DATA_INVALID.getText());
 				}
 			}
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -894,4 +906,58 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	}
 
 	*/	
+	
+	public XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, Long congChucId, String note) { 
+		Long donId = xuLyDon.getDon().getId();
+		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
+		XuLyDon xuLyDonTiepTheo = new XuLyDon();
+		
+		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
+		
+		xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
+		xuLyDonHienTai.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+		xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
+				xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+		xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
+				xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+		// xuLyDonHienTai.setThoiHanXuLy(thoiHanXuLy);
+		xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
+		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
+		xuLyDonTiepTheo.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
+		// xuLyDonTiepTheo.setThoiHanXuLy(thoiHanXuLy);
+		xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+		if (xuLyDon.getCanBoXuLyChiDinh() == null) {
+
+			note = note + xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
+		} else {
+
+			note = note + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen().trim() + " "
+					+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
+			xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
+		}
+
+		if (xuLyDonHienTai.isDonChuyen()) {
+
+			note = note + "đơn chuyển từ "
+					+ xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
+			xuLyDonTiepTheo.setDonChuyen(true);
+			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+		}
+		xuLyDonHienTai.setGhiChu(note);
+		Don don = donRepo.findOne(donId);
+		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+		don.setCurrentState(xuLyDonHienTai.getNextState());
+		don.setCurrentForm(xuLyDonHienTai.getNextForm());
+		Utils.save(donRepo, don, congChucId);
+		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
+		
+		return xuLyDonTiepTheo;
+	}
 }

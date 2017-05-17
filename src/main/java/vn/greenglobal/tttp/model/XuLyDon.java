@@ -56,10 +56,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private String soQuyetDinhDinhChi;
 	
-	@NotNull
 	@ManyToOne
 	private State nextState;
-	@NotNull
+	
 	@ManyToOne
 	private Form nextForm;
 	

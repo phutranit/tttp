@@ -178,7 +178,7 @@ public class Utils {
 
 	public static LocalDateTime convertNumberToLocalDateTime(LocalDateTime ngayBatDau, Long soNgayXuLy) {
 		long i = 1;
-
+		soNgayXuLy = soNgayXuLy != null ? soNgayXuLy : 0L;
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		while (i < soNgayXuLy) {
 			ngayKetThuc = ngayKetThuc.plusDays(1);
