@@ -342,7 +342,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
-		return getTaiLieuVanThus();
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa()) {
+				list.add(tlvt);
+			}
+		}
+		return list;
 	}
 
 	@Transient
@@ -405,7 +411,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungBoSungs() {
-		return getTaiLieuBangChungs();
+		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
+		for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+			if (!tlbc.isDaXoa()) {
+				list.add(tlbc);
+			}
+		}
+		return list;
 	}
 	
 	@Transient
