@@ -204,6 +204,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 					// huongXuLy
+					if (huongXuLyXLD == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
+								ApiErrorEnum.HUONGXULY_REQUIRED.getText());
+					}
 					note = note + huongXuLyXLD.getText().toLowerCase().trim() + " ";
 					xuLyDonHienTai.setHuongXuLy(huongXuLyXLD);
 					xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
@@ -231,6 +235,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					}
 				} else if (FlowStateEnum.KET_THUC.equals(nextState)) {
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
+					if (huongXuLyXLD == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
+								ApiErrorEnum.HUONGXULY_REQUIRED.getText());
+					}
 					if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = vanThuChuyenDon(xuLyDonHienTai, congChucId);
@@ -930,8 +938,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		} else {
 
-			note = note + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen().trim() + " "
-					+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+			note = note + xuLyDon.getCanBoXuLyChiDinh().getHoVaTen().trim() + " ";
+			if (xuLyDon.getPhongBanXuLy() != null) {
+				note += xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+			}
 			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 			xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
@@ -1004,9 +1014,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
-		CoQuanQuanLy coQuanQuanLy = xuLyDonHienTai.getPhongBanXuLy().getCha();
-		note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase().trim() + " "
-				+ coQuanQuanLy.getTen().toLowerCase().trim() + " ";
+		
+		note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase().trim() + " " ;
+		if (xuLyDonHienTai.getPhongBanXuLy() != null) {
+			CoQuanQuanLy coQuanQuanLy = xuLyDonHienTai.getPhongBanXuLy().getCha();
+			note = note + coQuanQuanLy.getTen().toLowerCase().trim() + " ";
+			xuLyDonTiepTheo.setPhongBanXuLy(coQuanQuanLy);
+		}
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -1014,7 +1028,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
 		xuLyDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
 		xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
-		xuLyDonTiepTheo.setPhongBanXuLy(coQuanQuanLy);
 		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 		if (xuLyDonHienTai.isDonChuyen()) {
 
@@ -1041,8 +1054,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
-		note = note + VaiTroEnum.CHUYEN_VIEN.getText().toLowerCase().trim() + " "
-				+ xuLyDonHienTai.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+		note = note + VaiTroEnum.CHUYEN_VIEN.getText().toLowerCase().trim() + " ";
+		if (xuLyDonHienTai.getPhongBanXuLy() != null) {
+			note += xuLyDonHienTai.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+		}
 		xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -1081,8 +1096,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		
-		note = note + VaiTroEnum.TRUONG_PHONG.getText().toLowerCase().trim() + " "
-				+ xuLyDonHienTai.getPhongBanXuLy().getTen().trim() + " ";
+		note = note + VaiTroEnum.TRUONG_PHONG.getText().toLowerCase().trim() + " ";
+		if (xuLyDonHienTai.getPhongBanXuLy() != null) {
+			note += xuLyDonHienTai.getPhongBanXuLy().getTen().trim() + " ";
+		}
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -1140,8 +1157,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
-		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " "
-				+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " ";
+				
+		if (xuLyDon.getPhongBanXuLy() != null) {
+			note += xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		}
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -1182,8 +1202,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
-		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " "
-				+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " ";
+		if (xuLyDon.getPhongBanXuLy() != null) {
+			note += xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		}
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		xuLyDonHienTai.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -1224,8 +1246,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
-		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " "
-				+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " ";
+		if (xuLyDon.getPhongBanXuLy() != null) {
+			note += xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		}
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -1264,8 +1288,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
-		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " "
-		+ xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		note = note + VaiTroEnum.VAN_THU.getText().toLowerCase().trim() + " ";
+		if (xuLyDon.getPhongBanXuLy() != null) {
+			note += xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim();
+		}
 		//
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());

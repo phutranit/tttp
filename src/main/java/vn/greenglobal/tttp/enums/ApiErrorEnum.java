@@ -24,6 +24,7 @@ public enum ApiErrorEnum {
 	DON_NOT_FOUND("Không tìm thấy đơn!"),
 	PROCESS_TYPE_REQUIRED("Trường processType không được để trống!"),
 	NEXT_STATE_REQUIRED("Trường nextState không được để trống!"),
+	HUONGXULY_REQUIRED("Trường huongXuLy không được để trống!"),
 	TRANSITION_FORBIDDEN("Quy trình không đúng!");
 	
 	
