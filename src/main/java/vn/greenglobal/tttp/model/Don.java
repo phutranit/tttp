@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +37,7 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @Entity
@@ -58,6 +60,10 @@ public class Don extends Model<Don> {
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
+	@Transient
+	private Long soNgayXuLy;
+	@Transient
+	private String noiDungThongTinTrinhLanhDao = "";
 	@Transient
 	private String nguonDonText = "";
 
@@ -1003,5 +1009,67 @@ public class Don extends Model<Don> {
 			}
 		}
 		return out;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinXuLyInfo() {
+		Map<String, Object> map = new HashMap<>();
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			map.put("huongXuLyText", xld.getHuongXuLy() != null ? xld.getHuongXuLy().getText() : "");
+			map.put("nhomThamQuyenGiaiQuyetText", xld.getThamQuyenGiaiQuyet() != null ? xld.getThamQuyenGiaiQuyet().getTen() : "");
+			
+			map.put("phongBanGiaiQuyetText", xld.getPhongBanGiaiQuyet() != null ? xld.getPhongBanGiaiQuyet().getTen() : "");
+			map.put("coQuanTiepNhanText", xld.getCoQuanTiepNhan() != null ? xld.getCoQuanTiepNhan().getTen() : "");
+			
+			map.put("lyDo", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
+			map.put("ngayHen", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
+			map.put("diaDiem", xld.getDiaDiem() != null ? xld.getDiaDiem() : "");
+			map.put("ngayHen", xld.getNgayHenGapLanhDao() != null ? xld.getNgayHenGapLanhDao() : "");
+			map.put("chucVuGiaoViec", xld.getChucVuGiaoViec() != null ? xld.getChucVuGiaoViec().getText() : "");
+			map.put("isDonChuyen", xld.isDonChuyen());
+			map.put("coQuanChuyenDenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getTen() : "");
+			
+			map.put("ngayHen", xld.getNgayHenGapLanhDao() != null ? xld.getNgayHenGapLanhDao() : "");
+			map.put("canBoXuLyText", xld.getCanBoXuLy() != null ? xld.getCanBoXuLy().getHoVaTen() : "");
+			map.put("hanXuLyText", xld.getThoiHanXuLy() != null ? xld.getThoiHanXuLy() : "");
+			map.put("quyTrinhXuLyCuaLD", "");
+			map.put("quyTrinhXuLyCuaPB", "");
+			
+			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+			xlds.addAll(xuLyDons);
+			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.LANH_DAO)).collect(Collectors.toList());
+			if(xlds.size() > 0) {
+				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaLD", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
+			}
+			xlds.clear();
+			xlds.addAll(xuLyDons);
+			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG)).collect(Collectors.toList());
+			if(xlds.size() > 0) {
+				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaPB", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
+			}
+			return map;
+		}
+		return null;
+	}
+
+	public String getNoiDungThongTinTrinhLanhDao() {
+		return noiDungThongTinTrinhLanhDao;
+	}
+
+	public void setNoiDungThongTinTrinhLanhDao(String noiDungThongTinTrinhLanhDao) {
+		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
+	}
+	
+	public Long getSoNgayXuLy() {
+		return soNgayXuLy;
+	}
+
+	public void setSoNgayXuLy(long soNgayXuLy) { 
+		this.soNgayXuLy = soNgayXuLy;
 	}
 }

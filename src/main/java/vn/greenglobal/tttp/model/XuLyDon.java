@@ -53,7 +53,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String diaDiem;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private String soQuyetDinhDinhChi;
-	
+
 	@Transient
 	private Long soNgayXuLy;
 	
@@ -354,5 +354,13 @@ public class XuLyDon extends Model<XuLyDon> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getSoNgayCuaThoiHanXuLy() {
+		long soNgay = 0; 
+		soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
+		return soNgay;
 	}
 }

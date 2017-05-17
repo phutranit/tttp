@@ -191,22 +191,46 @@ public class Utils {
 		return ngayKetThuc;
 	}
 
+	public static Long convertLocalDateTimeToNumber(LocalDateTime tuNgay, LocalDateTime denNgay) {
+		long soNgayXuLy = 1;
+		tuNgay = LocalDateTime.of(LocalDate.of(tuNgay.getYear(), tuNgay.getMonth(), tuNgay.getDayOfMonth()),
+				LocalTime.MAX);
+		denNgay = LocalDateTime.of(LocalDate.of(denNgay.getYear(), denNgay.getMonth(), denNgay.getDayOfMonth()),
+				LocalTime.MAX);
+		int check = tuNgay.compareTo(denNgay);
+		if (check == 0) {
+			soNgayXuLy = 0;
+		}
+		while (tuNgay.compareTo(denNgay) < 0) {
+			tuNgay = tuNgay.plusDays(1);
+			if (tuNgay.getDayOfWeek().getValue() == SATURDAY || tuNgay.getDayOfWeek().getValue() == SUNDAY) {
+				continue;
+			}
+			soNgayXuLy++;
+		}
+		return soNgayXuLy;
+	}
+
 	public static Long convertLocalDateTimeToNumber(LocalDateTime ngayKetThuc) {
-		long soNgayXuLy = 0;
+		long soNgayXuLy = 1;
 		LocalDateTime ngayHienTai = LocalDateTime.now();
 		ngayHienTai = LocalDateTime.of(
 				LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()),
 				LocalTime.MAX);
+		ngayKetThuc = LocalDateTime.of(
+				LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
+				LocalTime.MAX);
 		int check = ngayHienTai.compareTo(ngayKetThuc);
-		while (check < 0) {
+		if (check == 0) {
+			soNgayXuLy = 0;
+		}
+		while (ngayHienTai.compareTo(ngayKetThuc) < 0) {
 			ngayHienTai = ngayHienTai.plusDays(1);
-			check += ngayHienTai.compareTo(ngayKetThuc);
 			if (ngayHienTai.getDayOfWeek().getValue() == SATURDAY || ngayHienTai.getDayOfWeek().getValue() == SUNDAY) {
 				continue;
 			}
 			soNgayXuLy++;
 		}
-		System.out.println("soNgayXuLy " +soNgayXuLy);
 		return soNgayXuLy;
 	}
 
@@ -217,7 +241,7 @@ public class Utils {
 		}
 		return null;
 	}
-	
+
 	public static List<Method> getMethodsAnnotatedWith(final Class<?>... types) {
 		final List<Method> methods = new ArrayList<Method>();
 		for (Class<?> clasz : types) {
@@ -231,7 +255,7 @@ public class Utils {
 		}
 		return methods;
 	}
-	
+
 	/*
 	 * public static void main(String[] args) {
 	 * getMethodsAnnotatedWith(Utils.class); getMethodsAnnotatedWith(new

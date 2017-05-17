@@ -415,6 +415,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								+ coQuanQuanLy.getTen().toLowerCase().trim() + " ";
 						xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 						xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 						xuLyDonTiepTheo.setThoiHanXuLy(xuLyDonHienTai.getThoiHanXuLy());
 						xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
@@ -422,6 +423,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
 						xuLyDonTiepTheo.setPhongBanXuLy(coQuanQuanLy);
 						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+						xuLyDonTiepTheo.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 						if (xuLyDonHienTai.isDonChuyen()) {
 
 							note = note + "đơn chuyển từ "
@@ -445,6 +447,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 						xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 						xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 						xuLyDonTiepTheo.setThoiHanXuLy(xuLyDonHienTai.getThoiHanXuLy());
 						xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
@@ -453,6 +456,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setyKienXuLy(xuLyDon.getyKienXuLy());
 						xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+						
 						if (xuLyDonHienTai.isDonChuyen()) {
 
 							note = note + "đơn chuyển từ "
@@ -495,7 +499,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 						if (xuLyDon.getCanBoXuLyChiDinh() == null) {
 
-							note = note + xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+							note = note + xuLyDon.getPhongBanXuLyChiDinh().getTen().toLowerCase().trim() + " ";
 							xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 						} else {
 
