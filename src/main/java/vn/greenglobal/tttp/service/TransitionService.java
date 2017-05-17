@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
@@ -27,10 +28,18 @@ public class TransitionService {
 
 	public Predicate predicatePrivileged(State currentState, State nextState, Process process) {
 		BooleanExpression predAll = base;
-		predAll = predAll
-				.and(QTransition.transition.process.eq(process))
-				.and(QTransition.transition.currentState.id.eq(currentState.getId()))
-				.and(QTransition.transition.nextState.id.eq(nextState.getId()));
+		
+		if (currentState != null) {
+			predAll = predAll
+					.and(QTransition.transition.process.eq(process))
+					.and(QTransition.transition.currentState.id.eq(currentState.getId()))
+					.and(QTransition.transition.nextState.id.eq(nextState.getId()));
+		} else {
+			predAll = predAll
+					.and(QTransition.transition.process.eq(process))
+					.and(QTransition.transition.currentState.type.eq(FlowStateEnum.BAT_DAU))
+					.and(QTransition.transition.nextState.id.eq(nextState.getId()));
+		}
 		
 		return predAll;
 	}

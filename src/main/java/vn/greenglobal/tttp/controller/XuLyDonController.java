@@ -171,8 +171,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			if (xuLyDonHienTai != null) {
 				FlowStateEnum nextState = nextStage.getType();
 				System.out.println("nextState: " + nextState);
+				xuLyDonHienTai.setNextForm(xuLyDon.getNextForm());
+				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 				// Thong tin xu ly don
-				String note = vaiTroNguoiDungHienTai + " " + xuLyDon.getNextState().getGhiChu() + " ";
+				String note = vaiTroNguoiDungHienTai + " " + nextStage.getGhiChu() + " ";
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 				
 				if (FlowStateEnum.BAT_DAU.equals(nextState)) {
@@ -931,8 +933,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 		if (xuLyDon.getCanBoXuLyChiDinh() == null) {
-
-			note = note + xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+			if (xuLyDon.getPhongBanXuLy() != null) {
+				note = note + xuLyDon.getPhongBanXuLy().getTen().toLowerCase().trim() + " ";
+			}
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		} else {
 
