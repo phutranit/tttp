@@ -241,13 +241,11 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-
+		
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
-
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-
 			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
 			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
 
@@ -255,7 +253,8 @@ public class DonController extends TttpController<Don> {
 				if (don.getLoaiNguoiBiKhieuTo() == null) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
 							"Trường loaiNguoiBiKhieuTo không được để trống!");
-				}
+			   }
+			   
 				if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
 					don.setDiaChiCoQuanBKT("");
 					don.setSoDienThoaiCoQuanBKT("");
@@ -275,9 +274,6 @@ public class DonController extends TttpController<Don> {
 				don.setToDanPhoCoQuanBKT(null);
 			}
 
-			// if (don.isThanhLapDon()) {
-			// don.setMa(donService.getMaDonMoi(repo));
-			// }
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			Don donMoi = Utils.save(repo, don, congChucId);
 
@@ -289,6 +285,8 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 				xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				xuLyDon.setThuTuThucHien(0);
+				xuLyDon.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
+				xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 			}
 			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -367,18 +365,18 @@ public class DonController extends TttpController<Don> {
 					xuLyDonHienTai.setQuyTrinhXuLy(quyTrinhXuLy);
 					xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 					xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-					xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
-							xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
-
+					//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+					xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+					
 					xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-					xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(
-							xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+					//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
 					xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
 					xuLyDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
 					xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 					xuLyDonTiepTheo.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 					xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-
+					xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+					
 					// xuLyDonTiepTheo.setThoiHanXuLy();
 					if (xuLyDonHienTai.isDonChuyen()) {
 						note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();

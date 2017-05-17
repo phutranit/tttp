@@ -75,6 +75,17 @@ public class CoQuanQuanLyService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindPhongBan(Long capCoQuanQuanLy, Long cha) {
+		BooleanExpression predAll = base;
+		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
+		}
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha));
+		}
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
