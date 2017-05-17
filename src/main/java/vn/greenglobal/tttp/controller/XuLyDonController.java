@@ -131,16 +131,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 			State nextStage = repoState.findOne(stateService.predicateFindOne(xuLyDon.getNextState().getId()));
 			Long donId = xuLyDon.getDon().getId();
-			System.out.println("donId: " + donId);
 			Don don = donRepo.findOne(donService.predicateFindOne(donId));
 			if (don.getProcessType() == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
 						ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
 			}
-			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
-
-			// Thay alias
-			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
