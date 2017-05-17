@@ -20,12 +20,13 @@ public enum ApiErrorEnum {
 	DATA_INVALID("Dữ liệu không hợp lệ!"),
 	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!"),
-	PROCESS_NOT_FOUND("Không tìm thấy process!"),
+	PROCESS_NOT_FOUND("Không tìm thấy quy trình!"),
 	DON_NOT_FOUND("Không tìm thấy đơn!"),
 	PROCESS_TYPE_REQUIRED("Trường processType không được để trống!"),
 	NEXT_STATE_REQUIRED("Trường nextState không được để trống!"),
 	HUONGXULY_REQUIRED("Trường huongXuLy không được để trống!"),
-	TRANSITION_FORBIDDEN("Quy trình không đúng!");
+	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
+	TRANSITION_INVALID("Trạng thái không có trong quy trình!");
 	
 	
 	

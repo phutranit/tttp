@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
@@ -161,28 +162,32 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,
-			@RequestParam(value = "nguoiTaoId", required = false) Long nguoiTaoId,
+			@RequestParam(value = "nguoiTaoDonId", required = false) Long nguoiTaoId,
 			@RequestParam(value = "processType", required = true) String processType,
-			@RequestParam(value = "currentStateId", required = true) Long currentStateId,
-			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "currentStateId", required = true) Long currentStateId, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		if (nguoiDung != null) {
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			
+			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
-			
 			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true : congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
-						
 			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
-			
-			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
-			
+			ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
+			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
+			if (process == null && isOwner) {
+				process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, false, processTypeEnum));
+			}			
 			if (process == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
-			} 
-			Page<State> pageData = repoState.findAll(serviceState.predicateFindAll(currentStateId, process, repoTransition),pageable);
+			}
+			Predicate predicate = serviceState.predicateFindAll(currentStateId, process, repoTransition);
+			if (((List<State>) repoState.findAll(predicate)).size() < 1) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+						ApiErrorEnum.TRANSITION_INVALID.getText());
+			}
+			Page<State> pageData = repoState.findAll(predicate, pageable);
 			return assemblerState.toResource(pageData, (ResourceAssembler) eass);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
