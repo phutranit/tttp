@@ -31,15 +31,17 @@ firewall-cmd --permanent --zone=trusted --add-interface=docker0
 firewall-cmd --permanent --zone=trusted --add-port=4243/tcp
 
 
-sudo docker run -d --name=tttp-nginx -v /home/tttpdata/file:/var/www -p 8089:80 tttp-nginx:1.0
+sudo docker run -d --name=tttp-nginx -v /home/tttpdata/file:/usr/share/nginx/media -p 8089:80 tttp-nginx:1.0
 
 # Run api server
 
-1. sudo docker run -d --name=tttp-server -p 8080:8080 -p 8009:8009 --link=tttp-mariadb:tttpdb tttp-server:1.0
+sudo docker run --name=tttp-server -v /home/tttpdata/deploy:/usr/local/tomcat/webapps --link=tttp-mariadb:tttpdb -p 8088:8080 tttp-server:1.0
 
-2. sudo docker exec -it tttp-server bash
+## Deploy package
 
-3. mvn spring-boot:run
+cp tttp-api-1.0.0.war /home/tttpdata/deploy/ROOT.war
+
+3. sudo docker exec -it tttp-server bash
 
 #Start and stop (follow order)
 
