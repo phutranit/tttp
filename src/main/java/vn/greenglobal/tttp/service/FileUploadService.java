@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -25,11 +26,15 @@ public class FileUploadService {
 	@Autowired
 	DocumentMetaDataRepository documentRepository;
 
+	public String getFileStorageLocation() {
+		return System.getProperty("user.home")+File.separator+fileStorageLocation;
+	}
+	
 	public void upload(MultipartFile file) throws IOException {
 		String fileName = file.getOriginalFilename();
 		byte[] content = file.getBytes();
 		Document document = new Document(fileName, content);
-		DocumentMetaData documentMetaData = new DocumentMetaData(fileName, fileStorageLocation, LocalDateTime.now());
+		DocumentMetaData documentMetaData = new DocumentMetaData(fileName, getFileStorageLocation(), LocalDateTime.now());
 		documentFileSystemService.add(document);
 		documentRepository.save(documentMetaData);
 	}
