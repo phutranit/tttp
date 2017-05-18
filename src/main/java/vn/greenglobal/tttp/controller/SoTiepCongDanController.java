@@ -141,18 +141,15 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		soTiepCongDan.setDon(don);
-		int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
-		soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-		soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 		
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
-			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
 		}
 		
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
 						"Hướng giải quyết không được để trống!");
@@ -164,6 +161,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setDaXuLy(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+			soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
+			soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
@@ -200,6 +200,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 			soTiepCongDan.setDon(don);
 		}
+		
+		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
+			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
+		}
 
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
@@ -211,6 +215,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
@@ -302,7 +307,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		mappings.put("diaChi", diaChi);
 		mappings.put("diaDiemTiepCongDan", diaDiemTiepCongDan);
 		mappings.put("thoiGianTiepCongDan", thoiGianTiepCongDan);
-		mappings.put("ngayHenTiepCongDan", ngayHenTiepCongDan);
+		mappings.put("thoiGianHen", ngayHenTiepCongDan);
 		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HEN.doc").getFile(), mappings);
 	}
 

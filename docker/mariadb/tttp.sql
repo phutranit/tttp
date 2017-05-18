@@ -108,10 +108,10 @@ CREATE TABLE IF NOT EXISTS `chucvu` (
 -- Dumping data for table tttp.chucvu: 4 rows
 /*!40000 ALTER TABLE `chucvu` DISABLE KEYS */;
 INSERT INTO `chucvu` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `moTa`, `ten`, `nguoiSua_id`, `nguoiTao_id`, `lanhDao`) VALUES
-	(1, b'0', '2017-05-03 15:33:51', '2017-04-24 10:38:09', 'Chức vụ 1', 'Chức vụ 1', 1, 1, b'1'),
-	(2, b'0', '2017-05-03 15:33:46', '2017-04-24 10:38:15', 'Chức vụ 2', 'Chức vụ 2', 1, 1, b'0'),
-	(3, b'0', '2017-05-03 16:03:17', '2017-05-03 15:56:59', 'Chức vụ 3', 'Chức vụ 3', 1, 1, b'0'),
-	(4, b'0', '2017-05-03 16:03:14', '2017-05-03 15:59:46', 'Chức vụ 4', 'Chức vụ 4', 1, 1, b'0');
+	(1, b'0', '2017-05-17 19:32:37', '2017-04-24 10:38:09', 'Lãnh đạo tiếp dân', 'Lãnh đạo tiếp dân', 1, 1, b'1'),
+	(2, b'0', '2017-05-17 19:33:09', '2017-04-24 10:38:15', 'Trưởng phòng xử lý đơn', 'Trưởng phòng xử lý đơn', 1, 1, b'0'),
+	(3, b'0', '2017-05-17 19:33:01', '2017-05-03 15:56:59', 'Chuyên viên xử lý đơn', 'Chuyên viên xử lý đơn', 1, 1, b'0'),
+	(4, b'0', '2017-05-17 19:11:34', '2017-05-03 15:59:46', 'Văn thư', 'Văn thư', 1, 1, b'0');
 /*!40000 ALTER TABLE `chucvu` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.chungchihanhnghe
@@ -166,15 +166,22 @@ CREATE TABLE IF NOT EXISTS `congchuc` (
   KEY `FKsedbgmc9y7moxeg2byas7gafw` (`coQuanQuanLy_id`),
   KEY `FKagb75px243w4ihob0ff4xg674` (`nguoiDung_id`),
   KEY `FK6wvul42u3plmn4lyt0dujj7nw` (`noiCapCMND_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.congchuc: 4 rows
+-- Dumping data for table tttp.congchuc: 11 rows
 /*!40000 ALTER TABLE `congchuc` DISABLE KEYS */;
 INSERT INTO `congchuc` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `diaChi`, `dienThoai`, `email`, `gioiTinh`, `hoVaTen`, `ma`, `ngayCap`, `ngaySinh`, `soCMNDHoCHieu`, `nguoiSua_id`, `nguoiTao_id`, `chucVu_id`, `coQuanQuanLy_id`, `nguoiDung_id`, `noiCapCMND_id`) VALUES
-	(1, b'0', '2017-05-14 16:57:51', '2017-04-24 10:49:48', '24 Trần Phú', '01206189116', 'admin-tttp@danang.gov.vn', b'1', 'Administrator', '001', '2012-11-14 11:00:00', '1994-06-25 11:00:00', '201702245', 1, 1, 1, 2, 1, 86),
-	(2, b'0', '2017-05-11 09:40:39', '2017-05-03 15:30:58', 'K377/34 Hải phòng', '01206189116', 'namtvd@greenglobal.vn', b'1', 'Tran Vo Dinh Nam', '002', '2012-11-19 10:00:00', '1994-06-30 10:00:00', '201702275', 1, 1, 1, 2, 2, 86),
-	(3, b'0', '2017-05-11 09:40:47', '2017-05-03 15:51:28', 'Lê Duẫn', '01206189116', 'thanhpx@greenglobal.vn', b'1', 'Phạm Xuân Thành', '003', '2012-11-19 10:00:00', '1994-06-30 10:00:00', '201702276', 1, 1, 1, 2, 4, 86),
-	(4, b'0', '2017-05-11 09:40:52', '2017-05-03 15:52:46', 'Lê Duẫn', '01206189116', 'anvt@greenglobal.vn', b'1', 'Võ Tiến An', '004', '1969-12-31 03:00:00', '1994-05-31 03:00:00', '201702264', 1, 1, 1, 2, 5, 86);
+	(1, b'0', '2017-05-17 19:48:22', '2017-04-24 10:49:48', '24 Trần Phú', '01206189116', 'admin-tttp@gmail.com', b'1', 'Administrator', '001', '2012-11-13 00:00:00', '1994-06-24 00:00:00', '201702245', 1, 1, 1, 2, 1, 86),
+	(2, b'0', '2017-05-17 19:15:55', '2017-05-03 15:30:58', 'K377/34 Hải phòng', '01206189116', 'namtvd@greenglobal.vn', b'1', 'Tran Vo Dinh Nam', '002', '2012-11-18 13:00:00', '1994-06-29 13:00:00', '201702275', 1, 1, 2, 90, 2, 86),
+	(3, b'0', '2017-05-17 19:16:16', '2017-05-03 15:51:28', 'Lê Duẫn', '01206189116', 'thanhpx@greenglobal.vn', b'1', 'Phạm Xuân Thành', '003', '2012-11-18 20:00:00', '1994-06-29 20:00:00', '201702276', 1, 1, 3, 90, 4, 86),
+	(4, b'0', '2017-05-17 19:22:32', '2017-05-03 15:52:46', 'Lê Duẫn', '01206189116', 'anvt@greenglobal.vn', b'1', 'Võ Tiến An', '004', '1969-12-30 06:00:00', '1994-05-30 06:00:00', '201702264', 1, 1, 4, 90, 5, 86),
+	(5, b'0', '2017-05-17 19:15:47', '2017-05-17 19:06:57', 'Trần Phú', '01206189445', 'vinhlv@gmail.com', b'1', 'Lý Văn Vinh', '005', '2010-06-07 10:00:00', '1984-06-06 10:00:00', '201702245', 1, 1, 3, 90, 6, 86),
+	(6, b'0', '2017-05-17 19:42:57', '2017-05-17 19:42:57', 'Hoàng Hoa Thám', '01206185446', 'thanghq@gmail.com', b'1', 'Huỳnh Quang Thắng', '006', '2017-05-08 17:00:00', '2017-05-01 17:00:00', '201702245', 1, 1, 3, 90, 7, 86),
+	(7, b'0', '2017-05-17 19:43:49', '2017-05-17 19:43:49', 'Hùng Vương', '01204548796', 'toantt@gmail.com', b'1', 'Tôn Thất Toàn', '007', '2017-05-09 17:00:00', '2017-05-08 17:00:00', '201451157', 1, 1, 3, 90, 8, 86),
+	(8, b'0', '2017-05-17 19:44:59', '2017-05-17 19:44:59', 'Phan Châu Trinh', '01206215448', 'trandtb@gmail.com', b'1', 'Đinh Trương Bảo Trân', '008', '2017-05-02 17:00:00', '2017-04-30 17:00:00', '201451157', 1, 1, 3, 90, 9, 86),
+	(9, b'0', '2017-05-17 19:47:34', '2017-05-17 19:47:34', 'Ngô Quyền', '01206541254', 'thanhhx@gmail.com', b'1', 'Hà Xuân Thành', '009', '2017-05-02 17:00:00', '2017-05-10 17:00:00', '201548854', 1, 1, 1, 2, 10, 86),
+	(10, b'0', '2017-05-17 19:54:26', '2017-05-17 19:52:42', 'Trần Phú', '01206523664', 'thienpd@gmail.com', b'1', 'Phùng Duy Thiện', '010', '2017-05-17 10:00:00', '2017-05-08 10:00:00', '201456625', 1, 1, 1, 2, 11, 86),
+	(11, b'0', '2017-05-17 19:54:33', '2017-05-17 19:53:38', 'Trần Phú', '01206214552', 'vutx@gmail.com', b'1', 'Trần Xuân Vũ', '011', '2017-05-10 10:00:00', '2017-05-01 10:00:00', '201702215', 1, 1, 1, 2, 12, 86);
 /*!40000 ALTER TABLE `congchuc` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.congdan
@@ -210,26 +217,33 @@ CREATE TABLE IF NOT EXISTS `congdan` (
   KEY `FKd6x82c9yfp37e143ucaycy1l3` (`quocTich_id`),
   KEY `FKg6c7j69ne2q6tka6qtj0we9nc` (`tinhThanh_id`),
   KEY `FK2pa8vhiyhcgwvgbuu14u911o5` (`toDanPho_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.congdan: 15 rows
+-- Dumping data for table tttp.congdan: 22 rows
 /*!40000 ALTER TABLE `congdan` DISABLE KEYS */;
 INSERT INTO `congdan` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `diaChi`, `gioiTinh`, `hoVaTen`, `ngayCap`, `ngaySinh`, `soCMNDHoChieu`, `soDienThoai`, `nguoiSua_id`, `nguoiTao_id`, `danToc_id`, `noiCapCMND_id`, `phuongXa_id`, `quanHuyen_id`, `quocTich_id`, `tinhThanh_id`, `toDanPho_id`) VALUES
-	(1, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Van Nam', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702278', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(2, b'0', '2017-04-24 11:01:00', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Van Binh', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702279', '', 1, 1, 1, 86, 23, 14, 1, 9, 1),
-	(3, b'0', '2017-04-24 11:01:14', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Nguyen Van Ngoc', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702274', '', 1, 1, 1, 86, 23, 14, 1, 9, 1),
-	(4, b'0', '2017-04-24 11:01:25', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Nguyen Van Lam', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702273', '', 1, 1, 1, 86, 23, 14, 1, 9, 1),
-	(5, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Van Linh', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702211', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(6, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Thi Nhung', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702212', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(7, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Thanh Tai', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702213', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(8, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Tan Loi', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702214', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(9, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Quang Tien', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702215', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(10, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Thi Hoa', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702216', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(11, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Gia Van', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702217', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(12, b'0', '2017-04-24 11:00:46', '2017-04-24 11:00:46', '43 Hai phong', b'1', 'Phan Van Sang', '2017-04-24 03:23:44', '2017-04-24 03:23:44', '201702218', '', 1, 1, 1, 86, 25, 14, 1, 9, 1),
-	(13, b'0', '2017-05-14 16:06:24', '2017-05-14 16:06:24', 'Hải Phòng', b'1', 'Trần Võ Đình Nam', '2017-05-04 00:00:00', '2017-05-01 00:00:00', '201702275', '01206189116', 1, 1, 1, 86, 31, 15, 1, 9, 116),
-	(14, b'0', '2017-05-14 16:06:25', '2017-05-14 16:06:25', 'Hải Phòng', b'1', 'Trần Văn Hùng', '2017-05-12 00:00:00', '2017-05-10 00:00:00', '201702275', '', 1, 1, 1, 86, 28, 15, 1, 9, 84),
-	(15, b'0', '2017-05-14 16:06:25', '2017-05-14 16:06:25', 'Hải Phòng', b'1', 'Trần Văn Sang', NULL, NULL, '', '', 1, 1, 1, NULL, 25, 14, 1, 9, 55);
+	(17, b'0', '2017-05-17 09:45:37', '2017-05-17 09:45:37', '221 Hà Huy Tập nối dài', b'0', 'Huỳnh Bảo Ngọc', '2011-10-21 00:00:00', '1989-09-02 00:00:00', '201574408', '0932110442', 1, 1, 1, 86, 31, 15, 1, 9, 116),
+	(16, b'0', '2017-05-16 20:44:33', '2017-05-16 20:44:21', 'K377/34 Hải Phòng', b'1', 'Trần Võ Đình Nam', '2010-11-19 17:00:00', '1994-01-06 17:00:00', '201702275', '01206189116', 1, 1, 1, 86, 31, 15, 1, 9, 107),
+	(18, b'0', '2017-05-17 11:23:07', '2017-05-17 10:05:05', '20 Nguyễn Huy Tưởng', b'1', 'Lê Văn Quý', NULL, '1975-09-29 00:00:00', '201425632', '01206116305', 1, 1, NULL, 86, 26, 14, NULL, 9, 61),
+	(19, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '35 Phan Chu Trinh', b'1', 'Võ Hoài Nam', '2010-12-22 00:00:00', '1983-10-05 00:00:00', '201356214', '0982137146', 1, 1, 1, 86, 40, 16, 1, 9, 197),
+	(20, b'0', '2017-05-17 19:38:44', '2017-05-17 10:05:05', '12 Cù Chính Lan', b'0', 'Đỗ Bảo Trân', NULL, NULL, '201356214', '0982137146', 1, 1, 1, 86, 35, 15, 1, 9, 147),
+	(21, b'0', '2017-05-17 11:23:07', '2017-05-17 10:05:05', '15 Tản Đà', b'1', 'Trần Bá Hòa', NULL, '1975-09-29 00:00:00', '201115642', '01206116305', 1, 1, NULL, 86, 34, 15, NULL, 9, 140),
+	(22, b'0', '2017-05-17 12:36:17', '2017-05-17 10:05:05', '23 Phan Tứ', b'1', 'Đặng Đình Cường', NULL, NULL, '201575538', '0932110442', 1, 1, NULL, 86, 57, 18, NULL, 9, 375),
+	(23, b'0', '2017-05-17 11:23:07', '2017-05-17 10:05:05', '30 Quang Trung', b'0', 'Nguyễn Thị Kim', NULL, '1983-10-05 00:00:00', '201245578', '0982137146', 1, 1, NULL, 86, 40, 16, NULL, 9, 197),
+	(24, b'0', '2017-05-17 20:16:43', '2017-05-17 10:14:19', '20 Nguyễn Huy Tưởng', b'1', 'Nguyễn Văn Khải', NULL, NULL, '201425632', '01206116305', 1, 1, 1, 86, 26, 14, 1, 9, 61),
+	(25, b'0', '2017-05-17 10:40:57', '2017-05-17 10:40:57', '88 Cần Giuộc', b'0', 'Nguyễn Thị Trung Chinh', '2012-01-24 00:00:00', '1970-02-10 00:00:00', '201052987', '01206116305', 1, 1, 1, 86, 36, 15, 1, 9, 165),
+	(26, b'0', '2017-05-17 12:35:12', '2017-05-17 11:13:00', '221 Trường Chinh', b'0', 'Phạm Thị Cẩm Nhung', NULL, '1993-09-02 00:00:00', '201648215', '01214645823', 1, 1, 1, 86, 35, 15, 1, 9, 155),
+	(27, b'0', '2017-05-17 12:36:17', '2017-05-17 11:23:07', '70 Nguyễn Lương Bằng', b'1', 'Đinh Nguyễn Anh Khuê', NULL, '1993-10-05 00:00:00', '201356214', '0982137146', 1, 1, 1, 86, 24, 14, 1, 9, 40),
+	(28, b'0', '2017-05-17 11:36:30', '2017-05-17 11:36:30', '70 Nguyễn Lương Bằng', b'0', 'Dương Thanh Ái Quyên', '2010-12-23 00:00:00', '1993-09-29 00:00:00', '201425632', '01206116305', 1, 1, 1, 86, 24, 14, 1, 9, 40),
+	(29, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', '534 Trần Cao Vân', b'1', 'Huỳnh Quốc Đạt', '2011-10-21 00:00:00', '1987-09-23 00:00:00', '201537408', '0906345210', 1, 1, 1, 86, 34, 15, 1, 9, 145),
+	(30, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '30 Bà Huyện Thanh Quan', b'1', 'Lê Quang Tuấn', '2015-12-21 00:00:00', '1987-09-20 00:00:00', '201575786', '01202052973', 1, 1, NULL, 86, 57, 18, NULL, 9, 371),
+	(31, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '24 Quang Trung', b'1', 'Nguyễn Tiến Bá', '2010-12-02 00:00:00', '1983-10-05 00:00:00', '205356214', '0905234123', 1, 1, 1, 86, 40, 16, 1, 9, 197),
+	(32, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '50 Hà Huy Tập', b'0', 'Nguyễn Hồng Quyên', '2013-12-22 00:00:00', '1981-06-05 00:00:00', '201356467', '0903300143', 1, 1, NULL, 86, 35, 15, NULL, 9, 147),
+	(33, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '43 Hồ Tùng Mậu', b'1', 'Nguyễn Bá Quang', '1999-12-23 00:00:00', '1970-08-19 00:00:00', '201422432', '0973389168', 1, 1, NULL, 86, 26, 14, NULL, 9, 61),
+	(34, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '30 Quang Trung', b'0', 'Trần Thị Nguyệt', '1998-12-22 00:00:00', '1976-10-05 00:00:00', '201245523', '0987371772', 1, 1, NULL, 86, 40, 16, NULL, 9, 197),
+	(35, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '15 Tản Đà', b'1', 'Huỳnh Văn Chương', '1991-12-23 00:00:00', '1965-08-29 00:00:00', '200213224', '01636629861', 1, 1, NULL, 86, 34, 15, NULL, 9, 140),
+	(36, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', '23 Ngô Thì Nhậm', b'1', 'Trần Quang Diệu', '2014-03-09 00:00:00', '1978-09-29 00:00:00', '204025632', '01261246721', 1, 1, 1, 86, 26, 14, 1, 9, 61),
+	(37, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', '12 Hàm Nghi', b'0', 'Nguyễn Thị Nụ', '2012-01-24 00:00:00', '1970-02-10 00:00:00', '201052966', '01201090931', 1, 1, 1, 86, 34, 15, 1, 9, 138);
 /*!40000 ALTER TABLE `congdan` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.coquanquanly
@@ -255,9 +269,9 @@ CREATE TABLE IF NOT EXISTS `coquanquanly` (
   KEY `FK6g0yfb2vr2lrf7a96p11mb11j` (`cha_id`),
   KEY `FKqvda4xoqiflqmtx16b3df104a` (`donViHanhChinh_id`),
   KEY `FK7e22uj5l0xg0f6lgkb1lee6nk` (`loaiCoQuanQuanLy_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=90 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.coquanquanly: 89 rows
+-- Dumping data for table tttp.coquanquanly: 92 rows
 /*!40000 ALTER TABLE `coquanquanly` DISABLE KEYS */;
 INSERT INTO `coquanquanly` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `ma`, `moTa`, `ten`, `nguoiSua_id`, `nguoiTao_id`, `capCoQuanQuanLy_id`, `cha_id`, `donViHanhChinh_id`, `loaiCoQuanQuanLy_id`) VALUES
 	(1, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '001', 'UBND Thành phố Đà Nẵng', 'UBND Thành phố Đà Nẵng', 1, 1, 2, NULL, 9, NULL),
@@ -348,7 +362,10 @@ INSERT INTO `coquanquanly` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `ma`, `moTa`, `
 	(86, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '086', 'Công an Đà Nẵng', 'Công an Đà Nẵng', 1, 1, 5, 1, 9, 2),
 	(87, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '087', 'Công an Hồ Chí Minh', 'Công an Hồ Chí Minh', 1, 1, 5, 83, 10, 2),
 	(88, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '088', 'Công an Hà Nội', 'Công an Hà Nội', 1, 1, 5, 84, 12, 2),
-	(89, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '089', 'Công an Hải Phòng', 'Công an Hải Phòng', 1, 1, 5, 85, 11, 2);
+	(89, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '089', 'Công an Hải Phòng', 'Công an Hải Phòng', 1, 1, 5, 85, 11, 2),
+	(90, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '002', 'Phòng xử lý đơn', 'Phòng xử lý đơn', 1, 1, 6, 2, 9, NULL),
+	(91, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '002', 'Phòng giải quyết đơn', 'Phòng giải quyết đơn', 1, 1, 6, 2, 9, NULL),
+	(92, b'0', '2017-04-23 14:05:22', '2017-04-23 14:05:20', '002', 'Phòng Thanh tra phòng chống tham nhũng', 'Phòng Thanh tra phòng chống tham nhũng', 1, 1, 6, 2, 9, NULL);
 /*!40000 ALTER TABLE `coquanquanly` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.coquantochuctiepdan
@@ -366,15 +383,26 @@ CREATE TABLE IF NOT EXISTS `coquantochuctiepdan` (
   PRIMARY KEY (`id`),
   KEY `FKm45j02khl648myfq5ms97tdhv` (`nguoiSua_id`),
   KEY `FKj92x42wpougt7hrlkk1gigwfa` (`nguoiTao_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.coquantochuctiepdan: 4 rows
+-- Dumping data for table tttp.coquantochuctiepdan: 15 rows
 /*!40000 ALTER TABLE `coquantochuctiepdan` DISABLE KEYS */;
 INSERT INTO `coquantochuctiepdan` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `chucVu`, `nguoiDaiDien`, `ten`, `nguoiSua_id`, `nguoiTao_id`) VALUES
-	(1, b'0', '2017-04-27 09:59:02', '2017-04-27 09:59:02', 'Chuc vu A', ' Nguoi dai dien 1', 'Tran Van A', 1, 1),
-	(2, b'0', '2017-04-27 09:59:02', '2017-04-27 09:59:02', 'Chuc vu B', ' Nguoi dai dien 2', 'Tran Van B', 1, 1),
-	(3, b'0', '2017-04-27 09:59:02', '2017-04-27 09:59:02', 'Chuc vu C', ' Nguoi dai dien 3', 'Tran Van C', 1, 1),
-	(4, b'0', '2017-04-27 09:59:02', '2017-04-27 09:59:02', 'Chuc vu D', ' Nguoi dai dien 4', 'Tran Van D', 1, 1);
+	(8, b'0', '2017-05-17 12:35:12', '2017-05-17 12:34:41', 'Chủ tịch', 'Nguyễn Trường Thành', 'UBND quận Hải Châu', 1, 1),
+	(9, b'0', '2017-05-17 12:35:12', '2017-05-17 12:34:41', 'Chủ tịch', 'Phan Công Minh', 'UBND quận Thanh Khê', 1, 1),
+	(10, b'0', '2017-05-17 12:36:16', '2017-05-17 12:34:41', 'Chủ tịch', 'Nguyễn Trường Thành', 'UBND quận Hải Châu', 1, 1),
+	(11, b'0', '2017-05-17 12:36:17', '2017-05-17 12:34:41', 'Chủ tịch', 'Phan Công Minh', 'UBND quận Thanh Khê', 1, 1),
+	(12, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', 'Chủ tịch', 'Nguyễn Quốc Đạt', 'UBND phường Hòa Minh', 1, 1),
+	(13, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', 'Chủ tịch', 'Trần Đinh Lực', 'UBND Phường Hải Châu 1', 1, 1),
+	(14, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', 'Tổ trưởng', 'Trần Bá Nam', 'Tổ dân phố 5', 1, 1),
+	(15, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', 'Chủ tịch', 'Nguyễn Quốc Đạt', 'UBND phường Hòa Minh', 1, 1),
+	(16, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', 'Chủ tịch', 'Trần Đinh Lực', 'UBND Phường Hải Châu 1', 1, 1),
+	(17, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', 'Chủ tịch', 'Nguyễn Quốc Đạt', 'UBND phường Hòa Minh', 1, 1),
+	(18, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', 'Chủ tịch', 'Trần Đinh Lực', 'UBND Phường Hải Châu 1', 1, 1),
+	(19, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', 'Tổ trưởng', 'Trần Bá Nam', 'Tổ dân phố 5', 1, 1),
+	(20, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', 'Chủ tịch', 'Nguyễn Quốc Đạt', 'UBND phường Hòa Minh', 1, 1),
+	(21, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', 'Chủ tịch', 'Trần Đinh Lực', 'UBND Phường Hải Châu 1', 1, 1),
+	(22, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', 'Tổ trưởng', 'Trần Bá Nam', 'Tổ dân phố 5', 1, 1);
 /*!40000 ALTER TABLE `coquantochuctiepdan` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.coquantochuctiepdan_has_sotiepcongdan
@@ -386,13 +414,24 @@ CREATE TABLE IF NOT EXISTS `coquantochuctiepdan_has_sotiepcongdan` (
   KEY `FK80365qi9uuf6aff00r76ysts8` (`soTiepCongDan_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.coquantochuctiepdan_has_sotiepcongdan: 4 rows
+-- Dumping data for table tttp.coquantochuctiepdan_has_sotiepcongdan: 15 rows
 /*!40000 ALTER TABLE `coquantochuctiepdan_has_sotiepcongdan` DISABLE KEYS */;
 INSERT INTO `coquantochuctiepdan_has_sotiepcongdan` (`soTiepCongDan_id`, `coQuanToChucTiepDan_id`) VALUES
-	(6, 2),
-	(7, 3),
-	(6, 1),
-	(7, 4);
+	(42, 9),
+	(42, 8),
+	(43, 11),
+	(43, 10),
+	(44, 12),
+	(44, 13),
+	(44, 14),
+	(45, 15),
+	(45, 16),
+	(46, 17),
+	(46, 18),
+	(46, 19),
+	(47, 20),
+	(47, 21),
+	(47, 22);
 /*!40000 ALTER TABLE `coquantochuctiepdan_has_sotiepcongdan` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.dantoc
@@ -515,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `don` (
   `diaChiCoQuanBKT` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `ghiChuXuLyDon` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `hinhThucDaGiaiQuyet` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `huongGiaiQuyetDaThucHien` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `huongGiaiQuyetDaThucHien` longtext COLLATE utf8_vietnamese_ci,
   `huongXuLyXLD` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `lanGiaiQuyet` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `loaiDoiTuong` varchar(255) COLLATE utf8_vietnamese_ci NOT NULL,
@@ -528,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `don` (
   `ngayQuyetDinhDinhChi` datetime DEFAULT NULL,
   `ngayTiepNhan` datetime NOT NULL,
   `nguonTiepNhanDon` varchar(255) COLLATE utf8_vietnamese_ci NOT NULL,
-  `noiDung` varchar(255) COLLATE utf8_vietnamese_ci NOT NULL,
+  `noiDung` longtext COLLATE utf8_vietnamese_ci NOT NULL,
   `quyTrinhXuLy` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `soDienThoaiCoQuanBKT` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `soLanKhieuNaiToCao` int(11) NOT NULL,
@@ -559,6 +598,7 @@ CREATE TABLE IF NOT EXISTS `don` (
   `processType` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `currentState_id` bigint(20) DEFAULT NULL,
   `canBoXuLyPhanHeXLD_id` bigint(20) DEFAULT NULL,
+  `currentForm_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKle6vcyxx4cpgoqtm2o98e1gig` (`nguoiSua_id`),
   KEY `FKi26gnvwpqihb6ghk6kpldpywj` (`nguoiTao_id`),
@@ -575,23 +615,24 @@ CREATE TABLE IF NOT EXISTS `don` (
   KEY `FK78k72cpy4bq422xjwbjwoxl66` (`tinhThanhCoQuanBKT_id`),
   KEY `FKjgyea79csokc501q1dc2p7ly1` (`toDanPhoCoQuanBKT_id`),
   KEY `FK6gxjnr1mm4l4v5yg3v32w3et` (`currentState_id`),
-  KEY `FKjme5he22rybjexnb5n30boea4` (`canBoXuLyPhanHeXLD_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+  KEY `FKjme5he22rybjexnb5n30boea4` (`canBoXuLyPhanHeXLD_id`),
+  KEY `FK31n1rsmpwimy8dqkdoaieit0` (`currentForm_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 -- Dumping data for table tttp.don: 11 rows
 /*!40000 ALTER TABLE `don` DISABLE KEYS */;
-INSERT INTO `don` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `boSungThongTinBiKhieuTo`, `coThongTinCoQuanDaGiaiQuyet`, `coUyQuyen`, `daGiaiQuyet`, `daXuLy`, `diaChiCoQuanBKT`, `ghiChuXuLyDon`, `hinhThucDaGiaiQuyet`, `huongGiaiQuyetDaThucHien`, `huongXuLyXLD`, `lanGiaiQuyet`, `loaiDoiTuong`, `loaiDon`, `loaiNguoiBiKhieuTo`, `loaiNguoiDungDon`, `lyDoDinhChi`, `ma`, `ngayLapDonGapLanhDaoTmp`, `ngayQuyetDinhDinhChi`, `ngayTiepNhan`, `nguonTiepNhanDon`, `noiDung`, `quyTrinhXuLy`, `soDienThoaiCoQuanBKT`, `soLanKhieuNaiToCao`, `soNguoi`, `soQuyetDinhDinhChi`, `tenCoQuanBKT`, `thanhLapDon`, `thanhLapTiepDanGapLanhDao`, `tongSoLuotTCD`, `trangThaiDon`, `yKienXuLyDon`, `yeuCauCuaCongDan`, `yeuCauGapTrucTiepLanhDao`, `nguoiSua_id`, `nguoiTao_id`, `canBoXuLy_id`, `chiTietLinhVucDonThuChiTiet_id`, `coQuanDaGiaiQuyet_id`, `donLanTruoc_id`, `linhVucDonThu_id`, `linhVucDonThuChiTiet_id`, `phongBanGiaiQuyet_id`, `phuongXaCoQuanBKT_id`, `quanHuyenCoQuanBKT_id`, `thamQuyenGiaiQuyet_id`, `tinhThanhCoQuanBKT_id`, `toDanPhoCoQuanBKT_id`, `processType`, `currentState_id`, `canBoXuLyPhanHeXLD_id`) VALUES
-	(1, b'0', '2017-04-24 10:53:11', '2017-04-24 10:53:11', b'1', b'1', b'1', b'0', b'0', NULL, '', NULL, '', 'DE_XUAT_THU_LY', '', 'QUYET_DINH_HANH_CHINH', 'DON_KHIEU_NAI', 'CA_NHAN', 'CA_NHAN', '', '001', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', 'Ba Nam khieu nai ong X', NULL, NULL, 0, 1, '', NULL, b'1', b'0', 2, NULL, '', '', b'0', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(2, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'1', b'1', b'1', b'0', b'0', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', 'Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'1', 1, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(3, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'1', b'0', b'0', b'0', b'0', NULL, '', NULL, '', 'DE_XUAT_THU_LY', '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'DOAN_DONG_NGUOI', '', '003', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', 'Ong Lam to cao ong A', NULL, NULL, 0, 1, '', NULL, b'1', b'0', 1, NULL, '', '', b'0', 1, 1, 1, 7, NULL, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(4, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'1', b'1', b'0', b'0', b'0', 'Dia chi co quan A', '', NULL, '', 'DE_XUAT_THU_LY', '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CO_QUAN_TO_CHUC', 'CO_QUAN_TO_CHUC', '', '004', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', 'Ong Lam to cao ong A', NULL, '01206189116', 0, 1, '', 'Co quan A', b'1', b'0', 1, NULL, '', '', b'0', 1, 1, 1, 7, 21, NULL, 1, 4, NULL, 32, 15, 1, 9, 4, NULL, NULL, NULL),
-	(5, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'1', b'1', b'1', b'0', b'0', 'Dia chi co quan B', '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CO_QUAN_TO_CHUC', 'CA_NHAN', '', '005', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', 'Ba Nguyen to cao ong Hung', NULL, '01206189116', 0, 1, '', 'Co quan B', b'0', b'0', 1, NULL, '', '', b'0', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, 32, 15, 1, 9, 4, NULL, NULL, NULL),
-	(6, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'0', b'1', b'0', b'0', b'0', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', '001 Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'0', 1, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(7, b'0', '2017-04-24 10:54:01', '2017-04-24 10:53:11', b'0', b'1', b'0', b'0', b'0', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', '002 Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'0', 1, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(8, b'0', '2017-04-20 03:23:45', '2017-04-20 03:23:45', b'0', b'1', b'0', b'0', b'0', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-20 03:23:45', NULL, '2017-04-20 03:23:45', 'TRUC_TIEP', '003 Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'0', 1, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(9, b'0', '2017-04-22 03:23:45', '2017-04-22 03:23:45', b'0', b'1', b'0', b'0', b'0', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-22 03:23:45', NULL, '2017-04-22 03:23:45', 'TRUC_TIEP', '004 Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'0', 1, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(10, b'0', '2017-05-12 09:05:57', '2017-04-24 10:53:11', b'0', b'1', b'0', b'0', b'1', NULL, '', NULL, '', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_TO_CAO', 'CA_NHAN', 'CA_NHAN', '', '002', '2017-04-24 03:23:45', NULL, '2017-04-24 03:23:45', 'TRUC_TIEP', '005 Ba Hoang to cao ong LAM', NULL, NULL, 0, 1, '', NULL, b'0', b'0', 4, NULL, '', '', b'1', 1, 1, 1, 7, 20, NULL, 1, 4, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL),
-	(12, b'0', '2017-05-14 17:23:47', '2017-05-14 17:23:46', b'1', b'1', b'1', b'0', b'0', '', '', 'KIEM_TRA_NHAC_NHO', 'Hướng giải quyết thực hiện .....', NULL, '1', 'QUYET_DINH_HANH_CHINH', 'DON_KHIEU_NAI', 'CA_NHAN', 'CA_NHAN', '', '', '2017-05-14 17:23:46', NULL, '2017-05-14 17:21:36', 'TRUC_TIEP', 'Nội dung đơn thư ...........', NULL, '', 0, 1, '', '', b'0', b'0', 1, 'DANG_XU_LY', '', '', b'1', 1, 1, 1, 8, 1, NULL, 1, 4, NULL, NULL, NULL, 8, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `don` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `boSungThongTinBiKhieuTo`, `coThongTinCoQuanDaGiaiQuyet`, `coUyQuyen`, `daGiaiQuyet`, `daXuLy`, `diaChiCoQuanBKT`, `ghiChuXuLyDon`, `hinhThucDaGiaiQuyet`, `huongGiaiQuyetDaThucHien`, `huongXuLyXLD`, `lanGiaiQuyet`, `loaiDoiTuong`, `loaiDon`, `loaiNguoiBiKhieuTo`, `loaiNguoiDungDon`, `lyDoDinhChi`, `ma`, `ngayLapDonGapLanhDaoTmp`, `ngayQuyetDinhDinhChi`, `ngayTiepNhan`, `nguonTiepNhanDon`, `noiDung`, `quyTrinhXuLy`, `soDienThoaiCoQuanBKT`, `soLanKhieuNaiToCao`, `soNguoi`, `soQuyetDinhDinhChi`, `tenCoQuanBKT`, `thanhLapDon`, `thanhLapTiepDanGapLanhDao`, `tongSoLuotTCD`, `trangThaiDon`, `yKienXuLyDon`, `yeuCauCuaCongDan`, `yeuCauGapTrucTiepLanhDao`, `nguoiSua_id`, `nguoiTao_id`, `canBoXuLy_id`, `chiTietLinhVucDonThuChiTiet_id`, `coQuanDaGiaiQuyet_id`, `donLanTruoc_id`, `linhVucDonThu_id`, `linhVucDonThuChiTiet_id`, `phongBanGiaiQuyet_id`, `phuongXaCoQuanBKT_id`, `quanHuyenCoQuanBKT_id`, `thamQuyenGiaiQuyet_id`, `tinhThanhCoQuanBKT_id`, `toDanPhoCoQuanBKT_id`, `processType`, `currentState_id`, `canBoXuLyPhanHeXLD_id`, `currentForm_id`) VALUES
+	(18, b'0', '2017-05-17 09:45:37', '2017-05-17 09:45:36', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_KHIEU_NAI', NULL, 'CA_NHAN', '', '', '2017-05-17 09:45:36', NULL, '2017-05-17 09:39:35', 'TRUC_TIEP', 'Khiếu nại 2 cán bộ Công an kiểm soát trật tự tại khu công nghiệp An Đồn đối với hành vi yêu cầu tôi dừng xe lại nhưng lại không xuất trình những giấy tờ chứng minh việc đang thi hành công vụ, không đeo biển hiệu.					', NULL, '', 0, 1, '', '', b'0', b'0', 1, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, NULL, NULL, NULL, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(19, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:04', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_TO_CAO', NULL, 'DOAN_DONG_NGUOI', '', '', '2017-05-17 10:05:04', NULL, '2017-05-17 09:48:57', 'TRUC_TIEP', 'Tố cáo ông Trần Văn X, cán bộ địa chính - xây dựng Quận Hải Châu nhận hối lộ số tiền 100.000.000 triệu đồng để không gây khó dễ trong việc cấp giấy phép xây dựng 					', NULL, '', 0, 6, '', '', b'0', b'0', 1, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, NULL, NULL, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(20, b'0', '2017-05-17 20:16:43', '2017-05-17 10:14:18', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_KIEN_NGHI_PHAN_ANH', NULL, 'CO_QUAN_TO_CHUC', '', '', '2017-05-17 10:14:18', NULL, '2017-05-17 10:06:27', 'TRUC_TIEP', 'Chúng tôi là tập thể nhân dân sinh sống tại tổ 5- Hòa Minh - Liên Chiểu - Đà Nẵng, xin được phản ánh về tình hình ô nhiễm môi trường trong thời gian qua tại nơi chúng tôi sống.\nCụ thể như sau: mấy năm gần đây cạnh nhà chúng tôi ở mọc lên hai trạm trộn bêtông nhựa đường nóng hoạt động suất ngày đêm, gây ô nhiễm nghiêm trọng tại nơi chung tôi sinh sống. Nhà máy hoạt động gây ra những ảnh hưởng đến đời sống sinh hoạt của người dân :\nGây khói bụi đến ngạt thở.\nTiếng ồn của nhà máy, của máy xúc làm đầu chúng tôi như nổ tung không ăn ngủ gì được.\nTiếng rung của nhà máy gầm lên làm nứt nhà chúng tôi.\nTiếng còi, tiếng đật thùng xe ben kêu vang trời.		', NULL, '', 0, 1, '', '', b'1', b'0', 1, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, 6, NULL, NULL, 1, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(21, b'0', '2017-05-17 10:40:57', '2017-05-17 10:40:57', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_KIEN_NGHI_PHAN_ANH', NULL, 'CO_QUAN_TO_CHUC', '', '', '2017-05-17 10:40:57', NULL, '2017-05-17 10:37:16', 'TRUC_TIEP', 'Chúng tôi là tập thể giáo viên trường tiểu học Điện Biên Phủ, nay chúng tôi xin kiến nghị về việc không đồng ý sự quyết định bổ nhiệm bà Vương Thị Vân về làm hiệu trưởng trường tiểu học Điện Biên Phủ vì theo thông tin chính xác thì năm học 2013-2014 bà Vương Thị Vân đã bị kỷ luật và lên làm việc tại Phòng Giáo Dục.', NULL, '', 0, 1, '', '', b'0', b'0', 1, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, 13, NULL, NULL, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(22, b'0', '2017-05-17 12:35:12', '2017-05-17 11:13:00', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_KHIEU_NAI', NULL, 'CA_NHAN', '', '', '2017-05-17 11:13:00', NULL, '2017-05-17 05:33:58', 'TRUC_TIEP', 'Ông nội tôi có 06 người con (04 nam 02 nữ) trong đó bố tôi là người con trai thứ hai trong nhà. ông nội tôi có hai mảnh đất. Một mảnh đã cho người con trai thứ ba trong nhà (em bố tôi) sở hữu. Mảnh đất còn lại hiện nay gia đình đang ở được chia làm 2, bố tôi được hưởng 1/2 mảnh đất trên và đã được tách tên sở hữu đứng tên bố tôi (được vẽ trong bản đồ địa chính 299 của xã vẽ năm 1996) nhưng chưa có sổ đỏ (do địa phương chưa cấp sổ đỏ từ trước đến nay)', NULL, '', 0, 1, '', '', b'0', b'1', 1, NULL, '', '', b'1', 1, 1, 1, 15, NULL, NULL, 1, 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(23, b'0', '2017-05-17 12:36:17', '2017-05-17 11:23:06', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_TO_CAO', NULL, 'DOAN_DONG_NGUOI', '', '', '2017-05-17 11:23:06', NULL, '2017-05-17 05:33:58', 'TRUC_TIEP', 'Anh Trần Võ Đình Nam có hành vi lừa đảo, chiếm đoạt tài sản của bà Khuê là một chiếc nhẫn vàng 18k trị giá 1,8 chỉ.	', NULL, '', 0, 2, '', '', b'0', b'1', 1, NULL, '', '', b'1', 1, 1, 1, 17, NULL, NULL, 1, 16, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(24, b'0', '2017-05-17 11:36:30', '2017-05-17 11:36:30', b'0', b'0', b'0', b'0', b'0', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_KIEN_NGHI_PHAN_ANH', NULL, 'CO_QUAN_TO_CHUC', '', '', '2017-05-17 11:36:30', NULL, '2017-05-17 11:23:16', 'TRUC_TIEP', 'Chúng tôi là tập thể nhân dân sinh sống tại tổ 5- Hòa Khánh Bắc - Liên Chiểu - Đà Nẵng, xin được phản ánh về tình hình ô nhiễm môi trường trong thời gian qua tại nơi chúng tôi sống.\nCụ thể như sau: mấy năm gần đây cạnh nhà chúng tôi ở mọc lên hai trạm trộn bêtông nhựa đường nóng hoạt động suất ngày đêm, gây ô nhiễm nghiêm trọng tại nơi chung tôi sinh sống. Nhà máy hoạt động gây ra những ảnh hưởng đến đời sống sinh hoạt của người dân :\nGây khói bụi đến ngạt thở.\nTiếng ồn của nhà máy, của máy xúc làm đầu chúng tôi như nổ tung không ăn ngủ gì được.\nTiếng rung của nhà máy gầm lên làm nứt nhà chúng tôi.\nTiếng còi, tiếng đật thùng xe ben kêu vang trời.', NULL, '', 0, 1, '', '', b'0', b'0', 1, 'DANG_XU_LY', '', '', b'1', 1, 1, 1, 6, NULL, NULL, 1, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(25, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', b'0', b'0', b'0', b'0', b'1', '', '', NULL, ' ', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_KHIEU_NAI', NULL, 'CA_NHAN', '', '', '2017-05-17 12:40:20', NULL, '2017-05-17 12:37:12', 'TRUC_TIEP', 'Khiếu nại công ty TNHH A trong quá trình sản xuất đã lấn chiếm trái phép diện tích đất công', NULL, '', 0, 1, '', '', b'0', b'0', 0, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, NULL, NULL, NULL, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(26, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', b'0', b'0', b'0', b'0', b'1', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_TO_CAO', NULL, 'DOAN_DONG_NGUOI', '', '', '2017-05-17 12:48:49', NULL, '2017-05-17 12:40:53', 'TRUC_TIEP', 'Tố cáo ông Nguyễn Văn B nhận hối lộ của công ty C 1 tỷ đồng và làm ngơ cho việc công ty C trong quá trình sản xuất đã xả chất thải chưa qua xử lý ra môi trường gây ô nhiễm môi trường', NULL, '', 0, 6, '', '', b'0', b'0', 0, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, NULL, NULL, NULL, 18, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(27, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', b'0', b'0', b'0', b'0', b'1', '', '', NULL, ' ', NULL, '', 'HANH_VI_HANH_CHINH', 'DON_KIEN_NGHI_PHAN_ANH', NULL, 'CO_QUAN_TO_CHUC', '', '', '2017-05-17 13:01:05', NULL, '2017-05-17 12:57:33', 'TRUC_TIEP', 'Phản ánh công ty VinGrow trong quá trình sản xuất đã xả chất thải chưa qua xử lý gây ô nhiễm môi trường gây ảnh hưởng đến sức khỏe của các khu dân cư lân cận', NULL, '', 0, 1, '', '', b'0', b'0', 0, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, 6, NULL, NULL, 1, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(28, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:23', b'0', b'0', b'0', b'0', b'1', '', '', NULL, ' ', NULL, '', 'QUYET_DINH_HANH_CHINH', 'DON_KIEN_NGHI_PHAN_ANH', NULL, 'CO_QUAN_TO_CHUC', '', '', '2017-05-17 14:03:23', NULL, '2017-05-17 13:59:59', 'TRUC_TIEP', 'Cơ sở sản xuất gia công cơ khí, sản xuất ốc vít của hộ kinh doanh Tường Vinh hoạt động liên tục từ thứ Hai đến thứ Bảy hàng tuần, từ 07h15 đến 17,18giờ00 (chỉ nghỉ khoản 1,5 giờ vào buổi trưa). Cơ sở sản xuất này gây nên tiếng ồn rất lớn, tiếng máy dập kim loại, tiếng khoan cắt kim loại làm ảnh hưởng nghiêm trọng và gây khó khăn cho sinh hoạt của các hộ dân xung quanh.					', NULL, '', 0, 1, '', '', b'0', b'0', 0, 'DANG_XU_LY', '', '', b'0', 1, 1, 1, 13, NULL, NULL, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `don` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.donvihanhchinh
@@ -716,34 +757,37 @@ CREATE TABLE IF NOT EXISTS `don_congdan` (
   KEY `FK46a1i8bk19bcrkbyat97ru8lj` (`nguoiTao_id`),
   KEY `FKape2lfk6jntnixwhs9j7nlt6e` (`congDan_id`),
   KEY `FKeewjtm7v72lb549lihi8yavbv` (`don_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.don_congdan: 23 rows
+-- Dumping data for table tttp.don_congdan: 26 rows
 /*!40000 ALTER TABLE `don_congdan` DISABLE KEYS */;
 INSERT INTO `don_congdan` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `chucVu`, `diaChiCoQuan`, `donVi`, `luatSu`, `ngayCapTheLuatSu`, `noiCapTheLuatSu`, `phanLoaiCongDan`, `soDienThoai`, `soTheLuatSu`, `tenCoQuan`, `thongTinGioiThieu`, `nguoiSua_id`, `nguoiTao_id`, `congDan_id`, `don_id`) VALUES
-	(1, b'0', '2017-04-24 11:03:29', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 1, 1),
-	(2, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 2),
-	(3, b'0', '2017-04-24 11:05:08', '2017-04-24 11:06:13', '', '', '', b'1', NULL, '', 'NGUOI_DUOC_UY_QUYEN', '', 'LS937', '', NULL, 1, 1, 3, 2),
-	(4, b'0', '2017-04-24 11:05:19', '2017-04-24 11:06:13', '', '', '', b'1', NULL, '', 'NGUOI_DUOC_UY_QUYEN', '', 'LS935', '', NULL, 1, 1, 3, 1),
-	(5, b'0', '2017-04-24 11:06:02', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'DOI_TUONG_BI_KHIEU_TO', '', '', '', NULL, 1, 1, 4, 1),
-	(6, b'0', '2017-04-24 11:06:13', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'DOI_TUONG_BI_KHIEU_TO', '', '', '', NULL, 1, 1, 4, 2),
-	(7, b'0', '2017-04-24 11:06:13', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 4, 3),
-	(8, b'0', '2017-04-24 11:06:13', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', NULL, 1, 1, 3, 3),
-	(10, b'0', '2017-04-24 11:06:02', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'DOI_TUONG_BI_KHIEU_TO', '', '', '', NULL, 1, 1, 1, 3),
-	(9, b'0', '2017-04-24 11:06:13', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 3, 4),
-	(11, b'0', '2017-04-24 11:06:02', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'DOI_TUONG_BI_KHIEU_TO', '', '', '', NULL, 1, 1, 1, 4),
-	(12, b'0', '2017-04-24 11:06:13', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'DOI_TUONG_BI_KHIEU_TO', '', '', '', NULL, 1, 1, 4, 5),
-	(13, b'0', '2017-04-24 11:05:08', '2017-04-24 11:06:13', '', '', '', b'1', NULL, '', 'NGUOI_DUOC_UY_QUYEN', '', 'LS937', '', NULL, 1, 1, 3, 5),
-	(14, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 5),
-	(15, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 6),
-	(16, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 7),
-	(17, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 8),
-	(18, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 9),
-	(19, b'0', '2017-04-24 11:03:46', '2017-04-24 11:06:13', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', NULL, 1, 1, 2, 10),
-	(20, b'0', '2017-05-14 16:06:24', '2017-05-14 16:06:24', '', 'Hải Phòng', '', b'1', '2017-05-04 00:00:00', 'Đà Nẵng', 'NGUOI_DUNG_DON', '01206189116', 'SKJ21312', 'Sở Giao Thông Vân Tải', '', 1, 1, 13, 11),
-	(21, b'0', '2017-05-14 16:06:25', '2017-05-14 16:06:25', '', 'Hải Phòng', '', b'1', '2017-05-04 00:00:00', 'Đà Nẵng', 'NGUOI_DUOC_UY_QUYEN', '01206189116', 'SKJ21312', 'Sở Giao Thông Vân Tải', '', 1, 1, 14, 11),
-	(22, b'0', '2017-05-14 16:06:25', '2017-05-14 16:06:25', '', 'Hải Phòng', '', b'1', '2017-05-04 00:00:00', 'Đà Nẵng', 'DOI_TUONG_BI_KHIEU_TO', '01206189116', 'SKJ21312', 'Sở Giao Thông Vân Tải', '', 1, 1, 15, 11),
-	(23, b'0', '2017-05-14 17:23:50', '2017-05-14 17:23:50', '', '', '', b'1', '2017-05-03 00:00:00', 'Đà Nẵng', 'NGUOI_DUNG_DON', '', 'SJD28137', '', '', 1, 1, 13, 12);
+	(32, b'0', '2017-05-17 09:45:37', '2017-05-17 09:45:37', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 17, 18),
+	(33, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 20, 19),
+	(34, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 18, 19),
+	(35, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 19, 19),
+	(36, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 22, 19),
+	(37, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 21, 19),
+	(38, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 23, 19),
+	(39, b'0', '2017-05-17 10:14:19', '2017-05-17 10:14:19', '', '47 Hòa Minh - Liên Chiểu - Đà Nẵng', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '0511 3758465', '', 'Công ty Vin Group', '', 1, 1, 24, 20),
+	(40, b'0', '2017-05-17 10:40:57', '2017-05-17 10:40:57', '', '26 Trường Chinh', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '05113123486', '', 'Trường tiểu học Điện Biên Phủ', '', 1, 1, 25, 21),
+	(41, b'0', '2017-05-17 11:13:00', '2017-05-17 11:13:00', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 26, 22),
+	(42, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 27, 23),
+	(43, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 18, 23),
+	(44, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 20, 23),
+	(45, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 21, 23),
+	(46, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 22, 23),
+	(47, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 23, 23),
+	(48, b'0', '2017-05-17 11:36:30', '2017-05-17 11:36:30', '', '76 Hòa Khánh Bắc - Liên Chiểu - Đà Nẵng', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '05113754851', '', 'Vin Group', '', 1, 1, 28, 24),
+	(49, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 29, 25),
+	(50, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 30, 26),
+	(51, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '', '', '', '', 1, 1, 31, 26),
+	(52, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 33, 26),
+	(53, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 34, 26),
+	(54, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 35, 26),
+	(55, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', '', b'0', NULL, '', 'THANH_VIEN_DOAN_NHIEU_NGUOI', '', '', '', '', 1, 1, 32, 26),
+	(56, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', '', 'Hải Phòng', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '05113458652', '', 'Vina Group', '', 1, 1, 36, 27),
+	(57, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', '', '346 Tôn Đức Thắng', '', b'0', NULL, '', 'NGUOI_DUNG_DON', '05113245695', '', 'Hòa Bình', '', 1, 1, 37, 28);
 /*!40000 ALTER TABLE `don_congdan` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.giayuyquyen
@@ -784,10 +828,29 @@ CREATE TABLE IF NOT EXISTS `lichsuthaydoi` (
   PRIMARY KEY (`id`),
   KEY `FKbf8c0l5r75h4000beia7f1rg0` (`nguoiSua_id`),
   KEY `FKa9ima7a6hqqc2mqldaj93owui` (`nguoiTao_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.lichsuthaydoi: 0 rows
+-- Dumping data for table tttp.lichsuthaydoi: 17 rows
 /*!40000 ALTER TABLE `lichsuthaydoi` DISABLE KEYS */;
+INSERT INTO `lichsuthaydoi` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `chiTietThayDoi`, `doiTuongThayDoi`, `idDoiTuong`, `noiDung`, `nguoiSua_id`, `nguoiTao_id`) VALUES
+	(4, b'0', '2017-05-16 20:44:33', '2017-05-16 20:44:33', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Tân Chính\',\'newValue\': \'phường Tân Chính\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 01\',\'newValue\': \'Tổ 01\'}]', 'CONG_DAN', 16, 'Cập nhật thông tin công dân Trần Võ Đình Nam', 1, 1),
+	(5, b'0', '2017-05-17 10:15:01', '2017-05-17 10:15:01', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 24, 'Cập nhật thông tin công dân Nguyễn Văn Khải', 1, 1),
+	(6, b'0', '2017-05-17 10:16:44', '2017-05-17 10:16:44', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 24, 'Cập nhật thông tin công dân Nguyễn Văn Khải', 1, 1),
+	(7, b'0', '2017-05-17 10:24:00', '2017-05-17 10:24:00', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 24, 'Cập nhật thông tin công dân Nguyễn Văn Khải', 1, 1),
+	(8, b'0', '2017-05-17 10:25:14', '2017-05-17 10:25:14', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 24, 'Cập nhật thông tin công dân Nguyễn Văn Khải', 1, 1),
+	(9, b'0', '2017-05-17 11:13:27', '2017-05-17 11:13:27', '[{\'propertyName\': \'Ngày sinh\',\'oldValue\': \'02-09-1993\',\'newValue\': \'09-02-1993\'},{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường An Khê\',\'newValue\': \'phường An Khê\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 10\',\'newValue\': \'Tổ 10\'}]', 'CONG_DAN', 26, 'Cập nhật thông tin công dân Phạm Thị Cẩm Nhung', 1, 1),
+	(10, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Thạc Gián\',\'newValue\': \'phường Thạc Gián\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 21, 'Cập nhật thông tin công dân Trần Bá Hòa', 1, 1),
+	(11, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '[{\'propertyName\': \'Ngày sinh\',\'oldValue\': \'02-09-1989\',\'newValue\': \'29-09-1989\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Ngũ Hành Sơn\',\'newValue\': \'quận Ngũ Hành Sơn\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Mỹ An\',\'newValue\': \'phường Mỹ An\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 10\',\'newValue\': \'Tổ 10\'}]', 'CONG_DAN', 22, 'Cập nhật thông tin công dân Đặng Đình Cường', 1, 1),
+	(12, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường An Khê\',\'newValue\': \'phường An Khê\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 02\',\'newValue\': \'Tổ 02\'}]', 'CONG_DAN', 20, 'Cập nhật thông tin công dân Đỗ Bảo Trân', 1, 1),
+	(13, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Hải Châu\',\'newValue\': \'quận Hải Châu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hải Châu  I\',\'newValue\': \'phường Hải Châu  I\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 02\',\'newValue\': \'Tổ 02\'}]', 'CONG_DAN', 23, 'Cập nhật thông tin công dân Nguyễn Thị Kim', 1, 1),
+	(14, b'0', '2017-05-17 11:23:07', '2017-05-17 11:23:07', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 18, 'Cập nhật thông tin công dân Lê Văn Quý', 1, 1),
+	(15, b'0', '2017-05-17 11:53:56', '2017-05-17 11:53:56', '[{\'propertyName\': \'Ngày sinh\',\'oldValue\': \'05-10-1993\',\'newValue\': \'10-05-1993\'},{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Khánh Bắc\',\'newValue\': \'phường Hòa Khánh Bắc\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 27, 'Cập nhật thông tin công dân Đinh Nguyễn Anh Khuê', 1, 1),
+	(16, b'0', '2017-05-17 11:53:56', '2017-05-17 11:53:56', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Ngũ Hành Sơn\',\'newValue\': \'quận Ngũ Hành Sơn\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Mỹ An\',\'newValue\': \'phường Mỹ An\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 10\',\'newValue\': \'Tổ 10\'}]', 'CONG_DAN', 22, 'Cập nhật thông tin công dân Đặng Đình Cường', 1, 1),
+	(17, b'0', '2017-05-17 12:35:12', '2017-05-17 12:35:12', '[{\'propertyName\': \'Ngày sinh\',\'oldValue\': \'09-02-1993\',\'newValue\': \'02-09-1993\'},{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường An Khê\',\'newValue\': \'phường An Khê\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 10\',\'newValue\': \'Tổ 10\'}]', 'CONG_DAN', 26, 'Cập nhật thông tin công dân Phạm Thị Cẩm Nhung', 1, 1),
+	(18, b'0', '2017-05-17 12:36:17', '2017-05-17 12:36:17', '[{\'propertyName\': \'Ngày sinh\',\'oldValue\': \'10-05-1993\',\'newValue\': \'05-10-1993\'},{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Khánh Bắc\',\'newValue\': \'phường Hòa Khánh Bắc\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 27, 'Cập nhật thông tin công dân Đinh Nguyễn Anh Khuê', 1, 1),
+	(19, b'0', '2017-05-17 12:36:17', '2017-05-17 12:36:17', '[{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Ngũ Hành Sơn\',\'newValue\': \'quận Ngũ Hành Sơn\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Mỹ An\',\'newValue\': \'phường Mỹ An\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 10\',\'newValue\': \'Tổ 10\'}]', 'CONG_DAN', 22, 'Cập nhật thông tin công dân Đặng Đình Cường', 1, 1),
+	(20, b'0', '2017-05-17 19:38:44', '2017-05-17 19:38:44', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Thanh Khê\',\'newValue\': \'quận Thanh Khê\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường An Khê\',\'newValue\': \'phường An Khê\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 02\',\'newValue\': \'Tổ 02\'}]', 'CONG_DAN', 20, 'Cập nhật thông tin công dân Đỗ Bảo Trân', 1, 1),
+	(21, b'0', '2017-05-17 20:16:43', '2017-05-17 20:16:43', '[{\'propertyName\': \'Dân tộc\',\'oldValue\': \'Kinh\',\'newValue\': \'Kinh\'},{\'propertyName\': \'Quốc tịch\',\'oldValue\': \'Việt Nam\',\'newValue\': \'Việt Nam\'},{\'propertyName\': \'Tỉnh thành\',\'oldValue\': \'thành phố Đà Nẵng\',\'newValue\': \'thành phố Đà Nẵng\'},{\'propertyName\': \'Quận huyện\',\'oldValue\': \'quận Liên Chiểu\',\'newValue\': \'quận Liên Chiểu\'},{\'propertyName\': \'Phường xã\',\'oldValue\': \'phường Hòa Minh\',\'newValue\': \'phường Hòa Minh\'},{\'propertyName\': \'Thôn tổ\',\'oldValue\': \'Tổ 05\',\'newValue\': \'Tổ 05\'}]', 'CONG_DAN', 24, 'Cập nhật thông tin công dân Nguyễn Văn Khải', 1, 1);
 /*!40000 ALTER TABLE `lichsuthaydoi` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.linhvucdonthu
@@ -808,21 +871,30 @@ CREATE TABLE IF NOT EXISTS `linhvucdonthu` (
   KEY `FK8kjnjuj5m9k3h26hws6dfo1ci` (`nguoiSua_id`),
   KEY `FK4a77ckc5l0x15i8fgjfh6s94i` (`nguoiTao_id`),
   KEY `FK5ufddli1x5lbcvwd06o3omv4v` (`cha_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.linhvucdonthu: 10 rows
+-- Dumping data for table tttp.linhvucdonthu: 19 rows
 /*!40000 ALTER TABLE `linhvucdonthu` DISABLE KEYS */;
 INSERT INTO `linhvucdonthu` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `linhVucKhac`, `ma`, `moTa`, `ten`, `nguoiSua_id`, `nguoiTao_id`, `cha_id`) VALUES
-	(1, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '001', 'Lĩnh vực đơn thư 1', 'Lĩnh vực đơn thư 1', 1, 1, NULL),
-	(2, b'0', '2017-04-24 10:32:30', '2017-04-24 10:32:37', b'0', '002', 'Lĩnh vực đơn thư 2', 'Lĩnh vực đơn thư 2', 1, 1, NULL),
-	(3, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '003', 'Lĩnh vực đơn thư 3', 'Lĩnh vực đơn thư 3', 1, 1, NULL),
-	(4, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '004', 'Lĩnh vực đơn thư 4', 'Lĩnh vực đơn thư 4', 1, 1, 1),
-	(5, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '005', 'Lĩnh vực đơn thư 5', 'Lĩnh vực đơn thư 5', 1, 1, 1),
-	(6, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '006', 'Lĩnh vực đơn thư 6', 'Lĩnh vực đơn thư 6', 1, 1, 1),
-	(7, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '007', 'Lĩnh vực đơn thư 7', 'Lĩnh vực đơn thư 7', 1, 1, 4),
-	(8, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '008', 'Lĩnh vực đơn thư 8', 'Lĩnh vực đơn thư 8', 1, 1, 4),
-	(9, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '009', 'Lĩnh vực đơn thư 9', 'Lĩnh vực đơn thư 9', 1, 1, 5),
-	(10, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '010', 'Lĩnh vực đơn thư 10', 'Lĩnh vực đơn thư 10', 1, 1, 5);
+	(1, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '001', 'Hành chính', 'Hành chính', 1, 1, NULL),
+	(2, b'0', '2017-04-24 10:32:30', '2017-04-24 10:32:37', b'0', '002', 'Tham nhũng', 'Tham nhũng', 1, 1, 1),
+	(3, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '003', 'Phản ánh', 'Phản ánh', 1, 1, 1),
+	(4, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '004', 'Kiến nghị', 'Kiến nghị', 1, 1, 1),
+	(5, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '005', 'Khác', 'Khác', 1, 1, 1),
+	(6, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '006', 'Môi trường', 'Môi trường', 1, 1, 3),
+	(7, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '007', 'An toàn giao thông', 'An toàn giao thông', 1, 1, 3),
+	(8, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '008', 'An ninh trật tự', 'An ninh trật tự', 1, 1, 3),
+	(9, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '009', 'Hạ tầng đô thị', 'Hạ tầng đô thị', 1, 1, 3),
+	(10, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '010', 'Khác', 'Khác', 1, 1, 3),
+	(11, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '011', 'An ninh trật tự', 'An ninh trật tự', 1, 1, 4),
+	(12, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '012', 'Hạ tầng đô thị', 'Hạ tầng đô thị', 1, 1, 4),
+	(13, b'0', '2017-04-24 10:32:37', '2017-04-24 10:32:37', b'0', '013', 'Khác', 'Khác', 1, 1, 4),
+	(14, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '014', 'Đất đai, nhà cửa', 'Đất đai, nhà cửa', 1, 1, 1),
+	(15, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '015', 'Tranh chấp', 'Tranh chấp', 1, 1, 14),
+	(16, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '016', 'Vi phạm pháp luật trong các lĩnh vực', 'Vi phạm pháp luật trong các lĩnh vực', 1, 1, 1),
+	(17, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '017', 'Văn hóa, xã hội', 'Văn hóa, xã hội', 1, 1, 16),
+	(18, b'0', '2017-04-24 10:31:04', '2017-04-24 10:32:37', b'0', '018', 'Tư pháp', 'Tư pháp', 1, 1, NULL),
+	(19, b'0', '2017-04-24 10:32:30', '2017-04-24 10:32:37', b'0', '019', 'Tham nhũng', 'Tham nhũng', 1, 1, 18);
 /*!40000 ALTER TABLE `linhvucdonthu` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.loaicoquanquanly
@@ -911,15 +983,22 @@ CREATE TABLE IF NOT EXISTS `nguoidung` (
   KEY `FKj7xotjm1dm5pirxi26gxos8t5` (`nguoiSua_id`),
   KEY `FKeabbvfd8a1o51p2pbjnvcbydk` (`nguoiTao_id`),
   KEY `FK4oq97pi5mobmpar00hwqj327q` (`vaiTroMacDinh_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.nguoidung: 4 rows
+-- Dumping data for table tttp.nguoidung: 11 rows
 /*!40000 ALTER TABLE `nguoidung` DISABLE KEYS */;
 INSERT INTO `nguoidung` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `active`, `hinhDaiDien`, `matKhau`, `salkey`, `tenDangNhap`, `nguoiSua_id`, `nguoiTao_id`, `vaiTroMacDinh_id`) VALUES
-	(1, b'0', '2017-05-14 16:57:51', '2017-04-24 10:49:48', b'1', '', '812aa127020e37ea0816cfbc45643fb4', 'FjXBIh6363HdS9kuvRrzinynhmrQVqH1', 'admin', 1, 1, 1),
-	(2, b'0', '2017-05-11 09:40:39', '2017-05-03 15:30:58', b'1', '', 'e6ad4c9bcc84108bb3f187e1b9831b13', 'Dh/jbBfvqiwUUeITDmobi3HK9QVRI+N3', 'namtvd', 1, 1, 2),
-	(4, b'0', '2017-05-11 09:40:47', '2017-05-03 15:51:28', b'1', '', '88e32113758d84d971786b6855342d0b', '9qCtGHOMPF7bCpuUxitgGMQmN0aUjrSG', 'thanhpx', 1, 1, 3),
-	(5, b'0', '2017-05-11 09:40:52', '2017-05-03 15:52:46', b'1', '', '478eb0726d207392cae7ae486eecb859', 'PhkyQmWD9uVw+SmqgLFcyTG9Rbid6xfn', 'anvt', 1, 1, 4);
+	(1, b'0', '2017-05-17 19:48:22', '2017-04-24 10:49:48', b'1', '', '8dc12f49943d3305e49bd87d26e4c4bf', 'L8LWQ8eZFMpu1+AsqxRb/seH166G/iRY', 'admin', 1, 1, 1),
+	(2, b'0', '2017-05-17 19:15:55', '2017-05-03 15:30:58', b'1', '', 'e6f02da77290f66dbba7b0947764281d', 'yyLqe+u5/MImnlmm/muyF4hljjgtl7zS', 'namtvd', 1, 1, 2),
+	(4, b'0', '2017-05-17 19:16:16', '2017-05-03 15:51:28', b'1', '', '2ee7904aa806d4e0b26b65db1e5cf6dc', 'yqdA4DKrjXsNBNb7fde/8ruFCXcwS/DY', 'thanhpx', 1, 1, 3),
+	(5, b'0', '2017-05-17 19:22:32', '2017-05-03 15:52:46', b'1', '', '11563480e09f3f4bd87f820f3634784a', 'lUJE/vyVzynuxuQ3U+jhzskqXg07SJEY', 'anvt', 1, 1, 4),
+	(6, b'0', '2017-05-17 19:15:47', '2017-05-17 19:06:57', b'1', '', 'db964ed0e48334b3145c84d9740bcb54', 'p5sEg9zcVa9QVGrK/ddgUiBwfNRPmC7O', 'vinhlv', 1, 1, 3),
+	(11, b'0', '2017-05-17 19:54:26', '2017-05-17 19:52:42', b'1', '', '0859b1a9b885e1212e0ff56097521897', 'szB1ijYcKLXkKIaOrNnnM/4F6iCFwIwu', 'thienpd', 1, 1, 1),
+	(7, b'0', '2017-05-17 19:42:57', '2017-05-17 19:42:57', b'1', '', 'ccb3e33d991c1e3867c6457973146b3a', 'g1/38gxr0prekM1TK9r2KfOhMKDCmld4', 'thanghq', 1, 1, 3),
+	(8, b'0', '2017-05-17 19:43:49', '2017-05-17 19:43:49', b'1', '', '22a2b80d443ad69e2164935a339c82b0', 'eOazgi3Kkhx6rHsyTbYEEdDEw8hwzO+g', 'toantt', 1, 1, 3),
+	(9, b'0', '2017-05-17 19:44:59', '2017-05-17 19:44:59', b'1', '', '34386061c26dace16a6000c0074c040d', 'f1o5WB5PF5Fmcd2Ek2mDgLPZt5SX8726', 'trandtb', 1, 1, 3),
+	(10, b'0', '2017-05-17 19:47:34', '2017-05-17 19:47:34', b'1', '', 'ed550b3c90352310e6e1c777220b4cc7', '6CzDlL5evdj8CR6Y2TRyKv+bTp6X7wJn', 'thanhhx', 1, 1, 1),
+	(12, b'0', '2017-05-17 19:54:33', '2017-05-17 19:53:38', b'1', '', '1abac9086a232c85244587a99bfcd60f', 'f8O5JLRCsM0BnNX9dH0ZPFig6q2o9Fop', 'vutx', 1, 1, 1);
 /*!40000 ALTER TABLE `nguoidung` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.nguoidung_quyen
@@ -943,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `nguoidung_vaitro` (
   KEY `FKnyd5p3gsmyqm2b2j7hna2him8` (`vaitro_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.nguoidung_vaitro: 7 rows
+-- Dumping data for table tttp.nguoidung_vaitro: 14 rows
 /*!40000 ALTER TABLE `nguoidung_vaitro` DISABLE KEYS */;
 INSERT INTO `nguoidung_vaitro` (`nguoidung_id`, `vaitro_id`) VALUES
 	(1, 1),
@@ -952,7 +1031,14 @@ INSERT INTO `nguoidung_vaitro` (`nguoidung_id`, `vaitro_id`) VALUES
 	(1, 4),
 	(2, 2),
 	(4, 3),
-	(5, 4);
+	(5, 4),
+	(6, 3),
+	(7, 3),
+	(8, 3),
+	(9, 3),
+	(10, 1),
+	(11, 1),
+	(12, 1);
 /*!40000 ALTER TABLE `nguoidung_vaitro` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.quoctich
@@ -1243,8 +1329,8 @@ CREATE TABLE IF NOT EXISTS `sotiepcongdan` (
   `loaiTiepDan` varchar(255) COLLATE utf8_vietnamese_ci NOT NULL,
   `ngayHenGapLanhDao` datetime DEFAULT NULL,
   `ngayTiepDan` datetime NOT NULL,
-  `noiDungBoSung` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `noiDungTiepCongDan` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `noiDungBoSung` longtext COLLATE utf8_vietnamese_ci,
+  `noiDungTiepCongDan` longtext COLLATE utf8_vietnamese_ci,
   `soThuTuLuotTiep` int(11) NOT NULL,
   `thoiHan` datetime DEFAULT NULL,
   `trangThaiKetQua` varchar(255) COLLATE utf8_vietnamese_ci DEFAULT NULL,
@@ -1264,24 +1350,24 @@ CREATE TABLE IF NOT EXISTS `sotiepcongdan` (
   KEY `FK1fgxsmec6nwo5c7rux40pogp8` (`donViChuTri_id`),
   KEY `FK6grbn4yn0d8g5ebg6jhbsew1m` (`donViTiepDan_id`),
   KEY `FKk0e4yuj18g9sn7okgv6yncp7h` (`phongBanGiaiQuyet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
 -- Dumping data for table tttp.sotiepcongdan: 13 rows
 /*!40000 ALTER TABLE `sotiepcongdan` DISABLE KEYS */;
 INSERT INTO `sotiepcongdan` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `diaDiemGapLanhDao`, `ghiChuXuLy`, `hoanThanhTCDLanhDao`, `huongGiaiQuyetTCDLanhDao`, `huongXuLy`, `ketQuaGiaiQuyet`, `loaiTiepDan`, `ngayHenGapLanhDao`, `ngayTiepDan`, `noiDungBoSung`, `noiDungTiepCongDan`, `soThuTuLuotTiep`, `thoiHan`, `trangThaiKetQua`, `yKienXuLy`, `nguoiSua_id`, `nguoiTao_id`, `canBoTiepDan_id`, `don_id`, `donViChuTri_id`, `donViTiepDan_id`, `phongBanGiaiQuyet_id`) VALUES
-	(1, b'0', '2017-04-24 11:12:15', '2017-04-24 11:12:15', '', '', b'0', NULL, 'TIEP_NHAN_DON', '', 'THUONG_XUYEN', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 1, NULL, 1, NULL),
-	(2, b'0', '2017-04-24 11:13:08', '2017-04-24 11:12:15', '', '', b'0', NULL, 'TIEP_NHAN_DON', '', 'THUONG_XUYEN', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong lan 2', 2, NULL, '', '', 1, 1, 1, 1, NULL, 1, NULL),
-	(3, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 2, NULL, 1, NULL),
-	(4, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', '', '', b'0', NULL, 'TIEP_NHAN_DON', '', 'THUONG_XUYEN', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 3, NULL, 1, NULL),
-	(5, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', '', '', b'0', NULL, 'BO_SUNG_THONG_TIN', '', 'THUONG_XUYEN', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 4, NULL, 1, NULL),
-	(6, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', '', '', b'0', NULL, 'TIEP_NHAN_DON', '', 'DINH_KY', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 2, NULL, 1, NULL),
-	(7, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', '', '', b'0', NULL, 'TIEP_NHAN_DON', '', 'DOT_XUAT', NULL, '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 5, NULL, 1, NULL),
-	(8, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 6, NULL, 1, NULL),
-	(9, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 7, NULL, 1, NULL),
-	(10, b'0', '2017-04-20 03:23:45', '2017-04-20 03:23:45', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-22 03:23:45', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 8, NULL, 1, NULL),
-	(11, b'0', '2017-04-22 03:23:45', '2017-04-22 03:23:45', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-22 03:23:45', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 9, NULL, 1, NULL),
-	(12, b'0', '2017-04-24 11:14:24', '2017-04-24 11:12:15', 'Tang 3 - 24 Tran Phu', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-04-30 03:23:46', '2017-04-24 03:23:46', '', 'tiep thanh cong', 1, NULL, '', '', 1, 1, 1, 10, NULL, 1, NULL),
-	(14, b'0', '2017-05-14 17:23:47', '2017-05-14 17:23:47', 'Trần Phú', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', '', 'THUONG_XUYEN', '2017-05-24 17:00:00', '2017-05-14 17:21:36', '', '', 1, NULL, '', '', 1, 1, 1, 12, NULL, 1, NULL);
+	(35, b'0', '2017-05-17 09:45:37', '2017-05-17 09:45:37', '', '', b'0', NULL, 'TU_CHOI', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 09:39:35', ' ', 'Chưa có thông tin hồ sơ tài liệu bằng chứng', 1, NULL, '', '', 1, 1, 1, 18, NULL, 2, NULL),
+	(36, b'0', '2017-05-17 10:05:05', '2017-05-17 10:05:05', '', '', b'0', NULL, 'BO_SUNG_THONG_TIN', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 09:48:57', ' ', 'Bổ sung thông tin đơn thư', 1, NULL, '', '', 1, 1, 1, 19, NULL, 2, NULL),
+	(37, b'0', '2017-05-17 20:16:43', '2017-05-17 10:14:19', '', '', b'0', NULL, 'TIEP_NHAN_DON', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 10:06:27', ' ', ' ', 1, NULL, '', '', 1, 1, 1, 20, NULL, 2, NULL),
+	(38, b'0', '2017-05-17 10:40:57', '2017-05-17 10:40:57', '', '', b'0', NULL, 'TRA_DON_VA_HUONG_DAN', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 10:37:16', ' ', 'Đến cơ quan đúng thẩm quyền để trình đơn.\nSở Tài Nguyên Môi Trường', 1, NULL, '', '', 1, 1, 1, 21, NULL, 2, NULL),
+	(39, b'0', '2017-05-17 11:13:27', '2017-05-17 11:13:00', '', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 11:06:40', ' ', ' ', 1, NULL, '', '', 1, 1, 1, 22, NULL, 2, NULL),
+	(40, b'0', '2017-05-17 11:53:56', '2017-05-17 11:23:07', '', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 11:14:02', ' ', ' ', 1, NULL, '', '', 1, 1, 1, 23, NULL, 2, NULL),
+	(41, b'0', '2017-05-17 11:36:30', '2017-05-17 11:36:30', '', '', b'0', NULL, 'YEU_CAU_GAP_LANH_DAO', ' ', 'THUONG_XUYEN', NULL, '2017-05-17 11:23:16', ' ', ' ', 1, NULL, '', '', 1, 1, 1, 24, NULL, 2, NULL),
+	(42, b'0', '2017-05-17 12:35:12', '2017-05-17 12:34:41', '', '', b'0', 'GIAI_QUYET_NGAY', 'KHOI_TAO', ' ', 'DINH_KY', NULL, '2017-05-17 05:33:58', ' ', ' ', 0, NULL, '', '', 1, 1, 11, 22, NULL, 2, NULL),
+	(43, b'0', '2017-05-17 12:36:17', '2017-05-17 12:34:41', '', '', b'0', 'CHO_GIAI_QUYET', 'KHOI_TAO', ' ', 'DINH_KY', NULL, '2017-05-17 05:33:58', ' ', ' ', 0, NULL, '', '', 1, 1, 11, 23, 21, 2, NULL),
+	(44, b'0', '2017-05-17 12:40:20', '2017-05-17 12:40:20', '', '', b'0', 'GIAI_QUYET_NGAY', 'KHOI_TAO', '', 'DOT_XUAT', NULL, '2017-05-17 12:37:12', ' ', ' ', 0, NULL, '', '', 1, 1, 9, 25, NULL, 2, NULL),
+	(45, b'0', '2017-05-17 12:48:49', '2017-05-17 12:48:49', '', '', b'0', 'GIAI_QUYET_NGAY', 'KHOI_TAO', '', 'DOT_XUAT', NULL, '2017-05-17 12:40:53', ' ', ' ', 0, NULL, '', '', 1, 1, 9, 26, NULL, 2, NULL),
+	(46, b'0', '2017-05-17 13:01:05', '2017-05-17 13:01:05', '', '', b'0', 'GIAI_QUYET_NGAY', 'KHOI_TAO', '', 'DOT_XUAT', NULL, '2017-05-17 12:57:33', ' ', ' ', 0, NULL, '', '', 1, 1, 10, 27, NULL, 2, NULL),
+	(47, b'0', '2017-05-17 14:03:24', '2017-05-17 14:03:24', '', '', b'0', 'CHO_GIAI_QUYET', 'KHOI_TAO', '', 'DOT_XUAT', NULL, '2017-05-17 13:59:59', ' ', ' ', 0, NULL, '', '', 1, 1, 10, 28, 20, 2, NULL);
 /*!40000 ALTER TABLE `sotiepcongdan` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.sotiepcongdan_has_donviphoihop
@@ -1293,8 +1379,11 @@ CREATE TABLE IF NOT EXISTS `sotiepcongdan_has_donviphoihop` (
   KEY `FK3q6ie589rhosaj8by8f0ca7wn` (`soTiepCongDan_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.sotiepcongdan_has_donviphoihop: 0 rows
+-- Dumping data for table tttp.sotiepcongdan_has_donviphoihop: 2 rows
 /*!40000 ALTER TABLE `sotiepcongdan_has_donviphoihop` DISABLE KEYS */;
+INSERT INTO `sotiepcongdan_has_donviphoihop` (`soTiepCongDan_id`, `coQuanQuanLy_id`) VALUES
+	(43, 20),
+	(47, 23);
 /*!40000 ALTER TABLE `sotiepcongdan_has_donviphoihop` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.tailieubangchung
@@ -1320,22 +1409,10 @@ CREATE TABLE IF NOT EXISTS `tailieubangchung` (
   KEY `FKm7lvmkr4t8q5e3i2ybcxhakxr` (`don_id`),
   KEY `FKtqbmjxy42x1t9ks4dp67h74m5` (`loaiTaiLieu_id`),
   KEY `FKr434cjl5l7ievuaxfltn7thm8` (`soTiepCongDan_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.tailieubangchung: 11 rows
+-- Dumping data for table tttp.tailieubangchung: 0 rows
 /*!40000 ALTER TABLE `tailieubangchung` DISABLE KEYS */;
-INSERT INTO `tailieubangchung` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `duongDan`, `soTrang`, `ten`, `tenFile`, `tinhTrangTaiLieu`, `nguoiSua_id`, `nguoiTao_id`, `don_id`, `loaiTaiLieu_id`, `soTiepCongDan_id`) VALUES
-	(1, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 1', 'TaiLieuBangChung1', 'Bản sao', 1, 1, 1, 1, NULL),
-	(2, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 2', 'TaiLieuBangChung2', 'Bản sao', 1, 1, 1, 1, NULL),
-	(3, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 1', 'TaiLieuBangChung1', 'Bản sao', 1, 1, 2, 1, NULL),
-	(4, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 2', 'TaiLieuBangChung2', 'Bản sao', 1, 1, 2, 1, NULL),
-	(5, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 1', 'TaiLieuBangChung1', 'Bản sao', 1, 1, 3, 1, NULL),
-	(6, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 2', 'TaiLieuBangChung2', 'Bản sao', 1, 1, 3, 1, NULL),
-	(7, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 1', 'TaiLieuBangChung1', 'Bản sao', 1, 1, 4, 1, NULL),
-	(8, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 2', 'TaiLieuBangChung2', 'Bản sao', 1, 1, 4, 1, NULL),
-	(9, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 3', 'TaiLieuBangChung3', 'Bản sao', 1, 1, 4, 1, 5),
-	(10, b'0', '2017-04-27 08:27:50', '2017-04-27 08:27:52', NULL, 1, 'Tai lieu bang chung 4', 'TaiLieuBangChung4', 'Bản sao', 1, 1, 4, 1, 5),
-	(11, b'0', '2017-05-14 17:23:50', '2017-05-14 17:23:50', '', 1, 'Tài liệu bằng chứng chiềm đất', '', 'Bản sao', 1, 1, 12, 1, NULL);
 /*!40000 ALTER TABLE `tailieubangchung` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.tailieudinhkemdinhchi
@@ -1385,17 +1462,8 @@ CREATE TABLE IF NOT EXISTS `tailieuvanthu` (
   KEY `FKknbyx9548nh4feci6uov61ecv` (`soTiepCongDan_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.tailieuvanthu: 8 rows
+-- Dumping data for table tttp.tailieuvanthu: 0 rows
 /*!40000 ALTER TABLE `tailieuvanthu` DISABLE KEYS */;
-INSERT INTO `tailieuvanthu` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `duongDan`, `loaiTepDinhKem`, `ngayQuyetDinh`, `soQuyetDinh`, `ten`, `tenFile`, `nguoiSua_id`, `nguoiTao_id`, `don_id`, `soTiepCongDan_id`) VALUES
-	(1, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 001', NULL, 1, 1, 2, 6),
-	(2, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 005', NULL, 1, 1, 5, 7),
-	(3, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 002', NULL, 1, 1, 2, 6),
-	(4, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 003', NULL, 1, 1, 2, 6),
-	(5, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 004', NULL, 1, 1, 2, 6),
-	(6, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 006', NULL, 1, 1, 5, 7),
-	(7, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 007', NULL, 1, 1, 5, 7),
-	(8, b'0', '2017-05-14 09:28:05', '2017-05-14 09:28:05', NULL, 'KHAC', NULL, NULL, 'Tài liệu văn thư 008', NULL, 1, 1, 5, 7);
 /*!40000 ALTER TABLE `tailieuvanthu` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.thamquyengiaiquyet
@@ -1447,7 +1515,7 @@ CREATE TABLE IF NOT EXISTS `thamso` (
   KEY `FKlo4ke6t4f9ofyii0gr2g1sl87` (`nguoiTao_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.thamso: 12 rows
+-- Dumping data for table tttp.thamso: 13 rows
 /*!40000 ALTER TABLE `thamso` DISABLE KEYS */;
 INSERT INTO `thamso` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `giaTri`, `moTa`, `ten`, `nguoiSua_id`, `nguoiTao_id`) VALUES
 	(1, b'0', '2017-04-23 11:09:41', '2017-04-23 11:09:42', '1', 'CDVHC_TINH', 'CDVHC_TINH', 1, 1),
@@ -2040,9 +2108,9 @@ CREATE TABLE IF NOT EXISTS `vaitro` (
 /*!40000 ALTER TABLE `vaitro` DISABLE KEYS */;
 INSERT INTO `vaitro` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `loaiVaiTro`, `ten`, `nguoiSua_id`, `nguoiTao_id`) VALUES
 	(1, b'0', '2017-05-11 11:00:16', '2017-04-25 15:36:45', 'LANH_DAO', 'Lãnh đạo', 1, 1),
-	(2, b'0', '2017-05-10 14:50:17', '2017-05-10 14:48:29', 'TRUONG_PHONG', 'Trưởng Phòng', 1, 1),
-	(3, b'0', '2017-05-10 14:50:04', '2017-05-10 14:48:46', 'CHUYEN_VIEN', 'Chuyên viên', 1, 1),
-	(4, b'0', '2017-05-10 14:49:55', '2017-05-10 14:48:55', 'VAN_THU', 'Văn thư', 1, 1);
+	(2, b'0', '2017-05-17 18:35:29', '2017-05-10 14:48:29', 'TRUONG_PHONG', 'Trưởng Phòng', 1, 1),
+	(3, b'0', '2017-05-17 18:36:55', '2017-05-10 14:48:46', 'CHUYEN_VIEN', 'Chuyên viên', 1, 1),
+	(4, b'0', '2017-05-17 18:49:16', '2017-05-10 14:48:55', 'VAN_THU', 'Văn thư', 1, 1);
 /*!40000 ALTER TABLE `vaitro` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.vaitro_quyen
@@ -2057,9 +2125,9 @@ CREATE TABLE IF NOT EXISTS `vaitro_quyen` (
 /*!40000 ALTER TABLE `vaitro_quyen` DISABLE KEYS */;
 INSERT INTO `vaitro_quyen` (`vaitro_id`, `quyens`) VALUES
 	(1, 'thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa,vuviec:lietke,vuviec:xem,vuviec:them,vuviec:sua,vuviec:xoa,loaitailieu:lietke,loaitailieu:xem,loaitailieu:them,loaitailieu:sua,loaitailieu:xoa,chucvu:lietke,chucvu:xem,chucvu:them,chucvu:sua,chucvu:xoa,quoctich:lietke,quoctich:xem,quoctich:them,quoctich:sua,quoctich:xoa,capdonvihanhchinh:lietke,capdonvihanhchinh:xem,capdonvihanhchinh:them,capdonvihanhchinh:sua,capdonvihanhchinh:xoa,donvihanhchinh:lietke,donvihanhchinh:xem,donvihanhchinh:them,donvihanhchinh:sua,donvihanhchinh:xoa,capcoquanquanly:lietke,capcoquanquanly:xem,capcoquanquanly:them,capcoquanquanly:sua,capcoquanquanly:xoa,coquanquanly:lietke,coquanquanly:xem,coquanquanly:them,coquanquanly:sua,coquanquanly:xoa,todanpho:lietke,todanpho:them,todanpho:xem,todanpho:sua,todanpho:xoa,dantoc:lietke,dantoc:them,dantoc:xem,dantoc:sua,dantoc:xoa,linhvucdonthu:lietke,linhvucdonthu:xem,linhvucdonthu:them,linhvucdonthu:sua,linhvucdonthu:xoa,congchuc:lietke,congchuc:xem,congchuc:them,congchuc:sua,congchuc:xoa,congdan:lietke,congdan:xem,congdan:them,congdan:sua,congdan:xoa,vaitro:lietke,vaitro:xem,vaitro:them,vaitro:sua,vaitro:xoa,don:lietke,don:xem,don:them,don:sua,don:xoa,sotiepcongdan:lietke,sotiepcongdan:xem,sotiepcongdan:them,sotiepcongdan:sua,sotiepcongdan:xoa,thamquyengiaiquyet:lietke,loaicoquanquanly:lietke,loaicoquanquanly:xem,loaicoquanquanly:them,loaicoquanquanly:sua,loaicoquanquanly:xoa,thoihan:lietke,thoihan:xem,thoihan:them,thoihan:sua,thoihan:xoa,thamso:sua,thamso:them,thamso:xem,thamso:lietke,thamso:xoa'),
-	(2, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa'),
-	(3, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa'),
-	(4, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa');
+	(2, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa,vuviec:lietke,vuviec:xem,vuviec:them,vuviec:sua,vuviec:xoa,loaitailieu:lietke,loaitailieu:xem,loaitailieu:them,loaitailieu:sua,loaitailieu:xoa,chucvu:lietke,chucvu:xem,chucvu:them,chucvu:sua,chucvu:xoa,quoctich:lietke,quoctich:xem,quoctich:them,quoctich:sua,quoctich:xoa,capdonvihanhchinh:lietke,capdonvihanhchinh:xem,capdonvihanhchinh:them,capdonvihanhchinh:sua,capdonvihanhchinh:xoa,donvihanhchinh:lietke,donvihanhchinh:xem,donvihanhchinh:them,donvihanhchinh:sua,donvihanhchinh:xoa,loaicoquanquanly:lietke,loaicoquanquanly:xem,loaicoquanquanly:them,loaicoquanquanly:sua,loaicoquanquanly:xoa,capcoquanquanly:lietke,capcoquanquanly:xem,capcoquanquanly:them,capcoquanquanly:sua,capcoquanquanly:xoa,coquanquanly:lietke,coquanquanly:xem,coquanquanly:them,coquanquanly:sua,coquanquanly:xoa,todanpho:lietke,todanpho:xem,todanpho:them,todanpho:sua,todanpho:xoa,dantoc:lietke,dantoc:xem,dantoc:them,dantoc:sua,dantoc:xoa,linhvucdonthu:lietke,linhvucdonthu:xem,linhvucdonthu:sua,linhvucdonthu:xoa,linhvucdonthu:them,congchuc:lietke,congchuc:xem,congchuc:them,congchuc:sua,congchuc:xoa,congdan:lietke,congdan:xem,congdan:them,congdan:sua,congdan:xoa,vaitro:lietke,vaitro:xem,vaitro:sua,vaitro:xoa,vaitro:them,thoihan:xem,thoihan:lietke,thoihan:them,thoihan:sua,thoihan:xoa,thamso:lietke,thamso:xem,thamso:them,thamso:sua,thamso:xoa,sotiepcongdan:lietke,sotiepcongdan:xem,sotiepcongdan:them,sotiepcongdan:sua,sotiepcongdan:xoa,don:lietke,don:xem,don:them,don:sua,don:xoa'),
+	(3, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa,vuviec:xem,vuviec:lietke,vuviec:them,vuviec:sua,vuviec:xoa,loaitailieu:lietke,loaitailieu:xem,loaitailieu:them,loaitailieu:sua,loaitailieu:xoa,chucvu:lietke,chucvu:xem,chucvu:them,chucvu:sua,chucvu:xoa,quoctich:lietke,quoctich:xem,quoctich:them,quoctich:sua,quoctich:xoa,capdonvihanhchinh:lietke,capdonvihanhchinh:xem,capdonvihanhchinh:them,capdonvihanhchinh:sua,capdonvihanhchinh:xoa,donvihanhchinh:lietke,donvihanhchinh:xem,donvihanhchinh:them,donvihanhchinh:sua,donvihanhchinh:xoa,loaicoquanquanly:lietke,loaicoquanquanly:xem,loaicoquanquanly:them,loaicoquanquanly:sua,loaicoquanquanly:xoa,capcoquanquanly:lietke,capcoquanquanly:xem,capcoquanquanly:them,capcoquanquanly:sua,capcoquanquanly:xoa,coquanquanly:lietke,coquanquanly:xem,coquanquanly:them,coquanquanly:sua,coquanquanly:xoa,todanpho:lietke,todanpho:xem,todanpho:them,todanpho:sua,todanpho:xoa,dantoc:lietke,dantoc:xem,dantoc:them,dantoc:sua,dantoc:xoa,linhvucdonthu:lietke,linhvucdonthu:xem,linhvucdonthu:them,linhvucdonthu:sua,linhvucdonthu:xoa,congchuc:lietke,congchuc:xem,congchuc:them,congchuc:sua,congchuc:xoa,congdan:lietke,congdan:xem,congdan:them,congdan:sua,congdan:xoa,vaitro:lietke,vaitro:xem,vaitro:them,vaitro:sua,vaitro:xoa,thoihan:lietke,thoihan:xem,thoihan:them,thoihan:sua,thoihan:xoa,thamso:lietke,thamso:xem,thamso:them,thamso:sua,thamso:xoa,sotiepcongdan:lietke,sotiepcongdan:xem,sotiepcongdan:them,sotiepcongdan:sua,sotiepcongdan:xoa,don:lietke,don:xem,don:them,don:xoa,don:sua'),
+	(4, 'thamquyengiaiquyet:lietke,thamquyengiaiquyet:xem,thamquyengiaiquyet:them,thamquyengiaiquyet:sua,thamquyengiaiquyet:xoa,vuviec:lietke,vuviec:xem,vuviec:them,vuviec:sua,vuviec:xoa,loaitailieu:lietke,loaitailieu:xem,loaitailieu:them,loaitailieu:sua,loaitailieu:xoa,chucvu:lietke,chucvu:xem,chucvu:them,chucvu:sua,chucvu:xoa,quoctich:xem,quoctich:lietke,quoctich:them,quoctich:sua,quoctich:xoa,capdonvihanhchinh:lietke,capdonvihanhchinh:xem,capdonvihanhchinh:them,capdonvihanhchinh:sua,capdonvihanhchinh:xoa,donvihanhchinh:lietke,donvihanhchinh:xem,donvihanhchinh:them,donvihanhchinh:sua,donvihanhchinh:xoa,loaicoquanquanly:lietke,loaicoquanquanly:xem,loaicoquanquanly:them,loaicoquanquanly:sua,loaicoquanquanly:xoa,capcoquanquanly:lietke,capcoquanquanly:xem,capcoquanquanly:them,capcoquanquanly:sua,capcoquanquanly:xoa,coquanquanly:xem,coquanquanly:lietke,coquanquanly:them,coquanquanly:sua,coquanquanly:xoa,todanpho:lietke,todanpho:xem,todanpho:them,todanpho:sua,todanpho:xoa,dantoc:lietke,dantoc:xem,dantoc:them,dantoc:sua,dantoc:xoa,linhvucdonthu:lietke,linhvucdonthu:xem,linhvucdonthu:them,linhvucdonthu:sua,linhvucdonthu:xoa,congchuc:lietke,congchuc:xem,congchuc:them,congchuc:sua,congchuc:xoa,congdan:xem,congdan:lietke,congdan:them,congdan:sua,congdan:xoa,vaitro:lietke,vaitro:xem,vaitro:them,vaitro:sua,vaitro:xoa,thoihan:lietke,thoihan:xem,thoihan:them,thoihan:sua,thoihan:xoa,thamso:lietke,thamso:xem,thamso:them,thamso:sua,thamso:xoa,sotiepcongdan:lietke,sotiepcongdan:xem,sotiepcongdan:them,sotiepcongdan:sua,sotiepcongdan:xoa,don:lietke,don:xem,don:them,don:sua,don:xoa');
 /*!40000 ALTER TABLE `vaitro_quyen` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.wf_donvi_has_state
@@ -2172,19 +2240,20 @@ CREATE TABLE IF NOT EXISTS `wf_state` (
   PRIMARY KEY (`id`),
   KEY `FK55rccdtd35bei5r9gwghfdrx2` (`nguoiSua_id`),
   KEY `FKijg4n683sup3sxn3q281w3ddn` (`nguoiTao_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.wf_state: 8 rows
+-- Dumping data for table tttp.wf_state: 9 rows
 /*!40000 ALTER TABLE `wf_state` DISABLE KEYS */;
 INSERT INTO `wf_state` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `ghiChu`, `ten`, `type`, `nguoiSua_id`, `nguoiTao_id`) VALUES
-	(1, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Bắt đầu xử lý đơn', 'BAT_DAU', 1, 1),
-	(2, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Trình lãnh đạo', 'TRINH_LANH_DAO', 1, 1),
-	(3, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Lãnh đạo giao việc trưởng phòng', 'LANH_DAO_GIAO_VIEC_TRUONG_PHONG', 1, 1),
-	(4, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Trường phòng đề xuất giao việc lại', 'TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI', 1, 1),
-	(5, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Trưởng phòng giao việc cán bộ', 'TRUONG_PHONG_GIAO_VIEC_CAN_BO', 1, 1),
-	(6, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Cán bộ đề xuất giao việc lại', 'CAN_BO_DE_XUAT_GIAO_VIEC_LAI', 1, 1),
-	(7, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Cán bộ đề xuất hướng xử lý', 'CAN_BO_DE_XUAT_HUONG_XU_LY', 1, 1),
-	(8, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', NULL, 'Kết thúc xử lý đơn', 'KET_THUC', 1, 1);
+	(1, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Bắt đầu', 'Bắt đầu', 'BAT_DAU', 1, 1),
+	(2, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Trình lãnh đạo', 'Trình lãnh đạo', 'TRINH_LANH_DAO', 1, 1),
+	(3, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Giao việc trưởng phòng', 'Lãnh đạo giao việc trưởng phòng', 'LANH_DAO_GIAO_VIEC_TRUONG_PHONG', 1, 1),
+	(4, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Đề xuất giao việc lại', 'Trường phòng đề xuất giao việc lại', 'TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI', 1, 1),
+	(5, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Giao việc cán bộ', 'Trưởng phòng giao việc cán bộ', 'TRUONG_PHONG_GIAO_VIEC_CAN_BO', 1, 1),
+	(6, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Đề xuất giao việc lại', 'Cán bộ đề xuất giao việc lại', 'CAN_BO_DE_XUAT_GIAO_VIEC_LAI', 1, 1),
+	(7, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Đề xuất hướng xử lý', 'Cán bộ đề xuất hướng xử lý', 'CAN_BO_DE_XUAT_HUONG_XU_LY', 1, 1),
+	(8, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Kết thúc', 'Kết thúc', 'KET_THUC', 1, 1),
+	(9, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 'Giao việc cán bộ', 'Lãnh đạo giao việc cán bộ', 'LANH_DAO_GIAO_VIEC_CAN_BO', 1, 1);
 /*!40000 ALTER TABLE `wf_state` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.wf_transition
@@ -2207,9 +2276,9 @@ CREATE TABLE IF NOT EXISTS `wf_transition` (
   KEY `FKgax7pfxrbm1droa3nwdtxvopf` (`form_id`),
   KEY `FKrfk6n3ds4jr0hv5ptoo1je3l3` (`nextState_id`),
   KEY `FKdcmimeash24b61vjf4b65t6ej` (`process_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.wf_transition: 12 rows
+-- Dumping data for table tttp.wf_transition: 14 rows
 /*!40000 ALTER TABLE `wf_transition` DISABLE KEYS */;
 INSERT INTO `wf_transition` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `nguoiSua_id`, `nguoiTao_id`, `currentState_id`, `form_id`, `nextState_id`, `process_id`) VALUES
 	(1, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 1, 1, 2, 1),
@@ -2223,7 +2292,9 @@ INSERT INTO `wf_transition` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `nguoiSua_id`,
 	(9, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 6, 4, 5, 4),
 	(10, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 7, 7, 8, 1),
 	(11, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 7, 7, 8, 2),
-	(12, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 6, 3, 4, 4);
+	(12, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 6, 3, 4, 4),
+	(13, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 9, 5, 6, 5),
+	(14, b'0', '2017-05-03 13:20:39', '2017-05-03 13:20:39', 1, 1, 9, 6, 7, 5);
 /*!40000 ALTER TABLE `wf_transition` ENABLE KEYS */;
 
 -- Dumping structure for table tttp.xulydon
@@ -2275,12 +2346,12 @@ CREATE TABLE IF NOT EXISTS `xulydon` (
   KEY `FKe0w8kx6irtoyqc88bcaqi0x61` (`phongBanXuLy_id`),
   KEY `FKl94mjqmxb6vchw7y3h1m3a6dr` (`phongBanXuLyChiDinh_id`),
   KEY `FK79w5mvipene2vpj5aj4rt478` (`thamQuyenGiaiQuyet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
 
--- Dumping data for table tttp.xulydon: 1 rows
+-- Dumping data for table tttp.xulydon: 0 rows
 /*!40000 ALTER TABLE `xulydon` DISABLE KEYS */;
 INSERT INTO `xulydon` (`id`, `daXoa`, `ngaySua`, `ngayTao`, `chucVu`, `chucVuGiaoViec`, `diaDiem`, `ghiChu`, `huongXuLy`, `moTaTrangThai`, `ngayHenGapLanhDao`, `ngayQuyetDinhDinhChi`, `noiDungThongTinTrinhLanhDao`, `noiDungYeuCauXuLy`, `quyTrinhXuLy`, `soQuyetDinhDinhChi`, `thoiHanXuLy`, `thuTuThucHien`, `trangThaiDon`, `yKienXuLy`, `nguoiSua_id`, `nguoiTao_id`, `canBoXuLy_id`, `canBoXuLyChiDinh_id`, `coQuanChuyenDon_id`, `coQuanTiepNhan_id`, `congChuc_id`, `don_id`, `phongBanGiaiQuyet_id`, `phongBanXuLy_id`, `phongBanXuLyChiDinh_id`, `thamQuyenGiaiQuyet_id`, `donChuyen`) VALUES
-	(2, b'0', '2017-05-14 17:23:46', '2017-05-14 17:23:46', 'VAN_THU', NULL, NULL, '', NULL, '', NULL, NULL, '', '', NULL, NULL, '2017-05-20 17:24:41', 0, 'DANG_XU_LY', '', 1, 1, NULL, NULL, NULL, NULL, NULL, 12, NULL, 2, NULL, NULL, b'0');
+	(10, b'0', '2017-05-17 20:16:42', '2017-05-17 20:16:42', 'VAN_THU', NULL, NULL, ' ', NULL, '', NULL, NULL, '', '', NULL, NULL, '2017-05-17 10:06:27', 0, 'DANG_XU_LY', '', 1, 1, NULL, NULL, NULL, NULL, NULL, 20, NULL, 2, NULL, NULL, b'0');
 /*!40000 ALTER TABLE `xulydon` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
