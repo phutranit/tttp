@@ -133,13 +133,13 @@ public class SearchQuery5<T> implements SimpleQuery<SearchQuery5<T>>, Fetchable<
 		return new IteratorAdapter<T>(createQuery(false).iterate());
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public List<T> fetch() {
 		return createQuery(false).list();
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public T fetchOne() {
 		return (T) createQuery(false).uniqueResult();

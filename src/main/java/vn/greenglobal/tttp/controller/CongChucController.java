@@ -152,6 +152,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
 		}
 
+		congChuc.getNguoiDung().setActive(true);
 		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
@@ -242,6 +243,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
+		congChuc.getNguoiDung().setActive(true);
 		return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
