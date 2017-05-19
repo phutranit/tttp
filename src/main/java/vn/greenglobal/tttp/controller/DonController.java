@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +37,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
@@ -50,9 +50,7 @@ import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.State;
-import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -333,7 +331,9 @@ public class DonController extends TttpController<Don> {
 				Don donMoi = Utils.save(repo, don, congChucId);
 
 				if (donMoi.isThanhLapDon()) {
-					
+					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
+					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+					donMoi.setCurrentState(beginState);
 					// Them xu ly don hien tai
 					XuLyDon xuLyDonHienTai = new XuLyDon();
 					xuLyDonHienTai.setDon(donMoi);
@@ -467,7 +467,11 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 				xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
+				
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
+				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+				don.setCurrentState(beginState);
 			}
 
 			return Utils.doSave(repo, don,

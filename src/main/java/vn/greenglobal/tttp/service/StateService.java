@@ -16,6 +16,7 @@ import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.model.Process;
 
 @Component
@@ -44,5 +45,9 @@ public class StateService {
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QState.state.id.eq(id));
+	}
+	
+	public Predicate predicateFindByType(FlowStateEnum type) {
+		return base.and(QState.state.type.eq(type));
 	}
 }
