@@ -17,8 +17,9 @@ public class XuLyDonService {
 	BooleanExpression base = xuLyDon.daXoa.eq(false);
 
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
-
+		System.out.println("predFindCurrent: " + id);
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
+		System.out.println("where: "  +where);
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();			
 			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(where, sortOrder);

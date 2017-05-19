@@ -1084,14 +1084,14 @@ public class Don extends Model<Don> {
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.LANH_DAO)).collect(Collectors.toList());
 			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaLD", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
+				map.put("quyTrinhXuLyCuaLD", xldld.getNextState() != null ? xldld.getNextState().getGhiChu() : "");
 			}
 			xlds.clear();
 			xlds.addAll(xuLyDons);
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG)).collect(Collectors.toList());
 			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaPB", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
+				map.put("quyTrinhXuLyCuaPB", xldld.getNextState() != null ? xldld.getNextState().getGhiChu() : "");
 			}
 			return map;
 		}

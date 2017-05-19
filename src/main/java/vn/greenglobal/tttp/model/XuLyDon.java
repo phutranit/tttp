@@ -7,15 +7,18 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
@@ -53,16 +56,58 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private String soQuyetDinhDinhChi;
 	
+	@ManyToOne
+	private State nextState;
+	
+	@ManyToOne
+	private Form nextForm;
+	
 	@Transient
 	private Long soNgayCuaThoiHanXuLy;
 	
 	@Transient
 	private Long soNgayXuLy;
 	
+	//@Enumerated(EnumType.STRING)
+	//private QuyTrinhXuLyDonEnum quyTrinhXuLy;
+	@Enumerated(EnumType.STRING)
+	private HuongXuLyXLDEnum huongXuLy;
+
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiDon;
+	
+	@Lob
+	private String ghiChu = "";
+	private String yKienXuLy = "";
+	private String moTaTrangThai = "";
+	private String noiDungYeuCauXuLy = "";
+	private String noiDungThongTinTrinhLanhDao = "";
+
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu;
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVuGiaoViec;
+	
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}
+	
+	public State getNextState() {
+		return nextState;
+	}
+	
+	public void setNextState(State nextState) {
+		this.nextState = nextState;
+	}
 
+	public Form getNextForm() {
+		return nextForm;
+	}
+
+	public void setNextForm(Form nextForm) {
+		this.nextForm = nextForm;
+	}
+	
 	public void setSoNgayXuLy(long soNgayXuLy) { 
 		this.soNgayXuLy = soNgayXuLy;
 	}
@@ -107,18 +152,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
-//	@Lob
-	private String ghiChu = " ";
-	private String yKienXuLy = "";
-	private String moTaTrangThai = "";
-	private String noiDungYeuCauXuLy = "";
-	private String noiDungThongTinTrinhLanhDao = "";
-
-	@Enumerated(EnumType.STRING)
-	private VaiTroEnum chucVu;
-	@Enumerated(EnumType.STRING)
-	private VaiTroEnum chucVuGiaoViec;
-	
 	@ApiModelProperty(position = 8)
 	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
@@ -127,15 +160,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setChucVuGiaoViec(VaiTroEnum chucVuGiaoViec) {
 		this.chucVuGiaoViec = chucVuGiaoViec;
 	}
-
-	@Enumerated(EnumType.STRING)
-	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
-	@Enumerated(EnumType.STRING)
-	private HuongXuLyXLDEnum huongXuLy;
-
-	@Enumerated(EnumType.STRING)
-	private TrangThaiDonEnum trangThaiDon;
-
+	
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
 	}
@@ -257,14 +282,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
 	}
 
-	@ApiModelProperty(position = 5)
-	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
-		return quyTrinhXuLy;
-	}
-
-	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
-		this.quyTrinhXuLy = quyTrinhXuLy;
-	}
+//	@ApiModelProperty(position = 5)
+//	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
+//		return quyTrinhXuLy;
+//	}
+//
+//	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
+//		this.quyTrinhXuLy = quyTrinhXuLy;
+//	}
 
 	@ApiModelProperty(position = 10)
 	public HuongXuLyXLDEnum getHuongXuLy() {

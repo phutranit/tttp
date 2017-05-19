@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.Predicate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,8 +37,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -48,9 +50,7 @@ import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.State;
-import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -62,6 +62,7 @@ import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.model.Process;
@@ -102,6 +103,9 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private StateService serviceState;
+	
+	@Autowired
+	private ProcessService processService;
 
 	@Autowired
 	protected PagedResourcesAssembler<State> assemblerState;
@@ -154,66 +158,38 @@ public class DonController extends TttpController<Don> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/listNextStates")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
-	public @ResponseBody Object getListNextStates(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
-			@RequestParam(value = "nguoiTaoId", required = false) Long nguoiTaoId,
+	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "nguoiTaoDonId", required = false) Long nguoiTaoId,
 			@RequestParam(value = "processType", required = true) String processType,
-			@RequestParam(value = "currentStateId", required = true) Long currentStateId,
-			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "currentStateId", required = true) Long currentStateId, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		if (nguoiDung != null) {
-			Long congChucId = new Long(
-					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
-
-			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true 
-					: congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
-
-			BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
-
-			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
-			CoQuanQuanLy donVi = null;
-			if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
-				if (thamSo != null && thamSo.getGiaTri().toString()
-						.equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
-					donVi = congChuc.getCoQuanQuanLy().getCha();
-				} else {
-					donVi = congChuc.getCoQuanQuanLy();
-				}
-			}
-			System.out.println("VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))): "
-					+ VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro)));
-			processQuery = processQuery
-					.and(QProcess.process.vaiTro.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
-			// processQuery =
-			// processQuery.and(QProcess.process.coQuanQuanLy.eq(donVi));
-			// processQuery =
-			// processQuery.and(QProcess.process.owner.eq(isOwner));
-			// processQuery =
-			// processQuery.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
-
-			List<Process> listProcess = (List<Process>) repoProcess.findAll(processQuery);
-
-			for (Process p : listProcess) {
-				System.out.println("process: " + p.getTenQuyTrinh() + "; " + p.getVaiTro().getLoaiVaiTro().toString()
-						+ "; " + p.getCoQuanQuanLy().getTen());
-			}
-
-			Process process = repoProcess.findOne(processQuery);
-
+			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true : congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
+			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
+			ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
+			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
+			if (process == null && isOwner) {
+				process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, false, processTypeEnum));
+			}			
 			if (process == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 			}
-			Page<State> pageData = repoState
-					.findAll(serviceState.predicateFindAll(currentStateId, process, repoTransition), pageable);
+			Predicate predicate = serviceState.predicateFindAll(currentStateId, process, repoTransition);
+			if (((List<State>) repoState.findAll(predicate)).size() < 1) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+						ApiErrorEnum.TRANSITION_INVALID.getText());
+			}
+			Page<State> pageData = repoState.findAll(predicate, pageable);
 			return assemblerState.toResource(pageData, (ResourceAssembler) eass);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -355,7 +331,9 @@ public class DonController extends TttpController<Don> {
 				Don donMoi = Utils.save(repo, don, congChucId);
 
 				if (donMoi.isThanhLapDon()) {
-					
+					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
+					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+					donMoi.setCurrentState(beginState);
 					// Them xu ly don hien tai
 					XuLyDon xuLyDonHienTai = new XuLyDon();
 					xuLyDonHienTai.setDon(donMoi);
@@ -368,7 +346,7 @@ public class DonController extends TttpController<Don> {
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
 					note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
 							+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
-					xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO);
+					//xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO);
 					xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 					xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 					//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
@@ -489,7 +467,11 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 				xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
+				
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
+				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+				don.setCurrentState(beginState);
 			}
 
 			return Utils.doSave(repo, don,
