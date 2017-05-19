@@ -23,6 +23,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -58,10 +60,12 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<VaiTro> vaiTros;// = new HashSet<>(0);
 
 	@ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
 	@CollectionTable(name = "nguoidung_quyen", joinColumns = { @JoinColumn(name = "nguoidung_id") })
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<String> quyens = new HashSet<>();
 
 	@Transient

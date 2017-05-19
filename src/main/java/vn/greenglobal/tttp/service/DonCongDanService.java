@@ -73,4 +73,15 @@ public class DonCongDanService {
 
 		return donCongDan != null ? true : false;
 	}
+
+	public Don_CongDan delete(DonCongDanRepository repo, Long id) {
+		Don_CongDan dcd = repo.findOne(predicateFindOne(id));
+
+		if (dcd != null) {
+			dcd.setDaXoa(true);
+		}
+
+		return dcd;
+	}
+
 }

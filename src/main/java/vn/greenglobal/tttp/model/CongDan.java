@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -59,14 +61,15 @@ public class CongDan extends Model<CongDan> {
 
 	@ManyToOne
 	private DanToc danToc;
-	
+
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;
 
 	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
 	@OrderBy("ngayTao ASC")
 	@ApiModelProperty(hidden = true)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 
 	public List<Don_CongDan> getDonCongDans() {
@@ -113,7 +116,6 @@ public class CongDan extends Model<CongDan> {
 	public void setNoiCapCMND(CoQuanQuanLy noiCapCMND) {
 		this.noiCapCMND = noiCapCMND;
 	}
-	
 
 	@ApiModelProperty(position = 5)
 	public String getDiaChi() {
@@ -296,7 +298,7 @@ public class CongDan extends Model<CongDan> {
 		}
 		return out;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNoiCapCMNDInfo() {
@@ -308,41 +310,44 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("coQuanQuanLyId",
+					getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("congChucId", getNguoiTao().getId());
 			return map;
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiSuaInfo() {
 		if (getNguoiSua() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("coQuanQuanLyId",
+					getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public int getSoDonThu() {
 		int soDonThu = 0;
 		List<Don_CongDan> _donCongDans = new ArrayList<Don_CongDan>();
 		_donCongDans.addAll(donCongDans);
-		if(_donCongDans.size() > 0) {
-			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList()).size();
+		if (_donCongDans.size() > 0) {
+			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList())
+					.size();
 		}
 		return soDonThu;
 	}

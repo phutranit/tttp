@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -49,7 +52,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
-	private String noiDungTiepCongDan = "";
+	@Lob
+	private String noiDungTiepCongDan = " ";
 	private String ketQuaGiaiQuyet = "";
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;
@@ -58,10 +62,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@JoinTable(name = "sotiepcongdan_has_donviphoihop", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanQuanLy_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
 	private String trangThaiKetQua = "";
-	private String noiDungBoSung = "";
+	@Lob
+	private String noiDungBoSung = " ";
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
 	
@@ -89,15 +95,18 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
 			@JoinColumn(name = "soTiepCongDan_id") }, inverseJoinColumns = {
 					@JoinColumn(name = "coQuanToChucTiepDan_id") })
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanToChucTiepDan> coQuanToChucTiepDans = new ArrayList<CoQuanToChucTiepDan>();
 
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
 	
 	@OneToMany(mappedBy = "soTiepCongDan", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>();
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
@@ -164,7 +173,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungTiepCongDan(String noiDungTiepCongDan) {
-		this.noiDungTiepCongDan = noiDungTiepCongDan;
+		if (noiDungTiepCongDan != null && noiDungTiepCongDan.length() == 0) {
+			this.noiDungTiepCongDan = " ";
+		} else {
+			this.noiDungTiepCongDan = noiDungTiepCongDan;
+		}
 	}
 
 	public String getKetQuaGiaiQuyet() {
@@ -205,7 +218,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	public void setNoiDungBoSung(String noiDungBoSung) {
-		this.noiDungBoSung = noiDungBoSung;
+		if (noiDungBoSung != null && noiDungBoSung.length() == 0) {
+			this.noiDungBoSung = " ";
+		} else {
+			this.noiDungBoSung = noiDungBoSung;
+		}
 	}
 
 	public String getDiaDiemGapLanhDao() {
@@ -325,7 +342,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
-		return getTaiLieuVanThus();
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa()) {
+				list.add(tlvt);
+			}
+		}
+		return list;
 	}
 
 	@Transient
@@ -388,7 +411,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungBoSungs() {
-		return getTaiLieuBangChungs();
+		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
+		for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+			if (!tlbc.isDaXoa()) {
+				list.add(tlbc);
+			}
+		}
+		return list;
 	}
 	
 	@Transient

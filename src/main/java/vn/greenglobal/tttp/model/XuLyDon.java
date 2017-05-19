@@ -63,6 +63,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private Form nextForm;
 	
 	@Transient
+	private Long soNgayCuaThoiHanXuLy;
+	
+	@Transient
 	private Long soNgayXuLy;
 	
 	//@Enumerated(EnumType.STRING)
@@ -226,7 +229,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	public void setGhiChu(String ghiChu) {
-		this.ghiChu = ghiChu;
+		if (ghiChu != null && ghiChu.length() == 0) {
+			this.ghiChu = " ";
+		} else {
+			this.ghiChu = ghiChu;
+		}
 	}
 
 	@ApiModelProperty(position = 4)
@@ -238,7 +245,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.yKienXuLy = yKienXuLy;
 	}
 
-	@ApiModelProperty(example = "{}", position = 16)
+	@ApiModelProperty(position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
 	}
@@ -247,7 +254,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.moTaTrangThai = moTaTrangThai;
 	}
 
-	@ApiModelProperty(example = "{}", position = 18)
+	@ApiModelProperty(position = 18)
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
 	}
@@ -256,7 +263,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-	@ApiModelProperty(example = "{}", position = 19)
+	@ApiModelProperty(position = 19)
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
@@ -374,5 +381,17 @@ public class XuLyDon extends Model<XuLyDon> {
 			return map;
 		}
 		return null;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getSoNgayCuaThoiHanXuLy() {
+		long soNgay = 0; 
+		soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
+		return soNgay;
+	}
+
+	public void setSoNgayCuaThoiHanXuLy(Long soNgayCuaThoiHanXuLy) {
+		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
 }

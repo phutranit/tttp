@@ -101,6 +101,11 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
+		object.put("ten", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.getText());
+		object.put("giaTri", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.name());
+		list.add(object);
+
+		object = new HashMap<>();
 		object.put("ten", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.getText());
 		object.put("giaTri", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.name());
 		list.add(object);
@@ -244,7 +249,7 @@ public class EnumController {
 		errorBody.put("list", list);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/nguonTiepNhanDons")
 	@ApiOperation(value = "Lấy danh sách tất cả Nguồn Tiếp Nhận Đơn", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachNguonTiepNhanDons(
@@ -252,20 +257,20 @@ public class EnumController {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
-		
+
 		for (NguonTiepNhanDonEnum nguonTiepNhanDon : NguonTiepNhanDonEnum.values()) {
 			object.put("ten", nguonTiepNhanDon.getText());
 			object.put("giaTri", nguonTiepNhanDon.name());
 			list.add(object);
 			object = new HashMap<>();
 		}
-		
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyXLDs/vaiTro")
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý Đơn XLD theo Vai Trò", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
@@ -307,7 +312,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLys")
 	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
@@ -315,14 +320,14 @@ public class EnumController {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
-		
+
 		for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
 			object.put("ten", hxl.getText());
 			object.put("giaTri", hxl.name());
 			list.add(object);
 			object = new HashMap<>();
 		}
-		
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
@@ -372,7 +377,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiTepDinhKems")
 	@ApiOperation(value = "Lấy danh sách Loại tệp đính kèm", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachLoaiTepDinhKems(
@@ -383,7 +388,7 @@ public class EnumController {
 		object.put("ten", LoaiTepDinhKemEnum.QUYET_DINH.getText());
 		object.put("giaTri", LoaiTepDinhKemEnum.QUYET_DINH.name());
 		list.add(object);
-		
+
 		object = new HashMap<>();
 		object.put("ten", LoaiTepDinhKemEnum.KHAC.getText());
 		object.put("giaTri", LoaiTepDinhKemEnum.KHAC.name());
@@ -448,7 +453,7 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiVaiTros")
 	@ApiOperation(value = "Lấy danh sách Loại Vai Trò", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiVaiTro(

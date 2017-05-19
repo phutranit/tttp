@@ -36,6 +36,10 @@ public class DocumentFileSystemServiceImp implements DocumentFileSystemService{
         createDirectory(fileStorageLocation);
     }
 
+    public String getFileStorageLocation() {
+		return System.getProperty("user.home")+File.separator+fileStorageLocation;
+	}
+    
     @Override
     public void add(Document document) throws IOException {
 
@@ -44,7 +48,7 @@ public class DocumentFileSystemServiceImp implements DocumentFileSystemService{
             throw new IOException();
         }
 
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileStorageLocation, document.getName())));
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(getFileStorageLocation(), document.getName())));
         stream.write(document.getContent());
         stream.close();
     }
@@ -67,7 +71,7 @@ public class DocumentFileSystemServiceImp implements DocumentFileSystemService{
     
     @Override
 	public Stream<Path> loadAll() {
-    	Path path = Paths.get(fileStorageLocation);
+    	Path path = Paths.get(getFileStorageLocation());
 		try {
 			return Files.walk(path, 1).filter(p -> !path.equals(path))
 					.map(p -> path.relativize(p));
@@ -79,7 +83,7 @@ public class DocumentFileSystemServiceImp implements DocumentFileSystemService{
 
 	@Override
 	public Path load(String filename) {
-		Path path = Paths.get(fileStorageLocation);
+		Path path = Paths.get(getFileStorageLocation());
 		return path.resolve(filename);
 	}
 	

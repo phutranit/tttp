@@ -2,11 +2,13 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -19,11 +21,34 @@ public class CongChucService {
 
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa) {
+	public Predicate predicateFindAll(String tuKhoa, Long coQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
+			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
+		}
+
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindByVaiTro(String tuKhoa, Long coQuanQuanLyId, String vaiTro) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
+		
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		
+		if (vaiTro != null && !"".equals(vaiTro)) {
+			predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
+		}
+		
 		return predAll;
 	}
 	

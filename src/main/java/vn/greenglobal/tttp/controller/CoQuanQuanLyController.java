@@ -119,6 +119,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/coQuanQuanLys")
 	@ApiOperation(value = "Thêm mới Cơ Quan Quản Lý", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -216,5 +218,22 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		Utils.save(repo, coQuanQuanLy,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBanGiaiQuyets")
+	@ApiOperation(value = "Lấy danh sách Phong ban giải quyết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDanhSachPhongBans(
+			@RequestHeader(value = "Authorization", required = true) String authorization, 
+			@RequestParam(value = "id", required = true) Long id,
+			Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<CoQuanQuanLy> page = null;
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+		if (thamSoOne != null) {
+			page = repo.findAll(coQuanQuanLyService.predicateFindPhongBan(new Long(thamSoOne.getGiaTri().toString()), id, repo, thamSoService, repoThamSo), pageable);
+		}
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }

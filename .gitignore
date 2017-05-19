@@ -14,3 +14,9 @@ target
 /exportwar
 /run
 /viewlogtttpapi
+/deploytttpapidev
+/deploytttpapitest
+/viewlogtttpapidev
+/viewlogtttpapitest
+/post.sh
+/postout

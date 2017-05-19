@@ -135,6 +135,19 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/www/nginx/media
+#RUN mkdir /tmp/0
+#RUN mkdir /tmp/1
+#RUN mkdir /tmp/2
+#RUN mkdir /tmp/3
+#RUN mkdir /tmp/4
+#RUN mkdir /tmp/5
+#RUN mkdir /tmp/6
+#RUN mkdir /tmp/7
+#RUN mkdir /tmp/8
+#RUN mkdir /tmp/9
+
+#RUN chown -R nginx /tmp/
 
 EXPOSE 80
 
