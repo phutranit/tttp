@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -53,7 +52,10 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String diaDiem;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private String soQuyetDinhDinhChi;
-
+	
+	@Transient
+	private Long soNgayCuaThoiHanXuLy;
+	
 	@Transient
 	private Long soNgayXuLy;
 	
@@ -105,7 +107,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
-	@Lob
+//	@Lob
 	private String ghiChu = " ";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
@@ -202,7 +204,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	public void setGhiChu(String ghiChu) {
-		if (ghiChu != null && ghiChu.length() ==0) {
+		if (ghiChu != null && ghiChu.length() == 0) {
 			this.ghiChu = " ";
 		} else {
 			this.ghiChu = ghiChu;
@@ -218,7 +220,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.yKienXuLy = yKienXuLy;
 	}
 
-	@ApiModelProperty(example = "{}", position = 16)
+	@ApiModelProperty(position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
 	}
@@ -227,7 +229,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.moTaTrangThai = moTaTrangThai;
 	}
 
-	@ApiModelProperty(example = "{}", position = 18)
+	@ApiModelProperty(position = 18)
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
 	}
@@ -236,7 +238,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-	@ApiModelProperty(example = "{}", position = 19)
+	@ApiModelProperty(position = 19)
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
@@ -355,12 +357,16 @@ public class XuLyDon extends Model<XuLyDon> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getSoNgayCuaThoiHanXuLy() {
 		long soNgay = 0; 
 		soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
 		return soNgay;
+	}
+
+	public void setSoNgayCuaThoiHanXuLy(Long soNgayCuaThoiHanXuLy) {
+		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
 }

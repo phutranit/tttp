@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import com.google.common.collect.Iterables;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
@@ -18,10 +20,10 @@ public class XuLyDonService {
 
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
 		if (repo.exists(where)) {
-
-			OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();
-			Iterable<XuLyDon> results = repo.findAll(where, sortOrder);
-			return Iterables.get(results, 0);
+			OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();			
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(where, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
 		}
 		return null;
 	}
