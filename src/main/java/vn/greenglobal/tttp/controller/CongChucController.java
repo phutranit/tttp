@@ -78,7 +78,24 @@ public class CongChucController extends TttpController<CongChuc> {
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, coQuanQuanLyId), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/vaiTro")
+	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "vaiTro") String vaiTro,
+			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_LIETKE) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindByVaiTro(tuKhoa, coQuanQuanLyId, vaiTro), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/lanhDaoTiepCongDans")
 	@ApiOperation(value = "Lấy danh sách Lãnh đạo tiếp công dân", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -14,11 +14,13 @@ import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 
 @Component
@@ -76,15 +78,43 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindPhongBan(Long capCoQuanQuanLy, Long cha) {
+	public CoQuanQuanLy getCha(CoQuanQuanLyRepository repo, Long id) {
+		CoQuanQuanLy coQuanQuanLy = repo.findOne(predicateFindOne(id));
+		if (coQuanQuanLy != null) {
+			coQuanQuanLy = coQuanQuanLy.getCha();
+		}
+		return coQuanQuanLy != null ? coQuanQuanLy : null;
+	}
+	
+	public Predicate predicateFindPhongBan(Long capCoQuanQuanLy, Long id, CoQuanQuanLyRepository repo, 
+			ThamSoService thamSoService, ThamSoRepository repoThamSo) {
 		BooleanExpression predAll = base;
-		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
+		boolean check = false;
+
+		ThamSo thamSoQuan = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
+		ThamSo thamSoHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_HUYEN"));
+		ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+		//CoQuanQuanLy cqql = repo.findOne(predicateFindOne(id));
+		CoQuanQuanLy cqql = getCha(repo, id);
+		
+		if(cqql != null) {
+			id = cqql.getId();
+			if(cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoQuan.getGiaTri().toString())) || 
+					cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoHuyen.getGiaTri().toString())) || 
+					cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoSBN.getGiaTri().toString()))) {
+				id = cqql.getId();
+				check = true;
+			}
 		}
-		if (cha != null && cha > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha));
+		
+		if(check || cqql == null) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id))
+					.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
+			
+			return predAll;
 		}
-		return predAll;
+		
+		return predicateFindPhongBan(capCoQuanQuanLy, id, repo, thamSoService, repoThamSo);
 	}
 
 	public Predicate predicateFindOne(Long id) {
