@@ -92,6 +92,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		return soNgayXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 8)
 	public State getNextState() {
 		return nextState;
 	}
@@ -100,6 +101,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.nextState = nextState;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public Form getNextForm() {
 		return nextForm;
 	}

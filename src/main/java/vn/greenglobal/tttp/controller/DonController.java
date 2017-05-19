@@ -51,6 +51,7 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -65,6 +66,7 @@ import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.util.ExcelUtil;
 import vn.greenglobal.tttp.util.Utils;
@@ -112,6 +114,12 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private DonService donService;
+	
+	@Autowired
+	private TransitionRepository transitionRepo;
+	
+	@Autowired
+	private TransitionService transitionService;
 
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -164,16 +172,21 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,
-			@RequestParam(value = "nguoiTaoDonId", required = false) Long nguoiTaoId,
+			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "processType", required = true) String processType,
 			@RequestParam(value = "currentStateId", required = true) Long currentStateId, PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		if (nguoiDung != null) {
+			Don don = repo.findOne(donService.predicateFindOne(donId));
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
+						ApiErrorEnum.DON_REQUIRED.getText());
+			}
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
-			boolean isOwner = nguoiTaoId == null || nguoiTaoId.equals(0L) ? true : congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
+			boolean isOwner = don.getNguoiTao() == null ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
 			ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
 			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
@@ -184,10 +197,20 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 			}
+			
 			Predicate predicate = serviceState.predicateFindAll(currentStateId, process, repoTransition);
-			if (((List<State>) repoState.findAll(predicate)).size() < 1) {
+			List<State> listState = ((List<State>) repoState.findAll(predicate));
+			if (listState.size() < 1) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 						ApiErrorEnum.TRANSITION_INVALID.getText());
+			} else {
+				for (State nextState : listState) {
+					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
+					if (transition == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+					}
+				}
 			}
 			Page<State> pageData = repoState.findAll(predicate, pageable);
 			return assemblerState.toResource(pageData, (ResourceAssembler) eass);

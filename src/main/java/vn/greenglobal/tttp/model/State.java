@@ -4,10 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 
 @Entity
@@ -20,7 +22,7 @@ public class State extends Model<State>{
 	@NotBlank
 	private String ten;
 	
-	private String ghiChu;
+	private String tenVietTat;
 	
 	@Enumerated(EnumType.STRING)
 	private FlowStateEnum type;
@@ -34,12 +36,12 @@ public class State extends Model<State>{
 		this.ten = ten;
 	}
 	
-	public String getGhiChu() {
-		return ghiChu;
+	public String getTenVietTat() {
+		return tenVietTat;
 	}
 
-	public void setGhiChu(String ghiChu) {
-		this.ghiChu = ghiChu;
+	public void setTenVietTat(String tenVietTat) {
+		this.tenVietTat = tenVietTat;
 	}
 
 	public FlowStateEnum getType() {
@@ -50,5 +52,9 @@ public class State extends Model<State>{
 		this.type = type;
 	}
 	
-	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getStateId() {
+		return getId();
+	}
 }
