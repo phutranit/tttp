@@ -334,8 +334,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
 	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuDeXuatThuLy(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
@@ -345,34 +343,30 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("diaChi", diaChi);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai")
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLy(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
-			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "lyDoDinhChi", required = false) String lyDoDinhChi, HttpServletResponse response) {
 
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
-		mappings.put("diaChi", diaChi);
+		mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("lyDoDinhChi", lyDoDinhChi);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai")
 	@ApiOperation(value = "In phiếu trả đơn và hướng dẫn khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordKhieuNaiTraDonVaHuongDan(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
@@ -384,17 +378,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		mappings.put("nguoiDungDon", nguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh")
 	@ApiOperation(value = "In phiếu chuyển đơn kiến nghị phản ánh", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordChuyenDonKienNghiPhanAnh(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
-			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
 			HttpServletResponse response) {
@@ -402,21 +394,18 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
-		mappings.put("diaChi", diaChi);
+		mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx",
-				mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuChuyenDonToCao")
 	@ApiOperation(value = "In phiếu chuyển đơn tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordChuyenDonToCao(
-			// @RequestHeader(value = "Authorization", required = true) String
-			// authorization,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
-			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
 			HttpServletResponse response) {
@@ -424,10 +413,65 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("ngayTiepNhan", ngayTiepNhan);
 		mappings.put("nguoiDungDon", nguoiDungDon);
-		mappings.put("diaChi", diaChi);
+		mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 		mappings.put("noiDung", noiDung);
 		mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-		WordUtil.exportWord(response, "word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx", mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_CHUYEN_DON_TO_CAO.docx").getFile(), mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC")
+	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết tố cáo", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordDuThaoThongBaoThuLyGQTC(
+			@RequestParam(value = "doiTuongGiaiQuyet", required = false) String doiTuongGiaiQuyet,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "doiTuongBiToCao", required = false) String doiTuongBiToCao,
+			@RequestParam(value = "noiDungToCao", required = false) String noiDungToCao,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("doiTuongGiaiQuyet", doiTuongGiaiQuyet);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("doiTuongBiToCao", doiTuongBiToCao);
+		mappings.put("noiDungToCao", noiDungToCao);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_GQTC.docx").getFile(), mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai")
+	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết khiếu nại", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordDuThaoThongBaoThuLyKhieuNai(
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiKhieuNai", required = true) String nguoiKhieuNai,
+			@RequestParam(value = "diaChiNguoiKhieuNai", required = false) String diaChiNguoiKhieuNai,
+			@RequestParam(value = "SoCMNDHoChieu", required = false) String SoCMNDHoChieu,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "noiDungKhieuNai", required = false) String noiDungKhieuNai,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiKhieuNai", nguoiKhieuNai);
+		mappings.put("diaChiNguoiKhieuNai", diaChiNguoiKhieuNai);
+		mappings.put("SoCMNDHoChieu", SoCMNDHoChieu);
+		mappings.put("ngayCap", ngayCap);
+		mappings.put("noiCap", noiCap);
+		mappings.put("noiDungKhieuNai", noiDungKhieuNai);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KHIEU_NAI.docx").getFile(), mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatKienNghi")
+	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết kiến nghị", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordDuThaoThongBaoThuLyKienNghi(
+			@RequestParam(value = "loaiDon", required = true) String loaiDon,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi, HttpServletResponse response) {
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("loaiDon", loaiDon.toUpperCase());
+		mappings.put("ngayTiepNhan", ngayTiepNhan);
+		mappings.put("nguoiDungDon", nguoiDungDon);
+		mappings.put("diaChi", diaChi);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KIEN_NGHI.docx").getFile(), mappings);
 	}
 	
 	/*

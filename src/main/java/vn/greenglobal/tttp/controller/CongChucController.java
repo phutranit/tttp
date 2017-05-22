@@ -110,7 +110,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
-			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId().toString())) {
 				donVi = congChuc.getCoQuanQuanLy().getCha();
 			} else {
 				donVi = congChuc.getCoQuanQuanLy();

@@ -87,6 +87,9 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private LocalDateTime ngayLapDonGapLanhDaoTmp;
+	private LocalDateTime thoiHanXuLyXLD;
+	private LocalDateTime ngayBatDauXLD;
+	private LocalDateTime ngayKetThucXLD;
 
 	@OneToOne
 	private Don donLanTruoc;
@@ -1112,5 +1115,40 @@ public class Don extends Model<Don> {
 
 	public void setSoNgayXuLy(long soNgayXuLy) { 
 		this.soNgayXuLy = soNgayXuLy;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getLoaiDonText() {
+		String out = "";
+		LoaiDonEnum loaiDon = getLoaiDon();
+		if (loaiDon != null) {
+			out = loaiDon.getText();
+		}
+		return out;
+	}
+
+	public LocalDateTime getThoiHanXuLyXLD() {
+		return thoiHanXuLyXLD;
+	}
+
+	public void setThoiHanXuLyXLD(LocalDateTime thoiHanXuLyXLD) {
+		this.thoiHanXuLyXLD = thoiHanXuLyXLD;
+	}
+
+	public LocalDateTime getNgayBatDauXLD() {
+		return ngayBatDauXLD;
+	}
+
+	public void setNgayBatDauXLD(LocalDateTime ngayBatDauXLD) {
+		this.ngayBatDauXLD = ngayBatDauXLD;
+	}
+
+	public LocalDateTime getNgayKetThucXLD() {
+		return ngayKetThucXLD;
+	}
+
+	public void setNgayKetThucXLD(LocalDateTime ngayKetThucXLD) {
+		this.ngayKetThucXLD = ngayKetThucXLD;
 	}
 }

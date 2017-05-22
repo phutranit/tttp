@@ -11,15 +11,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
-import vn.greenglobal.tttp.enums.ProcessTypeEnum;
-import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity
@@ -50,11 +47,16 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
 	private int thuTuThucHien = 0;
+	private String diaDiem;
+	private String soQuyetDinhDinhChi;
+	
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
-	private String diaDiem;
 	private LocalDateTime ngayQuyetDinhDinhChi;
-	private String soQuyetDinhDinhChi;
+	@Transient
+	private LocalDateTime ngayBatDauXLD;
+	@Transient
+	private LocalDateTime ngayKetThucXLD;
 	
 	@ManyToOne
 	private State nextState;
@@ -393,5 +395,21 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setSoNgayCuaThoiHanXuLy(Long soNgayCuaThoiHanXuLy) {
 		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
+	}
+
+	public LocalDateTime getNgayBatDauXLD() {
+		return ngayBatDauXLD;
+	}
+
+	public void setNgayBatDauXLD(LocalDateTime ngayBatDauXLD) {
+		this.ngayBatDauXLD = ngayBatDauXLD;
+	}
+
+	public LocalDateTime getNgayKetThucXLD() {
+		return ngayKetThucXLD;
+	}
+
+	public void setNgayKetThucXLD(LocalDateTime ngayKetThucXLD) {
+		this.ngayKetThucXLD = ngayKetThucXLD;
 	}
 }
