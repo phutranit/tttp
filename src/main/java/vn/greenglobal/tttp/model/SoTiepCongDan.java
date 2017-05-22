@@ -25,6 +25,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.querydsl.core.annotations.QueryInit;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
@@ -46,6 +48,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private CongChuc canBoTiepDan;
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private CoQuanQuanLy donViTiepDan;
 
 	@NotNull

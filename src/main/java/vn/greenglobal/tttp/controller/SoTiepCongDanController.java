@@ -90,13 +90,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
-		
+		Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan), pageable);
+				tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -316,17 +317,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public void exportExcel(HttpServletResponse response,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan) throws IOException {
+			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan,
+			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
-							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
-							null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
 	}
