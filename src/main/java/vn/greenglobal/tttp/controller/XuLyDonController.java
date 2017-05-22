@@ -162,10 +162,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			if (xuLyDonHienTai != null) {
 				FlowStateEnum nextState = nextStage.getType();
 				System.out.println("nextState: " + nextState);
-				xuLyDonHienTai.setNextForm(xuLyDon.getNextForm());
+				xuLyDonHienTai.setNextForm(transition.getForm());
 				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 				// Thong tin xu ly don
-				String note = vaiTroNguoiDungHienTai + " " + nextStage.getGhiChu() + " ";
+				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 				
 				if (FlowStateEnum.BAT_DAU.equals(nextState)) {
@@ -301,7 +301,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			
 			State nextStage = xuLyDon.getNextState();
-			String note = vaiTroNguoiDungHienTai + " " + nextStage.getGhiChu() + " ";			
+			String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";			
 			if (xuLyDonHienTai != null) {
 				if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name()) || 
 						StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.LANH_DAO.name()) 
