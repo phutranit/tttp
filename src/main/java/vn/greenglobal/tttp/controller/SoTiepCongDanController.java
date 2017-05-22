@@ -240,14 +240,28 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
+		
+		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
+		soTiepCongDan.setDaXoa(true);
+		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			Don don = soTiepCongDan.getDon();
+			
+			if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(),
+						ApiErrorEnum.DATA_INVALID.getText());
+			}
+			int tongSoLuotTCD = don.getTongSoLuotTCD();
+			don.setTongSoLuotTCD(tongSoLuotTCD - 1);
+			Utils.save(repoDon, don,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}		
 		Utils.save(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
