@@ -246,7 +246,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		soTiepCongDan.setDaXoa(true);
+		
 		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 			Don don = soTiepCongDan.getDon();
 			
@@ -259,6 +259,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Utils.save(repoDon, don,
 					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}		
+		soTiepCongDan.setDaXoa(true);
 		Utils.save(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		
