@@ -152,8 +152,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
-						"Hướng giải quyết không được để trống!");
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
+						ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaXuLy(true);
@@ -209,8 +209,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
-						"Hướng giải quyết không được để trống!");
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
+						ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);

@@ -139,6 +139,20 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
+		
+		if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
+			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(coQuanQuanLy.getCapCoQuanQuanLy().getId().toString())) {
+				if (coQuanQuanLy.getCha() != null) {
+					coQuanQuanLy.setDonVi(coQuanQuanLy.getCha());
+				} else {
+					coQuanQuanLy.setDonVi(coQuanQuanLy);
+				}				
+			} else {
+				coQuanQuanLy.setDonVi(coQuanQuanLy);
+			}
+		}
+		
 		return Utils.doSave(repo, coQuanQuanLy,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
@@ -187,6 +201,18 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
+		if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
+			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(coQuanQuanLy.getCapCoQuanQuanLy().getId().toString())) {
+				if (coQuanQuanLy.getCha() != null) {
+					coQuanQuanLy.setDonVi(coQuanQuanLy.getCha());
+				} else {
+					coQuanQuanLy.setDonVi(coQuanQuanLy);
+				}				
+			} else {
+				coQuanQuanLy.setDonVi(coQuanQuanLy);
+			}
+		}
 		return Utils.doSave(repo, coQuanQuanLy,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
