@@ -1084,14 +1084,14 @@ public class Don extends Model<Don> {
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.LANH_DAO)).collect(Collectors.toList());
 			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaLD", xldld.getNextState() != null ? xldld.getNextState().getGhiChu() : "");
+				map.put("quyTrinhXuLyCuaLD", xldld.getNextState() != null ? xldld.getNextState().getTenVietTat() : "");
 			}
 			xlds.clear();
 			xlds.addAll(xuLyDons);
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG)).collect(Collectors.toList());
 			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaPB", xldld.getNextState() != null ? xldld.getNextState().getGhiChu() : "");
+				map.put("quyTrinhXuLyCuaPB", xldld.getNextState() != null ? xldld.getNextState().getTenVietTat() : "");
 			}
 			return map;
 		}
@@ -1112,5 +1112,31 @@ public class Don extends Model<Don> {
 
 	public void setSoNgayXuLy(long soNgayXuLy) { 
 		this.soNgayXuLy = soNgayXuLy;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getCurrentStateInfo() {
+		if (getCurrentState() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("currentStateId", getCurrentState().getId());
+			map.put("ten", getCurrentState().getTen());
+			map.put("tenVietTat", getCurrentState().getTenVietTat());
+			map.put("type", getCurrentState().getType().toString());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getCurrenFormInfo() {
+		if (getCurrentForm() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCurrentForm().getTen());
+			map.put("alias", getCurrentForm().getAlias());
+			return map;
+		}
+		return null;
 	}
 }
