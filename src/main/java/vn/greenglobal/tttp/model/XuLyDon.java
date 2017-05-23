@@ -11,15 +11,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
-import vn.greenglobal.tttp.enums.ProcessTypeEnum;
-import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @Entity

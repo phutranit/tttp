@@ -19,7 +19,6 @@ import io.swagger.annotations.Api;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.DocumentMetaData;
 import vn.greenglobal.tttp.service.FileUploadService;
-import vn.greenglobal.tttp.util.RestServieResourceFacade;
 
 @RestController
 @Api(value = "document", description = "File upload")
