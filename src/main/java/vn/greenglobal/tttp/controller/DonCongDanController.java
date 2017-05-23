@@ -182,12 +182,12 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 							}
 						}
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 				}
 			});
 		}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
