@@ -90,13 +90,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			PersistentEntityResourceAssembler eass) {
-		
+		Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan), pageable);
+				tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -151,8 +152,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
-						"Hướng giải quyết không được để trống!");
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
+						ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaXuLy(true);
@@ -208,8 +209,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "HUONGGIAIQUYET_REQUIRED",
-						"Hướng giải quyết không được để trống!");
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
+						ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 			}
 			if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
@@ -240,14 +241,29 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		SoTiepCongDan soTiepCongDan = soTiepCongDanService.deleteSoTiepCongDan(repo, id);
+		
+		SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 		if (soTiepCongDan == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
+		
+		if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+			Don don = soTiepCongDan.getDon();
+			
+			if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(),
+						ApiErrorEnum.DATA_INVALID.getText());
+			}
+			int tongSoLuotTCD = don.getTongSoLuotTCD();
+			don.setTongSoLuotTCD(tongSoLuotTCD - 1);
+			Utils.save(repoDon, don,
+					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}		
+		soTiepCongDan.setDaXoa(true);
 		Utils.save(repo, soTiepCongDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -316,17 +332,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public void exportExcel(HttpServletResponse response,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan) throws IOException {
+			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan,
+			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
-							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
-							null, null, tuNgay, denNgay, loaiTiepCongDan), order),
+							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
 	}

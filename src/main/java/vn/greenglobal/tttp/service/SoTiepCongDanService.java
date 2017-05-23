@@ -23,7 +23,7 @@ public class SoTiepCongDanService {
 	}
 
 	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay,
-			String denNgay, String loaiTiepCongDan) {
+			String denNgay, String loaiTiepCongDan, Long coQuanQuanLyId) {
 		BooleanExpression predAll = base;
 
 		if (StringUtils.isNotBlank(tuKhoa)) {
@@ -36,6 +36,9 @@ public class SoTiepCongDanService {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon));
 		}
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(coQuanQuanLyId)
+				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(coQuanQuanLyId))
+				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(coQuanQuanLyId)));
 		if (StringUtils.isNotBlank(huongXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy));
 		}
