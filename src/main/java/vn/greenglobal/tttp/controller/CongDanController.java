@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -111,6 +112,13 @@ public class CongDanController extends TttpController<CongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
 
 		return Utils.doSave(repo, congDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -204,6 +212,13 @@ public class CongDanController extends TttpController<CongDan> {
 		if (!congDanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null && id != congDanExists.getId().longValue()) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
 		}
 		CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
 		List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
