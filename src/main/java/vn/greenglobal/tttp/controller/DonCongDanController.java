@@ -160,6 +160,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
 		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+		List<Don_CongDan> listUpdate = new ArrayList<Don_CongDan>();
 
 		if (params != null) {
 			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
@@ -167,12 +168,16 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				public Object doInTransaction(TransactionStatus arg0) {
 					if (params.getDonCongDans().size() > 0) {
 						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(
-									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							if (!donCongDanService.isExists(repo, donCongDan.getId())) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+							}
+							listUpdate.add(donCongDan);
+						}
+						for (Don_CongDan donCongDan : listUpdate) {
+							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							if (congDan != null) {
 								donCongDan.getCongDan().setId(congDan.getId());
-								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil
-										.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDonCongDans().add(dcd);
 							}
 						}
