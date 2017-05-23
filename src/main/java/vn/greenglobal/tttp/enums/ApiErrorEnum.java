@@ -25,6 +25,7 @@ public enum ApiErrorEnum {
 	PROCESS_TYPE_REQUIRED("Trường processType không được để trống!"),
 	NEXT_STATE_REQUIRED("Trường nextState không được để trống!"),
 	HUONGXULY_REQUIRED("Trường huongXuLy không được để trống!"),
+	HUONGGIAIQUYET_REQUIRED("Trường huongGiaiQuyetTCDLanhDao không được để trống!"),
 	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
 	TRANSITION_INVALID("Trạng thái không có trong quy trình!");
 	

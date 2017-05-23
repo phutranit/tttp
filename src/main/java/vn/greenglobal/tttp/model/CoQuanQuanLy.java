@@ -42,6 +42,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	@ManyToOne
 	@NotNull
 	private DonViHanhChinh donViHanhChinh;
+	
+	@ManyToOne
+	private CoQuanQuanLy donVi;
 
 	@ApiModelProperty(position = 1)
 	public String getMa() {
@@ -110,6 +113,28 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	@ApiModelProperty(hidden = true)
 	public Long getCoQuanQuanLyId() {
 		return getId();
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViInfo() {
+		if (getDonVi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ma", getDonVi().getMa());
+			map.put("ten", getDonVi().getTen());
+			map.put("coQuanQuanLyId", getDonVi().getId());
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
