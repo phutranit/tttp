@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Medial_TaiLieuVanThu_Delete {
 
-	List<Medial_TaiLieuBangChung> taiLieuBangChungs = new ArrayList<>();
+	List<Medial_TaiLieuVanThu> taiLieuVanThus = new ArrayList<>();
 
-	public List<Medial_TaiLieuBangChung> getTaiLieuBangChungs() {
-		return taiLieuBangChungs;
+	public List<Medial_TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
 	}
 
-	public void setTaiLieuBangChungs(List<Medial_TaiLieuBangChung> taiLieuBangChungs) {
-		this.taiLieuBangChungs = taiLieuBangChungs;
+	public void setTaiLieuVanThus(List<Medial_TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
 	}
 
 }
