@@ -7,11 +7,11 @@ public class Medial_TaiLieuBangChung_Delete {
 
 	List<Medial_TaiLieuBangChung> taiLieuBangChungs = new ArrayList<>();
 
-	public List<Medial_TaiLieuBangChung> getDonCongDans() {
+	public List<Medial_TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
 	}
 
-	public void setDonCongDans(List<Medial_TaiLieuBangChung> taiLieuBangChungs) {
+	public void setTaiLieuBangChungs(List<Medial_TaiLieuBangChung> taiLieuBangChungs) {
 		this.taiLieuBangChungs = taiLieuBangChungs;
 	}
 
