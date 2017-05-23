@@ -53,10 +53,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
-	@Transient
-	private LocalDateTime ngayBatDauXLD;
-	@Transient
-	private LocalDateTime ngayKetThucXLD;
+
 	
 	@ManyToOne
 	private State nextState;
@@ -399,19 +396,5 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
 
-	public LocalDateTime getNgayBatDauXLD() {
-		return ngayBatDauXLD;
-	}
-
-	public void setNgayBatDauXLD(LocalDateTime ngayBatDauXLD) {
-		this.ngayBatDauXLD = ngayBatDauXLD;
-	}
-
-	public LocalDateTime getNgayKetThucXLD() {
-		return ngayKetThucXLD;
-	}
-
-	public void setNgayKetThucXLD(LocalDateTime ngayKetThucXLD) {
-		this.ngayKetThucXLD = ngayKetThucXLD;
-	}
+	
 }

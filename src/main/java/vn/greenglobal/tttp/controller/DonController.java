@@ -486,6 +486,10 @@ public class DonController extends TttpController<Don> {
 			don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
 			don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 			don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
+			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+			don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
+			don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
+			
 			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			}

@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -261,9 +262,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 						
 						//set ngay ket thuc cho don
-						if(xuLyDon.getNgayKetThucXLD() != null) {
-							don.setNgayKetThucXLD(xuLyDon.getNgayKetThucXLD());
-						}
+						don.setNgayKetThucXLD(LocalDateTime.now());
 						
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
@@ -325,9 +324,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 					
 					//set ngay bat dau xu ly don cho don
-					if(xuLyDon.getNgayBatDauXLD() != null) {
-						don.setNgayBatDauXLD(xuLyDon.getNgayBatDauXLD());
-					}
+					don.setNgayBatDauXLD(LocalDateTime.now());
+					
 					Utils.save(donRepo, don, congChucId);
 					return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 				}
@@ -1023,9 +1021,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		
 		//set ngay bat dau xu ly don cho don
-		if(xuLyDon.getNgayBatDauXLD() != null) {
-			don.setNgayBatDauXLD(xuLyDon.getNgayBatDauXLD());
-		}
+		don.setNgayBatDauXLD(LocalDateTime.now());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		don.setCurrentForm(xuLyDonHienTai.getNextForm());
@@ -1509,9 +1505,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		
 		//set ngay ket thuc cho don
-		if(xuLyDon.getNgayKetThucXLD() != null) {
-			don.setNgayKetThucXLD(xuLyDon.getNgayKetThucXLD());
-		}
+		don.setNgayKetThucXLD(LocalDateTime.now());
 		
 		Utils.save(donRepo, don, congChucId);
 		
