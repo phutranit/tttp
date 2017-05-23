@@ -68,6 +68,7 @@ public class CongChucController extends TttpController<CongChuc> {
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_LIETKE) == null) {
@@ -75,14 +76,14 @@ public class CongChucController extends TttpController<CongChuc> {
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, coQuanQuanLyId), pageable);
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/vaiTro")
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody Object getListByVaiTro(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "vaiTro") String vaiTro,
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
@@ -110,7 +111,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
-			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId().toString())) {
 				donVi = congChuc.getCoQuanQuanLy().getCha();
 			} else {
 				donVi = congChuc.getCoQuanQuanLy();
