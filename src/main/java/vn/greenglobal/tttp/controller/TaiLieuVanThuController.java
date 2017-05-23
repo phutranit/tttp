@@ -109,13 +109,13 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					if (params.getTaiLieuVanThus().size() > 0) {
 						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
 							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-								return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED", "Loại tệp đính kèm không được để trống!");
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 								if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED", "Số quyết định không được để trống!");
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.SOQUYETDINH_REQUIRED.name(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
 								}
 								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED", "Ngày quyết định không được để trống!");
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
 								}
 							}
 							listCreate.add(taiLieuVanThu);
@@ -204,13 +204,13 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 							}
 							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-								return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED", "Loại tệp đính kèm không được để trống!");
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 								if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED", "Số quyết định không được để trống!");
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.SOQUYETDINH_REQUIRED.name(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
 								}
 								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED", "Ngày quyết định không được để trống!");
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
 								}
 							}
 							listUpdate.add(taiLieuVanThu);
