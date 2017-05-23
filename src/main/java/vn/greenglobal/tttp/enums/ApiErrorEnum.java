@@ -18,6 +18,7 @@ public enum ApiErrorEnum {
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
+	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator!"),
 	DATA_USED("Dữ liệu này đang được sử dụng!"),
 	EMAIL_INVALID("Trường email không đúng định dạng!"),
 	DATA_INVALID("Dữ liệu không hợp lệ!"),

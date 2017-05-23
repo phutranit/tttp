@@ -32,9 +32,11 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
@@ -52,6 +54,12 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
+	
+	@Autowired
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
 
 	@Autowired
 	private ThamSoRepository repoThamSo;
@@ -70,13 +78,15 @@ public class CongChucController extends TttpController<CongChuc> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
-
+		
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-
-		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId), pageable);
+		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long coQuanQuanLyLoginId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));		
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
@@ -289,7 +299,11 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-
+		if (id.equals(1L)) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGCHUC_FORBIDDEN.name(),
+					ApiErrorEnum.CONGCHUC_FORBIDDEN.getText());
+		}
+		
 		CongChuc congChuc = congChucService.delete(repo, id);
 		if (congChuc == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
