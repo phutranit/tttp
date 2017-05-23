@@ -2,6 +2,9 @@ package vn.greenglobal.tttp.enums;
 
 public enum ApiErrorEnum {
 
+	LOAITEPDINHKEM_REQUIRED("Loại tệp đính kèm không được để trống!"),
+	SOQUYETDINH_REQUIRED("Số quyết định không được để trống!"),
+	NGAYQUYETDINH_REQUIRED("Ngày quyết định không được để trống!"),
 	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phòng ban giải quyết không được để trống!"),
 	HOVATEN_REQUIRED("Trường Họ và tên không được để trống!"),
 	NGAYSINH_REQUIRED("Trường ngày sinh không được để trống!"),
@@ -29,9 +32,7 @@ public enum ApiErrorEnum {
 	HUONGGIAIQUYET_REQUIRED("Trường huongGiaiQuyetTCDLanhDao không được để trống!"),
 	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
 	TRANSITION_INVALID("Trạng thái không có trong quy trình!");
-	
-	
-	
+		
 	ApiErrorEnum(String text) {
 		this.text = text;
 	}

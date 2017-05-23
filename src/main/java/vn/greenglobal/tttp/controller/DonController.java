@@ -291,7 +291,12 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				xuLyDon.setThuTuThucHien(0);
 				xuLyDon.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
-				xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				
+				//set thoi han xu ly
+				if(don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
+					xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				}
+				
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 			}
 			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -384,6 +389,12 @@ public class DonController extends TttpController<Don> {
 					xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 					xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 					
+					//set thoi han xu ly
+					if(don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
+						xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+						xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+					}
+					
 					// xuLyDonTiepTheo.setThoiHanXuLy();
 					if (xuLyDonHienTai.isDonChuyen()) {
 						note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
@@ -475,6 +486,10 @@ public class DonController extends TttpController<Don> {
 			don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
 			don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 			don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
+			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+			don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
+			don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
+			
 			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			}
@@ -488,7 +503,12 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				xuLyDon.setThuTuThucHien(0);
 				xuLyDon.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
-				xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				
+				//set thoi han xu ly
+				if(don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
+					xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				}
+				
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 				
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -547,65 +567,4 @@ public class DonController extends TttpController<Don> {
 				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo), order),
 				"Danh sách xử lý đơn");
 	}
-
-	/*
-	 * @RequestMapping(method = RequestMethod.GET, value =
-	 * "/soTiepCongDans/excel")
-	 * 
-	 * @ApiOperation(value = "Xuất file excel", position = 1, produces =
-	 * MediaType.APPLICATION_JSON_VALUE) public void
-	 * exportExcel(HttpServletResponse response,
-	 * 
-	 * @RequestParam(value = "maDon", required = false) String maDon,
-	 * 
-	 * @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-	 * 
-	 * @RequestParam(value = "nguonDon", required = false) String nguonDon,
-	 * 
-	 * @RequestParam(value = "phanLoaiDon", required = false) String
-	 * phanLoaiDon,
-	 * 
-	 * @RequestParam(value = "tiepNhanTuNgay", required = false) String
-	 * tiepNhanTuNgay,
-	 * 
-	 * @RequestParam(value = "tiepNhanDenNgay", required = false) String
-	 * tiepNhanDenNgay,
-	 * 
-	 * @RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String
-	 * hanGiaiQuyetTuNgay,
-	 * 
-	 * @RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String
-	 * hanGiaiQuyetDenNgay,
-	 * 
-	 * @RequestParam(value = "trinhTrangXuLy", required = false) String
-	 * trinhTrangXuLy,
-	 * 
-	 * @RequestParam(value = "thanhLapDon", required = true) boolean
-	 * thanhLapDon,
-	 * 
-	 * @RequestParam(value = "trangThaiDon", required = false) String
-	 * trangThaiDon,
-	 * 
-	 * @RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long
-	 * phongBanGiaiQuyet,
-	 * 
-	 * @RequestParam(value = "canBoXuLyXLD", required = false) Long
-	 * canBoXuLyXLD,
-	 * 
-	 * @RequestParam(value = "phongBanXuLyXLD", required = false) Long
-	 * phongBanXuLyXLD,
-	 * 
-	 * @RequestParam(value = "coQuanTiepNhanXLD", required = false) Long
-	 * coQuanTiepNhanXLD,
-	 * 
-	 * @RequestParam(value = "vaiTro", required = true) String vaiTro) throws
-	 * IOException {
-	 * 
-	 * OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
-	 * 
-	 * ExcelUtil.exportDanhSachXuLyDon(response, "fileName", "sheetName",
-	 * (List<Don>) repo.predicateFindAll(donService .predicateFindAllTCD("",
-	 * null, null, tuNgay, denNgay, loaiTiepCongDan), order),
-	 * "Danh sách sổ tiếp dân"); }
-	 */
 }

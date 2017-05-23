@@ -21,7 +21,7 @@ public class CongChucService {
 
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long coQuanQuanLyId, Long congChucId, CoQuanQuanLy coQuanQuanLyLogin) {
+	public Predicate predicateFindAll(String tuKhoa,  String vaiTro, Long coQuanQuanLyId, Long congChucId, CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;
 		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
@@ -41,8 +41,9 @@ public class CongChucService {
 				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.eq(coQuanQuanLyLogin));
 			}
 		}
-		
-		
+		if (vaiTro != null && !"".equals(vaiTro)) {
+			predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
+		}
 		
 		return predAll;
 	}
