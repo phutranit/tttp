@@ -1041,8 +1041,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 		}
 		xuLyDonHienTai.setGhiChu(note);
+		
+		//set don
 		Don don = donRepo.findOne(donId);
-		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+		//set thoi han xu ly cho don 
+		don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), 
+				xuLyDon.getSoNgayXuLy()));
+		
+		//workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);

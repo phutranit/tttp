@@ -936,13 +936,15 @@ public class Don extends Model<Don> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public long getThoiHanXuLyDon() {
+	public Long getThoiHanXuLyDon() {
 		long thoiHan = -1;
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
 			XuLyDon xld = xuLyDons.get(thuTu - 1);
 			if (xld.getThoiHanXuLy() != null) {
 				thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
+			} else {
+				return null;
 			}
 		}
 		return thoiHan;
