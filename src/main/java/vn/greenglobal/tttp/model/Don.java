@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -48,10 +47,10 @@ public class Don extends Model<Don> {
 
 	private String ma = "";
 	@NotBlank
-	@Lob
+	//@Lob
 	private String noiDung = " ";
 	private String yeuCauCuaCongDan = "";
-	@Lob
+	//@Lob
 	private String huongGiaiQuyetDaThucHien = " ";
 	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
