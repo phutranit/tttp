@@ -32,9 +32,11 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
@@ -52,6 +54,12 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private CongChucService congChucService;
+	
+	@Autowired
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
 
 	@Autowired
 	private ThamSoRepository repoThamSo;
@@ -68,21 +76,24 @@ public class CongChucController extends TttpController<CongChuc> {
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
-
+		
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-
-		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, coQuanQuanLyId), pageable);
+		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long coQuanQuanLyLoginId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));		
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/vaiTro")
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody Object getListByVaiTro(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "vaiTro") String vaiTro,
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId, PersistentEntityResourceAssembler eass) {
@@ -110,7 +121,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
-			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId())) {
+			if (thamSo != null && thamSo.getGiaTri().toString().equals(congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId().toString())) {
 				donVi = congChuc.getCoQuanQuanLy().getCha();
 			} else {
 				donVi = congChuc.getCoQuanQuanLy();
@@ -288,7 +299,11 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-
+		if (id.equals(1L)) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGCHUC_FORBIDDEN.name(),
+					ApiErrorEnum.CONGCHUC_FORBIDDEN.getText());
+		}
+		
 		CongChuc congChuc = congChucService.delete(repo, id);
 		if (congChuc == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

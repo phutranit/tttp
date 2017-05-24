@@ -11,6 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -46,11 +47,13 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
 	private int thuTuThucHien = 0;
+	private String diaDiem;
+	private String soQuyetDinhDinhChi;
+	
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
-	private String diaDiem;
 	private LocalDateTime ngayQuyetDinhDinhChi;
-	private String soQuyetDinhDinhChi;
+
 	
 	@ManyToOne
 	private State nextState;
@@ -392,4 +395,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setSoNgayCuaThoiHanXuLy(Long soNgayCuaThoiHanXuLy) {
 		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
+
+	
 }

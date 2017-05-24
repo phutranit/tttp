@@ -21,15 +21,28 @@ public class CongChucService {
 
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long coQuanQuanLyId) {
+	public Predicate predicateFindAll(String tuKhoa,  String vaiTro, Long coQuanQuanLyId, Long congChucId, CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;
 		
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
 
-		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		if (congChucId.equals(1L)) {
+			if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+			}
+		} else if (coQuanQuanLyLogin != null){
+			if (coQuanQuanLyLogin.getDonVi() != null) {
+				System.out.println("donVi: " + coQuanQuanLyLogin.getDonVi().getTen());
+				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.donVi.eq(coQuanQuanLyLogin.getDonVi()));
+			} else {
+				System.out.println("coQuan: " + coQuanQuanLyLogin.getTen());
+				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.eq(coQuanQuanLyLogin));
+			}
+		}
+		if (vaiTro != null && !"".equals(vaiTro)) {
+			predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
 		}
 		
 		return predAll;
