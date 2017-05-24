@@ -4,14 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.LoaiDonEnum;
 
 @Entity
 @Table(name = "linhvucdonthu")
@@ -32,6 +36,10 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	@ManyToOne
 	private LinhVucDonThu cha;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiDonEnum loaiDon;
 
 	@ApiModelProperty(position = 1)
 	public String getMa() {
@@ -76,6 +84,14 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	public void setCha(LinhVucDonThu cha) {
 		this.cha = cha;
+	}
+
+	public LoaiDonEnum getLoaiDon() {
+		return loaiDon;
+	}
+
+	public void setLoaiDon(LoaiDonEnum loaiDon) {
+		this.loaiDon = loaiDon;
 	}
 
 	@Transient
