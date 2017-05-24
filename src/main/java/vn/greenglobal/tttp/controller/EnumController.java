@@ -373,8 +373,53 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.getText());
-		object.put("giaTri", HinhThucGiaiQuyetEnum.KIEM_TRA_NHAC_NHO.name());
+		object.put("ten", HinhThucGiaiQuyetEnum.CHUA_CO_QUYET_DINH_GIAI_QUYET.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.CHUA_CO_QUYET_DINH_GIAI_QUYET.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.QUYET_DINH_LAN_I.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.QUYET_DINH_LAN_I.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.QUYET_DINH_LAN_II.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.QUYET_DINH_LAN_II.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.QUYET_DINH_CUOI_CUNG.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.QUYET_DINH_CUOI_CUNG.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.BAN_AN_SO_THAM.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.BAN_AN_SO_THAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.BAN_AN_PHUC_THAM.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.BAN_AN_PHUC_THAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.BAN_AN_TAI_THAM.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.BAN_AN_TAI_THAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.QUYET_DINH_GIAM_DOC_THAM.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.QUYET_DINH_GIAM_DOC_THAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.TRA_LOI_BANG_VAN_BAN.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.TRA_LOI_BANG_VAN_BAN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", HinhThucGiaiQuyetEnum.KET_LUAN_THONG_BAO_BAO_CAO.getText());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.TRA_LOI_BANG_VAN_BAN.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
