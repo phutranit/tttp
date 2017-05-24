@@ -83,6 +83,14 @@ public class CongDanService {
 		}
 		return predAll;
 	}
+	
+	public Predicate predicateFindCongDanExists(String tuKhoa, String soCMND, String diaChi) {
+		BooleanExpression predAll = base
+				.and(QCongDan.congDan.hoVaTen.equalsIgnoreCase(tuKhoa))
+				.and(QCongDan.congDan.soCMNDHoChieu.equalsIgnoreCase(soCMND))
+				.and(QCongDan.congDan.diaChi.equalsIgnoreCase(diaChi));		
+		return predAll;
+	}
 
 	public List<PropertyChangeObject> getListThayDoi(CongDan congDanNew, CongDan congDanOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();

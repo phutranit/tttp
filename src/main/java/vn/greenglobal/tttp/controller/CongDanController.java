@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -111,7 +112,6 @@ public class CongDanController extends TttpController<CongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-
 		return Utils.doSave(repo, congDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
@@ -129,6 +129,24 @@ public class CongDanController extends TttpController<CongDan> {
 		Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi),
 				pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/congDanExists")
+	@ApiOperation(value = "Lấy danh sách Suggest Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getCongDanExists(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "soCMNND", required = false) String soCMNND,
+			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
+		
+		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMNND) && StringUtils.isNotBlank(diaChi)) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(tuKhoa, soCMNND, diaChi));
+			if (congDanExists != null) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists), HttpStatus.OK);
+			}
+		} 
+		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+				ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -204,6 +222,13 @@ public class CongDanController extends TttpController<CongDan> {
 		if (!congDanService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null && id != congDanExists.getId().longValue()) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
 		}
 		CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
 		List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);

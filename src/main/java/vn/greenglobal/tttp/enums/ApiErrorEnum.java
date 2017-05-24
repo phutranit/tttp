@@ -16,6 +16,7 @@ public enum ApiErrorEnum {
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
+	CONGDAN_EXISTS("Công dân đã tồn tại trong hệ thống!"),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống!"),
 	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này!"),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator!"),
