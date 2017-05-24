@@ -115,6 +115,14 @@ public class CongDanController extends TttpController<CongDan> {
 		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
 			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
 			if (congDanExists != null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
+		
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(), ApiErrorEnum.CONGDAN_EXISTS.getText());
 			}
 		}
