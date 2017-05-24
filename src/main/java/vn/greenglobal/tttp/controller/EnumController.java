@@ -82,6 +82,11 @@ public class EnumController {
 		object.put("ten", LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.getText());
 		object.put("giaTri", LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.name());
 		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiDonEnum.DON_TRANH_CHAP_DAT.getText());
+		object.put("giaTri", LoaiDonEnum.DON_TRANH_CHAP_DAT.name());
+		list.add(object);
 
 		object = new HashMap<>();
 		object.put("ten", LoaiDonEnum.DON_CO_NHIEU_NOI_DUNG_KHAC_NHAU.getText());
