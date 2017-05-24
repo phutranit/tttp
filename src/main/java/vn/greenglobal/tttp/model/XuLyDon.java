@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -75,7 +74,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon;
 	
-	@Lob
+	//@Lob
 	private String ghiChu = "";
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";

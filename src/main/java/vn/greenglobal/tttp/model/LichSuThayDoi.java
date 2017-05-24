@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,7 +27,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi> {
 	 */
 	private static final long serialVersionUID = -7570594530357424037L;
 	private String noiDung = "";
-	@Lob
+	//@Lob
 	private String chiTietThayDoi = "";
 	@Enumerated(EnumType.STRING)
 	private DoiTuongThayDoiEnum doiTuongThayDoi;

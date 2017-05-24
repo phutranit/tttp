@@ -1,3 +1,3 @@
 FROM tomcat:8-alpine
 
-MAINTAINER Caltalys <trandinh86@gmail.com>
+MAINTAINER Caltalys <trandtb@greenglobal.vn.com>
