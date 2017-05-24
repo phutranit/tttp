@@ -100,7 +100,6 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private LinhVucDonThu linhVucDonThu;
 	@ManyToOne
-	@NotNull
 	private LinhVucDonThu linhVucDonThuChiTiet;
 	@ManyToOne
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;

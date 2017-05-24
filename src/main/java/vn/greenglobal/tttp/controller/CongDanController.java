@@ -109,9 +109,24 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
+		
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi()) && StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(), congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(), ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
+		
 		return Utils.doSave(repo, congDan,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
