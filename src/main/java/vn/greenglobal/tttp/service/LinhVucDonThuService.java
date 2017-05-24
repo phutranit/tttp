@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QDon;
@@ -19,7 +20,7 @@ public class LinhVucDonThuService {
 
 	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, String cha) {
+	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa));
@@ -31,6 +32,10 @@ public class LinhVucDonThuService {
 			} else if (new Long(cha) > 0) {
 				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(new Long(cha)));
 			}
+		}
+		
+		if (loaiDon != null && !"".equals(loaiDon)) {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(LoaiDonEnum.valueOf(loaiDon)));
 		}
 
 		return predAll;
