@@ -1071,7 +1071,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		
 		//set ngay bat dau xu ly don cho don
-		don.setNgayBatDauXLD(LocalDateTime.now());
+//		don.setNgayBatDauXLD(LocalDateTime.now());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		don.setCurrentForm(xuLyDonHienTai.getNextForm());
@@ -1622,7 +1622,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 		//set thoi han xu ly cho don 
 		don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
-		don.setNgayBatDauXLD(LocalDateTime.now());
+//		don.setNgayBatDauXLD(LocalDateTime.now());
 		
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);

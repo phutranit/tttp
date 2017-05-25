@@ -47,7 +47,7 @@ public class DonService {
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, String hoTen, 
-			XuLyDonRepository xuLyRepo) {
+			String quyTrinhXuLy, XuLyDonRepository xuLyRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
@@ -72,6 +72,10 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			predAll = predAll.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+		}
+		
+		if (StringUtils.isNotBlank(quyTrinhXuLy)) {
+			predAll = predAll.and(QDon.don.quyTrinhXuLy.eq(QuyTrinhXuLyDonEnum.valueOf(StringUtils.upperCase(quyTrinhXuLy))));
 		}
 		
 		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {

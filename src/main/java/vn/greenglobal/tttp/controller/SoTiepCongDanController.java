@@ -168,6 +168,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
+			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
+				long thoiHanXuLy = 10;
+				soTiepCongDan.getDon().setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), thoiHanXuLy));
+			}
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan,
@@ -219,6 +223,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
+			}
+			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
+				long thoiHanXuLy = 10;
+				soTiepCongDan.getDon().setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), thoiHanXuLy));
 			}
 		}
 
