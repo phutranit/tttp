@@ -56,6 +56,7 @@ import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
@@ -76,6 +77,9 @@ import vn.greenglobal.tttp.util.Utils;
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
 
+	@Autowired
+	private DonCongDanRepository donCongDanrepo;
+	
 	@Autowired
 	private DonRepository repo;
 
@@ -148,14 +152,16 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "vaiTro", required = true) String vaiTro, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "vaiTro", required = false) String vaiTro, 
+			@RequestParam(value = "hoTen", required = false) String hoTen,
+			PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
 		if (nguoiDung != null) {
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, trinhTrangXuLy, thanhLapDon, trangThaiDon,
-							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo),
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, xuLyRepo),
 					pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
@@ -560,11 +566,13 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "vaiTro", required = true) String vaiTro) throws IOException {
+			@RequestParam(value = "vaiTro", required = true) String vaiTro,
+			@RequestParam(value = "hoTen", required = false) String hoTen) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 		
 		ExcelUtil.exportDanhSachXuLyDon(response, "fileName", "sheetName", 
-				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", trinhTrangXuLy, thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, xuLyRepo), order),
+				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", trinhTrangXuLy, 
+						thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, xuLyRepo), order),
 				"Danh sách xử lý đơn");
 	}
 }

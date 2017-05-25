@@ -17,6 +17,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -42,23 +43,23 @@ public class DonService {
 		return predAll;
 	}
 	
-	
-	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
-			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, XuLyDonRepository xuLyRepo) {
+			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, String hoTen, 
+			XuLyDonRepository xuLyRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
-
+		
 		//Query don
 		if (StringUtils.isNotBlank(maDon)) {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(tuKhoa)) {
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
-					.or(QDon.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
+		if (StringUtils.isNotBlank(hoTen)) {
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
+					.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
+					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 
 		if (StringUtils.isNotBlank(nguonDon)) {
@@ -112,7 +113,7 @@ public class DonService {
 		}
 
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
-		Collection<Don> donCollections = new ArrayList<Don>();
+		List<Don> donCollections = new ArrayList<Don>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
