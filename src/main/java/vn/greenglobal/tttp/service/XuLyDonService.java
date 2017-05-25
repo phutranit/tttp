@@ -2,6 +2,8 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -10,6 +12,7 @@ import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 
+@Component
 public class XuLyDonService {
 
 	QXuLyDon xuLyDon = QXuLyDon.xuLyDon;

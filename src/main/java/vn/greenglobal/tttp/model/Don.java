@@ -59,6 +59,11 @@ public class Don extends Model<Don> {
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
+	private String fileUyQuyen = "";
+	private String urlFileUyQuyen = "";
+	private String fileChungChiHanhNghe = "";
+	private String urlChungChiHanhNghe = "";
+	
 	@Transient
 	private Long soNgayXuLy;
 	@Transient
@@ -1055,13 +1060,11 @@ public class Don extends Model<Don> {
 			int thuTu = xuLyDons.size();
 			XuLyDon xld = xuLyDons.get(thuTu - 1);
 			map.put("huongXuLyText", xld.getHuongXuLy() != null ? xld.getHuongXuLy().getText() : "");
-			map.put("nhomThamQuyenGiaiQuyetText",
-					xld.getThamQuyenGiaiQuyet() != null ? xld.getThamQuyenGiaiQuyet().getTen() : "");
-
-			map.put("phongBanGiaiQuyetText",
-					xld.getPhongBanGiaiQuyet() != null ? xld.getPhongBanGiaiQuyet().getTen() : "");
+			map.put("nhomThamQuyenGiaiQuyetText", xld.getThamQuyenGiaiQuyet() != null ? xld.getThamQuyenGiaiQuyet().getTen() : "");
+			
+			map.put("phongBanGiaiQuyetText", xld.getPhongBanGiaiQuyet() != null ? xld.getPhongBanGiaiQuyet().getTen() : "");
 			map.put("coQuanTiepNhanText", xld.getCoQuanTiepNhan() != null ? xld.getCoQuanTiepNhan().getTen() : "");
-
+			
 			map.put("lyDo", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
 			map.put("ngayHen", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
 			map.put("diaDiem", xld.getDiaDiem() != null ? xld.getDiaDiem() : "");
@@ -1071,36 +1074,37 @@ public class Don extends Model<Don> {
 			map.put("coQuanChuyenDenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getTen() : "");
 			map.put("phongBanXuLyId", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getId() : "");
 			map.put("phongBanXuLyText", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getTen() : "");
-			map.put("phongBanXuLyChiDinhId",
-					xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getId() : "");
-			map.put("phongBanXuLyChiDinhText",
-					xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getTen() : "");
+			map.put("phongBanXuLyChiDinhId", xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getId() : "");
+			map.put("phongBanXuLyChiDinhText", xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getTen() : "");
 			map.put("soNgayConLai", xld.getNgayConLai() != null ? xld.getNgayConLai() : "");
-			map.put("canBoXuLyChiDinhText",
-					xld.getCanBoXuLyChiDinh() != null ? xld.getCanBoXuLyChiDinh().getHoVaTen() : "");
-			map.put("canBoXuLyText", xld.getCanBoXuLy() != null ? xld.getCanBoXuLy().getHoVaTen() : "");
-			map.put("huongXuLy", xld.getHuongXuLy() != null ? xld.getHuongXuLy() : "");
-
+			map.put("canBoXuLyChiDinhText", xld.getCanBoXuLyChiDinh()!= null ? xld.getCanBoXuLyChiDinh().getHoVaTen() : "");
+			map.put("canBoXuLyText", xld.getCanBoXuLy()!= null ? xld.getCanBoXuLy().getHoVaTen() : "");
+			map.put("huongXuLy", xld.getHuongXuLy()!= null ? xld.getHuongXuLy() : "");
+			map.put("donViPhongBanId", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getId() : "" : "");
+			map.put("donViPhongBanText", xld.getPhongBanXuLy() != null ? 
+					xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getTen() : "" : "");
+			
 			map.put("ngayHen", xld.getNgayHenGapLanhDao() != null ? xld.getNgayHenGapLanhDao() : "");
-			// map.put("canBoXuLyText", xld.getCanBoXuLy() != null ?
-			// xld.getCanBoXuLy().getHoVaTen() : "");
+			//map.put("canBoXuLyText", xld.getCanBoXuLy() != null ? xld.getCanBoXuLy().getHoVaTen() : "");
 			map.put("hanXuLyText", xld.getThoiHanXuLy() != null ? xld.getThoiHanXuLy() : "");
 			map.put("quyTrinhXuLyCuaLD", "");
 			map.put("quyTrinhXuLyCuaPB", "");
-
+			map.put("thoiHanXuLy", getThoiHanXuLyXLD() != null ? Utils.convertLocalDateTimeToNumber(getThoiHanXuLyXLD()) : "");
+			map.put("noiDungTrinhLanhDao", xld.getNoiDungThongTinTrinhLanhDao());
+			
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			xlds.addAll(xuLyDons);
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.LANH_DAO)).collect(Collectors.toList());
-			if (xlds.size() > 0) {
+			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaLD", xldld.getNextState() != null ? xldld.getNextState().getTenVietTat() : "");
+				//map.put("quyTrinhXuLyCuaLD", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
 			}
 			xlds.clear();
 			xlds.addAll(xuLyDons);
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG)).collect(Collectors.toList());
-			if (xlds.size() > 0) {
+			if(xlds.size() > 0) {
 				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
-				map.put("quyTrinhXuLyCuaPB", xldld.getNextState() != null ? xldld.getNextState().getTenVietTat() : "");
+				//map.put("quyTrinhXuLyCuaPB", xldld.getQuyTrinhXuLy() != null ? xldld.getQuyTrinhXuLy().getText() : "");
 			}
 			return map;
 		}
@@ -1158,6 +1162,38 @@ public class Don extends Model<Don> {
 		this.ngayKetThucXLD = ngayKetThucXLD;
 	}
 
+	public String getFileUyQuyen() {
+		return fileUyQuyen;
+	}
+
+	public void setFileUyQuyen(String fileUyQuyen) {
+		this.fileUyQuyen = fileUyQuyen;
+	}
+
+	public String getUrlFileUyQuyen() {
+		return urlFileUyQuyen;
+	}
+
+	public void setUrlFileUyQuyen(String urlFileUyQuyen) {
+		this.urlFileUyQuyen = urlFileUyQuyen;
+	}
+
+	public String getFileChungChiHanhNghe() {
+		return fileChungChiHanhNghe;
+	}
+
+	public void setFileChungChiHanhNghe(String fileChungChiHanhNghe) {
+		this.fileChungChiHanhNghe = fileChungChiHanhNghe;
+	}
+
+	public String getUrlChungChiHanhNghe() {
+		return urlChungChiHanhNghe;
+	}
+
+	public void setUrlChungChiHanhNghe(String urlChungChiHanhNghe) {
+		this.urlChungChiHanhNghe = urlChungChiHanhNghe;
+	}
+	
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getCurrentStateInfo() {
