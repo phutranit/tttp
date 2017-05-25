@@ -1,10 +1,10 @@
 package vn.greenglobal.tttp.enums;
 
-public enum HinhThucTheoDoiEnum {
+public enum KetLuanNoiDungKhieuNaiEnum {
 
-	GIAO_CO_QUAN_KHAC("Giao cơ quan khác theo dõi");
-	
-	HinhThucTheoDoiEnum(String text) {
+	DUNG_TOAN_BO("Đúng toàn bộ");
+
+	KetLuanNoiDungKhieuNaiEnum(String text) {
 		this.text = text;
 	}
 
