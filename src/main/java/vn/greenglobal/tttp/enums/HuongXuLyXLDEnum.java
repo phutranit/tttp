@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum HuongXuLyXLDEnum {
 	
+	DINH_CHI("Đình chỉ"),
 	DE_XUAT_THU_LY("Đề xuất thụ lý"),
 	KHONG_DU_DIEU_KIEN_THU_LY("Không đủ điều kiện thụ lý"),
 	CHUYEN_DON("Chuyển đơn"),
