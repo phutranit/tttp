@@ -136,6 +136,11 @@ public class Don extends Model<Don> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>(); // TCD
+	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -757,6 +762,18 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa()) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -771,6 +788,15 @@ public class Don extends Model<Don> {
 
 	public void setTaiLieuBangChungs(List<TaiLieuBangChung> taiLieuBangChungs) {
 		this.taiLieuBangChungs = taiLieuBangChungs;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
 	}
 
 	@ApiModelProperty(hidden = true)
