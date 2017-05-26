@@ -162,41 +162,52 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách Quy Trình Xử Lý Đơn XLD", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachQuyTrinhXuLyXLDs(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam("chucVu") String chucVu) {
+			@RequestParam("vaiTro") String vaiTro) {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
-
-		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
-			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
+		
+		if (StringUtils.equals(vaiTro, VaiTroEnum.VAN_THU.name())) {
+			object.put("ten", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.name());
 			list.add(object);
 
 			object = new HashMap<>();
 			object.put("ten", QuyTrinhXuLyDonEnum.DINH_CHI.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DINH_CHI.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.DINH_CHI.name());
 			list.add(object);
 		}
-
-		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
+		
+		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.name())) {
 			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
 
 			object = new HashMap<>();
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			object.put("ten", QuyTrinhXuLyDonEnum.DINH_CHI.getText());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.DINH_CHI.name());
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
-			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
+		if (StringUtils.equals(vaiTro, VaiTroEnum.TRUONG_PHONG.name())) {
+			object.put("ten", QuyTrinhXuLyDonEnum.GIAO_VIEC.getText());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.GIAO_VIEC.name());
 			list.add(object);
 
 			object = new HashMap<>();
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			list.add(object);
+		}
+
+		if (StringUtils.equals(vaiTro, VaiTroEnum.CHUYEN_VIEN.name())) {
+			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
 			list.add(object);
 		}
 
@@ -209,44 +220,44 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách Quy Trình Xử Lý Đơn chuyển cho bộ phận giải quyết", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSach(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam("chucVu") String chucVu) {
+			@RequestParam("vaiTro") String vaiTro) {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(chucVu, VaiTroEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.name())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.CHUYEN_CAN_BO_XU_LY.name());
 			list.add(object);
 
 			object = new HashMap<>();
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.CHUYEN_BO_PHAN_GIAI_QUYET.name());
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, VaiTroEnum.TRUONG_PHONG.getText())) {
+		if (StringUtils.equals(vaiTro, VaiTroEnum.TRUONG_PHONG.name())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.YEU_CAU_KIEM_TRA_LAI.name());
 			list.add(object);
 
 			object = new HashMap<>();
 			object.put("ten", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.name());
 			list.add(object);
 		}
 
-		if (StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.getText())) {
+		if (StringUtils.equals(vaiTro, VaiTroEnum.CHUYEN_VIEN.name())) {
 
 			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.CHUYEN_CHO_VAN_THU.name());
 			list.add(object);
 
 			object = new HashMap<>();
 			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.getText());
-			object.put("ten", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
+			object.put("giaTri", QuyTrinhXuLyDonEnum.DE_XUAT_GIAO_VIEC_LAI.name());
 			list.add(object);
 		}
 
@@ -285,7 +296,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.getText())) {
+		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.name())) {
 
 			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
@@ -309,6 +320,75 @@ public class EnumController {
 			object = new HashMap<>();
 			object.put("ten", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.name());
+			list.add(object);
+		}
+		
+		if (StringUtils.equals(vaiTro, VaiTroEnum.CHUYEN_VIEN.name()) 
+				|| StringUtils.equals(vaiTro, VaiTroEnum.VAN_THU.getText())) {
+
+			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.CHUYEN_DON.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.CHUYEN_DON.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.name());
+			list.add(object);
+		
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.name());
+			list.add(object);
+		}
+		
+		if (StringUtils.equals(vaiTro, VaiTroEnum.VAN_THU.name())) {
+			object.put("ten", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.CHUYEN_DON.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.CHUYEN_DON.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.name());
+			list.add(object);
+		
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.name());
 			list.add(object);
 		}
 

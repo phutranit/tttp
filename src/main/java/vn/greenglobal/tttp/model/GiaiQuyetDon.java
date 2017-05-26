@@ -394,7 +394,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getCanBoGiaiQuyet() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("hoVaTen", getCanBoGiaiQuyet().getHoVaTen());
-			map.put("canBoGiaiQuyetId", getCanBoGiaiQuyet().getId());
+			map.put("congChucId", getCanBoGiaiQuyet().getId());
 			return map;
 		}
 		return null;
@@ -406,7 +406,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getTruongDoanTTXM() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("hoVaTen", getTruongDoanTTXM().getHoVaTen());
-			map.put("truongDoanTTXMId", getTruongDoanTTXM().getId());
+			map.put("congChucId", getTruongDoanTTXM().getId());
 			return map;
 		}
 		return null;
@@ -418,7 +418,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getCanBoThamTraXacMinh() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("hoVaTen", getCanBoThamTraXacMinh().getHoVaTen());
-			map.put("canBoThamTraXacMinhId", getCanBoThamTraXacMinh().getId());
+			map.put("congChucId", getCanBoThamTraXacMinh().getId());
 			return map;
 		}
 		return null;
@@ -430,7 +430,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getCoQuanDieuTra() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getCoQuanDieuTra().getTen());
-			map.put("coQuanDieuTraId", getCoQuanDieuTra().getId());
+			map.put("coQuanQuanLyId", getCoQuanDieuTra().getId());
 			return map;
 		}
 		return null;
@@ -442,7 +442,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getCoQuanTheoDoi() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getCoQuanTheoDoi().getTen());
-			map.put("coQuanTheoDoiId", getCoQuanTheoDoi().getId());
+			map.put("coQuanQuanLyId", getCoQuanTheoDoi().getId());
 			return map;
 		}
 		return null;
@@ -454,7 +454,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getDonViThamTraXacMinh() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getDonViThamTraXacMinh().getTen());
-			map.put("donViThamTraXacMinhId", getDonViThamTraXacMinh().getId());
+			map.put("coQuanQuanLyId", getDonViThamTraXacMinh().getId());
 			return map;
 		}
 		return null;
