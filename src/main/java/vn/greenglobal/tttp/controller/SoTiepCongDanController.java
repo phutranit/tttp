@@ -140,10 +140,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
-		System.out.println("soTiepCongDan " +soTiepCongDan.getDon().getId());
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		soTiepCongDan.setDon(don);
-		System.out.println("don " +don.getId());
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
@@ -346,11 +344,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
-					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
+					"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
-			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
+			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân định kỳ");

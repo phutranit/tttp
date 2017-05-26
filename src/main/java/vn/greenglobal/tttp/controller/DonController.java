@@ -56,17 +56,14 @@ import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
-import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
-import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
-import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.model.Process;
@@ -163,6 +160,20 @@ public class DonController extends TttpController<Don> {
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
+	
+	public Process getProcess(String authorization, Long nguoiTaoId, String processType) {
+		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+		CongChuc congChuc = congChucRepo.findOne(congChucId);
+		boolean isOwner = congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
+		CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
+		ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
+		Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
+		if (process == null && isOwner) {
+			process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, false, processTypeEnum));
+		}
+		return process;
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/listNextStates")
@@ -184,17 +195,7 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
 						ApiErrorEnum.DON_REQUIRED.getText());
 			}
-			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			CongChuc congChuc = congChucRepo.findOne(congChucId);
-			boolean isOwner = don.getNguoiTao() == null ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
-			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
-			ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
-			System.out.println("vaiTro: " + vaiTro + "; donVi: " + donVi.getTen());
-			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
-			if (process == null && isOwner) {
-				process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, false, processTypeEnum));
-			}			
+			Process process = getProcess(authorization, don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L, processType);
 			if (process == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
@@ -285,6 +286,26 @@ public class DonController extends TttpController<Don> {
 			Don donMoi = Utils.save(repo, don, congChucId);
 
 			if (donMoi.isThanhLapDon()) {
+				donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
+				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+				Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+				if (process == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+				}
+				
+				Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
+				List<State> listState = ((List<State>) repoState.findAll(predicate));
+				if (listState.size() > 0) {
+					State nextState = listState.get(0);
+					donMoi.setCurrentState(nextState);
+					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
+					if (transition != null) {
+						donMoi.setCurrentForm(transition.getForm());
+					}
+				} else {
+					donMoi.setCurrentState(beginState);
+				}
 				// Them xu ly don
 				XuLyDon xuLyDon = new XuLyDon();
 				xuLyDon.setDon(donMoi);
@@ -371,8 +392,26 @@ public class DonController extends TttpController<Don> {
 
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
-					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-					donMoi.setCurrentState(beginState);
+					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+					Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+					if (process == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+								ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+					}
+					
+					Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
+					List<State> listState = ((List<State>) repoState.findAll(predicate));
+					if (listState.size() > 0) {
+						State nextState = listState.get(0);
+						donMoi.setCurrentState(nextState);
+						Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
+						if (transition != null) {
+							donMoi.setCurrentForm(transition.getForm());
+						}
+					} else {
+						donMoi.setCurrentState(beginState);
+					}
+					
 					// Them xu ly don hien tai
 					XuLyDon xuLyDonHienTai = new XuLyDon();
 					xuLyDonHienTai.setDon(donMoi);
@@ -549,8 +588,25 @@ public class DonController extends TttpController<Don> {
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				
 				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
-				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-				don.setCurrentState(beginState);
+				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+				Process process = getProcess(authorization, don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L, ProcessTypeEnum.XU_LY_DON.toString());
+				if (process == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+				}
+				
+				Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
+				List<State> listState = ((List<State>) repoState.findAll(predicate));
+				if (listState.size() > 0) {
+					State nextState = listState.get(0);
+					don.setCurrentState(nextState);
+					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
+					if (transition != null) {
+						don.setCurrentForm(transition.getForm());
+					}
+				} else {
+					don.setCurrentState(beginState);
+				}
 			}
 
 			return Utils.doSave(repo, don,
