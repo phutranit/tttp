@@ -644,10 +644,6 @@ public class DonController extends TttpController<Don> {
 				if (listState.size() > 0) {
 					State nextState = listState.get(0);
 					don.setCurrentState(nextState);
-					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
-					if (transition != null) {
-						don.setCurrentForm(transition.getForm());
-					}
 				} else {
 					don.setCurrentState(beginState);
 				}

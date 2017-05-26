@@ -1,8 +1,5 @@
 package vn.greenglobal.tttp.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
