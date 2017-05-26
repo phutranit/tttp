@@ -140,10 +140,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
-		System.out.println("soTiepCongDan " +soTiepCongDan.getDon().getId());
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		soTiepCongDan.setDon(don);
-		System.out.println("don " +don.getId());
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
