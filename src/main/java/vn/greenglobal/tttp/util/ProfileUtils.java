@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.QInvalidToken;
+import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 
 @Component
@@ -22,6 +25,9 @@ public class ProfileUtils {
 	@Autowired
 	NguoiDungRepository nguoiDungRepository;
 
+	@Autowired
+	InvalidTokenRepository invalidTokenRep;
+	
 	private CommonProfile profile;
 	private SignatureConfiguration secretSignatureConfiguration;
 	private SecretEncryptionConfiguration secretEncryptionConfiguration;
@@ -39,6 +45,10 @@ public class ProfileUtils {
 	public CommonProfile getCommonProfile(String authHeader) {
 		if (authHeader != null && authHeader.startsWith("Bearer")) {
 			String token = StringUtils.substringAfter(authHeader, " ");
+			InvalidToken invalid = invalidTokenRep.findOne(QInvalidToken.invalidToken.token.eq(token));
+			if(invalid!=null){
+				return null;
+			}
 			secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 			secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 			authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);

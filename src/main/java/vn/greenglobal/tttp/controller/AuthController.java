@@ -8,6 +8,7 @@ import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
@@ -17,6 +18,7 @@ import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
+import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.QInvalidToken;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.CongChucService;
@@ -72,6 +77,10 @@ public class AuthController {
 	@Autowired
 	VaiTroService vaiTroService;
 
+	@Autowired
+	InvalidTokenRepository invalidTokenRep;
+	
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(
 			@RequestHeader(value = "Username", required = true) String username,
@@ -101,9 +110,9 @@ public class AuthController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
-	public void logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
+	public ResponseEntity<Object> logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
 			final HttpServletRequest request, final HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("auth:" + auth);
 		final J2EContext context = new J2EContext(request, response);
 
@@ -119,8 +128,21 @@ public class AuthController {
 			profileManager = profileManagerFactory.apply(context);
 			profiles = profileManager.getAll(true);
 			System.out.println("profiles:" + profiles);
-		}
+		}*/
 
+		if (authorization != null && authorization.startsWith("Bearer")) {
+			String currentToken = StringUtils.substringAfter(authorization, " ");
+			final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
+			final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
+			final JwtAuthenticator authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
+			if (authenticator.validateToken(currentToken)!=null){
+				InvalidToken token = new InvalidToken(currentToken);
+				invalidTokenRep.save(token);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/switchRole")
