@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -221,6 +223,64 @@ public class DonController extends TttpController<Don> {
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
+	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getCurrentForm(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "donId", required = false) Long donId,
+			@RequestParam(value = "processType", required = true) String processType,
+			@RequestParam(value = "currentStateId", required = false) Long currentStateId, PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		if (nguoiDung != null) {
+			Medial_Form_State media = new Medial_Form_State();
+			State currentState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+			Long currentStateId2 = (currentStateId != null && currentStateId.longValue() > 0) ? currentStateId : currentState.getId();
+			Long nguoiTaoId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			if (donId != null && donId.longValue() > 0) {
+				Don don = repo.findOne(donService.predicateFindOne(donId));
+				if (don == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
+							ApiErrorEnum.DON_REQUIRED.getText());
+				}
+				nguoiTaoId = don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L;
+				currentState = don.getCurrentState();
+			}
+			
+			Process process = getProcess(authorization, nguoiTaoId, processType);
+			if (process == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+			}
+			
+			Predicate predicate = serviceState.predicateFindAll(currentStateId2, process, repoTransition);
+			List<State> listState = ((List<State>) repoState.findAll(predicate));
+			media.setListNextStates(listState);
+			if (listState.size() < 1) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+						ApiErrorEnum.TRANSITION_INVALID.getText());
+			} else {
+				for (State nextState : listState) {
+					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
+					if (transition == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+					} else {
+						media.setCurrentForm(transition.getForm());
+					}
+				}
+			}
+			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
 
 	public boolean checkInputDateTime(String tuNgay, String denNgay) {
 
@@ -293,19 +353,7 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
-				
-				Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
-				List<State> listState = ((List<State>) repoState.findAll(predicate));
-				if (listState.size() > 0) {
-					State nextState = listState.get(0);
-					donMoi.setCurrentState(nextState);
-					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
-					if (transition != null) {
-						donMoi.setCurrentForm(transition.getForm());
-					}
-				} else {
-					donMoi.setCurrentState(beginState);
-				}
+				donMoi.setCurrentState(beginState);
 				// Them xu ly don
 				XuLyDon xuLyDon = new XuLyDon();
 				xuLyDon.setDon(donMoi);
@@ -404,10 +452,6 @@ public class DonController extends TttpController<Don> {
 					if (listState.size() > 0) {
 						State nextState = listState.get(0);
 						donMoi.setCurrentState(nextState);
-						Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, nextState, process));
-						if (transition != null) {
-							donMoi.setCurrentForm(transition.getForm());
-						}
 					} else {
 						donMoi.setCurrentState(beginState);
 					}
