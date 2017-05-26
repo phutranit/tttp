@@ -344,11 +344,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
-					"fileName", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
+					"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
-			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "fileName",
+			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
 					"Danh sách sổ tiếp dân định kỳ");
