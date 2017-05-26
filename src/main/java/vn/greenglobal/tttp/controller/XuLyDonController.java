@@ -139,7 +139,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 			
-			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
+			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
 			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
 			
 			if (process == null && isOwner) {
