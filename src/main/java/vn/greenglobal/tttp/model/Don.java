@@ -191,8 +191,6 @@ public class Don extends Model<Don> {
 	private State currentState;
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
-	@ManyToOne
-	private Form currentForm;
 
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
@@ -682,15 +680,6 @@ public class Don extends Model<Don> {
 
 	public void setProcessType(ProcessTypeEnum processType) {
 		this.processType = processType;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public Form getCurrentForm() {
-		return currentForm;
-	}
-
-	public void setCurrentForm(Form currentForm) {
-		this.currentForm = currentForm;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -1239,18 +1228,6 @@ public class Don extends Model<Don> {
 			map.put("ten", getCurrentState().getTen());
 			map.put("tenVietTat", getCurrentState().getTenVietTat());
 			map.put("type", getCurrentState().getType().toString());
-			return map;
-		}
-		return null;
-	}
-
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getCurrenFormInfo() {
-		if (getCurrentForm() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getCurrentForm().getTen());
-			map.put("alias", getCurrentForm().getAlias());
 			return map;
 		}
 		return null;

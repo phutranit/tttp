@@ -1066,7 +1066,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //		don.setNgayBatDauXLD(LocalDateTime.now());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
@@ -1121,7 +1120,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		//workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		return xuLyDonTiepTheo;
@@ -1168,7 +1166,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		return xuLyDonTiepTheo;
@@ -1219,7 +1216,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
@@ -1264,7 +1260,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);	
 		return xuLyDonTiepTheo;
@@ -1362,7 +1357,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
@@ -1410,7 +1404,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
@@ -1456,7 +1449,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
@@ -1502,7 +1494,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 		
 		don.setCurrentState(xuLyDonHienTai.getNextState());
-		don.setCurrentForm(xuLyDonHienTai.getNextForm());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		
