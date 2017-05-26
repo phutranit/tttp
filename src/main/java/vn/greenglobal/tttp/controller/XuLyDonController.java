@@ -45,13 +45,11 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
-import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
-import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
@@ -84,13 +82,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	private TransitionService transitionService;
 	
 	@Autowired
-	private ThamSoRepository repoThamSo;
-	
-	@Autowired
 	private ProcessRepository repoProcess;
-
-	@Autowired
-	private ThamSoService thamSoService;
 	
 	@Autowired
 	private ProcessService processService;
