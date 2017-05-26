@@ -91,13 +91,7 @@ public class DonController extends TttpController<Don> {
 	private CongChucRepository congChucRepo;
 
 	@Autowired
-	private ThamSoRepository repoThamSo;
-
-	@Autowired
 	private ProcessRepository repoProcess;
-
-	@Autowired
-	private ThamSoService thamSoService;
 
 	@Autowired
 	private TransitionRepository repoTransition;
