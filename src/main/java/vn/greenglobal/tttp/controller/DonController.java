@@ -592,7 +592,7 @@ public class DonController extends TttpController<Don> {
 				
 				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
 				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
-				Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+				Process process = getProcess(authorization, don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L, ProcessTypeEnum.XU_LY_DON.toString());
 				if (process == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
