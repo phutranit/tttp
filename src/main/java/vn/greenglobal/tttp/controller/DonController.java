@@ -191,8 +191,9 @@ public class DonController extends TttpController<Don> {
 			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 			boolean isOwner = don.getNguoiTao() == null ? true : congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
-			CoQuanQuanLy donVi = Utils.getDonViByCongChuc(congChuc, repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN")));
+			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
 			ProcessTypeEnum processTypeEnum = ProcessTypeEnum.valueOf(StringUtils.upperCase(processType));
+			System.out.println("vaiTro: " + vaiTro + "; donVi: " + donVi.getTen());
 			Process process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, isOwner, processTypeEnum));			
 			if (process == null && isOwner) {
 				process = repoProcess.findOne(processService.predicateFindAll(vaiTro, donVi, false, processTypeEnum));
