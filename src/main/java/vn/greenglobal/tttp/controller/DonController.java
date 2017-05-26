@@ -77,9 +77,6 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
-
-	@Autowired
-	private DonCongDanRepository donCongDanrepo;
 	
 	@Autowired
 	private DonRepository repo;
@@ -158,7 +155,6 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
 			@RequestParam(value = "vaiTro", required = false) String vaiTro, 
 			@RequestParam(value = "hoTen", required = false) String hoTen,
-			@RequestParam(value = "quyTrinhXuLy", required = false) String quyTrinhXuLy,
 			PersistentEntityResourceAssembler eass) {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
@@ -166,7 +162,7 @@ public class DonController extends TttpController<Don> {
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
-							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, quyTrinhXuLy, xuLyRepo),
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, xuLyRepo),
 					pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}
@@ -598,7 +594,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
 			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
-			@RequestParam(value = "trinhTrangXuLy", required = false) String trinhTrangXuLy,
+			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
@@ -606,13 +602,12 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
 			@RequestParam(value = "vaiTro", required = true) String vaiTro,
-			@RequestParam(value = "hoTen", required = false) String hoTen, 
-			@RequestParam(value = "quyTrinhXuLy", required = false) String quyTrinhXuLy) throws IOException {
+			@RequestParam(value = "hoTen", required = false) String hoTen) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 		
 		ExcelUtil.exportDanhSachXuLyDon(response, "fileName", "sheetName", 
-				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", trinhTrangXuLy, 
-						thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, quyTrinhXuLy, xuLyRepo), order),
+				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
+						thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, xuLyRepo), order),
 				"Danh sách xử lý đơn");
 	}
 }

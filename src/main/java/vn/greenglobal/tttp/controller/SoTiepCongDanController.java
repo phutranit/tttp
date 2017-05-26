@@ -140,9 +140,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
+		System.out.println("soTiepCongDan " +soTiepCongDan.getDon().getId());
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		soTiepCongDan.setDon(don);
-		
+		System.out.println("don " +don.getId());
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(true);
@@ -212,6 +213,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
+			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
 						ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
@@ -220,7 +222,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setDaGiaiQuyet(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}

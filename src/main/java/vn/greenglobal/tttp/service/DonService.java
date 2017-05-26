@@ -47,7 +47,7 @@ public class DonService {
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, String hoTen, 
-			String quyTrinhXuLy, XuLyDonRepository xuLyRepo) {
+			XuLyDonRepository xuLyRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
@@ -68,14 +68,6 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
-		}
-		
-		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
-			predAll = predAll.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
-		}
-		
-		if (StringUtils.isNotBlank(quyTrinhXuLy)) {
-			predAll = predAll.and(QDon.don.quyTrinhXuLy.eq(QuyTrinhXuLyDonEnum.valueOf(StringUtils.upperCase(quyTrinhXuLy))));
 		}
 		
 		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
@@ -114,6 +106,11 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+		}
+		
+		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
+					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
 
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
