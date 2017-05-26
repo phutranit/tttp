@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -14,6 +16,8 @@ import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 
+@Entity
+@Table(name = "giaiquyetdon")
 public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	/**
