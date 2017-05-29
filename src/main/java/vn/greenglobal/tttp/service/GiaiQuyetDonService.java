@@ -17,7 +17,7 @@ public class GiaiQuyetDonService {
 	BooleanExpression base = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false);
 
 	public GiaiQuyetDon predFindCurrent(GiaiQuyetDonRepository repo, Long id) {
-		BooleanExpression where = base.and(QGiaiQuyetDon.giaiQuyetDon.giaiQuyetDon.id.eq(id));
+		BooleanExpression where = base.and(QGiaiQuyetDon.giaiQuyetDon.id.eq(id));
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
 			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
