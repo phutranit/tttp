@@ -21,6 +21,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
@@ -31,6 +32,7 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
@@ -53,6 +55,9 @@ public class LichSuGiaiQuyetDonController extends TttpController<LichSuGiaiQuyet
 	
 	@Autowired
 	private StateRepository stateRepo;
+	
+	@Autowired
+	private DonRepository donRepo;
 	
 	@Autowired
 	private StateService stateService;
@@ -86,6 +91,7 @@ public class LichSuGiaiQuyetDonController extends TttpController<LichSuGiaiQuyet
 	}
 	
 	
+	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.POST, value = "/lichSuGiaiQuyetDons")
 	@ApiOperation(value = "Thêm mới Lịch sử giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Lịch sử giải quyết đơn thành công", response = LichSuGiaiQuyetDon.class),
@@ -169,9 +175,9 @@ public class LichSuGiaiQuyetDonController extends TttpController<LichSuGiaiQuyet
 						profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 				if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType)) {
 
-					LichSuGiaiQuyetDon giaiQuyetDonTiepTheo = new LichSuGiaiQuyetDon();
-					giaiQuyetDonTiepTheo = truongPhongGiaoViecChuyenVien(giaiQuyetDonHienTai, coQuanQuanLyId, congChucId, note);
-					return Utils.doSave(repo, giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					LichSuGiaiQuyetDon lichSuGiaiQuyetDonTiepTheo = new LichSuGiaiQuyetDon();
+					lichSuGiaiQuyetDonTiepTheo = truongPhongGiaoViecChuyenVien(giaiQuyetDonHienTai, coQuanQuanLyId, congChucId, note);
+					return Utils.doSave(repo, lichSuGiaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 
 				} else if (FlowStateEnum.CAN_BO_DE_XUAT_GIAO_VIEC_LAI.equals(nextStateType)) {
 					
@@ -186,10 +192,28 @@ public class LichSuGiaiQuyetDonController extends TttpController<LichSuGiaiQuyet
 				HttpStatus.CREATED);
 	}
 	
-	private LichSuGiaiQuyetDon truongPhongGiaoViecChuyenVien(LichSuGiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
-		Long giaiQuyetDonId = giaiQuyetDon.getGiaiQuyetDon().getId();
-		LichSuGiaiQuyetDon giaiQuyetDonHienTai = lichSuGiaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonId);
-		LichSuGiaiQuyetDon giaiQuyetDonTiepTheo = new LichSuGiaiQuyetDon();
-		return giaiQuyetDonTiepTheo;
+	private LichSuGiaiQuyetDon truongPhongGiaoViecChuyenVien(LichSuGiaiQuyetDon lichSuGiaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
+		Long donId = lichSuGiaiQuyetDon.getGiaiQuyetDon().getDon().getId();
+		LichSuGiaiQuyetDon lichSuGiaiQuyetDonHienTai = lichSuGiaiQuyetDonService.predFindCurrent(repo, lichSuGiaiQuyetDon.getGiaiQuyetDon().getId());
+		lichSuGiaiQuyetDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+		lichSuGiaiQuyetDonHienTai.setNextState(lichSuGiaiQuyetDon.getNextState());
+
+		lichSuGiaiQuyetDonHienTai.setCanBoXuLyChiDinh(lichSuGiaiQuyetDon.getCanBoXuLyChiDinh());
+		lichSuGiaiQuyetDonHienTai.setyKienGiaiQuyet(lichSuGiaiQuyetDon.getyKienGiaiQuyet());
+		lichSuGiaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+		
+		LichSuGiaiQuyetDon lichSuGiaiQuyetDonTiepTheo = new LichSuGiaiQuyetDon();
+		lichSuGiaiQuyetDonTiepTheo.setGiaiQuyetDon(lichSuGiaiQuyetDonHienTai.getGiaiQuyetDon());
+		lichSuGiaiQuyetDonTiepTheo.setCongChuc(lichSuGiaiQuyetDon.getCanBoXuLyChiDinh());
+		lichSuGiaiQuyetDonTiepTheo.setyKienGiaiQuyet(lichSuGiaiQuyetDon.getyKienGiaiQuyet());
+		lichSuGiaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(lichSuGiaiQuyetDonHienTai.getCanBoXuLyChiDinh());
+		lichSuGiaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		lichSuGiaiQuyetDonTiepTheo.setThuTuThucHien(lichSuGiaiQuyetDonHienTai.getThuTuThucHien() + 1);
+		
+		Don don = donRepo.findOne(donId);
+		don.setCurrentState(lichSuGiaiQuyetDon.getNextState());
+		Utils.save(donRepo, don, congChucId);
+		Utils.save(repo, lichSuGiaiQuyetDonHienTai, congChucId);
+		return lichSuGiaiQuyetDonTiepTheo;
 	}
 }

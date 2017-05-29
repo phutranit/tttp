@@ -42,6 +42,9 @@ public class LichSuGiaiQuyetDon extends Model<LichSuGiaiQuyetDon> {
 	
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
+	
+	@ManyToOne
+	private CongChuc canBoXuLyChiDinh;
 
 	public String getyKienGiaiQuyet() {
 		return yKienGiaiQuyet;
@@ -97,6 +100,14 @@ public class LichSuGiaiQuyetDon extends Model<LichSuGiaiQuyetDon> {
 
 	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
+	}
+	
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
 	@Transient
