@@ -34,6 +34,7 @@ public class LichSuGiaiQuyetDon extends Model<LichSuGiaiQuyetDon> {
 	
 	@ManyToOne
 	private GiaiQuyetDon giaiQuyetDon;
+	
 	@ManyToOne
 	private State nextState;
 	@ManyToOne
@@ -97,7 +98,7 @@ public class LichSuGiaiQuyetDon extends Model<LichSuGiaiQuyetDon> {
 	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getLichSuGiaiQuyetId() {
