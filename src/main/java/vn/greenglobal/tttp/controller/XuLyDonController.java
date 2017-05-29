@@ -36,8 +36,8 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
-import vn.greenglobal.tttp.model.LichSuGiaiQuyetDon;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.State;
@@ -47,8 +47,8 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
-import vn.greenglobal.tttp.repository.LichSuGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
@@ -76,10 +76,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	private DonRepository donRepo;
 	
 	@Autowired
-	private GiaiQuyetDonRepository giaiQuyetDonRepo;
+	private ThongTinGiaiQuyetDonRepository thongTinGiaiQuyetDonRepo;
 	
 	@Autowired
-	private LichSuGiaiQuyetDonRepository lichSuGiaiQuyetDonRepo;
+	private GiaiQuyetDonRepository giaiQuyetDonRepo;
 
 	@Autowired
 	private XuLyDonRepository xuLyDonRepo;
@@ -1339,16 +1339,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(donRepo, don, congChucId);
 		
 		//Quy trinh Giai Quyet Don
-		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
-		giaiQuyetDon.setDon(don);
-		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
+		thongTinGiaiQuyetDon.setDon(don);
+		Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
 		
 		//Lich su Giai quyet don
-		LichSuGiaiQuyetDon lichSuGiaiQuyetDon = new LichSuGiaiQuyetDon();
-		lichSuGiaiQuyetDon.setGiaiQuyetDon(giaiQuyetDon);
-		lichSuGiaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
-		lichSuGiaiQuyetDon.setThuTuThucHien(1);
-		Utils.save(lichSuGiaiQuyetDonRepo, lichSuGiaiQuyetDon, congChucId);
+		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
+		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
+		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		giaiQuyetDon.setThuTuThucHien(1);
+		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
 
 		return xuLyDonHienTai;
 	}
@@ -1699,16 +1699,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(donRepo, don, congChucId);
 		
 		//Quy trinh Giai Quyet Don
-		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
-		giaiQuyetDon.setDon(don);
-		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
+		thongTinGiaiQuyetDon.setDon(don);
+		Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
 		
 		//Lich su Giai quyet don
-		LichSuGiaiQuyetDon lichSuGiaiQuyetDon = new LichSuGiaiQuyetDon();
-		lichSuGiaiQuyetDon.setGiaiQuyetDon(giaiQuyetDon);
-		lichSuGiaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
-		lichSuGiaiQuyetDon.setThuTuThucHien(1);
-		Utils.save(lichSuGiaiQuyetDonRepo, lichSuGiaiQuyetDon, congChucId);
+		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
+		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
+		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		giaiQuyetDon.setThuTuThucHien(1);
+		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
 
 		return xuLyDonHienTai;
 	}
