@@ -22,11 +22,13 @@ import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -125,10 +127,10 @@ public class DonService {
 	}
 	
 	public Predicate predicateFindAllGQD(String maDon, String nguonDon, String phanLoaiDon,
-			String tiepNhanTuNgay, String tiepNhanDenNgay, 
-			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetId,
-			Long canBoXuLyXLD, Long phongBanXuLyXLD, String chucVu, String hoTen, 
-			XuLyDonRepository xuLyRepo) {
+			String tiepNhanTuNgay, String tiepNhanDenNgay, boolean thanhLapDon, 
+			String trangThaiDon, Long phongBanGiaiQuyetId,
+			Long canBoGiaiQuyetId, String chucVu, String hoTen, 
+			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
@@ -175,24 +177,19 @@ public class DonService {
 			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.stringValue().eq(trangThaiDon));
 		}
 		
-		
-		//Query xu ly don
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false);
-		
-
-		if (canBoXuLyXLD != null) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
-		}
-		
 		if (StringUtils.isNotBlank(chucVu)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+			
+			if (VaiTroEnum.CHUYEN_VIEN.equals(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))) {
+				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoGiaiQuyetId));
+			}
 		}
 
-		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		Collection<GiaiQuyetDon> gqdCollections = new ArrayList<GiaiQuyetDon>();
 		List<Don> donCollections = new ArrayList<Don>();
-		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
-		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
-		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		Iterable<GiaiQuyetDon> giaiQuyetDons = giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
+		CollectionUtils.addAll(gqdCollections, giaiQuyetDons.iterator());
+		donCollections = gqdCollections.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		
 		return predAll;
