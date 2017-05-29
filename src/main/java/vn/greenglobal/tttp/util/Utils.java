@@ -41,7 +41,8 @@ public class Utils {
     private static final int endMorning = 11;
     private static final int minuteEndMorning = 30;
     private static final int startAfternoon = 13;
-    private static final int minuteStartAfternoon = 30;
+    @SuppressWarnings("unused")
+	private static final int minuteStartAfternoon = 30;
     private static final int endAfternoon = 17;
     private static final int minuteEndAfternoon = 30;
     
