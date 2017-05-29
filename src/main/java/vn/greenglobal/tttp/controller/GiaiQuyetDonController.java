@@ -40,7 +40,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	public GiaiQuyetDonController(BaseRepository<GiaiQuyetDon, Long> repo) {
 		super(repo);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/giaiQuyetDons/{id}")
 	@ApiOperation(value = "Cập nhật giải quyết", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -49,7 +49,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody GiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_SUA) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -62,5 +62,5 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return Utils.doSave(repo, giaiQuyetDon,
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
-	} 
+	}
 }
