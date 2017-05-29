@@ -12,7 +12,7 @@ public enum ApiErrorEnum {
 	CHUCVU_REQUIRED("Trường chức vụ không được để trống!"),
 	MATKHAU_REQUIRED("Trường mật khẩu không được để trống!"),
 	DON_REQUIRED("Trường đơn không được để trống!"),
-	GIAIQUYETDON_REQUIRED("Trường giaiQuyetDon không được để trống!"),
+	THONGTINGIAIQUYETDON_REQUIRED("Trường thongTinGiaiQuyetDon không được để trống!"),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống!"),
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
