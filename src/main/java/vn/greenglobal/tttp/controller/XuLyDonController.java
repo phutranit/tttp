@@ -175,16 +175,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			if (xuLyDonHienTai != null) {
 				FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 				FlowStateEnum nextState = nextStage.getType();
-				xuLyDonHienTai.setNextForm(transition.getForm());
 				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
 				Long coQuanQuanLyId = new Long(
 						profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 
-				if (FlowStateEnum.BAT_DAU.equals(nextState)) {
-
-				} else if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
+				if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
 
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
 					xuLyDonTiepTheo = trinhDon(xuLyDonHienTai, coQuanQuanLyId, congChucId, note);
@@ -1337,7 +1334,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		//Lich su Giai quyet don
 		LichSuGiaiQuyetDon lichSuGiaiQuyetDon = new LichSuGiaiQuyetDon();
-		lichSuGiaiQuyetDon.setDon(don);
+		lichSuGiaiQuyetDon.setGiaiQuyetDon(giaiQuyetDon);
 		lichSuGiaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		lichSuGiaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(lichSuGiaiQuyetDonRepo, lichSuGiaiQuyetDon, congChucId);
@@ -1697,7 +1694,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		//Lich su Giai quyet don
 		LichSuGiaiQuyetDon lichSuGiaiQuyetDon = new LichSuGiaiQuyetDon();
-		lichSuGiaiQuyetDon.setDon(don);
+		lichSuGiaiQuyetDon.setGiaiQuyetDon(giaiQuyetDon);
 		lichSuGiaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		lichSuGiaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(lichSuGiaiQuyetDonRepo, lichSuGiaiQuyetDon, congChucId);

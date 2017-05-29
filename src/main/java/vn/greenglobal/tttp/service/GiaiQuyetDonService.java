@@ -20,5 +20,9 @@ public class GiaiQuyetDonService {
 		}
 		return false;
 	}
+	
+	public Predicate predicateFindOne(Long id) {
+		return base.and(QGiaiQuyetDon.giaiQuyetDon.id.eq(id));
+	}
 
 }
