@@ -1303,7 +1303,7 @@ public class Don extends Model<Don> {
 				} else if (soNgayXuLy == -1) {
 					return "-1";
 				} else if (soNgayXuLy == 0) {
-					return "0";
+					str = "Còn " + Utils.getLaySoGioPhut(xld.getThoiHanXuLy());
 				} else {
 					str = "Còn " + Utils.getLaySoGioPhut(xld.getThoiHanXuLy());
 				}

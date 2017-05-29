@@ -1024,7 +1024,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donId);
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
-
+		XuLyDon xuLyDonTruongPhong = new XuLyDon();
+		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 
@@ -1055,6 +1056,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 			xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
+			
+			//Tat ca truong phong
+//			xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
+//			xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+//			xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
+//			xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
+//			xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
+//			xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.TRUONG_PHONG);
+//			xuLyDonTruongPhong.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+//			xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 		}
 
 		if (xuLyDonHienTai.isDonChuyen()) {
@@ -1089,7 +1100,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
-
+		//Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
+		
 		return xuLyDonTiepTheo;
 	}
 
