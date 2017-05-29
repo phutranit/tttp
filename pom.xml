@@ -276,7 +276,7 @@
 							<goal>process</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>target/generated-sources/annotations</outputDirectory>
+							<outputDirectory>target/generated-sources/apt-maven-plugin</outputDirectory>
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 						</configuration>
 					</execution>

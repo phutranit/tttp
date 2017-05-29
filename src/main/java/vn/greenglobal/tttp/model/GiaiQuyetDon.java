@@ -34,17 +34,19 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	
 	@ManyToOne
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
-	
 	@ManyToOne
 	private State nextState;
 	@ManyToOne
-	private CongChuc congChuc;
-	
-	@Enumerated(EnumType.STRING)
-	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
-	
+	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy donVi;
+
+	@Enumerated(EnumType.STRING)
+	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
 
 	public String getyKienGiaiQuyet() {
 		return yKienGiaiQuyet;
@@ -93,14 +95,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
 	}
-
-	public TinhTrangGiaiQuyetEnum getTinhTrangGiaiQuyet() {
-		return tinhTrangGiaiQuyet;
-	}
-
-	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
-		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
-	}
 	
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
@@ -108,6 +102,30 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
 		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
+	}
+
+	public CoQuanQuanLy getPhongBanGiaiQuyet() {
+		return phongBanGiaiQuyet;
+	}
+
+	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
+		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
+	}
+
+	public TinhTrangGiaiQuyetEnum getTinhTrangGiaiQuyet() {
+		return tinhTrangGiaiQuyet;
+	}
+
+	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
+		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
 
 	@Transient
@@ -186,6 +204,54 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 				map.put("coQuanQuanLyInfo", mapCoQuanQuanLy);
 			}
 			map.put("congChucId", getCongChuc().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoXuLyChiDinhInfo() {
+		if (getCanBoXuLyChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+			if (getCongChuc() != null && getCanBoXuLyChiDinh().getCoQuanQuanLy() != null) {
+				Map<String, Object> mapCoQuanQuanLy = new HashMap<>();
+				mapCoQuanQuanLy.put("ten", getCanBoXuLyChiDinh().getCoQuanQuanLy().getTen());
+				if (getCanBoXuLyChiDinh().getCoQuanQuanLy().getDonVi() != null) {
+					Map<String, Object> mapDonVi = new HashMap<>();
+					mapDonVi.put("ten", getCanBoXuLyChiDinh().getCoQuanQuanLy().getDonVi().getTen());
+					mapDonVi.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy().getDonVi().getId());
+					mapCoQuanQuanLy.put("donViInfo", mapDonVi);
+				}
+				mapCoQuanQuanLy.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy().getId());
+				map.put("coQuanQuanLyInfo", mapCoQuanQuanLy);
+			}
+			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhongBanGiaiQuyetInfo() {
+		if (getPhongBanGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhongBanGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViInfo() {
+		if (getDonVi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getDonVi().getTen());
+			map.put("coQuanQuanLyId", getDonVi().getId());
 			return map;
 		}
 		return null;
