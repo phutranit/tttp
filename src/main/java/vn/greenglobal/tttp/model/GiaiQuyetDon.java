@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -68,6 +69,9 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CoQuanQuanLy coQuanTheoDoi;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
+	
+	@OneToOne
+	private Don don;
 
 	@Enumerated(EnumType.STRING)
 	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai;
@@ -326,6 +330,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
 		return donViThamTraXacMinh;
+	}
+	
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
 	}
 
 	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
