@@ -59,6 +59,7 @@ import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
@@ -97,6 +98,9 @@ public class DonController extends TttpController<Don> {
 	@Autowired
 	private StateRepository repoState;
 
+	@Autowired
+	private GiaiQuyetDonRepository giaiQuyetDonRepo;
+	
 	@Autowired
 	private StateService serviceState;
 	
@@ -155,6 +159,40 @@ public class DonController extends TttpController<Don> {
 					donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, vaiTro, hoTen, xuLyRepo),
+					pageable);
+			return assembler.toResource(pageData, (ResourceAssembler) eass);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons")
+	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Don.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getListGiaiQuyetDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "nguonDon", required = false) String nguonDon,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
+			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
+			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "hoTen", required = false) String hoTen,
+			PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		if (nguoiDung != null) {
+			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			CongChuc congChuc = congChucRepo.findOne(congChucId);
+			Page<Don> pageData = repo.findAll(
+					donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+							thanhLapDon, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
+							congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo),
 					pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		}

@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 
 @Entity
 @Table(name = "giaiquyetdon")
@@ -40,13 +41,20 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
-	@ManyToOne
-	private CoQuanQuanLy phongBanGiaiQuyet;
-	@ManyToOne
-	private CoQuanQuanLy donVi;
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
+	
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu;
+	
+	public VaiTroEnum getChucVu() {
+		return chucVu;
+	}
+
+	public void setChucVu(VaiTroEnum chucVu) {
+		this.chucVu = chucVu;
+	}
 
 	public String getyKienGiaiQuyet() {
 		return yKienGiaiQuyet;
@@ -104,22 +112,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
-	public CoQuanQuanLy getPhongBanGiaiQuyet() {
-		return phongBanGiaiQuyet;
-	}
-
-	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
-		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
-	}
-
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
-	}
-
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
-	}
-
 	public TinhTrangGiaiQuyetEnum getTinhTrangGiaiQuyet() {
 		return tinhTrangGiaiQuyet;
 	}
@@ -127,6 +119,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
+
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -228,30 +221,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 				map.put("coQuanQuanLyInfo", mapCoQuanQuanLy);
 			}
 			map.put("congChucId", getCanBoXuLyChiDinh().getId());
-			return map;
-		}
-		return null;
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getPhongBanGiaiQuyetInfo() {
-		if (getPhongBanGiaiQuyet() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getPhongBanGiaiQuyet().getTen());
-			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
-			return map;
-		}
-		return null;
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getDonViInfo() {
-		if (getDonVi() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getDonVi().getTen());
-			map.put("coQuanQuanLyId", getDonVi().getId());
 			return map;
 		}
 		return null;
