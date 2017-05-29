@@ -1034,7 +1034,7 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTrangThaiDonText() {
-		trangThaiDonText = "Đang giải quyết";
+		trangThaiDonText = "Đang xử lý";
 		if (xuLyDons.size() > 0) {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			// hxl
@@ -1311,5 +1311,27 @@ public class Don extends Model<Don> {
 	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
 		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getThoiHanXuLy() {
+		String str = "";
+		if (xuLyDons.size() > 0) {
+			int thuTu = xuLyDons.size();
+			XuLyDon xld = xuLyDons.get(thuTu - 1);
+			if (xld.getThoiHanXuLy() != null) {
+				long soNgayXuLy = Utils.getLaySoNgay(xld.getThoiHanXuLy());
+				if (soNgayXuLy > 0) {
+					return soNgayXuLy + "";
+				} else if (soNgayXuLy == -1) {
+					return "-1";
+				} else if (soNgayXuLy == 0) {
+					return "0";
+				} else {
+					str = "Còn " + Utils.getLaySoGioPhut(xld.getThoiHanXuLy());
+				}
+			}
+		}
+		return str;
+	}
 }
