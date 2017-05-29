@@ -23,6 +23,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
+import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -111,6 +112,80 @@ public class DonService {
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
 					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+		}
+
+		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		List<Don> donCollections = new ArrayList<Don>();
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
+		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		predAll = predAll.and(QDon.don.in(donCollections));
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindAllGQD(String maDon, String nguonDon, String phanLoaiDon,
+			String tiepNhanTuNgay, String tiepNhanDenNgay, 
+			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetId,
+			Long canBoXuLyXLD, Long phongBanXuLyXLD, String chucVu, String hoTen, 
+			XuLyDonRepository xuLyRepo) {
+
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
+		
+		//Query don
+		if (StringUtils.isNotBlank(maDon)) {
+			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
+		}
+
+		if (StringUtils.isNotBlank(hoTen)) {
+			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
+					.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
+					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+		}
+
+		if (StringUtils.isNotBlank(nguonDon)) {
+			predAll = predAll.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+		}
+		
+		if (StringUtils.isNotBlank(phanLoaiDon)) {
+			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
+		}
+		
+		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
+			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.between(tuNgay, denNgay));
+		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.before(denNgay));
+		} else if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
+			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
+			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
+		}
+		
+		if (phongBanGiaiQuyetId != null && phongBanGiaiQuyetId.longValue() > 0) {
+			predAll = predAll.and(QDon.don.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId));
+		}
+		
+		
+		//Query Giai quyet don
+		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false);
+			
+		if (StringUtils.isNotBlank(trangThaiDon)) {
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.stringValue().eq(trangThaiDon));
+		}
+		
+		
+		//Query xu ly don
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false);
+		
+
+		if (canBoXuLyXLD != null) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
+		}
+		
+		if (StringUtils.isNotBlank(chucVu)) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 		}
 
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
