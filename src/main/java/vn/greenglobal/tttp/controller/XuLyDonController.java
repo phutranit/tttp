@@ -1100,7 +1100,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
-		Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
+		//Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
 		
 		return xuLyDonTiepTheo;
 	}
