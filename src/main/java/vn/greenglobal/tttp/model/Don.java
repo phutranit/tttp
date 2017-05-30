@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -770,7 +769,7 @@ public class Don extends Model<Don> {
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
 				list.add(tlvt);
 			}
 		}
@@ -1104,13 +1103,11 @@ public class Don extends Model<Don> {
 			int thuTu = xuLyDons.size();
 			XuLyDon xld = xuLyDons.get(thuTu - 1);
 			map.put("huongXuLyText", xld.getHuongXuLy() != null ? xld.getHuongXuLy().getText() : "");
-			map.put("nhomThamQuyenGiaiQuyetText",
-					xld.getThamQuyenGiaiQuyet() != null ? xld.getThamQuyenGiaiQuyet().getTen() : "");
-
-			map.put("phongBanGiaiQuyetText",
-					xld.getPhongBanGiaiQuyet() != null ? xld.getPhongBanGiaiQuyet().getTen() : "");
+			map.put("nhomThamQuyenGiaiQuyetText", xld.getThamQuyenGiaiQuyet() != null ? xld.getThamQuyenGiaiQuyet().getTen() : "");
+			
+			map.put("phongBanGiaiQuyetText", xld.getPhongBanGiaiQuyet() != null ? xld.getPhongBanGiaiQuyet().getTen() : "");
 			map.put("coQuanTiepNhanText", xld.getCoQuanTiepNhan() != null ? xld.getCoQuanTiepNhan().getTen() : "");
-
+			
 			map.put("lyDo", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
 			map.put("ngayHen", xld.getyKienXuLy() != null ? xld.getyKienXuLy() : "");
 			map.put("diaDiem", xld.getDiaDiem() != null ? xld.getDiaDiem() : "");
@@ -1120,39 +1117,73 @@ public class Don extends Model<Don> {
 			map.put("coQuanChuyenDenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getTen() : "");
 			map.put("phongBanXuLyId", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getId() : "");
 			map.put("phongBanXuLyText", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getTen() : "");
-			map.put("phongBanXuLyChiDinhId",
-					xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getId() : "");
-			map.put("phongBanXuLyChiDinhText",
-					xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getTen() : "");
+			map.put("phongBanXuLyChiDinhId", xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getId() : "");
+			map.put("phongBanXuLyChiDinhText", xld.getPhongBanXuLyChiDinh() != null ? xld.getPhongBanXuLyChiDinh().getTen() : "");
 			map.put("soNgayConLai", xld.getNgayConLai() != null ? xld.getNgayConLai() : "");
-			map.put("canBoXuLyChiDinhText",
-					xld.getCanBoXuLyChiDinh() != null ? xld.getCanBoXuLyChiDinh().getHoVaTen() : "");
-			map.put("canBoXuLyText", xld.getCanBoXuLy() != null ? xld.getCanBoXuLy().getHoVaTen() : "");
-			map.put("huongXuLy", xld.getHuongXuLy() != null ? xld.getHuongXuLy() : "");
-			map.put("donViPhongBanId", xld.getPhongBanXuLy() != null
-					? xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getId() : "" : "");
-			map.put("donViPhongBanText", xld.getPhongBanXuLy() != null
-					? xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getTen() : "" : "");
-
+			map.put("canBoXuLyChiDinhText", xld.getCanBoXuLyChiDinh()!= null ? xld.getCanBoXuLyChiDinh().getHoVaTen() : "");
+			map.put("canBoXuLyText", xld.getCanBoXuLy()!= null ? xld.getCanBoXuLy().getHoVaTen() : "");
+			map.put("huongXuLy", xld.getHuongXuLy()!= null ? xld.getHuongXuLy() : "");
+			map.put("donViPhongBanId", xld.getPhongBanXuLy() != null ? xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getId() : "" : "");
+			map.put("donViPhongBanText", xld.getPhongBanXuLy() != null ? 
+					xld.getPhongBanXuLy().getDonVi() != null ? xld.getPhongBanXuLy().getDonVi().getTen() : "" : "");
+			
 			map.put("ngayHen", xld.getNgayHenGapLanhDao() != null ? xld.getNgayHenGapLanhDao() : "");
-			// map.put("canBoXuLyText", xld.getCanBoXuLy() != null ?
-			// xld.getCanBoXuLy().getHoVaTen() : "");
 			map.put("hanXuLyText", xld.getThoiHanXuLy() != null ? xld.getThoiHanXuLy() : "");
 			map.put("quyTrinhXuLyCuaLD", "");
-			map.put("quyTrinhXuLyCuaPB", "");
-			map.put("thoiHanXuLy",
-					getThoiHanXuLyXLD() != null ? Utils.convertLocalDateTimeToNumber(getThoiHanXuLyXLD()) : "");
+			map.put("quyTrinhXuLyCuaTP", "");
+			map.put("quyTrinhXuLyCuaCV", "");
+			map.put("quyTrinhXuLyCuaVT", "");
+			
+			map.put("thoiHanXuLy", getThoiHanXuLyXLD() != null ? Utils.convertLocalDateTimeToNumber(getThoiHanXuLyXLD()) : "");
 			map.put("noiDungTrinhLanhDao", xld.getNoiDungThongTinTrinhLanhDao());
-
+			map.put("trangThaiDonTheoVaiTro", "");
+			map.put("trangThaiDonTheoVaiTroText", "");
+			
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			xlds.addAll(xuLyDons);
 			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.LANH_DAO)).collect(Collectors.toList());
-
+			if(xlds.size() > 0) {
+				XuLyDon xldld = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaLD", xldld.getNextState() != null ? xldld.getNextState().getTen() : "");
+				map.put("trangThaiDonTheoVaiTro", xldld.getTrangThaiDon().name());
+				map.put("trangThaiDonTheoVaiTroText", xldld.getTrangThaiDon().getText());
+			}
 			xlds.clear();
 			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG))
-					.collect(Collectors.toList());
-
+			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.TRUONG_PHONG)).collect(Collectors.toList());
+			if(xlds.size() > 0) {
+				XuLyDon xldtp = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaTP", xldtp.getNextState() != null ? xldtp.getNextState().getTen() : "");
+				map.put("trangThaiDonTheoVaiTro", xldtp.getTrangThaiDon().name());
+				map.put("trangThaiDonTheoVaiTroText", xldtp.getTrangThaiDon().getText());
+				map.put("lyDo", xldtp.getyKienXuLy() != null ? xldtp.getyKienXuLy() : "");
+			}
+			xlds.clear();
+			xlds.addAll(xuLyDons);
+			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.VAN_THU)).collect(Collectors.toList());
+			if(xlds.size() > 0) {
+				XuLyDon xldvt = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaVT", xldvt.getNextState() != null ? xldvt.getNextState().getTen() : "");
+				map.put("trangThaiDonTheoVaiTro", xldvt.getTrangThaiDon().name());
+				map.put("trangThaiDonTheoVaiTroText", xldvt.getTrangThaiDon().getText());
+				map.put("nhomThamQuyenGiaiQuyetText", xldvt.getThamQuyenGiaiQuyet() != null ? xldvt.getThamQuyenGiaiQuyet().getTen() : "");
+				map.put("huongXuLyText", xldvt.getHuongXuLy() != null ? xldvt.getHuongXuLy().getText() : "");
+				map.put("phongBanGiaiQuyetText", xldvt.getPhongBanGiaiQuyet() != null ? xldvt.getPhongBanGiaiQuyet().getTen() : "");
+				map.put("lyDo", xldvt.getyKienXuLy() != null ? xldvt.getyKienXuLy() : "");
+			}
+			xlds.clear();
+			xlds.addAll(xuLyDons);
+			xlds = xlds.stream().filter(x -> x.getChucVu().equals(VaiTroEnum.CHUYEN_VIEN)).collect(Collectors.toList());
+			if(xlds.size() > 0) {
+				XuLyDon xldcv = xuLyDons.get(xlds.size() - 1);
+				map.put("quyTrinhXuLyCuaCV", xldcv.getNextState() != null ? xldcv.getNextState().getTen() : "");
+				map.put("trangThaiDonTheoVaiTro", xldcv.getTrangThaiDon().name());
+				map.put("trangThaiDonTheoVaiTroText", xldcv.getTrangThaiDon().getText());
+				map.put("nhomThamQuyenGiaiQuyetText", xldcv.getThamQuyenGiaiQuyet() != null ? xldcv.getThamQuyenGiaiQuyet().getTen() : "");
+				map.put("huongXuLyText", xldcv.getHuongXuLy() != null ? xldcv.getHuongXuLy().getText() : "");
+				map.put("phongBanGiaiQuyetText", xldcv.getPhongBanGiaiQuyet() != null ? xldcv.getPhongBanGiaiQuyet().getTen() : "");
+				map.put("lyDo", xldcv.getyKienXuLy() != null ? xldcv.getyKienXuLy() : "");
+			}
 			return map;
 		}
 		return null;

@@ -16,7 +16,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
 @Table(name = "tailieuvanthu")
@@ -29,14 +31,20 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private String duongDan = "";
 	private String tenFile = "";
 	private String soQuyetDinh = "";
+	
+	private LocalDateTime ngayQuyetDinh;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTepDinhKemEnum loaiTepDinhKem;
-	private LocalDateTime ngayQuyetDinh;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private ProcessTypeEnum loaiQuyTrinh;
+	@Enumerated(EnumType.STRING)
+	private BuocGiaiQuyetEnum buocGiaiQuyet;
 
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-
 	@NotNull
 	@ManyToOne
 	private Don don;
@@ -107,6 +115,22 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.loaiTepDinhKem = loaiTepDinhKem;
 	}
 	
+	public ProcessTypeEnum getLoaiQuyTrinh() {
+		return loaiQuyTrinh;
+	}
+
+	public void setLoaiQuyTrinh(ProcessTypeEnum loaiQuyTrinh) {
+		this.loaiQuyTrinh = loaiQuyTrinh;
+	}
+
+	public BuocGiaiQuyetEnum getBuocGiaiQuyet() {
+		return buocGiaiQuyet;
+	}
+
+	public void setBuocGiaiQuyet(BuocGiaiQuyetEnum buocGiaiQuyet) {
+		this.buocGiaiQuyet = buocGiaiQuyet;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getLoaiTepDinhKemText() {

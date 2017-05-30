@@ -31,6 +31,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
 @Table(name = "sotiepcongdan")
@@ -346,7 +347,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())) {
 				list.add(tlvt);
 			}
 		}

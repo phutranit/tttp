@@ -14,6 +14,7 @@ import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 @Api(value = "invalidTokens", description = "Invalid Tokens")
 public class InvalidTokenController extends TttpController<InvalidToken> {
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private InvalidTokenRepository repo;
 
