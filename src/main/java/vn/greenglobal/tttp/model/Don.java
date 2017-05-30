@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -102,6 +103,8 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
 
+	@OneToOne(mappedBy = "don")
+	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
 	private Don donLanTruoc;
 	@ManyToOne
@@ -199,6 +202,15 @@ public class Don extends Model<Don> {
 
 	public void setXuLyDons(List<XuLyDon> xuLyDons) {
 		this.xuLyDons = xuLyDons;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public ThongTinGiaiQuyetDon getThongTinGiaiQuyetDon() {
+		return thongTinGiaiQuyetDon;
+	}
+
+	public void setThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
+		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -1041,6 +1053,15 @@ public class Don extends Model<Don> {
 		this.trangThaiDonText = trangThaiDonText;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getThongTinGiaiQuyetDonId() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return getThongTinGiaiQuyetDon().getId();
+		}
+		return null;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getQuyTrinhXuLyText() {

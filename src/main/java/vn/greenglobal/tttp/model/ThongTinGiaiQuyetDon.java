@@ -4,11 +4,15 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -71,6 +75,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy donViThamTraXacMinh;
 	
 	@OneToOne
+	@JoinColumn(name = "don_id")
 	private Don don;
 
 	@Enumerated(EnumType.STRING)
@@ -370,8 +375,17 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getGiaiQuyetDonId() {
+	public Long getThongTinGiaiQuyetDonId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDonId() {
+		if (getDon() != null) {
+			return getDon().getId();
+		}
+		return null;
 	}
 	
 	@Transient
