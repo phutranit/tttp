@@ -43,6 +43,8 @@ import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.service.DonService;
@@ -67,12 +69,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 	@Autowired
 	private DonService donService;
-
+	
+	@Autowired
+	private CongChucRepository repoCongChuc;
+	
 	@Autowired
 	private PagedResourcesAssembler<Don> assemblerDon;
 
 	@Autowired
 	private CoQuanToChucTiepDanRepository repoCoQuanToChucTiepDan;
+	
+	@Autowired
+	private DonCongDanRepository repoDonCongDan;
 
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
@@ -89,15 +97,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
+			@RequestParam(value = "lanhDaoId", required = false) Long lanhDaoId,
+			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
+			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
+			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan,
 			PersistentEntityResourceAssembler eass) {
 		Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), pageable);
+				tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -340,17 +351,23 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan,
-			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId) throws IOException {
+			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId,
+			@RequestParam(value = "lanhDaoId", required = true) Long lanhDaoId,
+			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
+			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
+			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan) throws IOException {
 		OrderSpecifier<LocalDateTime> order = QSoTiepCongDan.soTiepCongDan.ngayTiepDan.desc();
 		if (LoaiTiepDanEnum.THUONG_XUYEN.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 					"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
-							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
+							.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, 
+									tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), order),
 					"Danh sách sổ tiếp dân");
 		} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 			ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 					"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
-							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId), order),
+							null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, 
+							ketQuaTiepDan, repoCongChuc, repoDonCongDan), order),
 					"Danh sách sổ tiếp dân định kỳ");
 		}
 	}
