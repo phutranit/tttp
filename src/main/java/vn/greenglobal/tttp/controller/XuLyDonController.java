@@ -176,6 +176,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 				FlowStateEnum nextState = nextStage.getType();
 				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
+				xuLyDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
 				Long coQuanQuanLyId = new Long(

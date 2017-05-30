@@ -164,6 +164,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 				FlowStateEnum nextStateType = nextState.getType();
 				giaiQuyetDonHienTai.setNextState(nextState);
+				giaiQuyetDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
