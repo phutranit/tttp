@@ -33,6 +33,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	private int thuTuThucHien;
 	
+	private boolean laTTXM;
+	
 	@ManyToOne
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@ManyToOne
@@ -128,6 +130,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setNextForm(Form nextForm) {
 		this.nextForm = nextForm;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public boolean isLaTTXM() {
+		return laTTXM;
+	}
+
+	public void setLaTTXM(boolean laTTXM) {
+		this.laTTXM = laTTXM;
 	}
 
 	@Transient
