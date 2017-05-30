@@ -50,9 +50,9 @@ public class DonService {
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu, String hoTen, 
-			XuLyDonRepository xuLyRepo) {
+			XuLyDonRepository xuLyRepo, DonRepository donRepo) {
 
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon)).and(QDon.don.xuLyDons.isNotEmpty());
 		
 		//Query don
 		if (StringUtils.isNotBlank(maDon)) {
@@ -84,46 +84,62 @@ public class DonService {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
-		
-		//Query xu ly don
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false);
-		if (phongBanGiaiQuyetXLD != null) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
-		}
-
-		if (canBoXuLyXLD != null) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
-		}
-
-		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
-		}
-		
-		if (StringUtils.isNotBlank(trangThaiDon)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
-		}
-
-		if (coQuanTiepNhanXLD != null) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
-		}
-		
-		if (StringUtils.isNotBlank(chucVu)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
-		}
-		
-		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
-					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
-		}
-		
-		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
-		}
-		
+						
+		QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		List<Don> donCollections = new ArrayList<Don>();
-		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
-		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		List<Don> listDons = (List<Don>) donRepo.findAll(predAll);
+		//Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
+		//CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		
+		if (listDons.size() > 0) {
+			for (Don don : listDons) {
+				//Query xu ly don
+				BooleanExpression where = base.and(xuLyDon.don.id.eq(don.getId()));
+				
+				if (phongBanGiaiQuyetXLD != null) {
+					where = where.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
+				}
+
+				if (canBoXuLyXLD != null) {
+					where = where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
+				}
+
+				if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
+					where = where.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+				}
+				
+				if (StringUtils.isNotBlank(chucVu)) {
+					where = where.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+				}
+				
+				if (coQuanTiepNhanXLD != null) {
+					where = where.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
+				}
+				
+				if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+					where = where.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
+							.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+				}
+				
+				if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+					where = where.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+				}
+				
+				if (xuLyRepo.exists(where)) {
+					OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();			
+					List<XuLyDon> results = (List<XuLyDon>) xuLyRepo.findAll(where, sortOrder);
+					Long xldId = results.get(0).getId();
+					XuLyDon xld = xuLyRepo.findOne(xldId);
+					if (StringUtils.isNotBlank(trangThaiDon)) {
+						if (xld.getTrangThaiDon().equals(TrangThaiDonEnum.valueOf(trangThaiDon))) {
+							xldCollections.add(xld);
+						}
+					}
+				}
+			}
+		}
+		
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		
