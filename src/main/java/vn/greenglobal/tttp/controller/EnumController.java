@@ -435,10 +435,51 @@ public class EnumController {
 		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 		list.add(object);
 
-		object = new HashMap<>();
-		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
-		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
-		list.add(object);
+//		object = new HashMap<>();
+//		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
+//		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
+//		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tinhTrangXuLyCuaLanhDaoTCDs")
+	@ApiOperation(value = "Lấy danh sách Tình trạng xử lý của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachTinhTrangXuLyCuaLanhDaoTCDs(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("ketQuaTiepDan") String ketQuaTiepDan) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name())) {
+			object.put("ten", "Đang giải quyết");
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", "Hoàn thành");
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+			list.add(object);
+		}
+		
+		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name())) {
+			object.put("ten", "Giao kiểm tra đề xuất");
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", "Đã có báo cáo kiểm tra đề xuất");
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", "Hoàn thành");
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			list.add(object);
+		}
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
