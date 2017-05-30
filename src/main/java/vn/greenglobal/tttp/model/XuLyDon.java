@@ -37,6 +37,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanXuLy;
 	@ManyToOne
+	private CoQuanQuanLy donViXuLy;
+	@ManyToOne
 	private CoQuanQuanLy phongBanXuLyChiDinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -395,5 +397,11 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
 
-	
+	public CoQuanQuanLy getDonViXuLy() {
+		return donViXuLy;
+	}
+
+	public void setDonViXuLy(CoQuanQuanLy donViXuLy) {
+		this.donViXuLy = donViXuLy;
+	}
 }

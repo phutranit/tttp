@@ -176,11 +176,13 @@ public class AuthController {
 			if (congChuc != null) {
 				commonProfile.addAttribute("congChucId", congChuc.getId());
 				commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
+				commonProfile.addAttribute("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 				commonProfile.addAttribute("loaiVaiTro",
 						user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
 
 				result.put("congChucId", congChuc.getId());
 				result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
+				result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 				result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
 			}
 
