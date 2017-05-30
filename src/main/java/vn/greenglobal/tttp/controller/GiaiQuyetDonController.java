@@ -92,6 +92,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	}
 	
 	
+	
 	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.POST, value = "/giaiQuyetDons")
 	@ApiOperation(value = "Thêm mới Lịch sử giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -176,6 +177,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 					giaiQuyetDonTiepTheo = chuyenVienDeXuatGiaoViecLai(giaiQuyetDonHienTai, giaiQuyetDon, coQuanQuanLyId, congChucId, note);
 					return Utils.doSave(repo, giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+				} else if (FlowStateEnum.CAN_BO_CHUYEN_VAN_THU_GIAO_TTXM.equals(nextStateType)) {
+					GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+					giaiQuyetDonTiepTheo = chuyenVienChuyenVanThuGiaoTTXM(giaiQuyetDonHienTai, giaiQuyetDon, coQuanQuanLyId, congChucId, note);
+					return Utils.doSave(repo, giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+				} else if (FlowStateEnum.CAN_BO_GIAI_QUYET_DON.equals(nextStateType)) {
+					
+				} else if (FlowStateEnum.VAN_THU_CHUYEN_DON_VI_TTXM.equals(nextStateType)) {
+					
 				}
 			} 
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -185,6 +194,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
+	
+	
 	
 	private GiaiQuyetDon truongPhongGiaoViecChuyenVien(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
@@ -227,4 +238,23 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return giaiQuyetDonTiepTheo;
 	}
 	
+	private GiaiQuyetDon chuyenVienChuyenVanThuGiaoTTXM(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
+		Long donId = giaiQuyetDon.getThongTinGiaiQuyetDon().getDon().getId();
+		giaiQuyetDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+		
+		
+		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDon.getThongTinGiaiQuyetDon());
+		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
+		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
+		
+		Don don = donRepo.findOne(donId);
+		don.setCurrentState(giaiQuyetDon.getNextState());
+		Utils.save(donRepo, don, congChucId);
+		Utils.save(repo, giaiQuyetDonHienTai, congChucId);
+		return giaiQuyetDonTiepTheo;
+	}
 }
