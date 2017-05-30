@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum ProcessTypeEnum {
 	
+	TIEP_CONG_DAN("Xử lý đơn"),
 	XU_LY_DON("Xử lý đơn"),
 	GIAI_QUYET_DON("Giải quyết đơn"),
 	THAM_TRA_XAC_MINH("Thẩm tra xác minh"),
