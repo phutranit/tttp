@@ -156,7 +156,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
-		if (getThongTinGiaiQuyetDonInfo() != null) {
+		if (getThongTinGiaiQuyetDon() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("thongTinGiaiQuyetDonId", getThongTinGiaiQuyetDon().getId());
 			return map;

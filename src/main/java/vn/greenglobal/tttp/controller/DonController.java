@@ -189,6 +189,8 @@ public class DonController extends TttpController<Don> {
 			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
+			System.out.println("vaiTro: " + vaiTro);
+			System.out.println("congChuc.getCoQuanQuanLy().getId(): " + congChuc.getCoQuanQuanLy().getId());
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							thanhLapDon, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 

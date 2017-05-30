@@ -190,6 +190,7 @@ public class DonService {
 		Iterable<GiaiQuyetDon> giaiQuyetDons = giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
 		CollectionUtils.addAll(gqdCollections, giaiQuyetDons.iterator());
 		donCollections = gqdCollections.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+		System.out.println("donCollections size: "  + donCollections.size());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		
 		return predAll;
