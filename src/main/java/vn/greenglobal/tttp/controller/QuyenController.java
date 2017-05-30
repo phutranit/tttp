@@ -143,9 +143,15 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
-		quyenObj.put("tenChucNang","Đơn");
-		quyenObj.put("tenQuyen", QuyenEnum.DON_LIETKE.getText() + "," + QuyenEnum.DON_XEM.getText() + "," + QuyenEnum.DON_THEM.getText() + "," + QuyenEnum.DON_SUA.getText() + "," + QuyenEnum.DON_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.DON_LIETKE.name() + "," + QuyenEnum.DON_XEM.name() + "," + QuyenEnum.DON_THEM.name() + "," + QuyenEnum.DON_SUA.name() + "," + QuyenEnum.DON_XOA.name());
+		quyenObj.put("tenChucNang","Xử lý đơn");
+		quyenObj.put("tenQuyen", QuyenEnum.XULYDON_LIETKE.getText() + "," + QuyenEnum.XULYDON_XEM.getText() + "," + QuyenEnum.XULYDON_THEM.getText() + "," + QuyenEnum.XULYDON_SUA.getText() + "," + QuyenEnum.XULYDON_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.XULYDON_LIETKE.name() + "," + QuyenEnum.XULYDON_XEM.name() + "," + QuyenEnum.XULYDON_THEM.name() + "," + QuyenEnum.XULYDON_SUA.name() + "," + QuyenEnum.XULYDON_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Giải quyết đơn");
+		quyenObj.put("tenQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.getText() + "," + QuyenEnum.GIAIQUYETDON_XEM.getText() + "," + QuyenEnum.GIAIQUYETDON_THEM.getText() + "," + QuyenEnum.GIAIQUYETDON_SUA.getText() + "," + QuyenEnum.GIAIQUYETDON_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.name() + "," + QuyenEnum.GIAIQUYETDON_XEM.name() + "," + QuyenEnum.GIAIQUYETDON_THEM.name() + "," + QuyenEnum.GIAIQUYETDON_SUA.name() + "," + QuyenEnum.GIAIQUYETDON_XOA.name());
 		quyenList.add(quyenObj);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
