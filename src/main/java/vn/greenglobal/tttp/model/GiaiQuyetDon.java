@@ -38,6 +38,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@ManyToOne
 	private State nextState;
 	@ManyToOne
+	private Form nextForm;
+	@ManyToOne
 	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
@@ -119,12 +121,28 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
+	
+	public Form getNextForm() {
+		return nextForm;
+	}
 
+	public void setNextForm(Form nextForm) {
+		this.nextForm = nextForm;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getLichSuGiaiQuyetId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getNextFormId() {
+		if (getNextForm() != null) {
+			return getNextForm().getId();
+		}
+		return null;
 	}
 
 	@Transient
@@ -156,7 +174,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
-		if (getThongTinGiaiQuyetDonInfo() != null) {
+		if (getThongTinGiaiQuyetDon() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("thongTinGiaiQuyetDonId", getThongTinGiaiQuyetDon().getId());
 			return map;

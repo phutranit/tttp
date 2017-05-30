@@ -99,11 +99,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@ApiResponse(code = 201, message = "Thêm mới Lịch sử giải quyết đơn thành công", response = GiaiQuyetDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody GiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
-
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
 		
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
@@ -156,7 +151,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 			}
-
 			Transition transition = transitionRepo.findOne(
 					transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
 
@@ -170,6 +164,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 				FlowStateEnum nextStateType = nextState.getType();
 				giaiQuyetDonHienTai.setNextState(nextState);
+				giaiQuyetDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
 				Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -187,13 +182,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		
-		return Utils.doSave(repo, giaiQuyetDon,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 	
 	private GiaiQuyetDon truongPhongGiaoViecChuyenVien(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
-		Long donId = giaiQuyetDon.getThongTinGiaiQuyetDon().getDon().getId();
+		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		giaiQuyetDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		giaiQuyetDonHienTai.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
