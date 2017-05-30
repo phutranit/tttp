@@ -86,7 +86,8 @@ public class Don extends Model<Don> {
 	private boolean thanhLapTiepDanGapLanhDao = false;
 	private boolean boSungThongTinBiKhieuTo = false;
 	private boolean coThongTinCoQuanDaGiaiQuyet = false;
-
+	private boolean lanhDaoDuyet = false;
+	
 	@NotNull
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
@@ -1287,6 +1288,15 @@ public class Don extends Model<Don> {
 
 	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
 		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
+	}
+	
+	public boolean isLanhDaoDuyet() {
+		return lanhDaoDuyet;
+	}
+
+	public void setLanhDaoDuyet(boolean lanhDaoDuyet) {
+		this.lanhDaoDuyet = lanhDaoDuyet;
+	
 	}
 	
 	@Transient

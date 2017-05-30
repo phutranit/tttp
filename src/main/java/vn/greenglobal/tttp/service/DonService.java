@@ -49,7 +49,7 @@ public class DonService {
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
-			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, String chucVu, String hoTen, 
+			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu, String hoTen, 
 			XuLyDonRepository xuLyRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
@@ -95,7 +95,7 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
 		}
 
-		if (phongBanXuLyXLD != null) {
+		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 		
@@ -115,7 +115,11 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
 					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
-
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		List<Don> donCollections = new ArrayList<Don>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
