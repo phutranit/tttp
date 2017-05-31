@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
@@ -27,5 +29,11 @@ public class GiaiQuyetDonService {
 			return repo.findOne(lichSuId);
 		}
 		return null;
+	}
+	
+	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro) {
+		BooleanExpression predicate = base.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
+		predicate = predicate.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(vaiTro));
+		return predicate;
 	}
 }

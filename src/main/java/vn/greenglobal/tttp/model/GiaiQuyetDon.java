@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
@@ -45,6 +47,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	private boolean old;
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
@@ -74,6 +77,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
+	}
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public boolean isOld() {
+		return old;
+	}
+
+	public void setOld(boolean old) {
+		this.old = old;
 	}
 
 	public int getThuTuThucHien() {
