@@ -179,8 +179,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
 			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
-				long thoiHanXuLy = 10;
-				soTiepCongDan.getDon().setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), thoiHanXuLy));
+				soTiepCongDan.getDon().setNgayBatDauXLD(LocalDateTime.now());
 			}
 		}
 
@@ -235,8 +234,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.getDon().setYeuCauGapTrucTiepLanhDao(true);
 			}
 			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
-				long thoiHanXuLy = 10;
-				soTiepCongDan.getDon().setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), thoiHanXuLy));
+				soTiepCongDan.getDon().setNgayBatDauXLD(LocalDateTime.now());
 			}
 		}
 
