@@ -149,19 +149,19 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
-		quyenObj.put("tenChucNang","Thanh tr");
+		quyenObj.put("tenChucNang","Thanh tra");
 		quyenObj.put("tenQuyen", QuyenEnum.THANHTRA_LIETKE.getText() + "," + QuyenEnum.THANHTRA_XEM.getText() + "," + QuyenEnum.THANHTRA_THEM.getText() + "," + QuyenEnum.THANHTRA_SUA.getText() + "," + QuyenEnum.THANHTRA_XOA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.THANHTRA_LIETKE.name() + "," + QuyenEnum.THANHTRA_XEM.name() + "," + QuyenEnum.THANHTRA_THEM.name() + "," + QuyenEnum.THANHTRA_SUA.name() + "," + QuyenEnum.THANHTRA_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
-		quyenObj.put("tenChucNang","Thanh tr");
+		quyenObj.put("tenChucNang","Tổng hợp báo cáo");
 		quyenObj.put("tenQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.getText() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.name() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
-		quyenObj.put("tenChucNang","Thanh tr");
+		quyenObj.put("tenChucNang","Theo dõi giám sát");
 		quyenObj.put("tenQuyen", QuyenEnum.THEODOIGIAMSAT_LIETKE.getText() + "," + QuyenEnum.THEODOIGIAMSAT_THONGKE.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.THEODOIGIAMSAT_LIETKE.name() + "," + QuyenEnum.THEODOIGIAMSAT_THONGKE.name());
 		quyenList.add(quyenObj);
