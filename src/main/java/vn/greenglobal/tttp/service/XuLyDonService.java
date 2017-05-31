@@ -8,6 +8,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
@@ -27,6 +28,12 @@ public class XuLyDonService {
 			return repo.findOne(xldId);
 		}
 		return null;
+	}
+	
+	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro) {
+		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro));
+		return predicate;
 	}
 
 	public Predicate predicateFindOne(Long id) {

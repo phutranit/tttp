@@ -84,62 +84,46 @@ public class DonService {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
-						
-		QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
-		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		List<Don> donCollections = new ArrayList<Don>();
-		List<Don> listDons = (List<Don>) donRepo.findAll(predAll);
-		//Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
-		//CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
-		
-		if (listDons.size() > 0) {
-			for (Don don : listDons) {
-				//Query xu ly don
-				BooleanExpression where = base.and(xuLyDon.don.id.eq(don.getId()));
-				
-				if (phongBanGiaiQuyetXLD != null) {
-					where = where.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
-				}
+		//Query xu ly don
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				;		
+		if (phongBanGiaiQuyetXLD != null) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
+		}
 
-				if (canBoXuLyXLD != null) {
-					where = where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
-				}
-
-				if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-					where = where.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
-				}
-				
-				if (StringUtils.isNotBlank(chucVu)) {
-					where = where.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
-				}
-				
-				if (coQuanTiepNhanXLD != null) {
-					where = where.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
-				}
-				
-				if (StringUtils.isNotBlank(tinhTrangXuLy)) {
-					where = where.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
-							.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
-				}
-				
-				if (donViXuLyXLD != null && donViXuLyXLD > 0) {
-					where = where.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
-				}
-				
-				if (xuLyRepo.exists(where)) {
-					OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();			
-					List<XuLyDon> results = (List<XuLyDon>) xuLyRepo.findAll(where, sortOrder);
-					Long xldId = results.get(0).getId();
-					XuLyDon xld = xuLyRepo.findOne(xldId);
-					if (StringUtils.isNotBlank(trangThaiDon)) {
-						if (xld.getTrangThaiDon().equals(TrangThaiDonEnum.valueOf(trangThaiDon))) {
-							xldCollections.add(xld);
-						}
-					}
-				}
-			}
+		if (canBoXuLyXLD != null) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
+		}
+		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 		
+		
+		if (StringUtils.isNotBlank(chucVu)) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+		}
+		
+		if (coQuanTiepNhanXLD != null) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
+		}
+		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
+					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
+		}
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		if (StringUtils.isNotBlank(trangThaiDon)) {			
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
+		}
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();		
+		
+		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
+		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		
@@ -189,9 +173,9 @@ public class DonService {
 			predAll = predAll.and(QDon.don.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId));
 		}
 		
-		
 		//Query Giai quyet don
-		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false);
+		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
+				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 			
 		if (StringUtils.isNotBlank(trangThaiDon)) {
 			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.stringValue().eq(trangThaiDon));
@@ -205,13 +189,12 @@ public class DonService {
 			}
 		}
 
-		Collection<GiaiQuyetDon> gqdCollections = new ArrayList<GiaiQuyetDon>();
+		//TODO Toi uu lai tim kiem
 		List<Don> donCollections = new ArrayList<Don>();
-		Iterable<GiaiQuyetDon> giaiQuyetDons = giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
-		CollectionUtils.addAll(gqdCollections, giaiQuyetDons.iterator());
-		donCollections = gqdCollections.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
+		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);
+		donCollections = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QDon.don.in(donCollections));
-		
 		return predAll;
 	}
 

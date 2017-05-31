@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -54,7 +56,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
-
+	private boolean old;
 	
 	@ManyToOne
 	private State nextState;
@@ -87,7 +89,17 @@ public class XuLyDon extends Model<XuLyDon> {
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVuGiaoViec;
-	
+
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public boolean isOld() {
+		return old;
+	}
+
+	public void setOld(boolean old) {
+		this.old = old;
+	}
+
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}

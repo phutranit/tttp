@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -208,6 +210,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	}
 	
 	
+	private void disableGiaiQuyetDonCu(VaiTroEnum vaiTro, Long donId, Long congChucId) {
+		List<GiaiQuyetDon> giaiQuyetDonCu = (List<GiaiQuyetDon>) repo.findAll(giaiQuyetDonService.predFindOld(donId, vaiTro));
+		if (giaiQuyetDonCu != null) {
+			for (GiaiQuyetDon gqd: giaiQuyetDonCu) {
+				gqd.setOld(true);
+				Utils.save(repo, gqd, congChucId);
+			}
+		}
+	}
 	
 	private GiaiQuyetDon truongPhongGiaoViecChuyenVien(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
@@ -217,6 +228,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+		disableGiaiQuyetDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId);
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon());
 		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
@@ -237,6 +249,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+		disableGiaiQuyetDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId);
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDon.getThongTinGiaiQuyetDon());
 		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
@@ -257,6 +270,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+		disableGiaiQuyetDonCu(VaiTroEnum.VAN_THU, donId, congChucId);
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDon.getThongTinGiaiQuyetDon());
 		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
