@@ -134,7 +134,19 @@ public enum QuyenEnum {
 	GIAIQUYETDON_THEM("Thêm mới"),
 	GIAIQUYETDON_SUA("Chỉnh sửa"),
 	GIAIQUYETDON_XOA("Xoá"),
-	GIAIQUYETDON_DINHCHI("Đình chỉ/Rút đơn");
+	GIAIQUYETDON_DINHCHI("Đình chỉ/Rút đơn"),
+	
+	THANHTRA_LIETKE("Liệt kê"),
+	THANHTRA_XEM("Xem"),
+	THANHTRA_THEM("Thêm mới"),
+	THANHTRA_SUA("Chỉnh sửa"),
+	THANHTRA_XOA("Xoá"),
+	
+	TONGHOPBAOCAO_LIETKE("Liệt kê"),
+	TONGHOPBAOCAO_THONGKE("Thống kê"),
+	
+	THEODOIGIAMSAT_LIETKE("Liệt kê"),
+	THEODOIGIAMSAT_THONG_KE("Thống kê");
 
 	QuyenEnum(String text) {
 		this.text = text;
