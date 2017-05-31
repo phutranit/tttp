@@ -1038,6 +1038,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId, String note) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
+		XuLyDon xuLyDonTruongPhong = new XuLyDon();
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
@@ -1072,14 +1073,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonTiepTheo.setCongChuc(xuLyDon.getCanBoXuLyChiDinh());
 			
 			//Tat ca truong phong
-//			xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
-//			xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-//			xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
-//			xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
-//			xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
-//			xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.TRUONG_PHONG);
-//			xuLyDonTruongPhong.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-//			xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
+			xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
+			xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+			xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
+			xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
+			xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
+			xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.TRUONG_PHONG);
+			xuLyDonTruongPhong.setNoiDungYeuCauXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+			xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 		}
 
 		if (xuLyDonHienTai.isDonChuyen()) {

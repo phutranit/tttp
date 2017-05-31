@@ -455,28 +455,28 @@ public class EnumController {
 		Map<String, Object> object = new HashMap<>();
 		
 		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name())) {
-			object.put("ten", "Đang giải quyết");
+			object.put("ten", HuongGiaiQuyetTCDEnum.DANG_GIAI_QUYET.getText());
 			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
 			list.add(object);
 			
 			object = new HashMap<>();
-			object.put("ten", "Hoàn thành");
+			object.put("ten", HuongGiaiQuyetTCDEnum.HOAN_THANH.getText());
 			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
 			list.add(object);
 		}
 		
 		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name())) {
-			object.put("ten", "Giao kiểm tra đề xuất");
+			object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
 			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 			list.add(object);
 			
 			object = new HashMap<>();
-			object.put("ten", "Đã có báo cáo kiểm tra đề xuất");
+			object.put("ten", HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT.getText());
 			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 			list.add(object);
 			
 			object = new HashMap<>();
-			object.put("ten", "Hoàn thành");
+			object.put("ten", HuongGiaiQuyetTCDEnum.HOAN_THANH.getText());
 			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 			list.add(object);
 		}
