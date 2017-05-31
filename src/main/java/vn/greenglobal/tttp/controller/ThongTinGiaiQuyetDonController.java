@@ -49,7 +49,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ThongTinGiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -70,7 +70,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_XEM) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}

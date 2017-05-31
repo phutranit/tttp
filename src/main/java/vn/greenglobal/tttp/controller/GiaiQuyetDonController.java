@@ -7,6 +7,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "giaiQuyetDons", description = "Lịch sử giải quyết đơn")
+@Api(value = "giaiQuyetDons", description = "Giải quyết đơn")
 public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 
 	@Autowired
@@ -94,13 +95,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.POST, value = "/giaiQuyetDons")
-	@ApiOperation(value = "Thêm mới Lịch sử giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Lịch sử giải quyết đơn thành công", response = GiaiQuyetDon.class),
-			@ApiResponse(code = 201, message = "Thêm mới Lịch sử giải quyết đơn thành công", response = GiaiQuyetDon.class) })
+	@ApiOperation(value = "Thêm mới Lịch sử  giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Lịch sử  giải quyết đơn thành công", response = GiaiQuyetDon.class),
+			@ApiResponse(code = 201, message = "Thêm mới Lịch sử  giải quyết đơn thành công", response = GiaiQuyetDon.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody GiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
 		
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
@@ -207,7 +208,20 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 	
-	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/giaiQuyetDons/{id}/dinhChi")
+	@ApiOperation(value = "Đình chỉ đơn giải quyết", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Đình chỉ đơn giải quyết thành công") })
+	public ResponseEntity<Object> dinhChiDonGiaiQuyet(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_DINHCHI) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		// Đang đợi confirm của khách hàng
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 	
 	private GiaiQuyetDon truongPhongGiaoViecChuyenVien(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
@@ -234,6 +248,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	private GiaiQuyetDon chuyenVienDeXuatGiaoViecLai(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long coQuanQuanLyId, Long congChucId, String note) {
 		Long donId = giaiQuyetDon.getThongTinGiaiQuyetDon().getDon().getId();
 		giaiQuyetDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();

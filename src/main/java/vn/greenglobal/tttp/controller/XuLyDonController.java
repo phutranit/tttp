@@ -119,7 +119,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public ResponseEntity<Object> createWorkflow(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestBody XuLyDon xuLyDon,
 			PersistentEntityResourceAssembler eass) {
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
@@ -346,7 +346,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestParam Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {

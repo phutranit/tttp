@@ -152,7 +152,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 		if (nguoiDung != null) {
 			Long donViXuLyXLD = 0L;
 			Long phongBanXuLyXLD = 0L;
@@ -193,7 +193,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_LIETKE);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 		if (nguoiDung != null) {
 			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
@@ -236,7 +236,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "processType", required = true) String processType,
 			@RequestParam(value = "currentStateId", required = true) Long currentStateId, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 		if (nguoiDung != null) {
 			Don don = repo.findOne(donService.predicateFindOne(donId));
 			if (don == null) {
@@ -282,7 +282,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "processType", required = true) String processType,
 			@RequestParam(value = "currentStateId", required = false) Long currentStateId, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 		if (nguoiDung != null) {
 			Medial_Form_State media = new Medial_Form_State();
 			State currentState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -354,7 +354,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
@@ -444,7 +444,7 @@ public class DonController extends TttpController<Don> {
 	public ResponseEntity<Object> taoDonMoiVaTrinhDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestBody Don don,
 			PersistentEntityResourceAssembler eass) {
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
@@ -580,7 +580,7 @@ public class DonController extends TttpController<Don> {
 	public ResponseEntity<Object> getDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_XEM);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM);
 		if (nguoiDung != null) {
 			Don don = repo.findOne(donService.predicateFindOne(id));
 			if (don == null) {
@@ -602,7 +602,7 @@ public class DonController extends TttpController<Don> {
 //		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
 //		if (nguoiDung != null) {
 		
-		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_THEM);
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
@@ -728,7 +728,7 @@ public class DonController extends TttpController<Don> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_XOA);
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XOA);
 		if (nguoiDung != null) {
 
 			Don don = donService.deleteDon(repo, id);

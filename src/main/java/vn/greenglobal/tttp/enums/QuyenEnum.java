@@ -97,12 +97,24 @@ public enum QuyenEnum {
 	VAITRO_THEM("Thêm mới"),
 	VAITRO_SUA("Chỉnh sửa"),
 	VAITRO_XOA("Xoá"),
+	
+	THAMSO_LIETKE("Liệt kê"),
+	THAMSO_XEM("Xem"),
+	THAMSO_THEM("Thêm mới"),
+	THAMSO_SUA("Chỉnh sửa"),
+	THAMSO_XOA("Xoá"),
+	
+	THOIHAN_LIETKE("Liệt kê"),
+	THOIHAN_XEM("Xem"),
+	THOIHAN_THEM("Thêm mới"),
+	THOIHAN_SUA("Chỉnh sửa"),
+	THOIHAN_XOA("Xoá"),
 
-	DON_LIETKE("Liệt kê"),
-	DON_XEM("Xem"),
-	DON_THEM("Thêm mới"),
-	DON_SUA("Chỉnh sửa"),
-	DON_XOA("Xoá"),
+//	DON_LIETKE("Liệt kê"),
+//	DON_XEM("Xem"),
+//	DON_THEM("Thêm mới"),
+//	DON_SUA("Chỉnh sửa"),
+//	DON_XOA("Xoá"),
 	
 	SOTIEPCONGDAN_LIETKE("Liệt kê"),
 	SOTIEPCONGDAN_XEM("Xem"),
@@ -115,18 +127,14 @@ public enum QuyenEnum {
 	XULYDON_THEM("Thêm mới"),
 	XULYDON_SUA("Chỉnh sửa"),
 	XULYDON_XOA("Xoá"),
+	XULYDON_DINHCHI_RUTDON("Đình chỉ/Rút đơn"),
 
-	THAMSO_LIETKE("Liệt kê"),
-	THAMSO_XEM("Xem"),
-	THAMSO_THEM("Thêm mới"),
-	THAMSO_SUA("Chỉnh sửa"),
-	THAMSO_XOA("Xoá"),
-	
-	THOIHAN_LIETKE("Liệt kê"),
-	THOIHAN_XEM("Xem"),
-	THOIHAN_THEM("Thêm mới"),
-	THOIHAN_SUA("Chỉnh sửa"),
-	THOIHAN_XOA("Xoá");
+	GIAIQUYETDON_LIETKE("Liệt kê"),
+	GIAIQUYETDON_XEM("Xem"),
+	GIAIQUYETDON_THEM("Thêm mới"),
+	GIAIQUYETDON_SUA("Chỉnh sửa"),
+	GIAIQUYETDON_XOA("Xoá"),
+	GIAIQUYETDON_DINHCHI("Đình chỉ/Rút đơn");
 
 	QuyenEnum(String text) {
 		this.text = text;
