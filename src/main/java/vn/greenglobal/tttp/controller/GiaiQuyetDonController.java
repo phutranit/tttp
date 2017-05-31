@@ -218,12 +218,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-//		SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
-//		if (soTiepCongDan == null) {
-//			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-//		}
-//
-//		Utils.save(repo, soTiepCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		// Đang đợi confirm của khách hàng
+
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
