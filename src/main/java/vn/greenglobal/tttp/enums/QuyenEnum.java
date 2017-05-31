@@ -8,12 +8,6 @@ public enum QuyenEnum {
 	THAMQUYENGIAIQUYET_SUA("Chỉnh sửa"),
 	THAMQUYENGIAIQUYET_XOA("Xoá"),
 	
-	VUVIEC_LIETKE("Liệt kê"),
-	VUVIEC_XEM("Xem"),
-	VUVIEC_THEM("Thêm mới"),
-	VUVIEC_SUA("Chỉnh sửa"),
-	VUVIEC_XOA("Xoá"),
-	
 	LOAITAILIEU_LIETKE("Liệt kê"),
 	LOAITAILIEU_XEM("Xem"),
 	LOAITAILIEU_THEM("Thêm mới"),
@@ -97,12 +91,24 @@ public enum QuyenEnum {
 	VAITRO_THEM("Thêm mới"),
 	VAITRO_SUA("Chỉnh sửa"),
 	VAITRO_XOA("Xoá"),
+	
+	THAMSO_LIETKE("Liệt kê"),
+	THAMSO_XEM("Xem"),
+	THAMSO_THEM("Thêm mới"),
+	THAMSO_SUA("Chỉnh sửa"),
+	THAMSO_XOA("Xoá"),
+	
+	THOIHAN_LIETKE("Liệt kê"),
+	THOIHAN_XEM("Xem"),
+	THOIHAN_THEM("Thêm mới"),
+	THOIHAN_SUA("Chỉnh sửa"),
+	THOIHAN_XOA("Xoá"),
 
-	DON_LIETKE("Liệt kê"),
-	DON_XEM("Xem"),
-	DON_THEM("Thêm mới"),
-	DON_SUA("Chỉnh sửa"),
-	DON_XOA("Xoá"),
+//	DON_LIETKE("Liệt kê"),
+//	DON_XEM("Xem"),
+//	DON_THEM("Thêm mới"),
+//	DON_SUA("Chỉnh sửa"),
+//	DON_XOA("Xoá"),
 	
 	SOTIEPCONGDAN_LIETKE("Liệt kê"),
 	SOTIEPCONGDAN_XEM("Xem"),
@@ -115,18 +121,26 @@ public enum QuyenEnum {
 	XULYDON_THEM("Thêm mới"),
 	XULYDON_SUA("Chỉnh sửa"),
 	XULYDON_XOA("Xoá"),
+	XULYDON_DINHCHI_RUTDON("Đình chỉ/Rút đơn"),
 
-	THAMSO_LIETKE("Liệt kê"),
-	THAMSO_XEM("Xem"),
-	THAMSO_THEM("Thêm mới"),
-	THAMSO_SUA("Chỉnh sửa"),
-	THAMSO_XOA("Xoá"),
+	GIAIQUYETDON_LIETKE("Liệt kê"),
+	GIAIQUYETDON_XEM("Xem"),
+	GIAIQUYETDON_THEM("Thêm mới"),
+	GIAIQUYETDON_SUA("Chỉnh sửa"),
+	GIAIQUYETDON_XOA("Xoá"),
+	GIAIQUYETDON_DINHCHI("Đình chỉ/Rút đơn"),
 	
-	THOIHAN_LIETKE("Liệt kê"),
-	THOIHAN_XEM("Xem"),
-	THOIHAN_THEM("Thêm mới"),
-	THOIHAN_SUA("Chỉnh sửa"),
-	THOIHAN_XOA("Xoá");
+	THANHTRA_LIETKE("Liệt kê"),
+	THANHTRA_XEM("Xem"),
+	THANHTRA_THEM("Thêm mới"),
+	THANHTRA_SUA("Chỉnh sửa"),
+	THANHTRA_XOA("Xoá"),
+	
+	TONGHOPBAOCAO_LIETKE("Liệt kê"),
+	TONGHOPBAOCAO_THONGKE("Thống kê"),
+	
+	THEODOIGIAMSAT_LIETKE("Liệt kê"),
+	THEODOIGIAMSAT_THONGKE("Thống kê");
 
 	QuyenEnum(String text) {
 		this.text = text;
