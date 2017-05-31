@@ -8,12 +8,6 @@ public enum QuyenEnum {
 	THAMQUYENGIAIQUYET_SUA("Chỉnh sửa"),
 	THAMQUYENGIAIQUYET_XOA("Xoá"),
 	
-	VUVIEC_LIETKE("Liệt kê"),
-	VUVIEC_XEM("Xem"),
-	VUVIEC_THEM("Thêm mới"),
-	VUVIEC_SUA("Chỉnh sửa"),
-	VUVIEC_XOA("Xoá"),
-	
 	LOAITAILIEU_LIETKE("Liệt kê"),
 	LOAITAILIEU_XEM("Xem"),
 	LOAITAILIEU_THEM("Thêm mới"),
@@ -146,7 +140,7 @@ public enum QuyenEnum {
 	TONGHOPBAOCAO_THONGKE("Thống kê"),
 	
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
-	THEODOIGIAMSAT_THONG_KE("Thống kê");
+	THEODOIGIAMSAT_THONGKE("Thống kê");
 
 	QuyenEnum(String text) {
 		this.text = text;
