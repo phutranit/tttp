@@ -417,16 +417,10 @@ public class DonController extends TttpController<Don> {
 				if(don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
 					xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 					donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-				}
+				} 
+				donMoi.setNgayBatDauXLD(LocalDateTime.now());
 
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
-			}
-			
-			if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
-				donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
-			} else {
-				long hanXuLy = 10;
-				donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), hanXuLy));
 			}
 			
 			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -450,10 +444,8 @@ public class DonController extends TttpController<Don> {
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
 
 			// Xac dinh vai tro cua nguoi dung (Nhieu vai tro cho 1 nguoi)
-			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
-
 			// Thay alias
-			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 
 			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
 			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
@@ -548,11 +540,9 @@ public class DonController extends TttpController<Don> {
 						
 						//set don
 						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
-					} else {
-						long hanXuLy = 10;
-						donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), hanXuLy));
+						//donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
 					}
+					donMoi.setNgayBatDauXLD(LocalDateTime.now());
 					
 					// xuLyDonTiepTheo.setThoiHanXuLy();
 					if (xuLyDonHienTai.isDonChuyen()) {
@@ -689,12 +679,9 @@ public class DonController extends TttpController<Don> {
 				
 				if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
 					don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-					don.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
-				} else {
-					long hanXuLy = 10;
-					if (donOld.getNgayBatDauXLD() != null) {
-						don.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), hanXuLy));
-					}
+				}
+				if (donOld.getNgayBatDauXLD() != null) {
+					don.setNgayBatDauXLD(LocalDateTime.now());
 				}
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				

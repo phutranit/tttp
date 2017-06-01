@@ -209,7 +209,23 @@ public class Utils {
 
 		return ngayKetThuc != null ? ngayKetThuc : null;
 	}
+	
+	public static LocalDateTime convertNumberToLocalDateTimeGoc(LocalDateTime ngayBatDau, Long soNgayXuLy) {
+		long i = 1;
+		LocalDateTime ngayKetThuc = ngayBatDau;
+		if (ngayKetThuc != null && soNgayXuLy != null && soNgayXuLy > 0) {
+			while (i < soNgayXuLy) {
+				ngayKetThuc = ngayKetThuc.plusDays(1);
+				i++;
+			}
+			ngayKetThuc = LocalDateTime.of(
+					LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
+					LocalTime.MAX);
+		}
 
+		return ngayKetThuc != null ? ngayKetThuc : null;
+	}
+	
 	public static Long convertLocalDateTimeToNumber(LocalDateTime tuNgay, LocalDateTime denNgay) {
 		long soNgayXuLy = 0;
 		if(tuNgay != null && denNgay != null) {
