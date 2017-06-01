@@ -163,7 +163,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			if (ProcessTypeEnum.GIAI_QUYET_DON.equals(don.getProcessType())) {
 				GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
-				System.out.println("giaiQuyetDonHienTai: " + giaiQuyetDonHienTai);
 				if (giaiQuyetDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextStateType = nextState.getType();
@@ -202,7 +201,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			} else if (ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(don.getProcessType())){
-				System.out.println("THAM_TRA_XAC_MINH, id: " + thongTinGiaiQuyetDonId);
 				GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
 				if (giaiQuyetDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
