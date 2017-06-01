@@ -5,7 +5,7 @@ public enum ApiErrorEnum {
 	LOAITEPDINHKEM_REQUIRED("Loại tệp đính kèm không được để trống!"),
 	SOQUYETDINH_REQUIRED("Số quyết định không được để trống!"),
 	NGAYQUYETDINH_REQUIRED("Ngày quyết định không được để trống!"),
-	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phòng ban giải quyết không được để trống!"),
+	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phongBanGiaiQuyet không được để trống!"),
 	HOVATEN_REQUIRED("Trường Họ và tên không được để trống!"),
 	NGAYSINH_REQUIRED("Trường ngày sinh không được để trống!"),
 	COQUANQUANLY_REQUIRED("Trường cơ quan quản lý không được để trống!"),
@@ -35,7 +35,7 @@ public enum ApiErrorEnum {
 	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
 	TRANSITION_INVALID("Trạng thái không có trong quy trình!"),
 	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống!"),
-	donViThamTraXacMinh_REQUIRED("Trường donViThamTraXacMinh không được để trống!");
+	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống!");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

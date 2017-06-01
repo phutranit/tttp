@@ -1382,6 +1382,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
+		giaiQuyetDon.setPhongBanGiaiQuyet(don.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
@@ -1756,6 +1757,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		giaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
