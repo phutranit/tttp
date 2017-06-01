@@ -25,4 +25,7 @@ public class ThongTinGiaiQuyetDonService {
 		return base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id));
 	}
 
+	public Predicate predicateFindByDon(Long donId) {
+		return base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
+	}
 }

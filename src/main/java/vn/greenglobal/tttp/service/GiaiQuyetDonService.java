@@ -9,6 +9,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
@@ -20,20 +21,22 @@ public class GiaiQuyetDonService {
 
 	public GiaiQuyetDon predFindCurrent(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
-				.and(QGiaiQuyetDon.giaiQuyetDon.id.eq(id))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
 				.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.eq(laTTXM));
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
 			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
 			Long lichSuId = results.get(0).getId();
+			System.out.println("lichSuId: " + lichSuId);
 			return repo.findOne(lichSuId);
 		}
 		return null;
 	}
 	
-	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro) {
+	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro, CongChuc congChuc) {
 		BooleanExpression predicate = base.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
-		predicate = predicate.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(vaiTro));
+		predicate = predicate.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(vaiTro))
+				.and(QGiaiQuyetDon.giaiQuyetDon.congChuc.coQuanQuanLy.donVi.eq(congChuc.getCoQuanQuanLy().getDonVi()));
 		return predicate;
 	}
 }
