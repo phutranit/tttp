@@ -20,7 +20,7 @@ public class GiaiQuyetDonService {
 
 	public GiaiQuyetDon predFindCurrent(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
-				.and(QGiaiQuyetDon.giaiQuyetDon.id.eq(id))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
 				.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.eq(laTTXM));
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
