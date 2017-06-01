@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,12 +39,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@ManyToOne
 	private State nextState;
 	@ManyToOne
 	private Form nextForm;
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
@@ -55,6 +58,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	
+	@ApiModelProperty(hidden = true)
 	public VaiTroEnum getChucVu() {
 		return chucVu;
 	}
@@ -88,6 +92,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.old = old;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public int getThuTuThucHien() {
 		return thuTuThucHien;
 	}
@@ -96,6 +101,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.thuTuThucHien = thuTuThucHien;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public ThongTinGiaiQuyetDon getThongTinGiaiQuyetDon() {
 		return thongTinGiaiQuyetDon;
 	}
@@ -104,6 +110,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public State getNextState() {
 		return nextState;
 	}
@@ -112,6 +119,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.nextState = nextState;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public CongChuc getCongChuc() {
 		return congChuc;
 	}
@@ -120,6 +128,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.congChuc = congChuc;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 2)
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
 	}
@@ -128,6 +137,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public TinhTrangGiaiQuyetEnum getTinhTrangGiaiQuyet() {
 		return tinhTrangGiaiQuyet;
 	}
@@ -136,6 +146,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	public Form getNextForm() {
 		return nextForm;
 	}

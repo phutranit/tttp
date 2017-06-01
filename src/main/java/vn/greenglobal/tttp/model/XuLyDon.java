@@ -341,6 +341,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.canBoXuLy = canBoXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getCoQuanChuyenDon() {
 		return coQuanChuyenDon;
 	}
@@ -357,6 +358,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.donChuyen = donChuyen;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getPhongBanXuLyChiDinh() {
 		return phongBanXuLyChiDinh;
 	}
@@ -409,6 +411,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.soNgayCuaThoiHanXuLy = soNgayCuaThoiHanXuLy;
 	}
 
+	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getDonViXuLy() {
 		return donViXuLy;
 	}

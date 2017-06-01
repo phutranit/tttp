@@ -33,7 +33,9 @@ public enum ApiErrorEnum {
 	HUONGXULY_REQUIRED("Trường huongXuLy không được để trống!"),
 	HUONGGIAIQUYET_REQUIRED("Trường huongGiaiQuyetTCDLanhDao không được để trống!"),
 	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
-	TRANSITION_INVALID("Trạng thái không có trong quy trình!");
+	TRANSITION_INVALID("Trạng thái không có trong quy trình!"),
+	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống!"),
+	donViThamTraXacMinh_REQUIRED("Trường donViThamTraXacMinh không được để trống!");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

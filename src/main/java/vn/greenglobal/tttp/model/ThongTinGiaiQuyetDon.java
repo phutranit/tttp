@@ -290,6 +290,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.datDaTraCongDan = datDaTraCongDan;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CongChuc getCanBoGiaiQuyet() {
 		return canBoGiaiQuyet;
 	}
@@ -298,6 +299,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.canBoGiaiQuyet = canBoGiaiQuyet;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CongChuc getTruongDoanTTXM() {
 		return truongDoanTTXM;
 	}
@@ -306,6 +308,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.truongDoanTTXM = truongDoanTTXM;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CongChuc getCanBoThamTraXacMinh() {
 		return canBoThamTraXacMinh;
 	}
@@ -314,6 +317,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.canBoThamTraXacMinh = canBoThamTraXacMinh;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getCoQuanDieuTra() {
 		return coQuanDieuTra;
 	}
@@ -322,6 +326,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.coQuanDieuTra = coQuanDieuTra;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getCoQuanTheoDoi() {
 		return coQuanTheoDoi;
 	}
@@ -334,6 +339,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return donViThamTraXacMinh;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 2)
 	public Don getDon() {
 		return don;
 	}

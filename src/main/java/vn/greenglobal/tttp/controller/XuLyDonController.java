@@ -57,6 +57,7 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
@@ -93,6 +94,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@Autowired
 	private TransitionService transitionService;
+	
+	@Autowired
+	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
 
 	@Autowired
 	private ProcessRepository repoProcess;
@@ -1367,9 +1371,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(donRepo, don, congChucId);
 		
 		//Quy trinh Giai Quyet Don
-		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
-		thongTinGiaiQuyetDon.setDon(don);
-		Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonRepo.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(xuLyDonHienTai.getDon().getId()));
+		if (thongTinGiaiQuyetDon == null) {
+			thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
+			thongTinGiaiQuyetDon.setDon(don);
+			Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
+		}
 		
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
@@ -1738,9 +1745,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(donRepo, don, congChucId);
 		
 		//Quy trinh Giai Quyet Don
-		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
-		thongTinGiaiQuyetDon.setDon(don);
-		Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonRepo.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(xuLyDonHienTai.getDon().getId()));
+		if (thongTinGiaiQuyetDon == null) {
+			thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
+			thongTinGiaiQuyetDon.setDon(don);
+			Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
+		}
 		
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
