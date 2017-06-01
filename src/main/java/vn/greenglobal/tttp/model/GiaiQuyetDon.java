@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,12 +39,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@ManyToOne
 	private State nextState;
 	@ManyToOne
 	private Form nextForm;
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private CongChuc congChuc;	
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
