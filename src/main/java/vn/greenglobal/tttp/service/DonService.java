@@ -229,7 +229,6 @@ public class DonService {
 		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);
 		donCollections = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
-		System.out.println("donCollections: " + donCollections.size());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		return predAll;
 	}
