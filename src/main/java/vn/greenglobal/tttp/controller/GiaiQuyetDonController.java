@@ -108,12 +108,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
 			if (giaiQuyetDon.getThongTinGiaiQuyetDon() == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.name(),
-						ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.name(), ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.getText());
 			}
 			if (giaiQuyetDon.getNextState() == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEXT_STATE_REQUIRED.name(),
-						ApiErrorEnum.NEXT_STATE_REQUIRED.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEXT_STATE_REQUIRED.name(), ApiErrorEnum.NEXT_STATE_REQUIRED.getText());
 			}
 			State nextState = stateRepo.findOne(stateService.predicateFindOne(giaiQuyetDon.getNextState().getId()));
 			Long thongTinGiaiQuyetDonId = giaiQuyetDon.getThongTinGiaiQuyetDon().getId();
@@ -122,19 +120,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			Don don = thongTinGiaiQuyetDon.getDon();
 			
 			if (don == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
-						ApiErrorEnum.DON_REQUIRED.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(), ApiErrorEnum.DON_REQUIRED.getText());
 			}
 			
 			if (don.getProcessType() == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
-						ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
 			}
 			
-			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-					.toString();
-			Long congChucId = new Long(
-					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 
@@ -142,12 +136,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					: congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 
 			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
-			Process process = processRepo.findOne(
-					processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
+			Process process = processRepo.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
 
 			if (process == null && isOwner) {
-				process = processRepo.findOne(
-						processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, false, don.getProcessType()));
+				process = processRepo.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, false, don.getProcessType()));
 			}
 
 			if (process == null) {
@@ -200,8 +192,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						return Utils.doSave(repo, giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
 				} 
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			} else if (ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(don.getProcessType())){
 				GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
 				if (giaiQuyetDonHienTai != null) {
@@ -257,14 +248,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						return Utils.doSave(repo, giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
 				}
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			
 		}
 		
-		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 	
 	private void disableGiaiQuyetDonCu(VaiTroEnum vaiTro, Long donId, CongChuc congChuc) {
