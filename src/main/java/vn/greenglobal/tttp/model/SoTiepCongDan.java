@@ -93,6 +93,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	private String yKienXuLy = "";
 	private String ghiChuXuLy = "";
+	@Transient
+	private boolean chuyenDonViKiemTra;
+	private boolean daGiaoKiemTra;
+	private boolean daCoBaoCaoKetQua;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
@@ -118,6 +122,33 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setCoQuanToChucTiepDans(List<CoQuanToChucTiepDan> coQuanToChucTiepDans) {
 		this.coQuanToChucTiepDans = coQuanToChucTiepDans;
+	}
+	
+	
+	public boolean isChuyenDonViKiemTra() {
+		return chuyenDonViKiemTra;
+	}
+
+	public void setChuyenDonViKiemTra(boolean chuyenDonViKiemTra) {
+		this.chuyenDonViKiemTra = chuyenDonViKiemTra;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public boolean isDaGiaoKiemTra() {
+		return daGiaoKiemTra;
+	}
+
+	public void setDaGiaoKiemTra(boolean daGiaoKiemTra) {
+		this.daGiaoKiemTra = daGiaoKiemTra;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public boolean isDaCoBaoCaoKetQua() {
+		return daCoBaoCaoKetQua;
+	}
+
+	public void setDaCoBaoCaoKetQua(boolean daCoBaoCaoKetQua) {
+		this.daCoBaoCaoKetQua = daCoBaoCaoKetQua;
 	}
 
 	@ApiModelProperty(example = "{}")

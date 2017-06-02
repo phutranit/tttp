@@ -949,7 +949,7 @@ public class Don extends Model<Don> {
 
 	@ApiModelProperty(hidden = true)
 	public String getNguonDonText() {
-		nguonDonText = nguonTiepNhanDon.getText();
+		nguonDonText = nguonTiepNhanDon != null ? nguonTiepNhanDon.getText() : "";
 
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
@@ -1005,7 +1005,7 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getPhanLoaiDonSoNguoi() {
-		String nd = getLoaiDon().getText();
+		String nd = getLoaiDon() != null ? getLoaiDon().getText() : "";
 		Long hanXuLy = getThoiHanXuLyDon();
 		String out = "";
 		if (nd != null && !nd.isEmpty()) {

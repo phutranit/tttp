@@ -201,8 +201,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				} 
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
-			} else if (ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(don.getProcessType())){
+			} else if (ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(don.getProcessType()) 
+					|| ProcessTypeEnum.TIEP_DAN_LANH_DAO.equals(don.getProcessType()) ){
 				GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
+				System.out.println("don.getProcessType(): " + don.getProcessType() + ";thongTinGiaiQuyetDonId: " + thongTinGiaiQuyetDonId);
 				if (giaiQuyetDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextStateType = nextState.getType();
