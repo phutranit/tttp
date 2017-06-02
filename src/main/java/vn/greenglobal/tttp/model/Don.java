@@ -95,14 +95,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime thoiHanXuLyXLD;
 	private LocalDateTime ngayBatDauXLD;
 	private LocalDateTime ngayKetThucXLD;
-	private LocalDateTime ngayBatDauGiaiQuyet;
-	private LocalDateTime ngayketThucGiaiQuyet;
-	private LocalDateTime ngayHetHanGiaiQuyet;
-	private LocalDateTime ngayBatDauTTXM;
-	private LocalDateTime ngayketThucTTXM;
-	private LocalDateTime ngayHetHanTTXM;
-	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
-
+	
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
@@ -1441,62 +1434,6 @@ public class Don extends Model<Don> {
 		return null;
 	}
 
-	public LocalDateTime getNgayBatDauGiaiQuyet() {
-		return ngayBatDauGiaiQuyet;
-	}
-
-	public void setNgayBatDauGiaiQuyet(LocalDateTime ngayBatDauGiaiQuyet) {
-		this.ngayBatDauGiaiQuyet = ngayBatDauGiaiQuyet;
-	}
-
-	public LocalDateTime getNgayketThucGiaiQuyet() {
-		return ngayketThucGiaiQuyet;
-	}
-
-	public void setNgayketThucGiaiQuyet(LocalDateTime ngayketThucGiaiQuyet) {
-		this.ngayketThucGiaiQuyet = ngayketThucGiaiQuyet;
-	}
-
-	public LocalDateTime getNgayHetHanGiaiQuyet() {
-		return ngayHetHanGiaiQuyet;
-	}
-
-	public void setNgayHetHanGiaiQuyet(LocalDateTime ngayHetHanGiaiQuyet) {
-		this.ngayHetHanGiaiQuyet = ngayHetHanGiaiQuyet;
-	}
-
-	public LocalDateTime getNgayBatDauTTXM() {
-		return ngayBatDauTTXM;
-	}
-
-	public void setNgayBatDauTTXM(LocalDateTime ngayBatDauTTXM) {
-		this.ngayBatDauTTXM = ngayBatDauTTXM;
-	}
-
-	public LocalDateTime getNgayketThucTTXM() {
-		return ngayketThucTTXM;
-	}
-
-	public void setNgayketThucTTXM(LocalDateTime ngayketThucTTXM) {
-		this.ngayketThucTTXM = ngayketThucTTXM;
-	}
-
-	public LocalDateTime getNgayHetHanTTXM() {
-		return ngayHetHanTTXM;
-	}
-
-	public void setNgayHetHanTTXM(LocalDateTime ngayHetHanTTXM) {
-		this.ngayHetHanTTXM = ngayHetHanTTXM;
-	}
-
-	public LocalDateTime getNgayHetHanSauKhiGiaHanTTXM() {
-		return ngayHetHanSauKhiGiaHanTTXM;
-	}
-
-	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
-		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
-	}
-	
 	public boolean isLanhDaoDuyet() {
 		return lanhDaoDuyet;
 	}
