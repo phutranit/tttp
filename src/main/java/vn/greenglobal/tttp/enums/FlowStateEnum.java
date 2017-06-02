@@ -15,6 +15,7 @@ public enum FlowStateEnum {
 	CAN_BO_NHAN_KET_QUA_TTXM("Cán bộ nhận kết quả TTXM"),
 	CAN_BO_CHUYEN_VAN_THU_KET_QUA_TTXM("Cán bộ chuyển văn thư kết quả TTXM"),
 	CAN_BO_GIAI_QUYET_DON("Cán bộ giải quyết đơn"),
+	CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET("Cán bộ chuyển về đơn vị giải quyết"),
 	KET_THUC("Kết thúc");
 
 	FlowStateEnum(String text) {
