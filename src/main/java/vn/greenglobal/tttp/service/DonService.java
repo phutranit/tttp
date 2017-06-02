@@ -225,7 +225,6 @@ public class DonService {
 			}
 		}
 
-		//TODO Toi uu lai tim kiem
 		List<Don> donCollections = new ArrayList<Don>();
 		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);

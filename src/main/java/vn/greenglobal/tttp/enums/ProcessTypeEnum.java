@@ -4,6 +4,7 @@ public enum ProcessTypeEnum {
 	
 	TIEP_CONG_DAN("Xử lý đơn"),
 	XU_LY_DON("Xử lý đơn"),
+	TIEP_DAN_LANH_DAO("Tiếp dân lãnh đạo"),
 	GIAI_QUYET_DON("Giải quyết đơn"),
 	THAM_TRA_XAC_MINH("Thẩm tra xác minh"),
 	GIAI_QUYET_KHIEU_NAI("Giải quyết khiếu nại"),
