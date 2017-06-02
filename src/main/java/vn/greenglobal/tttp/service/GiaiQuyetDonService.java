@@ -27,7 +27,6 @@ public class GiaiQuyetDonService {
 			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
 			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
 			Long lichSuId = results.get(0).getId();
-			System.out.println("lichSuId: " + lichSuId);
 			return repo.findOne(lichSuId);
 		}
 		return null;

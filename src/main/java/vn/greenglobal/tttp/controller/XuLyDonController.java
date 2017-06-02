@@ -236,6 +236,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId, note);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
+						if (xuLyDon.getPhongBanGiaiQuyet() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
+									ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = chuyenVienChuyenChoVanThuDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, note);
 						return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
@@ -305,6 +309,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId, note);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
+						if (xuLyDon.getPhongBanGiaiQuyet() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
+									ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+						}
 						xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, note);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
@@ -1382,7 +1390,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
-		giaiQuyetDon.setPhongBanGiaiQuyet(don.getPhongBanGiaiQuyet());
+		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
