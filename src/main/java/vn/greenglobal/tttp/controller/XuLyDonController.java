@@ -325,7 +325,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
-				} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState)
+				} else if ((FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState) || FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(currentState))
 						&& FlowStateEnum.KET_THUC.equals(nextState)) {
 					// Xu ly don khong co van thu
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
