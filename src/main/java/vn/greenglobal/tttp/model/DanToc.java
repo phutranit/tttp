@@ -28,8 +28,6 @@ public class DanToc extends Model<DanToc> {
 	private String tenKhac = "";
 	private String moTa = "";
 
-	private boolean thieuSo;
-
 	@ApiModelProperty(position = 2)
 	public String getMa() {
 		return ma;
@@ -55,15 +53,6 @@ public class DanToc extends Model<DanToc> {
 
 	public void setTenKhac(String tenKhac) {
 		this.tenKhac = tenKhac;
-	}
-
-	@ApiModelProperty(position = 4)
-	public boolean isThieuSo() {
-		return thieuSo;
-	}
-
-	public void setThieuSo(boolean thieuSo) {
-		this.thieuSo = thieuSo;
 	}
 
 	@ApiModelProperty(position = 5)

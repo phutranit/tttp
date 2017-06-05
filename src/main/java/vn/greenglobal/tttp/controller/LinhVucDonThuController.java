@@ -66,6 +66,18 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/theoLoaiDon")
+	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListLinhVucDonThuTHeoLoaiDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) String cha,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, PersistentEntityResourceAssembler eass) {
+
+		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/linhVucDonThus")
 	@ApiOperation(value = "Thêm mới Lĩnh Vực Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,7 +97,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -135,7 +147,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		}
 
 		return Utils.doSave(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -162,7 +174,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		}
 
 		Utils.save(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

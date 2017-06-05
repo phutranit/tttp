@@ -98,8 +98,8 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO-TRUC_THUOC_TINH"));
 		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null) {
 			page = repo.findAll(
-					donViHanhChinhService.predicateFindCapTinhThanhPho(new Long(thamSoOne.getGiaTri().toString()),
-							new Long(thamSoTwo.getGiaTri().toString()), new Long(thamSoThree.getGiaTri().toString())),
+					donViHanhChinhService.predicateFindCapTinhThanhPho(Long.valueOf(thamSoOne.getGiaTri().toString()),
+							Long.valueOf(thamSoTwo.getGiaTri().toString()), Long.valueOf(thamSoThree.getGiaTri().toString())),
 					pageable);
 		}
 
@@ -119,7 +119,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_HUYEN"));
 		if (thamSoOne != null && thamSoOne != null) {
 			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
-					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoOne.getGiaTri().toString()), Long.valueOf(thamSoTwo.getGiaTri().toString())), pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -138,7 +138,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_XA"));
 		if (thamSoOne != null && thamSoOne != null) {
 			page = repo.findAll(donViHanhChinhService.predicateFindCapQuanHuyen(cha,
-					new Long(thamSoOne.getGiaTri().toString()), new Long(thamSoTwo.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoOne.getGiaTri().toString()), Long.valueOf(thamSoTwo.getGiaTri().toString())), pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -158,7 +158,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		}
 
 		return Utils.doSave(repo, donViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -202,7 +202,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		}
 
 		return Utils.doSave(repo, donViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -230,7 +230,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		}
 
 		Utils.save(repo, donViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

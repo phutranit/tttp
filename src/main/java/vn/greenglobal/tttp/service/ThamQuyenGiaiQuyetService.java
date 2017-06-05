@@ -22,15 +22,11 @@ public class ThamQuyenGiaiQuyetService {
 
 	BooleanExpression base = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long cha) {
+	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.containsIgnoreCase(tuKhoa)
 					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa)));
-		}
-
-		if (cha != null && cha > 0) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(cha));
 		}
 
 		return predAll;
@@ -73,15 +69,12 @@ public class ThamQuyenGiaiQuyetService {
 
 	public boolean checkUsedData(ThamQuyenGiaiQuyetRepository repo, DonRepository donRepository,
 			XuLyDonRepository xuLyDonRepository, Long id) {
-		List<ThamQuyenGiaiQuyet> thamQuyenGiaiQuyetList = (List<ThamQuyenGiaiQuyet>) repo
-				.findAll(base.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.cha.id.eq(id)));
 		List<Don> donList = (List<Don>) donRepository
 				.findAll(QDon.don.daXoa.eq(false).and(QDon.don.thamQuyenGiaiQuyet.id.eq(id)));
 		List<XuLyDon> xuLyDonList = (List<XuLyDon>) xuLyDonRepository
 				.findAll(QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.thamQuyenGiaiQuyet.id.eq(id)));
 
-		if ((thamQuyenGiaiQuyetList != null && thamQuyenGiaiQuyetList.size() > 0)
-				|| (donList != null && donList.size() > 0) || (xuLyDonList != null && xuLyDonList.size() > 0)) {
+		if ((donList != null && donList.size() > 0) || (xuLyDonList != null && xuLyDonList.size() > 0)) {
 			return true;
 		}
 

@@ -88,7 +88,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, loaiTaiLieu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -136,7 +136,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		}
 
 		return Utils.doSave(repo, loaiTaiLieu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -163,7 +163,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		}
 
 		Utils.save(repo, loaiTaiLieu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

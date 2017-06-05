@@ -65,6 +65,17 @@ public class QuocTichController extends TttpController<QuocTich> {
 		Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/quocTichs/combobox")
+	@ApiOperation(value = "Lấy danh sách Quốc Tịch", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListQuocTich(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/quocTichs")
 	@ApiOperation(value = "Thêm mới Quốc Tịch", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,7 +95,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, quocTich,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -132,7 +143,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 		}
 
 		return Utils.doSave(repo, quocTich,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -159,7 +170,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 		}
 
 		Utils.save(repo, quocTich,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

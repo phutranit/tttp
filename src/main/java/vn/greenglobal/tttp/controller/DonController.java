@@ -158,7 +158,7 @@ public class DonController extends TttpController<Don> {
 					(StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai) && phongBanXuLyXLD == 0)) {
 				donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			} else {
-				phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+				phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			}
 			
 			Page<Don> pageData = repo.findAll(
@@ -194,7 +194,7 @@ public class DonController extends TttpController<Don> {
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 		if (nguoiDung != null) {
 			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
@@ -208,7 +208,7 @@ public class DonController extends TttpController<Don> {
 	}
 	
 	public Process getProcess(String authorization, Long nguoiTaoId, String processType) {
-		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 		CongChuc congChuc = congChucRepo.findOne(congChucId);
 		boolean isOwner = congChucId.longValue() == nguoiTaoId.longValue() ? true : false;
@@ -285,7 +285,7 @@ public class DonController extends TttpController<Don> {
 			Medial_Form_State media = new Medial_Form_State();
 			State currentState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 			Long currentStateId2 = (currentStateId != null && currentStateId.longValue() > 0) ? currentStateId : currentState.getId();
-			Long nguoiTaoId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long nguoiTaoId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			if (donId != null && donId.longValue() > 0) {
 				Don don = repo.findOne(donService.predicateFindOne(donId));
 				if (don == null) {
@@ -357,9 +357,9 @@ public class DonController extends TttpController<Don> {
 		
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
-			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
-			Long donViId = new Long(commonProfile.getAttribute("donViId").toString());
+			Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 			
 			if (don.isBoSungThongTinBiKhieuTo()) {
 				if (don.getLoaiNguoiBiKhieuTo() == null) {
@@ -445,9 +445,9 @@ public class DonController extends TttpController<Don> {
 			// Thay alias
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 
-			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
-			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
-			Long donViId = new Long(commonProfile.getAttribute("donViId").toString());
+			Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 			
 			//QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 			String note = vaiTroNguoiDungHienTai + " " + QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText().toLowerCase() + " ";
@@ -595,9 +595,9 @@ public class DonController extends TttpController<Don> {
 
 		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-			Long congChucId = new Long(commonProfile.getAttribute("congChucId").toString());
-			Long coQuanQuanLyId = new Long(commonProfile.getAttribute("coQuanQuanLyId").toString());
-			Long donViId = new Long(commonProfile.getAttribute("donViId").toString());
+			Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 			
 			don.setId(id);
 
@@ -703,7 +703,7 @@ public class DonController extends TttpController<Don> {
 			}
 
 			return Utils.doSave(repo, don,
-					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -723,7 +723,7 @@ public class DonController extends TttpController<Don> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			Utils.save(repo, don,
-					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),

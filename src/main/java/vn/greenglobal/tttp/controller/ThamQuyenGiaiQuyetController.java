@@ -58,15 +58,14 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 	@RequestMapping(method = RequestMethod.GET, value = "/thamQuyenGiaiQuyets")
 	@ApiOperation(value = "Lấy danh sách Thẩm Quyền Giải Quyết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa, cha), pageable);
+		Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
@@ -89,7 +88,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, thamQuyenGiaiQuyet,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -139,7 +138,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		}
 
 		return Utils.doSave(repo, thamQuyenGiaiQuyet,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -166,7 +165,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		}
 
 		Utils.save(repo, thamQuyenGiaiQuyet,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

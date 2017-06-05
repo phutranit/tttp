@@ -129,7 +129,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan,
 			PersistentEntityResourceAssembler eass) {
-		Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -171,18 +171,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		Long congChucId = new Long(
-				profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		if (soTiepCongDan != null && !soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
-				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan,congChucId);
+				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, congChucId);
 			}
 		}
 		Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			don.setThanhLapTiepDanGapLanhDao(true);
 		}
-		System.out.println("post SoTiepCaongDan");
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
@@ -315,8 +313,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 		}
 
-		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass,
-				HttpStatus.CREATED);
+		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
 			Utils.save(repoDon, don, congChucId);
 		}
@@ -349,11 +346,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			int tongSoLuotTCD = don.getTongSoLuotTCD();
 			don.setTongSoLuotTCD(tongSoLuotTCD - 1);
 			Utils.save(repoDon, don,
-					new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}		
 		soTiepCongDan.setDaXoa(true);
 		Utils.save(repo, soTiepCongDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -390,7 +387,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 
 		Utils.save(repo, soTiepCongDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

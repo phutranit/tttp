@@ -84,7 +84,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 		}
 
 		return Utils.doSave(repo, capDonViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -132,7 +132,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 		}
 
 		return Utils.doSave(repo, capDonViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -159,7 +159,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 		}
 
 		Utils.save(repo, capDonViHanhChinh,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

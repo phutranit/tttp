@@ -80,7 +80,7 @@ public class ThoiHanController extends TttpController<ThoiHan> {
 					ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, thoiHan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -123,7 +123,7 @@ public class ThoiHanController extends TttpController<ThoiHan> {
 		}
 
 		return Utils.doSave(repo, thoiHan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -145,7 +145,7 @@ public class ThoiHanController extends TttpController<ThoiHan> {
 		}
 
 		Utils.save(repo, thoiHan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

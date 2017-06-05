@@ -72,13 +72,13 @@ public class AuthController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(
-			@RequestHeader(value = "Username", required = true) String username,
+			@RequestHeader(value = "Email", required = true) String username,
 			@RequestHeader(value = "Password", required = true) String password) {
 		Map<String, Object> result = new HashMap<>();
 		NguoiDung user;
 
 		if (username != null && !username.isEmpty()) {
-			user = nguoiDungRepository.findByTenDangNhap(username);
+			user = nguoiDungRepository.findByEmail(username);
 			if (user != null) {
 				if (user.checkPassword(password)) {
 					return returnUser(result, user);
@@ -167,7 +167,7 @@ public class AuthController {
 		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 
 		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addAttribute("username", user.getTenDangNhap());
+		commonProfile.addAttribute("email", user.getEmail());
 
 		if (user != null) {
 			commonProfile.setId(user.getId());
@@ -177,18 +177,21 @@ public class AuthController {
 				commonProfile.addAttribute("congChucId", congChuc.getId());
 				commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 				commonProfile.addAttribute("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
-				commonProfile.addAttribute("loaiVaiTro",
-						user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
+				commonProfile.addAttribute("loaiVaiTro", user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
+				commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
 
 				result.put("congChucId", congChuc.getId());
 				result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
-				result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
+				result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
 				result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
+				result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
+				result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
+				
 			}
 
 			String token = generator.generate(commonProfile);
 			result.put("token", token);
-			result.put("username", user.getTenDangNhap());
+			result.put("email", user.getEmail());
 			result.put("userId", user.getId());
 			result.put("roles", user.getVaiTros());
 			result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());

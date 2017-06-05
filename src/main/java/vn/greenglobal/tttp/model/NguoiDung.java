@@ -46,10 +46,9 @@ public class NguoiDung extends Model<NguoiDung> {
 	private static final long serialVersionUID = 6979954418350232111L;
 
 	@NotBlank
-	private String tenDangNhap = "";
+	private String email = "";
 	@NotBlank
 	private String matKhau = "";
-	private String hinhDaiDien = "";
 	private String salkey = "";
 
 	@NotNull
@@ -74,27 +73,27 @@ public class NguoiDung extends Model<NguoiDung> {
 	public NguoiDung() {
 	}
 
-	public NguoiDung(String tenDangNhap, String matKhau, boolean active) {
+	public NguoiDung(String email, String matKhau, boolean active) {
 		super();
-		this.tenDangNhap = tenDangNhap;
+		this.email = email;
 		this.matKhau = matKhau;
 		this.active = active;
 	}
 
-	public NguoiDung(String tenDangNhap, String matKhau, boolean active, Set<VaiTro> vaiTros) {
+	public NguoiDung(String email, String matKhau, boolean active, Set<VaiTro> vaiTros) {
 		super();
-		this.tenDangNhap = tenDangNhap;
+		this.email = email;
 		this.matKhau = matKhau;
 		this.active = active;
 		this.vaiTros = vaiTros;
 	}
 
-	public String getTenDangNhap() {
-		return tenDangNhap;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setTenDangNhap(String tenDangNhap) {
-		this.tenDangNhap = tenDangNhap;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getMatKhau() {
@@ -103,14 +102,6 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	public void setMatKhau(String matKhau) {
 		this.matKhau = matKhau;
-	}
-
-	public String getHinhDaiDien() {
-		return hinhDaiDien;
-	}
-
-	public void setHinhDaiDien(String hinhDaiDien) {
-		this.hinhDaiDien = hinhDaiDien;
 	}
 
 	@ApiModelProperty(hidden = true)

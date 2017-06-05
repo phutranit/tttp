@@ -277,6 +277,28 @@ public class DonService {
 		}
 		return "001";
 	}
+	
+	public String getMaDon(DonRepository repo, Long donId) {
+		String maDon = Utils.getMaDon();
+		boolean flagTonTai = true;
+		while (flagTonTai) {
+			flagTonTai = isMaDonExists(repo, donId, maDon);
+			if (flagTonTai) {
+				maDon = Utils.getMaDon();
+			}
+		}
+		return maDon;
+	}
+	
+	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon) {
+		if (donId != null && donId > 0) {
+			Predicate predicate = base
+					.and(QDon.don.id.ne(donId))
+					.and(QDon.don.ma.eq(maDon));
+			return repo.exists(predicate);
+		}
+		return false;
+	}
 
 	public boolean isExists(DonRepository repo, Long id) {
 		if (id != null && id > 0) {

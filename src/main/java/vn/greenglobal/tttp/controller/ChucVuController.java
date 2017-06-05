@@ -83,7 +83,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 		}
 
 		return Utils.doSave(repo, chucVu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -130,7 +130,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 		}
 
 		return Utils.doSave(repo, chucVu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -157,7 +157,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 		}
 
 		Utils.save(repo, chucVu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

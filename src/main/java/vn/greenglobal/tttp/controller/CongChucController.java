@@ -83,8 +83,8 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-		Long coQuanQuanLyLoginId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long coQuanQuanLyLoginId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -117,7 +117,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		CongChuc congChuc = repo.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		CongChuc congChuc = repo.findOne(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
@@ -151,17 +151,17 @@ public class CongChucController extends TttpController<CongChuc> {
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MATKHAU_REQUIRED.name(), ApiErrorEnum.MATKHAU_REQUIRED.getText());
 			}
-			if (congChuc.getNguoiDung().getTenDangNhap() == null | congChuc.getNguoiDung().getTenDangNhap().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_REQUIRED.name(), ApiErrorEnum.TENDANGNHAP_REQUIRED.getText());
+			if (congChuc.getNguoiDung().getEmail() == null | congChuc.getNguoiDung().getEmail().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_REQUIRED.name(), ApiErrorEnum.EMAIL_REQUIRED.getText());
+			}
+			
+			if (congChuc.getNguoiDung().getEmail() != null && !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 			}
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
-		}
-
-		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
@@ -172,12 +172,10 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 		}
 
-		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
-		}
+		
 
-		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap()) && congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
+		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail()) && congChucService.checkExistsData(repo, congChuc)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(), ApiErrorEnum.EMAIL_EXISTS.getText());
 		}
 
 		congChuc.getNguoiDung().setActive(true);
@@ -186,9 +184,9 @@ public class CongChucController extends TttpController<CongChuc> {
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
 				Utils.save(repoNguoiDung, congChuc.getNguoiDung(),
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return Utils.doSave(repo, congChuc,
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 						eass, HttpStatus.CREATED);
 			}
 		});
@@ -242,21 +240,17 @@ public class CongChucController extends TttpController<CongChuc> {
 		 * "Trường tên đăng nhập không được để trống!"); } }
 		 */
 
-		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
+		if (congChuc.getNguoiDung().getEmail() != null && !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 		}
 
-		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap())
+		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
 				&& congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(), ApiErrorEnum.EMAIL_EXISTS.getText());
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
-		}
-
-		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
@@ -282,8 +276,8 @@ public class CongChucController extends TttpController<CongChuc> {
 					congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
 					congChuc.getNguoiDung().setSalkey(nd.getSalkey());
 				}
-				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return Utils.doSave(repo, congChuc, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 			}
 
 		});
@@ -311,7 +305,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		}
 
 		Utils.save(repo, congChuc,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
