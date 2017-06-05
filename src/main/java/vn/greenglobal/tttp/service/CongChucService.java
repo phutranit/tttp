@@ -129,4 +129,14 @@ public class CongChucService {
 			repo.save(congChuc);
 		}
 	}
+	
+	public Predicate predicateFindAllTruongDoanTTXM(Long donViId) {
+		BooleanExpression predAll = base;
+		
+		if (donViId != null && donViId > 0 ) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.donVi.id.eq(donViId));
+		}
+		
+		return predAll;
+	}
 }

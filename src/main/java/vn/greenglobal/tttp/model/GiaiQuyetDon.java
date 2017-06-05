@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -29,15 +28,13 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	 */
 	private static final long serialVersionUID = -626978002365811586L;
 
-	@Lob
+	// @Lob
 	private String yKienGiaiQuyet;
-	@Lob
-	private String ghiChu;
 
 	private int thuTuThucHien;
-	
+
 	private boolean laTTXM;
-	
+
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
@@ -47,7 +44,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private Form nextForm;
 	@ManyToOne
 	@QueryInit("*.*.*")
-	private CongChuc congChuc;	
+	private CongChuc congChuc;
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -57,10 +54,10 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
-	
+
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
-	
+
 	@ApiModelProperty(hidden = true)
 	public VaiTroEnum getChucVu() {
 		return chucVu;
@@ -77,14 +74,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
 		this.yKienGiaiQuyet = yKienGiaiQuyet;
 	}
-	
-	public String getGhiChu() {
-		return ghiChu;
-	}
 
-	public void setGhiChu(String ghiChu) {
-		this.ghiChu = ghiChu;
-	}
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public boolean isOld() {
@@ -112,7 +102,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
 		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
 	}
-	
+
 	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
@@ -139,7 +129,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
 	}
-	
+
 	@ApiModelProperty(example = "{}", position = 2)
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
@@ -157,7 +147,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet) {
 		this.tinhTrangGiaiQuyet = tinhTrangGiaiQuyet;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	public Form getNextForm() {
 		return nextForm;
@@ -166,7 +156,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setNextForm(Form nextForm) {
 		this.nextForm = nextForm;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	public boolean isLaTTXM() {
 		return laTTXM;
@@ -181,7 +171,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public Long getLichSuGiaiQuyetId() {
 		return getId();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getNextFormId() {
@@ -196,7 +186,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("coQuanQuanLyId",
+					getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("congChucId", getNguoiTao().getId());
 			return map;
@@ -209,14 +200,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public Map<String, Object> getNguoiSuaInfo() {
 		if (getNguoiSua() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("coQuanQuanLyId",
+					getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
 			return map;
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
@@ -227,7 +219,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNextStateInfo() {
@@ -241,7 +233,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCongChucInfo() {
@@ -265,7 +257,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCanBoXuLyChiDinhInfo() {
@@ -289,5 +281,5 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
-	
+
 }

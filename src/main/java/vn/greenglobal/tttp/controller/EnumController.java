@@ -20,9 +20,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
+import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
@@ -649,6 +652,77 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", VaiTroEnum.VAN_THU.getText());
 		object.put("giaTri", VaiTroEnum.VAN_THU.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ketLuanNoiDungKhieuNais")
+	@ApiOperation(value = "Lấy danh sách kết luận nội dung khiếu nại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getKetLuanNoiDungKhieuNais(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", KetLuanNoiDungKhieuNaiEnum.DUNG_TOAN_BO.getText());
+		object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.DUNG_TOAN_BO.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetLuanNoiDungKhieuNaiEnum.SAI_TOAN_BO.getText());
+		object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.SAI_TOAN_BO.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.getText());
+		object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucTheoDois")
+	@ApiOperation(value = "Lấy danh sách hình thức theo dõi", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getHinhThucTheoDois(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", HinhThucTheoDoiEnum.TU_THEO_DOI.getText());
+		object.put("giaTri", HinhThucTheoDoiEnum.TU_THEO_DOI.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", HinhThucTheoDoiEnum.GIAO_CO_QUAN_KHAC_THEO_DOI.getText());
+		object.put("giaTri", HinhThucTheoDoiEnum.GIAO_CO_QUAN_KHAC_THEO_DOI.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaThucHiens")
+	@ApiOperation(value = "Lấy danh sách kết quả thực hiện", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getKetQuaThucHiens(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.getText());
+		object.put("giaTri", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaThucHienTheoDoiEnum.CHUA_THUC_HIEN.getText());
+		object.put("giaTri", KetQuaThucHienTheoDoiEnum.CHUA_THUC_HIEN.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
