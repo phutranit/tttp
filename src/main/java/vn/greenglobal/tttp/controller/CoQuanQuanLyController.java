@@ -101,6 +101,47 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donVis")
+	@ApiOperation(value = "Lấy danh sách đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDonVis(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		
+		Page<CoQuanQuanLy> page = null;
+		Long donViId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Long capCoQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
+		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+		ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+		ThamSo thamSoFour = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+		ThamSo thamSoFive = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+		
+		if (donViId != null && donViId > 0 && capCoQuanQuanLyId != null && capCoQuanQuanLyId > 0) {
+			if (donViId == new Long(thamSoOne.getGiaTri().toString()) || donViId == new Long(thamSoTwo.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(new Long(thamSoOne.getGiaTri().toString())), pageable);
+			} else if (capCoQuanQuanLyId == new Long(thamSoThree.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindOne(donViId), pageable);
+			} else if (capCoQuanQuanLyId == new Long(thamSoFour.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(new Long(thamSoOne.getGiaTri().toString())), pageable);
+			} else if (capCoQuanQuanLyId == new Long(thamSoFive.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindOne(donViId), pageable);
+			}
+		}
+
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViTrucThuocs")
+	@ApiOperation(value = "Lấy danh sách đơn vị trực thuộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDonViTrucThuocs(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "cha", required = false) Long cha,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", cha, null, null), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViChuTris")
 	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDonViChuTris(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -187,9 +228,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 		}
 		
-		return Utils.doSave(repo, coQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+		return Utils.doSave(repo, coQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/{id}")

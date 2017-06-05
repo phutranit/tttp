@@ -65,7 +65,7 @@ public class CoQuanQuanLyService {
 	public Predicate predicateFindNoiCapCMND(Long capCoQuanQuanLy, Long loaiCoQuanQuanLy) {
 		BooleanExpression predAll = base;
 
-		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 & loaiCoQuanQuanLy != null && loaiCoQuanQuanLy > 0) {
+		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 && loaiCoQuanQuanLy != null && loaiCoQuanQuanLy > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy)
 					.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.eq(loaiCoQuanQuanLy)));
 		}
@@ -167,6 +167,17 @@ public class CoQuanQuanLyService {
 		}
 
 		return false;
+	}
+	
+	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
+					.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+		}
+
+		return predAll;
 	}
 
 }
