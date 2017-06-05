@@ -130,6 +130,8 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		System.out.println("xldCollections " +xldCollections.size());
+		System.out.println("donCollections " +donCollections.size());
 		
 		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
 			//Query don TTXM
