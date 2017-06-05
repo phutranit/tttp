@@ -65,6 +65,17 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/combobox")
+	@ApiOperation(value = "Lấy danh sách Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListCapCoQuanQuanLy(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+
+		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/capCoQuanQuanLys")
 	@ApiOperation(value = "Thêm mới Cấp Cơ Quan Quản Lý", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
