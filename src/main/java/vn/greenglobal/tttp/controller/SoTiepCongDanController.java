@@ -182,7 +182,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 			don.setThanhLapTiepDanGapLanhDao(true);
 		}
-		System.out.println("post SoTiepCaongDan");
 		if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 				|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 			soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);

@@ -1395,6 +1395,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 
+		//tao ma don
+		if (don.getMa() == null || don.getMa().isEmpty()) {
+			don.setMa(donService.getMaDon(donRepo, don.getId()));
+		}
+		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
@@ -1769,6 +1774,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 
+		//tao ma don
+		if (don.getMa() == null || don.getMa().isEmpty()) {
+			don.setMa(donService.getMaDon(donRepo, don.getId()));
+		}
+		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
