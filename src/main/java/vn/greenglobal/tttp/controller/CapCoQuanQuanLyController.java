@@ -87,9 +87,9 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 		ThamSo thamSoThree = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 		ThamSo thamSoFour = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null && thamSoFour != null) {
-			page = repo.findAll(capCoQuanQuanLyService.predicateFindCapCoQuanDaGiaiQuyet(new Long(thamSoOne.getGiaTri().toString()),
-							new Long(thamSoTwo.getGiaTri().toString()), new Long(thamSoThree.getGiaTri().toString()),
-							new Long(thamSoFour.getGiaTri().toString())),pageable);
+			page = repo.findAll(capCoQuanQuanLyService.predicateFindCapCoQuanDaGiaiQuyet(Long.valueOf(thamSoOne.getGiaTri().toString()),
+							Long.valueOf(thamSoTwo.getGiaTri().toString()), Long.valueOf(thamSoThree.getGiaTri().toString()),
+							Long.valueOf(thamSoFour.getGiaTri().toString())),pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -115,7 +115,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 		}
 
 		return Utils.doSave(repo, capCoQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -165,7 +165,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 		}
 
 		return Utils.doSave(repo, capCoQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -192,7 +192,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 		}
 
 		Utils.save(repo, capCoQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -188,8 +188,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
 		if (thamSoOne != null && thamSoTwo != null) {
-			page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(new Long(thamSoOne.getGiaTri().toString()),
-					new Long(thamSoTwo.getGiaTri().toString())), pageable);
+			page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(Long.valueOf(thamSoOne.getGiaTri().toString()),
+					Long.valueOf(thamSoTwo.getGiaTri().toString())), pageable);
 		}
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -228,7 +228,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 		}
 		
-		return Utils.doSave(repo, coQuanQuanLy, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		return Utils.doSave(repo, coQuanQuanLy, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/{id}")
@@ -287,7 +287,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 		}
 		return Utils.doSave(repo, coQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -315,7 +315,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		}
 
 		Utils.save(repo, coQuanQuanLy,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -331,7 +331,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		Page<CoQuanQuanLy> page = null;
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		if (thamSoOne != null) {
-			page = repo.findAll(coQuanQuanLyService.predicateFindPhongBan(new Long(thamSoOne.getGiaTri().toString()), id, repo, thamSoService, repoThamSo), pageable);
+			page = repo.findAll(coQuanQuanLyService.predicateFindPhongBan(Long.valueOf(thamSoOne.getGiaTri().toString()), id, repo, thamSoService, repoThamSo), pageable);
 		}
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}

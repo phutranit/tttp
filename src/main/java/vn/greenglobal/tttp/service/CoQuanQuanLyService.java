@@ -94,9 +94,9 @@ public class CoQuanQuanLyService {
 		
 		if(cqql != null) {
 			id = cqql.getId();
-			if(cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoQuan.getGiaTri().toString())) || 
-					cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoHuyen.getGiaTri().toString())) || 
-					cqql.getCapCoQuanQuanLy().getId().equals(new Long(thamSoSBN.getGiaTri().toString()))) {
+			if(cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoQuan.getGiaTri().toString())) || 
+					cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoHuyen.getGiaTri().toString())) || 
+					cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoSBN.getGiaTri().toString()))) {
 				id = cqql.getId();
 				check = true;
 			}

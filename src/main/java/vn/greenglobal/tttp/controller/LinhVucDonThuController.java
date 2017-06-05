@@ -97,7 +97,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText());
 		}
 		return Utils.doSave(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -147,7 +147,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		}
 
 		return Utils.doSave(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -174,7 +174,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		}
 
 		Utils.save(repo, linhVucDonThu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

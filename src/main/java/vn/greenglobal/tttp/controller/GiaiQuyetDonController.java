@@ -128,7 +128,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 
@@ -162,7 +162,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					giaiQuyetDonHienTai.setNextForm(transition.getForm());
 					// Thong tin xu ly don
 					String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
-					Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+					Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 					if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType)) {
 						if (giaiQuyetDon.getCanBoXuLyChiDinh() == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.name(),
@@ -201,7 +201,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					giaiQuyetDonHienTai.setNextState(nextState);
 					giaiQuyetDonHienTai.setNextForm(transition.getForm());
 					String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
-					Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+					Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 					if (FlowStateEnum.TRINH_LANH_DAO.equals(nextStateType)) {
 						GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 						giaiQuyetDonTiepTheo = vanThuDonViTTXMTrinhLanhDao(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note);

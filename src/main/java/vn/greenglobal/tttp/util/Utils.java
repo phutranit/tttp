@@ -61,7 +61,7 @@ public class Utils {
 	public static ResponseEntity<Object> responseErrors(HttpStatus httpStatus, String code, String detail) {
 		List<Map<String, Object>> errors = new ArrayList<>();
 		Map<String, Object> error = new HashMap<>();
-		error.put("status", new Long(httpStatus.toString()));
+		error.put("status", Long.valueOf(httpStatus.toString()));
 		error.put("code", code);
 		error.put("detail", detail);
 		errors.add(error);

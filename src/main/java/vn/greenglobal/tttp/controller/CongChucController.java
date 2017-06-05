@@ -83,8 +83,8 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-		Long coQuanQuanLyLoginId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long coQuanQuanLyLoginId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -117,7 +117,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		CongChuc congChuc = repo.findOne(new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		CongChuc congChuc = repo.findOne(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		CoQuanQuanLy donVi = null;
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
@@ -186,9 +186,9 @@ public class CongChucController extends TttpController<CongChuc> {
 			public Object doInTransaction(TransactionStatus arg0) {
 				congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
 				Utils.save(repoNguoiDung, congChuc.getNguoiDung(),
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return Utils.doSave(repo, congChuc,
-						new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 						eass, HttpStatus.CREATED);
 			}
 		});
@@ -282,8 +282,8 @@ public class CongChucController extends TttpController<CongChuc> {
 					congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
 					congChuc.getNguoiDung().setSalkey(nd.getSalkey());
 				}
-				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				return Utils.doSave(repo, congChuc, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+				Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return Utils.doSave(repo, congChuc, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
 			}
 
 		});
@@ -311,7 +311,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		}
 
 		Utils.save(repo, congChuc,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	

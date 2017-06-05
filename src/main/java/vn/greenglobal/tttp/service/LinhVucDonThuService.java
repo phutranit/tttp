@@ -29,8 +29,8 @@ public class LinhVucDonThuService {
 		if (!"".equals(cha) && cha != null) {
 			if ("null".equals(cha)) {
 				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.isNull());
-			} else if (new Long(cha) > 0) {
-				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(new Long(cha)));
+			} else if (Long.valueOf(cha) > 0) {
+				predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(Long.valueOf(cha)));
 			}
 		}
 		
