@@ -314,4 +314,22 @@ public class CongChucController extends TttpController<CongChuc> {
 				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/truongDoanTTXMs")
+	@ApiOperation(value = "Lấy danh sách trưởng đoàn TTXM", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy danh sách trưởng đoàn TTXM thành công", response = CongChuc.class) })
+	public @ResponseBody Object getListTruongDoanTTXM(@RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass, Pageable pageable) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		Long donViId = (Long) profileUtil.getCommonProfile(authorization).getAttribute("donViId");
+		
+		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAllTruongDoanTTXM(donViId), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
 }
