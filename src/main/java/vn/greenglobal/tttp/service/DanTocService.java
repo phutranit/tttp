@@ -19,7 +19,7 @@ public class DanTocService {
 
 	BooleanExpression base = QDanToc.danToc.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long cha) {
+	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(

@@ -128,7 +128,7 @@ public class CongDanController extends TttpController<CongDan> {
 		}
 		
 		return Utils.doSave(repo, congDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -253,9 +253,9 @@ public class CongDanController extends TttpController<CongDan> {
 		lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
 		lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 		Utils.save(repoLichSu, lichSu,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return Utils.doSave(repo, congDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -282,7 +282,7 @@ public class CongDanController extends TttpController<CongDan> {
 		}
 
 		Utils.save(repo, congDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
