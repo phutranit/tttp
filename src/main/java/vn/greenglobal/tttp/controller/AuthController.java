@@ -72,13 +72,13 @@ public class AuthController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(
-			@RequestHeader(value = "Username", required = true) String username,
+			@RequestHeader(value = "Email", required = true) String username,
 			@RequestHeader(value = "Password", required = true) String password) {
 		Map<String, Object> result = new HashMap<>();
 		NguoiDung user;
 
 		if (username != null && !username.isEmpty()) {
-			user = nguoiDungRepository.findByTenDangNhap(username);
+			user = nguoiDungRepository.findByEmail(username);
 			if (user != null) {
 				if (user.checkPassword(password)) {
 					return returnUser(result, user);
@@ -167,7 +167,7 @@ public class AuthController {
 		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 
 		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addAttribute("username", user.getTenDangNhap());
+		commonProfile.addAttribute("email", user.getEmail());
 
 		if (user != null) {
 			commonProfile.setId(user.getId());
@@ -191,7 +191,7 @@ public class AuthController {
 
 			String token = generator.generate(commonProfile);
 			result.put("token", token);
-			result.put("username", user.getTenDangNhap());
+			result.put("email", user.getEmail());
 			result.put("userId", user.getId());
 			result.put("roles", user.getVaiTros());
 			result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());

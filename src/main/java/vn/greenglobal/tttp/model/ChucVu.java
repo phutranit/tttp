@@ -25,7 +25,6 @@ public class ChucVu extends Model<ChucVu> {
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
-	private boolean lanhDao;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -45,15 +44,6 @@ public class ChucVu extends Model<ChucVu> {
 		this.moTa = moTa;
 	}
 	
-	
-	public boolean isLanhDao() {
-		return lanhDao;
-	}
-
-	public void setLanhDao(boolean lanhDao) {
-		this.lanhDao = lanhDao;
-	}
-
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getChucVuId() {

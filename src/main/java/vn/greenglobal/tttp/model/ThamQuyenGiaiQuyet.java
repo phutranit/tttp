@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,9 +23,6 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	private String ten = "";
 	private String moTa = "";
 
-	@ManyToOne
-	private ThamQuyenGiaiQuyet cha;
-
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
 		return ten;
@@ -45,25 +41,10 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 		this.moTa = moTa;
 	}
 
-	@ApiModelProperty(position = 3)
-	public ThamQuyenGiaiQuyet getCha() {
-		return cha;
-	}
-
-	public void setCha(ThamQuyenGiaiQuyet cha) {
-		this.cha = cha;
-	}
-
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getThamQuyenGiaiQuyetId() {
 		return getId();
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetCha() {
-		return getCha();
 	}
 	
 	@Transient
