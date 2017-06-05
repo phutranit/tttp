@@ -66,6 +66,18 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos/thuocPhuongXa")
+	@ApiOperation(value = "Lấy danh sách Tổ Dân Phố theo Phường Xã", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListToDanPhoTheoPhuongXa(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/toDanPhos")
 	@ApiOperation(value = "Thêm mới Tổ Dân Phố", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
