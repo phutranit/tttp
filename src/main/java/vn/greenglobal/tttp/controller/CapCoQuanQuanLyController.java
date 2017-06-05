@@ -27,9 +27,12 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.CapCoQuanQuanLyService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -45,6 +48,12 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
+	@Autowired
+	private ThamSoRepository thamSoRepository;
+	
+	@Autowired
+	private ThamSoService thamSoService;
 
 	public CapCoQuanQuanLyController(BaseRepository<CapCoQuanQuanLy, ?> repo) {
 		super(repo);
@@ -67,13 +76,22 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/combobox")
+	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/capCoQuanDaGiaiQuyets")
 	@ApiOperation(value = "Lấy danh sách Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getListCapCoQuanQuanLy(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+	public @ResponseBody Object getCapCoQuanDaGiaiQuyets(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
-		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
+		Page<CapCoQuanQuanLy> page = null;
+		ThamSo thamSoOne = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+		ThamSo thamSoTwo = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+		ThamSo thamSoThree = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+		ThamSo thamSoFour = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null && thamSoFour != null) {
+			page = repo.findAll(capCoQuanQuanLyService.predicateFindCapCoQuanDaGiaiQuyet(new Long(thamSoOne.getGiaTri().toString()),
+							new Long(thamSoTwo.getGiaTri().toString()), new Long(thamSoThree.getGiaTri().toString()),
+							new Long(thamSoFour.getGiaTri().toString())),pageable);
+		}
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
