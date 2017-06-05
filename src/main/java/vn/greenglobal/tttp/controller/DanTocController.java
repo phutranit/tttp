@@ -55,14 +55,25 @@ public class DanTocController extends TttpController<DanToc> {
 	@ApiOperation(value = "Lấy danh sách Dân tộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+			PersistentEntityResourceAssembler eass) {
 
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
-		Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa, cha), pageable);
+		Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/danTocs/combobox")
+	@ApiOperation(value = "Lấy danh sách Dân tộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListDanToc(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			PersistentEntityResourceAssembler eass) {
+
+		Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
