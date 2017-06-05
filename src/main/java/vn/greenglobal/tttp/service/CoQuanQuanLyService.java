@@ -174,7 +174,7 @@ public class CoQuanQuanLyService {
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
-					.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
 		}
 
 		return predAll;

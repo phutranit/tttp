@@ -107,22 +107,22 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 		
 		Page<CoQuanQuanLy> page = null;
-		Long donViId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-		Long capCoQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
+		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 		ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 		ThamSo thamSoFour = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 		ThamSo thamSoFive = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
-		
+
 		if (donViId != null && donViId > 0 && capCoQuanQuanLyId != null && capCoQuanQuanLyId > 0) {
-			if (donViId == new Long(thamSoOne.getGiaTri().toString()) || donViId == new Long(thamSoTwo.getGiaTri().toString())) {
-				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(new Long(thamSoOne.getGiaTri().toString())), pageable);
-			} else if (capCoQuanQuanLyId == new Long(thamSoThree.getGiaTri().toString())) {
+			if (donViId == Long.valueOf(thamSoOne.getGiaTri().toString()) || donViId == Long.valueOf(thamSoTwo.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(Long.valueOf(thamSoOne.getGiaTri().toString())), pageable);
+			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoThree.getGiaTri().toString())) {
 				page = repo.findAll(coQuanQuanLyService.predicateFindOne(donViId), pageable);
-			} else if (capCoQuanQuanLyId == new Long(thamSoFour.getGiaTri().toString())) {
-				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(new Long(thamSoOne.getGiaTri().toString())), pageable);
-			} else if (capCoQuanQuanLyId == new Long(thamSoFive.getGiaTri().toString())) {
+			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoFour.getGiaTri().toString())) {
+				page = repo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(Long.valueOf(thamSoOne.getGiaTri().toString())), pageable);
+			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoFive.getGiaTri().toString())) {
 				page = repo.findAll(coQuanQuanLyService.predicateFindOne(donViId), pageable);
 			}
 		}
