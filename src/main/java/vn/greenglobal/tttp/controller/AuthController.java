@@ -72,7 +72,7 @@ public class AuthController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(
-			@RequestHeader(value = "Username", required = true) String username,
+			@RequestHeader(value = "Email", required = true) String username,
 			@RequestHeader(value = "Password", required = true) String password) {
 		Map<String, Object> result = new HashMap<>();
 		NguoiDung user;
@@ -167,7 +167,7 @@ public class AuthController {
 		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 
 		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addAttribute("username", user.getEmail());
+		commonProfile.addAttribute("email", user.getEmail());
 
 		if (user != null) {
 			commonProfile.setId(user.getId());
@@ -188,7 +188,7 @@ public class AuthController {
 
 			String token = generator.generate(commonProfile);
 			result.put("token", token);
-			result.put("username", user.getEmail());
+			result.put("email", user.getEmail());
 			result.put("userId", user.getId());
 			result.put("roles", user.getVaiTros());
 			result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());
