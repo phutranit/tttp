@@ -66,6 +66,18 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/theoLoaiDon")
+	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListLinhVucDonThuTHeoLoaiDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) String cha,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, PersistentEntityResourceAssembler eass) {
+
+		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/linhVucDonThus")
 	@ApiOperation(value = "Thêm mới Lĩnh Vực Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
