@@ -52,7 +52,6 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
-import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -145,10 +144,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
-			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
-			//@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			//@RequestParam(value = "vaiTro", required = false) String vaiTro, 
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
@@ -157,7 +153,9 @@ public class DonController extends TttpController<Don> {
 			Long donViXuLyXLD = 0L;
 			Long phongBanXuLyXLD = 0L;
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) {
+			Long canBoXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)|| 
+					(StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai) && phongBanXuLyXLD == 0)) {
 				donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			} else {
 				phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
