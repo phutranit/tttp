@@ -101,7 +101,7 @@ public class Application extends SpringBootServletInitializer {
 						.allowCredentials(true)
 						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
 						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"username", "password", "authorization", "client-security-token",
+								"email", "password", "authorization", "client-security-token",
 								"X-Application-Context", "Date", "Content-Disposition")
 						.maxAge(3600);
 			}
