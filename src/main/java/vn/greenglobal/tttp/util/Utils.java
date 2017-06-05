@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.util;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
@@ -472,5 +476,17 @@ public class Utils {
         	soNgayXuLy = -2;
         }
         return soNgayXuLy;
+    }
+    
+    public static String getMaDon() {
+    	DateFormat df = new SimpleDateFormat("yyMMdd");
+    	String out = df.format(new Date());    	
+    	Random generator = new Random(); 
+    	Integer randomNumber = generator.nextInt(9999 - 1) + 1;
+    	String randomNumberStr = "" + randomNumber;
+		for (int m = 1; m <= (4 - randomNumber.toString().length()); m++) {
+			randomNumberStr = "0" + randomNumberStr;
+		}
+    	return out + randomNumberStr;
     }
 }
