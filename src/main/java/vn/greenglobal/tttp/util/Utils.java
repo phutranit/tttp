@@ -419,12 +419,22 @@ public class Utils {
         return flag;
     }
  
-    public static Long getLaySoNgay(LocalDateTime ngayKetThuc) {
+    public static Long getLaySoNgay(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
         LocalDateTime gioHanhChinh = LocalDateTime.now();
         Calendar cal = Calendar.getInstance();
+        Calendar start = getMocThoiGianLocalDateTime(
+        		ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
         Calendar end = getMocThoiGianLocalDateTime(
                 ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
        
+        while (start.before(end) || DateUtils.isSameDay(start, end)) {
+        	// check ngay nghi
+            if (isInvalidNgayNghi(start.getTime())) {
+            	end.add(Calendar.DATE, 1);
+            }
+            start.add(Calendar.DATE, 1);
+        }
+        
         long soNgayXuLy = 0;
         boolean checkNgayNghi = false;
         // check ngay hop le
@@ -445,7 +455,7 @@ public class Utils {
                             	soNgayXuLy = 1;
                             }
                         } else {
-                        	//
+                        	//PM
                         	if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
                         		Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, 
                                 		endAfternoon, minuteEndAfternoon);

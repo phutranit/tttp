@@ -91,18 +91,19 @@ public class DonService {
 		List<Don> donCollections = new ArrayList<Don>();
 		//Query xu ly don
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false))
-				;		
+				.and(QXuLyDon.xuLyDon.old.eq(false));		
+		
 		if (phongBanGiaiQuyetXLD != null) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
-		if (canBoXuLyXLD != null) {
+		
+		if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
 		}
+		
 		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
-		
 		
 		if (StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
@@ -111,6 +112,7 @@ public class DonService {
 		if (coQuanTiepNhanXLD != null) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
 		}
+		
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
 					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
@@ -119,9 +121,11 @@ public class DonService {
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
+		
 		if (StringUtils.isNotBlank(trangThaiDon)) {			
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);

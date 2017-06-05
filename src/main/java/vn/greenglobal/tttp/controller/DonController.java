@@ -144,10 +144,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
-			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
-			//@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			//@RequestParam(value = "vaiTro", required = false) String vaiTro, 
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
@@ -156,7 +153,9 @@ public class DonController extends TttpController<Don> {
 			Long donViXuLyXLD = 0L;
 			Long phongBanXuLyXLD = 0L;
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai) || StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
+			Long canBoXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)|| 
+					(StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai) && phongBanXuLyXLD == 0)) {
 				donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			} else {
 				phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -754,5 +753,19 @@ public class DonController extends TttpController<Don> {
 				(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
 						thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, hoTen, xuLyRepo, repo, giaiQuyetDonRepo), order),
 				"Danh sách xử lý đơn");
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanXuLyDon")
+	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	public Object getNgayMacDinhCuaThoiHanXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass) {
+		long soNgayMacDinh = 10;
+		LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
+		if (thoiHan == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		return new ResponseEntity<>(thoiHan, HttpStatus.OK);
 	}
 }
