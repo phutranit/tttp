@@ -412,9 +412,9 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
 				
 				//set thoi han xu ly
-				if(don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
-					xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-					donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				if(xuLyDon.getThoiHanXuLy() != null) {
+					//xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+					donMoi.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 				} 
 				donMoi.setNgayBatDauXLD(LocalDateTime.now());
 
@@ -531,13 +531,13 @@ public class DonController extends TttpController<Don> {
 					xuLyDonTiepTheo.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 					
 					//set thoi han xu ly
-					if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
+					if (xuLyDonHienTai.getThoiHanXuLy() != null) {
 						//set thoi han xu ly
-						xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+						//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+						//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 						
 						//set don
-						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+						donMoi.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 						//donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
 					}
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
@@ -657,8 +657,8 @@ public class DonController extends TttpController<Don> {
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
 					
 					//set thoi han xu ly
-					if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
-						xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+					if (xuLyDon.getThoiHanXuLy() != null) {
+						don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 					}
 					
 					Utils.save(xuLyRepo, xuLyDon, congChucId);
@@ -667,16 +667,17 @@ public class DonController extends TttpController<Don> {
 					if(xuLyDonHienTai != null) {
 						if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
-							if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
-								xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-							}
+						}
+						//set thoi han xu ly
+						if (xuLyDonHienTai.getThoiHanXuLy() != null) {
+							don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 						}
 						Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					}
 				}
 				
-				if (don.getSoNgayXuLy() != null && don.getSoNgayXuLy() > 0) {
-					don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
+				if (donOld.getThoiHanXuLyXLD() != null) {
+					don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
 				}
 				if (donOld.getNgayBatDauXLD() != null) {
 					don.setNgayBatDauXLD(LocalDateTime.now());

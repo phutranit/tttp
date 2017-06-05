@@ -64,8 +64,8 @@ public class Don extends Model<Don> {
 	private String fileChungChiHanhNghe = "";
 	private String urlChungChiHanhNghe = "";
 
-	@Transient
-	private Long soNgayXuLy;
+//	@Transient
+//	private Long soNgayXuLy;
 	@Transient
 	private String noiDungThongTinTrinhLanhDao = "";
 	@Transient
@@ -1075,7 +1075,7 @@ public class Don extends Model<Don> {
 		return out;
 	}
 
-	@Transient
+	/*@Transient
 	@ApiModelProperty(hidden = true)
 	public String getCanBoXuLyText() {
 		String out = "";
@@ -1086,9 +1086,9 @@ public class Don extends Model<Don> {
 			out = xlds.get(thuTu).getNguoiTao().getHoVaTen();
 		}
 		return out;
-	}
+	}*/
 
-	@Transient
+	/*@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThongTinXuLyInfo() {
 		Map<String, Object> map = new HashMap<>();
@@ -1335,7 +1335,7 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
-	}
+	}*/
 
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
@@ -1345,13 +1345,13 @@ public class Don extends Model<Don> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-	public Long getSoNgayXuLy() {
-		return soNgayXuLy;
-	}
-
-	public void setSoNgayXuLy(long soNgayXuLy) {
-		this.soNgayXuLy = soNgayXuLy;
-	}
+//	public Long getSoNgayXuLy() {
+//		return soNgayXuLy;
+//	}
+//
+//	public void setSoNgayXuLy(long soNgayXuLy) {
+//		this.soNgayXuLy = soNgayXuLy;
+//	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)

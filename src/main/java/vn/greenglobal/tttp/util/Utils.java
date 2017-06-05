@@ -242,9 +242,9 @@ public class Utils {
 			}
 			while (tuNgay.compareTo(denNgay) < 0) {
 				tuNgay = tuNgay.plusDays(1);
-				if (tuNgay.getDayOfWeek().getValue() == SATURDAY || tuNgay.getDayOfWeek().getValue() == SUNDAY) {
-					continue;
-				}
+//				if (tuNgay.getDayOfWeek().getValue() == SATURDAY || tuNgay.getDayOfWeek().getValue() == SUNDAY) {
+//					continue;
+//				}
 				soNgayXuLy++;
 			}
 		}
@@ -424,67 +424,72 @@ public class Utils {
     }
  
     public static Long getLaySoNgay(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
-        LocalDateTime gioHanhChinh = LocalDateTime.now();
+    	long soNgayXuLy = 0;
+        boolean checkNgayNghi = false;
+    	LocalDateTime gioHanhChinh = LocalDateTime.now();
         Calendar cal = Calendar.getInstance();
         Calendar start = getMocThoiGianLocalDateTime(
         		ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
         Calendar end = getMocThoiGianLocalDateTime(
                 ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
        
-        while (start.before(end) || DateUtils.isSameDay(start, end)) {
-        	// check ngay nghi
-            if (isInvalidNgayNghi(start.getTime())) {
-            	end.add(Calendar.DATE, 1);
-            }
-            start.add(Calendar.DATE, 1);
-        }
+		if (start.before(end) || DateUtils.isSameDay(start, end)) {
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				// check ngay nghi
+				if (isInvalidNgayNghi(start.getTime())) {
+					end.add(Calendar.DATE, 1);
+				}
+				start.add(Calendar.DATE, 1);
+			}
+
+			// check ngay hop le
+			if (cal.before(end)) {
+				// lay so ngay de xu ly
+				while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
+					// check ngay nghi
+					if (!isInvalidNgayNghi(cal.getTime())) {
+						if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
+							// check thuoc gio hanh chinh
+							if (cal.get(Calendar.AM_PM) == 0) {
+								// AM
+								// check thoi gian gio hanh chinh
+								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinh, startMorning,
+										minuteStartMorning);
+								long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
+								if (cal.getTimeInMillis() <= gioBuoiSang) {
+									soNgayXuLy = 1;
+								}
+							} else {
+								// PM
+								if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
+									Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, endAfternoon,
+											minuteEndAfternoon);
+									long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
+									if (cal.getTimeInMillis() < gioBuoiChieu) {
+										checkNgayNghi = true;
+									}
+								}
+							}
+						} else {
+							soNgayXuLy += 1;
+							if (DateUtils.isSameDay(cal, end)) {
+								break;
+							}
+						}
+					}
+					cal.add(Calendar.DATE, 1);
+				}
+			} else {
+				soNgayXuLy = -1;
+			}
+
+			if (soNgayXuLy == 0 && checkNgayNghi) {
+				soNgayXuLy = -2;
+			}
+		} else {
+			soNgayXuLy = -1;
+		}
         
-        long soNgayXuLy = 0;
-        boolean checkNgayNghi = false;
-        // check ngay hop le
-        if (cal.before(end)) {
-            // lay so ngay de xu ly
-            while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
-            	// check ngay nghi
-                if (!isInvalidNgayNghi(cal.getTime())) {
-                	if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
-                		// check thuoc gio hanh chinh
-                        if (cal.get(Calendar.AM_PM) == 0) {
-                            // AM
-                            //check thoi gian gio hanh chinh
-                            Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinh, 
-                            		startMorning, minuteStartMorning);
-                            long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
-                            if (cal.getTimeInMillis() <= gioBuoiSang) {
-                            	soNgayXuLy = 1;
-                            }
-                        } else {
-                        	//PM
-                        	if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
-                        		Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, 
-                                		endAfternoon, minuteEndAfternoon);
-                                long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
-                                if(cal.getTimeInMillis() < gioBuoiChieu) {
-                                	checkNgayNghi = true;
-                                }
-                        	}
-                        }
-                	} else { 
-                		soNgayXuLy += 1;
-                    	if (DateUtils.isSameDay(cal, end)) {
-                    		break;
-                    	}
-                	}
-                }
-                cal.add(Calendar.DATE, 1);
-            }
-        } else {
-        	soNgayXuLy = -1;
-        }
-        
-        if (soNgayXuLy == 0 && checkNgayNghi) {
-        	soNgayXuLy = -2;
-        }
         return soNgayXuLy;
     }
     
