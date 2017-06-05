@@ -78,7 +78,7 @@ public class AuthController {
 		NguoiDung user;
 
 		if (username != null && !username.isEmpty()) {
-			user = nguoiDungRepository.findByTenDangNhap(username);
+			user = nguoiDungRepository.findByEmail(username);
 			if (user != null) {
 				if (user.checkPassword(password)) {
 					return returnUser(result, user);
@@ -167,7 +167,7 @@ public class AuthController {
 		generator.setEncryptionConfiguration(secretEncryptionConfiguration);
 
 		CommonProfile commonProfile = new CommonProfile();
-		commonProfile.addAttribute("username", user.getTenDangNhap());
+		commonProfile.addAttribute("username", user.getEmail());
 
 		if (user != null) {
 			commonProfile.setId(user.getId());
@@ -188,7 +188,7 @@ public class AuthController {
 
 			String token = generator.generate(commonProfile);
 			result.put("token", token);
-			result.put("username", user.getTenDangNhap());
+			result.put("username", user.getEmail());
 			result.put("userId", user.getId());
 			result.put("roles", user.getVaiTros());
 			result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());

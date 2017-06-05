@@ -32,7 +32,7 @@ public class NguoiDungService {
 			predAll = predAll.and(QNguoiDung.nguoiDung.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QNguoiDung.nguoiDung.tenDangNhap.eq(body.getTenDangNhap()));
+		predAll = predAll.and(QNguoiDung.nguoiDung.email.eq(body.getEmail()));
 		NguoiDung nguoiDung = repo.findOne(predAll);
 
 		return nguoiDung != null ? true : false;

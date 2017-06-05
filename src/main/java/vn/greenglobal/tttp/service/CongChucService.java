@@ -107,7 +107,7 @@ public class CongChucService {
 			predAll = predAll.and(QCongChuc.congChuc.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QCongChuc.congChuc.nguoiDung.tenDangNhap.eq(body.getNguoiDung().getTenDangNhap()));
+		predAll = predAll.and(QCongChuc.congChuc.nguoiDung.email.eq(body.getNguoiDung().getEmail()));
 		CongChuc congChuc = repo.findOne(predAll);
 
 		return congChuc != null ? true : false;
@@ -117,14 +117,13 @@ public class CongChucService {
 		List<CongChuc> list = (List<CongChuc>) repo.findAll(base);
 		if (list.size() == 0) {
 			NguoiDung nguoiDung = new NguoiDung();
-			nguoiDung.setTenDangNhap("admin");
+			nguoiDung.setEmail("admin@liferay.com");
 			nguoiDung.updatePassword("tttp@123");
 			nguoiDung.getQuyens().add("*");
 			nguoiDung.setActive(true);
 			NguoiDung nguoiDungNew = repoNguoiDung.save(nguoiDung);
 			CongChuc congChuc = new CongChuc();
 			congChuc.setHoVaTen("Super Admin");
-			congChuc.setEmail("admin@liferay.com");
 			congChuc.setNguoiDung(nguoiDungNew);
 			repo.save(congChuc);
 		}

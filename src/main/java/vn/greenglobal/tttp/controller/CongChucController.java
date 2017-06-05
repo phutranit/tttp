@@ -151,17 +151,17 @@ public class CongChucController extends TttpController<CongChuc> {
 			if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MATKHAU_REQUIRED.name(), ApiErrorEnum.MATKHAU_REQUIRED.getText());
 			}
-			if (congChuc.getNguoiDung().getTenDangNhap() == null | congChuc.getNguoiDung().getTenDangNhap().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_REQUIRED.name(), ApiErrorEnum.TENDANGNHAP_REQUIRED.getText());
+			if (congChuc.getNguoiDung().getEmail() == null | congChuc.getNguoiDung().getEmail().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_REQUIRED.name(), ApiErrorEnum.EMAIL_REQUIRED.getText());
+			}
+			
+			if (congChuc.getNguoiDung().getEmail() != null && !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 			}
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
-		}
-
-		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
@@ -172,12 +172,10 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 		}
 
-		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
-		}
+		
 
-		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap()) && congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
+		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail()) && congChucService.checkExistsData(repo, congChuc)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(), ApiErrorEnum.EMAIL_EXISTS.getText());
 		}
 
 		congChuc.getNguoiDung().setActive(true);
@@ -242,21 +240,17 @@ public class CongChucController extends TttpController<CongChuc> {
 		 * "Trường tên đăng nhập không được để trống!"); } }
 		 */
 
-		if (congChuc.getEmail() != null && !Utils.isValidEmailAddress(congChuc.getEmail())) {
+		if (congChuc.getNguoiDung().getEmail() != null && !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(), ApiErrorEnum.EMAIL_INVALID.getText());
 		}
 
-		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getTenDangNhap())
+		if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
 				&& congChucService.checkExistsData(repo, congChuc)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TENDANGNHAP_EXISTS.name(), ApiErrorEnum.TENDANGNHAP_EXISTS.getText());
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(), ApiErrorEnum.EMAIL_EXISTS.getText());
 		}
 
 		if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
-		}
-
-		if (congChuc.getNgaySinh() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYSINH_REQUIRED.name(), ApiErrorEnum.NGAYSINH_REQUIRED.getText());
 		}
 
 		if (congChuc.getCoQuanQuanLy() == null) {
