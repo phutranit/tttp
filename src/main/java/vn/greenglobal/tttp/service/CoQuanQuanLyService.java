@@ -28,30 +28,25 @@ public class CoQuanQuanLyService {
 
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh,
-			Boolean notCha) {
+	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
 
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa) && !notCha) {
+		if (tuKhoa != null && !"".equals(tuKhoa)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
 					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa))
 					.or(QCoQuanQuanLy.coQuanQuanLy.moTa.containsIgnoreCase(tuKhoa)));
 		}
 
-		if (cha != null && cha > 0 && !notCha) {
+		if (cha != null && cha > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha));
 		}
 
-		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 && !notCha) {
+		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
 		}
 
-		if (donViHanhChinh != null && donViHanhChinh > 0 && !notCha) {
+		if (donViHanhChinh != null && donViHanhChinh > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
-		}
-
-		if (donViHanhChinh == null && capCoQuanQuanLy == null && cha == null && notCha) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.isNull());
 		}
 
 		return predAll;
