@@ -80,7 +80,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
 		return Utils.doSave(repo, donCongDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.CREATED);
 	}
 
@@ -102,11 +102,11 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				public Object doInTransaction(TransactionStatus arg0) {
 					if (params.getDonCongDans().size() > 0) {
 						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(
+							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							if (congDan != null) {
 								donCongDan.getCongDan().setId(congDan.getId());
-								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil
+								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
 										.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDonCongDans().add(dcd);
 							}
@@ -148,7 +148,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		return Utils.doSave(repo, donCongDan,
-				new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 				HttpStatus.OK);
 	}
 
@@ -174,10 +174,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 							listUpdate.add(donCongDan);
 						}
 						for (Don_CongDan donCongDan : listUpdate) {
-							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							if (congDan != null) {
 								donCongDan.getCongDan().setId(congDan.getId());
-								Don_CongDan dcd = Utils.save(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDonCongDans().add(dcd);
 							}
 						}
@@ -200,7 +200,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 
-		Utils.save(repo, dcd, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		Utils.save(repo, dcd, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -220,7 +220,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				listDelete.add(dcd);
 			}
 			for (Don_CongDan donCongDan : listDelete) {
-				Utils.save(repo, donCongDan, new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		

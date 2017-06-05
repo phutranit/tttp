@@ -176,7 +176,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
 					.toString();
-			Long congChucId = new Long(
+			Long congChucId = Long.valueOf(
 					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
@@ -215,9 +215,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
 				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
-				Long coQuanQuanLyId = new Long(
+				Long coQuanQuanLyId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());				
-				Long donViId = new Long(
+				Long donViId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				
 				if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
@@ -404,7 +404,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
 
 			// Thong tin xu ly don
-			Long congChucId = new Long(
+			Long congChucId = Long.valueOf(
 					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 			State nextStage = xuLyDon.getNextState();
@@ -640,9 +640,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	 * 
 	 * // Thong tin xu ly don QuyTrinhXuLyDonEnum quyTrinhXuLy =
 	 * xuLyDon.getQuyTrinhXuLy(); String note = vaiTroNguoiDungHienTai + " " +
-	 * quyTrinhXuLy.getText().toLowerCase() + " "; Long congChucId = new Long(
+	 * quyTrinhXuLy.getText().toLowerCase() + " "; Long congChucId = Long.valueOf(
 	 * profileUtil.getCommonProfile(authorization).getAttribute("congChucId").
-	 * toString()); Long coQuanQuanLyId = new Long(
+	 * toString()); Long coQuanQuanLyId = Long.valueOf(
 	 * profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId"
 	 * ).toString());
 	 * 

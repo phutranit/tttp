@@ -83,5 +83,20 @@ public class CapCoQuanQuanLyService {
 
 		return false;
 	}
+	
+	public Predicate predicateFindCapCoQuanDaGiaiQuyet(Long capCoQuanQuanLyTinhTP, Long capCoQuanQuanLySoBanNganh, Long capCoQuanQuanLyQuanHuyen, Long capCoQuanQuanLyPhuongXa) {
+		BooleanExpression predAll = base;
+
+		if (capCoQuanQuanLyTinhTP != null && capCoQuanQuanLyTinhTP > 0 && capCoQuanQuanLySoBanNganh != null
+				&& capCoQuanQuanLySoBanNganh > 0 && capCoQuanQuanLyQuanHuyen != null && capCoQuanQuanLyQuanHuyen > 0
+				&& capCoQuanQuanLyPhuongXa != null && capCoQuanQuanLyPhuongXa > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyTinhTP)
+					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLySoBanNganh))
+					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyQuanHuyen))
+					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyPhuongXa)));
+		}
+
+		return predAll;
+	}
 
 }
