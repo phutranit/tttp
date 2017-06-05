@@ -53,6 +53,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String diaDiem;
 	private String soQuyetDinhDinhChi;
 	
+	@Transient
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
