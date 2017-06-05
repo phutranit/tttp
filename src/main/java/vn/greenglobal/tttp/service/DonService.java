@@ -55,7 +55,8 @@ public class DonService {
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu, String hoTen, 
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon)).and(QDon.don.xuLyDons.isNotEmpty());
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
+		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty().or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
 		
 		//Query don
 		if (StringUtils.isNotBlank(maDon)) {
@@ -90,18 +91,19 @@ public class DonService {
 		List<Don> donCollections = new ArrayList<Don>();
 		//Query xu ly don
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false))
-				;		
+				.and(QXuLyDon.xuLyDon.old.eq(false));		
+		
 		if (phongBanGiaiQuyetXLD != null) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
-		if (canBoXuLyXLD != null) {
+		
+		if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
 		}
+		
 		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
-		
 		
 		if (StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
@@ -110,6 +112,7 @@ public class DonService {
 		if (coQuanTiepNhanXLD != null) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
 		}
+		
 		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
 					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
@@ -118,9 +121,11 @@ public class DonService {
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
+		
 		if (StringUtils.isNotBlank(trangThaiDon)) {			
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
@@ -149,11 +154,16 @@ public class DonService {
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
+						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
+						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
 				predAll = predAll.and(QDon.don.processType.isNull()
 						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON))
-								.or((QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
-										.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD)))));
-			}
+						.or(donViKiemTraDeXuat)
+						.or(donViThamTraXacMinh)
+						);
+			} 
 			predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		} else {
 			predAll = predAll.and(QDon.don.in(donCollections));
@@ -266,6 +276,28 @@ public class DonService {
 			}
 		}
 		return "001";
+	}
+	
+	public String getMaDon(DonRepository repo, Long donId) {
+		String maDon = Utils.getMaDon();
+		boolean flagTonTai = true;
+		while (flagTonTai) {
+			flagTonTai = isMaDonExists(repo, donId, maDon);
+			if (flagTonTai) {
+				maDon = Utils.getMaDon();
+			}
+		}
+		return maDon;
+	}
+	
+	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon) {
+		if (donId != null && donId > 0) {
+			Predicate predicate = base
+					.and(QDon.don.id.ne(donId))
+					.and(QDon.don.ma.eq(maDon));
+			return repo.exists(predicate);
+		}
+		return false;
 	}
 
 	public boolean isExists(DonRepository repo, Long id) {

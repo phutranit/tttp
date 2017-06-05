@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.util;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
@@ -419,12 +423,22 @@ public class Utils {
         return flag;
     }
  
-    public static Long getLaySoNgay(LocalDateTime ngayKetThuc) {
+    public static Long getLaySoNgay(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
         LocalDateTime gioHanhChinh = LocalDateTime.now();
         Calendar cal = Calendar.getInstance();
+        Calendar start = getMocThoiGianLocalDateTime(
+        		ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
         Calendar end = getMocThoiGianLocalDateTime(
                 ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
        
+        while (start.before(end) || DateUtils.isSameDay(start, end)) {
+        	// check ngay nghi
+            if (isInvalidNgayNghi(start.getTime())) {
+            	end.add(Calendar.DATE, 1);
+            }
+            start.add(Calendar.DATE, 1);
+        }
+        
         long soNgayXuLy = 0;
         boolean checkNgayNghi = false;
         // check ngay hop le
@@ -445,7 +459,7 @@ public class Utils {
                             	soNgayXuLy = 1;
                             }
                         } else {
-                        	//
+                        	//PM
                         	if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
                         		Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, 
                                 		endAfternoon, minuteEndAfternoon);
@@ -472,5 +486,17 @@ public class Utils {
         	soNgayXuLy = -2;
         }
         return soNgayXuLy;
+    }
+    
+    public static String getMaDon() {
+    	DateFormat df = new SimpleDateFormat("yyMMdd");
+    	String out = df.format(new Date());    	
+    	Random generator = new Random(); 
+    	Integer randomNumber = generator.nextInt(9999 - 1) + 1;
+    	String randomNumberStr = "" + randomNumber;
+		for (int m = 1; m <= (4 - randomNumber.toString().length()); m++) {
+			randomNumberStr = "0" + randomNumberStr;
+		}
+    	return out + randomNumberStr;
     }
 }

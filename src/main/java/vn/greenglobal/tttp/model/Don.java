@@ -942,7 +942,7 @@ public class Don extends Model<Don> {
 
 	@ApiModelProperty(hidden = true)
 	public String getNguonDonText() {
-		nguonDonText = nguonTiepNhanDon.getText();
+		nguonDonText = nguonTiepNhanDon != null ? nguonTiepNhanDon.getText() : "";
 
 		if (xuLyDons.size() > 0) {
 			int thuTu = xuLyDons.size();
@@ -998,7 +998,7 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getPhanLoaiDonSoNguoi() {
-		String nd = getLoaiDon().getText();
+		String nd = getLoaiDon() != null ? getLoaiDon().getText() : "";
 		Long hanXuLy = getThoiHanXuLyDon();
 		String out = "";
 		if (nd != null && !nd.isEmpty()) {
@@ -1082,7 +1082,7 @@ public class Don extends Model<Don> {
 		if (xuLyDons.size() > 0) {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			xlds.addAll(xuLyDons);
-			int thuTu = xlds.size() - 1;
+			int thuTu = xlds.size();
 			out = xlds.get(thuTu).getNguoiTao().getHoVaTen();
 		}
 		return out;
@@ -1447,20 +1447,16 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLy() {
 		String str = "";
-		if (xuLyDons.size() > 0) {
-			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			if (xld.getThoiHanXuLy() != null) {
-				long soNgayXuLy = Utils.getLaySoNgay(xld.getThoiHanXuLy());
-				if (soNgayXuLy > 0) {
-					return soNgayXuLy + "";
-				} else if (soNgayXuLy == -1) {
-					return "-1";
-				} else if (soNgayXuLy == 0) {
-					str = "Còn " + Utils.getLaySoGioPhut(xld.getThoiHanXuLy());
-				} else {
-					str = "Còn " + Utils.getLaySoGioPhut(xld.getThoiHanXuLy());
-				}
+		if (getThoiHanXuLyXLD() != null) {
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
+			if (soNgayXuLy > 0) {
+				return soNgayXuLy + "";
+			} else if (soNgayXuLy == -1) {
+				return "-1";
+			} else if (soNgayXuLy == 0) {
+				str = "Còn " + Utils.getLaySoGioPhut(getThoiHanXuLyXLD());
+			} else {
+				str = "Còn " + Utils.getLaySoGioPhut(getThoiHanXuLyXLD());
 			}
 		}
 		return str;

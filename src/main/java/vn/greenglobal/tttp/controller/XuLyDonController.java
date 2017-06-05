@@ -14,6 +14,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,6 +118,36 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		super(repo);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/thongTinXuLyDon")
+	@ApiOperation(value = "Lấy thông tin Xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy thông tin Xử lý đơn", response = XuLyDon.class) })
+	public ResponseEntity<Object> getThongTinXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, 
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			PersistentEntityResourceAssembler eass) {
+
+		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM);
+		if (nguoiDung != null) {
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long canBoXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			Don don = donRepo.findOne(donService.predicateFindOne(id));
+			if (don != null) {
+				XuLyDon xuLyDon = xuLyDonService.predFindCurrent(repo, don.getId(), canBoXuLyXLD, phongBanXuLyXLD, vaiTroNguoiDungHienTai, congChucId, trangThaiDon);
+				if (xuLyDon != null) {
+					return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
+				}
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText());
+			
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
 	@RequestMapping(method = RequestMethod.POST, value = "/xuLyDons")
 	@ApiOperation(value = "Quy trình xử lý đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -294,7 +325,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
-				} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState)
+				} else if ((FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState) || FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(currentState))
 						&& FlowStateEnum.KET_THUC.equals(nextState)) {
 					// Xu ly don khong co van thu
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
@@ -1364,6 +1395,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 
+		//tao ma don
+		if (don.getMa() == null || don.getMa().isEmpty()) {
+			don.setMa(donService.getMaDon(donRepo, don.getId()));
+		}
+		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
@@ -1738,6 +1774,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 
+		//tao ma don
+		if (don.getMa() == null || don.getMa().isEmpty()) {
+			don.setMa(donService.getMaDon(donRepo, don.getId()));
+		}
+		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
