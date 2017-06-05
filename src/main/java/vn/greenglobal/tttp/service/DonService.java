@@ -56,7 +56,7 @@ public class DonService {
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
-		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty().or(QDon.don.processType.eq(ProcessTypeEnum.TIEP_DAN_LANH_DAO).and(QDon.don.xuLyDons.isEmpty())));
+		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty().or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
 		
 		//Query don
 		if (StringUtils.isNotBlank(maDon)) {
@@ -150,7 +150,7 @@ public class DonService {
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
-				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.TIEP_DAN_LANH_DAO)
+				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
 						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
 				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
 						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
