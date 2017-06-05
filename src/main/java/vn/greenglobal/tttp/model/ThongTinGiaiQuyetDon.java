@@ -30,9 +30,19 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String soQuyetDinhThanhLapDTXM = "";
 	private String soQuyetDinhGiaHan = "";
 	private String diaDiemDoiThoai = "";
+	private String lyDoGiaHan = "";
+	private String noiDung = "";
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
+	private LocalDateTime ngayBatDauGiaiQuyet;
+	private LocalDateTime ngayketThucGiaiQuyet;
+	private LocalDateTime ngayHetHanGiaiQuyet;
+	private LocalDateTime ngayBatDauTTXM;
+	private LocalDateTime ngayketThucTTXM;
+	private LocalDateTime ngayHetHanTTXM;
+	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
+	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
 
 	private boolean lapToDoanXacMinh;
 	private boolean giaHanGiaiQuyet;
@@ -45,6 +55,9 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private boolean daThamTraXacMinhVuViec;
 	private boolean daRaQuyetDinhGiaiQuyet;
 
+	private int soVuGiaoCoQuanDieuTra;
+	private int soDoiTuongGiaoCoQuanDieuTra;
+	private int soVuBiKhoiTo;
 	private int soDoiTuongBiKhoiTo;
 	private int tongSoNguoiXuLyHanhChinh;
 	private int soNguoiDaBiXuLyHanhChinh;
@@ -106,6 +119,22 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.diaDiemDoiThoai = diaDiemDoiThoai;
 	}
 
+	public String getLyDoGiaHan() {
+		return lyDoGiaHan;
+	}
+
+	public void setLyDoGiaHan(String lyDoGiaHan) {
+		this.lyDoGiaHan = lyDoGiaHan;
+	}
+
+	public String getNoiDung() {
+		return noiDung;
+	}
+
+	public void setNoiDung(String noiDung) {
+		this.noiDung = noiDung;
+	}
+
 	public LocalDateTime getThoiGianDoiThoai() {
 		return thoiGianDoiThoai;
 	}
@@ -120,6 +149,69 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNgayBaoCaoKetQuaTTXM(LocalDateTime ngayBaoCaoKetQuaTTXM) {
 		this.ngayBaoCaoKetQuaTTXM = ngayBaoCaoKetQuaTTXM;
+	}
+	public LocalDateTime getNgayBatDauGiaiQuyet() {
+		return ngayBatDauGiaiQuyet;
+	}
+
+	public void setNgayBatDauGiaiQuyet(LocalDateTime ngayBatDauGiaiQuyet) {
+		this.ngayBatDauGiaiQuyet = ngayBatDauGiaiQuyet;
+	}
+
+	public LocalDateTime getNgayketThucGiaiQuyet() {
+		return ngayketThucGiaiQuyet;
+	}
+
+	public void setNgayketThucGiaiQuyet(LocalDateTime ngayketThucGiaiQuyet) {
+		this.ngayketThucGiaiQuyet = ngayketThucGiaiQuyet;
+	}
+
+	public LocalDateTime getNgayHetHanGiaiQuyet() {
+		return ngayHetHanGiaiQuyet;
+	}
+
+	public void setNgayHetHanGiaiQuyet(LocalDateTime ngayHetHanGiaiQuyet) {
+		this.ngayHetHanGiaiQuyet = ngayHetHanGiaiQuyet;
+	}
+
+	public LocalDateTime getNgayBatDauTTXM() {
+		return ngayBatDauTTXM;
+	}
+
+	public void setNgayBatDauTTXM(LocalDateTime ngayBatDauTTXM) {
+		this.ngayBatDauTTXM = ngayBatDauTTXM;
+	}
+
+	public LocalDateTime getNgayketThucTTXM() {
+		return ngayketThucTTXM;
+	}
+
+	public void setNgayketThucTTXM(LocalDateTime ngayketThucTTXM) {
+		this.ngayketThucTTXM = ngayketThucTTXM;
+	}
+
+	public LocalDateTime getNgayHetHanTTXM() {
+		return ngayHetHanTTXM;
+	}
+
+	public void setNgayHetHanTTXM(LocalDateTime ngayHetHanTTXM) {
+		this.ngayHetHanTTXM = ngayHetHanTTXM;
+	}
+
+	public LocalDateTime getNgayHetHanSauKhiGiaHanTTXM() {
+		return ngayHetHanSauKhiGiaHanTTXM;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
+		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayRaQuyetDinhGiaHanTTXM() {
+		return ngayRaQuyetDinhGiaHanTTXM;
+	}
+
+	public void setNgayRaQuyetDinhGiaHanTTXM(LocalDateTime ngayRaQuyetDinhGiaHanTTXM) {
+		this.ngayRaQuyetDinhGiaHanTTXM = ngayRaQuyetDinhGiaHanTTXM;
 	}
 
 	public boolean isLapToDoanXacMinh() {
@@ -200,6 +292,30 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDaRaQuyetDinhGiaiQuyet(boolean daRaQuyetDinhGiaiQuyet) {
 		this.daRaQuyetDinhGiaiQuyet = daRaQuyetDinhGiaiQuyet;
+	}
+
+	public int getSoVuGiaoCoQuanDieuTra() {
+		return soVuGiaoCoQuanDieuTra;
+	}
+
+	public void setSoVuGiaoCoQuanDieuTra(int soVuGiaoCoQuanDieuTra) {
+		this.soVuGiaoCoQuanDieuTra = soVuGiaoCoQuanDieuTra;
+	}
+
+	public int getSoDoiTuongGiaoCoQuanDieuTra() {
+		return soDoiTuongGiaoCoQuanDieuTra;
+	}
+
+	public void setSoDoiTuongGiaoCoQuanDieuTra(int soDoiTuongGiaoCoQuanDieuTra) {
+		this.soDoiTuongGiaoCoQuanDieuTra = soDoiTuongGiaoCoQuanDieuTra;
+	}
+
+	public int getSoVuBiKhoiTo() {
+		return soVuBiKhoiTo;
+	}
+
+	public void setSoVuBiKhoiTo(int soVuBiKhoiTo) {
+		this.soVuBiKhoiTo = soVuBiKhoiTo;
 	}
 
 	public int getSoDoiTuongBiKhoiTo() {
