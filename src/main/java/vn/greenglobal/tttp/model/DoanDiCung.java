@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +26,10 @@ public class DoanDiCung extends Model<DoanDiCung> {
 	private String cmndHoChieu = "";
 	private String diaChi = "";
 	private String soDienThoai = "";
+	
+	@NotNull
+	@ManyToOne
+	private Don don;
 	
 
 	public String getHoVaTen() {
@@ -56,6 +62,15 @@ public class DoanDiCung extends Model<DoanDiCung> {
 
 	public void setSoDienThoai(String soDienThoai) {
 		this.soDienThoai = soDienThoai;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
 	}
 
 	@Transient
