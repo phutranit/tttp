@@ -91,6 +91,10 @@ public class CongDanService {
 				.and(QCongDan.congDan.diaChi.equalsIgnoreCase(diaChi));		
 		return predAll;
 	}
+	
+	public Predicate predicateFindCongDanExists(String soCMND) {
+		return base.and(QCongDan.congDan.soCMNDHoChieu.equalsIgnoreCase(soCMND));
+	}
 
 	public List<PropertyChangeObject> getListThayDoi(CongDan congDanNew, CongDan congDanOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
