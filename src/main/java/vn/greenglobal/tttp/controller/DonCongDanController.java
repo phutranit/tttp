@@ -38,6 +38,7 @@ import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Post_Patch;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.service.CongDanService;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -53,7 +54,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	private DonCongDanService donCongDanService;
 
 	@Autowired
-	private CongDanRepository congDanRepository;
+	private CongDanRepository congDanRepo;
+	
+	@Autowired
+	private CongDanService congDanService;
 
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
 		super(repo);
@@ -102,12 +106,33 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				public Object doInTransaction(TransactionStatus arg0) {
 					if (params.getDonCongDans().size() > 0) {
 						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), Long.valueOf(
-									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDan != null) {
-								donCongDan.getCongDan().setId(congDan.getId());
-								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
-										.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							CongDan congDan = null;
+							
+							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+							}	
+							if (congDan == null) {
+								congDan = new CongDan();
+							}
+							congDan.setHoVaTen(donCongDan.getHoVaTen());
+							congDan.setDanToc(donCongDan.getDanToc());
+							congDan.setQuocTich(donCongDan.getQuocTich());
+							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+							congDan.setDiaChi(donCongDan.getDiaChi());
+							congDan.setNgaySinh(donCongDan.getNgaySinh());
+							congDan.setNgayCap(donCongDan.getNgayCap());
+							congDan.setGioiTinh(donCongDan.isGioiTinh());
+							congDan.setTinhThanh(donCongDan.getTinhThanh());
+							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+							congDan.setPhuongXa(donCongDan.getPhuongXa());
+							congDan.setToDanPho(donCongDan.getToDanPho());
+							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+								
+							CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							if (congDanUpdate != null) {
+								donCongDan.setCongDan(congDanUpdate);
+								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDonCongDans().add(dcd);
 							}
 						}
@@ -174,9 +199,33 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 							listUpdate.add(donCongDan);
 						}
 						for (Don_CongDan donCongDan : listUpdate) {
-							CongDan congDan = Utils.save(congDanRepository, donCongDan.getCongDan(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDan != null) {
-								donCongDan.getCongDan().setId(congDan.getId());
+							
+							CongDan congDan = null;
+							
+							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+							}		
+							if (congDan == null) {
+								congDan = new CongDan();
+							}
+							congDan.setHoVaTen(donCongDan.getHoVaTen());
+							congDan.setDanToc(donCongDan.getDanToc());
+							congDan.setQuocTich(donCongDan.getQuocTich());
+							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+							congDan.setDiaChi(donCongDan.getDiaChi());
+							congDan.setNgaySinh(donCongDan.getNgaySinh());
+							congDan.setNgayCap(donCongDan.getNgayCap());
+							congDan.setGioiTinh(donCongDan.isGioiTinh());
+							congDan.setTinhThanh(donCongDan.getTinhThanh());
+							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+							congDan.setPhuongXa(donCongDan.getPhuongXa());
+							congDan.setToDanPho(donCongDan.getToDanPho());
+							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+								
+							CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							if (congDanUpdate != null) {
+								donCongDan.setCongDan(congDanUpdate);
 								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDonCongDans().add(dcd);
 							}

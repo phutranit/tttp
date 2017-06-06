@@ -61,6 +61,8 @@ public class Don extends Model<Don> {
 	private String urlFileUyQuyen = "";
 	private String fileChungChiHanhNghe = "";
 	private String urlChungChiHanhNghe = "";
+	private String fileVanBanDaGiaiQuyet = "";
+	private String urlVanBanDaGiaiQuyet = "";
 
 //	@Transient
 //	private Long soNgayXuLy;
@@ -346,6 +348,22 @@ public class Don extends Model<Don> {
 	public void setGhiChuXuLyDon(String ghiChuXuLyDon) {
 		this.ghiChuXuLyDon = ghiChuXuLyDon;
 	}
+	
+	public String getFileVanBanDaGiaiQuyet() {
+		return fileVanBanDaGiaiQuyet;
+	}
+
+	public void setFileVanBanDaGiaiQuyet(String fileVanBanDaGiaiQuyet) {
+		this.fileVanBanDaGiaiQuyet = fileVanBanDaGiaiQuyet;
+	}
+
+	public String getUrlVanBanDaGiaiQuyet() {
+		return urlVanBanDaGiaiQuyet;
+	}
+
+	public void setUrlVanBanDaGiaiQuyet(String urlVanBanDaGiaiQuyet) {
+		this.urlVanBanDaGiaiQuyet = urlVanBanDaGiaiQuyet;
+	}
 
 	@ApiModelProperty(position = 26, example = "{}")
 	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
@@ -614,19 +632,6 @@ public class Don extends Model<Don> {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		for (Don_CongDan dcd : getDonCongDans()) {
 			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-				list.add(dcd);
-			}
-		}
-		return list;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public List<Don_CongDan> getListThanhVienDoanDongNguoi() {
-		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		for (Don_CongDan dcd : getDonCongDans()) {
-			if ((PhanLoaiDonCongDanEnum.THANH_VIEN_DOAN_NHIEU_NGUOI.equals(dcd.getPhanLoaiCongDan())
-					|| PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan())) && !dcd.isDaXoa()) {
 				list.add(dcd);
 			}
 		}
