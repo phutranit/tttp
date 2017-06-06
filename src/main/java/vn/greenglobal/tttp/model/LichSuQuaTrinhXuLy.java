@@ -15,9 +15,12 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 
 	private String ten = "";
 	private String noiDung = "";
-
+	private int thuTuThucHien = 0;
+	
 	@ManyToOne
 	private CongChuc nguoiXuLy;
+	@ManyToOne
+	private Don don;
 	
 	private LocalDateTime ngayXuLy;
 	
@@ -43,6 +46,15 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	public CongChuc getNguoiXuLy() {
 		return nguoiXuLy;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
+	}
 
 	public void setNguoiXuLy(CongChuc nguoiXuLy) {
 		this.nguoiXuLy = nguoiXuLy;
@@ -55,5 +67,13 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
+	}
+
+	public int getThuTuThucHien() {
+		return thuTuThucHien;
+	}
+
+	public void setThuTuThucHien(int thuTuThucHien) {
+		this.thuTuThucHien = thuTuThucHien;
 	}
 }

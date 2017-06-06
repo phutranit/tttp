@@ -141,7 +141,7 @@ public enum QuyenEnum {
 	
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
 	THEODOIGIAMSAT_THONGKE("Thống kê");
-
+	
 	QuyenEnum(String text) {
 		this.text = text;
 	}
