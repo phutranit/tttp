@@ -155,9 +155,9 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
 		
 		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
-			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
-			if (congDanExists != null) {
-				return new ResponseEntity<>(eass.toFullResource(congDanExists), HttpStatus.OK);
+			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
 			}
 		} 
 		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
@@ -170,9 +170,9 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "soCMND", required = false) String soCMND, PersistentEntityResourceAssembler eass) {
 		
 		if (StringUtils.isNotBlank(soCMND)) {
-			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(soCMND));
-			if (congDanExists != null) {
-				return new ResponseEntity<>(eass.toFullResource(congDanExists), HttpStatus.OK);
+			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(soCMND));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
 			}
 		} 
 		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
