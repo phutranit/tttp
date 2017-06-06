@@ -36,20 +36,16 @@ public class CongDan extends Model<CongDan> {
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
-	@NotBlank
 	private String diaChi = "";
 
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
 	private boolean gioiTinh;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh quanHuyen;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh phuongXa;
 

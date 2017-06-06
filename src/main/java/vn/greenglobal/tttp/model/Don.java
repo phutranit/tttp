@@ -51,7 +51,6 @@ public class Don extends Model<Don> {
 	private String yeuCauCuaCongDan = "";
 	// @Lob
 	private String huongGiaiQuyetDaThucHien = " ";
-	private String lanGiaiQuyet = "";
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
 
@@ -71,6 +70,7 @@ public class Don extends Model<Don> {
 	private String nguonDonText = "";
 	@Transient
 	private String trangThaiDonText = "";
+	private String soVanBanDaGiaiQuyet = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
@@ -83,7 +83,6 @@ public class Don extends Model<Don> {
 	private boolean daXuLy = false;
 	private boolean yeuCauGapTrucTiepLanhDao = false;
 	private boolean thanhLapTiepDanGapLanhDao = false;
-	private boolean boSungThongTinBiKhieuTo = false;
 	private boolean coThongTinCoQuanDaGiaiQuyet = false;
 	private boolean lanhDaoDuyet = false;
 	
@@ -94,6 +93,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime thoiHanXuLyXLD;
 	private LocalDateTime ngayBatDauXLD;
 	private LocalDateTime ngayKetThucXLD;
+	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
@@ -164,23 +164,9 @@ public class Don extends Model<Don> {
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 
 	@Enumerated(EnumType.STRING)
-	private LoaiNguoiDungDonEnum loaiNguoiBiKhieuTo;
-	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
-
-	private String tenCoQuanBKT = "";
-	private String diaChiCoQuanBKT = "";
-	private String soDienThoaiCoQuanBKT = "";
-	@ManyToOne
-	private DonViHanhChinh tinhThanhCoQuanBKT;
-	@ManyToOne
-	private DonViHanhChinh quanHuyenCoQuanBKT;
-	@ManyToOne
-	private DonViHanhChinh phuongXaCoQuanBKT;
-	@ManyToOne
-	private ToDanPho toDanPhoCoQuanBKT;
 
 	@ManyToOne
 	private State currentState;
@@ -273,14 +259,6 @@ public class Don extends Model<Don> {
 		return thanhLapDon;
 	}
 
-	public boolean isBoSungThongTinBiKhieuTo() {
-		return boSungThongTinBiKhieuTo;
-	}
-
-	public void setBoSungThongTinBiKhieuTo(boolean boSungThongTinBiKhieuTo) {
-		this.boSungThongTinBiKhieuTo = boSungThongTinBiKhieuTo;
-	}
-
 	public boolean isCoThongTinCoQuanDaGiaiQuyet() {
 		return coThongTinCoQuanDaGiaiQuyet;
 	}
@@ -351,15 +329,6 @@ public class Don extends Model<Don> {
 		}
 	}
 
-	@ApiModelProperty(position = 17)
-	public String getLanGiaiQuyet() {
-		return lanGiaiQuyet;
-	}
-
-	public void setLanGiaiQuyet(String lanGiaiQuyet) {
-		this.lanGiaiQuyet = lanGiaiQuyet;
-	}
-
 	@ApiModelProperty(position = 24)
 	public String getyKienXuLyDon() {
 		return yKienXuLyDon;
@@ -421,6 +390,22 @@ public class Don extends Model<Don> {
 
 	public void setThamQuyenGiaiQuyet(ThamQuyenGiaiQuyet thamQuyenGiaiQuyet) {
 		this.thamQuyenGiaiQuyet = thamQuyenGiaiQuyet;
+	}
+	
+	public String getSoVanBanDaGiaiQuyet() {
+		return soVanBanDaGiaiQuyet;
+	}
+
+	public void setSoVanBanDaGiaiQuyet(String soVanBanDaGiaiQuyet) {
+		this.soVanBanDaGiaiQuyet = soVanBanDaGiaiQuyet;
+	}
+
+	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {
+		return ngayBanHanhVanBanDaGiaiQuyet;
+	}
+
+	public void setNgayBanHanhVanBanDaGiaiQuyet(LocalDateTime ngayBanHanhVanBanDaGiaiQuyet) {
+		this.ngayBanHanhVanBanDaGiaiQuyet = ngayBanHanhVanBanDaGiaiQuyet;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -585,78 +570,6 @@ public class Don extends Model<Don> {
 		this.donCongDans = donCongDans;
 	}
 
-	@ApiModelProperty(position = 8, allowableValues = "CA_NHAN, CO_QUAN_TO_CHUC")
-	public LoaiNguoiDungDonEnum getLoaiNguoiBiKhieuTo() {
-		return loaiNguoiBiKhieuTo;
-	}
-
-	public void setLoaiNguoiBiKhieuTo(LoaiNguoiDungDonEnum loaiNguoiBiKhieuTo) {
-		this.loaiNguoiBiKhieuTo = loaiNguoiBiKhieuTo;
-	}
-
-	@ApiModelProperty(position = 27)
-	public String getTenCoQuanBKT() {
-		return tenCoQuanBKT;
-	}
-
-	public void setTenCoQuanBKT(String tenCoQuanBKT) {
-		this.tenCoQuanBKT = tenCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 28)
-	public String getDiaChiCoQuanBKT() {
-		return diaChiCoQuanBKT;
-	}
-
-	public void setDiaChiCoQuanBKT(String diaChiCoQuanBKT) {
-		this.diaChiCoQuanBKT = diaChiCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 29)
-	public String getSoDienThoaiCoQuanBKT() {
-		return soDienThoaiCoQuanBKT;
-	}
-
-	public void setSoDienThoaiCoQuanBKT(String soDienThoaiCoQuanBKT) {
-		this.soDienThoaiCoQuanBKT = soDienThoaiCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 30, example = "{}")
-	public DonViHanhChinh getTinhThanhCoQuanBKT() {
-		return tinhThanhCoQuanBKT;
-	}
-
-	public void setTinhThanhCoQuanBKT(DonViHanhChinh tinhThanhCoQuanBKT) {
-		this.tinhThanhCoQuanBKT = tinhThanhCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 31, example = "{}")
-	public DonViHanhChinh getQuanHuyenCoQuanBKT() {
-		return quanHuyenCoQuanBKT;
-	}
-
-	public void setQuanHuyenCoQuanBKT(DonViHanhChinh quanHuyenCoQuanBKT) {
-		this.quanHuyenCoQuanBKT = quanHuyenCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 32, example = "{}")
-	public DonViHanhChinh getPhuongXaCoQuanBKT() {
-		return phuongXaCoQuanBKT;
-	}
-
-	public void setPhuongXaCoQuanBKT(DonViHanhChinh phuongXaCoQuanBKT) {
-		this.phuongXaCoQuanBKT = phuongXaCoQuanBKT;
-	}
-
-	@ApiModelProperty(position = 33, example = "{}")
-	public ToDanPho getToDanPhoCoQuanBKT() {
-		return toDanPhoCoQuanBKT;
-	}
-
-	public void setToDanPhoCoQuanBKT(ToDanPho toDanPhoCoQuanBKT) {
-		this.toDanPhoCoQuanBKT = toDanPhoCoQuanBKT;
-	}
-
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
 		for (Don_CongDan obj : donCongDans) {
@@ -726,19 +639,6 @@ public class Don extends Model<Don> {
 		for (Don_CongDan dcd : getDonCongDans()) {
 			if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 				return dcd;
-			}
-		}
-		return null;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Don_CongDan getDoiTuongBiKhieuTo() {
-		if (LoaiNguoiDungDonEnum.CA_NHAN.equals(getLoaiNguoiBiKhieuTo())) {
-			for (Don_CongDan dcd : getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.DOI_TUONG_BI_KHIEU_TO.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-					return dcd;
-				}
 			}
 		}
 		return null;
@@ -839,54 +739,6 @@ public class Don extends Model<Don> {
 			mapCapCoQuanQuanLy.put("ten", getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy() != null
 					? getCoQuanDaGiaiQuyet().getCapCoQuanQuanLy().getTen() : "");
 			map.put("capCoQuanQuanLyInfo", mapCapCoQuanQuanLy);
-			return map;
-		}
-		return null;
-	}
-
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getTinhThanhCoQuanBKTInfo() {
-		if (getTinhThanhCoQuanBKT() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("donViHanhChinhId", getTinhThanhCoQuanBKT().getId());
-			map.put("ten", getTinhThanhCoQuanBKT().getTen());
-			return map;
-		}
-		return null;
-	}
-
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getQuanHuyenCoQuanBKTInfo() {
-		if (getQuanHuyenCoQuanBKT() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("donViHanhChinhId", getQuanHuyenCoQuanBKT().getId());
-			map.put("ten", getQuanHuyenCoQuanBKT().getTen());
-			return map;
-		}
-		return null;
-	}
-
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getPhuongXaCoQuanBKTInfo() {
-		if (getPhuongXaCoQuanBKT() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("donViHanhChinhId", getPhuongXaCoQuanBKT().getId());
-			map.put("ten", getPhuongXaCoQuanBKT().getTen());
-			return map;
-		}
-		return null;
-	}
-
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getToDanPhoCoQuanBKTInfo() {
-		if (getToDanPhoCoQuanBKT() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("toDanPhoId", getToDanPhoCoQuanBKT().getId());
-			map.put("ten", getToDanPhoCoQuanBKT().getTen());
 			return map;
 		}
 		return null;
