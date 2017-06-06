@@ -412,9 +412,8 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
 				
 				//set thoi han xu ly
-				if(xuLyDon.getThoiHanXuLy() != null) {
-					//xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
-					donMoi.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
+				if(don.getThoiHanXuLyXLD() != null) {
+					donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 				} 
 				donMoi.setNgayBatDauXLD(LocalDateTime.now());
 
@@ -531,13 +530,13 @@ public class DonController extends TttpController<Don> {
 					xuLyDonTiepTheo.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 					
 					//set thoi han xu ly
-					if (xuLyDonHienTai.getThoiHanXuLy() != null) {
+					if (don.getThoiHanXuLyXLD() != null) {
 						//set thoi han xu ly
 						//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 						//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
 						
 						//set don
-						donMoi.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
+						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 						//donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
 					}
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
@@ -655,12 +654,7 @@ public class DonController extends TttpController<Don> {
 					//set co quan & don vi
 					xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
-					
-					//set thoi han xu ly
-					if (xuLyDon.getThoiHanXuLy() != null) {
-						don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
-					}
-					
+
 					Utils.save(xuLyRepo, xuLyDon, congChucId);
 				} else {
 					XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
@@ -668,17 +662,14 @@ public class DonController extends TttpController<Don> {
 						if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 						}
-						//set thoi han xu ly
-						if (xuLyDonHienTai.getThoiHanXuLy() != null) {
-							don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
-						}
+						
 						Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					}
 				}
 				
-				if (donOld.getThoiHanXuLyXLD() != null) {
+				/*if (donOld.getThoiHanXuLyXLD() != null) {
 					don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
-				}
+				}*/
 				if (donOld.getNgayBatDauXLD() != null) {
 					don.setNgayBatDauXLD(LocalDateTime.now());
 				}

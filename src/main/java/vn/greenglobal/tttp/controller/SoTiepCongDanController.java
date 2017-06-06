@@ -231,6 +231,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				long soNgayXuLyMacDinh = 10;
 				don.setNgayBatDauXLD(LocalDateTime.now());
 				don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(soTiepCongDan.getDon().getNgayBatDauXLD(), soNgayXuLyMacDinh));
+				State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
+				don.setProcessType(ProcessTypeEnum.XU_LY_DON);					
+				don.setCurrentState(beginState);
 			}
 		}
 
@@ -310,6 +313,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				long soNgayXuLyMacDinh = 10;
 				don.setNgayBatDauXLD(LocalDateTime.now());
 				don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(soTiepCongDan.getDon().getNgayBatDauXLD(), soNgayXuLyMacDinh));
+				State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
+				don.setProcessType(ProcessTypeEnum.XU_LY_DON);					
+				don.setCurrentState(beginState);
 			}
 		}
 
