@@ -34,7 +34,7 @@ public class SoTiepCongDanService {
 	}
 
 	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay,
-			String denNgay, String loaiTiepCongDan, Long coQuanQuanLyId, Long lanhDaoId, String tenNguoiDungDon, String tinhTrangXuLy,
+			String denNgay, String loaiTiepCongDan, Long donViId, Long lanhDaoId, String tenNguoiDungDon, String tinhTrangXuLy,
 			String ketQuaTiepDan, CongChucRepository congChucRepo, DonCongDanRepository donCongDanRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression donCongDanQuery = baseDonCongDan;
@@ -50,9 +50,9 @@ public class SoTiepCongDanService {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon));
 		}
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(coQuanQuanLyId)
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(coQuanQuanLyId))
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(coQuanQuanLyId)));
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
 		if (StringUtils.isNotBlank(huongXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy));
 		}
