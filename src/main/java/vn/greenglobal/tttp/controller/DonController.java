@@ -386,11 +386,13 @@ public class DonController extends TttpController<Don> {
 				xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
 				
 				//set thoi han xu ly
-				if(xuLyDon.getThoiHanXuLy() != null) {
-					//xuLyDon.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
-					donMoi.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
-				} 
 				donMoi.setNgayBatDauXLD(LocalDateTime.now());
+				if (don.getThoiHanXuLyXLD() != null) {
+					donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
+				} else {
+					long soNgayXuLyMacDinh = 10;
+					donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+				}
 
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 			}
@@ -482,16 +484,13 @@ public class DonController extends TttpController<Don> {
 					xuLyDonTiepTheo.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 					
 					//set thoi han xu ly
-					if (xuLyDonHienTai.getThoiHanXuLy() != null) {
-						//set thoi han xu ly
-						//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						
-						//set don
-						donMoi.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
-						//donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
-					}
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
+					if (don.getThoiHanXuLyXLD() != null) {
+						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
+					} else {
+						long soNgayXuLyMacDinh = 10;
+						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+					}
 					
 					// xuLyDonTiepTheo.setThoiHanXuLy();
 					if (xuLyDonHienTai.isDonChuyen()) {
@@ -538,9 +537,6 @@ public class DonController extends TttpController<Don> {
 	public @ResponseBody ResponseEntity<Object> update(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-//		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DON_SUA);
-//		if (nguoiDung != null) {
-		
 		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
 		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 
@@ -560,15 +556,25 @@ public class DonController extends TttpController<Don> {
 			don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
 			don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 			don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
-			don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
-			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
-			don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
 			don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
 			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			}
-			
+
 			if (don.isThanhLapDon()) {
+				don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+				if (donOld.getThoiHanXuLyXLD() == null) {
+					don.setNgayBatDauXLD(LocalDateTime.now());
+					if (don.getThoiHanXuLyXLD() == null) {
+						long soNgayXuLyMacDinh = 10;
+						don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+					}
+				} else {
+					if (don.getThoiHanXuLyXLD() == null) {
+						don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
+					}
+				}
+				
 				// Them xu ly don
 				if(donOld.getXuLyDons().size() <= 0) {
 					XuLyDon xuLyDon = new XuLyDon();
@@ -582,35 +588,18 @@ public class DonController extends TttpController<Don> {
 					//set co quan & don vi
 					xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
-					
-					//set thoi han xu ly
-					if (xuLyDon.getThoiHanXuLy() != null) {
-						don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
-					}
-					
 					Utils.save(xuLyRepo, xuLyDon, congChucId);
 				} else {
 					XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
-					if(xuLyDonHienTai != null) {
+					if (xuLyDonHienTai != null) {
 						if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
 							xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
-						}
-						//set thoi han xu ly
-						if (xuLyDonHienTai.getThoiHanXuLy() != null) {
-							don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
 						}
 						Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					}
 				}
-				
-				if (donOld.getThoiHanXuLyXLD() != null) {
-					don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
-				}
-				if (donOld.getNgayBatDauXLD() != null) {
-					don.setNgayBatDauXLD(LocalDateTime.now());
-				}
+
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-				
 				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
 				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 				Process process = getProcess(authorization, don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L, ProcessTypeEnum.XU_LY_DON.toString());
