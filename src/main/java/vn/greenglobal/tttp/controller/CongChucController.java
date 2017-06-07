@@ -87,9 +87,6 @@ public class CongChucController extends TttpController<CongChuc> {
 		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		Long coQuanQuanLyLoginId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));	
-		System.out.println("vaiTro " +vaiTro);
-		System.out.println("congChucId " +congChucId);
-		System.out.println("coQuanQuanLyLoginCC " +coQuanQuanLyLoginCC.getId());
 		
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);

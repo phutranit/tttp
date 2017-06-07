@@ -467,9 +467,7 @@ public class DonController extends TttpController<Don> {
 					if (listState.size() > 0) {
 						State nextState = listState.get(0);
 						donMoi.setCurrentState(nextState);
-						System.out.println("1 - " +nextState.getId());
 					} else {
-						System.out.println("2");
 						donMoi.setCurrentState(beginState);
 					}
 					
@@ -479,18 +477,10 @@ public class DonController extends TttpController<Don> {
 					Transition transition = transitionRepo.findOne(
 							transitionService.predicatePrivileged(beginState, nextState, process));
 					
-					System.out.println("process " +process.getId());
-					System.out.println("beginState " +beginState.getTenVietTat() + "id " +beginState.getId());
-					System.out.println("nextState " +nextState.getTenVietTat() + "id " +nextState.getId());
-					System.out.println("currentState " +donMoi.getCurrentState().getTenVietTat() + " id " +donMoi.getCurrentState().getId());
-					
-					
 					if (transition == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
 								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 					}
-					System.out.println("transition " +transition.getId());
-					
 					
 					// Them xu ly don hien tai
 					XuLyDon xuLyDonHienTai = new XuLyDon();
@@ -641,11 +631,21 @@ public class DonController extends TttpController<Don> {
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
 					xuLyDon.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
-					
 					//set co quan & don vi
 					xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
+					
+					//tao lich su qua trinh xu ly don
+					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+					lichSuQTXLD.setDon(donOld);
+					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
+					lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+					int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId());
+					lichSuQTXLD.setThuTuThucHien(thuTu);
 					Utils.save(xuLyRepo, xuLyDon, congChucId);
+					Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 				} else {
 					XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
 					if (xuLyDonHienTai != null) {
@@ -665,15 +665,16 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
+				don.setCurrentState(beginState);
 				
-				Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
+				/*Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
 				List<State> listState = ((List<State>) repoState.findAll(predicate));
 				if (listState.size() > 0) {
 					State nextState = listState.get(0);
 					don.setCurrentState(nextState);
 				} else {
 					don.setCurrentState(beginState);
-				}
+				}*/
 			}
 
 			return Utils.doSave(repo, don,

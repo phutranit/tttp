@@ -251,7 +251,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			lichSuQTXL.setDon(soTiepCongDan.getDon());
 			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
 			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy().getText());
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
 			lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
 			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
 			lichSuQTXL.setThuTuThucHien(thuTu);
@@ -335,7 +335,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			lichSuQTXL.setDon(soTiepCongDan.getDon());
 			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
 			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy().getText());
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
 			lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
 			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
 			lichSuQTXL.setThuTuThucHien(thuTu);
