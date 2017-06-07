@@ -147,21 +147,35 @@ public class CongDanController extends TttpController<CongDan> {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/congDanExists")
-	@ApiOperation(value = "Lấy danh sách Suggest Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Kiểm tra công dân tồn tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getCongDanExists(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "soCMNND", required = false) String soCMNND,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
 		
-		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMNND) && StringUtils.isNotBlank(diaChi)) {
-			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(tuKhoa, soCMNND, diaChi));
-			if (congDanExists != null) {
-				return new ResponseEntity<>(eass.toFullResource(congDanExists), HttpStatus.OK);
+		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
+			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
 			}
 		} 
-		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-				ApiErrorEnum.DATA_NOT_FOUND.getText());
+		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/cmndExists")
+	@ApiOperation(value = "Kiểm tra CMND tồn tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getCongDanExists(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "soCMND", required = false) String soCMND, PersistentEntityResourceAssembler eass) {
+		
+		if (StringUtils.isNotBlank(soCMND)) {
+			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(soCMND));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
+			}
+		} 
+		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

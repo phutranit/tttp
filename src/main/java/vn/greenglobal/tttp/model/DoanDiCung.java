@@ -4,52 +4,78 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 
 @Entity
-@Table(name = "thoihan")
+@Table(name = "doandicung")
 @ApiModel
-public class ThoiHan extends Model<ThoiHan> {
+public class DoanDiCung extends Model<DoanDiCung> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5794847516802209604L;
-
-	private int soNgay = 0;
+	private static final long serialVersionUID = -7373932592993931273L;
+	
+	private String hoVaTen = "";
+	private String cmndHoChieu = "";
+	private String diaChi = "";
+	private String soDienThoai = "";
+	
 	@NotNull
-	@Enumerated(EnumType.STRING)
-	private LoaiThoiHanEnum loaiThoiHanEnum;
+	@ManyToOne
+	private Don don;
+	
 
-	@ApiModelProperty(position = 1)
-	public int getSoNgay() {
-		return soNgay;
+	public String getHoVaTen() {
+		return hoVaTen;
 	}
 
-	public void setSoNgay(int soNgay) {
-		this.soNgay = soNgay;
+	public void setHoVaTen(String hoVaTen) {
+		this.hoVaTen = hoVaTen;
 	}
 
-	@ApiModelProperty(position = 2)
-	public LoaiThoiHanEnum getLoaiThoiHanEnum() {
-		return loaiThoiHanEnum;
+	public String getCmndHoChieu() {
+		return cmndHoChieu;
 	}
 
-	public void setLoaiThoiHanEnum(LoaiThoiHanEnum loaiThoiHanEnum) {
-		this.loaiThoiHanEnum = loaiThoiHanEnum;
+	public void setCmndHoChieu(String cmndHoChieu) {
+		this.cmndHoChieu = cmndHoChieu;
+	}
+
+	public String getDiaChi() {
+		return diaChi;
+	}
+
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
+	}
+
+	public String getSoDienThoai() {
+		return soDienThoai;
+	}
+
+	public void setSoDienThoai(String soDienThoai) {
+		this.soDienThoai = soDienThoai;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
 	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getThoiHanId() {
+	public Long getDoanDiCungId() {
 		return getId();
 	}
 

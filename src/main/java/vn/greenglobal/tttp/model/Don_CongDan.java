@@ -29,6 +29,10 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String tenCoQuan = "";
 	private String diaChiCoQuan = "";
 	private String soDienThoai = "";
+	private String hoVaTen = "";
+	private String soCMNDHoChieu = "";
+	private String diaChi = "";
+	private String soDienThoaiCoQuan = "";
 
 	// Người đứng đơn, ủy quyền, khiếu tố
 	@NotNull
@@ -37,14 +41,36 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	private String soTheLuatSu = "";
 
+	private boolean gioiTinh;
 	private boolean luatSu = false;
 
 	private LocalDateTime ngayCapTheLuatSu;
+	private LocalDateTime ngaySinh;
+	private LocalDateTime ngayCap;
 
 	private String thongTinGioiThieu = "";
 	private String noiCapTheLuatSu = "";
 	private String donVi = "";
 	private String chucVu = "";
+	
+	@ManyToOne
+	private CoQuanQuanLy noiCapCMND;
+	
+	@ManyToOne
+	private DonViHanhChinh tinhThanh;
+	@ManyToOne
+	private DonViHanhChinh quanHuyen;
+	@ManyToOne
+	private DonViHanhChinh phuongXa;
+
+	@ManyToOne
+	private ToDanPho toDanPho;
+
+	@ManyToOne
+	private QuocTich quocTich;
+
+	@ManyToOne
+	private DanToc danToc;
 
 	@ApiModelProperty(position = 3, required = true, example = "{}")
 	public Don getDon() {
@@ -55,7 +81,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 		this.don = don;
 	}
 
-	@ApiModelProperty(position = 4, required = true)
+	@ApiModelProperty(position = 4, required = true, example = "{}")
 	public CongDan getCongDan() {
 		return congDan;
 	}
@@ -144,6 +170,125 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	public void setDonVi(String donVi) {
 		this.donVi = donVi;
+	}
+
+	public String getHoVaTen() {
+		return hoVaTen;
+	}
+
+	public void setHoVaTen(String hoVaTen) {
+		this.hoVaTen = hoVaTen;
+	}
+
+	public String getSoCMNDHoChieu() {
+		return soCMNDHoChieu;
+	}
+
+	public void setSoCMNDHoChieu(String soCMNDHoChieu) {
+		this.soCMNDHoChieu = soCMNDHoChieu;
+	}
+
+	public boolean isGioiTinh() {
+		return gioiTinh;
+	}
+
+	public void setGioiTinh(boolean gioiTinh) {
+		this.gioiTinh = gioiTinh;
+	}
+
+	public LocalDateTime getNgaySinh() {
+		return ngaySinh;
+	}
+
+	public void setNgaySinh(LocalDateTime ngaySinh) {
+		this.ngaySinh = ngaySinh;
+	}
+
+	public LocalDateTime getNgayCap() {
+		return ngayCap;
+	}
+
+	public void setNgayCap(LocalDateTime ngayCap) {
+		this.ngayCap = ngayCap;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public CoQuanQuanLy getNoiCapCMND() {
+		return noiCapCMND;
+	}
+
+	public void setNoiCapCMND(CoQuanQuanLy noiCapCMND) {
+		this.noiCapCMND = noiCapCMND;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public DonViHanhChinh getTinhThanh() {
+		return tinhThanh;
+	}
+
+	public void setTinhThanh(DonViHanhChinh tinhThanh) {
+		this.tinhThanh = tinhThanh;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public DonViHanhChinh getQuanHuyen() {
+		return quanHuyen;
+	}
+
+	public void setQuanHuyen(DonViHanhChinh quanHuyen) {
+		this.quanHuyen = quanHuyen;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public DonViHanhChinh getPhuongXa() {
+		return phuongXa;
+	}
+
+	public void setPhuongXa(DonViHanhChinh phuongXa) {
+		this.phuongXa = phuongXa;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public ToDanPho getToDanPho() {
+		return toDanPho;
+	}
+
+	public void setToDanPho(ToDanPho toDanPho) {
+		this.toDanPho = toDanPho;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public QuocTich getQuocTich() {
+		return quocTich;
+	}
+
+	public void setQuocTich(QuocTich quocTich) {
+		this.quocTich = quocTich;
+	}
+
+	@ApiModelProperty(position = 3, example = "{}")
+	public DanToc getDanToc() {
+		return danToc;
+	}
+
+	public void setDanToc(DanToc danToc) {
+		this.danToc = danToc;
+	}
+	
+	public String getDiaChi() {
+		return diaChi;
+	}
+
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
+	}
+
+	public String getSoDienThoaiCoQuan() {
+		return soDienThoaiCoQuan;
+	}
+
+	public void setSoDienThoaiCoQuan(String soDienThoaiCoQuan) {
+		this.soDienThoaiCoQuan = soDienThoaiCoQuan;
 	}
 
 	@ApiModelProperty(position = 5)

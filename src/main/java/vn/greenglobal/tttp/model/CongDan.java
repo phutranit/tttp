@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -36,20 +35,16 @@ public class CongDan extends Model<CongDan> {
 	private String hoVaTen = "";
 	private String soDienThoai = "";
 	private String soCMNDHoChieu = "";
-	@NotBlank
 	private String diaChi = "";
 
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
 	private boolean gioiTinh;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh quanHuyen;
-	@NotNull
 	@ManyToOne
 	private DonViHanhChinh phuongXa;
 

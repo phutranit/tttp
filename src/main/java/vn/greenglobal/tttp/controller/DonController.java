@@ -38,7 +38,6 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
-import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
@@ -361,31 +360,6 @@ public class DonController extends TttpController<Don> {
 			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 			
-			if (don.isBoSungThongTinBiKhieuTo()) {
-				if (don.getLoaiNguoiBiKhieuTo() == null) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
-							"Trường loaiNguoiBiKhieuTo không được để trống!");
-			   }
-			   
-				if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-					don.setDiaChiCoQuanBKT("");
-					don.setSoDienThoaiCoQuanBKT("");
-					don.setTenCoQuanBKT("");
-					don.setTinhThanhCoQuanBKT(null);
-					don.setQuanHuyenCoQuanBKT(null);
-					don.setPhuongXaCoQuanBKT(null);
-					don.setToDanPhoCoQuanBKT(null);
-				}
-			} else {
-				don.setDiaChiCoQuanBKT("");
-				don.setSoDienThoaiCoQuanBKT("");
-				don.setTenCoQuanBKT("");
-				don.setTinhThanhCoQuanBKT(null);
-				don.setQuanHuyenCoQuanBKT(null);
-				don.setPhuongXaCoQuanBKT(null);
-				don.setToDanPhoCoQuanBKT(null);
-			}
-
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			Don donMoi = Utils.save(repo, don, congChucId);
 
@@ -452,30 +426,7 @@ public class DonController extends TttpController<Don> {
 			//QuyTrinhXuLyDonEnum quyTrinhXuLy = xuLyDon.getQuyTrinhXuLy();
 			String note = vaiTroNguoiDungHienTai + " " + QuyTrinhXuLyDonEnum.TRINH_LANH_DAO.getText().toLowerCase() + " ";
 
-			if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
-				if (don.isBoSungThongTinBiKhieuTo()) {
-					if (don.getLoaiNguoiBiKhieuTo() == null) {
-						return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
-								"Trường loaiNguoiBiKhieuTo không được để trống!");
-					}
-					if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-						don.setDiaChiCoQuanBKT("");
-						don.setSoDienThoaiCoQuanBKT("");
-						don.setTenCoQuanBKT("");
-						don.setTinhThanhCoQuanBKT(null);
-						don.setQuanHuyenCoQuanBKT(null);
-						don.setPhuongXaCoQuanBKT(null);
-						don.setToDanPhoCoQuanBKT(null);
-					}
-				} else {
-					don.setDiaChiCoQuanBKT("");
-					don.setSoDienThoaiCoQuanBKT("");
-					don.setTenCoQuanBKT("");
-					don.setTinhThanhCoQuanBKT(null);
-					don.setQuanHuyenCoQuanBKT(null);
-					don.setPhuongXaCoQuanBKT(null);
-					don.setToDanPhoCoQuanBKT(null);
-				}
+			if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {				
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 				Don donMoi = Utils.save(repo, don, congChucId);
 
@@ -600,30 +551,6 @@ public class DonController extends TttpController<Don> {
 			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 			
 			don.setId(id);
-
-			if (don.isBoSungThongTinBiKhieuTo()) {
-				if (don.getLoaiNguoiBiKhieuTo() == null) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAINGUOIBIKHIEUTO_REQUIRED",
-							"Trường loaiNguoiBiKhieuTo không được để trống!");
-				}
-				if (LoaiNguoiDungDonEnum.CA_NHAN.equals(don.getLoaiNguoiBiKhieuTo())) {
-					don.setDiaChiCoQuanBKT("");
-					don.setSoDienThoaiCoQuanBKT("");
-					don.setTenCoQuanBKT("");
-					don.setTinhThanhCoQuanBKT(null);
-					don.setQuanHuyenCoQuanBKT(null);
-					don.setPhuongXaCoQuanBKT(null);
-					don.setToDanPhoCoQuanBKT(null);
-				}
-			} else {
-				don.setDiaChiCoQuanBKT("");
-				don.setSoDienThoaiCoQuanBKT("");
-				don.setTenCoQuanBKT("");
-				don.setTinhThanhCoQuanBKT(null);
-				don.setQuanHuyenCoQuanBKT(null);
-				don.setPhuongXaCoQuanBKT(null);
-				don.setToDanPhoCoQuanBKT(null);
-			}
 
 			if (!donService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
