@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.annotations.Api;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.DocumentMetaData;
+import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
 import vn.greenglobal.tttp.service.FileUploadService;
 
 @RestController
@@ -37,21 +38,25 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 	@Value("${file.repository}")
 	private String fileStorageLocation;
-	
+
 	public FileUploadController(BaseRepository<DocumentMetaData, ?> repo) {
 		super(repo);
 	}
 
 	@Autowired
 	FileUploadService fileService;
+	
+	@Autowired
+	DocumentMetaDataRepository repo;
 
 	@RequestMapping(value = "/documents/upload", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public ResponseEntity<?> upload(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestPart(value = "file", required = true) MultipartFile file, HttpServletRequest req) throws IOException {
+			@RequestPart(value = "file", required = true) MultipartFile file, HttpServletRequest req)
+			throws IOException {
 
 		if (!file.isEmpty()) {
-			fileService.upload(file);
-			return new ResponseEntity<>(getBaseUrl(req)+fileStorageLocation+file.getOriginalFilename(), new HttpHeaders(), HttpStatus.CREATED);
+			fileService.upload(file, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + file.getOriginalFilename(), new HttpHeaders(), HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
@@ -68,22 +73,22 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 	@RequestMapping(value = "/tttpdata/files/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Object> serveFileUpload(@PathVariable String filename, HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
-		
-		File file = new File(fileService.getFileStorageLocation()+filename);
-		
+			HttpServletResponse response) throws IOException {
+
+		File file = new File(fileService.getFileStorageLocation() + filename);
+
 		HttpHeaders header = new HttpHeaders();
 		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
 		header.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()));
-		
-		response.setContentLength((int)file.length());
-		 
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        
+
+		response.setContentLength((int) file.length());
+
+		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+		FileCopyUtils.copy(inputStream, response.getOutputStream());
+
 		return ResponseEntity.ok(HttpStatus.FOUND);
 	}
-	
+
 	@RequestMapping(value = "/documents/uploadhandler", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadHandler(HttpServletRequest request) {
 

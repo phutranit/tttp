@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -10,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Document;
 import vn.greenglobal.tttp.model.DocumentMetaData;
 import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
@@ -27,15 +27,19 @@ public class FileUploadService {
 	DocumentMetaDataRepository documentRepository;
 
 	public String getFileStorageLocation() {
-		return System.getProperty("user.home")+File.separator+fileStorageLocation;
+		return System.getProperty("user.home") + fileStorageLocation;
 	}
-	
-	public void upload(MultipartFile file) throws IOException {
+
+	public void upload(MultipartFile file, Long congChucId) throws IOException {
 		String fileName = file.getOriginalFilename();
 		byte[] content = file.getBytes();
 		Document document = new Document(fileName, content);
 		DocumentMetaData documentMetaData = new DocumentMetaData(fileName, getFileStorageLocation(), LocalDateTime.now());
 		documentFileSystemService.add(document);
+		CongChuc cc = new CongChuc();
+		cc.setId(congChucId);
+		documentMetaData.setNguoiTao(cc);
+		documentMetaData.setNguoiSua(cc);
 		documentRepository.save(documentMetaData);
 	}
 
