@@ -81,10 +81,10 @@ public class SoTiepCongDanService {
 					.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.id.eq(lanhDaoId)));
 		}
 		
-		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+		/*if (StringUtils.isNotBlank(tinhTrangXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
 					.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy))));
-		}
+		}*/
 		
 		if (StringUtils.isNotBlank(ketQuaTiepDan)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
