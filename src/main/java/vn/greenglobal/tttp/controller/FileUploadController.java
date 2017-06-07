@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.annotations.Api;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.DocumentMetaData;
+import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
 import vn.greenglobal.tttp.service.FileUploadService;
 
 @RestController
@@ -44,6 +45,9 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 	@Autowired
 	FileUploadService fileService;
+	
+	@Autowired
+	DocumentMetaDataRepository repo;
 
 	@RequestMapping(value = "/documents/upload", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 	public ResponseEntity<?> upload(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -51,7 +55,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			throws IOException {
 
 		if (!file.isEmpty()) {
-			fileService.upload(file);
+			fileService.upload(file, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + file.getOriginalFilename(), new HttpHeaders(), HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
