@@ -411,10 +411,12 @@ public class EnumController {
 		Map<String, Object> object = new HashMap<>();
 
 		for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
-			object.put("ten", hxl.getText());
-			object.put("giaTri", hxl.name());
-			list.add(object);
-			object = new HashMap<>();
+			if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI)) { 
+				object.put("ten", hxl.getText());
+				object.put("giaTri", hxl.name());
+				list.add(object);
+				object = new HashMap<>();
+			}
 		}
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
