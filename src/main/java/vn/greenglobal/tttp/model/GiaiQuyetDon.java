@@ -50,6 +50,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private SoTiepCongDan soTiepCongDan;
 	private boolean old;
 
 	@Enumerated(EnumType.STRING)
@@ -164,6 +166,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setLaTTXM(boolean laTTXM) {
 		this.laTTXM = laTTXM;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public SoTiepCongDan getSoTiepCongDan() {
+		return soTiepCongDan;
+	}
+
+	public void setSoTiepCongDan(SoTiepCongDan soTiepCongDan) {
+		this.soTiepCongDan = soTiepCongDan;
 	}
 
 	@Transient
