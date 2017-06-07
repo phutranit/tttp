@@ -29,11 +29,10 @@ public class CongChucService {
 			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
 
-		if (congChucId.equals(1L)) {
-			if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
-			}
-		} else if (coQuanQuanLyLogin != null) {
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		else if (coQuanQuanLyLogin != null) {
 			if (coQuanQuanLyLogin.getDonVi() != null) {
 				predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.donVi.eq(coQuanQuanLyLogin.getDonVi()));
 			} else {

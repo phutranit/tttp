@@ -50,9 +50,11 @@ public class SoTiepCongDanService {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon));
 		}
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(coQuanQuanLyId)
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(coQuanQuanLyId))
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(coQuanQuanLyId)));
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(coQuanQuanLyId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(coQuanQuanLyId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(coQuanQuanLyId)));
+		}
 		if (StringUtils.isNotBlank(huongXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy));
 		}
