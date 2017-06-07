@@ -158,11 +158,13 @@ public class DonService {
 						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
 				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
 						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
-				predAll = predAll.and(QDon.don.processType.isNull()
+				/*predAll = predAll.and(QDon.don.processType.isNull()
 						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON))
 						.or(donViKiemTraDeXuat)
-						.or(donViThamTraXacMinh)
-						);
+						.or(donViThamTraXacMinh));*/
+				
+				predAll = predAll.and(QDon.don.processType.isNull()
+						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON)));
 			} 
 			predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		} else {
