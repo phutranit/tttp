@@ -209,6 +209,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
 			soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 			soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
+			don.setTongSoLuotTCD(soLuotTiep + 1);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				don.setYeuCauGapTrucTiepLanhDao(true);
 			}

@@ -27,9 +27,9 @@ public class FileUploadService {
 	DocumentMetaDataRepository documentRepository;
 
 	public String getFileStorageLocation() {
-		return System.getProperty("user.home")+File.separator+fileStorageLocation;
+		return System.getProperty("user.home") + File.separator + fileStorageLocation;
 	}
-	
+
 	public void upload(MultipartFile file) throws IOException {
 		String fileName = file.getOriginalFilename();
 		byte[] content = file.getBytes();
