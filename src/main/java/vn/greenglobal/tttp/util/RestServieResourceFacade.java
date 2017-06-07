@@ -16,7 +16,7 @@ public class RestServieResourceFacade {
 	FileUploadService fileUploadService;
 
 	public void upload(MultipartFile file) throws IOException {
-		fileUploadService.upload(file, null);
+		fileUploadService.upload(file, "", null);
 	}
 
 	public Resource download(String filename) throws IOException {
@@ -25,7 +25,7 @@ public class RestServieResourceFacade {
 
 	public void upload(MultipartFile[] files) throws IOException {
 		for (MultipartFile file : files) {
-			fileUploadService.upload(file, null);
+			fileUploadService.upload(file, "", null);
 		}
 	}
 }

@@ -128,6 +128,11 @@ public class Don extends Model<Don> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
+	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<DoanDiCung> doanDiCungs = new ArrayList<DoanDiCung>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -589,6 +594,15 @@ public class Don extends Model<Don> {
 	}
 
 	@ApiModelProperty(hidden = true)
+	public List<DoanDiCung> getDoanDiCungs() {
+		return doanDiCungs;
+	}
+
+	public void setDoanDiCungs(List<DoanDiCung> doanDiCungs) {
+		this.doanDiCungs = doanDiCungs;
+	}
+
+	@ApiModelProperty(hidden = true)
 	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
 		for (Don_CongDan obj : donCongDans) {
 			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
@@ -632,6 +646,18 @@ public class Don extends Model<Don> {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		for (Don_CongDan dcd : getDonCongDans()) {
 			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+				list.add(dcd);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<DoanDiCung> getListDoanDiCung() {
+		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
+		for (DoanDiCung dcd : getDoanDiCungs()) {
+			if (!dcd.isDaXoa()) {
 				list.add(dcd);
 			}
 		}

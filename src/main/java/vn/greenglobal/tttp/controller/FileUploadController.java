@@ -6,17 +6,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -55,8 +58,15 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			throws IOException {
 
 		if (!file.isEmpty()) {
-			fileService.upload(file, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + file.getOriginalFilename(), new HttpHeaders(), HttpStatus.CREATED);
+			String originalFilename = file.getOriginalFilename();
+			String fileName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
+			
+			Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+			BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+			fileName = md5PasswordEncoder.encodePassword(fileName, encryptor.encryptPassword((new Date()).toString())) + originalFilename.substring(originalFilename.lastIndexOf('.'));
+			
+			fileService.upload(file, fileName, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + fileName, new HttpHeaders(), HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
