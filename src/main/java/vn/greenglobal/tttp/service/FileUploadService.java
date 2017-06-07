@@ -2,13 +2,9 @@ package vn.greenglobal.tttp.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
