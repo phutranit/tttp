@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -13,6 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 
 @Entity
 @Table(name = "tailieubangchung")
@@ -25,11 +28,14 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	private static final long serialVersionUID = -7863478663069074533L;
 	@NotBlank
 	private String ten = "";
-	private String tinhTrangTaiLieu = "";
 	private String duongDan = "";
 	private String tenFile = "";
 
 	private int soTrang = 0;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private TinhTrangTaiLieuEnum tinhTrangTaiLieu;
 
 	@NotNull
 	@ManyToOne
@@ -48,14 +54,6 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	public void setTen(String ten) {
 		this.ten = ten;
-	}
-
-	public String getTinhTrangTaiLieu() {
-		return tinhTrangTaiLieu;
-	}
-
-	public void setTinhTrangTaiLieu(String tinhTrangTaiLieu) {
-		this.tinhTrangTaiLieu = tinhTrangTaiLieu;
 	}
 
 	public String getDuongDan() {
@@ -80,6 +78,14 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	public void setSoTrang(int soTrang) {
 		this.soTrang = soTrang;
+	}
+
+	public TinhTrangTaiLieuEnum getTinhTrangTaiLieu() {
+		return tinhTrangTaiLieu;
+	}
+
+	public void setTinhTrangTaiLieu(TinhTrangTaiLieuEnum tinhTrangTaiLieu) {
+		this.tinhTrangTaiLieu = tinhTrangTaiLieu;
 	}
 
 	@ApiModelProperty(example = "{}")
