@@ -33,7 +33,7 @@ public class XuLyDonService {
 	}
 	
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu, 
-			Long congChucId, String trangThaiDon) {
+			Long congChucId) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		
@@ -45,13 +45,13 @@ public class XuLyDonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 		}
 		
-		if (StringUtils.isNotBlank(trangThaiDon)) {			
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
-		}
-		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
+		
+		/*if (congChucId != null && congChucId > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId));
+		}*/
 		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		

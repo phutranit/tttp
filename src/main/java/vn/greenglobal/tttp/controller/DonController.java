@@ -46,6 +46,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QDon;
@@ -57,11 +58,13 @@ import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.TransitionService;
@@ -118,7 +121,16 @@ public class DonController extends TttpController<Don> {
 	
 	@Autowired
 	private TransitionService transitionService;
-
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
+	@Autowired
+	private StateService stateService;
+	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
@@ -390,12 +402,20 @@ public class DonController extends TttpController<Don> {
 					donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 				} 
 				donMoi.setNgayBatDauXLD(LocalDateTime.now());
-
+				donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				
+				//tao lich su qua trinh xu ly don
+				LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+				lichSuQTXLD.setDon(donMoi);
+				lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+				lichSuQTXLD.setNgayXuLy(donMoi.getNgayBatDauXLD());
+				lichSuQTXLD.setTen("Tạo mới đơn");
+				lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+				lichSuQTXLD.setThuTuThucHien(0);
+				
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
+				Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 			}
-			
-			donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-			
 			return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
 		}
 		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -415,7 +435,6 @@ public class DonController extends TttpController<Don> {
 				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
 
 			// Xac dinh vai tro cua nguoi dung (Nhieu vai tro cho 1 nguoi)
-			// Thay alias
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 
 			Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
@@ -443,16 +462,35 @@ public class DonController extends TttpController<Don> {
 					if (listState.size() > 0) {
 						State nextState = listState.get(0);
 						donMoi.setCurrentState(nextState);
+						System.out.println("1 - " +nextState.getId());
 					} else {
+						System.out.println("2");
 						donMoi.setCurrentState(beginState);
 					}
+					
+					//tao flow trinh lanh dao
+					FlowStateEnum trinhLanhDaoState = FlowStateEnum.TRINH_LANH_DAO;
+					State nextState = repoState.findOne(stateService.predicateFindByType(trinhLanhDaoState));
+					Transition transition = transitionRepo.findOne(
+							transitionService.predicatePrivileged(donMoi.getCurrentState(), nextState, process));
+					
+					System.out.println("process " +process.getId());
+					System.out.println("nextState " +nextState.getTenVietTat());
+					System.out.println("currentState " +donMoi.getCurrentState().getTenVietTat() + " id " +donMoi.getCurrentState().getId());
+					
+					
+					if (transition == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+					}
+					System.out.println("transition " +transition.getId());
+					
 					
 					// Them xu ly don hien tai
 					XuLyDon xuLyDonHienTai = new XuLyDon();
 					xuLyDonHienTai.setDon(donMoi);
 					xuLyDonHienTai.setChucVu(VaiTroEnum.VAN_THU);
 					xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
-					//xuLyDonHienTai.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 					xuLyDonHienTai.setThuTuThucHien(0);
 					
 					//set co quan & don vi xu ly don hien tai
@@ -463,16 +501,14 @@ public class DonController extends TttpController<Don> {
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
 					note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
 							+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
-					//xuLyDonHienTai.setQuyTrinhXuLy(QuyTrinhXuLyDonEnum.TRINH_LANH_DAO);
 					xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 					xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-					//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
+					xuLyDonHienTai.setNextState(nextState);
+					xuLyDonHienTai.setNextForm(transition.getForm());
 					
 					xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-					//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(xuLyDonHienTai.getDon().getNgayTiepNhan(), xuLyDon.getSoNgayXuLy()));
 					xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
 					xuLyDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
-					//xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
 					xuLyDonTiepTheo.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 					xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 					
@@ -483,25 +519,38 @@ public class DonController extends TttpController<Don> {
 					//set thoi han xu ly
 					if (don.getThoiHanXuLyXLD() != null) {
 						//set thoi han xu ly
-						//xuLyDonHienTai.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						//xuLyDonTiepTheo.setThoiHanXuLy(Utils.convertNumberToLocalDateTime(don.getNgayTiepNhan(), don.getSoNgayXuLy()));
-						
-						//set don
 						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
-						//donMoi.setNgayBatDauXLD(Utils.convertNumberToLocalDateTime(LocalDateTime.now(), don.getSoNgayXuLy()));
 					}
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
 					
-					// xuLyDonTiepTheo.setThoiHanXuLy();
 					if (xuLyDonHienTai.isDonChuyen()) {
 						note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
 						xuLyDonTiepTheo.setDonChuyen(true);
 						xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 					}
-					
 					xuLyDonHienTai.setGhiChu(note);
+					
+					//tao lich su qua trinh xu ly don
+					LichSuQuaTrinhXuLy lichSuQTXLDHienTai = new LichSuQuaTrinhXuLy();
+					lichSuQTXLDHienTai.setDon(donMoi);
+					lichSuQTXLDHienTai.setNguoiXuLy(congChucRepo.findOne(congChucId));
+					lichSuQTXLDHienTai.setNgayXuLy(donMoi.getNgayBatDauXLD());
+					lichSuQTXLDHienTai.setTen("Tạo mới đơn");
+					lichSuQTXLDHienTai.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+					lichSuQTXLDHienTai.setThuTuThucHien(0);
+					
+					LichSuQuaTrinhXuLy lichSuQTXLDTiepTheo = new LichSuQuaTrinhXuLy();
+					lichSuQTXLDTiepTheo.setDon(donMoi);
+					lichSuQTXLDTiepTheo.setNguoiXuLy(congChucRepo.findOne(congChucId));
+					lichSuQTXLDTiepTheo.setNgayXuLy(donMoi.getNgayBatDauXLD());
+					lichSuQTXLDTiepTheo.setTen(xuLyDonHienTai.getNextState().getTenVietTat());
+					lichSuQTXLDTiepTheo.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+					lichSuQTXLDTiepTheo.setThuTuThucHien(1);
+					
 					Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					Utils.save(xuLyRepo, xuLyDonTiepTheo, congChucId);
+					Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLDHienTai, congChucId);
+					Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLDTiepTheo, congChucId);
 				}
 				
 				donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -581,7 +630,7 @@ public class DonController extends TttpController<Don> {
 					//set co quan & don vi
 					xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
-
+					
 					Utils.save(xuLyRepo, xuLyDon, congChucId);
 				} else {
 					XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
@@ -589,7 +638,6 @@ public class DonController extends TttpController<Don> {
 						if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
 							xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 						}
-						
 						Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					}
 				}

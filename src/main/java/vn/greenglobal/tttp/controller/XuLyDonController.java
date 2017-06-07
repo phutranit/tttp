@@ -150,8 +150,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "Lấy thông tin Xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy thông tin Xử lý đơn", response = XuLyDon.class) })
 	public ResponseEntity<Object> getThongTinXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam("id") Long id, 
-			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam("id") Long id,
 			PersistentEntityResourceAssembler eass) {
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM);
 		if (nguoiDung != null) {
@@ -161,7 +160,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			Long phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			Don don = donRepo.findOne(donService.predicateFindOne(id));
 			if (don != null) {
-				XuLyDon xuLyDon = xuLyDonService.predFindCurrent(repo, don.getId(), donViId, phongBanXuLyXLD, vaiTroNguoiDungHienTai, congChucId, trangThaiDon);
+				XuLyDon xuLyDon = xuLyDonService.predFindCurrent(repo, don.getId(), donViId, phongBanXuLyXLD, vaiTroNguoiDungHienTai, congChucId);
 				if (xuLyDon != null) {
 					return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 				}
