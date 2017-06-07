@@ -465,23 +465,23 @@ public class EnumController {
 			
 			object = new HashMap<>();
 			object.put("ten", HuongGiaiQuyetTCDEnum.HOAN_THANH.getText());
-			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.HOAN_THANH.name());
 			list.add(object);
 		}
 		
 		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name())) {
 			object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
-			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
 			list.add(object);
 			
 			object = new HashMap<>();
 			object.put("ten", HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT.getText());
-			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT.name());
 			list.add(object);
 			
 			object = new HashMap<>();
 			object.put("ten", HuongGiaiQuyetTCDEnum.HOAN_THANH.getText());
-			object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.HOAN_THANH.name());
 			list.add(object);
 		}
 
