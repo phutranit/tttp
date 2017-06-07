@@ -1329,7 +1329,7 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLy() {
 		String str = "";
-		if (getThoiHanXuLyXLD() != null) {
+		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
 			if (soNgayXuLy > 0) {
 				return soNgayXuLy + "";
