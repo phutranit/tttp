@@ -138,13 +138,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan,
 			PersistentEntityResourceAssembler eass) {
-		Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 
 		Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-				tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), pageable);
+				tuNgay, denNgay, loaiTiepCongDan, donViId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
