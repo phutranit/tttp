@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -30,11 +29,12 @@ public class FileUploadService {
 		return System.getProperty("user.home") + fileStorageLocation;
 	}
 
-	public void upload(MultipartFile file, Long congChucId) throws IOException {
-		String fileName = file.getOriginalFilename();
+	public void upload(MultipartFile file, String fileName, Long congChucId) throws IOException {
+		String originalFilename = file.getOriginalFilename();
+		
 		byte[] content = file.getBytes();
 		Document document = new Document(fileName, content);
-		DocumentMetaData documentMetaData = new DocumentMetaData(fileName, getFileStorageLocation(), LocalDateTime.now());
+		DocumentMetaData documentMetaData = new DocumentMetaData(originalFilename, getFileStorageLocation(), LocalDateTime.now());
 		documentFileSystemService.add(document);
 		CongChuc cc = new CongChuc();
 		cc.setId(congChucId);
