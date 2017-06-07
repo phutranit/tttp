@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
@@ -54,10 +55,12 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
@@ -108,7 +111,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private DonCongDanRepository repoDonCongDan;
-
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -234,6 +243,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 				don.setProcessType(ProcessTypeEnum.XU_LY_DON);					
 				don.setCurrentState(beginState);
+				
+				//tao lich su qua trinh xu ly don
+				LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+				lichSuQTXLD.setDon(don);
+				lichSuQTXLD.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+				lichSuQTXLD.setNgayXuLy(don.getNgayBatDauXLD());
+				lichSuQTXLD.setTen("Chuyển xử lý đơn");
+				//lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+				int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId());
+				lichSuQTXLD.setThuTuThucHien(thuTu);
 			}
 		}
 
