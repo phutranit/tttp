@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -75,5 +76,14 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 
 	public void setThuTuThucHien(int thuTuThucHien) {
 		this.thuTuThucHien = thuTuThucHien;
+	}
+
+	@Transient
+	public String getNguoiXuLyText() {
+		String str = "";
+		if (getNguoiXuLy() != null) {
+			str = getNguoiXuLy().getHoVaTen();
+		}
+		return str;
 	}
 }

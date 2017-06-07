@@ -409,7 +409,7 @@ public class DonController extends TttpController<Don> {
 				lichSuQTXLD.setDon(donMoi);
 				lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 				lichSuQTXLD.setNgayXuLy(donMoi.getNgayBatDauXLD());
-				lichSuQTXLD.setTen("Tạo mới đơn");
+				lichSuQTXLD.setTen("Tạo mới Xử lý đơn");
 				lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
 				lichSuQTXLD.setThuTuThucHien(0);
 				
@@ -472,10 +472,11 @@ public class DonController extends TttpController<Don> {
 					FlowStateEnum trinhLanhDaoState = FlowStateEnum.TRINH_LANH_DAO;
 					State nextState = repoState.findOne(stateService.predicateFindByType(trinhLanhDaoState));
 					Transition transition = transitionRepo.findOne(
-							transitionService.predicatePrivileged(donMoi.getCurrentState(), nextState, process));
+							transitionService.predicatePrivileged(beginState, nextState, process));
 					
 					System.out.println("process " +process.getId());
-					System.out.println("nextState " +nextState.getTenVietTat());
+					System.out.println("beginState " +beginState.getTenVietTat() + "id " +beginState.getId());
+					System.out.println("nextState " +nextState.getTenVietTat() + "id " +nextState.getId());
 					System.out.println("currentState " +donMoi.getCurrentState().getTenVietTat() + " id " +donMoi.getCurrentState().getId());
 					
 					
@@ -535,7 +536,7 @@ public class DonController extends TttpController<Don> {
 					lichSuQTXLDHienTai.setDon(donMoi);
 					lichSuQTXLDHienTai.setNguoiXuLy(congChucRepo.findOne(congChucId));
 					lichSuQTXLDHienTai.setNgayXuLy(donMoi.getNgayBatDauXLD());
-					lichSuQTXLDHienTai.setTen("Tạo mới đơn");
+					lichSuQTXLDHienTai.setTen("Tạo mới Xử lý đơn");
 					lichSuQTXLDHienTai.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
 					lichSuQTXLDHienTai.setThuTuThucHien(0);
 					

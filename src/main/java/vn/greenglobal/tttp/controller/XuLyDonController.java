@@ -43,6 +43,7 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.State;
@@ -54,11 +55,13 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
@@ -117,6 +120,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@Autowired
 	private CongChucRepository congChucRepo;
 
+	@Autowired
+	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
 	public XuLyDonController(BaseRepository<XuLyDon, Long> repo) {
 		super(repo);
 	}
@@ -1148,7 +1157,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			//Tat ca truong phong
 			if (xuLyDonHienTai.getChucVu().equals(VaiTroEnum.LANH_DAO)) {
 				xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
-				xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+				xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 				xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
 				xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
 				xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
@@ -1180,10 +1189,23 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			// set thoi han xu ly cho don
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
-
 		don.setCurrentState(xuLyDonHienTai.getNextState());
+		
+		//tao lich su qua trinh xu ly don
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+		lichSuQTXLD.setDon(don);
+		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		System.out.println("nd " +state.getTen() +" id " +state.getId());
+		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donId);
+		lichSuQTXLD.setThuTuThucHien(thuTu);
+		
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
+		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		if (xuLyDon.getCanBoXuLyChiDinh() != null && xuLyDonHienTai.getChucVu().equals(VaiTroEnum.LANH_DAO)) {
 			Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
 		}
@@ -1227,11 +1249,24 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
-
 		// workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
+		
+		//tao lich su qua trinh xu ly don
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+		lichSuQTXLD.setDon(don);
+		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		System.out.println("nd " +state.getTen() +" id " +state.getId());
+		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donId);
+		lichSuQTXLD.setThuTuThucHien(thuTu);
+		
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
+		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		return xuLyDonTiepTheo;
 	}
 
@@ -1367,8 +1402,19 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		// set thoi han xu ly cho don
 		//don.setThoiHanXuLyXLD(xuLyDonHienTai.getThoiHanXuLy());
-
 		don.setCurrentState(xuLyDonHienTai.getNextState());
+		
+		//tao lich su qua trinh xu ly don
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+		lichSuQTXLD.setDon(don);
+		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donId);
+		lichSuQTXLD.setThuTuThucHien(thuTu);
+		
 		Utils.save(donRepo, don, congChucId);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		return xuLyDonTiepTheo;
