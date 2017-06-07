@@ -246,7 +246,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				giaiQuyetDon.setThuTuThucHien(1);
 				Utils.save(repoGiaiQuyetDon, giaiQuyetDon, congChucId);
 			}
+			
+			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
+			lichSuQTXL.setDon(soTiepCongDan.getDon());
+			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy().getText());
+			lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+			lichSuQTXL.setThuTuThucHien(thuTu);
 			Utils.save(repoDon, don, congChucId);
+			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
 		}
 		return output;
 	}
@@ -321,7 +331,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
+			lichSuQTXL.setDon(soTiepCongDan.getDon());
+			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy().getText());
+			lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+			lichSuQTXL.setThuTuThucHien(thuTu);
+			
 			Utils.save(repoDon, don, congChucId);
+			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
 		}
 		return output;
 	}
