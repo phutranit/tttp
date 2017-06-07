@@ -222,24 +222,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				don.setYeuCauGapTrucTiepLanhDao(true);
 			}
-			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
-				long soNgayXuLyMacDinh = 10;
-				don.setNgayBatDauXLD(LocalDateTime.now());
-				don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(soTiepCongDan.getDon().getNgayBatDauXLD(), soNgayXuLyMacDinh));
-				State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
-				don.setProcessType(ProcessTypeEnum.XU_LY_DON);					
-				don.setCurrentState(beginState);
-				
-				//tao lich su qua trinh xu ly don
-				LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-				lichSuQTXLD.setDon(don);
-				lichSuQTXLD.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-				lichSuQTXLD.setNgayXuLy(don.getNgayBatDauXLD());
-				lichSuQTXLD.setTen("Chuyển xử lý đơn");
-				//lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
-				int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId());
-				lichSuQTXLD.setThuTuThucHien(thuTu);
-			}
 		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
@@ -334,14 +316,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				don.setYeuCauGapTrucTiepLanhDao(true);
-			}
-			if (HuongXuLyTCDEnum.TIEP_NHAN_DON.equals(soTiepCongDan.getHuongXuLy())) {
-				long soNgayXuLyMacDinh = 10;
-				don.setNgayBatDauXLD(LocalDateTime.now());
-				don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(soTiepCongDan.getDon().getNgayBatDauXLD(), soNgayXuLyMacDinh));
-				State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
-				don.setProcessType(ProcessTypeEnum.XU_LY_DON);					
-				don.setCurrentState(beginState);
 			}
 		}
 
