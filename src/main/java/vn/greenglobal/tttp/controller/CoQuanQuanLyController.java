@@ -288,13 +288,10 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/coQuanDaGiaiQuyets")
 	@ApiOperation(value = "Lấy danh sách Cơ Quan đã giải quyết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListCoQuanDaGiaiQuyet(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "cha", required = false) Long cha,
-			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
-			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			Pageable pageable, @RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			PersistentEntityResourceAssembler eass) {
 
-		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh), pageable);
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", null, capCoQuanQuanLy, null), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 

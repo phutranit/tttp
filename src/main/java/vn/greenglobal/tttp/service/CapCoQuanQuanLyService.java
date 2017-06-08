@@ -90,10 +90,10 @@ public class CapCoQuanQuanLyService {
 		if (capCoQuanQuanLyTinhTP != null && capCoQuanQuanLyTinhTP > 0 && capCoQuanQuanLySoBanNganh != null
 				&& capCoQuanQuanLySoBanNganh > 0 && capCoQuanQuanLyQuanHuyen != null && capCoQuanQuanLyQuanHuyen > 0
 				&& capCoQuanQuanLyPhuongXa != null && capCoQuanQuanLyPhuongXa > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyTinhTP)
-					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLySoBanNganh))
-					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyQuanHuyen))
-					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyPhuongXa)));
+			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyTinhTP)
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLySoBanNganh))
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyQuanHuyen))
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyPhuongXa)));
 		}
 
 		return predAll;
