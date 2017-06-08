@@ -30,6 +30,7 @@ import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
@@ -56,13 +57,6 @@ public class Don extends Model<Don> {
 
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
-
-	private String fileUyQuyen = "";
-	private String urlFileUyQuyen = "";
-	private String fileChungChiHanhNghe = "";
-	private String urlChungChiHanhNghe = "";
-	private String fileVanBanDaGiaiQuyet = "";
-	private String urlVanBanDaGiaiQuyet = "";
 
 //	@Transient
 //	private Long soNgayXuLy;
@@ -143,6 +137,11 @@ public class Don extends Model<Don> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); // TCD
+	
+	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<TepDinhKem> tepDinhKems = new ArrayList<TepDinhKem>(); 
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -354,21 +353,6 @@ public class Don extends Model<Don> {
 		this.ghiChuXuLyDon = ghiChuXuLyDon;
 	}
 	
-	public String getFileVanBanDaGiaiQuyet() {
-		return fileVanBanDaGiaiQuyet;
-	}
-
-	public void setFileVanBanDaGiaiQuyet(String fileVanBanDaGiaiQuyet) {
-		this.fileVanBanDaGiaiQuyet = fileVanBanDaGiaiQuyet;
-	}
-
-	public String getUrlVanBanDaGiaiQuyet() {
-		return urlVanBanDaGiaiQuyet;
-	}
-
-	public void setUrlVanBanDaGiaiQuyet(String urlVanBanDaGiaiQuyet) {
-		this.urlVanBanDaGiaiQuyet = urlVanBanDaGiaiQuyet;
-	}
 
 	@ApiModelProperty(position = 26, example = "{}")
 	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
@@ -674,6 +658,42 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TepDinhKem> getListTepUyQuyen() {
+		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
+		for (TepDinhKem tdk : getTepDinhKems()) {
+			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
+				list.add(tdk);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TepDinhKem> getListTepChungChiHanhNghe() {
+		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
+		for (TepDinhKem tdk : getTepDinhKems()) {
+			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
+				list.add(tdk);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TepDinhKem> getListTepVanBanDaGiaiQuyet() {
+		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
+		for (TepDinhKem tdk : getTepDinhKems()) {
+			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
+				list.add(tdk);
+			}
+		}
+		return list;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -721,6 +741,15 @@ public class Don extends Model<Don> {
 
 	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
 		this.taiLieuVanThus = taiLieuVanThus;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public List<TepDinhKem> getTepDinhKems() {
+		return tepDinhKems;
+	}
+
+	public void setTepDinhKems(List<TepDinhKem> tepDinhKems) {
+		this.tepDinhKems = tepDinhKems;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -1268,38 +1297,6 @@ public class Don extends Model<Don> {
 
 	public void setNgayKetThucXLD(LocalDateTime ngayKetThucXLD) {
 		this.ngayKetThucXLD = ngayKetThucXLD;
-	}
-
-	public String getFileUyQuyen() {
-		return fileUyQuyen;
-	}
-
-	public void setFileUyQuyen(String fileUyQuyen) {
-		this.fileUyQuyen = fileUyQuyen;
-	}
-
-	public String getUrlFileUyQuyen() {
-		return urlFileUyQuyen;
-	}
-
-	public void setUrlFileUyQuyen(String urlFileUyQuyen) {
-		this.urlFileUyQuyen = urlFileUyQuyen;
-	}
-
-	public String getFileChungChiHanhNghe() {
-		return fileChungChiHanhNghe;
-	}
-
-	public void setFileChungChiHanhNghe(String fileChungChiHanhNghe) {
-		this.fileChungChiHanhNghe = fileChungChiHanhNghe;
-	}
-
-	public String getUrlChungChiHanhNghe() {
-		return urlChungChiHanhNghe;
-	}
-
-	public void setUrlChungChiHanhNghe(String urlChungChiHanhNghe) {
-		this.urlChungChiHanhNghe = urlChungChiHanhNghe;
 	}
 
 	@ApiModelProperty(hidden = true)
