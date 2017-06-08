@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
@@ -54,10 +55,12 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
@@ -108,7 +111,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private DonCongDanRepository repoDonCongDan;
-
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
+	
+	@Autowired
+	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -237,7 +246,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				giaiQuyetDon.setThuTuThucHien(1);
 				Utils.save(repoGiaiQuyetDon, giaiQuyetDon, congChucId);
 			}
+			
+			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
+			lichSuQTXL.setDon(soTiepCongDan.getDon());
+			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
+			lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+			lichSuQTXL.setThuTuThucHien(thuTu);
 			Utils.save(repoDon, don, congChucId);
+			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
 		}
 		return output;
 	}
@@ -312,7 +331,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
+			lichSuQTXL.setDon(soTiepCongDan.getDon());
+			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
+			lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+			lichSuQTXL.setThuTuThucHien(thuTu);
+			
 			Utils.save(repoDon, don, congChucId);
+			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
 		}
 		return output;
 	}

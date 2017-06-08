@@ -1332,7 +1332,7 @@ public class Don extends Model<Don> {
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
 			if (soNgayXuLy > 0) {
-				return soNgayXuLy + "";
+				return "Còn " +  soNgayXuLy + " ngày";
 			} else if (soNgayXuLy == -1) {
 				return "-1";
 			} else if (soNgayXuLy == 0) {
