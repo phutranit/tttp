@@ -39,7 +39,7 @@ public class CongChuc extends Model<CongChuc> {
 	@ManyToOne
 	private ChucVu chucVu;
 
-	@NotNull
+	@QueryInit("*.*.*")
 	@ManyToOne
 	private NguoiDung nguoiDung;
 

@@ -81,11 +81,16 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	//@Lob
 	private String ghiChu = "";
+	
+	@Transient
 	private String yKienXuLy = "";
 	private String moTaTrangThai = "";
+	@Transient
 	private String noiDungYeuCauXuLy = "";
+	@Transient
 	private String noiDungThongTinTrinhLanhDao = "";
-
+	private String noiDungXuLy = "";
+	
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
@@ -282,7 +287,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
-
+	
+	public void setNoiDungYeuCauXuLy(String noiDungYeuCauXuLy) {
+		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
+	}
+	
 	@ApiModelProperty(position = 13, example = "{}")
 	public CongChuc getCanBoXuLyChiDinh() {
 		return canBoXuLyChiDinh;
@@ -293,10 +302,15 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
 
-	public void setNoiDungYeuCauXuLy(String noiDungYeuCauXuLy) {
-		this.noiDungYeuCauXuLy = noiDungYeuCauXuLy;
+	@ApiModelProperty(position = 4)
+	public String getNoiDungXuLy() {
+		return noiDungXuLy;
 	}
 
+	public void setNoiDungXuLy(String noiDungXuLy) {
+		this.noiDungXuLy = noiDungXuLy;
+	}
+	
 //	@ApiModelProperty(position = 5)
 //	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
 //		return quyTrinhXuLy;
@@ -419,5 +433,17 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setDonViXuLy(CoQuanQuanLy donViXuLy) {
 		this.donViXuLy = donViXuLy;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getQuaTrinhXuLyInfo() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("tenQuaTrinhXuLy", getNextState() != null ? getNextState().getTenVietTat() : "");
+		map.put("ngayXuLy", getNgayTao());
+		map.put("nguoiXuLy", getNguoiTao().getHoVaTen());
+		map.put("noiDung", getNoiDungXuLy());
+		
+		return map;
 	}
 }
