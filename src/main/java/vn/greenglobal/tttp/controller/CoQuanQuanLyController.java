@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -438,21 +439,19 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBanGiaiQuyets")
-	@ApiOperation(value = "Lấy danh sách Phong ban giải quyết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getDanhSachPhongBans(
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBansTheoDonVi")
+	@ApiOperation(value = "Lấy danh sách Phong ban theo đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDanhSachPhongBanstheoDonVi(
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestParam(value = "id", required = true) Long id,
 			Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+		
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo), pageable);
 
-		Page<CoQuanQuanLy> page = null;
-		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
-		if (thamSoOne != null) {
-			page = repo.findAll(coQuanQuanLyService.predicateFindPhongBan(Long.valueOf(thamSoOne.getGiaTri().toString()), id, repo, thamSoService, repoThamSo), pageable);
-		}
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
