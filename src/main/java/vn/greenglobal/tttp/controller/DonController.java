@@ -161,17 +161,17 @@ public class DonController extends TttpController<Don> {
 
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 		if (nguoiDung != null) {
-			Long donViXuLyXLD = 0L;
-			Long phongBanXuLyXLD = 0L;
+			Long donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Long phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long canBoXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)|| 
-					(StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai) && phongBanXuLyXLD == 0)) {
-				donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			} else {
-				phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) {
+//				donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+				phongBanXuLyXLD = 0L;
 			}
-			
+			System.out.println("phongBanXuLyXLD " +phongBanXuLyXLD);
+			System.out.println("donViXuLyXLD " +donViXuLyXLD);
+			System.out.println("vaiTroNguoiDungHienTai " +vaiTroNguoiDungHienTai);
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
@@ -391,14 +391,24 @@ public class DonController extends TttpController<Don> {
 				}
 				donMoi.setCurrentState(beginState);
 				// Them xu ly don
+				XuLyDon xuLyDonLanhDao = new XuLyDon();
+				//lanh dao
+				xuLyDonLanhDao.setDon(donMoi);
+				xuLyDonLanhDao.setChucVu(VaiTroEnum.LANH_DAO);
+				xuLyDonLanhDao.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+				xuLyDonLanhDao.setThuTuThucHien(0);
+				xuLyDonLanhDao.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
+				//set co quan & don vi
+				xuLyDonLanhDao.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
+				xuLyDonLanhDao.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
+				
+				//van thu
 				XuLyDon xuLyDon = new XuLyDon();
 				xuLyDon.setDon(donMoi);
 				xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
-				//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 				xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-				xuLyDon.setThuTuThucHien(0);
+				xuLyDon.setThuTuThucHien(1);
 				xuLyDon.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
-				
 				//set co quan & don vi
 				xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
 				xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
@@ -415,6 +425,7 @@ public class DonController extends TttpController<Don> {
 					long soNgayXuLyMacDinh = 10;
 					donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 				}
+				Utils.save(xuLyRepo, xuLyDonLanhDao, congChucId);
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 			} else { 
 				lichSuQTXLD.setTen("Tạo mới xử lý đơn");
@@ -624,10 +635,24 @@ public class DonController extends TttpController<Don> {
 				
 				// Them xu ly don
 				if(donOld.getXuLyDons().size() <= 0) {
+					
+					//them moi xu ly don
+					//lanh dao
+					XuLyDon xuLyDonLanhDao = new XuLyDon();
+					//lanh dao
+					xuLyDonLanhDao.setDon(don);
+					xuLyDonLanhDao.setChucVu(VaiTroEnum.LANH_DAO);
+					xuLyDonLanhDao.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+					xuLyDonLanhDao.setThuTuThucHien(0);
+					xuLyDonLanhDao.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
+					//set co quan & don vi
+					xuLyDonLanhDao.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
+					xuLyDonLanhDao.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
+					
+					//van thu
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(don);
 					xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
-					//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
 					xuLyDon.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());

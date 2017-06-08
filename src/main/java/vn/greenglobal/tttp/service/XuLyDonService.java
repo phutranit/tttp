@@ -77,9 +77,11 @@ public class XuLyDonService {
 		return xuLyDonQuery;
 	}
 	
-	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro) {
+	public Predicate predFindOld(Long donId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
 		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
-		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro));
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
+				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId))
+				.and(xuLyDon.donViXuLy.id.eq(donViId));;
 		return predicate;
 	}
 
