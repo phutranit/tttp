@@ -73,6 +73,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String noiDungBoSung = " ";
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
+	private boolean hoanThanhTCDThuongXuyen;
 	
 	@Transient
 	private String huongXuLyText = "";
@@ -175,6 +176,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setHoanThanhTCDLanhDao(boolean hoanThanhTCDLanhDao) {
 		this.hoanThanhTCDLanhDao = hoanThanhTCDLanhDao;
+	}
+
+	public boolean isHoanThanhTCDThuongXuyen() {
+		return hoanThanhTCDThuongXuyen;
+	}
+
+	public void setHoanThanhTCDThuongXuyen(boolean hoanThanhTCDThuongXuyen) {
+		this.hoanThanhTCDThuongXuyen = hoanThanhTCDThuongXuyen;
 	}
 
 	public LocalDateTime getThoiHan() {
