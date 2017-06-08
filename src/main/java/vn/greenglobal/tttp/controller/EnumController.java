@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.profile.CommonProfile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,9 +19,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.util.Utils;
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
@@ -38,7 +53,16 @@ import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
 public class EnumController {
-
+	
+	@Autowired
+	ProfileUtils profileUtil;
+	
+	@Autowired
+	private DonRepository donRepo;
+	
+	@Autowired
+	XuLyDonRepository xuLyDonRepo;
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/phanLoaiNguoiDungDons")
 	@ApiOperation(value = "Lấy danh sách Phân Loại Người Đứng Đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getPhanLoaiNguoiDungDons(
@@ -155,7 +179,12 @@ public class EnumController {
 		object.put("ten", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.getText());
 		object.put("giaTri", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.name());
 		list.add(object);
-
+		
+		object = new HashMap<>();
+		object.put("ten", HuongXuLyTCDEnum.KHAC.getText());
+		object.put("giaTri", HuongXuLyTCDEnum.KHAC.name());
+		list.add(object);
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
@@ -406,7 +435,7 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDs(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
-
+		
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
@@ -424,7 +453,64 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLys/don")
+	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDsTheoDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, 
+			@RequestParam(value = "donId", required = true) Long donId) {
+		Don don = donRepo.findOne(donId);
+		
+		if (don == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+					ApiErrorEnum.DON_NOT_FOUND.getText());
+		}
+		
+		CommonProfile commonProfile =  profileUtil.getCommonProfile(authorization);
+		Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
+		
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.don.eq(don));
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		if (congChucId != null && congChucId > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId));
+		}
+		
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		XuLyDon xld = new XuLyDon();
+		if (xuLyDonRepo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) xuLyDonRepo.findAll(xuLyDonQuery, sortOrder);
+			xld = results.get(0);
+		}
 
+		
+		if (xld != null) {
+			for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
+				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)) { 
+					object.put("ten", hxl.getText());
+					object.put("giaTri", hxl.name());
+					list.add(object);
+					object = new HashMap<>();
+				}
+			}
+			System.out.println("xld " + xld.getId());
+			if (xld.isDonChuyen()) {
+				System.out.println(":");
+				object.put("ten", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
+				object.put("giaTri", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
+				list.add(object);
+			}
+		}
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetCuaLanhDaoTCDs(

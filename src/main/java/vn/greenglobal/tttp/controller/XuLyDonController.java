@@ -163,11 +163,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			PersistentEntityResourceAssembler eass) {
 		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM);
 		if (nguoiDung != null) {
+			Don don = donRepo.findOne(donService.predicateFindOne(id));
+			Long phongBanXuLyXLD = 0L;
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			Long donViId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Long phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-			Don don = donRepo.findOne(donService.predicateFindOne(id));
+			if (!StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) { 
+				phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			}
+			
 			if (don != null) {
 				XuLyDon xuLyDon = xuLyDonService.predFindCurrent(repo, don.getId(), donViId, phongBanXuLyXLD, vaiTroNguoiDungHienTai, congChucId);
 				if (xuLyDon != null) {
@@ -1164,6 +1168,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
 				xuLyDonTruongPhong.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 				xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+				xuLyDonTruongPhong.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
+				xuLyDonTruongPhong.setNextState(xuLyDon.getNextState());
 				xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 			}
 		}
@@ -1655,7 +1661,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanTiepNhan());
 		xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-		xuLyDonTiepTheo.setDaXoa(true);
+		xuLyDonTiepTheo.setDonChuyen(true);
 		xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
 		//xuLyDonTiepTheo.setThoiHanXuLy(xuLyDonHienTai.getThoiHanXuLy());
 		xuLyDonTiepTheo.setCoQuanTiepNhan(xuLyDonHienTai.getCoQuanTiepNhan());
