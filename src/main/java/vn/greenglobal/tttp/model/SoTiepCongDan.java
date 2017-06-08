@@ -89,6 +89,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	
 	@Enumerated(EnumType.STRING)
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao;
+	
+	@Enumerated(EnumType.STRING)
+	private HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao;
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -96,8 +99,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private String ghiChuXuLy = "";
 	@Transient
 	private boolean chuyenDonViKiemTra;
-	private boolean daGiaoKiemTra;
-	private boolean daCoBaoCaoKetQua;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "coquantochuctiepdan_has_sotiepcongdan", joinColumns = {
@@ -132,24 +133,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	public void setChuyenDonViKiemTra(boolean chuyenDonViKiemTra) {
 		this.chuyenDonViKiemTra = chuyenDonViKiemTra;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public boolean isDaGiaoKiemTra() {
-		return daGiaoKiemTra;
-	}
-
-	public void setDaGiaoKiemTra(boolean daGiaoKiemTra) {
-		this.daGiaoKiemTra = daGiaoKiemTra;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public boolean isDaCoBaoCaoKetQua() {
-		return daCoBaoCaoKetQua;
-	}
-
-	public void setDaCoBaoCaoKetQua(boolean daCoBaoCaoKetQua) {
-		this.daCoBaoCaoKetQua = daCoBaoCaoKetQua;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -309,6 +292,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@ApiModelProperty(hidden = true)
+	public HuongGiaiQuyetTCDEnum getTrinhTrangXuLyTCDLanhDao() {
+		return trinhTrangXuLyTCDLanhDao;
+	}
+
+	public void setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao) {
+		this.trinhTrangXuLyTCDLanhDao = trinhTrangXuLyTCDLanhDao;
+	}
+
+	@ApiModelProperty(hidden = true)
 	public String getHuongXuLyText() {
 		if (getHuongXuLy() != null) {
 			huongXuLyText = getHuongXuLy().getText();
@@ -448,7 +440,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
-		return isHoanThanhTCDLanhDao() ? "Hoàn thành" : "Đang xử lý";
+		return getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
 	}
 	
 	@Transient
