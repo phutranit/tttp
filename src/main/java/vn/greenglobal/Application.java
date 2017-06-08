@@ -41,9 +41,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+//import org.springframework.web.servlet.config.annotation.CorsRegistry;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
@@ -88,9 +88,9 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-//	@Value("${cors.allowedOrigins}")
-//	private String[] myAllowedOriginList;
-//	
+	@Value("${cors.allowedOrigins}")
+	private String[] myAllowedOriginList;
+	
 //	@Bean
 //	public WebMvcConfigurer corsConfigurer() {
 //		return new WebMvcConfigurerAdapter() {
@@ -98,6 +98,7 @@ public class Application extends SpringBootServletInitializer {
 //			public void addCorsMappings(CorsRegistry registry) {
 //				registry.addMapping("/**")
 //						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "http://localhost:8089", "test-thanhtratp.greenglobal.vn", "test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830", "http://192.168.1.242:9830", "192.168.1.242:9830")
+//						.allowedOrigins(myAllowedOriginList)
 //						.allowCredentials(true)
 //						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
 //						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
