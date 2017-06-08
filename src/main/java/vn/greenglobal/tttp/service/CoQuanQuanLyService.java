@@ -53,7 +53,6 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindAllByName(String ten) {
-
 		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(ten));
@@ -89,7 +88,7 @@ public class CoQuanQuanLyService {
 		ThamSo thamSoQuan = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
 		ThamSo thamSoHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_HUYEN"));
 		ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
-		//CoQuanQuanLy cqql = repo.findOne(predicateFindOne(id));
+
 		CoQuanQuanLy cqql = getCha(repo, id);
 		
 		if(cqql != null) {
@@ -178,12 +177,25 @@ public class CoQuanQuanLyService {
 		return false;
 	}
 	
-	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId) {
+	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type, Long coQuanQuanLyDaChonId) {
 		BooleanExpression predAll = base;
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
 					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+			
+			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))));
+			} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))));
+			}
+			
+			if (coQuanQuanLyDaChonId != null && coQuanQuanLyDaChonId > 0) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(coQuanQuanLyDaChonId));
+			}
 		}
 
 		return predAll;
