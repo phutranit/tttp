@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -333,6 +334,21 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 		if (thamSoOne != null) {
 			page = repo.findAll(coQuanQuanLyService.predicateFindPhongBan(Long.valueOf(thamSoOne.getGiaTri().toString()), id, repo, thamSoService, repoThamSo), pageable);
 		}
+		return assembler.toResource(page, (ResourceAssembler) eass);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBansTheoDonVi")
+	@ApiOperation(value = "Lấy danh sách Phong ban theo đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDanhSachPhongBanstheoDonVi(
+			@RequestHeader(value = "Authorization", required = true) String authorization, 
+			Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+		
+		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo), pageable);
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
