@@ -88,25 +88,25 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "http://localhost:8089",
-								"test-thanhtratp.greenglobal.vn", "test-thanhtratp.greenglobal.vn:9830",
-								"http://test-thanhtratp.greenglobal.vn:9830", "http://192.168.1.242:9830",
-								"192.168.1.242:9830")
-						.allowCredentials(true)
-						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"email", "password", "authorization", "client-security-token",
-								"X-Application-Context", "Date", "Content-Disposition")
-						.maxAge(3600);
-			}
-		};
-	}
+//	@Value("${cors.allowedOrigins}")
+//	private String[] myAllowedOriginList;
+//	
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "http://localhost:8089", "test-thanhtratp.greenglobal.vn", "test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830", "http://192.168.1.242:9830", "192.168.1.242:9830")
+//						.allowCredentials(true)
+//						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+//						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+//								"email", "password", "authorization", "client-security-token",
+//								"X-Application-Context", "Date", "Content-Disposition")
+//						.maxAge(3600);
+//			}
+//		};
+//	}
 
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
