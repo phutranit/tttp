@@ -5,11 +5,8 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.model.QTaiLieuVanThu;
 import vn.greenglobal.tttp.model.QTepDinhKem;
-import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.model.TepDinhKem;
-import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.repository.TepDinhKemRepository;
 
 @Component
