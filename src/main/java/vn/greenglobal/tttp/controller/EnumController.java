@@ -461,8 +461,8 @@ public class EnumController {
 		Map<String, Object> object = new HashMap<>();
 		
 		if (StringUtils.equals(ketQuaTiepDan, HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name())) {
-			object.put("ten", HuongGiaiQuyetTCDEnum.DANG_GIAI_QUYET.getText());
-			object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+			object.put("ten", HuongGiaiQuyetTCDEnum.DANG_XU_LY.getText());
+			object.put("giaTri", HuongGiaiQuyetTCDEnum.DANG_XU_LY.name());
 			list.add(object);
 			
 			object = new HashMap<>();
