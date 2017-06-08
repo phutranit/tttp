@@ -496,9 +496,7 @@ public class EnumController {
 					object = new HashMap<>();
 				}
 			}
-			System.out.println("xld " + xld.getId());
 			if (xld.isDonChuyen()) {
-				System.out.println(":");
 				object.put("ten", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
 				object.put("giaTri", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
 				list.add(object);
