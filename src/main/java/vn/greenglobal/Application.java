@@ -97,7 +97,6 @@ public class Application extends SpringBootServletInitializer {
 //			@Override
 //			public void addCorsMappings(CorsRegistry registry) {
 //				registry.addMapping("/**")
-//						.allowedOrigins("http://localhost", "http://localhost:8088", "http://localhost:3000", "http://localhost:8089", "test-thanhtratp.greenglobal.vn", "test-thanhtratp.greenglobal.vn:9830", "http://test-thanhtratp.greenglobal.vn:9830", "http://192.168.1.242:9830", "192.168.1.242:9830")
 //						.allowedOrigins(myAllowedOriginList)
 //						.allowCredentials(true)
 //						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
