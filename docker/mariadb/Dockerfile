@@ -5,4 +5,4 @@ ENV MYSQL_DATABASE tttp
 ENV MYSQL_USER tttp
 ENV MYSQL_PASSWORD 123456
 
-COPY tttp.sql.gz /docker-entrypoint-initdb.d/dump.sql.gz
+COPY dump.sql.gz /docker-entrypoint-initdb.d/dump.sql.gz

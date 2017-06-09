@@ -32,8 +32,31 @@ public class XuLyDonService {
 		return null;
 	}
 	
-	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu, 
-			Long congChucId) {
+	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.old.eq(false));
+		if (chucVu.equals(VaiTroEnum.LANH_DAO.name())) {
+			phongBanXuLyXLD = 0L;
+		}
+		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
+			xuLyDonQuery =  xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+		}
+	
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		
+		if (repo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
+		}
+		return null;
+	}
+	
+	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		
@@ -77,9 +100,17 @@ public class XuLyDonService {
 		return xuLyDonQuery;
 	}
 	
-	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro) {
+	public Predicate predFindOld(Long donId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
 		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
-		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro));
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
+				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId))
+				.and(xuLyDon.donViXuLy.id.eq(donViId));;
+		return predicate;
+	}
+	
+	public Predicate predFindAllOld(Long donId, Long phongBanId) {
+		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
+		predicate = predicate.and(xuLyDon.phongBanXuLy.id.eq(phongBanId));
 		return predicate;
 	}
 

@@ -48,12 +48,8 @@ public class CongChucService {
 		return predAll;
 	}
 
-	public Predicate predicateFindByVaiTro(String tuKhoa, Long coQuanQuanLyId, String vaiTro) {
+	public Predicate predicateFindByVaiTro(Long coQuanQuanLyId, String vaiTro) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
-		}
-
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
 		}

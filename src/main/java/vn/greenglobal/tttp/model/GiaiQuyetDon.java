@@ -49,6 +49,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@QueryInit("*.*.*")
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViGiaiQuyet;
+	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
@@ -175,6 +177,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setSoTiepCongDan(SoTiepCongDan soTiepCongDan) {
 		this.soTiepCongDan = soTiepCongDan;
+	}
+	
+	public CoQuanQuanLy getDonViGiaiQuyet() {
+		return donViGiaiQuyet;
+	}
+
+	public void setDonViGiaiQuyet(CoQuanQuanLy donViGiaiQuyet) {
+		this.donViGiaiQuyet = donViGiaiQuyet;
 	}
 
 	@Transient

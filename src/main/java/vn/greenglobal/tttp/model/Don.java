@@ -25,6 +25,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.querydsl.core.annotations.QueryInit;
+
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
@@ -91,6 +93,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
+	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
@@ -111,7 +114,9 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
+	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD	
+	@ManyToOne
+	private CoQuanQuanLy donViThamTraXacMinh;
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -490,6 +495,14 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(position = 13)
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
+	}
+	
+	public CoQuanQuanLy getDonViThamTraXacMinh() {
+		return donViThamTraXacMinh;
+	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
 	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {

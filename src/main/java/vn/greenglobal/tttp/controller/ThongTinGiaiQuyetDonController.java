@@ -21,8 +21,11 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
+import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -36,6 +39,12 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 
 	@Autowired
 	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
+	
+	@Autowired
+	private DonRepository donRepo;
+	
+	@Autowired
+	private DonService donService;
 
 	public ThongTinGiaiQuyetDonController(BaseRepository<ThongTinGiaiQuyetDon, Long> repo) {
 		super(repo);
@@ -57,6 +66,11 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 		if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+		
+		Don don = donRepo.findOne(donService.predicateFindOne(giaiQuyetDon.getDon().getId()));
+		don.setDonViThamTraXacMinh(giaiQuyetDon.getDonViThamTraXacMinh());
+		Utils.save(donRepo, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		
 		return Utils.doSave(repo, giaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 	

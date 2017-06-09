@@ -58,14 +58,16 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			throws IOException {
 
 		if (!file.isEmpty()) {
-			String originalFilename = file.getOriginalFilename();
-			String fileName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
-			
 			Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 			BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
-			fileName = md5PasswordEncoder.encodePassword(fileName, encryptor.encryptPassword((new Date()).toString())) + originalFilename.substring(originalFilename.lastIndexOf('.'));
 			
-			fileService.upload(file, fileName, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			String originalFilename = file.getOriginalFilename();
+			String fileName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
+			String salkey = encryptor.encryptPassword(fileName + new Date().toString());
+			
+			fileName = md5PasswordEncoder.encodePassword(fileName, salkey) + originalFilename.substring(originalFilename.lastIndexOf('.'));
+			
+			fileService.upload(file, fileName, salkey, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + fileName, new HttpHeaders(), HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);

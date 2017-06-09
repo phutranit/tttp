@@ -97,9 +97,9 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
 		
-		if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
+		/*if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
-		}
+		}*/
 		
 		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
@@ -131,7 +131,6 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		
 		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
 			//Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
@@ -149,22 +148,24 @@ public class DonService {
 				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 			}
 			
+			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViXuLyXLD));
+			}
+			
 			List<Don> donCollections2 = new ArrayList<Don>();
 			OrderSpecifier<Integer> sortOrder2 = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
-						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
 				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
-						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
-				/*predAll = predAll.and(QDon.don.processType.isNull()
-						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON))
-						.or(donViKiemTraDeXuat)
-						.or(donViThamTraXacMinh));*/
+						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+				BooleanExpression processXuLyDon = QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON);
+				BooleanExpression processNull = QDon.don.processType.isNull();
 				
-				predAll = predAll.and(QDon.don.processType.isNull()
-						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON)));
+				BooleanExpression predOr = processNull.or(processXuLyDon).or(donViKiemTraDeXuat).or(donViThamTraXacMinh);
+				predAll = predAll.and(predOr);
 			} 
 			predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		} else {
