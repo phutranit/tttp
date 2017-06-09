@@ -141,7 +141,6 @@ public class DonService {
 				if (TrangThaiXuLyDonEnum.DANG_XU_LY.equals(trangThaiXuLyDon)) {
 					tinhTrangGiaiQuyet = TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET;
 				} 				
-				System.out.println("tinhTrangGiaiQuyet: " + tinhTrangGiaiQuyet);
 				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.eq(tinhTrangGiaiQuyet));
 			}
 			
@@ -156,9 +155,6 @@ public class DonService {
 			List<Don> donCollections2 = new ArrayList<Don>();
 			OrderSpecifier<Integer> sortOrder2 = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
-			for (GiaiQuyetDon giaiQuyetDon: giaiQuyetDons) {
-				System.out.println("giaiQuyetDonId: " + giaiQuyetDon.getId());
-			}
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
