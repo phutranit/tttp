@@ -97,9 +97,9 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
 		
-		if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
+		/*if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
-		}
+		}*/
 		
 		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
@@ -131,7 +131,6 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		
 		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
 			//Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
