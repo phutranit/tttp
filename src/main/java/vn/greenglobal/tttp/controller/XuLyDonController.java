@@ -264,8 +264,23 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
 					xuLyDonTiepTheo = trinhDon(xuLyDon, xuLyDonHienTai, coQuanQuanLyId, congChucId, note);
 					return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-				} else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState)
-						|| FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
+				} else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState)) {
+					if (xuLyDon.getPhongBanXuLyChiDinh() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.name(),
+								ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.getText());
+					}					
+					XuLyDon xuLyDonTiepTheo = new XuLyDon();
+					xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId, note);
+					return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+				} else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
+					if (xuLyDon.getPhongBanXuLyChiDinh() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.name(),
+								ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.getText());
+					}
+					if (xuLyDon.getCanBoXuLyChiDinh() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.name(),
+								ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText());
+					}
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
 					xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId, note);
 					return Utils.doSave(repo, xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
@@ -1168,7 +1183,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
 				xuLyDonTruongPhong.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 				xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-				xuLyDonTruongPhong.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
+				xuLyDonTruongPhong.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 				xuLyDonTruongPhong.setNextState(xuLyDon.getNextState());
 				xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 			}
@@ -1520,6 +1535,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
+		giaiQuyetDon.setDonViGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet().getDonVi());
 		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
@@ -1941,6 +1957,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
+		giaiQuyetDon.setDonViGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet().getDonVi());
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		giaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
