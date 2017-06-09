@@ -22,7 +22,7 @@ public class LoaiCoQuanQuanLyService {
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.ten.eq(ten));
+			predAll = predAll.and(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.ten.containsIgnoreCase(ten));
 		}
 		return predAll;
 	}

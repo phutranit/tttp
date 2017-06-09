@@ -22,7 +22,7 @@ public class ChucVuService {
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QChucVu.chucVu.ten.eq(ten));
+			predAll = predAll.and(QChucVu.chucVu.ten.containsIgnoreCase(ten));
 		}
 		return predAll;
 	}
