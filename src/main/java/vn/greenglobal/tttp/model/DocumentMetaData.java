@@ -1,9 +1,6 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -12,18 +9,20 @@ import java.time.LocalDateTime;
 @Table(name = "documentmetadata")
 public class DocumentMetaData extends Model<DocumentMetaData> {
 
-	private static final long serialVersionUID = 3960938328339804565L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String name;
-	private String fileLocation;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9213336720883904141L;
+	
+	private String salkey = "";
+	private String name = "";
+	private String fileLocation = "";
 
 	public DocumentMetaData() {
 	}
 
-	public DocumentMetaData(String name, String fileLocation, LocalDateTime lastModified) {
+	public DocumentMetaData(String salkey, String name, String fileLocation, LocalDateTime lastModified) {
+		this.setSalkey(salkey);
 		this.setName(name);
 		this.setFileLocation(fileLocation);
 		setNgayTao(lastModified);
@@ -32,6 +31,14 @@ public class DocumentMetaData extends Model<DocumentMetaData> {
 
 	public void setFileLocation(String fileLocation) {
 		this.fileLocation = fileLocation;
+	}
+
+	public String getSalkey() {
+		return salkey;
+	}
+
+	public void setSalkey(String salkey) {
+		this.salkey = salkey;
 	}
 
 	public void setName(String name) {

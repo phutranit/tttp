@@ -32,12 +32,10 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	private String tenFile = "";
 
 	private int soTrang = 0;
-	
-	@NotNull
+
 	@Enumerated(EnumType.STRING)
 	private TinhTrangTaiLieuEnum tinhTrangTaiLieu;
 
-	@NotNull
 	@ManyToOne
 	private LoaiTaiLieu loaiTaiLieu;
 
