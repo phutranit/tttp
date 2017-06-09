@@ -34,6 +34,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private int thuTuThucHien;
 
 	private boolean laTTXM;
+	private boolean old;
+	private boolean donChuyen;
 
 	@ManyToOne
 	@QueryInit("*.*.*")
@@ -54,7 +56,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-	private boolean old;
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
@@ -170,6 +171,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.laTTXM = laTTXM;
 	}
 	
+	public boolean isDonChuyen() {
+		return donChuyen;
+	}
+
+	public void setDonChuyen(boolean donChuyen) {
+		this.donChuyen = donChuyen;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public SoTiepCongDan getSoTiepCongDan() {
 		return soTiepCongDan;

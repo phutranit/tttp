@@ -169,7 +169,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			Don don = donRepo.findOne(donService.predicateFindOne(id));
 			Long phongBanXuLyXLD = 0L;
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-			Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			Long donViId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			if (!StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) { 
 				phongBanXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -1555,11 +1554,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
 		}
 		
+		
+		CoQuanQuanLy donViGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId()).getDonVi();
+		
+		System.out.println("xuLyDon.getPhongBanGiaiQuyet(): " + donViGiaiQuyet.getId());
+		
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 		giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
-		giaiQuyetDon.setDonViGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet().getDonVi());
+		giaiQuyetDon.setDonChuyen(true);
+		giaiQuyetDon.setDonViGiaiQuyet(donViGiaiQuyet);
 		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
@@ -1987,6 +1992,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setDonViGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet().getDonVi());
 		giaiQuyetDon.setChucVu(VaiTroEnum.TRUONG_PHONG);
+		giaiQuyetDon.setDonChuyen(true);
 		giaiQuyetDon.setThuTuThucHien(1);
 		Utils.save(giaiQuyetDonRepo, giaiQuyetDon, congChucId);
 
