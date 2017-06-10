@@ -323,10 +323,69 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	public ResponseEntity<Object> dinhChiDonGiaiQuyet(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 		
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_DINHCHI) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}		
-		// Đang đợi confirm của khách hàng
+//		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_DINHCHI);
+//		if (nguoiDungHienTai == null) {
+//			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//		}		
+//		
+//		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+//		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") && commonProfile.containsAttribute("coQuanQuanLyId")) {
+//			if (giaiQuyetDon.getThongTinGiaiQuyetDon() == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.name(), ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.getText());
+//			}
+//			if (giaiQuyetDon.getNextState() == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEXT_STATE_REQUIRED.name(), ApiErrorEnum.NEXT_STATE_REQUIRED.getText());
+//			}
+//			State nextState = stateRepo.findOne(stateService.predicateFindOne(giaiQuyetDon.getNextState().getId()));
+//			Long thongTinGiaiQuyetDonId = giaiQuyetDon.getThongTinGiaiQuyetDon().getId();
+//			ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonRepo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(thongTinGiaiQuyetDonId));
+//			
+//			Don don = thongTinGiaiQuyetDon.getDon();
+//			
+//			if (don == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(), ApiErrorEnum.DON_REQUIRED.getText());
+//			}
+//			
+//			if (don.getProcessType() == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
+//			}
+//			
+//			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+//			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+//
+//			CongChuc congChuc = congChucRepo.findOne(congChucId);
+//
+//			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
+//					: congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
+//
+//			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
+//			Process process = processRepo.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
+//
+//			if (process == null && isOwner) {
+//				process = processRepo.findOne(processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, false, don.getProcessType()));
+//			}
+//
+//			if (process == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+//						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+//			}
+//			Transition transition = transitionRepo.findOne(
+//					transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
+//
+//			if (transition == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+//						ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+//			}
+//			if (ProcessTypeEnum.GIAI_QUYET_DON.equals(don.getProcessType())) {
+//				GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
+//				if (giaiQuyetDonHienTai != null) {
+//					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
+//					FlowStateEnum nextStateType = nextState.getType();
+//					giaiQuyetDonHienTai.setNextState(nextState);
+//					giaiQuyetDonHienTai.setNextForm(transition.getForm());
+//				}
+//			}
+//		}
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
