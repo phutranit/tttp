@@ -1372,4 +1372,52 @@ public class Don extends Model<Don> {
 		}
 		return map;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getNguonDonInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		List<Long> listIdDonVi = new ArrayList<Long>();
+		listIdDonVi.add(0L);
+		if (xuLyDons != null) {
+			for (XuLyDon xld : xuLyDons) {
+				Long idDonViXuLy = xld.getDonViXuLy() != null ? xld.getDonViXuLy().getId() : 0L;
+				if (!listIdDonVi.contains(idDonViXuLy)) {
+					listIdDonVi.add(idDonViXuLy);
+					map = new HashMap<>();
+					map.put("idDonVi", idDonViXuLy);
+					if (xld.isDonChuyen()) {					
+						map.put("nguonDonText", "Chuyển đơn");
+						map.put("donViChuyenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getDonVi().getTen() : "");
+					} else {
+						map.put("nguonDonText", xld.getDon().getNguonTiepNhanDon().getText());
+					}
+					list.add(map);
+				}
+			}
+		}		
+		if (getThongTinGiaiQuyetDon() != null) {
+			List<GiaiQuyetDon> giaiQuyetDons = thongTinGiaiQuyetDon.getGiaiQuyetDons();
+			if (giaiQuyetDons != null) {
+				for (GiaiQuyetDon gqd : giaiQuyetDons) {
+					Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
+					if (!listIdDonVi.contains(idDonViGiaiQuyet)) {
+						listIdDonVi.add(idDonViGiaiQuyet);
+						map = new HashMap<>();
+						map.put("idDonVi", idDonViGiaiQuyet);
+						if (gqd.isLaTTXM()) {					
+							map.put("nguonDonText", "Giao thẩm tra xác minh");
+							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+						} else if (gqd.isDonChuyen()){
+							map.put("nguonDonText", "Giao kiểm tra đề xuất");
+							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+						}
+						list.add(map);
+					}
+				}
+			}
+		}
+		return list;
+	}
 }

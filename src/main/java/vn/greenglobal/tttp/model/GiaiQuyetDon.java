@@ -53,6 +53,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@ManyToOne
 	private CoQuanQuanLy donViGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViChuyenDon;
+	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
@@ -194,6 +196,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setDonViGiaiQuyet(CoQuanQuanLy donViGiaiQuyet) {
 		this.donViGiaiQuyet = donViGiaiQuyet;
+	}
+	
+	public CoQuanQuanLy getDonViChuyenDon() {
+		return donViChuyenDon;
+	}
+
+	public void setDonViChuyenDon(CoQuanQuanLy donViChuyenDon) {
+		this.donViChuyenDon = donViChuyenDon;
 	}
 
 	@Transient
