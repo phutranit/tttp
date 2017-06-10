@@ -446,4 +446,49 @@ public class XuLyDon extends Model<XuLyDon> {
 		
 		return map;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinXuLyInfo() {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapHuongXuLy = new HashMap<>();
+		Map<String, Object> mapThamQuyenGiaiQuyet = new HashMap<>();
+		Map<String, Object> mapPhongBanGiaiQuyet = new HashMap<>();
+		Map<String, Object> mapCoQuanTiepNhan = new HashMap<>();
+		
+		map.put("quyTrinhXuLy", "");
+		map.put("huongXuLy", "");
+		map.put("thamQuyenGiaiQuyet", "");
+		map.put("phongBanGiaiQuyet", "");
+		map.put("yKienXuLy", getNoiDungXuLy());
+		
+		if (getHuongXuLy() != null) {
+			mapHuongXuLy.put("ten", getHuongXuLy().getText());
+			mapHuongXuLy.put("giatTri", getHuongXuLy().name());
+			map.put("huongXuLy", mapHuongXuLy);
+			if (getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
+				mapPhongBanGiaiQuyet.put("id", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getId() : "");
+				mapPhongBanGiaiQuyet.put("ten", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getTen() : "");
+				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");				
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {				
+				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
+				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");	
+				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
+					|| getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
+					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {
+				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+			}
+			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
+			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
+			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
+		}
+		if (getNextState() != null) {
+			map.put("quyTrinhXuLy", getNextState().getTenVietTat());
+		}
+		return map;
+	}
 }

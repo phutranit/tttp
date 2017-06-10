@@ -1335,7 +1335,7 @@ public class Don extends Model<Don> {
 	
 	}
 	
-	@Transient
+	/*@Transient
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLy() {
 		String str = "";
@@ -1352,5 +1352,24 @@ public class Don extends Model<Don> {
 			}
 		}
 		return str;
+	}*/
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getThoiHanXuLyInfo() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("day", "");
+		map.put("time", "");
+		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
+			if (soNgayXuLy > 0) {
+				map.put("day", soNgayXuLy);
+			} else if (soNgayXuLy == -1) {
+				map.put("day", -Utils.getLayNgayTreHan(getThoiHanXuLyXLD()));
+			} else {
+				map.put("time", Utils.getLaySoGioPhut(getThoiHanXuLyXLD()));
+			} 
+		}
+		return map;
 	}
 }

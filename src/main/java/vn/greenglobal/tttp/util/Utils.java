@@ -341,6 +341,7 @@ public class Utils {
         c.set(Calendar.MILLISECOND, 0);
         return c;
     }
+	
 	@SuppressWarnings("deprecation")
     public static String getLaySoGioPhut(LocalDateTime thoiHanKetThuc) {
         //Main m = new Main();
@@ -363,16 +364,16 @@ public class Utils {
             Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHienTai, 
             		endMorning, minuteEndMorning);
             long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
-            if (cal.getTimeInMillis() <= gioBuoiSang) {
-            	// check dieu kien thuoc gio hanh chinh
-                if (ketThuc.getTime().getMinutes() > batDau.getTime().getMinutes()) {
-                    phut = ketThuc.getTime().getMinutes() - batDau.getTime().getMinutes();
-                } else if (ketThuc.getTime().getMinutes() < batDau.getTime().getMinutes()) {
-                    phut = batDau.getTime().getMinutes() - ketThuc.getTime().getMinutes();
-                    phut = 60 - phut;
-                    gio = gio - 1;
-                }
-            }
+			if (cal.getTimeInMillis() <= gioBuoiSang) {
+				// check dieu kien thuoc gio hanh chinh
+				if (ketThuc.getTime().getMinutes() > batDau.getTime().getMinutes()) {
+					phut = ketThuc.getTime().getMinutes() - batDau.getTime().getMinutes();
+				} else if (ketThuc.getTime().getMinutes() < batDau.getTime().getMinutes()) {
+					phut = batDau.getTime().getMinutes() - ketThuc.getTime().getMinutes();
+					phut = 60 - phut;
+					gio = gio - 1;
+				}
+			}
             gio += bonus;
         } else {
             LocalDateTime gioKetThuc = LocalDateTime.of(thoiHanKetThuc.getYear(), thoiHanKetThuc.getMonth(),
@@ -385,24 +386,25 @@ public class Utils {
             Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHienTai, 
             		startAfternoon, minuteEndAfternoon);
             long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
-            if(cal.getTimeInMillis() >= gioBuoiChieu) {
-            	// check dieu kien thuoc gio hanh chinh
-                if (ketThuc.getTime().getMinutes() > batDau.getTime().getMinutes()) {
-                    phut = ketThuc.getTime().getMinutes() - batDau.getTime().getMinutes();
-                } else if (ketThuc.getTime().getMinutes() < batDau.getTime().getMinutes()) {
-                	phut = batDau.getTime().getMinutes() - ketThuc.getTime().getMinutes();
-                    phut = 60 - phut;
-                    gio = gio - 1;
-                }
-            } else {
-            	gio = 4;
-            }
+			if (cal.getTimeInMillis() >= gioBuoiChieu) {
+				// check dieu kien thuoc gio hanh chinh
+				if (ketThuc.getTime().getMinutes() > batDau.getTime().getMinutes()) {
+					phut = ketThuc.getTime().getMinutes() - batDau.getTime().getMinutes();
+				} else if (ketThuc.getTime().getMinutes() < batDau.getTime().getMinutes()) {
+					phut = batDau.getTime().getMinutes() - ketThuc.getTime().getMinutes();
+					phut = 60 - phut;
+					gio = gio - 1;
+				}
+			} else {
+				gio = 4;
+			}
         }
- 
-        String str = (gio < 0 ? 0 : gio) + " giờ " + (phut < 0 ? 0 : phut) +" phút";
+
+        String str = (gio < 0 ? 0 : "0"+gio) + ":" + (phut < 0 ? 0 : 0+phut);
         return str;
     }
-   
+	
+
     private static boolean isInvalidNgayNghi(Date date) {
       if (vietHolidays == null) {
           genVietHolidays();
@@ -482,7 +484,6 @@ public class Utils {
 			} else {
 				soNgayXuLy = -1;
 			}
-
 			if (soNgayXuLy == 0 && checkNgayNghi) {
 				soNgayXuLy = -2;
 			}
@@ -492,6 +493,19 @@ public class Utils {
         
         return soNgayXuLy;
     }
+    
+    public static Long getLayNgayTreHan(LocalDateTime ngayKetThuc) {
+		long soNgayXuLy = 0;
+		Calendar ngayHienTai = Calendar.getInstance();
+		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		if (end.before(ngayHienTai)) {
+			while (end.before(ngayHienTai)) {
+				soNgayXuLy += 1;
+				end.add(Calendar.DATE, 1);
+			}
+		}
+		return soNgayXuLy;
+	}
     
     public static String getMaDon() {
     	DateFormat df = new SimpleDateFormat("yyMMdd");
