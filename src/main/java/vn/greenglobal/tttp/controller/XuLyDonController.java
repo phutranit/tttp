@@ -1536,7 +1536,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		don.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
-		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);	
+		don.setTrangThaiDon(TrangThaiDonEnum.DANG_GIAI_QUYET);	
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 		// set thoi han xu ly cho don
@@ -1966,7 +1966,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDonHienTai.getPhongBanGiaiQuyet());
-		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+		don.setTrangThaiDon(TrangThaiDonEnum.DANG_GIAI_QUYET);
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 
 		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
