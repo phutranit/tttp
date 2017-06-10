@@ -156,6 +156,9 @@ public class DonService {
 			OrderSpecifier<Integer> sortOrder2 = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+			for (GiaiQuyetDon gqd : giaiQuyetDons) {
+				System.out.println(gqd.getId());
+			}
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
 						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
