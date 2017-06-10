@@ -247,6 +247,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 				giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 				giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
+				giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 				giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 				giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 				giaiQuyetDon.setThuTuThucHien(1);
@@ -320,6 +321,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 						giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 						giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
+						giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 						giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 						giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 						giaiQuyetDon.setThuTuThucHien(1);

@@ -1,17 +1,26 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
@@ -87,6 +96,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	@OneToOne
 	@JoinColumn(name = "don_id")
 	private Don don;
+	
+	@OneToMany(mappedBy = "thongTinGiaiQuyetDon", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<GiaiQuyetDon> giaiQuyetDons = new ArrayList<GiaiQuyetDon>(); // XLD
 
 	@Enumerated(EnumType.STRING)
 	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai;
@@ -164,6 +178,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNgayketThucGiaiQuyet(LocalDateTime ngayketThucGiaiQuyet) {
 		this.ngayketThucGiaiQuyet = ngayketThucGiaiQuyet;
+	}
+	
+	public List<GiaiQuyetDon> getGiaiQuyetDons() {
+		return giaiQuyetDons;
+	}
+
+	public void setGiaiQuyetDons(List<GiaiQuyetDon> giaiQuyetDons) {
+		this.giaiQuyetDons = giaiQuyetDons;
 	}
 
 	public LocalDateTime getNgayHetHanGiaiQuyet() {
@@ -491,6 +513,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	public void setKetQuaThucHienTheoDoi(KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi) {
 		this.ketQuaThucHienTheoDoi = ketQuaThucHienTheoDoi;
 	}
+	
+	
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
