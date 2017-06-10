@@ -127,6 +127,8 @@ public class CongChuc extends Model<CongChuc> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId());
 			map.put("ten", getCoQuanQuanLy().getTen());
+			map.put("chaId", getCoQuanQuanLy().getCha() == null ? getCoQuanQuanLy().getCha() : getCoQuanQuanLy().getCha().getId());
+			
 			return map;
 		}
 		return null;
