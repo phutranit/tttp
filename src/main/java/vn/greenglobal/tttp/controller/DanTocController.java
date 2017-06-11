@@ -57,7 +57,8 @@ public class DanTocController extends TttpController<DanToc> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -72,6 +73,11 @@ public class DanTocController extends TttpController<DanToc> {
 	public @ResponseBody Object getListDanToc(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 
 		Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);

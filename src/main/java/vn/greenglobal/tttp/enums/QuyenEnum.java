@@ -128,7 +128,7 @@ public enum QuyenEnum {
 	GIAIQUYETDON_THEM("Thêm mới"),
 	GIAIQUYETDON_SUA("Chỉnh sửa"),
 	GIAIQUYETDON_XOA("Xoá"),
-	GIAIQUYETDON_DINHCHI("Đình chỉ/Rút đơn"),
+	GIAIQUYETDON_DINHCHI("Đình chỉ"),
 	
 	THANHTRA_LIETKE("Liệt kê"),
 	THANHTRA_XEM("Xem"),

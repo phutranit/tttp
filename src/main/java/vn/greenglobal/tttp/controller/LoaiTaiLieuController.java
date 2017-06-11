@@ -61,7 +61,8 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
