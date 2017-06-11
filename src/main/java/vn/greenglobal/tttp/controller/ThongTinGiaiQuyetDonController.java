@@ -66,7 +66,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 		if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		
+
 		Don don = donRepo.findOne(donService.predicateFindOne(giaiQuyetDon.getDon().getId()));
 		don.setDonViThamTraXacMinh(giaiQuyetDon.getDonViThamTraXacMinh());
 		Utils.save(donRepo, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
