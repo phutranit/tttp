@@ -239,8 +239,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 				if (thongTinGiaiQuyetDon == null) {
 					thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
-					thongTinGiaiQuyetDon.setDon(don);						
+					thongTinGiaiQuyetDon.setDon(don);
 				}
+				thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+				Long soNgayGiaiQuyetMacDinh = 45L;
+				LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+				thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 				thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 				Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
 				GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
@@ -315,6 +319,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 							thongTinGiaiQuyetDon.setDon(don);						
 						}
+						thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+						Long soNgayGiaiQuyetMacDinh = 45L;
+						LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+						thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 						thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 						Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
 						GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
