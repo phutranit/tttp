@@ -58,7 +58,8 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}

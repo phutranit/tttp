@@ -1142,17 +1142,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 	
-	private void disableAllXuLyDonCu(Long donId, Long congChucId, Long phongBanId) {
-		List<XuLyDon> xuLyDonCu = (List<XuLyDon>) repo.findAll(xuLyDonService.predFindAllOld(donId, phongBanId));
-		if (xuLyDonCu != null) {
-			for (XuLyDon xld : xuLyDonCu) {
-				if (!xld.isOld()) {
-					xld.setOld(true);
-					Utils.save(repo, xld, congChucId);
-				}
-			}
-		}
-	}
+//	private void disableAllXuLyDonCu(Long donId, Long congChucId, Long phongBanId) {
+//		List<XuLyDon> xuLyDonCu = (List<XuLyDon>) repo.findAll(xuLyDonService.predFindAllOld(donId, phongBanId));
+//		if (xuLyDonCu != null) {
+//			for (XuLyDon xld : xuLyDonCu) {
+//				if (!xld.isOld()) {
+//					xld.setOld(true);
+//					Utils.save(repo, xld, congChucId);
+//				}
+//			}
+//		}
+//	}
 	
 	public XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId, String note) {
 		Long donId = xuLyDon.getDon().getId();

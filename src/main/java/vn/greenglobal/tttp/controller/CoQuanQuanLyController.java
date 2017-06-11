@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +31,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.DonViHanhChinh;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -86,7 +84,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -110,6 +109,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	public @ResponseBody Object getDonVis(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<CoQuanQuanLy> page = null;
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
@@ -153,6 +157,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "cha", required = false) Long cha,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", cha, null, null), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
@@ -162,6 +171,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDonViChuTris(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		
 		Page<CoQuanQuanLy> page = null;
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -206,6 +220,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "coQuanQuanLy", required = false) Long coQuanQuanLy,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<CoQuanQuanLy> page = null;
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
@@ -247,6 +266,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getCoQuanTiepNhan(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		
 		Page<CoQuanQuanLy> page = null;
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -290,6 +314,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	public @ResponseBody Object getListCoQuanDaGiaiQuyet(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 
 		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", null, capCoQuanQuanLy, null), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -298,10 +327,15 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/noiCapCMNDs")
 	@ApiOperation(value = "Lấy danh sách Nơi Cấp Chứng Minh Nhân Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapTinhThanhPho(
+	public @ResponseBody Object getListDonViHanhChinhTheoCapTinhThanhPho(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
 		Page<CoQuanQuanLy> page = null;
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 		ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
@@ -441,12 +475,16 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBansTheoDonVi")
 	@ApiOperation(value = "Lấy danh sách Phong ban theo đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDanhSachPhongBanstheoDonVi(
-			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			Pageable pageable,
+			@RequestHeader(value = "Authorization", required = true) String authorization,  Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
-		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
-		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());		
 		Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo), pageable);
 
 		return assembler.toResource(page, (ResourceAssembler) eass);
