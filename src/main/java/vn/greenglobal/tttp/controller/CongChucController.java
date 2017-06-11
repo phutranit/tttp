@@ -98,14 +98,13 @@ public class CongChucController extends TttpController<CongChuc> {
 	@ApiOperation(value = "Lấy danh sách Công Chức", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListByVaiTro(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "coQuanQuanLyId") Long coQuanQuanLyId,
 			@RequestParam(value = "vaiTro") String vaiTro, PersistentEntityResourceAssembler eass) {
 		
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		
-		Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		Page<CongChuc> page = repo.findAll(congChucService.predicateFindByVaiTro(coQuanQuanLyId, vaiTro), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}

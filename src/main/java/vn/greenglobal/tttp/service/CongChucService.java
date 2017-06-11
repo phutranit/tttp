@@ -48,15 +48,15 @@ public class CongChucService {
 		return predAll;
 	}
 
-	public Predicate predicateFindByVaiTro(Long coQuanQuanLyId, String vaiTro) {
+	public Predicate predicateFindByVaiTro(Long coQuanQuanLyId, String vaiTroCongChucCanLay) {
 		BooleanExpression predAll = base;
+
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId));
 		}
 
-		if (vaiTro != null && !"".equals(vaiTro)) {
-			predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro
-					.eq(VaiTroEnum.valueOf(StringUtils.upperCase(vaiTro))));
+		if (vaiTroCongChucCanLay != null && !"".equals(vaiTroCongChucCanLay)) {
+			predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.valueOf(vaiTroCongChucCanLay)));
 		}
 
 		return predAll;
