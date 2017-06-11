@@ -1551,13 +1551,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (thongTinGiaiQuyetDon == null) {
 			thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 			thongTinGiaiQuyetDon.setDon(don);
+			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+			Long soNgayGiaiQuyetMacDinh = 45L;
+			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
+			
 			Utils.save(thongTinGiaiQuyetDonRepo, thongTinGiaiQuyetDon, congChucId);
 		}
 		
-		
 		CoQuanQuanLy donViGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId()).getDonVi();
-		
-		System.out.println("xuLyDon.getPhongBanGiaiQuyet(): " + donViGiaiQuyet.getId());
 		
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
