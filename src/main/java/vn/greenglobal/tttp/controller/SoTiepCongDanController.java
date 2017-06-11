@@ -220,9 +220,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				don.setDaXuLy(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-			int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+			int soLuotTiep = don.getTongSoLuotTCD();
 			soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-			soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 			don.setTongSoLuotTCD(soLuotTiep + 1);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				don.setYeuCauGapTrucTiepLanhDao(true);
@@ -384,17 +383,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Don don = soTiepCongDan.getDon();
 			
 			if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(),
-						ApiErrorEnum.DATA_INVALID.getText());
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText());
 			}
 			int tongSoLuotTCD = don.getTongSoLuotTCD();
 			don.setTongSoLuotTCD(tongSoLuotTCD - 1);
-			Utils.save(repoDon, don,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repoDon, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}		
 		soTiepCongDan.setDaXoa(true);
-		Utils.save(repo, soTiepCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		Utils.save(repo, soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
