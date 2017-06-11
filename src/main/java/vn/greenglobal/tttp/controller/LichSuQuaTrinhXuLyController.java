@@ -60,7 +60,8 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId), pageable);
+		Long donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViXuLyXLD), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
