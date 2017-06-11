@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -36,8 +37,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	
+	@QueryInit("*.*.*")
 	@ManyToOne
 	private CoQuanQuanLy phongBanXuLy;
+	@QueryInit("*.*.*")
 	@ManyToOne
 	private CoQuanQuanLy donViXuLy;
 	@ManyToOne
