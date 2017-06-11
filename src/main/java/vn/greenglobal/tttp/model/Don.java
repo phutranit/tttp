@@ -965,6 +965,13 @@ public class Don extends Model<Don> {
 		}
 		return trangThaiDonText;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTrangThaiDonGiaiQuyetText() {
+		return getTrangThaiDon() != null ? getTrangThaiDon().getText() : "";
+	}
+	
 
 	public void setTrangThaiDonText(String trangThaiDonText) {
 		this.trangThaiDonText = trangThaiDonText;

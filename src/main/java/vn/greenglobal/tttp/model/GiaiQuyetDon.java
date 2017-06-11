@@ -190,6 +190,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.soTiepCongDan = soTiepCongDan;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getDonViGiaiQuyet() {
 		return donViGiaiQuyet;
 	}
@@ -198,6 +199,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.donViGiaiQuyet = donViGiaiQuyet;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getDonViChuyenDon() {
 		return donViChuyenDon;
 	}
