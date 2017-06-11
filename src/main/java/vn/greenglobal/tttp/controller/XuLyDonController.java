@@ -176,7 +176,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 			
 			if (don != null) {
-				XuLyDon xuLyDon = xuLyDonService.predFindCurrent(repo, don.getId(), donViId, phongBanXuLyXLD, vaiTroNguoiDungHienTai);
+				XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, vaiTroNguoiDungHienTai);
 				if (xuLyDon != null) {
 					return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 				}
