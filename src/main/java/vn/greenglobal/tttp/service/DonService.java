@@ -179,7 +179,7 @@ public class DonService {
 	}
 	
 	public Predicate predicateFindAllGQD(String maDon, String nguonDon, String phanLoaiDon,
-			String tiepNhanTuNgay, String tiepNhanDenNgay, boolean thanhLapDon, 
+			String tiepNhanTuNgay, String tiepNhanDenNgay, boolean thanhLapDon, String tinhTrangGiaiQuyet,
 			String trangThaiDon, Long phongBanGiaiQuyetId,
 			Long canBoGiaiQuyetId, String chucVu, String hoTen, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
@@ -202,6 +202,10 @@ public class DonService {
 		
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
+		}
+		
+		if (StringUtils.isNotBlank(tinhTrangGiaiQuyet)) {
+			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(tinhTrangGiaiQuyet))));
 		}
 		
 		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {

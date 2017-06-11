@@ -195,7 +195,8 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
 			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
-			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "tinhTrangGiaiQuyet", required = false) String tinhTrangGiaiQuyet,
+			@RequestParam(value = "trangThaiDon", required = true) String trangThaiDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
@@ -206,7 +207,7 @@ public class DonController extends TttpController<Don> {
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-							thanhLapDon, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
+							thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
 							congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo),
 					pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);

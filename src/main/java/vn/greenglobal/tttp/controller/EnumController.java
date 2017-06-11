@@ -47,6 +47,7 @@ import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -527,6 +528,33 @@ public class EnumController {
 //		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
 //		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
 //		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tinhTrangGiaiQuyets")
+	@ApiOperation(value = "Lấy danh sách Tình trạng giải quyết", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachTinhTrangGiaiQuyet(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		object.put("ten", TrangThaiDonEnum.DA_GIAI_QUYET.getText());
+		object.put("giaTri", TrangThaiDonEnum.DA_GIAI_QUYET.name());
+		list.add(object);
+			
+		object = new HashMap<>();
+		object.put("ten", TrangThaiDonEnum.DANG_GIAI_QUYET.getText());
+		object.put("giaTri", TrangThaiDonEnum.DANG_GIAI_QUYET.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TrangThaiDonEnum.HOAN_THANH.getText());
+		object.put("giaTri", TrangThaiDonEnum.HOAN_THANH.name());
+		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
