@@ -473,13 +473,15 @@ public class XuLyDon extends Model<XuLyDon> {
 		mapCanBoXuLy.put("ten", getNguoiTao().getHoVaTen());
 		map.put("canBoXuLy", mapCanBoXuLy);
 		
-		mapPhongBanChiDinh.put("id", getPhongBanXuLyChiDinh().getId());
-		mapPhongBanChiDinh.put("ten", getPhongBanXuLyChiDinh().getTen());
+		mapPhongBanChiDinh.put("id", getPhongBanXuLyChiDinh() != null ?  getPhongBanXuLyChiDinh().getId() : "");
+		mapPhongBanChiDinh.put("ten", getPhongBanXuLyChiDinh() != null ? getPhongBanXuLyChiDinh().getTen() : "");
 		map.put("phongBanXuLyChiDinh", mapPhongBanChiDinh);
 		
-		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh().getId());
-		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh().getHoVaTen());
+		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
+		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
+		
+		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
 		
 		if (getHuongXuLy() != null) {
 			mapHuongXuLy.put("ten", getHuongXuLy().getText());
