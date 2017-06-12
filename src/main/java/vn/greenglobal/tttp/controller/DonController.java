@@ -372,6 +372,7 @@ public class DonController extends TttpController<Don> {
 			
 			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			Don donMoi = Utils.save(repo, don, congChucId);
+			donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 			
 			//tao lich su qua trinh xu ly don
 			LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -450,7 +451,8 @@ public class DonController extends TttpController<Don> {
 			if (StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {				
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 				Don donMoi = Utils.save(repo, don, congChucId);
-
+				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
@@ -606,6 +608,7 @@ public class DonController extends TttpController<Don> {
 			}
 			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 			don.setProcessType(donOld.getProcessType());
+			don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 			
 			State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 			Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
@@ -715,7 +718,9 @@ public class DonController extends TttpController<Don> {
 			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 			}
-
+			don.setProcessType(donOld.getProcessType());
+			don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDaGiaiQuyet());
+			
 			if (don.isThanhLapDon()) {
 				don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 				if (donOld.getThoiHanXuLyXLD() == null) {
@@ -764,7 +769,8 @@ public class DonController extends TttpController<Don> {
 						Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 					}
 				}
-
+				
+				don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				don.setProcessType(ProcessTypeEnum.XU_LY_DON);
 				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
@@ -774,15 +780,6 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
 				don.setCurrentState(beginState);
-				
-				/*Predicate predicate = serviceState.predicateFindAll(beginState.getId(), process, repoTransition);
-				List<State> listState = ((List<State>) repoState.findAll(predicate));
-				if (listState.size() > 0) {
-					State nextState = listState.get(0);
-					don.setCurrentState(nextState);
-				} else {
-					don.setCurrentState(beginState);
-				}*/
 			}
 
 			return Utils.doSave(repo, don,
