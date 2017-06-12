@@ -219,7 +219,7 @@ public class DonService {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
-//		
+	
 //		if (phongBanGiaiQuyetId != null && phongBanGiaiQuyetId.longValue() > 0) {
 //			predAll = predAll.and(QDon.don.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId));
 //		}
@@ -249,10 +249,6 @@ public class DonService {
 		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);		
 		donCollections = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
-		System.out.println("abc: ");
-		for (Don don : donCollections) {
-			System.out.println("donId: " + don.getId());
-		}
 		predAll = predAll.and(QDon.don.in(donCollections));
 		return predAll;
 	}
