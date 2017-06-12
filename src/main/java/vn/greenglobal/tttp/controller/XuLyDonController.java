@@ -255,6 +255,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				listState = ((List<State>) repoState.findAll(predicate));
 				if (listState.size() > 0) {
 					process = processFromList;
+					vaiTroNguoiDungHienTai = process.getVaiTro().getLoaiVaiTro().toString();
 					break;
 				}
 			}
