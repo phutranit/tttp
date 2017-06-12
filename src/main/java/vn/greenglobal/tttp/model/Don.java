@@ -848,16 +848,11 @@ public class Don extends Model<Don> {
 	public Map<String, Object> getCoQuanDangQuyetInfo() {
 		if (getNguoiSua() != null) {
 			Map<String, Object> map = new HashMap<>();
-			CoQuanQuanLy coQuanDangGiaiQuyet = null;
-			if (getPhongBanGiaiQuyet() != null) {
-				coQuanDangGiaiQuyet = getPhongBanGiaiQuyet();
-				if (coQuanDangGiaiQuyet.getCha() != null) {
-					coQuanDangGiaiQuyet = coQuanDangGiaiQuyet.getCha();
-				}
+			if (getCoQuanDangGiaiQuyet() != null) {
+				map.put("coQuanQuanLyId", getCoQuanDangGiaiQuyet().getId());
+				map.put("ten", getCoQuanDangGiaiQuyet().getTen());
+				return map;
 			}
-			map.put("coQuanQuanLyId", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getId() : 0);
-			map.put("ten", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getTen() : "");
-			return map;
 		}
 		return null;
 	}

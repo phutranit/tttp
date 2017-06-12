@@ -608,6 +608,7 @@ public class DonController extends TttpController<Don> {
 			}
 			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 			don.setProcessType(donOld.getProcessType());
+			don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 			
 			State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 			Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
