@@ -1,7 +1,10 @@
 package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -61,6 +65,7 @@ import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.util.Utils;
+import vn.greenglobal.tttp.util.WordUtil;
 
 @RestController
 @RepositoryRestController
@@ -802,4 +807,31 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		return giaiQuyetDonHienTai;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai")
+	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordPhieuXacMinhKhieuNai(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
+			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
+			@RequestParam(value = "ghiChu", required = false) String ghiChu,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("hoVaTen", tenCoQuan);
+		mappings.put("noiDungDonThu", noiDungDonThu);
+		mappings.put("ghiChu", ghiChu);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.doc").getFile(), mappings);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao")
+	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
+			@RequestParam(value = "ghiChu", required = false) String ghiChu,
+			HttpServletResponse response) {
+
+		HashMap<String, String> mappings = new HashMap<String, String>();
+		mappings.put("hoVaTen", tenCoQuan);
+		mappings.put("ghiChu", ghiChu);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI.doc").getFile(), mappings);
+	}
+	
 }

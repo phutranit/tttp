@@ -117,6 +117,7 @@ public class Don extends Model<Don> {
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
+	@ManyToOne
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)

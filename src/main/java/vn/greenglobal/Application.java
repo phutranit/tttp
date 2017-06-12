@@ -41,9 +41,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+//import org.springframework.web.servlet.config.annotation.CorsRegistry;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
@@ -91,22 +91,22 @@ public class Application extends SpringBootServletInitializer {
 	@Value("${cors.allowedOrigins}")
 	private String[] myAllowedOriginList;
 	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins(myAllowedOriginList)
-						.allowCredentials(true)
-						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"email", "password", "authorization", "client-security-token",
-								"X-Application-Context", "Date", "Content-Disposition")
-						.maxAge(3600);
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//						.allowedOrigins(myAllowedOriginList)
+//						.allowCredentials(true)
+//						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+//						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+//								"email", "password", "authorization", "client-security-token",
+//								"X-Application-Context", "Date", "Content-Disposition")
+//						.maxAge(3600);
+//			}
+//		};
+//	}
 
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
@@ -120,17 +120,17 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring()
-						.antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
-								"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel", 
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
-								"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
-								"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
-								"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
-								"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
-								"/swagger-resources/configuration/security", "/webjars/**")
-						.antMatchers(HttpMethod.OPTIONS, "/**");
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs",
+						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao", "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai",
+						"/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
+						"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
+						"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
+						"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai", "/swagger-resources",
+						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
+						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
+						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override
