@@ -635,6 +635,7 @@ public class DonController extends TttpController<Don> {
 			XuLyDon xuLyDonTiepTheo = new XuLyDon();
 			xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 			xuLyDonHienTai.setNextState(nextState);
+			xuLyDonHienTai.setNextForm(transition.getForm());
 			xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 			xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 			xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -656,7 +657,7 @@ public class DonController extends TttpController<Don> {
 			don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 			don.setCurrentState(xuLyDonHienTai.getNextState());
 			don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);			
-
+			
 			Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 			Utils.save(xuLyRepo, xuLyDonTiepTheo, congChucId);
 			return Utils.doSave(repo, don,
