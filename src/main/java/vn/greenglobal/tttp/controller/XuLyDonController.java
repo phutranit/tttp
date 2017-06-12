@@ -476,11 +476,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					don.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 					don.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 					don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
-
 					// set ngay ket thuc xu ly don cho don
 					don.setNgayKetThucXLD(LocalDateTime.now());
 
+					//tao lich su qua trinh xu ly don
+					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+					State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+					lichSuQTXLD.setDon(don);
+					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+					lichSuQTXLD.setTen(state.getTenVietTat());
+					lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
+					int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId());
+					lichSuQTXLD.setThuTuThucHien(thuTu);
+					
 					Utils.save(donRepo, don, congChucId);
+					Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 					return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 				}
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
