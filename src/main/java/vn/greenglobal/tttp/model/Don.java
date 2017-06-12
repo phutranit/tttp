@@ -111,6 +111,8 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy coQuanDangGiaiQuyet;
+	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
@@ -361,6 +363,15 @@ public class Don extends Model<Don> {
 
 	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
 		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
+	}
+	
+	@ApiModelProperty(position = 27, example = "{}")
+	public CoQuanQuanLy getCoQuanDangGiaiQuyet() {
+		return coQuanDangGiaiQuyet;
+	}
+
+	public void setCoQuanDangGiaiQuyet(CoQuanQuanLy coQuanDangGiaiQuyet) {
+		this.coQuanDangGiaiQuyet = coQuanDangGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
