@@ -559,6 +559,116 @@ public class DonController extends TttpController<Don> {
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 
+	private void disableXuLyDonCu(VaiTroEnum vaiTro, Long donId, Long congChucId, Long phongBanId, Long donViId) {
+		List<XuLyDon> xuLyDonCu = (List<XuLyDon>) xuLyRepo.findAll(xuLyDonService.predFindOld(donId, phongBanId, donViId, vaiTro));
+		if (xuLyDonCu != null) {
+			for (XuLyDon xld: xuLyDonCu) {
+				xld.setOld(true);
+				Utils.save(xuLyRepo, xld, congChucId);
+			}
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.PATCH, value = "/dons/luuDonVaTrinh/{id}")
+	@ApiOperation(value = "Cập nhật Đơn và trình đơn", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật Đơn và trình đơn thành công", response = Don.class) })
+	public @ResponseBody ResponseEntity<Object> luuDonVaTrinhDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+
+		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
+				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
+			Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
+			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
+					.toString();
+			
+			don.setId(id);
+
+			if (!donService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			if (!StringUtils.equals(vaiTroNguoiDungHienTai, VaiTroEnum.VAN_THU.name())) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Don donOld = repo.findOne(id);
+			don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
+			don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
+			don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
+			don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
+			if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
+				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+			}
+			don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+			don.setProcessType(donOld.getProcessType());
+			
+			State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+			Process process = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+			if (process == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+			}
+			
+			//tao flow trinh lanh dao
+			FlowStateEnum trinhLanhDaoState = FlowStateEnum.TRINH_LANH_DAO;
+			State nextState = repoState.findOne(stateService.predicateFindByType(trinhLanhDaoState));
+			Transition transition = transitionRepo.findOne(
+					transitionService.predicatePrivileged(beginState, nextState, process));
+			
+			if (transition == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+						ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+			}
+			
+			String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
+			XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(xuLyRepo, donOld.getId(), donViId, coQuanQuanLyId, vaiTroNguoiDungHienTai);
+			if (xuLyDonHienTai == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			XuLyDon xuLyDonTiepTheo = new XuLyDon();
+			xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+			xuLyDonHienTai.setNextState(nextState);
+			xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
+			xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+			xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+			disableXuLyDonCu(VaiTroEnum.LANH_DAO, donOld.getId(), congChucId, coQuanQuanLyId, donViId);
+			note = note + VaiTroEnum.LANH_DAO.getText().toLowerCase() + " "
+					+ coQuanQuanLyRepo.findOne(coQuanQuanLyId).getTen().toLowerCase().trim() + " ";
+			xuLyDonTiepTheo.setDon(xuLyDonHienTai.getDon());
+			xuLyDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
+			xuLyDonTiepTheo.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
+			xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+			xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getPhongBanXuLy());
+			xuLyDonTiepTheo.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
+			if (xuLyDonHienTai.isDonChuyen()) {
+				note = note + "đơn chuyển từ " + xuLyDonHienTai.getCoQuanChuyenDon().getTen().toLowerCase().trim();
+				xuLyDonTiepTheo.setDonChuyen(true);
+				xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+			}
+			xuLyDonHienTai.setGhiChu(note);
+			don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+			don.setCurrentState(xuLyDonHienTai.getNextState());
+			don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);			
+
+			Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
+			Utils.save(xuLyRepo, xuLyDonTiepTheo, congChucId);
+			return Utils.doSave(repo, don,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
 	@ApiOperation(value = "Lấy Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Đơn thành công", response = Don.class) })
