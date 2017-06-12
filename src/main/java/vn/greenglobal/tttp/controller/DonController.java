@@ -661,6 +661,17 @@ public class DonController extends TttpController<Don> {
 			don.setCurrentState(xuLyDonHienTai.getNextState());
 			don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);			
 			
+			//tao lich su qua trinh xu ly don
+			LichSuQuaTrinhXuLy lichSuQTXLDHienTai = new LichSuQuaTrinhXuLy();
+			State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+			lichSuQTXLDHienTai.setDon(don);
+			lichSuQTXLDHienTai.setNguoiXuLy(congChucRepo.findOne(congChucId));
+			lichSuQTXLDHienTai.setNgayXuLy(LocalDateTime.now());
+			lichSuQTXLDHienTai.setTen(state.getTenVietTat());
+			lichSuQTXLDHienTai.setNoiDung(xuLyDonTiepTheo.getNoiDungXuLy());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId());
+			lichSuQTXLDHienTai.setThuTuThucHien(thuTu);
+			
 			Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
 			Utils.save(xuLyRepo, xuLyDonTiepTheo, congChucId);
 			return Utils.doSave(repo, don,
