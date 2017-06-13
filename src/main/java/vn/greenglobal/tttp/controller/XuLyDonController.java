@@ -389,8 +389,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
-						
+						if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
+							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
+						}
 						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+						xuLyDonHienTai.setGhiChu(note);
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 						don.setHuongXuLyXLD(huongXuLyXLD);
 						don.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
@@ -402,11 +405,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-						State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
 						lichSuQTXLD.setDon(don);
 						lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 						lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-						lichSuQTXLD.setTen(state.getTenVietTat());
+						lichSuQTXLD.setTen(huongXuLyXLD.getText());
 						lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
 						lichSuQTXLD.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 						int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), 
