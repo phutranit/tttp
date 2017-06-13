@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,13 +56,16 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 			Pageable pageable,
 			@RequestParam(value = "donId", required = true) Long donId,
 			PersistentEntityResourceAssembler eass) {
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 		Don don = donRepo.findOne(donService.predicateFindOne(donId));
 		if (don == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-		Long donViXuLyXLD = new Long(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViXuLyXLD), pageable);
+
+		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
