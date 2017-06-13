@@ -454,7 +454,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan,
 			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId,
-			@RequestParam(value = "lanhDaoId", required = true) Long lanhDaoId,
+			@RequestParam(value = "lanhDaoId", required = false) Long lanhDaoId,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan) throws IOException {
