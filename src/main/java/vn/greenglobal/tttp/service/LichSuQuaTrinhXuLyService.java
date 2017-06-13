@@ -27,9 +27,18 @@ public class LichSuQuaTrinhXuLyService {
 		return predAll;
 	}
 	
-	public int timThuTuLichSuQuaTrinhXuLyHienTai(LichSuQuaTrinhXuLyRepository repo, Long donId) {
+	/*public int timThuTuLichSuQuaTrinhXuLyHienTai(LichSuQuaTrinhXuLyRepository repo, Long donId) {
 		int thuTu = 0;
 		List<LichSuQuaTrinhXuLy> lichSuList = (List<LichSuQuaTrinhXuLy>) repo.findAll(predicateFindAll(donId));
+		if (lichSuList != null) {
+			thuTu = lichSuList.size();
+		}
+		return thuTu;
+	}*/
+	
+	public int timThuTuLichSuQuaTrinhXuLyHienTai(LichSuQuaTrinhXuLyRepository repo, Long donId, Long donViId) {
+		int thuTu = 0;
+		List<LichSuQuaTrinhXuLy> lichSuList = (List<LichSuQuaTrinhXuLy>) repo.findAll(predicateFindAll(donId, donViId));
 		if (lichSuList != null) {
 			thuTu = lichSuList.size();
 		}
