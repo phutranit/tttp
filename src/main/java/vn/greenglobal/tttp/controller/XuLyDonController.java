@@ -1252,8 +1252,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		if (xuLyDon.getCanBoXuLyChiDinh() != null && xuLyDonHienTai.getChucVu().equals(VaiTroEnum.LANH_DAO)) {
-			Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTruongPhong.getPhongBanXuLy().getId(), donViId);
+			Utils.save(xuLyDonRepo, xuLyDonTruongPhong, congChucId);
 		}
 		return xuLyDonTiepTheo;
 	}
@@ -1756,7 +1756,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLDChuyenDon, congChucId);
-		disableAllXuLyDonCu(don.getId(), congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId());
+		//disableAllXuLyDonCu(don.getId(), congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId());
 		return xuLyDonTiepTheo;
 	}
 
@@ -1919,7 +1919,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 		Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLDTraDon, congChucId);
-		disableAllXuLyDonCu(don.getId(), congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId());
+		//disableAllXuLyDonCu(don.getId(), congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId());
 		return xuLyDonTiepTheo;
 	}
 
