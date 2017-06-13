@@ -25,6 +25,8 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	private CongChuc nguoiXuLy;
 	@ManyToOne
 	private Don don;
+	@ManyToOne
+	private CoQuanQuanLy donViXuLy;
 	
 	private LocalDateTime ngayXuLy;
 	
@@ -88,5 +90,14 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 			str = getNguoiXuLy().getHoVaTen();
 		}
 		return str;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonViXuLy() {
+		return donViXuLy;
+	}
+
+	public void setDonViXuLy(CoQuanQuanLy donViXuLy) {
+		this.donViXuLy = donViXuLy;
 	}
 }
