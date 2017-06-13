@@ -23,7 +23,7 @@ public class LichSuQuaTrinhXuLyService {
 	
 	public Predicate predicateFindAll(Long donId, Long donViId) {
 		BooleanExpression predAll = base.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.don.id.eq(donId))
-				.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.nguoiXuLy.coQuanQuanLy.donVi.id.eq(donViId));
+				.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.donViXuLy.id.eq(donViId));
 		return predAll;
 	}
 	
