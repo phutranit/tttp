@@ -808,7 +808,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return giaiQuyetDonHienTai;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai")
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao")
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuXacMinhKhieuNai(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
@@ -819,10 +819,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		mappings.put("hoVaTen", tenCoQuan);
 		mappings.put("noiDungDonThu", noiDungDonThu);
 		mappings.put("ghiChu", ghiChu);
-		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.doc").getFile(), mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao")
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai")
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "ghiChu", required = false) String ghiChu,
@@ -831,7 +831,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		HashMap<String, String> mappings = new HashMap<String, String>();
 		mappings.put("hoVaTen", tenCoQuan);
 		mappings.put("ghiChu", ghiChu);
-		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI.doc").getFile(), mappings);
+		WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI.docx").getFile(), mappings);
 	}
 	
 }
