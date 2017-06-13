@@ -58,9 +58,6 @@ public class Don extends Model<Don> {
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
-//	@Transient
-//	private Long soNgayXuLy;
-	@Transient
 	private String noiDungThongTinTrinhLanhDao = "";
 	@Transient
 	private String nguonDonText = "";
@@ -1346,13 +1343,13 @@ public class Don extends Model<Don> {
 		
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
-			if (soNgayXuLy > 0) {
+			if (soNgayXuLy >= 0) {
 				mapType.put("type", "DAY");
 				mapType.put("value", soNgayXuLy);
 			} else if (soNgayXuLy == -1) {
 				mapType.put("type", "DAY");
-				mapType.put("value", -Utils.getLayNgayTreHan(getThoiHanXuLyXLD()));
-			} else {
+				mapType.put("value", -Utils.getLayNgayTreHan(getNgayBatDauXLD(), getThoiHanXuLyXLD()));
+			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
 				mapType.put("type", "TIME");
 				mapType.put("value", Utils.getLaySoGioPhut(getThoiHanXuLyXLD()));
 			} 
