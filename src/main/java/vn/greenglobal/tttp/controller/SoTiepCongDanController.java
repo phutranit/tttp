@@ -42,7 +42,6 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -226,9 +225,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				don.setDaXuLy(true);
 			}
 		} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-			int soLuotTiep = soTiepCongDan.getDon().getTongSoLuotTCD();
+			int soLuotTiep = don.getTongSoLuotTCD();
 			soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
-			soTiepCongDan.getDon().setTongSoLuotTCD(soLuotTiep + 1);
 			don.setTongSoLuotTCD(soLuotTiep + 1);
 			if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 				don.setYeuCauGapTrucTiepLanhDao(true);
@@ -245,13 +243,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 				if (thongTinGiaiQuyetDon == null) {
 					thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
-					thongTinGiaiQuyetDon.setDon(don);						
+					thongTinGiaiQuyetDon.setDon(don);
 				}
+				thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+				Long soNgayGiaiQuyetMacDinh = 45L;
+				LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+				thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 				thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 				Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
 				GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 				giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 				giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
+				giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
+				giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 				giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 				giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 				giaiQuyetDon.setThuTuThucHien(1);
@@ -319,11 +323,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 							thongTinGiaiQuyetDon.setDon(don);						
 						}
+						thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+						Long soNgayGiaiQuyetMacDinh = 45L;
+						LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+						thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 						thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 						Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
 						GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 						giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 						giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
+						giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
+						giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 						giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 						giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 						giaiQuyetDon.setThuTuThucHien(1);
@@ -378,17 +388,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Don don = soTiepCongDan.getDon();
 			
 			if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(),
-						ApiErrorEnum.DATA_INVALID.getText());
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText());
 			}
 			int tongSoLuotTCD = don.getTongSoLuotTCD();
 			don.setTongSoLuotTCD(tongSoLuotTCD - 1);
-			Utils.save(repoDon, don,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repoDon, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		}		
 		soTiepCongDan.setDaXoa(true);
-		Utils.save(repo, soTiepCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		Utils.save(repo, soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

@@ -46,4 +46,12 @@ public class Transition extends Model<Transition>{
 	public void setForm(Form form) {
 		this.form = form;
 	}
+
+	public Process getProcess() {
+		return process;
+	}
+
+	public void setProcess(Process process) {
+		this.process = process;
+	}
 }

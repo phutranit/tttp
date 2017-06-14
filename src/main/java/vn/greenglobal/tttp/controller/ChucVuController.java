@@ -56,7 +56,8 @@ public class ChucVuController extends TttpController<ChucVu> {
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}

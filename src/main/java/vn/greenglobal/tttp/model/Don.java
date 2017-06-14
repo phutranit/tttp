@@ -25,6 +25,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.querydsl.core.annotations.QueryInit;
+
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
@@ -88,6 +90,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
+	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
@@ -108,9 +111,11 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
-	private CoQuanQuanLy coQuanDangGiaiQuyet;
+	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
+	@ManyToOne
+	private CoQuanQuanLy coQuanDangGiaiQuyet;
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -498,6 +503,14 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(position = 13)
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
+	}
+	
+	public CoQuanQuanLy getDonViThamTraXacMinh() {
+		return donViThamTraXacMinh;
+	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
 	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
@@ -955,6 +968,13 @@ public class Don extends Model<Don> {
 		}
 		return trangThaiDonText;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getTrangThaiDonGiaiQuyetText() {
+		return getTrangThaiDon() != null ? getTrangThaiDon().getText() : "";
+	}
+	
 
 	public void setTrangThaiDonText(String trangThaiDonText) {
 		this.trangThaiDonText = trangThaiDonText;
@@ -1427,5 +1447,53 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getNguonDonInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		List<Long> listIdDonVi = new ArrayList<Long>();
+		listIdDonVi.add(0L);
+		if (xuLyDons != null) {
+			for (XuLyDon xld : xuLyDons) {
+				Long idDonViXuLy = xld.getDonViXuLy() != null ? xld.getDonViXuLy().getId() : 0L;
+				if (!listIdDonVi.contains(idDonViXuLy)) {
+					listIdDonVi.add(idDonViXuLy);
+					map = new HashMap<>();
+					map.put("idDonVi", idDonViXuLy);
+					if (xld.isDonChuyen()) {					
+						map.put("nguonDonText", "Chuyển đơn");
+						map.put("donViChuyenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getDonVi().getTen() : "");
+					} else {
+						map.put("nguonDonText", xld.getDon().getNguonTiepNhanDon().getText());
+					}
+					list.add(map);
+				}
+			}
+		}		
+		if (getThongTinGiaiQuyetDon() != null) {
+			List<GiaiQuyetDon> giaiQuyetDons = thongTinGiaiQuyetDon.getGiaiQuyetDons();
+			if (giaiQuyetDons != null) {
+				for (GiaiQuyetDon gqd : giaiQuyetDons) {
+					Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
+					if (!listIdDonVi.contains(idDonViGiaiQuyet)) {
+						listIdDonVi.add(idDonViGiaiQuyet);
+						map = new HashMap<>();
+						map.put("idDonVi", idDonViGiaiQuyet);
+						if (gqd.isLaTTXM()) {					
+							map.put("nguonDonText", "Giao thẩm tra xác minh");
+							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+						} else if (gqd.isDonChuyen()){
+							map.put("nguonDonText", "Giao kiểm tra đề xuất");
+							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+						}
+						list.add(map);
+					}
+				}
+			}
+		}
+		return list;
 	}
 }

@@ -41,9 +41,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 //import org.springframework.web.servlet.config.annotation.CorsRegistry;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -123,17 +120,17 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring()
-						.antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
-								"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel", 
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
-								"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
-								"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
-								"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
-								"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
-								"/swagger-resources/configuration/security", "/webjars/**")
-						.antMatchers(HttpMethod.OPTIONS, "/**");
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs",
+						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao", "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai",
+						"/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
+						"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
+						"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
+						"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai", "/swagger-resources",
+						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
+						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
+						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override

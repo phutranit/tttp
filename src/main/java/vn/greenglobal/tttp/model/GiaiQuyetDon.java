@@ -34,6 +34,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private int thuTuThucHien;
 
 	private boolean laTTXM;
+	private boolean old;
+	private boolean donChuyen;
 
 	@ManyToOne
 	@QueryInit("*.*.*")
@@ -49,10 +51,13 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@QueryInit("*.*.*")
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy donViChuyenDon;
+	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-	private boolean old;
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
@@ -168,6 +173,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.laTTXM = laTTXM;
 	}
 	
+	public boolean isDonChuyen() {
+		return donChuyen;
+	}
+
+	public void setDonChuyen(boolean donChuyen) {
+		this.donChuyen = donChuyen;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public SoTiepCongDan getSoTiepCongDan() {
 		return soTiepCongDan;
@@ -175,6 +188,24 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setSoTiepCongDan(SoTiepCongDan soTiepCongDan) {
 		this.soTiepCongDan = soTiepCongDan;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonViGiaiQuyet() {
+		return donViGiaiQuyet;
+	}
+
+	public void setDonViGiaiQuyet(CoQuanQuanLy donViGiaiQuyet) {
+		this.donViGiaiQuyet = donViGiaiQuyet;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonViChuyenDon() {
+		return donViChuyenDon;
+	}
+
+	public void setDonViChuyenDon(CoQuanQuanLy donViChuyenDon) {
+		this.donViChuyenDon = donViChuyenDon;
 	}
 
 	@Transient

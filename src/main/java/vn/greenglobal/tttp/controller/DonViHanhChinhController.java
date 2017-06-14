@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,7 +74,8 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			@RequestParam(value = "capDonViHanhChinh", required = false) Long capDonViHanhChinh,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -88,9 +88,14 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capTinhThanhPho")
 	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Tỉnh Thành Phố", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapTinhThanhPho(
+	public @ResponseBody Object getListDonViHanhChinhTheoCapTinhThanhPho(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 
 		Page<DonViHanhChinh> page = null;
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_TINH"));
@@ -109,10 +114,15 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capQuanHuyen")
 	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Quận Huyện", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapQuanHuyen(
+	public @ResponseBody Object getListDonViHanhChinhTheoCapQuanHuyen(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "cha", required = false) Long cha, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 
 		Page<DonViHanhChinh> page = null;
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
@@ -128,10 +138,15 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capPhuongXa")
 	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Phường Xã", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<DonViHanhChinh> getListDonViHanhChinhTheoCapPhuongXa(
+	public @ResponseBody Object getListDonViHanhChinhTheoCapPhuongXa(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "cha", required = false) Long cha, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 
 		Page<DonViHanhChinh> page = null;
 		ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_PHUONG"));
