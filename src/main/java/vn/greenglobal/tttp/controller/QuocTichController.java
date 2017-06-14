@@ -66,13 +66,13 @@ public class QuocTichController extends TttpController<QuocTich> {
 		Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/quocTichs/combobox")
 	@ApiOperation(value = "Lấy danh sách Quốc Tịch", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getListQuocTich(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			PersistentEntityResourceAssembler eass) {
+	public @ResponseBody Object getListQuocTich(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 
 		Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
@@ -153,7 +153,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Quốc Tịch thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-		
+
 		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XOA) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
