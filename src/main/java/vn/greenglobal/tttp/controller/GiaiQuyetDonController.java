@@ -227,7 +227,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						}						
 						Transition transitionTTXM = null;
 						for (Process processFromList : listProcess) {
-							transitionTTXM = transitionRepo.findOne(transitionService.predicateFindBegin(processFromList));
+							transitionTTXM = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 							if (transitionTTXM != null) {
 								break;
 							}

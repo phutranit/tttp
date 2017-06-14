@@ -425,7 +425,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						}
 						Transition transitionGQD = null;
 						for (Process processFromList : listProcessGQD) {
-							transitionGQD = transitionRepo.findOne(transitionService.predicateFindBegin(processFromList));
+							transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 							if (transitionGQD != null) {
 								break;
 							}

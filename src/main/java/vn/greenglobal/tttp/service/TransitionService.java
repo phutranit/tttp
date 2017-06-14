@@ -44,11 +44,11 @@ public class TransitionService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindBegin(Process process) {
+	public Predicate predicateFindFromCurrent(FlowStateEnum current, Process process) {
 		BooleanExpression predAll = base;		
 		predAll = predAll
 				.and(QTransition.transition.process.eq(process))
-				.and(QTransition.transition.currentState.type.eq(FlowStateEnum.BAT_DAU));
+				.and(QTransition.transition.currentState.type.eq(current));
 		
 		return predAll;
 	}

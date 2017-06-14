@@ -260,7 +260,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
 			}			
 			for (Process processFromList : listProcess) {
-				transitionTTXM = repoTransition.findOne(transitionService.predicateFindBegin(processFromList));
+				transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 				if (transitionTTXM != null) {
 					break;
 				}
