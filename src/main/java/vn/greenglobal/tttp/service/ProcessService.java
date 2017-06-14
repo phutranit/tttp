@@ -25,5 +25,13 @@ public class ProcessService {
 			.and(QProcess.process.processType.eq(processType));
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllByDonVi(CoQuanQuanLy donVi, ProcessTypeEnum processType) {
+		BooleanExpression predAll = base;
+		predAll = predAll
+			.and(QProcess.process.coQuanQuanLy.eq(donVi))
+			.and(QProcess.process.processType.eq(processType));
+		return predAll;
+	}
 
 }
