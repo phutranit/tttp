@@ -526,9 +526,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-//			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-//					.toString();
-			xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+
 			if (xuLyDon.getHuongXuLy() != null) { 
 				xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 			}
