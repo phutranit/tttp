@@ -427,7 +427,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			return Utils.responseInternalServerErrors();
 		}
 	}
-
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/coQuanQuanLys")
 	@ApiOperation(value = "Thêm mới Cơ Quan Quản Lý", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
