@@ -53,7 +53,6 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
-import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
