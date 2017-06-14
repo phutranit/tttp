@@ -60,7 +60,8 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}

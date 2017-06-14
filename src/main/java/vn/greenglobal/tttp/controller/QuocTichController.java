@@ -57,7 +57,8 @@ public class QuocTichController extends TttpController<QuocTich> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}

@@ -26,16 +26,12 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.Don;
-import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
-import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
-import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
@@ -171,22 +167,27 @@ public class DonService {
 				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 			}
 			
+			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViXuLyXLD));
+			}
+			
 			List<Don> donCollections2 = new ArrayList<Don>();
 			OrderSpecifier<Integer> sortOrder2 = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+			for (GiaiQuyetDon gqd : giaiQuyetDons) {
+				System.out.println(gqd.getId());
+			}
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
-						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
 				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
-						.and(QDon.don.thongTinGiaiQuyetDon.donViThamTraXacMinh.id.eq(donViXuLyXLD));
-				/*predAll = predAll.and(QDon.don.processType.isNull()
-						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON))
-						.or(donViKiemTraDeXuat)
-						.or(donViThamTraXacMinh));*/
+						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+				BooleanExpression processXuLyDon = QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON);
+				BooleanExpression processNull = QDon.don.processType.isNull();
 				
-				predAll = predAll.and(QDon.don.processType.isNull()
-						.or(QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON)));
+				BooleanExpression predOr = processNull.or(processXuLyDon).or(donViKiemTraDeXuat).or(donViThamTraXacMinh);
+				predAll = predAll.and(predOr);
 			} 
 			predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		} else {
@@ -197,7 +198,7 @@ public class DonService {
 	}
 	
 	public Predicate predicateFindAllGQD(String maDon, String nguonDon, String phanLoaiDon,
-			String tiepNhanTuNgay, String tiepNhanDenNgay, boolean thanhLapDon, 
+			String tiepNhanTuNgay, String tiepNhanDenNgay, boolean thanhLapDon, String tinhTrangGiaiQuyet,
 			String trangThaiDon, Long phongBanGiaiQuyetId,
 			Long canBoGiaiQuyetId, String chucVu, String hoTen, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
@@ -222,6 +223,10 @@ public class DonService {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
 		
+		if (StringUtils.isNotBlank(tinhTrangGiaiQuyet)) {
+			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(tinhTrangGiaiQuyet))));
+		}
+		
 		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
@@ -233,7 +238,7 @@ public class DonService {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
-		
+	
 //		if (phongBanGiaiQuyetId != null && phongBanGiaiQuyetId.longValue() > 0) {
 //			predAll = predAll.and(QDon.don.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId));
 //		}
@@ -261,7 +266,7 @@ public class DonService {
 
 		List<Don> donCollections = new ArrayList<Don>();
 		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();		
-		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);
+		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery, sortOrder);		
 		donCollections = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QDon.don.in(donCollections));
 		return predAll;

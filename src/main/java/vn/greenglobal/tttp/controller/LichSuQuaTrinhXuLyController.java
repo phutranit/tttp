@@ -63,7 +63,9 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
 		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
+
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }

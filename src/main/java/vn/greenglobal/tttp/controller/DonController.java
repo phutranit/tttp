@@ -196,7 +196,8 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
 			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
-			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "tinhTrangGiaiQuyet", required = false) String tinhTrangGiaiQuyet,
+			@RequestParam(value = "trangThaiDon", required = true) String trangThaiDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
@@ -207,7 +208,7 @@ public class DonController extends TttpController<Don> {
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
 			Page<Don> pageData = repo.findAll(
 					donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-							thanhLapDon, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
+							thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
 							congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo),
 					pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
@@ -1002,12 +1003,25 @@ public class DonController extends TttpController<Don> {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
-		long soNgayMacDinh = 10;
+		Long soNgayMacDinh = 10L;
 		LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
 		if (thoiHan == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
 		return new ResponseEntity<>(thoiHan, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaiQuyetDon")
+	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giải quyết đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	public Object getNgayMacDinhCuaThoiHanGiaiQuyeDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass) {
+		Long soNgayMacDinh = 45L;
+		LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
+		if (thoiHan == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		return new ResponseEntity<>(thoiHan, HttpStatus.OK);
+	}
+	
 }

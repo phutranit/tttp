@@ -90,7 +90,8 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "phuongXa", required = false) Long phuongXa,
 			@RequestParam(value = "toDanPho", required = false) Long toDanPho, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_LIETKE) == null) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
@@ -135,14 +136,18 @@ public class CongDanController extends TttpController<CongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congDanBySuggests")
 	@ApiOperation(value = "Lấy danh sách Suggest Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<CongDan> getCongDanBySuggests(
+	public @ResponseBody Object getCongDanBySuggests(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "soCMNND", required = false) String soCMNND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
 
-		Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi),
-				pageable);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi), pageable);
 		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
@@ -153,6 +158,11 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		
 		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
 			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
@@ -168,6 +178,11 @@ public class CongDanController extends TttpController<CongDan> {
 	public @ResponseBody ResponseEntity<Object> getCongDanExists(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "soCMND", required = false) String soCMND, PersistentEntityResourceAssembler eass) {
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
 		
 		if (StringUtils.isNotBlank(soCMND)) {
 			List<CongDan> congDanExists = (List<CongDan>) repo.findAll(congDanService.predicateFindCongDanExists(soCMND));
