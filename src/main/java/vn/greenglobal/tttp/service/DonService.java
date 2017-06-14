@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,6 +30,7 @@ import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
@@ -52,7 +54,7 @@ public class DonService {
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
-			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu, String hoTen, 
+			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu, Set<VaiTro> vaitros, String hoTen, 
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
@@ -113,8 +115,13 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 		
-		if (StringUtils.isNotBlank(chucVu)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+		if (vaitros.size() > 0) {
+			List<VaiTroEnum> listVaiTro = vaitros.stream().map(d -> d.getLoaiVaiTro()).distinct().collect(Collectors.toList());
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.in(listVaiTro));
+		} else {
+			if (StringUtils.isNotBlank(chucVu)) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
+			}
 		}
 		
 		if (coQuanTiepNhanXLD != null) {
