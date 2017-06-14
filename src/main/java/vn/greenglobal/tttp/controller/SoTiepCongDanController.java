@@ -184,7 +184,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
-		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		if (soTiepCongDan != null && !soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
@@ -289,7 +289,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		soTiepCongDan.setId(id);
-		Long congChucId = new Long(
+		Long congChucId = Long.valueOf(
 				profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, congChucId);
