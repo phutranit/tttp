@@ -849,9 +849,49 @@ public class DonController extends TttpController<Don> {
 				
 				// Them xu ly don
 				if(donOld.getXuLyDons().size() <= 0) {
+					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+					List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+					if (don.getProcessType() == null) {
+						don.setProcessType(ProcessTypeEnum.XU_LY_DON);
+					}
+					if (don.getCurrentState() == null) {
+						don.setCurrentState(beginState);
+					}
+					
+					//Vai tro tiep theo
+					List<State> listState = new ArrayList<State>();
+					Process process = null;
+					for (Process processFromList : listProcess) {
+						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
+						listState = ((List<State>) repoState.findAll(predicate));
+						if (listState.size() > 0) {
+							process = processFromList;
+							break;
+						}
+					}
+					
+					Transition transition = null;
+					
+					if (listState.size() < 1) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+								ApiErrorEnum.TRANSITION_INVALID.getText());
+					} else {
+						for (State stateFromList : listState) {
+							transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+							if (transition != null) {
+								break;
+							} 						
+						}					
+						if (transition == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+									ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+						}
+					}
+					
+					
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(don);
-					xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
+					xuLyDon.setChucVu(transition.getProcess().getVaiTro().getLoaiVaiTro());
 					//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
