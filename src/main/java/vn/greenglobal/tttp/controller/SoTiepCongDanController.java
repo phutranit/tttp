@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,10 +47,12 @@ import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
+import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -57,14 +60,18 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
+import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
+import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
+import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.util.ExcelUtil;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.util.WordUtil;
@@ -121,6 +128,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
+	@Autowired
+	private TransitionRepository repoTransition;
+	
+	@Autowired
+	private TransitionService transitionService;
+	
+	@Autowired
+	private ProcessRepository repoProcess;
+	
+	@Autowired
+	private ProcessService processService;
 	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
@@ -232,6 +251,25 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				don.setYeuCauGapTrucTiepLanhDao(true);
 			}
 		}
+		Transition transitionTTXM = null;
+		if (flagChuyenDonViKiemTra) {
+			Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
+			List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
+			if (listProcess.size() < 1) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
+			}			
+			for (Process processFromList : listProcess) {
+				transitionTTXM = repoTransition.findOne(transitionService.predicateFindBegin(processFromList));
+				if (transitionTTXM != null) {
+					break;
+				}
+			}
+			if (transitionTTXM == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
+						ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
+			}	
+		}
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
@@ -240,6 +278,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 				don.setCurrentState(beginState);
 				don.setThanhLapDon(true);
+				
 				ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 				if (thongTinGiaiQuyetDon == null) {
 					thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
@@ -253,7 +292,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
 				GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 				giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-				giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
+				giaiQuyetDon.setChucVu(transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
 				giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 				giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 				giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
