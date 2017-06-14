@@ -44,6 +44,15 @@ public class TransitionService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindBegin(Process process) {
+		BooleanExpression predAll = base;		
+		predAll = predAll
+				.and(QTransition.transition.process.eq(process))
+				.and(QTransition.transition.currentState.type.eq(FlowStateEnum.BAT_DAU));
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(long congChucId, long nguoiTaoId, String vaiTro, String processType, 
 			State currentState, CongChucRepository congChucRepo, ProcessRepository processRepo, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
 		BooleanExpression predAll = base;
