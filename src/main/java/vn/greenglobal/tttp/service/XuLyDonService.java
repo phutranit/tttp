@@ -32,7 +32,7 @@ public class XuLyDonService {
 		return null;
 	}
 	
-	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu) {
+	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
@@ -48,6 +48,10 @@ public class XuLyDonService {
 		
 		if (StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)));
+		}
+		
+		if (StringUtils.isNotBlank(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId));
 		}
 		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();		
@@ -59,7 +63,7 @@ public class XuLyDonService {
 		return null;
 	}
 	
-	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, String chucVu) {
+	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		
@@ -77,6 +81,10 @@ public class XuLyDonService {
 		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		if (StringUtils.isNotBlank(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId));
 		}
 		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
@@ -107,7 +115,16 @@ public class XuLyDonService {
 		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
 		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
 				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId))
-				.and(xuLyDon.donViXuLy.id.eq(donViId));;
+				.and(xuLyDon.donViXuLy.id.eq(donViId));
+		return predicate;
+	}
+	
+	public Predicate predFindChuyenVienOld(Long donId, Long canBoId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
+		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
+				.and(xuLyDon.canBoXuLyChiDinh.id.eq(canBoId))
+				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId))
+				.and(xuLyDon.donViXuLy.id.eq(donViId));
 		return predicate;
 	}
 	
@@ -117,7 +134,7 @@ public class XuLyDonService {
 				.and(xuLyDon.donViXuLy.id.eq(donViId));
 		return predicate;
 	}
-
+	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QXuLyDon.xuLyDon.id.eq(id));
 	}

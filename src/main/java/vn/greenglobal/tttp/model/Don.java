@@ -80,6 +80,7 @@ public class Don extends Model<Don> {
 	private boolean thanhLapTiepDanGapLanhDao = false;
 	private boolean coThongTinCoQuanDaGiaiQuyet = false;
 	private boolean lanhDaoDuyet = false;
+	//private boolean hoanThanh = false;
 	
 	@NotNull
 	private LocalDateTime ngayTiepNhan;
