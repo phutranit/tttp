@@ -451,11 +451,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 			Long donId = xuLyDon.getDon().getId();
 			XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
-			// Xac dinh vai tro cua nguoi dung (Nhieu vai tro cho 1 nguoi)
-			VaiTro vaiTro = nguoiDungHienTai.getVaiTros().iterator().next();
-
-			// Thay alias
-			String vaiTroNguoiDungHienTai = vaiTro.getLoaiVaiTro().name();
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
+					.toString();
 
 			// Thong tin xu ly don
 			Long congChucId = Long.valueOf(
@@ -473,6 +470,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 					xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 					xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+					xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.DINH_CHI);
 					Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 					don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 					don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -485,11 +483,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 					//tao lich su qua trinh xu ly don
 					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-					State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
 					lichSuQTXLD.setDon(don);
 					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-					lichSuQTXLD.setTen(state.getTenVietTat());
+					lichSuQTXLD.setTen(xuLyDonHienTai.getHuongXuLy().getText());
 					lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
 					lichSuQTXLD.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 					int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), 
@@ -510,7 +507,50 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				ApiErrorEnum.ROLE_FORBIDDEN.getText());
 	}
 	
+	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/{id}")
+	@ApiOperation(value = "Cập nhật thông tin xử lý đơn	", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 202, message = "Cập nhật thông tin xử lý đơn thành công", response = XuLyDon.class) })
+	public ResponseEntity<Object> capNhatThongTinXuLyDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, 
+			@RequestParam Long id,
+			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
+		NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
+		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+		if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
+				&& commonProfile.containsAttribute("coQuanQuanLyId")) {
+			XuLyDon xuLyDonHienTai = repo.findOne(id);
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+
+			if (xuLyDonHienTai == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			Don don = donRepo.findOne(xuLyDon.getDon().getId());
+			xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+			if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
+				xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
+			}
+			if (xuLyDon.getCoQuanTiepNhan() != null) { 
+				xuLyDonHienTai.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
+			}
+			if (xuLyDon.getyKienXuLy().isEmpty()) { 
+				xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
+			}
+			if (xuLyDon.getHuongXuLy() != null) { 
+				xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
+			}
+			xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
+			xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 	
+			xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
+			xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
+						
+			Utils.save(donRepo, don, congChucId);
+			return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
+		}
+		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				ApiErrorEnum.ROLE_FORBIDDEN.getText());
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
 	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
