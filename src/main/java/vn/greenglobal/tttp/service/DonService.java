@@ -114,7 +114,6 @@ public class DonService {
 		}*/
 		
 		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-			System.out.println("H");
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 		
