@@ -289,8 +289,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		soTiepCongDan.setId(id);
-		Long congChucId = new Long(
-				profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 		for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 			Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, congChucId);
 		}
