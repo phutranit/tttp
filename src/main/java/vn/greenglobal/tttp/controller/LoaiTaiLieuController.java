@@ -61,14 +61,18 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null
-				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuService.predicateFindAll(tuKhoa), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+			Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuService.predicateFindAll(tuKhoa), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/loaiTaiLieus")
@@ -79,18 +83,22 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
+			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
+			return Utils.doSave(repo, loaiTaiLieu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return Utils.doSave(repo, loaiTaiLieu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiTaiLieus/{id}")
@@ -100,16 +108,20 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuService.predicateFindOne(id));
-		if (loaiTaiLieu == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuService.predicateFindOne(id));
+			if (loaiTaiLieu == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(loaiTaiLieu), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return new ResponseEntity<>(eass.toFullResource(loaiTaiLieu), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/loaiTaiLieus/{id}")
@@ -120,25 +132,29 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody LoaiTaiLieu loaiTaiLieu, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		loaiTaiLieu.setId(id);
-		if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			loaiTaiLieu.setId(id);
+			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		if (!loaiTaiLieuService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			if (!loaiTaiLieuService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		return Utils.doSave(repo, loaiTaiLieu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+			return Utils.doSave(repo, loaiTaiLieu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/loaiTaiLieus/{id}")
@@ -147,24 +163,28 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XOA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-					ApiErrorEnum.DATA_USED.getText());
-		}
+			if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText());
+			}
 
-		LoaiTaiLieu loaiTaiLieu = loaiTaiLieuService.delete(repo, id);
-		if (loaiTaiLieu == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			LoaiTaiLieu loaiTaiLieu = loaiTaiLieuService.delete(repo, id);
+			if (loaiTaiLieu == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Utils.save(repo, loaiTaiLieu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			Utils.save(repo, loaiTaiLieu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 }

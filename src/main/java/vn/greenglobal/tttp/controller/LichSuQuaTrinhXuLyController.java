@@ -38,13 +38,13 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 
 	@Autowired
 	private LichSuQuaTrinhXuLyRepository repo;
-	
+
 	@Autowired
 	private DonRepository donRepo;
-	
+
 	@Autowired
 	private DonService donService;
-	
+
 	public LichSuQuaTrinhXuLyController(BaseRepository<LichSuQuaTrinhXuLy, Long> repo) {
 		super(repo);
 	}
@@ -53,19 +53,23 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 	@RequestMapping(method = RequestMethod.GET, value = "/lichSuQuaTrinhXuLys")
 	@ApiOperation(value = "Lấy danh sách Lịch sử quá trình xử lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable,
-			@RequestParam(value = "donId", required = true) Long donId,
+			Pageable pageable, @RequestParam(value = "donId", required = true) Long donId,
 			PersistentEntityResourceAssembler eass) {
-		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
-		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
-		Don don = donRepo.findOne(donService.predicateFindOne(donId));
-		if (don == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+			Don don = donRepo.findOne(donService.predicateFindOne(donId));
+			
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+
+			Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
+
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-
-		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
-
-		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }

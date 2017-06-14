@@ -6,10 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,7 +53,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 	@Autowired
 	private CongDanRepository congDanRepo;
-	
+
 	@Autowired
 	private CongDanService congDanService;
 
@@ -66,14 +64,19 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans")
 	@ApiOperation(value = "Lấy danh sách Quan hệ giữa Đơn và Công Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<Don_CongDan> getList(
+	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "don", required = false) Long don,
 			@RequestParam(value = "congDan", required = false) Long congDan,
 			@RequestParam(value = "phanLoai", required = false) String phanLoai, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
-		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		
+		try {
+			Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/donCongDans")
@@ -83,9 +86,12 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@ApiResponse(code = 201, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
-		return Utils.doSave(repo, donCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+		
+		try {
+			return Utils.doSave(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -98,145 +104,169 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+		try {
+			Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDonCongDans().size() > 0) {
-						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							CongDan congDan = null;
-							
-							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-							}	
-							if (congDan == null) {
-								congDan = new CongDan();
-							}
-							congDan.setHoVaTen(donCongDan.getHoVaTen());
-							congDan.setDanToc(donCongDan.getDanToc());
-							congDan.setQuocTich(donCongDan.getQuocTich());
-							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
-							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
-							congDan.setDiaChi(donCongDan.getDiaChi());
-							congDan.setNgaySinh(donCongDan.getNgaySinh());
-							congDan.setNgayCap(donCongDan.getNgayCap());
-							congDan.setGioiTinh(donCongDan.isGioiTinh());
-							congDan.setTinhThanh(donCongDan.getTinhThanh());
-							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
-							congDan.setPhuongXa(donCongDan.getPhuongXa());
-							congDan.setToDanPho(donCongDan.getToDanPho());
-							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
-								
-							CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDanUpdate != null) {
-								donCongDan.setCongDan(congDanUpdate);
-								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getDonCongDans().add(dcd);
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDonCongDans().size() > 0) {
+							for (Don_CongDan donCongDan : params.getDonCongDans()) {
+								CongDan congDan = null;
+
+								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+									congDan = congDanRepo
+											.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}
+								if (congDan == null) {
+									congDan = new CongDan();
+								}
+								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setDanToc(donCongDan.getDanToc());
+								congDan.setQuocTich(donCongDan.getQuocTich());
+								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setNgaySinh(donCongDan.getNgaySinh());
+								congDan.setNgayCap(donCongDan.getNgayCap());
+								congDan.setGioiTinh(donCongDan.isGioiTinh());
+								congDan.setTinhThanh(donCongDan.getTinhThanh());
+								congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+								congDan.setPhuongXa(donCongDan.getPhuongXa());
+								congDan.setToDanPho(donCongDan.getToDanPho());
+								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+
+								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								if (congDanUpdate != null) {
+									donCongDan.setCongDan(congDanUpdate);
+									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
+											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									result.getDonCongDans().add(dcd);
+								}
 							}
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans/{id}")
 	@ApiOperation(value = "Lấy Quan hệ giữa Đơn và Công Dân theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
-	public ResponseEntity<PersistentEntityResource> getDonCongDan(
-			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
-			PersistentEntityResourceAssembler eass) {
-		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
-		if (donCongDan == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public Object getDonCongDan(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+		
+		try {
+			Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
+			if (donCongDan == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(donCongDan), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return new ResponseEntity<>(eass.toFullResource(donCongDan), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/donCongDans/{id}")
 	@ApiOperation(value = "Cập nhật quan hệ giữa Đơn và Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Cập nhật quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public @ResponseBody ResponseEntity<Object> update(@RequestBody Don_CongDan donCongDan,
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
-		donCongDan.setId(id);
+		
+		try {
+			donCongDan.setId(id);
 
-		if (!donCongDanService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+			if (!donCongDanService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return Utils.doSave(repo, donCongDan,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return Utils.doSave(repo, donCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.PATCH, value = "/donCongDans/multi")
 	@ApiOperation(value = "Cập nhật nhiều quan hệ giữa Đơn và Công Dân", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật nhiều quan hệ giữa Đơn và Công Dân thành công", response = Medial_DonCongDan_Post_Patch.class) })
-	public @ResponseBody ResponseEntity<Object> updateMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody ResponseEntity<Object> updateMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
-		List<Don_CongDan> listUpdate = new ArrayList<Don_CongDan>();
+		try {
+			Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+			List<Don_CongDan> listUpdate = new ArrayList<Don_CongDan>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDonCongDans().size() > 0) {
-						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							if (!donCongDanService.isExists(repo, donCongDan.getId())) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDonCongDans().size() > 0) {
+							for (Don_CongDan donCongDan : params.getDonCongDans()) {
+								if (!donCongDanService.isExists(repo, donCongDan.getId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.DATA_NOT_FOUND.getText());
+								}
+								listUpdate.add(donCongDan);
 							}
-							listUpdate.add(donCongDan);
+							for (Don_CongDan donCongDan : listUpdate) {
+
+								CongDan congDan = null;
+
+								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+									congDan = congDanRepo
+											.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}
+								if (congDan == null) {
+									congDan = new CongDan();
+								}
+								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setDanToc(donCongDan.getDanToc());
+								congDan.setQuocTich(donCongDan.getQuocTich());
+								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setNgaySinh(donCongDan.getNgaySinh());
+								congDan.setNgayCap(donCongDan.getNgayCap());
+								congDan.setGioiTinh(donCongDan.isGioiTinh());
+								congDan.setTinhThanh(donCongDan.getTinhThanh());
+								congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+								congDan.setPhuongXa(donCongDan.getPhuongXa());
+								congDan.setToDanPho(donCongDan.getToDanPho());
+								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+
+								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								if (congDanUpdate != null) {
+									donCongDan.setCongDan(congDanUpdate);
+									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
+											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									result.getDonCongDans().add(dcd);
+								}
+							}
 						}
-						for (Don_CongDan donCongDan : listUpdate) {
-							
-							CongDan congDan = null;
-							
-							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-							}		
-							if (congDan == null) {
-								congDan = new CongDan();
-							}
-							congDan.setHoVaTen(donCongDan.getHoVaTen());
-							congDan.setDanToc(donCongDan.getDanToc());
-							congDan.setQuocTich(donCongDan.getQuocTich());
-							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
-							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
-							congDan.setDiaChi(donCongDan.getDiaChi());
-							congDan.setNgaySinh(donCongDan.getNgaySinh());
-							congDan.setNgayCap(donCongDan.getNgayCap());
-							congDan.setGioiTinh(donCongDan.isGioiTinh());
-							congDan.setTinhThanh(donCongDan.getTinhThanh());
-							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
-							congDan.setPhuongXa(donCongDan.getPhuongXa());
-							congDan.setToDanPho(donCongDan.getToDanPho());
-							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
-								
-							CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDanUpdate != null) {
-								donCongDan.setCongDan(congDanUpdate);
-								Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getDonCongDans().add(dcd);
-							}
-						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
@@ -244,36 +274,50 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-		Don_CongDan dcd = donCongDanService.delete(repo, id);
-		if (dcd == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+		
+		try {
+			Don_CongDan dcd = donCongDanService.delete(repo, id);
+			if (dcd == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Utils.save(repo, dcd, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			Utils.save(repo, dcd,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/multi")
 	@ApiOperation(value = "Xoá nhiều quan hệ giữa Đơn và Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá nhiều quan hệ giữa Đơn và Công Dân thành công") })
-	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public ResponseEntity<Object> deleteMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Delete params) {
-		
-		List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
-		if (params != null && params.getDonCongDans().size() > 0) {
-			for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
-				Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
-				if (dcd == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+
+		try {
+			List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
+			if (params != null && params.getDonCongDans().size() > 0) {
+				for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
+					Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
+					if (dcd == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(dcd);
 				}
-				listDelete.add(dcd);
+				for (Don_CongDan donCongDan : listDelete) {
+					Utils.save(repo, donCongDan, Long
+							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
 			}
-			for (Don_CongDan donCongDan : listDelete) {
-				Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 }

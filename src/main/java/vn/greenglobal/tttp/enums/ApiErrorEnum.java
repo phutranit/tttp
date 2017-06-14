@@ -39,7 +39,8 @@ public enum ApiErrorEnum {
 	PHONGBANXULYCHIDINH_REQUIRED("Trường phongBanXuLyChiDinh không được để trống!"),
 	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống!"),
 	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống!"),
-	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống!");
+	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống!"),
+	INTERNAL_SERVER_ERROR("Lỗi hệ thống!"),;
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

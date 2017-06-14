@@ -6,10 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,12 +55,16 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuVanThus")
 	@ApiOperation(value = "Lấy danh sách Tài liệu văn thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody PagedResources<TaiLieuVanThu> getList(
+	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
-		Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		try {
+			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/taiLieuVanThus")
@@ -72,81 +74,102 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@ApiResponse(code = 201, message = "Thêm mới Tài liệu văn thư thành công", response = TaiLieuVanThu.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
-		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-					"Loại tệp đính kèm không được để trống!");
-		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-						"Số quyết định không được để trống!");
+		
+		try {
+			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+						"Loại tệp đính kèm không được để trống!");
+			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+							"Số quyết định không được để trống!");
+				}
+				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+							"Ngày quyết định không được để trống!");
+				}
 			}
-			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-						"Ngày quyết định không được để trống!");
-			}
+			return Utils.doSave(repo, taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return Utils.doSave(repo, taiLieuVanThu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/taiLieuVanThus/multi")
 	@ApiOperation(value = "Thêm mới nhiều Tài liệu văn thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_TaiLieuVanThu_Post_Patch.class),
 			@ApiResponse(code = 201, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_TaiLieuVanThu_Post_Patch.class) })
-	public ResponseEntity<Object> createMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public ResponseEntity<Object> createMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
-		
-		Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-		List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getTaiLieuVanThus().size() > 0) {
-						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-								if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.SOQUYETDINH_REQUIRED.name(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+		try {
+			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
+			List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
+
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getTaiLieuVanThus().size() > 0) {
+							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+									if (taiLieuVanThu.getSoQuyetDinh() == null
+											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+									}
+									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+									}
 								}
-								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
-								}
+								listCreate.add(taiLieuVanThu);
 							}
-							listCreate.add(taiLieuVanThu);
+							for (TaiLieuVanThu taiLieuVanThu : listCreate) {
+								TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getTaiLieuVanThus().add(tlvt);
+							}
 						}
-						for (TaiLieuVanThu taiLieuVanThu : listCreate) {
-							TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getTaiLieuVanThus().add(tlvt);
-						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-				}
-			});
+				});
+			}
+
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuVanThus/{id}")
 	@ApiOperation(value = "Lấy Tài liệu văn thư theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Lấy Tài liệu văn thư thành công", response = TaiLieuVanThu.class) })
-	public ResponseEntity<PersistentEntityResource> getById(
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Tài liệu văn thư thành công", response = TaiLieuVanThu.class) })
+	public ResponseEntity<Object> getById(
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
-		TaiLieuVanThu taiLieuVanThu = repo.findOne(taiLieuVanThuService.predicateFindOne(id));
-		if (taiLieuVanThu == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		try {
+			TaiLieuVanThu taiLieuVanThu = repo.findOne(taiLieuVanThuService.predicateFindOne(id));
+			if (taiLieuVanThu == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(taiLieuVanThu), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(taiLieuVanThu), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/taiLieuVanThus/{id}")
@@ -157,31 +180,35 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
 
-		taiLieuVanThu.setId(id);
-		if (!taiLieuVanThuService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
-		
-		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-					"Loại tệp đính kèm không được để trống!");
-		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-						"Số quyết định không được để trống!");
+		try {
+			taiLieuVanThu.setId(id);
+			if (!taiLieuVanThuService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-						"Ngày quyết định không được để trống!");
-			}
-		}
 
-		return Utils.doSave(repo, taiLieuVanThu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+						"Loại tệp đính kèm không được để trống!");
+			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+							"Số quyết định không được để trống!");
+				}
+				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+							"Ngày quyết định không được để trống!");
+				}
+			}
+
+			return Utils.doSave(repo, taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.PATCH, value = "/taiLieuVanThus/multi")
 	@ApiOperation(value = "Cập nhật nhiều Tài liệu văn thư", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -191,41 +218,54 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-		List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
+		try {
+			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
+			List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getTaiLieuVanThus().size() > 0) {
-						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-							if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-							}
-							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-								if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.SOQUYETDINH_REQUIRED.name(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getTaiLieuVanThus().size() > 0) {
+							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+								if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
-								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+									if (taiLieuVanThu.getSoQuyetDinh() == null
+											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+									}
+									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+									}
 								}
+								listUpdate.add(taiLieuVanThu);
 							}
-							listUpdate.add(taiLieuVanThu);
+							for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
+								TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getTaiLieuVanThus().add(tlvt);
+							}
 						}
-						for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
-							TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getTaiLieuVanThus().add(tlvt);
-						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-				}
-			});
+				});
+			}
+
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/{id}")
@@ -234,35 +274,47 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		TaiLieuVanThu taiLieuVanThu = taiLieuVanThuService.delete(repo, id);
-		if (taiLieuVanThu == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+		try {
+			TaiLieuVanThu taiLieuVanThu = taiLieuVanThuService.delete(repo, id);
+			if (taiLieuVanThu == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Utils.save(repo, taiLieuVanThu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			Utils.save(repo, taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/multi")
 	@ApiOperation(value = "Xoá nhiều Tài liệu văn thư", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá nhiều Tài liệu văn thư thành công") })
 	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Delete params) {
-		
-		List<TaiLieuVanThu> listDelete = new ArrayList<TaiLieuVanThu>();
-		if (params != null && params.getTaiLieuVanThus().size() > 0) {
-			for (Medial_TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-				TaiLieuVanThu tlvt = taiLieuVanThuService.delete(repo, taiLieuVanThu.getId());
-				if (tlvt == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+
+		try {
+			List<TaiLieuVanThu> listDelete = new ArrayList<TaiLieuVanThu>();
+			if (params != null && params.getTaiLieuVanThus().size() > 0) {
+				for (Medial_TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+					TaiLieuVanThu tlvt = taiLieuVanThuService.delete(repo, taiLieuVanThu.getId());
+					if (tlvt == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(tlvt);
 				}
-				listDelete.add(tlvt);
+				for (TaiLieuVanThu tlvt : listDelete) {
+					Utils.save(repo, tlvt, Long
+							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
 			}
-			for (TaiLieuVanThu tlvt : listDelete) {
-				Utils.save(repo, tlvt, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
