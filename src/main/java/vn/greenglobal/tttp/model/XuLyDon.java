@@ -459,6 +459,9 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapThamQuyenGiaiQuyet = new HashMap<>();
 		Map<String, Object> mapPhongBanGiaiQuyet = new HashMap<>();
 		Map<String, Object> mapCoQuanTiepNhan = new HashMap<>();
+		Map<String, Object> mapCanBoXuLy = new HashMap<>();
+		Map<String, Object> mapCanBoXuLyChiDinh = new HashMap<>();
+		Map<String, Object> mapPhongBanChiDinh = new HashMap<>();
 		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
@@ -466,10 +469,23 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("phongBanGiaiQuyet", "");
 		map.put("yKienXuLy", getNoiDungXuLy());
 		
+		mapCanBoXuLy.put("id", getNguoiTao().getId());
+		mapCanBoXuLy.put("ten", getNguoiTao().getHoVaTen());
+		map.put("canBoXuLy", mapCanBoXuLy);
+		
+		mapPhongBanChiDinh.put("id", getPhongBanXuLyChiDinh() != null ?  getPhongBanXuLyChiDinh().getId() : "");
+		mapPhongBanChiDinh.put("ten", getPhongBanXuLyChiDinh() != null ? getPhongBanXuLyChiDinh().getTen() : "");
+		map.put("phongBanXuLyChiDinh", mapPhongBanChiDinh);
+		
+		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
+		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
+		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
+		
+		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
+		
 		if (getHuongXuLy() != null) {
 			mapHuongXuLy.put("ten", getHuongXuLy().getText());
 			mapHuongXuLy.put("giatTri", getHuongXuLy().name());
-			map.put("huongXuLy", mapHuongXuLy);
 			if (getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
 				mapPhongBanGiaiQuyet.put("id", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getId() : "");
 				mapPhongBanGiaiQuyet.put("ten", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getTen() : "");
@@ -489,6 +505,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
+			map.put("huongXuLy", mapHuongXuLy);
 		}
 		if (getNextState() != null) {
 			map.put("quyTrinhXuLy", getNextState().getTenVietTat());

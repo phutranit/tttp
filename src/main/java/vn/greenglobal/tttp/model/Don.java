@@ -58,9 +58,6 @@ public class Don extends Model<Don> {
 	private String lyDoDinhChi = "";
 	private String soQuyetDinhDinhChi = "";
 
-//	@Transient
-//	private Long soNgayXuLy;
-	@Transient
 	private String noiDungThongTinTrinhLanhDao = "";
 	@Transient
 	private String nguonDonText = "";
@@ -110,6 +107,8 @@ public class Don extends Model<Don> {
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy coQuanDangGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 
@@ -361,6 +360,15 @@ public class Don extends Model<Don> {
 
 	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
 		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
+	}
+	
+	@ApiModelProperty(position = 27, example = "{}")
+	public CoQuanQuanLy getCoQuanDangGiaiQuyet() {
+		return coQuanDangGiaiQuyet;
+	}
+
+	public void setCoQuanDangGiaiQuyet(CoQuanQuanLy coQuanDangGiaiQuyet) {
+		this.coQuanDangGiaiQuyet = coQuanDangGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -837,16 +845,11 @@ public class Don extends Model<Don> {
 	public Map<String, Object> getCoQuanDangQuyetInfo() {
 		if (getNguoiSua() != null) {
 			Map<String, Object> map = new HashMap<>();
-			CoQuanQuanLy coQuanDangGiaiQuyet = null;
-			if (getPhongBanGiaiQuyet() != null) {
-				coQuanDangGiaiQuyet = getPhongBanGiaiQuyet();
-				if (coQuanDangGiaiQuyet.getCha() != null) {
-					coQuanDangGiaiQuyet = coQuanDangGiaiQuyet.getCha();
-				}
+			if (getCoQuanDangGiaiQuyet() != null) {
+				map.put("coQuanQuanLyId", getCoQuanDangGiaiQuyet().getId());
+				map.put("ten", getCoQuanDangGiaiQuyet().getTen());
+				return map;
 			}
-			map.put("coQuanQuanLyId", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getId() : 0);
-			map.put("ten", coQuanDangGiaiQuyet != null ? coQuanDangGiaiQuyet.getTen() : "");
-			return map;
 		}
 		return null;
 	}
@@ -1256,14 +1259,6 @@ public class Don extends Model<Don> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-//	public Long getSoNgayXuLy() {
-//		return soNgayXuLy;
-//	}
-//
-//	public void setSoNgayXuLy(long soNgayXuLy) {
-//		this.soNgayXuLy = soNgayXuLy;
-//	}
-
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getLoaiDonText() {
@@ -1344,19 +1339,93 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getThoiHanXuLyInfo() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("day", "");
-		map.put("time", "");
+		Map<String, Object> mapType = new HashMap<>();
+		
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
-			if (soNgayXuLy > 0) {
-				map.put("day", soNgayXuLy);
+			if (soNgayXuLy >= 0) {
+				mapType.put("type", "DAY");
+				mapType.put("value", soNgayXuLy);
 			} else if (soNgayXuLy == -1) {
-				map.put("day", -Utils.getLayNgayTreHan(getThoiHanXuLyXLD()));
-			} else {
-				map.put("time", Utils.getLaySoGioPhut(getThoiHanXuLyXLD()));
+				mapType.put("type", "DAY");
+				mapType.put("value", -Utils.getLayNgayTreHan(getNgayBatDauXLD(), getThoiHanXuLyXLD()));
+			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
+				mapType.put("type", "TIME");
+				mapType.put("value", Utils.getLaySoGioPhut(getThoiHanXuLyXLD()));
 			} 
 		}
-		return map;
+		return mapType;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getHuongXuLyXLDInfo() {
+		if (getHuongXuLyXLD() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getHuongXuLyXLD().getText());
+			map.put("giaTri", getHuongXuLyXLD().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getHinhThucGiaiQuyetInfo() {
+		if (getHinhThucDaGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getHinhThucDaGiaiQuyet().getText());
+			map.put("giaTri", getHinhThucDaGiaiQuyet().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiNguoiDungDonInfo() {
+		if (getLoaiNguoiDungDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiNguoiDungDon().getText());
+			map.put("giaTri", getLoaiNguoiDungDon().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getNguonTiepNhanDonInfo() {
+		if (getNguonTiepNhanDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getNguonTiepNhanDon().getText());
+			map.put("giaTri", getNguonTiepNhanDon().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiDoiTuongInfo() {
+		if (getLoaiDoiTuong() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiDoiTuong().getText());
+			map.put("giaTri", getLoaiDoiTuong().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiDonInfo() {
+		if (getLoaiDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiDon().getText());
+			map.put("giaTri", getLoaiDon().name());
+			return map;
+		}
+		return null;
 	}
 }

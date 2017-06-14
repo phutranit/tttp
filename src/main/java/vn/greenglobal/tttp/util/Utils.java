@@ -434,7 +434,7 @@ public class Utils {
         		ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
         Calendar end = getMocThoiGianLocalDateTime(
                 ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
-       
+        
 		if (start.before(end) || DateUtils.isSameDay(start, end)) {
 			while (start.before(end) || DateUtils.isSameDay(start, end)) {
 				// check ngay nghi
@@ -443,9 +443,9 @@ public class Utils {
 				}
 				start.add(Calendar.DATE, 1);
 			}
-
+	        
 			// check ngay hop le
-			if (cal.before(end)) {
+			if (cal.before(end) || DateUtils.isSameDay(cal, end)) {
 				// lay so ngay de xu ly
 				while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
 					// check ngay nghi
@@ -460,6 +460,10 @@ public class Utils {
 								long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
 								if (cal.getTimeInMillis() <= gioBuoiSang) {
 									soNgayXuLy = 1;
+								} else { 
+									if (DateUtils.isSameDay(end, Calendar.getInstance())) {
+										soNgayXuLy = -3;
+									}
 								}
 							} else {
 								// PM
@@ -490,14 +494,27 @@ public class Utils {
 		} else {
 			soNgayXuLy = -1;
 		}
-        
         return soNgayXuLy;
     }
     
-    public static Long getLayNgayTreHan(LocalDateTime ngayKetThuc) {
+    public static Long getLayNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
 		Calendar ngayHienTai = Calendar.getInstance();
-		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		Calendar start = getMocThoiGianLocalDateTime(
+        		ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
+        Calendar end = getMocThoiGianLocalDateTime(
+                ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		
+		if (start.before(end) || DateUtils.isSameDay(start, end)) {
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				// check ngay nghi
+				if (isInvalidNgayNghi(start.getTime())) {
+					end.add(Calendar.DATE, 1);
+				}
+				start.add(Calendar.DATE, 1);
+			}
+		}
+		
 		if (end.before(ngayHienTai)) {
 			while (end.before(ngayHienTai)) {
 				soNgayXuLy += 1;

@@ -26,12 +26,16 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QDon;
+import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
+import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
@@ -59,7 +63,7 @@ public class DonService {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty().or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
-		
+
 		//Query don
 		if (StringUtils.isNotBlank(maDon)) {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
@@ -68,6 +72,14 @@ public class DonService {
 		if (StringUtils.isNotBlank(hoTen)) {
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
 					.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
+					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+		}
+
+		if (StringUtils.isNotBlank(tuKhoa)) {
+			predAll = predAll
+					.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
+							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa))
+							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa)))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 

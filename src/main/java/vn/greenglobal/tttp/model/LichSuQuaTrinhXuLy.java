@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.querydsl.core.annotations.QueryInit;
+
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
@@ -18,10 +20,13 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	private String noiDung = "";
 	private int thuTuThucHien = 0;
 	
+	@QueryInit("*.*.*")
 	@ManyToOne
 	private CongChuc nguoiXuLy;
 	@ManyToOne
 	private Don don;
+	@ManyToOne
+	private CoQuanQuanLy donViXuLy;
 	
 	private LocalDateTime ngayXuLy;
 	
@@ -85,5 +90,14 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 			str = getNguoiXuLy().getHoVaTen();
 		}
 		return str;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CoQuanQuanLy getDonViXuLy() {
+		return donViXuLy;
+	}
+
+	public void setDonViXuLy(CoQuanQuanLy donViXuLy) {
+		this.donViXuLy = donViXuLy;
 	}
 }

@@ -42,6 +42,7 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -50,6 +51,7 @@ import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
@@ -118,6 +120,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
 	
+	@Autowired
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -181,6 +186,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
 		Long congChucId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		if (soTiepCongDan != null && !soTiepCongDan.getCoQuanToChucTiepDans().isEmpty()) {
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, congChucId);
@@ -258,7 +264,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
 			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
 			lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
-			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+			lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId(), donViId);
 			lichSuQTXL.setThuTuThucHien(thuTu);
 			Utils.save(repoDon, don, congChucId);
 			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
@@ -337,17 +344,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 		ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 		if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
-			lichSuQTXL.setDon(soTiepCongDan.getDon());
-			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
-			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
-			lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
-			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
-			lichSuQTXL.setThuTuThucHien(thuTu);
+//			LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
+//			lichSuQTXL.setDon(soTiepCongDan.getDon());
+//			lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+//			lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+//			lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
+//			lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
+//			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
+//			lichSuQTXL.setThuTuThucHien(thuTu);
 			
 			Utils.save(repoDon, don, congChucId);
-			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
+//			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
 		}
 		return output;
 	}
@@ -454,7 +461,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "loaiTiepCongDan", required = true) String loaiTiepCongDan,
 			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId,
-			@RequestParam(value = "lanhDaoId", required = true) Long lanhDaoId,
+			@RequestParam(value = "lanhDaoId", required = false) Long lanhDaoId,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan) throws IOException {
