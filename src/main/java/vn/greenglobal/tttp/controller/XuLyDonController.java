@@ -1,8 +1,10 @@
 package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.querydsl.core.types.Predicate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -223,24 +227,39 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 
 			CongChuc congChuc = congChucRepo.findOne(congChucId);
-
+			List<VaiTroEnum> listVaiTro = congChuc.getNguoiDung().getVaiTros().stream().map(d -> d.getLoaiVaiTro()).distinct().collect(Collectors.toList());
+			
 			boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
 					: congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
-
 			CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
-			Process process = repoProcess.findOne(
-					processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, isOwner, don.getProcessType()));
-
-			if (process == null && isOwner) {
-				process = repoProcess.findOne(
-						processService.predicateFindAll(vaiTroNguoiDungHienTai, donVi, false, don.getProcessType()));
+			List<Process> listProcess = new ArrayList<Process>();
+			for (VaiTroEnum vaiTroEnum : listVaiTro) {
+				Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroEnum.toString(), donVi, isOwner, don.getProcessType()));			
+				if (process == null && isOwner) {
+					process = repoProcess.findOne(processService.predicateFindAll(vaiTroEnum.toString(), donVi, false, don.getProcessType()));
+				}
+				if (process != null) {
+					listProcess.add(process);
+				}
 			}
-
-			if (process == null) {
+			
+			if (listProcess.size() < 1) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 			}
-
+			
+			List<State> listState = new ArrayList<State>();
+			Process process = null;
+			for (Process processFromList : listProcess) {
+				Predicate predicate = serviceState.predicateFindAll(don.getCurrentState().getId(), processFromList, transitionRepo);
+				listState = ((List<State>) repoState.findAll(predicate));
+				if (listState.size() > 0) {
+					process = processFromList;
+					vaiTroNguoiDungHienTai = process.getVaiTro().getLoaiVaiTro().toString();
+					break;
+				}
+			}
+			
 			Transition transition = transitionRepo.findOne(
 					transitionService.predicatePrivileged(don.getCurrentState(), xuLyDon.getNextState(), process));
 
@@ -262,7 +281,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 				xuLyDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
-				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
+				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";				
 
 				if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
@@ -361,7 +380,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Utils.save(donRepo, don, congChucId);
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
-				} else if ((FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState) || FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(currentState))
+				} else if ((FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState) 
+						|| FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(currentState)
+						|| FlowStateEnum.BAT_DAU.equals(currentState))
 						&& FlowStateEnum.KET_THUC.equals(nextState)) {
 					// Xu ly don khong co van thu
 					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
