@@ -330,18 +330,21 @@ public class DonController extends TttpController<Don> {
 			}
 			
 			media.setListNextStates(listState);
+			Transition transition = null;
 			if (listState.size() < 1) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 						ApiErrorEnum.TRANSITION_INVALID.getText());
 			} else {
 				for (State nextState : listState) {
-					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
-					if (transition == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-					} else {
+					transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
+					if (transition != null) {
 						media.setCurrentForm(transition.getForm());
-					}
+						break;
+					} 
+				}
+				if (transition == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+							ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 				}
 			}
 			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
@@ -399,12 +402,44 @@ public class DonController extends TttpController<Don> {
 			if (donMoi.isThanhLapDon()) {
 				donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
-				
+				List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
 				donMoi.setCurrentState(beginState);
+				
+				//Vai tro tiep theo
+				List<State> listState = new ArrayList<State>();
+				Process process = null;
+				for (Process processFromList : listProcess) {
+					Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
+					listState = ((List<State>) repoState.findAll(predicate));
+					if (listState.size() > 0) {
+						process = processFromList;
+						break;
+					}
+				}
+				
+				Transition transition = null;
+				
+				if (listState.size() < 1) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+							ApiErrorEnum.TRANSITION_INVALID.getText());
+				} else {
+					for (State stateFromList : listState) {
+						transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+						if (transition != null) {
+							break;
+						} 						
+					}					
+					if (transition == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+					}
+				}
+			
+				
 				// Them xu ly don
 				XuLyDon xuLyDon = new XuLyDon();
 				xuLyDon.setDon(donMoi);
-				xuLyDon.setChucVu(VaiTroEnum.VAN_THU);
+				xuLyDon.setChucVu(transition.getProcess().getVaiTro().getLoaiVaiTro());
 				//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 				xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 				xuLyDon.setThuTuThucHien(0);
@@ -496,13 +531,14 @@ public class DonController extends TttpController<Don> {
 					} else {
 						for (State stateFromList : listState) {
 							transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-							if (transition == null) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-										ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-							} else {
+							if (transition != null) {
 								nextState = stateFromList;
 								break;
 							}
+						}
+						if (transition == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+									ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 						}
 					}
 					
@@ -677,13 +713,14 @@ public class DonController extends TttpController<Don> {
 			} else {
 				for (State stateFromList : listState) {
 					transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-					if (transition == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-					} else {
+					if (transition != null) {
 						nextState = stateFromList;
 						break;
-					}
+					} 
+				}
+				if (transition == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+							ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 				}
 			}
 			
