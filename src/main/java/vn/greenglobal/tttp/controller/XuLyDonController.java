@@ -417,14 +417,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						}
 						//Tim kiem VaiTro giai quyet don
 						CoQuanQuanLy phongBanGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId());
-						Predicate predicate = processService.predicateFindAllByDonVi(phongBanGiaiQuyet.getDonVi(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
+						Predicate predicate = processService.predicateFindAllByDonVi(phongBanGiaiQuyet.getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
 						List<Process> listProcessGQD = (List<Process>) repoProcess.findAll(predicate);
 						if (listProcessGQD.size() < 1) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
 									ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 						}
 						Transition transitionGQD = null;
-						for (Process processFromList : listProcess) {
+						for (Process processFromList : listProcessGQD) {
 							transitionGQD = transitionRepo.findOne(transitionService.predicateFindBegin(processFromList));
 							if (transitionGQD != null) {
 								break;
@@ -434,8 +434,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
 									ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
 						}	
-						System.out.println("=====DE XUAT THU LY");
-						System.out.println("vai tro: " + transitionGQD.getProcess().getVaiTro().getLoaiVaiTro());
 						xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, note, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro());
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
