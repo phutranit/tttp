@@ -281,7 +281,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 				xuLyDonHienTai.setNextForm(transition.getForm());
 				// Thong tin xu ly don
-				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";
+				String note = vaiTroNguoiDungHienTai + " " + nextStage.getTenVietTat() + " ";				
 
 				if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
 					XuLyDon xuLyDonTiepTheo = new XuLyDon();
