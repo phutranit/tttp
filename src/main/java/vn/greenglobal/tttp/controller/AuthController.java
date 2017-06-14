@@ -179,12 +179,15 @@ public class AuthController {
 				commonProfile.addAttribute("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 				commonProfile.addAttribute("loaiVaiTro", user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
 				commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+				commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 
 				result.put("congChucId", congChuc.getId());
 				result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 				result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+				result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 				result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
 				result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
+				result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
 				result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 				
 			}
