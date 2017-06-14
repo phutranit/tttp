@@ -431,8 +431,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							}
 						}
 						if (transitionGQD == null) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
-									ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
+									ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 						}	
 						xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, note, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro());
 						return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);

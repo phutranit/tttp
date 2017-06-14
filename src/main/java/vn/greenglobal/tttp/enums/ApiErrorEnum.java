@@ -39,6 +39,7 @@ public enum ApiErrorEnum {
 	TRANSITION_FORBIDDEN("Quy trình không đúng!"),
 	TRANSITION_INVALID("Trạng thái không có trong quy trình!"),
 	TRANSITION_TTXM_INVALID("Trạng thái TTXM không có trong quy trình!"),
+	TRANSITION_GQD_INVALID("Trạng thái GQD không có trong quy trình!"),
 	PHONGBANXULYCHIDINH_REQUIRED("Trường phongBanXuLyChiDinh không được để trống!"),
 	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống!"),
 	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống!"),

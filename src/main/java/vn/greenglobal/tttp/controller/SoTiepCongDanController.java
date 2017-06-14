@@ -256,8 +256,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
 			List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
 			if (listProcess.size() < 1) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.name(),
-						ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
+						ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 			}			
 			for (Process processFromList : listProcess) {
 				transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
@@ -266,8 +266,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 			}
 			if (transitionTTXM == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
-						ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
+						ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 			}	
 		}
 
