@@ -463,7 +463,7 @@ public class DonController extends TttpController<Don> {
 				}
 				Utils.save(xuLyRepo, xuLyDon, congChucId);
 			} else { 
-				lichSuQTXLD.setTen("Tạo mới xử lý đơn");
+				lichSuQTXLD.setTen("Tạo mới đơn thư");
 			}
 			lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
 			lichSuQTXLD.setThuTuThucHien(0);
