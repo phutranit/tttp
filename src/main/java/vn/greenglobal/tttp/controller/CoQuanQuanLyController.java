@@ -3,7 +3,6 @@ package vn.greenglobal.tttp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -442,11 +441,6 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
-			}
-
 			if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
 				ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 				if (thamSo != null && thamSo.getGiaTri().toString().equals(coQuanQuanLy.getCapCoQuanQuanLy().getId().toString())) {
@@ -506,10 +500,6 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 
 			coQuanQuanLy.setId(id);
-			if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
-			}
 
 			if (!coQuanQuanLyService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
