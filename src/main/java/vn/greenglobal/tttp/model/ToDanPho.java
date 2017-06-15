@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class ToDanPho extends Model<ToDanPho> {
 	private static final long serialVersionUID = 5662282127057182748L;
 
-	@NotNull
+	@NotBlank
 	private String ten = "";
 	private String moTa = "";
 
