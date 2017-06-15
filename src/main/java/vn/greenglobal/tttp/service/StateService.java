@@ -15,6 +15,7 @@ import vn.greenglobal.tttp.model.QState;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.model.Process;
@@ -42,6 +43,12 @@ public class StateService {
 		
 		return predAll;
 	}
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QState.state.id.eq(id));
@@ -49,5 +56,33 @@ public class StateService {
 	
 	public Predicate predicateFindByType(FlowStateEnum type) {
 		return base.and(QState.state.type.eq(type));
+	}
+	
+	public boolean isExists(StateRepository repo, Long id) {
+		if (id != null && id > 0) {
+			Predicate predicate = base.and(QState.state.id.eq(id));
+			return repo.exists(predicate);
+		}
+		return false;
+	}
+	
+	public boolean checkExistsData(StateRepository repo, State body) {
+		BooleanExpression predAll = base;
+		if (!body.isNew()) {
+			predAll = predAll.and(QState.state.id.ne(body.getId()));
+		}
+		predAll = predAll.and(QState.state.type.eq(body.getType()));
+		State state = repo.findOne(predAll);
+		return state != null ? true : false;
+	}
+	
+	public State delete(StateRepository repo, Long id) {
+		State state = repo.findOne(predicateFindOne(id));
+
+		if (state != null) {
+			state.setDaXoa(true);
+		}
+
+		return state;
 	}
 }
