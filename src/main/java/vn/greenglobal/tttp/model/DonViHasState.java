@@ -19,9 +19,6 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 @ApiModel
 public class DonViHasState extends Model<DonViHasState> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 
 	@ManyToOne
