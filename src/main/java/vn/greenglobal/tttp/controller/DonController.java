@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -49,8 +51,10 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
@@ -61,12 +65,14 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
+import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.TransitionService;
@@ -99,6 +105,9 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private StateRepository repoState;
+	
+	@Autowired
+	private LichSuThayDoiRepository lichSuRepo;
 
 	@Autowired
 	private GiaiQuyetDonRepository giaiQuyetDonRepo;
@@ -129,6 +138,12 @@ public class DonController extends TttpController<Don> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
+
+	@Autowired
+	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
 		
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -468,6 +483,14 @@ public class DonController extends TttpController<Don> {
 			}
 			lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
 			lichSuQTXLD.setThuTuThucHien(0);
+			List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(donMoi, new Don());
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(donMoi.getId());
+			lichSu.setNoiDung("Tạo mới đơn");
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			Utils.save(lichSuRepo, lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
 			return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
 		}
@@ -821,8 +844,7 @@ public class DonController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			Don donOld = repo.findOne(id);
-			don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
+			Don donOld = repo.findOne(donService.predicateFindOne(id));
 			don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 			don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 			don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
@@ -944,6 +966,15 @@ public class DonController extends TttpController<Don> {
 				}
 			}
 
+			List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(don, donOld);
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(id);
+			lichSu.setNoiDung("Cập nhật thông tin đơn");
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			Utils.save(lichSuRepo, lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			
 			return Utils.doSave(repo, don,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -1024,4 +1055,31 @@ public class DonController extends TttpController<Don> {
 		return new ResponseEntity<>(thoiHan, HttpStatus.OK);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}/lichSus")
+	@ApiOperation(value = "Lấy lịch sử thay đổi của Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy lịch sử thay đổi của Đơn thành công", response = LichSuThayDoi.class) })
+	public PagedResources<Object> getLichSuThayDoiDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+		Page<LichSuThayDoi> page = lichSuRepo
+				.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.DON, id), pageable);
+		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}/lichSus/{idLichSu}")
+	@ApiOperation(value = "Lấy chi tiết lịch sử thay đổi của Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy chi tiết lịch sử thay đổi của Đơn thành công", response = LichSuThayDoi.class) })
+	public ResponseEntity<Object> getLichSuById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@PathVariable("idLichSu") long idLichSu, PersistentEntityResourceAssembler eass) {
+
+		LichSuThayDoi lichSuThayDoi = lichSuRepo.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
+		if (lichSuThayDoi == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
+	}
 }
