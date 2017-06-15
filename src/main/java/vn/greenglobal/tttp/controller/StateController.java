@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,9 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.repository.DonViHasStateRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -33,6 +36,12 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "states", description = "Trang thái")
 public class StateController extends TttpController<State> {
+	
+	@Autowired
+	private DonViHasStateRepository donViHasStateRepo;
+	
+	@Autowired
+	private TransitionRepository transitionRepo;
 	
 	@Autowired
 	private StateRepository stateRepo;
@@ -48,7 +57,9 @@ public class StateController extends TttpController<State> {
 	@RequestMapping(method = RequestMethod.GET, value = "/states")
 	@ApiOperation(value = "Lấy danh sách Thạng Thái", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, PersistentEntityResourceAssembler eass) {
+			Pageable pageable,  @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "type", required = false) String type,
+			PersistentEntityResourceAssembler eass) {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
@@ -56,7 +67,7 @@ public class StateController extends TttpController<State> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<State> page = stateRepo.findAll(stateService.predicateFindAll(), pageable);
+			Page<State> page = stateRepo.findAll(stateService.predicateFindAll(tuKhoa, type), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors();
@@ -75,6 +86,11 @@ public class StateController extends TttpController<State> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
 			return Utils.doSave(stateRepo, state,
@@ -104,7 +120,12 @@ public class StateController extends TttpController<State> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-
+			
+			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
+			
 			return Utils.doSave(stateRepo, state,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
@@ -129,6 +150,11 @@ public class StateController extends TttpController<State> {
 			if (state == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText());
 			}
 
 			Utils.save(stateRepo, state,

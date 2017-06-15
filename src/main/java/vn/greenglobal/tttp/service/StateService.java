@@ -3,9 +3,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -15,10 +17,13 @@ import vn.greenglobal.tttp.model.QState;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.repository.DonViHasStateRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
+import vn.greenglobal.tttp.model.DonViHasState;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.QDonViHasState;
 
 @Component
 public class StateService {
@@ -44,9 +49,16 @@ public class StateService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll() {
+	public Predicate predicateFindAll(String tuKhoa, String type) {
 		BooleanExpression predAll = base;
-		
+		if (StringUtils.isNotBlank(tuKhoa)) { 
+			predAll = predAll.and(QState.state.ten.containsIgnoreCase(tuKhoa)
+					.or(QState.state.tenVietTat.containsIgnoreCase(tuKhoa)));
+		}
+		if (StringUtils.isNotBlank(type)) { 
+			FlowStateEnum flowState = FlowStateEnum.valueOf(type);
+			predAll = predAll.and(QState.state.type.eq(flowState));
+		}
 		return predAll;
 	}
 
@@ -71,7 +83,8 @@ public class StateService {
 		if (!body.isNew()) {
 			predAll = predAll.and(QState.state.id.ne(body.getId()));
 		}
-		predAll = predAll.and(QState.state.type.eq(body.getType()));
+		FlowStateEnum type = body.getType();
+		predAll = predAll.and(QState.state.type.eq(type));
 		State state = repo.findOne(predAll);
 		return state != null ? true : false;
 	}
@@ -84,5 +97,26 @@ public class StateService {
 		}
 
 		return state;
+	}
+	
+	public boolean checkUsedData(DonViHasStateRepository donViHasStateRepository, TransitionRepository transitionRepo, Long id) {
+		List<DonViHasState> donViHasStates = (List<DonViHasState>) donViHasStateRepository
+				.findAll(QDonViHasState.donViHasState.daXoa.eq(false)
+						.and(QDonViHasState.donViHasState.state.id.eq(id)));
+		
+		if (donViHasStates != null && donViHasStates.size() > 0) {
+			return true;
+		}
+		
+		List<Transition> transitions = (List<Transition>) transitionRepo
+				.findAll(QTransition.transition.daXoa.eq(false)
+						.and(QTransition.transition.currentState.id.eq(id))
+						.or(QTransition.transition.nextState.id.eq(id)));
+		
+		if (transitions != null && transitions.size() > 0) {
+			return true;
+		}
+		
+		return false;
 	}
 }
