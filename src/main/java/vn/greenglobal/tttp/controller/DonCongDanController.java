@@ -94,7 +94,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		LichSuThayDoi lichSu = new LichSuThayDoi();
 		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 		lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-		lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText());
+		lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 		lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 		Utils.save(lichSuRepo, lichSu,
 				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -155,7 +155,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 							LichSuThayDoi lichSu = new LichSuThayDoi();
 							lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 							lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-							lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText());
+							lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 							lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 							Utils.save(lichSuRepo, lichSu,
 									Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -202,7 +202,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			LichSuThayDoi lichSu = new LichSuThayDoi();
 			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 			lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-			lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText());
+			lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 			Utils.save(lichSuRepo, lichSu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -271,7 +271,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								LichSuThayDoi lichSu = new LichSuThayDoi();
 								lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 								lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-								lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText());
+								lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 								lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 								Utils.save(lichSuRepo, lichSu,
 										Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
