@@ -39,10 +39,10 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 
 	@Autowired
 	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
-	
+
 	@Autowired
 	private DonRepository donRepo;
-	
+
 	@Autowired
 	private DonService donService;
 
@@ -58,37 +58,51 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ThongTinGiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		giaiQuyetDon.setId(id);
-		if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			giaiQuyetDon.setId(id);
+			if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Don don = donRepo.findOne(donService.predicateFindOne(giaiQuyetDon.getDon().getId()));
-		don.setDonViThamTraXacMinh(giaiQuyetDon.getDonViThamTraXacMinh());
-		Utils.save(donRepo, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		
-		return Utils.doSave(repo, giaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+			Don don = donRepo.findOne(donService.predicateFindOne(giaiQuyetDon.getDon().getId()));
+			don.setDonViThamTraXacMinh(giaiQuyetDon.getDonViThamTraXacMinh());
+			Utils.save(donRepo, don,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+
+			return Utils.doSave(repo, giaiQuyetDon,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/thongTinGiaiQuyetDons/{id}")
 	@ApiOperation(value = "Lấy Thông tin giải quyết đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Thông tin giải quyết đơn thành công", response = ThongTinGiaiQuyetDon.class) })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy Thông tin giải quyết đơn thành công", response = ThongTinGiaiQuyetDon.class) })
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
-		if (thongTinGiaiQuyetDon == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
+			if (thongTinGiaiQuyetDon == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(thongTinGiaiQuyetDon), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return new ResponseEntity<>(eass.toFullResource(thongTinGiaiQuyetDon), HttpStatus.OK);
-	}
+	} 
 }

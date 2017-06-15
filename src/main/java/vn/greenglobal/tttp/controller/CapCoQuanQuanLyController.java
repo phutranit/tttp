@@ -48,10 +48,10 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
-	
+
 	@Autowired
 	private ThamSoRepository thamSoRepository;
-	
+
 	@Autowired
 	private ThamSoService thamSoService;
 
@@ -66,39 +66,50 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_LIETKE) == null
-				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+			Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/capCoQuanDaGiaiQuyets")
 	@ApiOperation(value = "Lấy danh sách Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getCapCoQuanDaGiaiQuyets(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, PersistentEntityResourceAssembler eass) {
-		
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+	public @ResponseBody Object getCapCoQuanDaGiaiQuyets(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
 
-		Page<CapCoQuanQuanLy> page = null;
-		ThamSo thamSoOne = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
-		ThamSo thamSoTwo = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
-		ThamSo thamSoThree = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
-		ThamSo thamSoFour = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
-		if (thamSoOne != null && thamSoTwo != null && thamSoThree != null && thamSoFour != null) {
-			page = repo.findAll(capCoQuanQuanLyService.predicateFindCapCoQuanDaGiaiQuyet(Long.valueOf(thamSoOne.getGiaTri().toString()),
-							Long.valueOf(thamSoTwo.getGiaTri().toString()), Long.valueOf(thamSoThree.getGiaTri().toString()),
-							Long.valueOf(thamSoFour.getGiaTri().toString())),pageable);
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		return assembler.toResource(page, (ResourceAssembler) eass);
+			Page<CapCoQuanQuanLy> page = null;
+			ThamSo thamSoOne = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoTwo = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoThree = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoFour = thamSoRepository
+					.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			if (thamSoOne != null && thamSoTwo != null && thamSoThree != null && thamSoFour != null) {
+				page = repo.findAll(capCoQuanQuanLyService.predicateFindCapCoQuanDaGiaiQuyet(
+						Long.valueOf(thamSoOne.getGiaTri().toString()), Long.valueOf(thamSoTwo.getGiaTri().toString()),
+						Long.valueOf(thamSoThree.getGiaTri().toString()),
+						Long.valueOf(thamSoFour.getGiaTri().toString())), pageable);
+			}
+
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/capCoQuanQuanLys")
@@ -109,20 +120,24 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
-				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		return Utils.doSave(repo, capCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+			return Utils.doSave(repo, capCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/{id}")
@@ -132,17 +147,21 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(capCoQuanQuanLyService.predicateFindOne(id));
-		if (capCoQuanQuanLy == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+			CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(capCoQuanQuanLyService.predicateFindOne(id));
+			if (capCoQuanQuanLy == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(capCoQuanQuanLy), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(capCoQuanQuanLy), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/capCoQuanQuanLys/{id}")
@@ -153,26 +172,30 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CapCoQuanQuanLy capCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		capCoQuanQuanLy.setId(id);
-		if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
-				&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			capCoQuanQuanLy.setId(id);
+			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		if (!capCoQuanQuanLyService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			if (!capCoQuanQuanLyService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		return Utils.doSave(repo, capCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+			return Utils.doSave(repo, capCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capCoQuanQuanLys/{id}")
@@ -181,24 +204,28 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XOA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (capCoQuanQuanLyService.checkUsedData(repo, repoCoQuanQuanLy, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-					ApiErrorEnum.DATA_USED.getText());
-		}
+			if (capCoQuanQuanLyService.checkUsedData(repo, repoCoQuanQuanLy, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText());
+			}
 
-		CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.delete(repo, id);
-		if (capCoQuanQuanLy == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			CapCoQuanQuanLy capCoQuanQuanLy = capCoQuanQuanLyService.delete(repo, id);
+			if (capCoQuanQuanLy == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Utils.save(repo, capCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			Utils.save(repo, capCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 }

@@ -322,7 +322,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					giaiQuyetDonHienTai.setNextState(nextState);
 					giaiQuyetDonHienTai.setNextForm(transition.getForm());
 					String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
-					Long coQuanQuanLyId = new Long(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+					Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 					if (FlowStateEnum.TRINH_LANH_DAO.equals(nextStateType)) {
 						GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 						giaiQuyetDonTiepTheo = vanThuDonViTTXMTrinhLanhDao(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, false, donViId);

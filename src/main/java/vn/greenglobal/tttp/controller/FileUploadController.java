@@ -34,6 +34,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.DocumentMetaData;
 import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
 import vn.greenglobal.tttp.service.FileUploadService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @Api(value = "document", description = "File upload")
@@ -48,7 +49,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 	@Autowired
 	FileUploadService fileService;
-	
+
 	@Autowired
 	DocumentMetaDataRepository repo;
 
@@ -57,20 +58,24 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			@RequestPart(value = "file", required = true) MultipartFile file, HttpServletRequest req)
 			throws IOException {
 
-		if (!file.isEmpty()) {
-			Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
-			BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
-			
-			String originalFilename = file.getOriginalFilename();
-			String fileName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
-			String salkey = encryptor.encryptPassword(fileName + new Date().toString());
-			
-			fileName = md5PasswordEncoder.encodePassword(fileName, salkey) + originalFilename.substring(originalFilename.lastIndexOf('.'));
-			
-			fileService.upload(file, fileName, salkey, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + fileName, new HttpHeaders(), HttpStatus.CREATED);
+		try {
+			if (!file.isEmpty()) {
+				Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+				BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+
+				String originalFilename = file.getOriginalFilename();
+				String fileName = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
+				String salkey = encryptor.encryptPassword(fileName + new Date().toString());
+
+				fileName = md5PasswordEncoder.encodePassword(fileName, salkey) + originalFilename.substring(originalFilename.lastIndexOf('.'));
+
+				fileService.upload(file, fileName, salkey, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				return new ResponseEntity<>(getBaseUrl(req) + fileStorageLocation + fileName, new HttpHeaders(), HttpStatus.CREATED);
+			}
+			return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
 		}
-		return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/documents/files/{filename:.+}", method = RequestMethod.GET)
@@ -78,40 +83,53 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable String filename) throws IOException {
 		Resource fileResource = fileService.download(filename);
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getURI() + "\"")
-				.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileResource.contentLength())).build();
+		
+		try {
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getURI() + "\"")
+					.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileResource.contentLength())).build();
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(value = "/tttpdata/files/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Object> serveFileUpload(@PathVariable String filename, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 
-		File file = new File(fileService.getFileStorageLocation() + filename);
+		try {
+			File file = new File(fileService.getFileStorageLocation() + filename);
 
-		HttpHeaders header = new HttpHeaders();
-		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
-		header.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()));
+			HttpHeaders header = new HttpHeaders();
+			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+			header.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()));
 
-		response.setContentLength((int) file.length());
+			response.setContentLength((int) file.length());
 
-		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-		FileCopyUtils.copy(inputStream, response.getOutputStream());
+			InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
 
-		return ResponseEntity.ok(HttpStatus.FOUND);
+			return ResponseEntity.ok(HttpStatus.FOUND);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	@RequestMapping(value = "/documents/uploadhandler", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadHandler(HttpServletRequest request) {
 
-		Enumeration<String> headers = request.getHeaderNames();
-		String result = "";
-		for (; headers.hasMoreElements();) {
-			String s = headers.nextElement();
-			result += s + " = " + request.getHeader(s) + "; ";
-		}
+		try {
+			Enumeration<String> headers = request.getHeaderNames();
+			String result = "";
+			for (; headers.hasMoreElements();) {
+				String s = headers.nextElement();
+				result += s + " = " + request.getHeader(s) + "; ";
+			}
 
-		return ResponseEntity.ok(Collections.singletonMap("response", result));
+			return ResponseEntity.ok(Collections.singletonMap("response", result));
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors();
+		}
 	}
 
 	public static String getBaseUrl(HttpServletRequest request) {
