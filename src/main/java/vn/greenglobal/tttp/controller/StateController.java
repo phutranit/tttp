@@ -145,16 +145,16 @@ public class StateController extends TttpController<State> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
-			State state = stateService.delete(stateRepo, id);
-			if (state == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
 			
 			if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
 						ApiErrorEnum.DATA_USED.getText());
+			}
+			
+			State state = stateService.delete(stateRepo, id);
+			if (state == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(stateRepo, state,
