@@ -740,6 +740,18 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
