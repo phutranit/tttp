@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -61,6 +62,59 @@ public class EnumController {
 	
 	@Autowired
 	XuLyDonRepository xuLyDonRepo;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/processTypes")
+	@ApiOperation(value = "Lấy danh sách loại quy trình", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getProcessTypes(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		
+		object.put("ten", ProcessTypeEnum.TIEP_CONG_DAN.getText());
+		object.put("giaTri", ProcessTypeEnum.TIEP_CONG_DAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.XU_LY_DON.getText());
+		object.put("giaTri", ProcessTypeEnum.XU_LY_DON.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.KIEM_TRA_DE_XUAT.getText());
+		object.put("giaTri", ProcessTypeEnum.KIEM_TRA_DE_XUAT.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.GIAI_QUYET_DON.getText());
+		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_DON.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.THAM_TRA_XAC_MINH.getText());
+		object.put("giaTri", ProcessTypeEnum.THAM_TRA_XAC_MINH.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.getText());
+		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.GIAI_QUYET_TO_CAO.getText());
+		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_TO_CAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.getText());
+		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/phanLoaiNguoiDungDons")
 	@ApiOperation(value = "Lấy danh sách Phân Loại Người Đứng Đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
