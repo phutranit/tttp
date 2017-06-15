@@ -5,6 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,6 +25,7 @@ public class State extends Model<State>{
 	
 	private String tenVietTat;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private FlowStateEnum type;
 	

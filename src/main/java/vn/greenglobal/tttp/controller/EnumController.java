@@ -32,6 +32,7 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
@@ -925,4 +926,95 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/flowStates")
+	@ApiOperation(value = "Lấy danh sách kiểu trạng thái", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getFlowStates(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", FlowStateEnum.BAT_DAU.getText());
+		object.put("giaTri", FlowStateEnum.BAT_DAU.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.TRINH_LANH_DAO.getText());
+		object.put("giaTri", FlowStateEnum.TRINH_LANH_DAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.getText());
+		object.put("giaTri", FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI.getText());
+		object.put("giaTri", FlowStateEnum.TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.getText());
+		object.put("giaTri", FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_DE_XUAT_GIAO_VIEC_LAI.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_DE_XUAT_GIAO_VIEC_LAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.getText());
+		object.put("giaTri", FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_CHUYEN_VAN_THU_GIAO_TTXM.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_CHUYEN_VAN_THU_GIAO_TTXM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.VAN_THU_CHUYEN_DON_VI_TTXM.getText());
+		object.put("giaTri", FlowStateEnum.VAN_THU_CHUYEN_DON_VI_TTXM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_CHUYEN_VAN_THU_KET_QUA_TTXM.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_CHUYEN_VAN_THU_KET_QUA_TTXM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_GIAI_QUYET_DON.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_GIAI_QUYET_DON.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.CAN_BO_CHUYEN_KET_QUA_DON_VI_GIAO.getText());
+		object.put("giaTri", FlowStateEnum.CAN_BO_CHUYEN_KET_QUA_DON_VI_GIAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", FlowStateEnum.KET_THUC.getText());
+		object.put("giaTri", FlowStateEnum.KET_THUC.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 }

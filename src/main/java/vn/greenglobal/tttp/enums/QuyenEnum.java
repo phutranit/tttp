@@ -146,7 +146,13 @@ public enum QuyenEnum {
 	TONGHOPBAOCAO_THONGKE("Thống kê"),
 	
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
-	THEODOIGIAMSAT_THONGKE("Thống kê");
+	THEODOIGIAMSAT_THONGKE("Thống kê"),
+	
+	STATE_LIETKE("Liệt kê"),
+	STATE_XEM("Xem"),
+	STATE_THEM("Thêm mới"),
+	STATE_SUA("Chỉnh sửa"),
+	STATE_XOA("Xoá");
 	
 	QuyenEnum(String text) {
 		this.text = text;
