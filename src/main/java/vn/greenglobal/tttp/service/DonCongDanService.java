@@ -221,7 +221,7 @@ public class DonCongDanService {
 		if ((don_CongDanNew.getPhuongXa() == null && don_CongDanOld.getPhuongXa() != null)
 				|| (don_CongDanNew.getPhuongXa() != null && don_CongDanOld.getPhuongXa() == null) 
 				|| (don_CongDanNew.getPhuongXa() != don_CongDanOld.getPhuongXa())) {
-			DonViHanhChinh donViHanhChinhNew = donViHanhChinhRepo.findOne(don_CongDanNew.getQuanHuyen() != null ? don_CongDanNew.getQuanHuyen().getId() : 0L);
+			DonViHanhChinh donViHanhChinhNew = donViHanhChinhRepo.findOne(don_CongDanNew.getPhuongXa() != null ? don_CongDanNew.getPhuongXa().getId() : 0L);
 			list.add(new PropertyChangeObject("Phường xã",
 					don_CongDanOld.getPhuongXa() != null ? don_CongDanOld.getPhuongXa().getTen() : "", donViHanhChinhNew != null ? donViHanhChinhNew.getTen() : ""));
 		}

@@ -967,13 +967,15 @@ public class DonController extends TttpController<Don> {
 			}
 
 			List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(don, donOld);
-			LichSuThayDoi lichSu = new LichSuThayDoi();
-			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-			lichSu.setIdDoiTuong(id);
-			lichSu.setNoiDung("Cập nhật thông tin đơn");
-			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-			Utils.save(lichSuRepo, lichSu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			if (listThayDoi.size() > 0) {
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(id);
+				lichSu.setNoiDung("Cập nhật thông tin đơn");
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				Utils.save(lichSuRepo, lichSu,
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}
 			
 			return Utils.doSave(repo, don,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
