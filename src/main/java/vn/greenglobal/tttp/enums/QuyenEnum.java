@@ -1,7 +1,13 @@
 package vn.greenglobal.tttp.enums;
 
 public enum QuyenEnum {
-
+	
+	FORM_LIETKE("Liệt kê"),
+	FORM_XEM("Xem"),
+	FORM_THEM("Thêm mới"),
+	FORM_SUA("Chỉnh sửa"),
+	FORM_XOA("Xoá"),
+	
 	THAMQUYENGIAIQUYET_LIETKE("Liệt kê"),
 	THAMQUYENGIAIQUYET_XEM("Xem"),
 	THAMQUYENGIAIQUYET_THEM("Thêm mới"),

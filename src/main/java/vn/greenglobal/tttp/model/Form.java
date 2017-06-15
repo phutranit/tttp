@@ -18,9 +18,6 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 @ApiModel
 public class Form extends Model<Form> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 
 	@NotBlank
