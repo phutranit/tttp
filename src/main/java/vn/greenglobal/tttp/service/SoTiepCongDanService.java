@@ -39,14 +39,14 @@ public class SoTiepCongDanService {
 		BooleanExpression predAll = base;
 		BooleanExpression donCongDanQuery = baseDonCongDan;
 		
-		if (StringUtils.isNotBlank(tuKhoa)) {
+		if (StringUtils.isNotEmpty(tuKhoa)) {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
 							.or(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.soCMNDHoChieu
 									.containsIgnoreCase(tuKhoa)));
 		}
 		
-		if (StringUtils.isNotBlank(phanLoaiDon)) {
+		if (StringUtils.isNotEmpty(phanLoaiDon)) {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon));
 		}
@@ -55,24 +55,24 @@ public class SoTiepCongDanService {
 				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
 				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
 
-		if (StringUtils.isNotBlank(huongXuLy)) {
+		if (StringUtils.isNotEmpty(huongXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy));
 		}
-		if (StringUtils.isNotBlank(loaiTiepCongDan)) {
+		if (StringUtils.isNotEmpty(loaiTiepCongDan)) {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.stringValue().containsIgnoreCase(loaiTiepCongDan));
 		}
-		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+		if (StringUtils.isNotEmpty(tuNgay) && StringUtils.isNotEmpty(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
 		} else {
-			if (StringUtils.isNotBlank(tuNgay)) {
+			if (StringUtils.isNotEmpty(tuNgay)) {
 				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.after(dtTuNgay));
 			}
-			if (StringUtils.isNotBlank(denNgay)) {
+			if (StringUtils.isNotEmpty(denNgay)) {
 				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.before(dtDenNgay));
 			}
@@ -83,11 +83,11 @@ public class SoTiepCongDanService {
 					.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.id.eq(lanhDaoId)));
 		}
 		
-		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+		if (StringUtils.isNotEmpty(tinhTrangXuLy)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.trinhTrangXuLyTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy)));
 		}
 		
-		if (StringUtils.isNotBlank(ketQuaTiepDan)) {
+		if (StringUtils.isNotEmpty(ketQuaTiepDan)) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
 					.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan))));
 		}
@@ -95,7 +95,7 @@ public class SoTiepCongDanService {
 		List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
 		List<Don> dons = new ArrayList<Don>();
 		
-		if (StringUtils.isNotBlank(tenNguoiDungDon)) {
+		if (StringUtils.isNotEmpty(tenNguoiDungDon)) {
 			donCongDanQuery = donCongDanQuery
 					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.stringValue()
 							.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.name()))

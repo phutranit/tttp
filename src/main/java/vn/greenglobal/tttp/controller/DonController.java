@@ -194,7 +194,7 @@ public class DonController extends TttpController<Don> {
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -233,7 +233,7 @@ public class DonController extends TttpController<Don> {
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -284,7 +284,7 @@ public class DonController extends TttpController<Don> {
 					Don don = repo.findOne(donService.predicateFindOne(donId));
 					if (don == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
-								ApiErrorEnum.DON_REQUIRED.getText());
+								ApiErrorEnum.DON_REQUIRED.getText(), ApiErrorEnum.DON_REQUIRED.getText());
 					}
 					nguoiTaoId = don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L;
 					currentState = don.getCurrentState();
@@ -293,7 +293,7 @@ public class DonController extends TttpController<Don> {
 				List<Process> listProcess = getProcess(authorization, nguoiTaoId, processType);
 				if (listProcess.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
-							ApiErrorEnum.PROCESS_NOT_FOUND.getText());
+							ApiErrorEnum.PROCESS_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
 				
 				List<State> listState = new ArrayList<State>();
@@ -311,7 +311,7 @@ public class DonController extends TttpController<Don> {
 				Transition transition = null;
 				if (listState.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-							ApiErrorEnum.TRANSITION_INVALID.getText());
+							ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 				} else {
 					for (State nextState : listState) {
 						transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
@@ -322,26 +322,26 @@ public class DonController extends TttpController<Don> {
 					}
 					if (transition == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+								ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 					}
 				}
 				return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
 	public boolean checkInputDateTime(String tuNgay, String denNgay) {
-		if (StringUtils.isNotBlank(tuNgay)) {
+		if (StringUtils.isNotEmpty(tuNgay)) {
 			try {
 				LocalDateTime.parse(denNgay);
 			} catch (DateTimeParseException ex) {
 				return false;
 			}
-			if (StringUtils.isNotBlank(tuNgay)) {
+			if (StringUtils.isNotEmpty(tuNgay)) {
 				try {
 					LocalDateTime.parse(denNgay);
 				} catch (DateTimeParseException ex) {
@@ -404,7 +404,7 @@ public class DonController extends TttpController<Don> {
 					
 					if (listState.size() < 1) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-								ApiErrorEnum.TRANSITION_INVALID.getText());
+								ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 					} else {
 						for (State stateFromList : listState) {
 							transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
@@ -414,7 +414,7 @@ public class DonController extends TttpController<Don> {
 						}					
 						if (transition == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-									ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+									ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 						}
 					}
 				
@@ -462,7 +462,7 @@ public class DonController extends TttpController<Don> {
 				return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -481,12 +481,12 @@ public class DonController extends TttpController<Don> {
 				Don don = repo.findOne(donService.predicateFindOne(id));
 				if (don == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText());
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				return new ResponseEntity<>(eass.toFullResource(don), HttpStatus.OK);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -512,7 +512,7 @@ public class DonController extends TttpController<Don> {
 
 				if (!donService.isExists(repo, id)) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText());
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
@@ -568,7 +568,7 @@ public class DonController extends TttpController<Don> {
 						
 						if (listState.size() < 1) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-									ApiErrorEnum.TRANSITION_INVALID.getText());
+									ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 						} else {
 							for (State stateFromList : listState) {
 								transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
@@ -578,7 +578,7 @@ public class DonController extends TttpController<Don> {
 							}					
 							if (transition == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-										ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 							}
 						}
 						
@@ -611,7 +611,7 @@ public class DonController extends TttpController<Don> {
 					} else {
 						XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
 						if (xuLyDonHienTai != null) {
-							if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
+							if (!don.isLanhDaoDuyet() && StringUtils.isNotEmpty(don.getNoiDungThongTinTrinhLanhDao())) {
 								xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 								xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 							}
@@ -653,7 +653,7 @@ public class DonController extends TttpController<Don> {
 						HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -670,14 +670,14 @@ public class DonController extends TttpController<Don> {
 				Don don = donService.deleteDon(repo, id);
 				if (don == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText());
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Utils.save(repo, don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -724,7 +724,7 @@ public class DonController extends TttpController<Don> {
 			Long soNgayMacDinh = 10L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
 			if (thoiHan == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			return new ResponseEntity<>(thoiHan, HttpStatus.OK);
 		} catch (Exception e) {
@@ -742,7 +742,7 @@ public class DonController extends TttpController<Don> {
 			Long soNgayMacDinh = 45L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
 			if (thoiHan == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			return new ResponseEntity<>(thoiHan, HttpStatus.OK);
 		} catch (Exception e) {

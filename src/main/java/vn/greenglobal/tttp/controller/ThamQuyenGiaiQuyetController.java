@@ -65,7 +65,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa), pageable);
@@ -86,13 +86,13 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
+			if (StringUtils.isNotEmpty(thamQuyenGiaiQuyet.getTen())
 					&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, thamQuyenGiaiQuyet,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -112,7 +112,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = repo.findOne(thamQuyenGiaiQuyetService.predicateFindOne(id));
@@ -137,19 +137,19 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			thamQuyenGiaiQuyet.setId(id);
-			if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
+			if (StringUtils.isNotEmpty(thamQuyenGiaiQuyet.getTen())
 					&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!thamQuyenGiaiQuyetService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, thamQuyenGiaiQuyet,
@@ -169,18 +169,18 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMQUYENGIAIQUYET_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (thamQuyenGiaiQuyetService.checkUsedData(repo, donRepository, xuLyDonRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyet = thamQuyenGiaiQuyetService.delete(repo, id);
 			if (thamQuyenGiaiQuyet == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, thamQuyenGiaiQuyet,

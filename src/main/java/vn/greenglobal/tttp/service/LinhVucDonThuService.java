@@ -71,9 +71,15 @@ public class LinhVucDonThuService {
 		}
 
 		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen()));
-		LinhVucDonThu linhVucDonThu = repo.findOne(predAll);
+		if (body.getCha() != null) {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(body.getCha().getId()));
+		} else {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.isNull());
+		}
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(LoaiDonEnum.valueOf(body.getLoaiDon().toString())));
+		List<LinhVucDonThu> linhVucDonThus = (List<LinhVucDonThu>) repo.findAll(predAll);
 
-		return linhVucDonThu != null ? true : false;
+		return linhVucDonThus != null && linhVucDonThus.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(LinhVucDonThuRepository repo, DonRepository donRepository, Long id) {

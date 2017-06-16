@@ -211,7 +211,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 			if (!donCongDanService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
 			List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
@@ -251,7 +251,8 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 						if (params.getDonCongDans().size() > 0) {
 							for (Don_CongDan donCongDan : params.getDonCongDans()) {
 								if (!donCongDanService.isExists(repo, donCongDan.getId())) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								listUpdate.add(donCongDan);
 							}
@@ -322,7 +323,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			Don_CongDan dcd = donCongDanService.delete(repo, id);
 			if (dcd == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			LichSuThayDoi lichSu = new LichSuThayDoi();
 			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
@@ -353,7 +354,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 					Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
 					if (dcd == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(dcd);
 				}

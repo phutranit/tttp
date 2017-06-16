@@ -61,7 +61,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
@@ -97,12 +97,12 @@ public class QuocTichController extends TttpController<QuocTich> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, quocTich,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -121,7 +121,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			QuocTich quocTich = repo.findOne(quocTichService.predicateFindOne(id));
@@ -146,18 +146,18 @@ public class QuocTichController extends TttpController<QuocTich> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			quocTich.setId(id);
-			if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!quocTichService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, quocTich,
@@ -177,18 +177,18 @@ public class QuocTichController extends TttpController<QuocTich> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.QUOCTICH_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (quocTichService.checkUsedData(congDanRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			QuocTich quocTich = quocTichService.delete(repo, id);
 			if (quocTich == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, quocTich,

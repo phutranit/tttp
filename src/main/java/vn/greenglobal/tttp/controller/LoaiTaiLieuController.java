@@ -65,7 +65,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<LoaiTaiLieu> page = repo.findAll(loaiTaiLieuService.predicateFindAll(tuKhoa), pageable);
@@ -86,12 +86,12 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, loaiTaiLieu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -111,7 +111,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			LoaiTaiLieu loaiTaiLieu = repo.findOne(loaiTaiLieuService.predicateFindOne(id));
@@ -135,18 +135,18 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			loaiTaiLieu.setId(id);
-			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!loaiTaiLieuService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, loaiTaiLieu,
@@ -166,18 +166,18 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAITAILIEU_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			LoaiTaiLieu loaiTaiLieu = loaiTaiLieuService.delete(repo, id);
 			if (loaiTaiLieu == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, loaiTaiLieu,

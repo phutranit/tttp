@@ -148,7 +148,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			taiLieuBangChung.setId(id);
 			if (!taiLieuBangChungService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, taiLieuBangChung,
@@ -180,7 +180,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 							for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
 								if (!taiLieuBangChungService.isExists(repo, taiLieuBangChung.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								listUpdate.add(taiLieuBangChung);
 							}
@@ -211,7 +211,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			TaiLieuBangChung taiLieuBangChung = taiLieuBangChungService.delete(repo, id);
 			if (taiLieuBangChung == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, taiLieuBangChung,
@@ -236,7 +236,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					TaiLieuBangChung tlbc = taiLieuBangChungService.delete(repo, taiLieuBangChung.getId());
 					if (tlbc == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(tlbc);
 				}

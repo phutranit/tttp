@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.model.QVaiTro;
@@ -58,9 +59,10 @@ public class VaiTroService {
 		}
 
 		predAll = predAll.and(QVaiTro.vaiTro.ten.eq(body.getTen()));
-		VaiTro vaiTro = repo.findOne(predAll);
+		predAll = predAll.and(QVaiTro.vaiTro.loaiVaiTro.eq(VaiTroEnum.valueOf(body.getLoaiVaiTro().toString())));
+		List<VaiTro> vaiTros = (List<VaiTro>) repo.findAll(predAll);
 
-		return vaiTro != null ? true : false;
+		return vaiTros != null && vaiTros.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(NguoiDungRepository nguoiDungRepository, Long id) {

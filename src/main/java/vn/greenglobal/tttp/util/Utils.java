@@ -62,12 +62,13 @@ public class Utils {
 		}
 	}
 
-	public static ResponseEntity<Object> responseErrors(HttpStatus httpStatus, String code, String detail) {
+	public static ResponseEntity<Object> responseErrors(HttpStatus httpStatus, String code, String detail, String description) {
 		List<Map<String, Object>> errors = new ArrayList<>();
 		Map<String, Object> error = new HashMap<>();
 		error.put("status", Long.valueOf(httpStatus.toString()));
 		error.put("code", code);
 		error.put("detail", detail);
+		error.put("description", description);
 		errors.add(error);
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("errors", errors);
@@ -76,7 +77,7 @@ public class Utils {
 	
 	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
 		e.printStackTrace();
-		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(), ApiErrorEnum.INTERNAL_SERVER_ERROR.getText());
+		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(), ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getCause().toString());
 	}
 
 	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {
@@ -85,16 +86,16 @@ public class Utils {
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 					vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED",
-					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
+					"Bạn không được bỏ trống trường này.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống.");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 					vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL",
-					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL!");
+					"Bạn không được bỏ trống trường này.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL.");
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 					vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE",
-					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống!");
-		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN");
+					"Trường này đã nhập quá kí tự cho phép.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " đã nhập quá kí tự cho phép.");
+		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN", "UNKNOWN");
 	}
 
 	@SuppressWarnings("rawtypes")
