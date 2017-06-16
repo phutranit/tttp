@@ -79,4 +79,12 @@ public class Process extends Model<Process>{
 	public void setCha(Process cha) {
 		this.cha = cha;
 	}
+
+	public ProcessTypeEnum getProcessType() {
+		return processType;
+	}
+
+	public void setProcessType(ProcessTypeEnum processType) {
+		this.processType = processType;
+	}
 }

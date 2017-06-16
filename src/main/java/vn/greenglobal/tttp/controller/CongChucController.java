@@ -84,7 +84,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Long congChucId = Long
@@ -114,7 +114,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<CongChuc> page = repo.findAll(congChucService.predicateFindByVaiTro(coQuanQuanLyId, vaiTro), pageable);
@@ -134,7 +134,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			CongChuc congChuc = repo.findOne(
@@ -168,48 +168,48 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (congChuc.getNguoiDung() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.name(),
-						ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
+						ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText(), ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
 			} else {
 				if (congChuc.getNguoiDung().getMatKhau() == null || congChuc.getNguoiDung().getMatKhau().isEmpty()) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MATKHAU_REQUIRED.name(),
-							ApiErrorEnum.MATKHAU_REQUIRED.getText());
+							ApiErrorEnum.MATKHAU_REQUIRED.getText(), ApiErrorEnum.MATKHAU_REQUIRED.getText());
 				}
 				if (congChuc.getNguoiDung().getEmail() == null | congChuc.getNguoiDung().getEmail().isEmpty()) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_REQUIRED.name(),
-							ApiErrorEnum.EMAIL_REQUIRED.getText());
+							ApiErrorEnum.EMAIL_REQUIRED.getText(), ApiErrorEnum.EMAIL_REQUIRED.getText());
 				}
 
 				if (congChuc.getNguoiDung().getEmail() != null
 						&& !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(),
-							ApiErrorEnum.EMAIL_INVALID.getText());
+							ApiErrorEnum.EMAIL_INVALID.getText(), ApiErrorEnum.EMAIL_INVALID.getText());
 				}
 			}
 
 			if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(),
-						ApiErrorEnum.HOVATEN_REQUIRED.getText());
+						ApiErrorEnum.HOVATEN_REQUIRED.getText(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
 			}
 
 			if (congChuc.getCoQuanQuanLy() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.COQUANQUANLY_REQUIRED.name(),
-						ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
+						ApiErrorEnum.COQUANQUANLY_REQUIRED.getText(), ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
 			}
 
 			if (congChuc.getChucVu() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(),
-						ApiErrorEnum.CHUCVU_REQUIRED.getText());
+						ApiErrorEnum.CHUCVU_REQUIRED.getText(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 			}
 
-			if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
+			if (StringUtils.isNotEmpty(congChuc.getNguoiDung().getEmail())
 					&& congChucService.checkExistsData(repo, congChuc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(),
-						ApiErrorEnum.EMAIL_EXISTS.getText());
+						ApiErrorEnum.EMAIL_EXISTS.getText(), ApiErrorEnum.EMAIL_EXISTS.getText());
 			}
 
 			congChuc.getNguoiDung().setActive(true);
@@ -239,7 +239,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			CongChuc congChuc = repo.findOne(congChucService.predicateFindOne(id));
@@ -265,13 +265,13 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			congChuc.setId(id);
 			if (congChuc.getNguoiDung() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.name(),
-						ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
+						ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText(), ApiErrorEnum.LOGIN_INFOMATION_REQUIRED.getText());
 			}
 			/*
 			 * else { if (congChuc.getNguoiDung().getMatKhau() == null ||
@@ -288,33 +288,33 @@ public class CongChucController extends TttpController<CongChuc> {
 			if (congChuc.getNguoiDung().getEmail() != null
 					&& !Utils.isValidEmailAddress(congChuc.getNguoiDung().getEmail())) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_INVALID.name(),
-						ApiErrorEnum.EMAIL_INVALID.getText());
+						ApiErrorEnum.EMAIL_INVALID.getText(), ApiErrorEnum.EMAIL_INVALID.getText());
 			}
 
-			if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
+			if (StringUtils.isNotEmpty(congChuc.getNguoiDung().getEmail())
 					&& congChucService.checkExistsData(repo, congChuc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(),
-						ApiErrorEnum.EMAIL_EXISTS.getText());
+						ApiErrorEnum.EMAIL_EXISTS.getText(), ApiErrorEnum.EMAIL_EXISTS.getText());
 			}
 
 			if (congChuc.getHoVaTen() == null && congChuc.getHoVaTen().isEmpty()) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(),
-						ApiErrorEnum.HOVATEN_REQUIRED.getText());
+						ApiErrorEnum.HOVATEN_REQUIRED.getText(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
 			}
 
 			if (congChuc.getCoQuanQuanLy() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.COQUANQUANLY_REQUIRED.name(),
-						ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
+						ApiErrorEnum.COQUANQUANLY_REQUIRED.getText(), ApiErrorEnum.COQUANQUANLY_REQUIRED.getText());
 			}
 
 			if (congChuc.getChucVu() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CHUCVU_REQUIRED.name(),
-						ApiErrorEnum.CHUCVU_REQUIRED.getText());
+						ApiErrorEnum.CHUCVU_REQUIRED.getText(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 			}
 
 			if (!congChucService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			congChuc.getNguoiDung().setActive(true);
@@ -352,17 +352,17 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			if (id.equals(1L)) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGCHUC_FORBIDDEN.name(),
-						ApiErrorEnum.CONGCHUC_FORBIDDEN.getText());
+						ApiErrorEnum.CONGCHUC_FORBIDDEN.getText(), ApiErrorEnum.CONGCHUC_FORBIDDEN.getText());
 			}
 
 			CongChuc congChuc = congChucService.delete(repo, id);
 			if (congChuc == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, congChuc,
@@ -385,7 +385,7 @@ public class CongChucController extends TttpController<CongChuc> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Long donViId = (Long) profileUtil.getCommonProfile(authorization).getAttribute("donViId");

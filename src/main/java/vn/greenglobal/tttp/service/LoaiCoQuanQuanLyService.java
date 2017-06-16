@@ -57,9 +57,9 @@ public class LoaiCoQuanQuanLyService {
 		}
 
 		predAll = predAll.and(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.ten.eq(body.getTen()));
-		LoaiCoQuanQuanLy loaiCoQuanQuanLy = repo.findOne(predAll);
+		List<LoaiCoQuanQuanLy> loaiCoQuanQuanLys = (List<LoaiCoQuanQuanLy>) repo.findAll(predAll);
 
-		return loaiCoQuanQuanLy != null ? true : false;
+		return loaiCoQuanQuanLys != null && loaiCoQuanQuanLys.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(CoQuanQuanLyRepository coQuanQuanLyRepository, Long id) {

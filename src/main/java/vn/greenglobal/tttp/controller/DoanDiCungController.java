@@ -104,7 +104,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 							for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
 								if (!doanDiCungService.isExists(repo, doanDiCung.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								listUpdate.add(doanDiCung);
 							}
@@ -139,7 +139,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 					DoanDiCung ddc = doanDiCungService.delete(repo, doanDiCung.getId());
 					if (ddc == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(ddc);
 				}

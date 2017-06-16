@@ -86,15 +86,18 @@ public class AuthController {
 					} else {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND,
 								ApiErrorEnum.LOGIN_USER_PASSWORD_INCORRECT.name(),
+								ApiErrorEnum.LOGIN_USER_PASSWORD_INCORRECT.getText(),
 								ApiErrorEnum.LOGIN_USER_PASSWORD_INCORRECT.getText());
 					}
 				} else {
 					congChucService.bootstrapCongChuc(congChucRepository, nguoiDungRepository);
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(), ApiErrorEnum.USER_NOT_EXISTS.getText());
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(),
+							ApiErrorEnum.USER_NOT_EXISTS.getText(), ApiErrorEnum.USER_NOT_EXISTS.getText());
 				}
 			}
 
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -162,7 +165,7 @@ public class AuthController {
 			}
 
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
