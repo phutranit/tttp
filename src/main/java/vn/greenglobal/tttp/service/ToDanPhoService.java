@@ -63,9 +63,10 @@ public class ToDanPhoService {
 		}
 
 		predAll = predAll.and(QToDanPho.toDanPho.ten.eq(body.getTen()));
-		ToDanPho toDanPho = repo.findOne(predAll);
+		predAll = predAll.and(QToDanPho.toDanPho.donViHanhChinh.id.eq(body.getDonViHanhChinh().getId()));
+		List<ToDanPho> toDanPhos = (List<ToDanPho>) repo.findAll(predAll);
 
-		return toDanPho != null ? true : false;
+		return toDanPhos != null && toDanPhos.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(CongDanRepository congDanRepository, Long id) {

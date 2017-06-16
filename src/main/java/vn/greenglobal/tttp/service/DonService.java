@@ -61,17 +61,17 @@ public class DonService {
 		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty().or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
 		
 		//Query don
-		if (StringUtils.isNotBlank(maDon)) {
+		if (StringUtils.isNotEmpty(maDon)) {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(hoTen)) {
+		if (StringUtils.isNotEmpty(hoTen)) {
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
 					.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 
-		if (StringUtils.isNotBlank(tuKhoa)) {
+		if (StringUtils.isNotEmpty(tuKhoa)) {
 			predAll = predAll
 					.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa)
 							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa))
@@ -79,22 +79,22 @@ public class DonService {
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 
-		if (StringUtils.isNotBlank(nguonDon)) {
+		if (StringUtils.isNotEmpty(nguonDon)) {
 			predAll = predAll.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
 		}
 		
-		if (StringUtils.isNotBlank(phanLoaiDon)) {
+		if (StringUtils.isNotEmpty(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
 		
-		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+		if (StringUtils.isNotEmpty(tiepNhanTuNgay) && StringUtils.isNotEmpty(tiepNhanDenNgay)) {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.between(tuNgay, denNgay));
-		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotEmpty(tiepNhanDenNgay)) {
 			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.before(denNgay));
-		} else if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
+		} else if (StringUtils.isNotEmpty(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
@@ -107,7 +107,7 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetXLD));
 		}
 		
-		/*if (canBoXuLyXLD != null && StringUtils.isNotBlank(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
+		/*if (canBoXuLyXLD != null && StringUtils.isNotEmpty(chucVu) && chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD));
 		}*/
 		
@@ -119,7 +119,7 @@ public class DonService {
 			List<VaiTroEnum> listVaiTro = vaitros.stream().map(d -> d.getLoaiVaiTro()).distinct().collect(Collectors.toList());
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.in(listVaiTro));
 		} else {
-			if (StringUtils.isNotBlank(chucVu)) {
+			if (StringUtils.isNotEmpty(chucVu)) {
 				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 			}
 		}
@@ -128,7 +128,7 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.coQuanTiepNhan.id.eq(coQuanTiepNhanXLD));
 		}
 		
-		if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+		if (StringUtils.isNotEmpty(tinhTrangXuLy)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
 					.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.valueOf(StringUtils.upperCase(tinhTrangXuLy))));
 		}
@@ -137,11 +137,11 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 		
-		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
+		if (StringUtils.isNotEmpty(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD));
 		}
 		
-		if (StringUtils.isNotBlank(trangThaiDon)) {			
+		if (StringUtils.isNotEmpty(trangThaiDon)) {			
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
 		
@@ -150,11 +150,11 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
+		if (StringUtils.isNotEmpty(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
 			//Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
-			if (StringUtils.isNotBlank(trangThaiDon)) {			
+			if (StringUtils.isNotEmpty(trangThaiDon)) {			
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum.valueOf(StringUtils.upperCase(trangThaiDon));
 				TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet = TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET;
 				if (TrangThaiXuLyDonEnum.DANG_XU_LY.equals(trangThaiXuLyDon)) {
@@ -163,7 +163,7 @@ public class DonService {
 				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.eq(tinhTrangGiaiQuyet));
 			}
 			
-			if (StringUtils.isNotBlank(chucVu)) {
+			if (StringUtils.isNotEmpty(chucVu)) {
 				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 			}
 			
@@ -205,36 +205,36 @@ public class DonService {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
 		//Query don
-		if (StringUtils.isNotBlank(maDon)) {
+		if (StringUtils.isNotEmpty(maDon)) {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(hoTen)) {
+		if (StringUtils.isNotEmpty(hoTen)) {
 			predAll = predAll.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
 					.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 
-		if (StringUtils.isNotBlank(nguonDon)) {
+		if (StringUtils.isNotEmpty(nguonDon)) {
 			predAll = predAll.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
 		}
 		
-		if (StringUtils.isNotBlank(phanLoaiDon)) {
+		if (StringUtils.isNotEmpty(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
 		
-		if (StringUtils.isNotBlank(tinhTrangGiaiQuyet)) {
+		if (StringUtils.isNotEmpty(tinhTrangGiaiQuyet)) {
 			predAll = predAll.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.valueOf(StringUtils.upperCase(tinhTrangGiaiQuyet))));
 		}
 		
-		if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+		if (StringUtils.isNotEmpty(tiepNhanTuNgay) && StringUtils.isNotEmpty(tiepNhanDenNgay)) {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.between(tuNgay, denNgay));
-		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
+		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotEmpty(tiepNhanDenNgay)) {
 			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.before(denNgay));
-		} else if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
+		} else if (StringUtils.isNotEmpty(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
@@ -247,7 +247,7 @@ public class DonService {
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 			
-		if (StringUtils.isNotBlank(trangThaiDon)) {
+		if (StringUtils.isNotEmpty(trangThaiDon)) {
 			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.stringValue().eq(trangThaiDon));
 		}
 		
@@ -256,7 +256,7 @@ public class DonService {
 					.or(QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.cha.id.eq(phongBanGiaiQuyetId)));
 		}
 		
-		if (StringUtils.isNotBlank(chucVu)) {
+		if (StringUtils.isNotEmpty(chucVu)) {
 			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
 			
 			if (VaiTroEnum.CHUYEN_VIEN.equals(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))) {
@@ -393,16 +393,16 @@ public class DonService {
 				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
 				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)))
 				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false));
-		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+		if (StringUtils.isNotEmpty(tuNgay) && StringUtils.isNotEmpty(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 			predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.between(dtTuNgay, dtDenNgay));
 		} else {
-			if (StringUtils.isNotBlank(tuNgay)) {
+			if (StringUtils.isNotEmpty(tuNgay)) {
 				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.after(dtTuNgay));
 			}
-			if (StringUtils.isNotBlank(denNgay)) {
+			if (StringUtils.isNotEmpty(denNgay)) {
 				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.before(dtDenNgay));
 			}
