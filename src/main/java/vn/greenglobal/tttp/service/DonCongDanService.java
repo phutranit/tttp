@@ -118,7 +118,7 @@ public class DonCongDanService {
 	public List<PropertyChangeObject> getListThayDoi(Don_CongDan don_CongDanNew, Don_CongDan don_CongDanOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		if (don_CongDanNew.getTenCoQuan() != null && !don_CongDanNew.getTenCoQuan().isEmpty() && don_CongDanOld.getTenCoQuan() != null
+		if (don_CongDanNew.getTenCoQuan() != null 
 				&& !don_CongDanNew.getTenCoQuan().equals(don_CongDanOld.getTenCoQuan())) {
 			list.add(new PropertyChangeObject("Nội dung", don_CongDanOld.getTenCoQuan(), don_CongDanNew.getTenCoQuan()));
 		}

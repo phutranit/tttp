@@ -295,7 +295,13 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 		if (dcd == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
-
+		LichSuThayDoi lichSu = new LichSuThayDoi();
+		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+		lichSu.setIdDoiTuong(dcd.getDon().getId());
+		lichSu.setNoiDung("Xóa thông tin công dân " + dcd.getHoVaTen());
+		lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+		Utils.save(lichSuRepo, lichSu,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		Utils.save(repo, dcd, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -317,6 +323,13 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			}
 			for (Don_CongDan donCongDan : listDelete) {
 				Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+				lichSu.setNoiDung("Xóa thông tin công dân " + donCongDan.getHoVaTen());
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+				Utils.save(lichSuRepo, lichSu,
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 		}
 		
