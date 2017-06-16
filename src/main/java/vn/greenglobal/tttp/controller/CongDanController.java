@@ -100,7 +100,7 @@ public class CongDanController extends TttpController<CongDan> {
 					.findAll(congDanService.predicateFindAll(tuKhoa, tinhThanh, quanHuyen, phuongXa, toDanPho), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class CongDanController extends TttpController<CongDan> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -165,7 +165,7 @@ public class CongDanController extends TttpController<CongDan> {
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class CongDanController extends TttpController<CongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -219,7 +219,7 @@ public class CongDanController extends TttpController<CongDan> {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -235,7 +235,7 @@ public class CongDanController extends TttpController<CongDan> {
 			Page<Don> page = donRepository.findAll(donService.predicateFindByCongDan(id), pageable);
 			return donAssembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -257,7 +257,7 @@ public class CongDanController extends TttpController<CongDan> {
 			}
 			return new ResponseEntity<>(eass.toFullResource(congDan), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -274,7 +274,7 @@ public class CongDanController extends TttpController<CongDan> {
 			Page<LichSuThayDoi> page = repoLichSu.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.CONG_DAN, id), pageable);
 			return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -292,7 +292,7 @@ public class CongDanController extends TttpController<CongDan> {
 			}
 			return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -335,7 +335,7 @@ public class CongDanController extends TttpController<CongDan> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -366,7 +366,7 @@ public class CongDanController extends TttpController<CongDan> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }

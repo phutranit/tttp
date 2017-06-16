@@ -67,7 +67,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -82,7 +82,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -108,7 +108,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 
 			return new ResponseEntity<>(eass.toFullResource(quocTich), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }

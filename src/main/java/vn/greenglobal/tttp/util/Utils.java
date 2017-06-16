@@ -74,7 +74,8 @@ public class Utils {
 		return new ResponseEntity<>(errorBody, httpStatus);
 	}
 	
-	public static ResponseEntity<Object> responseInternalServerErrors() {
+	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
+		e.printStackTrace();
 		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(), ApiErrorEnum.INTERNAL_SERVER_ERROR.getText());
 	}
 

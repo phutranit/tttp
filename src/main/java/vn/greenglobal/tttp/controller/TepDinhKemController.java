@@ -65,7 +65,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -109,7 +109,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 
 			return new ResponseEntity<>(eass.toFullResource(tepDinhKem), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -157,7 +157,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }

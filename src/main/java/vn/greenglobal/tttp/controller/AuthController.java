@@ -80,7 +80,7 @@ public class AuthController {
 
 			if (username != null && !username.isEmpty()) {
 				user = nguoiDungRepository.findByEmail(username);
-				if (user != null) {
+				if (user != null && !user.isDaXoa()) {
 					if (user.checkPassword(password)) {
 						return returnUser(result, user);
 					} else {
@@ -90,15 +90,13 @@ public class AuthController {
 					}
 				} else {
 					congChucService.bootstrapCongChuc(congChucRepository, nguoiDungRepository);
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText());
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(), ApiErrorEnum.USER_NOT_EXISTS.getText());
 				}
 			}
 
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -143,7 +141,7 @@ public class AuthController {
 			}
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -166,7 +164,7 @@ public class AuthController {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 					ApiErrorEnum.DATA_NOT_FOUND.getText());
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -224,7 +222,7 @@ public class AuthController {
 
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 

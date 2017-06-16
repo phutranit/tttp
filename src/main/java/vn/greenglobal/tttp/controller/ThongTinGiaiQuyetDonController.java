@@ -79,7 +79,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -102,7 +102,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			}
 			return new ResponseEntity<>(eass.toFullResource(thongTinGiaiQuyetDon), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	} 
 }
