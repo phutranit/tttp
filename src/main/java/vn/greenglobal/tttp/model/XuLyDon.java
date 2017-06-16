@@ -84,7 +84,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private TrangThaiDonEnum trangThaiDon;
 	
 	//@Lob
-	private String ghiChu = "";
+	//private String ghiChu = "";
 	
 	@Transient
 	private String yKienXuLy = "";
@@ -246,19 +246,6 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setThuTuThucHien(int thuTuThucHien) {
 		this.thuTuThucHien = thuTuThucHien;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public String getGhiChu() {
-		return ghiChu;
-	}
-
-	public void setGhiChu(String ghiChu) {
-		if (ghiChu != null && ghiChu.length() == 0) {
-			this.ghiChu = " ";
-		} else {
-			this.ghiChu = ghiChu;
-		}
 	}
 
 	@ApiModelProperty(position = 4)
