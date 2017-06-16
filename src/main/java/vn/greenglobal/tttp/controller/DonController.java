@@ -384,7 +384,8 @@ public class DonController extends TttpController<Don> {
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
-					List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+					List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 					donMoi.setCurrentState(beginState);
 					
 					//Vai tro tiep theo
@@ -540,9 +541,10 @@ public class DonController extends TttpController<Don> {
 					}
 					
 					// Them xu ly don
-					if(donOld.getXuLyDons().size() <= 0) {
+					if(donOld.getXuLyDons().size() <= 0) {						
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-						List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+						Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+						List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 						if (don.getProcessType() == null) {
 							don.setProcessType(ProcessTypeEnum.XU_LY_DON);
 						}
