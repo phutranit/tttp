@@ -93,6 +93,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungYeuCauXuLy = "";
 	@Transient
 	private String noiDungThongTinTrinhLanhDao = "";
+	//@Lob
 	private String noiDungXuLy = "";
 	
 	@Enumerated(EnumType.STRING)
