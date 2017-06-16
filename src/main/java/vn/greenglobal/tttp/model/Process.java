@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -78,5 +79,13 @@ public class Process extends Model<Process>{
 
 	public void setCha(Process cha) {
 		this.cha = cha;
+	}
+
+	public ProcessTypeEnum getProcessType() {
+		return processType;
+	}
+
+	public void setProcessType(ProcessTypeEnum processType) {
+		this.processType = processType;
 	}
 }
