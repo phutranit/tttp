@@ -324,13 +324,15 @@ public class CongDanController extends TttpController<CongDan> {
 			}
 			CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
 			List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
-			LichSuThayDoi lichSu = new LichSuThayDoi();
-			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
-			lichSu.setIdDoiTuong(id);
-			lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
-			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-			Utils.save(repoLichSu, lichSu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			if (listThayDoi.size() > 0) {
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
+				lichSu.setIdDoiTuong(id);
+				lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				Utils.save(repoLichSu, lichSu,
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}			
 			return Utils.doSave(repo, congDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

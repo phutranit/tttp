@@ -33,13 +33,16 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String soCMNDHoChieu = "";
 	private String diaChi = "";
 	private String soDienThoaiCoQuan = "";
+	private String thongTinGioiThieu = "";
+	private String noiCapTheLuatSu = "";
+	private String donVi = "";
+	private String chucVu = "";
+	private String soTheLuatSu = "";
 
 	// Người đứng đơn, ủy quyền, khiếu tố
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
-
-	private String soTheLuatSu = "";
 
 	private boolean gioiTinh;
 	private boolean luatSu = false;
@@ -47,11 +50,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private LocalDateTime ngayCapTheLuatSu;
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
-
-	private String thongTinGioiThieu = "";
-	private String noiCapTheLuatSu = "";
-	private String donVi = "";
-	private String chucVu = "";
 	
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;
