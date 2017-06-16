@@ -196,17 +196,17 @@ public class DonService {
 			for (GiaiQuyetDon gqd : giaiQuyetDons) {
 				System.out.println(gqd.getId());
 			}
-			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
-				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
-						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
-				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
-						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
-				BooleanExpression processXuLyDon = QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON);
-				BooleanExpression processNull = QDon.don.processType.isNull();
-				
-				BooleanExpression predOr = processNull.or(processXuLyDon).or(donViKiemTraDeXuat).or(donViThamTraXacMinh);
-				predAll = predAll.and(predOr);
-			} 
+//			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+//				BooleanExpression donViKiemTraDeXuat = QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
+//						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+//				BooleanExpression donViThamTraXacMinh = QDon.don.processType.eq(ProcessTypeEnum.THAM_TRA_XAC_MINH)
+//						.and(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD));
+//				BooleanExpression processXuLyDon = QDon.don.processType.eq(ProcessTypeEnum.XU_LY_DON);
+//				BooleanExpression processNull = QDon.don.processType.isNull();
+//				
+//				BooleanExpression predOr = processNull.or(processXuLyDon).or(donViKiemTraDeXuat).or(donViThamTraXacMinh);
+//				predAll = predAll.and(predOr);
+//			} 
 			predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		} else {
 			predAll = predAll.and(QDon.don.in(donCollections));
