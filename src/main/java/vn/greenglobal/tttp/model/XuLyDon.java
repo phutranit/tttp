@@ -95,6 +95,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungThongTinTrinhLanhDao = "";
 	//@Lob
 	private String noiDungXuLy = "";
+	private String noiDungThayDoi = "";
 	
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
@@ -237,6 +238,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public String getNoiDungThayDoi() {
+		return noiDungThayDoi;
+	}
+
+	public void setNoiDungThayDoi(String noiDungThayDoi) {
+		this.noiDungThayDoi = noiDungThayDoi;
 	}
 
 	@ApiModelProperty(hidden = true)
