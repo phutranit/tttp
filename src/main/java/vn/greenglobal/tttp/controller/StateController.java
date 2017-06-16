@@ -93,7 +93,7 @@ public class StateController extends TttpController<State> {
 
 			return new ResponseEntity<>(eass.toFullResource(state), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	

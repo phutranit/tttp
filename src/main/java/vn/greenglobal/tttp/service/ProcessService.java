@@ -12,13 +12,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.DonViHasState;
 import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.Process;
-import vn.greenglobal.tttp.model.QDonViHasState;
-import vn.greenglobal.tttp.repository.DonViHasStateRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 

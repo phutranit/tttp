@@ -57,16 +57,16 @@ public class ProcessController extends TttpController<Process> {
 			@RequestParam(value = "processType", required = false) String processType,
 			PersistentEntityResourceAssembler eass) {
 		try {
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_LIETKE) == null
-//					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
 			Page<Process> page = processRepo.findAll(processService.predicateFindAll(tuKhoa, processType), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class ProcessController extends TttpController<Process> {
 
 			return new ResponseEntity<>(eass.toFullResource(process), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	
@@ -116,7 +116,7 @@ public class ProcessController extends TttpController<Process> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class ProcessController extends TttpController<Process> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	
@@ -160,10 +160,10 @@ public class ProcessController extends TttpController<Process> {
 			@PathVariable("id") Long id) {
 
 		try {
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XOA) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XOA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 			
 			if (processService.checkUsedData(transitionRepo, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
@@ -180,7 +180,7 @@ public class ProcessController extends TttpController<Process> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }
