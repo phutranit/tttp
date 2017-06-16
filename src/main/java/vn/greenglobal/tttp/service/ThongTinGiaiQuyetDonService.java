@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
