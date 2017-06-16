@@ -74,7 +74,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 			}
 			return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getURI() + "\"")
 					.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileResource.contentLength())).build();
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -111,7 +111,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 			return ResponseEntity.ok(HttpStatus.FOUND);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class FileUploadController extends TttpController<DocumentMetaData> {
 
 			return ResponseEntity.ok(Collections.singletonMap("response", result));
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 

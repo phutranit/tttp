@@ -63,7 +63,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 			return new ResponseEntity<>(eass.toFullResource(taiLieuVanThu), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -205,7 +205,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -264,7 +264,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -314,7 +314,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }

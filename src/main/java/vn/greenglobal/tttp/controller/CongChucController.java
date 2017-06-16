@@ -99,7 +99,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			Page<CongChuc> page = repo.findAll(congChucService.predicateFindByVaiTro(coQuanQuanLyId, vaiTro), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -152,7 +152,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			Page<CongChuc> page = repo.findAll(congChucService.predicateFindLanhDaoTiepCongDan(donVi), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class CongChucController extends TttpController<CongChuc> {
 				}
 			});
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 			return new ResponseEntity<>(eass.toFullResource(congChuc), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -339,7 +339,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 			});
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -369,7 +369,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -393,7 +393,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			Page<CongChuc> page = repo.findAll(congChucService.predicateFindAllTruongDoanTTXM(donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
