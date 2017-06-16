@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.vineey.rql.core.util.StringUtils;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -101,6 +103,11 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
+			
+			if (StringUtils.isNotEmpty(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
 			return Utils.doSave(repo, toDanPho,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -149,6 +156,11 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			}
 
 			toDanPho.setId(id);
+			if (StringUtils.isNotEmpty(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.TEN_EXISTS.getText());
+			}
+			
 			if (!toDanPhoService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());

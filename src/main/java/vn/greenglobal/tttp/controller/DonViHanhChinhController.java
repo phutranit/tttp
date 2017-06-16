@@ -262,8 +262,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (donViHanhChinhService.checkUsedData(repo, coQuanQuanLyRepository, toDanPhoRepository, congDanRepository,
-					id)) {
+			if (donViHanhChinhService.checkUsedData(repo, coQuanQuanLyRepository, toDanPhoRepository, congDanRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
 						ApiErrorEnum.DATA_USED.getText());
 			}
