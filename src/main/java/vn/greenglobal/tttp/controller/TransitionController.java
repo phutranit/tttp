@@ -65,6 +65,29 @@ public class TransitionController extends TttpController<Transition> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/transitions/{id}")
+	@ApiOperation(value = "Lấy Transition theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Form thành công", response = Transition.class) })
+	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			Transition transition = transitionRepo.findOne(transitionService.predicateFindOne(id));
+			if (transition == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+			return new ResponseEntity<>(eass.toFullResource(transition), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/transitions")
 	@ApiOperation(value = "Thêm mới Transition", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -94,10 +117,10 @@ public class TransitionController extends TttpController<Transition> {
 	}
 	
 	@RequestMapping(method = RequestMethod.PATCH, value = "/transitions/{id}")
-	@ApiOperation(value = "Thêm mới Transition", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Cập nhật Transition", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Thêm mới Transition thành công", response = Transition.class),
-			@ApiResponse(code = 201, message = "Thêm mới Transition thành công", response = Transition.class) })
+			@ApiResponse(code = 200, message = "Cập nhật Transition thành công", response = Transition.class),
+			@ApiResponse(code = 201, message = "Cập nhật Transition thành công", response = Transition.class) })
 	public ResponseEntity<Object> update(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id,
 			@RequestBody Transition transition, PersistentEntityResourceAssembler eass) {
