@@ -269,7 +269,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
 				if (listProcess.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
-							ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+							ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 				}			
 				for (Process processFromList : listProcess) {
 					transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
@@ -279,7 +279,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				if (transitionTTXM == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
-							ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 				}	
 			}
 

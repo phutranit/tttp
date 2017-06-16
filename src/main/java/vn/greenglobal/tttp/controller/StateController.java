@@ -64,7 +64,7 @@ public class StateController extends TttpController<State> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<State> page = stateRepo.findAll(stateService.predicateFindAll(tuKhoa, type), pageable);
@@ -83,7 +83,7 @@ public class StateController extends TttpController<State> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			State state = stateRepo.findOne(stateService.predicateFindOne(id));
@@ -108,12 +108,12 @@ public class StateController extends TttpController<State> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
 			return Utils.doSave(stateRepo, state,
@@ -135,18 +135,18 @@ public class StateController extends TttpController<State> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			state.setId(id);
 			if (!stateService.isExists(stateRepo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
 			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
 			return Utils.doSave(stateRepo, state,
@@ -166,18 +166,18 @@ public class StateController extends TttpController<State> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 			
 			State state = stateService.delete(stateRepo, id);
 			if (state == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(stateRepo, state,

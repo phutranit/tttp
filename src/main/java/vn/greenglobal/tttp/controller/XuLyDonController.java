@@ -431,7 +431,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							List<Process> listProcessGQD = (List<Process>) repoProcess.findAll(predicate);
 							if (listProcessGQD.size() < 1) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
-										ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+										ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 							}
 							Transition transitionGQD = null;
 							for (Process processFromList : listProcessGQD) {
@@ -442,7 +442,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							}
 							if (transitionGQD == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
-										ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+										ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 							}	
 							xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, note, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro());
 							return Utils.doSave(repo, xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
