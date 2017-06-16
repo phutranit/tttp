@@ -17,9 +17,11 @@ import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 
 @Component
 public class TransitionService {
@@ -82,8 +84,44 @@ public class TransitionService {
 		predAll = predAll.and(QTransition.transition.process.eq(process)).and(QTransition.transition.currentState.eq(currentState));
 		return predAll;
 	}
-
+	
+	public Predicate predicateFindAll() { 
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QTransition.transition.id.eq(id));
+	}
+	
+	public boolean checkExistsData(TransitionRepository repo, Transition body) {
+		BooleanExpression predAll = base;
+		if (!body.isNew()) {
+			predAll = predAll.and(QTransition.transition.id.ne(body.getId()));
+		}
+		predAll = predAll.and(QTransition.transition.nextState.eq(body.getNextState()))
+				.and(QTransition.transition.form.eq(body.getForm()))
+				.and(QTransition.transition.currentState.eq(body.getCurrentState()))
+				.and(QTransition.transition.process.eq(body.getProcess()));
+		Transition transition = repo.findOne(predAll);
+		return transition != null ? true : false;
+	}
+	
+	public boolean isExists(TransitionRepository repo, Long id) {
+		if (id != null && id > 0) {
+			Predicate predicate = base.and(QTransition.transition.id.eq(id));
+			return repo.exists(predicate);
+		}
+		return false;
+	}
+	
+	public Transition delete(TransitionRepository repo, Long id) {
+		Transition transition = repo.findOne(predicateFindOne(id));
+
+		if (transition != null) {
+			transition.setDaXoa(true);
+		}
+
+		return transition;
 	}
 }

@@ -158,7 +158,13 @@ public enum QuyenEnum {
 	STATE_XEM("Xem"),
 	STATE_THEM("Thêm mới"),
 	STATE_SUA("Chỉnh sửa"),
-	STATE_XOA("Xoá");
+	STATE_XOA("Xoá"),
+	
+	TRANSITION_LIETKE("Liệt kê"),
+	TRANSITION_XEM("Xem"),
+	TRANSITION_THEM("Thêm mới"),
+	TRANSITION_SUA("Chỉnh sửa"),
+	TRANSITION_XOA("Xoá");
 	
 	QuyenEnum(String text) {
 		this.text = text;
