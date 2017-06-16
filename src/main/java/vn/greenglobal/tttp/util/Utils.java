@@ -30,6 +30,7 @@ import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -71,6 +72,11 @@ public class Utils {
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("errors", errors);
 		return new ResponseEntity<>(errorBody, httpStatus);
+	}
+	
+	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
+		e.printStackTrace();
+		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(), ApiErrorEnum.INTERNAL_SERVER_ERROR.getText());
 	}
 
 	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {

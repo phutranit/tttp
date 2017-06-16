@@ -27,6 +27,7 @@ public enum ApiErrorEnum {
 	EMAIL_INVALID("Trường email không đúng định dạng!"),
 	DATA_INVALID("Dữ liệu không hợp lệ!"),
 	LOGIN_USER_PASSWORD_INCORRECT("Tài khoản đăng nhập hoặc mật khẩu không chính xác!"),
+	USER_NOT_EXISTS("Tài khoản này không tồn tại trong hệ thống!"),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống!"),
 	PROCESS_NOT_FOUND("Không tìm thấy quy trình!"),
 	PROCESS_TTXM_NOT_FOUND("Không tìm thấy quy trình TTXM ở đơn vị được giao TTXM!"),
@@ -43,7 +44,8 @@ public enum ApiErrorEnum {
 	PHONGBANXULYCHIDINH_REQUIRED("Trường phongBanXuLyChiDinh không được để trống!"),
 	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống!"),
 	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống!"),
-	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống!");
+	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống!"),
+	INTERNAL_SERVER_ERROR("Lỗi hệ thống!"),;
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

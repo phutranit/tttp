@@ -1,7 +1,19 @@
 package vn.greenglobal.tttp.enums;
 
 public enum QuyenEnum {
-
+	
+	FORM_LIETKE("Liệt kê"),
+	FORM_XEM("Xem"),
+	FORM_THEM("Thêm mới"),
+	FORM_SUA("Chỉnh sửa"),
+	FORM_XOA("Xoá"),
+	
+	DONVIHASSTATE_LIETKE("Liệt kê"),
+	DONVIHASSTATE_XEM("Xem"),
+	DONVIHASSTATE_THEM("Thêm mới"),
+	DONVIHASSTATE_SUA("Chỉnh sửa"),
+	DONVIHASSTATE_XOA("Xoá"),
+	
 	THAMQUYENGIAIQUYET_LIETKE("Liệt kê"),
 	THAMQUYENGIAIQUYET_XEM("Xem"),
 	THAMQUYENGIAIQUYET_THEM("Thêm mới"),
@@ -140,7 +152,13 @@ public enum QuyenEnum {
 	TONGHOPBAOCAO_THONGKE("Thống kê"),
 	
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
-	THEODOIGIAMSAT_THONGKE("Thống kê");
+	THEODOIGIAMSAT_THONGKE("Thống kê"),
+	
+	STATE_LIETKE("Liệt kê"),
+	STATE_XEM("Xem"),
+	STATE_THEM("Thêm mới"),
+	STATE_SUA("Chỉnh sửa"),
+	STATE_XOA("Xoá");
 	
 	QuyenEnum(String text) {
 		this.text = text;
