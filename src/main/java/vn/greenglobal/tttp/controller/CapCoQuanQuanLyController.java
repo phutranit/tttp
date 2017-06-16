@@ -126,7 +126,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+			if (StringUtils.isNotEmpty(capCoQuanQuanLy.getTen())
 					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.TEN_EXISTS.getText());
@@ -179,7 +179,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			}
 
 			capCoQuanQuanLy.setId(id);
-			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
+			if (StringUtils.isNotEmpty(capCoQuanQuanLy.getTen())
 					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.TEN_EXISTS.getText());
