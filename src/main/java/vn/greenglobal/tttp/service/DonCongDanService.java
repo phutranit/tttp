@@ -21,7 +21,7 @@ public class DonCongDanService {
 		if (congDan != null && congDan > 0) {
 			predAll = QDon_CongDan.don_CongDan.congDan.id.eq(congDan);
 		}
-		if (StringUtils.isNotBlank(phanLoai)) {
+		if (StringUtils.isNotEmpty(phanLoai)) {
 			predAll = QDon_CongDan.don_CongDan.phanLoaiCongDan.stringValue().containsIgnoreCase(phanLoai);
 		}
 		return predAll;

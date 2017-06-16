@@ -188,7 +188,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 			if (!donCongDanService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			return Utils.doSave(repo, donCongDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -218,7 +218,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 							for (Don_CongDan donCongDan : params.getDonCongDans()) {
 								if (!donCongDanService.isExists(repo, donCongDan.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								listUpdate.add(donCongDan);
 							}
@@ -279,7 +279,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			Don_CongDan dcd = donCongDanService.delete(repo, id);
 			if (dcd == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, dcd,
@@ -304,7 +304,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 					Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
 					if (dcd == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(dcd);
 				}

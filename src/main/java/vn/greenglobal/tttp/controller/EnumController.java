@@ -462,7 +462,7 @@ public class EnumController {
 		
 		if (don == null) {
 			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
-					ApiErrorEnum.DON_NOT_FOUND.getText());
+					ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
 		}
 		
 		CommonProfile commonProfile =  profileUtil.getCommonProfile(authorization);

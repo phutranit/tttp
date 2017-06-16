@@ -498,7 +498,7 @@ public class ExcelUtil {
 				c.setCellValue(i);
 				c.setCellStyle(cellCenter);
 				c = row.createCell(1);
-				c.setCellValue(StringUtils.isNotBlank(don.getMa()) ? don.getMa() : "");
+				c.setCellValue(StringUtils.isNotEmpty(don.getMa()) ? don.getMa() : "");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(2);
 				c.setCellValue(don.getNgayTiepNhan().format(formatter));

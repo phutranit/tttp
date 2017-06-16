@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +79,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh),
@@ -99,7 +100,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<DonViHanhChinh> page = null;
@@ -129,7 +130,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<DonViHanhChinh> page = null;
@@ -158,7 +159,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<DonViHanhChinh> page = null;
@@ -187,7 +188,11 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (StringUtils.isNotEmpty(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, donViHanhChinh,
@@ -208,7 +213,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			DonViHanhChinh donViHanhChinh = repo.findOne(donViHanhChinhService.predicateFindOne(id));
@@ -233,13 +238,17 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			donViHanhChinh.setId(id);
+			if (StringUtils.isNotEmpty(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			}
+			
 			if (!donViHanhChinhService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, donViHanhChinh,
@@ -259,18 +268,18 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (donViHanhChinhService.checkUsedData(repo, coQuanQuanLyRepository, toDanPhoRepository, congDanRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			DonViHanhChinh donViHanhChinh = donViHanhChinhService.delete(repo, id);
 			if (donViHanhChinh == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, donViHanhChinh,
