@@ -239,6 +239,30 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							}						
 							giaiQuyetDonHienTai = vanThuChuyenVanThuDonViTTXM(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
 							return Utils.doSave(repo, giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
+						} else if (FlowStateEnum.CAN_BO_CHUYEN_DON_VI_TTXM.equals(nextStateType)) {
+							if (giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh() == null) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DONVITHAMTRAXACMINH_REQUIRED.name(),
+										ApiErrorEnum.DONVITHAMTRAXACMINH_REQUIRED.getText());
+							}
+							Predicate predicate = processService.predicateFindAllByDonVi(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh(), ProcessTypeEnum.THAM_TRA_XAC_MINH);
+							List<Process> listProcess = (List<Process>) processRepo.findAll(predicate);
+							if (listProcess.size() < 1) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.name(),
+										ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
+							}						
+							Transition transitionTTXM = null;
+							for (Process processFromList : listProcess) {
+								transitionTTXM = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
+								if (transitionTTXM != null) {
+									break;
+								}
+							}
+							if (transitionTTXM == null) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
+										ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
+							}						
+							giaiQuyetDonHienTai = vanThuChuyenVanThuDonViTTXM(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
+							return Utils.doSave(repo, giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						}
 					} 
 				} else if (ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(don.getProcessType())){
