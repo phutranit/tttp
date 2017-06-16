@@ -52,11 +52,11 @@ public class TransitionController extends TttpController<Transition> {
 			@RequestParam(value = "type", required = false) String type,
 			PersistentEntityResourceAssembler eass) {
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_LIETKE) == null
+//					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
+//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//			}
 
 			Page<Transition> page = transitionRepo.findAll(transitionService.predicateFindAll(), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
@@ -72,10 +72,10 @@ public class TransitionController extends TttpController<Transition> {
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
+//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//			}
 
 			Transition transition = transitionRepo.findOne(transitionService.predicateFindOne(id));
 			if (transition == null) {
@@ -97,15 +97,15 @@ public class TransitionController extends TttpController<Transition> {
 			@RequestBody Transition transition, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_THEM) == null) {
+//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//			}
 			
 			if (transition.getCurrentState() != null && transition.getNextState() != null && transition.getForm() != null && transition.getProcess() != null 
 					&& transitionService.checkExistsData(transitionRepo, transition)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return Utils.doSave(transitionRepo, transition,
@@ -126,10 +126,10 @@ public class TransitionController extends TttpController<Transition> {
 			@RequestBody Transition transition, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_SUA) == null) {
+//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//			}
 			
 			transition.setId(id);
 			if (!transitionService.isExists(transitionRepo, id)) {
@@ -139,8 +139,8 @@ public class TransitionController extends TttpController<Transition> {
 			
 			if (transition.getCurrentState() != null && transition.getNextState() != null && transition.getForm() != null && transition.getProcess() != null 
 					&& transitionService.checkExistsData(transitionRepo, transition)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return Utils.doSave(transitionRepo, transition,
@@ -158,10 +158,10 @@ public class TransitionController extends TttpController<Transition> {
 			@PathVariable("id") Long id) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XOA) == null) {
+//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+//			}
 			
 			Transition transition = transitionService.delete(transitionRepo, id);
 			if (transition == null) {

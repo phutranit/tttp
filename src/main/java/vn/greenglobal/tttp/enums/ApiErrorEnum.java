@@ -17,6 +17,7 @@ public enum ApiErrorEnum {
 	EMAIL_REQUIRED("Trường email không được để trống!"),
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống!"),
 	TEN_EXISTS("Tên đã tồn tại trong hệ thống!"),
+	DATA_EXISTS("Dữ liệu trùng với dữ liệu đã có trong hệ thống!"),
 	EMAIL_EXISTS("Email đã tồn tại trong hệ thống!"),
 	MA_TEN_EXISTS("Mã hoặc tên đã tồn tại trong hệ thống!"),
 	CONGDAN_EXISTS("Công dân đã tồn tại trong hệ thống!"),
