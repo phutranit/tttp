@@ -24,7 +24,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
-import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.PropertyChangeObject;

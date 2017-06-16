@@ -44,7 +44,7 @@
 			<dependency>
 				<groupId>io.spring.platform</groupId>
 				<artifactId>platform-bom</artifactId>
-				<version>Brussels-SR2</version>
+				<version>Brussels-SR3</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -69,7 +69,7 @@
 		<dependency>
 		    <groupId>org.docx4j</groupId>
 		    <artifactId>docx4j</artifactId>
-		    <version>3.3.3</version>
+		    <version>3.3.4</version>
 		    <exclusions>
 		    	<exclusion>
 		    		<groupId>org.slf4j</groupId>
