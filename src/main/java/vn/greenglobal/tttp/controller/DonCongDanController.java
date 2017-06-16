@@ -29,13 +29,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.medial.Medial_DonCongDan;
 import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Post_Patch;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.util.Utils;
@@ -54,6 +58,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@Autowired
 	private CongDanRepository congDanRepo;
 
+	@Autowired
+	private LichSuThayDoiRepository lichSuRepo;
+	
 	@Autowired
 	private CongDanService congDanService;
 
@@ -75,7 +82,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -86,11 +93,21 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@ApiResponse(code = 201, message = "Thêm mới Quan hệ giữa Đơn và Công Dân thành công", response = Don_CongDan.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
-		
+
 		try {
-			return Utils.doSave(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+			List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+			lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			Utils.save(lichSuRepo, lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return Utils.doSave(repo, donCongDan,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -114,11 +131,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 						if (params.getDonCongDans().size() > 0) {
 							for (Don_CongDan donCongDan : params.getDonCongDans()) {
 								CongDan congDan = null;
-
+								
 								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-									congDan = congDanRepo
-											.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-								}
+									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}	
 								if (congDan == null) {
 									congDan = new CongDan();
 								}
@@ -136,15 +152,22 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setPhuongXa(donCongDan.getPhuongXa());
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
-
-								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									
+								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								if (congDanUpdate != null) {
 									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
-											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									result.getDonCongDans().add(dcd);
 								}
+								
+								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
+								LichSuThayDoi lichSu = new LichSuThayDoi();
+								lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+								lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+								lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+								lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+								Utils.save(lichSuRepo, lichSu,
+										Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							}
 						}
 						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
@@ -154,7 +177,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -172,7 +195,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			}
 			return new ResponseEntity<>(eass.toFullResource(donCongDan), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -190,11 +213,22 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
+			Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
+			List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
+			if (listThayDoi.size() > 0) {
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+				lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				Utils.save(lichSuRepo, lichSu,
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}
 			return Utils.doSave(repo, donCongDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -217,19 +251,17 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 						if (params.getDonCongDans().size() > 0) {
 							for (Don_CongDan donCongDan : params.getDonCongDans()) {
 								if (!donCongDanService.isExists(repo, donCongDan.getId())) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								listUpdate.add(donCongDan);
 							}
 							for (Don_CongDan donCongDan : listUpdate) {
-
+								
 								CongDan congDan = null;
-
+								
 								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-									congDan = congDanRepo
-											.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-								}
+									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}		
 								if (congDan == null) {
 									congDan = new CongDan();
 								}
@@ -247,14 +279,24 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setPhuongXa(donCongDan.getPhuongXa());
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
-
-								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									
+								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								if (congDanUpdate != null) {
 									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil
-											.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									result.getDonCongDans().add(dcd);
+								}
+								
+								Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
+								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
+								if (listThayDoi.size() > 0) {
+									LichSuThayDoi lichSu = new LichSuThayDoi();
+									lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+									lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+									lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+									lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+									Utils.save(lichSuRepo, lichSu,
+											Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								}
 							}
 						}
@@ -265,7 +307,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -274,6 +316,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Quan hệ giữa Đơn và Công Dân thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
+
 		
 		try {
 			Don_CongDan dcd = donCongDanService.delete(repo, id);
@@ -281,12 +324,18 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(dcd.getDon().getId());
+			lichSu.setNoiDung("Xóa thông tin công dân " + dcd.getHoVaTen());
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+			Utils.save(lichSuRepo, lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			Utils.save(repo, dcd,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -309,14 +358,19 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 					listDelete.add(dcd);
 				}
 				for (Don_CongDan donCongDan : listDelete) {
-					Utils.save(repo, donCongDan, Long
-							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					LichSuThayDoi lichSu = new LichSuThayDoi();
+					lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+					lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+					lichSu.setNoiDung("Xóa thông tin công dân " + donCongDan.getHoVaTen());
+					lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+					Utils.save(lichSuRepo, lichSu,
+							Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
-			}
-
+			}	
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 

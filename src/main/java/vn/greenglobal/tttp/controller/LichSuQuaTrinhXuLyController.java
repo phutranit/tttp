@@ -69,7 +69,7 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 }

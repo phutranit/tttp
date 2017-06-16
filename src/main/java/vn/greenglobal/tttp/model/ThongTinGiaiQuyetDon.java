@@ -45,10 +45,10 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
 	private LocalDateTime ngayBatDauGiaiQuyet;
-	private LocalDateTime ngayketThucGiaiQuyet;
+	private LocalDateTime ngayKetThucGiaiQuyet;
 	private LocalDateTime ngayHetHanGiaiQuyet;
 	private LocalDateTime ngayBatDauTTXM;
-	private LocalDateTime ngayketThucTTXM;
+	private LocalDateTime ngayKetThucTTXM;
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
@@ -172,12 +172,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayBatDauGiaiQuyet = ngayBatDauGiaiQuyet;
 	}
 
-	public LocalDateTime getNgayketThucGiaiQuyet() {
-		return ngayketThucGiaiQuyet;
+	public LocalDateTime getNgayKetThucGiaiQuyet() {
+		return ngayKetThucGiaiQuyet;
 	}
 
-	public void setNgayketThucGiaiQuyet(LocalDateTime ngayketThucGiaiQuyet) {
-		this.ngayketThucGiaiQuyet = ngayketThucGiaiQuyet;
+	public void setNgayKetThucGiaiQuyet(LocalDateTime ngayKetThucGiaiQuyet) {
+		this.ngayKetThucGiaiQuyet = ngayKetThucGiaiQuyet;
 	}
 	
 	public List<GiaiQuyetDon> getGiaiQuyetDons() {
@@ -204,12 +204,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayBatDauTTXM = ngayBatDauTTXM;
 	}
 
-	public LocalDateTime getNgayketThucTTXM() {
-		return ngayketThucTTXM;
+	public LocalDateTime getNgayKetThucTTXM() {
+		return ngayKetThucTTXM;
 	}
 
-	public void setNgayketThucTTXM(LocalDateTime ngayketThucTTXM) {
-		this.ngayketThucTTXM = ngayketThucTTXM;
+	public void setNgayKetThucTTXM(LocalDateTime ngayKetThucTTXM) {
+		this.ngayKetThucTTXM = ngayKetThucTTXM;
 	}
 
 	public LocalDateTime getNgayHetHanTTXM() {

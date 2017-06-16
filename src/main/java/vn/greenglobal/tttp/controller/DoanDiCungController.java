@@ -79,7 +79,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 
 			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return Utils.responseInternalServerErrors();
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 
