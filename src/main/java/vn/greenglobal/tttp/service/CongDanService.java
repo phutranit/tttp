@@ -46,11 +46,11 @@ public class CongDanService {
 
 	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, Long phuongXa, Long toDanPho) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa)
-					.or(QCongDan.congDan.soDienThoai.containsIgnoreCase(tuKhoa))
-					.or(QCongDan.congDan.diaChi.containsIgnoreCase(tuKhoa))
-					.or(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.or(QCongDan.congDan.soDienThoai.containsIgnoreCase(tuKhoa.trim()))
+					.or(QCongDan.congDan.diaChi.containsIgnoreCase(tuKhoa.trim()))
+					.or(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		if (tinhThanh != null && tinhThanh > 0) {

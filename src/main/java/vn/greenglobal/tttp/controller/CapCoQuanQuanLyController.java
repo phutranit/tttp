@@ -126,10 +126,10 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(capCoQuanQuanLy.getTen())
+			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, capCoQuanQuanLy,
@@ -179,10 +179,10 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			}
 
 			capCoQuanQuanLy.setId(id);
-			if (StringUtils.isNotEmpty(capCoQuanQuanLy.getTen())
+			if (StringUtils.isNotBlank(capCoQuanQuanLy.getTen())
 					&& capCoQuanQuanLyService.checkExistsData(repo, capCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!capCoQuanQuanLyService.isExists(repo, id)) {

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -26,7 +27,9 @@ public class CongChuc extends Model<CongChuc> {
 	private static final long serialVersionUID = -1368951945883561494L;
 
 	@NotBlank
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String dienThoai = "";
 
 	private boolean gioiTinh;

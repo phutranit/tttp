@@ -335,13 +335,13 @@ public class DonController extends TttpController<Don> {
 	}
 
 	public boolean checkInputDateTime(String tuNgay, String denNgay) {
-		if (StringUtils.isNotEmpty(tuNgay)) {
+		if (StringUtils.isNotBlank(tuNgay)) {
 			try {
 				LocalDateTime.parse(denNgay);
 			} catch (DateTimeParseException ex) {
 				return false;
 			}
-			if (StringUtils.isNotEmpty(tuNgay)) {
+			if (StringUtils.isNotBlank(tuNgay)) {
 				try {
 					LocalDateTime.parse(denNgay);
 				} catch (DateTimeParseException ex) {
@@ -611,7 +611,7 @@ public class DonController extends TttpController<Don> {
 					} else {
 						XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
 						if (xuLyDonHienTai != null) {
-							if (!don.isLanhDaoDuyet() && StringUtils.isNotEmpty(don.getNoiDungThongTinTrinhLanhDao())) {
+							if (!don.isLanhDaoDuyet() && StringUtils.isNotBlank(don.getNoiDungThongTinTrinhLanhDao())) {
 								xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 								xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 							}

@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,9 +25,12 @@ public class DonViHanhChinh extends Model<DonViHanhChinh> {
 	 */
 	private static final long serialVersionUID = -8811521308334603087L;
 
+	@Size(max=255)
 	private String ma = "";
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ManyToOne

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.querydsl.core.annotations.QueryInit;
 
@@ -16,7 +17,9 @@ import io.swagger.annotations.ApiModelProperty;
 public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	private static final long serialVersionUID = 1L;
 
+	@Size(max=255)
 	private String ten = "";
+	//@Lob
 	private String noiDung = "";
 	private int thuTuThucHien = 0;
 	

@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -47,24 +48,34 @@ public class Don extends Model<Don> {
 
 	private static final long serialVersionUID = 8736658787648062250L;
 
+	@Size(max=255)
 	private String ma = "";
 	@NotBlank
+	@Size(max=255)
 	// @Lob
 	private String noiDung = " ";
+	@Size(max=255)
 	private String yeuCauCuaCongDan = "";
 	// @Lob
+	@Size(max=255)
 	private String huongGiaiQuyetDaThucHien = " ";
+	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
+	@Size(max=255)
 	private String ghiChuXuLyDon = ""; // Xu ly don TCD
 
+	@Size(max=255)
 	private String lyDoDinhChi = "";
+	@Size(max=255)
 	private String soQuyetDinhDinhChi = "";
 
+	@Size(max=255)
 	private String noiDungThongTinTrinhLanhDao = "";
 	@Transient
 	private String nguonDonText = "";
 	@Transient
 	private String trangThaiDonText = "";
+	@Size(max=255)
 	private String soVanBanDaGiaiQuyet = "";
 
 	private int soLanKhieuNaiToCao = 0;

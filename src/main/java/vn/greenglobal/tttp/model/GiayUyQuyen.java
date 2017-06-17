@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +22,9 @@ public class GiayUyQuyen extends Model<GiayUyQuyen> {
 	 */
 	private static final long serialVersionUID = -6134526710408670273L;
 
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String duongDan = "";
 
 	@ManyToOne

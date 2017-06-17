@@ -80,7 +80,7 @@ public class AuthController {
 
 			if (username != null && !username.isEmpty()) {
 				user = nguoiDungRepository.findByEmail(username);
-				if (user != null && !user.isDaXoa()) {
+				if (user != null && !user.isDaXoa() && user.isActive()) {
 					if (user.checkPassword(password)) {
 						return returnUser(result, user);
 					} else {

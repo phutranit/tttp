@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
@@ -29,6 +30,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private static final long serialVersionUID = -626978002365811586L;
 
 	// @Lob
+	@Size(max=255)
 	private String yKienGiaiQuyet;
 
 	private int thuTuThucHien;
