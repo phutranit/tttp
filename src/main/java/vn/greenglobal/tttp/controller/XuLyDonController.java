@@ -129,7 +129,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
-	
+		
 	@Autowired
 	private StateService serviceState;
 	
@@ -283,7 +283,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai);
-
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();

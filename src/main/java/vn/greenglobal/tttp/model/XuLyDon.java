@@ -1,5 +1,4 @@
 package vn.greenglobal.tttp.model;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +94,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungThongTinTrinhLanhDao = "";
 	//@Lob
 	private String noiDungXuLy = "";
-	
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
@@ -401,6 +399,18 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("nhanVienId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNextFormInfo() {
+		if (getNextForm() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getNextForm().getTen());
+			map.put("alias", getNextForm().getAlias());
 			return map;
 		}
 		return null;
