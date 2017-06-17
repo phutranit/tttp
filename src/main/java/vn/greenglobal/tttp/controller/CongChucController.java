@@ -363,10 +363,13 @@ public class CongChucController extends TttpController<CongChuc> {
 			if (congChuc == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			} else {
+				congChuc.getNguoiDung().setDaXoa(true);
+				congChuc.getNguoiDung().setActive(false);
 			}
 
-			Utils.save(repo, congChuc,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repo, congChuc, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
