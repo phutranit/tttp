@@ -72,10 +72,10 @@ public class TransitionController extends TttpController<Transition> {
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		try {
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
 			Transition transition = transitionRepo.findOne(transitionService.predicateFindOne(id));
 			if (transition == null) {
