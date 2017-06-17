@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +15,11 @@ public class DocumentMetaData extends Model<DocumentMetaData> {
 	 */
 	private static final long serialVersionUID = 9213336720883904141L;
 	
+	@Size(max=255)
 	private String salkey = "";
+	@Size(max=255)
 	private String name = "";
+	@Size(max=255)
 	private String fileLocation = "";
 
 	public DocumentMetaData() {

@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -46,9 +47,12 @@ public class NguoiDung extends Model<NguoiDung> {
 	private static final long serialVersionUID = 6979954418350232111L;
 
 	@NotBlank
+	@Size(max=255)
 	private String email = "";
 	@NotBlank
+	@Size(max=255)
 	private String matKhau = "";
+	@Size(max=255)
 	private String salkey = "";
 
 	@NotNull

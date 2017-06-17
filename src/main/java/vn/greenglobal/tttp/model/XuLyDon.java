@@ -1,5 +1,4 @@
 package vn.greenglobal.tttp.model;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
@@ -54,7 +54,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
 	private int thuTuThucHien = 0;
+	@Size(max=255)
 	private String diaDiem;
+	@Size(max=255)
 	private String soQuyetDinhDinhChi;
 	
 	@Transient
@@ -88,6 +90,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	@Transient
 	private String yKienXuLy = "";
+	@Size(max=255)
 	private String moTaTrangThai = "";
 	@Transient
 	private String noiDungYeuCauXuLy = "";
@@ -95,7 +98,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private String noiDungThongTinTrinhLanhDao = "";
 	//@Lob
 	private String noiDungXuLy = "";
-	
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
@@ -401,6 +403,18 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("nhanVienId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNextFormInfo() {
+		if (getNextForm() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getNextForm().getTen());
+			map.put("alias", getNextForm().getAlias());
 			return map;
 		}
 		return null;

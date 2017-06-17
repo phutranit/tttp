@@ -129,7 +129,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
-	
+		
 	@Autowired
 	private StateService serviceState;
 	
@@ -283,7 +283,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai);
-
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();
@@ -606,10 +605,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (xuLyDon.getNgayHenGapLanhDao() != null) { 
 					xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
 				}
-				if (StringUtils.isNotEmpty(xuLyDon.getDiaDiem())) { 
+				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
 					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 				}
-				if (StringUtils.isNotEmpty(xuLyDon.getyKienXuLy())) { 
+				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
 				}
 				xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
@@ -771,9 +770,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiKhieuNai", nguoiKhieuNai);
 			mappings.put("diaChiNguoiKhieuNai", diaChiNguoiKhieuNai);
-			mappings.put("SoCMNDHoChieu", StringUtils.isNotEmpty(SoCMNDHoChieu) ? SoCMNDHoChieu : ".................");
-			mappings.put("ngayCap", StringUtils.isNotEmpty(ngayCap) ? ngayCap : ".................");
-			mappings.put("noiCap", StringUtils.isNotEmpty(noiCap) ? noiCap : ".................");
+			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(SoCMNDHoChieu) ? SoCMNDHoChieu : ".................");
+			mappings.put("ngayCap", StringUtils.isNotBlank(ngayCap) ? ngayCap : ".................");
+			mappings.put("noiCap", StringUtils.isNotBlank(noiCap) ? noiCap : ".................");
 			mappings.put("noiDungKhieuNai", noiDungKhieuNai);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {

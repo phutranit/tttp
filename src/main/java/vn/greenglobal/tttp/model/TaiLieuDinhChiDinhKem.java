@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,8 +18,11 @@ import io.swagger.annotations.ApiModelProperty;
 public class TaiLieuDinhChiDinhKem extends Model<TaiLieuDinhChiDinhKem> {
 	private static final long serialVersionUID = -9223009647319074416L;
 
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String duongDan = "";
+	@Size(max=255)
 	private String tenFile = "";
 
 	@ManyToOne

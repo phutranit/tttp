@@ -86,7 +86,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 
 			if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, capDonViHanhChinh,
@@ -137,7 +137,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 			capDonViHanhChinh.setId(id);
 			if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!capDonViHanhChinhService.isExists(repo, id)) {

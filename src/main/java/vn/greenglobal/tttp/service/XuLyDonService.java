@@ -17,7 +17,6 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 
 @Component
 public class XuLyDonService {
-
 	QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
 	BooleanExpression base = xuLyDon.daXoa.eq(false);
 

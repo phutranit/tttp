@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
@@ -39,6 +40,7 @@ public class VaiTro extends Model<VaiTro> {
 	public static final String[] VAITRO_DEFAULTS = { VANTHU, CHUYENVIEN, TRUONGPHONG, LANHDAO };
 
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
 	// @Lob
 	@Transient
