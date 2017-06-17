@@ -1,10 +1,7 @@
 package vn.greenglobal.tttp.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
 import io.swagger.annotations.ApiModel;
 
 @Entity

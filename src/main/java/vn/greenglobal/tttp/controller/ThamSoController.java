@@ -80,7 +80,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
+			if (StringUtils.isNotBlank(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
@@ -129,7 +129,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 			}
 
 			thamSo.setId(id);
-			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
+			if (StringUtils.isNotBlank(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}

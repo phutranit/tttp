@@ -108,7 +108,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(linhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
+			if (StringUtils.isNotBlank(linhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
@@ -159,7 +159,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			}
 
 			linhVucDonThu.setId(id);
-			if (StringUtils.isNotEmpty(linhVucDonThu.getTen())
+			if (StringUtils.isNotBlank(linhVucDonThu.getTen())
 					&& linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());

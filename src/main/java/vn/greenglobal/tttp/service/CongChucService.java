@@ -25,8 +25,8 @@ public class CongChucService {
 			CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;
 
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa.trim()));
 		}
 
         if (congChucId.equals(1L)) {

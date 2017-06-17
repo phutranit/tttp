@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -21,7 +22,7 @@ public class CapCoQuanQuanLyService {
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa.trim())) {
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
 					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
 					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.moTa.containsIgnoreCase(tuKhoa.trim())));

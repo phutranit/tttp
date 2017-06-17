@@ -89,7 +89,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(thamQuyenGiaiQuyet.getTen())
+			if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 					&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
@@ -141,7 +141,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 			}
 
 			thamQuyenGiaiQuyet.setId(id);
-			if (StringUtils.isNotEmpty(thamQuyenGiaiQuyet.getTen())
+			if (StringUtils.isNotBlank(thamQuyenGiaiQuyet.getTen())
 					&& thamQuyenGiaiQuyetService.checkExistsData(repo, thamQuyenGiaiQuyet)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());

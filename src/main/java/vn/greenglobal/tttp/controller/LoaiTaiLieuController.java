@@ -89,7 +89,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
@@ -139,7 +139,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			}
 
 			loaiTaiLieu.setId(id);
-			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
+			if (StringUtils.isNotBlank(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}

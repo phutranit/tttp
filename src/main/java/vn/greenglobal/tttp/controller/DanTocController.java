@@ -104,7 +104,7 @@ public class DanTocController extends TttpController<DanToc> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
+			if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
@@ -153,7 +153,7 @@ public class DanTocController extends TttpController<DanToc> {
 			}
 
 			danToc.setId(id);
-			if (StringUtils.isNotEmpty(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
+			if (StringUtils.isNotBlank(danToc.getTen()) && danTocService.checkExistsData(repo, danToc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}

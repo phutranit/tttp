@@ -100,7 +100,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
@@ -150,7 +150,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			}
 
 			quocTich.setId(id);
-			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
+			if (StringUtils.isNotBlank(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}

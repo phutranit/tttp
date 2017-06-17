@@ -33,9 +33,7 @@ public class StateService {
 		Collection<Transition> transitionCollections = new ArrayList<Transition>();
 		Collection<State> stateCollections = new ArrayList<State>();
 		Iterable<Transition> transitions = transitionRepo.findAll(transitionQuery);
-		for (Transition tran : transitions) {
-			System.out.println("tran: " + tran.getCurrentState().getTen());
-		}
+
 		CollectionUtils.addAll(transitionCollections, transitions.iterator());
 		stateCollections = transitionCollections.stream().map(d -> d.getNextState()).distinct().collect(Collectors.toList());
 		predAll = predAll.and(QState.state.in(stateCollections));

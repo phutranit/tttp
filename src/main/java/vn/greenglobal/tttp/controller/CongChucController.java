@@ -206,7 +206,7 @@ public class CongChucController extends TttpController<CongChuc> {
 						ApiErrorEnum.CHUCVU_REQUIRED.getText(), ApiErrorEnum.CHUCVU_REQUIRED.getText());
 			}
 
-			if (StringUtils.isNotEmpty(congChuc.getNguoiDung().getEmail())
+			if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
 					&& congChucService.checkExistsData(repo, congChuc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(),
 						ApiErrorEnum.EMAIL_EXISTS.getText(), ApiErrorEnum.EMAIL_EXISTS.getText());
@@ -291,7 +291,7 @@ public class CongChucController extends TttpController<CongChuc> {
 						ApiErrorEnum.EMAIL_INVALID.getText(), ApiErrorEnum.EMAIL_INVALID.getText());
 			}
 
-			if (StringUtils.isNotEmpty(congChuc.getNguoiDung().getEmail())
+			if (StringUtils.isNotBlank(congChuc.getNguoiDung().getEmail())
 					&& congChucService.checkExistsData(repo, congChuc)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.EMAIL_EXISTS.name(),
 						ApiErrorEnum.EMAIL_EXISTS.getText(), ApiErrorEnum.EMAIL_EXISTS.getText());
