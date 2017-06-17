@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -73,8 +74,11 @@ public class DonService {
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true));
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
+		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
+				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+		
 		List<Don> donCollections = new ArrayList<Don>();
-		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
@@ -83,7 +87,12 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		predAll = predAll.and(QDon.don.in(donCollections));
+		
+		List<Don> donCollections2 = new ArrayList<Don>();
+		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
+		donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+		
+		predAll = predAll.and(QDon.don.in(donCollections).or(QDon.don.in(donCollections2)));
 		return predAll;
 	}
 	
@@ -93,8 +102,11 @@ public class DonService {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true));
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false));
+		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
+				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+		
 		List<Don> donCollections = new ArrayList<Don>();
-		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
@@ -103,13 +115,21 @@ public class DonService {
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		donCollections = donCollections.stream().filter(d -> {
+		
+		List<Don> donCollections2 = new ArrayList<Don>();
+		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
+		donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct().collect(Collectors.toList());
+		
+		Set<Don> setDons = new HashSet<Don>();
+		setDons.addAll(donCollections2);
+		setDons.addAll(donCollections);
+		setDons = setDons.stream().filter(d -> {
 			if (d.getNgayBatDauXLD() == null && d.getThoiHanXuLyXLD() == null) {
 				return false;
 			}
 			return Utils.isValidNgayTreHan(d.getNgayBatDauXLD(), d.getThoiHanXuLyXLD());
-		}).collect(Collectors.toList());
-		predAll = predAll.and(QDon.don.in(donCollections));
+		}).collect(Collectors.toSet());
+		predAll = predAll.and(QDon.don.in(setDons));
 		return predAll;
 	}
 	
