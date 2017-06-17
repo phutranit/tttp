@@ -51,13 +51,11 @@ public class Don extends Model<Don> {
 	@Size(max=255)
 	private String ma = "";
 	@NotBlank
-	@Size(max=255)
 	// @Lob
 	private String noiDung = " ";
 	@Size(max=255)
 	private String yeuCauCuaCongDan = "";
 	// @Lob
-	@Size(max=255)
 	private String huongGiaiQuyetDaThucHien = " ";
 	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
