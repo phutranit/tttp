@@ -74,7 +74,7 @@ public class TransitionController extends TttpController<Transition> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Transition transition = transitionRepo.findOne(transitionService.predicateFindOne(id));
