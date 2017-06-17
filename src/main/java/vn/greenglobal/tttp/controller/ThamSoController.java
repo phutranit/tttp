@@ -82,7 +82,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 
 			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, thamSo,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -131,7 +131,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 			thamSo.setId(id);
 			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!thamSoService.isExists(repo, id)) {

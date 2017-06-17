@@ -106,7 +106,7 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			
 			if (StringUtils.isNotEmpty(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, toDanPho,
@@ -158,7 +158,7 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			toDanPho.setId(id);
 			if (StringUtils.isNotEmpty(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
 			if (!toDanPhoService.isExists(repo, id)) {

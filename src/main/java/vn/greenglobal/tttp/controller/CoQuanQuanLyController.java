@@ -445,7 +445,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			
 			if (StringUtils.isNotEmpty(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
@@ -509,7 +509,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			coQuanQuanLy.setId(id);
 			if (StringUtils.isNotEmpty(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(),ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(),ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!coQuanQuanLyService.isExists(repo, id)) {

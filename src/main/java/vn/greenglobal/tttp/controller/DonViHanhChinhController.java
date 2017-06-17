@@ -192,7 +192,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			}
 			
 			if (StringUtils.isNotEmpty(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, donViHanhChinh,

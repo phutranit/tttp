@@ -102,7 +102,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 
 			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, quocTich,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -152,7 +152,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 			quocTich.setId(id);
 			if (StringUtils.isNotEmpty(quocTich.getTen()) && quocTichService.checkExistsData(repo, quocTich)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!quocTichService.isExists(repo, id)) {

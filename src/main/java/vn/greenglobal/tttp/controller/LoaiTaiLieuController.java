@@ -91,7 +91,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 
 			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, loaiTaiLieu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -141,7 +141,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 			loaiTaiLieu.setId(id);
 			if (StringUtils.isNotEmpty(loaiTaiLieu.getTen()) && loaiTaiLieuService.checkExistsData(repo, loaiTaiLieu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!loaiTaiLieuService.isExists(repo, id)) {

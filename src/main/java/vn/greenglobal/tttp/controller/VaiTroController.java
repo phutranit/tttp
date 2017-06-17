@@ -86,7 +86,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 
 			if (StringUtils.isNotEmpty(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, vaiTro,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -135,7 +135,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 			vaiTro.setId(id);
 			if (StringUtils.isNotEmpty(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!vaiTroService.isExists(repo, id)) {
