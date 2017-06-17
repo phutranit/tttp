@@ -55,7 +55,7 @@ public class TransitionController extends TttpController<Transition> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<Transition> page = transitionRepo.findAll(transitionService.predicateFindAll(), pageable);
@@ -99,13 +99,13 @@ public class TransitionController extends TttpController<Transition> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			if (transition.getCurrentState() != null && transition.getNextState() != null && transition.getForm() != null && transition.getProcess() != null 
 					&& transitionService.checkExistsData(transitionRepo, transition)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return Utils.doSave(transitionRepo, transition,
@@ -128,19 +128,19 @@ public class TransitionController extends TttpController<Transition> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			transition.setId(id);
 			if (!transitionService.isExists(transitionRepo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
 			if (transition.getCurrentState() != null && transition.getNextState() != null && transition.getForm() != null && transition.getProcess() != null 
 					&& transitionService.checkExistsData(transitionRepo, transition)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return Utils.doSave(transitionRepo, transition,
@@ -160,13 +160,13 @@ public class TransitionController extends TttpController<Transition> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			Transition transition = transitionService.delete(transitionRepo, id);
 			if (transition == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(transitionRepo, transition,
