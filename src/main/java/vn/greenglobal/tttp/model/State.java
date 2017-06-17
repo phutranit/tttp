@@ -5,6 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,8 +21,9 @@ public class State extends Model<State>{
 	private static final long serialVersionUID = 814001972864916332L;
 
 	@NotBlank
+	@Size(max=255)
 	private String ten;
-	
+	@Size(max=255)
 	private String tenVietTat;
 	
 	@Enumerated(EnumType.STRING)

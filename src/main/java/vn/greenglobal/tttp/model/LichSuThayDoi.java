@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.reflect.TypeToken;
@@ -26,6 +27,7 @@ public class LichSuThayDoi extends Model<LichSuThayDoi> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7570594530357424037L;
+	@Size(max=255)
 	private String noiDung = "";
 	//@Lob
 	private String chiTietThayDoi = "";

@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 
@@ -16,8 +17,7 @@ public class InvalidToken extends Model<InvalidToken> {
 	 */
 	private static final long serialVersionUID = -7550664635055554646L;
 
-	//@Lob 
-	@Column(length=2000)
+	//@Lob
 	private String token = "";
 
 	public InvalidToken() {

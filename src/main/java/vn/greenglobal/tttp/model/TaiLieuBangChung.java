@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,8 +28,11 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	 */
 	private static final long serialVersionUID = -7863478663069074533L;
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String duongDan = "";
+	@Size(max=255)
 	private String tenFile = "";
 
 	private int soTrang = 0;

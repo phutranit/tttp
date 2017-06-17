@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,9 +21,12 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
 	private static final long serialVersionUID = -1973333094118013160L;
 
+	@Size(max=255)
 	private String ma = "";
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ManyToOne

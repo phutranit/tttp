@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -36,10 +37,15 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	 */
 	private static final long serialVersionUID = 445465484063016490L;
 
+	@Size(max=255)
 	private String soQuyetDinhThanhLapDTXM = "";
+	@Size(max=255)
 	private String soQuyetDinhGiaHan = "";
+	@Size(max=255)
 	private String diaDiemDoiThoai = "";
+	@Size(max=255)
 	private String lyDoGiaHan = "";
+	@Size(max=255)
 	private String noiDung = "";
 
 	private LocalDateTime thoiGianDoiThoai;

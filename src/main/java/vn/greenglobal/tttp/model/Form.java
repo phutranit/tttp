@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,8 +25,10 @@ public class Form extends Model<Form> {
 	private static final long serialVersionUID = -3975638610686661750L;
 
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
 	@NotBlank
+	@Size(max=255)
 	private String alias = "";
 	
 	@Enumerated(EnumType.STRING)
