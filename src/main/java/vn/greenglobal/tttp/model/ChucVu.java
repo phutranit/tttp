@@ -22,6 +22,14 @@ public class ChucVu extends Model<ChucVu> {
 	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 
+	public ChucVu() {
+		
+	}
+	
+	public ChucVu(String ten) {
+		this.ten = ten;
+	}
+	
 	@NotBlank
 	private String ten = "";
 	private String moTa = "";
