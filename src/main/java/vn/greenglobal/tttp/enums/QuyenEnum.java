@@ -160,6 +160,12 @@ public enum QuyenEnum {
 	STATE_SUA("Chỉnh sửa"),
 	STATE_XOA("Xoá"),
 	
+	TRANSITION_LIETKE("Liệt kê"),
+	TRANSITION_XEM("Xem"),
+	TRANSITION_THEM("Thêm mới"),
+	TRANSITION_SUA("Chỉnh sửa"),
+	TRANSITION_XOA("Xoá"),
+
 	PROCESS_LIETKE("Liệt kê"),
 	PROCESS_XEM("Xem"),
 	PROCESS_THEM("Thêm mới"),
