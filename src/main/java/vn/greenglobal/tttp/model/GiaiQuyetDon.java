@@ -216,15 +216,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getNextFormId() {
-		if (getNextForm() != null) {
-			return getNextForm().getId();
-		}
-		return null;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
@@ -271,6 +262,18 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 			map.put("tenVietTat", getNextState().getTenVietTat());
 			map.put("type", getNextState().getType());
 			map.put("nextStateId", getNextState().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNextFormInfo() {
+		if (getNextForm() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getNextForm().getTen());
+			map.put("alias", getNextForm().getAlias());
 			return map;
 		}
 		return null;

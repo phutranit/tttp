@@ -57,8 +57,8 @@ public class TttpController<T> extends BaseController<T> {
 		if (list.size() > 0) {
 			out += "[";
 			for (PropertyChangeObject obj : list) {
-				out += "{'label': '" + obj.getPropertyName() + "'," + "'name': '" + obj.getOldValue()
-						+ "','value': '" + obj.getNewValue() + "'},";
+				out += "{'propertyName': '" + obj.getPropertyName() + "'," + "'oldValue': '" + obj.getOldValue()
+						+ "','newValue': '" + obj.getNewValue() + "'},";
 			}
 			out += "]";
 			out = out.replaceAll("},]", "}]");

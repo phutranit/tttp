@@ -51,7 +51,6 @@ import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
-import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
@@ -130,7 +129,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
-	
+		
 	@Autowired
 	private StateService serviceState;
 	
@@ -212,7 +211,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestBody XuLyDon xuLyDon,
 			PersistentEntityResourceAssembler eass) {
 		try {
-			List<PropertyChangeObject> listThayDoi = xuLyDonService.getListThayDoi(xuLyDon, new XuLyDon());
 			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
@@ -285,7 +283,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai);
-				xuLyDonHienTai.setNoiDungThayDoi(getChiTietNoiDung(listThayDoi));
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();

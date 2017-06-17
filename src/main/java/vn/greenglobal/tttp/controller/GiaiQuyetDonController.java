@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -435,6 +436,43 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			Utils.save(donRepo, don, congChucId);
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/thongTinGiaiQuyetDon")
+	@ApiOperation(value = "Lấy thông tin Giải quyết đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy thông tin Giải quyết đơn", response = GiaiQuyetDon.class) })
+	public ResponseEntity<Object> getThongTinXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("id") Long id, PersistentEntityResourceAssembler eass) {
+		
+		try {
+			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM);
+			if (nguoiDung != null) {
+				Don don = donRepo.findOne(donService.predicateFindOne(id));
+				Long phongBanXuLyXLD = 0L;
+				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+				Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				if (!StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) { 
+					phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+				}
+				
+				if (don != null) {
+					GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+					if (giaiQuyetDon != null) {
+						return new ResponseEntity<>(eass.toFullResource(giaiQuyetDon), HttpStatus.OK);
+					}
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				}
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				
+			}
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
