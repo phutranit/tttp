@@ -60,7 +60,7 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<LoaiCoQuanQuanLy> page = repo.findAll(loaiCoQuanQuanLyService.predicateFindAll(ten), pageable);
@@ -81,12 +81,12 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, loaiCoQuanQuanLy,
@@ -107,7 +107,7 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			LoaiCoQuanQuanLy loaiCoQuanQuanLy = repo.findOne(loaiCoQuanQuanLyService.predicateFindOne(id));
@@ -131,18 +131,18 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			loaiCoQuanQuanLy.setId(id);
 			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!loaiCoQuanQuanLyService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, loaiCoQuanQuanLy,
@@ -162,18 +162,18 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (loaiCoQuanQuanLyService.checkUsedData(coQuanQuanLyRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			LoaiCoQuanQuanLy loaiCoQuanQuanLy = loaiCoQuanQuanLyService.delete(repo, id);
 			if (loaiCoQuanQuanLy == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, loaiCoQuanQuanLy,

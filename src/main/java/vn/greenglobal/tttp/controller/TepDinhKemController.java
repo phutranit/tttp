@@ -59,7 +59,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 		try {
 			if (tepDinhKem.getLoaiFileDinhKem() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-						ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+						ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 			}
 			return Utils.doSave(repo, tepDinhKem,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -92,7 +92,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 								if (tepDinhKem.getLoaiFileDinhKem() == null) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 								}
 								listCreate.add(tepDinhKem);
 							}
@@ -145,12 +145,12 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			tepDinhKem.setId(id);
 			if (!TepDinhKemService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			if (tepDinhKem.getLoaiFileDinhKem() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống!");
+						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
 			}
 
 			return Utils.doSave(repo, tepDinhKem,
@@ -182,12 +182,12 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 							for (TepDinhKem tepDinhKem : params.getTepDinhKems()) {
 								if (!TepDinhKemService.isExists(repo, tepDinhKem.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								if (tepDinhKem.getLoaiFileDinhKem() == null) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 								}
 								listUpdate.add(tepDinhKem);
 							}
@@ -218,7 +218,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			TepDinhKem tepDinhKem = TepDinhKemService.delete(repo, id);
 			if (tepDinhKem == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, tepDinhKem,
@@ -243,7 +243,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 					TepDinhKem tlvt = TepDinhKemService.delete(repo, TepDinhKem.getId());
 					if (tlvt == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(tlvt);
 				}

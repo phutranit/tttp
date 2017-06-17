@@ -72,13 +72,13 @@ public class CongDanService {
 
 	public Predicate predicateFindCongDanBySuggests(String tuKhoa, String soCMND, String diaChi) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(tuKhoa)) {
+		if (StringUtils.isNotEmpty(tuKhoa)) {
 			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
-		if (StringUtils.isNotBlank(soCMND)) {
+		if (StringUtils.isNotEmpty(soCMND)) {
 			predAll = predAll.and(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(soCMND));
 		}
-		if (StringUtils.isNotBlank(diaChi)) {
+		if (StringUtils.isNotEmpty(diaChi)) {
 			predAll = predAll.and(QCongDan.congDan.diaChi.containsIgnoreCase(diaChi));
 		}
 		return predAll;

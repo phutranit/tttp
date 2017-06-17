@@ -61,7 +61,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<VaiTro> page = repo.findAll(vaiTroService.predicateFindAll(tuKhoa), pageable);
@@ -81,12 +81,12 @@ public class VaiTroController extends TttpController<VaiTro> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
+			if (StringUtils.isNotEmpty(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, vaiTro,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -105,7 +105,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			VaiTro vaiTro = repo.findOne(vaiTroService.predicateFindOne(id));
@@ -129,18 +129,18 @@ public class VaiTroController extends TttpController<VaiTro> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			vaiTro.setId(id);
-			if (StringUtils.isNotBlank(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
+			if (StringUtils.isNotEmpty(vaiTro.getTen()) && vaiTroService.checkExistsData(repo, vaiTro)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!vaiTroService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, vaiTro,
@@ -160,18 +160,18 @@ public class VaiTroController extends TttpController<VaiTro> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.VAITRO_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			if (vaiTroService.checkUsedData(nguoiDungRepository, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText());
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
 
 			VaiTro vaiTro = vaiTroService.delete(repo, id);
 			if (vaiTro == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, vaiTro,

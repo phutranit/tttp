@@ -57,7 +57,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<ThamSo> page = repo.findAll(thamSoService.predicateFindAll(tuKhoa), pageable);
@@ -77,12 +77,12 @@ public class ThamSoController extends TttpController<ThamSo> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
+			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			return Utils.doSave(repo, thamSo,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -101,7 +101,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			ThamSo thamSo = repo.findOne(thamSoService.predicateFindOne(id));
@@ -125,18 +125,18 @@ public class ThamSoController extends TttpController<ThamSo> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			thamSo.setId(id);
-			if (StringUtils.isNotBlank(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
+			if (StringUtils.isNotEmpty(thamSo.getTen()) && thamSoService.checkExistsData(repo, thamSo)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!thamSoService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(repo, thamSo,
@@ -156,13 +156,13 @@ public class ThamSoController extends TttpController<ThamSo> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			ThamSo thamSo = thamSoService.delete(repo, id);
 			if (thamSo == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, thamSo,

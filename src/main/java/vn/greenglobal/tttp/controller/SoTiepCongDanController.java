@@ -165,7 +165,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
@@ -188,7 +188,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 			if (soTiepCongDan == null) {
@@ -212,7 +212,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -232,12 +232,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(),
-							ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
+							ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					if (soTiepCongDan.getDonViChuTri() == null) {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
-								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
+								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						flagChuyenDonViKiemTra = true;
@@ -269,7 +269,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
 				if (listProcess.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
-							ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+							ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 				}			
 				for (Process processFromList : listProcess) {
 					transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
@@ -279,7 +279,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				if (transitionTTXM == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
-							ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 				}	
 			}
 
@@ -342,7 +342,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			soTiepCongDan.setId(id);
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
@@ -361,12 +361,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
 				soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null || HuongGiaiQuyetTCDEnum.KHOI_TAO.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					if (soTiepCongDan.getDonViChuTri() == null) {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
-								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
+								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
@@ -437,20 +437,20 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
 			SoTiepCongDan soTiepCongDan = repo.findOne(soTiepCongDanService.predicateFindOne(id));
 			if (soTiepCongDan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
 			if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				Don don = soTiepCongDan.getDon();
 				
 				if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
-					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText());
+					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 				}
 				int tongSoLuotTCD = don.getTongSoLuotTCD();
 				don.setTongSoLuotTCD(tongSoLuotTCD - 1);
@@ -476,7 +476,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
@@ -495,12 +495,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			SoTiepCongDan soTiepCongDan = soTiepCongDanService.cancelCuocTiepDanDinhKyCuaLanhDao(repo, id);
 			if (soTiepCongDan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, soTiepCongDan,

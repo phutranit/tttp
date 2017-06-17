@@ -78,15 +78,15 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 		try {
 			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống!");
+						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
 			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-							"Số quyết định không được để trống!");
+							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
 				}
 				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-							"Ngày quyết định không được để trống!");
+							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
 				}
 			}
 			return Utils.doSave(repo, taiLieuVanThu,
@@ -120,18 +120,18 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 									if (taiLieuVanThu.getSoQuyetDinh() == null
 											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
 										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
 									}
 									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
 										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
 									}
 								}
 								listCreate.add(taiLieuVanThu);
@@ -184,20 +184,20 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			taiLieuVanThu.setId(id);
 			if (!taiLieuVanThuService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống!");
+						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
 			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-							"Số quyết định không được để trống!");
+							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
 				}
 				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-							"Ngày quyết định không được để trống!");
+							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
 				}
 			}
 
@@ -230,23 +230,23 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
 								if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText());
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 								}
 								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
 									if (taiLieuVanThu.getSoQuyetDinh() == null
 											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
 										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
 									}
 									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
 										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
 									}
 								}
 								listUpdate.add(taiLieuVanThu);
@@ -278,7 +278,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			TaiLieuVanThu taiLieuVanThu = taiLieuVanThuService.delete(repo, id);
 			if (taiLieuVanThu == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(repo, taiLieuVanThu,
@@ -302,7 +302,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					TaiLieuVanThu tlvt = taiLieuVanThuService.delete(repo, taiLieuVanThu.getId());
 					if (tlvt == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText());
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 					}
 					listDelete.add(tlvt);
 				}

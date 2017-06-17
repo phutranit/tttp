@@ -56,7 +56,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			Page<DonViHasState> page = donViHasStateRepo.findAll(donViHasStateService.predicateFindAll(processType), pageable);
@@ -75,7 +75,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			DonViHasState donViHasState = donViHasStateRepo.findOne(donViHasStateService.predicateFindOne(id));
@@ -100,12 +100,12 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			} 
 
 			if (donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
 			return Utils.doSave(donViHasStateRepo, donViHasState,
@@ -127,18 +127,18 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			donViHasState.setId(id);
 			if (donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!donViHasStateService.isExists(donViHasStateRepo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			return Utils.doSave(donViHasStateRepo, donViHasState,
@@ -158,13 +158,13 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHASSTATE_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText());
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
 			DonViHasState donViHasState = donViHasStateService.delete(donViHasStateRepo, id);
 			if (donViHasState == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText());
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
 			Utils.save(donViHasStateRepo, donViHasState,

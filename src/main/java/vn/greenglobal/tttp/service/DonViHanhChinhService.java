@@ -28,7 +28,7 @@ public class DonViHanhChinhService {
 
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(ten)) {
+		if (StringUtils.isNotEmpty(ten)) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten)
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten)));
 		}
@@ -118,9 +118,15 @@ public class DonViHanhChinhService {
 		}
 
 		predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.eq(body.getTen()));
-		DonViHanhChinh donViHanhChinh = repo.findOne(predAll);
+		if (body.getCha() != null) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.id.eq(body.getCha().getId()));
+		} else {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.cha.isNull());
+		}
+		predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(body.getCapDonViHanhChinh().getId()));
+		List<DonViHanhChinh> donViHanhChinhs = (List<DonViHanhChinh>) repo.findAll(predAll);
 
-		return donViHanhChinh != null ? true : false;
+		return donViHanhChinhs != null && donViHanhChinhs.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(DonViHanhChinhRepository repo, CoQuanQuanLyRepository coQuanQuanLyRepository,

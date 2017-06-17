@@ -150,9 +150,16 @@ public class CoQuanQuanLyService {
 		}
 
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ten.eq(body.getTen()));
-		CoQuanQuanLy coQuanQuanLy = repo.findOne(predAll);
+		if (body.getCha() != null) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(body.getCha().getId()));
+		} else {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.isNull());
+		}
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(body.getCapCoQuanQuanLy().getId()));
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(body.getDonViHanhChinh().getId()));
+		List<CoQuanQuanLy> coQuanQuanLys = (List<CoQuanQuanLy>) repo.findAll(predAll);
 
-		return coQuanQuanLy != null ? true : false;
+		return coQuanQuanLys != null && coQuanQuanLys.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(CoQuanQuanLyRepository repo, CongChucRepository congChucRepository,
