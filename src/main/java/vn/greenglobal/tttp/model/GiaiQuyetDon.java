@@ -30,7 +30,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private static final long serialVersionUID = -626978002365811586L;
 
 	// @Lob
-	@Size(max=255)
 	private String yKienGiaiQuyet;
 
 	private int thuTuThucHien;
