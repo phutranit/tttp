@@ -86,7 +86,7 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 
 			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, loaiCoQuanQuanLy,
@@ -137,7 +137,7 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 			loaiCoQuanQuanLy.setId(id);
 			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!loaiCoQuanQuanLyService.isExists(repo, id)) {

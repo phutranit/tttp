@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.vineey.rql.core.util.StringUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -443,9 +442,9 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			if (StringUtils.isNotEmpty(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
+			if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
@@ -507,9 +506,9 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 
 			coQuanQuanLy.setId(id);
-			if (StringUtils.isNotEmpty(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
+			if (StringUtils.isNotBlank(coQuanQuanLy.getTen()) && coQuanQuanLyService.checkExistsData(repo, coQuanQuanLy)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(),ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(),ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!coQuanQuanLyService.isExists(repo, id)) {

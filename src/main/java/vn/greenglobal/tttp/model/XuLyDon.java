@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
@@ -54,7 +55,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
 	private int thuTuThucHien = 0;
+	@Size(max=255)
 	private String diaDiem;
+	@Size(max=255)
 	private String soQuyetDinhDinhChi;
 	
 	@Transient
@@ -88,6 +91,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	@Transient
 	private String yKienXuLy = "";
+	@Size(max=255)
 	private String moTaTrangThai = "";
 	@Transient
 	private String noiDungYeuCauXuLy = "";

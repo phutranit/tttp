@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,15 +33,20 @@ public class CongDan extends Model<CongDan> {
 	private static final long serialVersionUID = 2302822305956477280L;
 
 	@NotBlank
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String soDienThoai = "";
+	@Size(max=255)
 	private String soCMNDHoChieu = "";
+	@Size(max=255)
 	private String diaChi = "";
 
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
 	private boolean gioiTinh;
+	
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
 	@ManyToOne

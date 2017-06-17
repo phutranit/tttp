@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -21,9 +22,10 @@ public class CapDonViHanhChinhService {
 
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten)
-					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten)));
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
+			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten.trim())
+					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten.trim()))
+					.or(QCapDonViHanhChinh.capDonViHanhChinh.moTa.containsIgnoreCase(ten.trim())));
 		}
 		return predAll;
 	}

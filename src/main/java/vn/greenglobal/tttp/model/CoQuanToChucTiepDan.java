@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,8 +21,11 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	 */
 	private static final long serialVersionUID = -4101233843699537605L;
 
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String nguoiDaiDien = "";
+	@Size(max=255)
 	private String chucVu = "";
 
 	public String getTen() {

@@ -118,23 +118,13 @@ public class CongDanController extends TttpController<CongDan> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(congDan.getHoVaTen()) && StringUtils.isNotEmpty(congDan.getDiaChi())
-					&& StringUtils.isNotEmpty(congDan.getSoCMNDHoChieu())) {
+			if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
+					&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
 				CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
 						congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
 				if (congDanExists != null) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
-							ApiErrorEnum.CONGDAN_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
-				}
-			}
-
-			if (StringUtils.isNotEmpty(congDan.getHoVaTen()) && StringUtils.isNotEmpty(congDan.getDiaChi())
-					&& StringUtils.isNotEmpty(congDan.getSoCMNDHoChieu())) {
-				CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
-						congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
-				if (congDanExists != null) {
-					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
-							ApiErrorEnum.CONGDAN_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
+							ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
 				}
 			}
 
@@ -183,7 +173,7 @@ public class CongDanController extends TttpController<CongDan> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(tuKhoa) && StringUtils.isNotEmpty(soCMND) && StringUtils.isNotEmpty(diaChi)) {
+			if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
 				List<CongDan> congDanExists = (List<CongDan>) repo
 						.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
 				if (!congDanExists.isEmpty()) {
@@ -209,7 +199,7 @@ public class CongDanController extends TttpController<CongDan> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotEmpty(soCMND)) {
+			if (StringUtils.isNotBlank(soCMND)) {
 				List<CongDan> congDanExists = (List<CongDan>) repo
 						.findAll(congDanService.predicateFindCongDanExists(soCMND));
 				if (!congDanExists.isEmpty()) {
@@ -313,13 +303,13 @@ public class CongDanController extends TttpController<CongDan> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			if (StringUtils.isNotEmpty(congDan.getHoVaTen()) && StringUtils.isNotEmpty(congDan.getDiaChi())
-					&& StringUtils.isNotEmpty(congDan.getSoCMNDHoChieu())) {
+			if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
+					&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
 				CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
 						congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
 				if (congDanExists != null && id != congDanExists.getId().longValue()) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
-							ApiErrorEnum.CONGDAN_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
+							ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
 				}
 			}
 			CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
