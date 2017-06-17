@@ -386,7 +386,7 @@ public class Don extends Model<Don> {
 		this.donLanTruoc = donLanTruoc;
 	}
 
-	@ApiModelProperty(position = 11, example = "{}")
+	@ApiModelProperty(position = 14, example = "{}")
 	public CongChuc getCanBoXuLy() {
 		return canBoXuLy;
 	}

@@ -331,8 +331,8 @@ public class Utils {
 	private static void genVietHolidays() {
 		if (vietHolidays == null) {
 			vietHolidays = new ArrayList<Calendar>();
-			vietHolidays.add(getHoliday(2017, 06, 04));
-			vietHolidays.add(getHoliday(2017, 06, 05));
+			vietHolidays.add(getHoliday(2017, 05, 04));
+			vietHolidays.add(getHoliday(2017, 05, 05));
 		}
 	}
 
@@ -527,6 +527,27 @@ public class Utils {
 			}
 		}
 		return soNgayXuLy;
+	}
+	
+	public static boolean isValidNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar ngayHienTai = Calendar.getInstance();
+		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
+		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+
+		if (start.before(end) || DateUtils.isSameDay(start, end)) {
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				// check ngay nghi
+				if (isInvalidNgayNghi(start.getTime())) {
+					end.add(Calendar.DATE, 1);
+				}
+				start.add(Calendar.DATE, 1);
+			}
+		}
+		if (ngayHienTai.after(end) && !DateUtils.isSameDay(ngayHienTai, end)) {
+			isValid = true;
+		}
+		return isValid;
 	}
 
 	public static String getMaDon() {

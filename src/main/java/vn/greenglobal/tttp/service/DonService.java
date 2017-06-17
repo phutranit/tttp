@@ -69,6 +69,50 @@ public class DonService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindDSDonMoiNhat(Long donViXuLyXLD, String chucVu, XuLyDonRepository xuLyRepo,
+			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
+		List<Don> donCollections = new ArrayList<Don>();
+		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
+		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		predAll = predAll.and(QDon.don.in(donCollections));
+		return predAll;
+	}
+	
+	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu,
+			XuLyDonRepository xuLyRepo, DonRepository donRepo, 
+			GiaiQuyetDonRepository giaiQuyetDonRepo) { 
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false));
+		List<Don> donCollections = new ArrayList<Don>();
+		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
+		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		donCollections = donCollections.stream().filter(d -> {
+			if (d.getNgayBatDauXLD() == null && d.getThoiHanXuLyXLD() == null) {
+				return false;
+			}
+			return Utils.isValidNgayTreHan(d.getNgayBatDauXLD(), d.getThoiHanXuLyXLD());
+		}).collect(Collectors.toList());
+		predAll = predAll.and(QDon.don.in(donCollections));
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
