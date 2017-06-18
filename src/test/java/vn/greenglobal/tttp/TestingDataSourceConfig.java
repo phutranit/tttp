@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-@Configuration
+//@Configuration
 public class TestingDataSourceConfig {
 
-	@Bean
-    @Primary
+	//@Bean
+   // @Primary
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
             .generateUniqueName(true)

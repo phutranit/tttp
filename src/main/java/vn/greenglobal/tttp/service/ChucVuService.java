@@ -2,6 +2,9 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -17,6 +20,9 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 @Component
 public class ChucVuService {
 
+	@Autowired
+	private ChucVuRepository repo;
+	
 	BooleanExpression base = QChucVu.chucVu.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String ten) {
@@ -29,6 +35,18 @@ public class ChucVuService {
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QChucVu.chucVu.id.eq(id));
+	}
+	
+	public Page<ChucVu> findAll(String ten, Pageable pageable) {
+		return repo.findAll(predicateFindAll(ten), pageable);
+	}
+	
+	public List<ChucVu> findAll(String ten) {
+		return (List<ChucVu>) repo.findAll(predicateFindAll(ten));
+	}
+	
+	public List<ChucVu> findAll() {
+		return (List<ChucVu>) repo.findAll();
 	}
 
 	public boolean isExists(ChucVuRepository repo, Long id) {

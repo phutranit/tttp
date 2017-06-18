@@ -35,8 +35,11 @@ public class ProfileUtils {
 
 	public NguoiDung getUserInfo(String authHeader) {
 		CommonProfile profile = getCommonProfile(authHeader);
+		System.out.println("profile: " + profile);
 		if (profile != null) {
+			System.out.println("profile.getAttribute(email): " + profile.getAttribute("email"));
 			NguoiDung user = nguoiDungRepository.findByEmail(String.valueOf(profile.getAttribute("email")));
+			System.out.println("user: " + user);
 			return user;
 		}
 		return null;
