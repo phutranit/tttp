@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -13,10 +14,14 @@ import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class ThongTinGiaiQuyetDonService {
 
+	@Autowired
+	ThongTinGiaiQuyetDonRepository thongTinGiaiQuyetDonRepository;
+	
 	BooleanExpression base = QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.daXoa.eq(false);
 	
 	public boolean isExists(ThongTinGiaiQuyetDonRepository repo, Long id) {
@@ -201,4 +206,9 @@ public class ThongTinGiaiQuyetDonService {
 		}
 		return list;
 	}
+	
+	public ThongTinGiaiQuyetDon save(ThongTinGiaiQuyetDon obj, Long congChucId) {
+		return Utils.save(thongTinGiaiQuyetDonRepository, obj, congChucId);
+	}
+	
 }

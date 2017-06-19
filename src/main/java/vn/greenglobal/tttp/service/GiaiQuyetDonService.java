@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -14,9 +15,13 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class GiaiQuyetDonService {
+	
+	@Autowired
+	private GiaiQuyetDonRepository giaiQuyetDonRepository;
 
 	QGiaiQuyetDon giaiQuyetDon = QGiaiQuyetDon.giaiQuyetDon;
 	BooleanExpression base = giaiQuyetDon.daXoa.eq(false);
@@ -74,4 +79,9 @@ public class GiaiQuyetDonService {
 		}
 		return null;
 	}
+	
+	public GiaiQuyetDon save(GiaiQuyetDon obj, Long congChucId) {
+		return Utils.save(giaiQuyetDonRepository, obj, congChucId);
+	}
+	
 }
