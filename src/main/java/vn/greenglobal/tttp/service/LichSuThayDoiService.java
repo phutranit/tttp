@@ -1,6 +1,9 @@
 package vn.greenglobal.tttp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -33,5 +36,9 @@ public class LichSuThayDoiService {
 	
 	public LichSuThayDoi save(LichSuThayDoi obj, Long congChucId) {
 		return Utils.save(lichSuThayDoiRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(LichSuThayDoi obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(lichSuThayDoiRepository, obj, congChucId, eass, status);		
 	}
 }

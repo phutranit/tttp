@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -65,5 +68,9 @@ public class LichSuQuaTrinhXuLyService {
 
 	public LichSuQuaTrinhXuLy save(LichSuQuaTrinhXuLy obj, Long congChucId) {
 		return Utils.save(lichSuQuaTrinhXuLyRepo, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(LichSuQuaTrinhXuLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(lichSuQuaTrinhXuLyRepo, obj, congChucId, eass, status);		
 	}
 }

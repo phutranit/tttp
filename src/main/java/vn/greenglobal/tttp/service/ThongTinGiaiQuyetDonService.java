@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -209,6 +212,10 @@ public class ThongTinGiaiQuyetDonService {
 	
 	public ThongTinGiaiQuyetDon save(ThongTinGiaiQuyetDon obj, Long congChucId) {
 		return Utils.save(thongTinGiaiQuyetDonRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(ThongTinGiaiQuyetDon obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(thongTinGiaiQuyetDonRepository, obj, congChucId, eass, status);		
 	}
 	
 }

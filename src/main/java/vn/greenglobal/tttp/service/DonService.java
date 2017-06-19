@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -604,5 +607,9 @@ public class DonService {
 
 	public Don save(Don obj, Long congChucId) {
 		return Utils.save(donRepo, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(Don obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(donRepo, obj, congChucId, eass, status);		
 	}
 }
