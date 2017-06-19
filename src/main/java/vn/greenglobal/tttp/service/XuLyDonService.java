@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -146,4 +149,9 @@ public class XuLyDonService {
 	public XuLyDon save(XuLyDon obj, Long congChucId) {
 		return Utils.save(xuLyDonRepo, obj, congChucId);
 	}
+	
+	public ResponseEntity<Object> doSave(XuLyDon obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(xuLyDonRepo, obj, congChucId, eass, status);		
+	}
+	
 }
