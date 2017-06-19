@@ -55,7 +55,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
-		System.out.println("=====================/chucVus: " + authorization);
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XEM) == null) {

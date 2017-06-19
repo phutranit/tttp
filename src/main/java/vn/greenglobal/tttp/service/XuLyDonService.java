@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -11,14 +12,19 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class XuLyDonService {
 	QXuLyDon xuLyDon = QXuLyDon.xuLyDon;
 	BooleanExpression base = xuLyDon.daXoa.eq(false);
+	
+	@Autowired
+	private XuLyDonRepository xuLyDonRepo;
 
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
@@ -141,5 +147,9 @@ public class XuLyDonService {
 	public boolean isExists(XuLyDonRepository repo, Long id) {
 		Predicate predicate = base.and(QXuLyDon.xuLyDon.don.id.eq(id));
 		return repo.exists(predicate);
+	}
+	
+	public XuLyDon save(XuLyDon obj, Long congChucId) {
+		return Utils.save(xuLyDonRepo, obj, congChucId);
 	}
 }

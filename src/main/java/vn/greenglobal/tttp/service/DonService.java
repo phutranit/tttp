@@ -28,8 +28,10 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
@@ -57,6 +59,9 @@ public class DonService {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
+	
+	@Autowired
+	private DonRepository donRepo;
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	
@@ -306,23 +311,6 @@ public class DonService {
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDon.don.id.eq(id));
-	}
-
-	public String getMaDonMoi(DonRepository repo) {
-		Predicate pred = QDon.don.daXoa.eq(false).and(QDon.don.ma.isNotEmpty());
-		OrderSpecifier<Long> sortOrder = QDon.don.ma.castToNum(Long.class).desc();
-		List<Don> list = (List<Don>) repo.findAll(pred, sortOrder);
-		if (list != null && list.size() > 0) {
-			Long maDonMoi = Long.parseLong(list.get(0).getMa()) + 1;
-			if (maDonMoi < 10) {
-				return "00" + maDonMoi;
-			} else if (maDonMoi < 100) {
-				return "0" + maDonMoi;
-			} else {
-				return "" + maDonMoi;
-			}
-		}
-		return "001";
 	}
 	
 	public String getMaDon(DonRepository repo, Long donId) {
@@ -574,5 +562,9 @@ public class DonService {
 		}
 		
 		return list;
+	}
+	
+	public Don save(Don obj, Long congChucId) {
+		return Utils.save(donRepo, obj, congChucId);
 	}
 }

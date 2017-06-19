@@ -9,10 +9,14 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.QLichSuQuaTrinhXuLy;
+import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class LichSuQuaTrinhXuLyService {
@@ -60,20 +64,15 @@ public class LichSuQuaTrinhXuLyService {
 		return thuTu;
 	}
 	
+	public void saveLichSuQuaTrinhXuLy(Don don, CongChuc congChuc, String noiDungXuLy, 
+			CoQuanQuanLy donViXuLy, String ten) {
+		int thuTu = timThuTuLichSuQuaTrinhXuLyHienTai(don.getId(), donViXuLy.getId());
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy(don, congChuc, LocalDateTime.now(), 
+				ten, noiDungXuLy, donViXuLy, thuTu);
+		save(lichSuQTXLD, congChuc.getId());
+	}
+	
 	public LichSuQuaTrinhXuLy save(LichSuQuaTrinhXuLy obj, Long congChucId) {
-		CongChuc cc = new CongChuc();
-		cc.setId(congChucId);
-		if (!obj.isNew()) {
-			LichSuQuaTrinhXuLy o = lichSuQuaTrinhXuLyRepo.findOne(obj.getId());
-			obj.setNgayTao(o.getNgayTao());
-			obj.setNgaySua(LocalDateTime.now());
-			obj.setNguoiTao(o.getNguoiTao());
-			obj.setNguoiSua(cc);
-		} else {
-			obj.setNguoiTao(cc);
-			obj.setNguoiSua(obj.getNguoiTao());
-		}
-		obj = lichSuQuaTrinhXuLyRepo.save(obj);
-		return obj;
+		return Utils.save(lichSuQuaTrinhXuLyRepo, obj, congChucId);
 	}
 }
