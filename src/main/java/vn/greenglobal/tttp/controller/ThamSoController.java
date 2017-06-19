@@ -84,7 +84,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
-			return Utils.doSave(repo, thamSo,
+			return thamSoService.doSave(thamSo,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -139,7 +139,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, thamSo,
+			return thamSoService.doSave(thamSo,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -165,7 +165,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, thamSo,
+			thamSoService.save(thamSo,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

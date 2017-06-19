@@ -58,7 +58,6 @@ import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
-import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -66,6 +65,7 @@ import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
@@ -92,9 +92,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private StateRepository repoState;
-	
-	@Autowired
-	private GiaiQuyetDonRepository repoGiaiQuyetDon;
 	
 	@Autowired
 	private ThongTinGiaiQuyetDonRepository repoThongTinGiaiQuyetDon;
@@ -125,6 +122,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
+	@Autowired
+	private GiaiQuyetDonService giaiQuyetDonService;
 	
 	@Autowired
 	private CoQuanQuanLyRepository repoCoQuanQuanLy;
@@ -283,7 +283,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}	
 			}
 
-			ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
+			ResponseEntity<Object> output = soTiepCongDanService.doSave(soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
 				if (flagChuyenDonViKiemTra) {								
 					State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -301,7 +301,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
 					thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 					thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
-					Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
+					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 					giaiQuyetDon.setChucVu(transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
@@ -310,7 +310,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
-					Utils.save(repoGiaiQuyetDon, giaiQuyetDon, congChucId);
+					giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 				}
 				
 				LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
@@ -322,8 +322,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
 				int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId(), donViId);
 				lichSuQTXL.setThuTuThucHien(thuTu);
-				Utils.save(repoDon, don, congChucId);
-				Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
+				donService.save(don, congChucId);
+				lichSuQuaTrinhXuLyService.save(lichSuQTXL, congChucId);
 			}
 			return output;
 		} catch (Exception e) {
@@ -385,7 +385,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
 							thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 							thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
-							Utils.save(repoThongTinGiaiQuyetDon, thongTinGiaiQuyetDon, congChucId);
+							thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 							GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 							giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 							giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
@@ -394,7 +394,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
-							Utils.save(repoGiaiQuyetDon, giaiQuyetDon, congChucId);
+							giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 						}
 					}
 				}
@@ -408,7 +408,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 			}
 
-			ResponseEntity<Object> output = Utils.doSave(repo, soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
+			ResponseEntity<Object> output = soTiepCongDanService.doSave(soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
 //				LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
 //				lichSuQTXL.setDon(soTiepCongDan.getDon());
@@ -419,8 +419,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //				int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId());
 //				lichSuQTXL.setThuTuThucHien(thuTu);
 				
-				Utils.save(repoDon, don, congChucId);
-//				Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXL, congChucId);
+				donService.save(don, congChucId);
+//				lichSuQuaTrinhXuLyService.save(lichSuQTXL, congChucId);
 			}
 			return output;
 		} catch (Exception e) {
@@ -454,10 +454,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				int tongSoLuotTCD = don.getTongSoLuotTCD();
 				don.setTongSoLuotTCD(tongSoLuotTCD - 1);
-				Utils.save(repoDon, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}		
 			soTiepCongDan.setDaXoa(true);
-			Utils.save(repo, soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			soTiepCongDanService.save(soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -503,7 +503,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, soTiepCongDan,
+			soTiepCongDanService.save(soTiepCongDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

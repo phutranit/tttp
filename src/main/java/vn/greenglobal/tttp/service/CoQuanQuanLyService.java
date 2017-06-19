@@ -3,6 +3,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -23,9 +27,13 @@ import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CoQuanQuanLyService {
+	
+	@Autowired
+	private CoQuanQuanLyRepository coQuanQuanLyRepository;
 
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 
@@ -207,6 +215,14 @@ public class CoQuanQuanLyService {
 		}
 
 		return predAll;
+	}
+	
+	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
+		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
 	}
 
 }

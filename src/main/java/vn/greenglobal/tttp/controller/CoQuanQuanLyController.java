@@ -460,7 +460,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				}
 			}
 
-			return Utils.doSave(repo, coQuanQuanLy,
+			return coQuanQuanLyService.doSave(coQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -529,7 +529,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					coQuanQuanLy.setDonVi(coQuanQuanLy);
 				}
 			}
-			return Utils.doSave(repo, coQuanQuanLy,
+			return coQuanQuanLyService.doSave(coQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -561,7 +561,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, coQuanQuanLy,
+			coQuanQuanLyService.save(coQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

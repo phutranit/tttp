@@ -89,7 +89,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
 				}
 			}
-			return Utils.doSave(repo, taiLieuVanThu,
+			return taiLieuVanThuService.doSave(taiLieuVanThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -137,7 +137,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 								listCreate.add(taiLieuVanThu);
 							}
 							for (TaiLieuVanThu taiLieuVanThu : listCreate) {
-								TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(
+								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuVanThus().add(tlvt);
 							}
@@ -201,7 +201,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 				}
 			}
 
-			return Utils.doSave(repo, taiLieuVanThu,
+			return taiLieuVanThuService.doSave(taiLieuVanThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -252,7 +252,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 								listUpdate.add(taiLieuVanThu);
 							}
 							for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
-								TaiLieuVanThu tlvt = Utils.save(repo, taiLieuVanThu, Long.valueOf(
+								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuVanThus().add(tlvt);
 							}
@@ -281,7 +281,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, taiLieuVanThu,
+			taiLieuVanThuService.save(taiLieuVanThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -307,7 +307,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 					listDelete.add(tlvt);
 				}
 				for (TaiLieuVanThu tlvt : listDelete) {
-					Utils.save(repo, tlvt, Long
+					taiLieuVanThuService.save(tlvt, Long
 							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
 			}
