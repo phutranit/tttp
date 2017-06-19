@@ -48,7 +48,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
+import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
 @SpringBootApplication
@@ -87,6 +89,7 @@ public class Application extends SpringBootServletInitializer {
 			System.out.println(":::::" + beanNames.length + " beans");
 		};
 	}
+	
 
 //	@Value("${cors.allowedOrigins}")
 //	private String[] myAllowedOriginList;
@@ -257,12 +260,26 @@ public class Application extends SpringBootServletInitializer {
 	public String[] getACTIONS() {
 		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
 	}
-
+	
 	@Autowired
 	private DonCongDanRepository donCongDanRepository;
-
+	
+	@Autowired
+	private ChucVuRepository chucVuRepository;
+	
+	@Autowired
+	private ChucVuService chucVuService;
+	
 	public DonCongDanRepository getDonCongDanRepository() {
 		return donCongDanRepository;
+	}
+	
+	public ChucVuRepository getChucVuRepository() {
+		return chucVuRepository;
+	}
+
+	public ChucVuService getChucVuService() {
+		return chucVuService;
 	}
 
 }
