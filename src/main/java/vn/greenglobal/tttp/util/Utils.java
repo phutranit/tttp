@@ -62,7 +62,8 @@ public class Utils {
 		}
 	}
 
-	public static ResponseEntity<Object> responseErrors(HttpStatus httpStatus, String code, String detail, String description) {
+	public static ResponseEntity<Object> responseErrors(HttpStatus httpStatus, String code, String detail,
+			String description) {
 		List<Map<String, Object>> errors = new ArrayList<>();
 		Map<String, Object> error = new HashMap<>();
 		error.put("status", Long.valueOf(httpStatus.toString()));
@@ -74,10 +75,11 @@ public class Utils {
 		errorBody.put("errors", errors);
 		return new ResponseEntity<>(errorBody, httpStatus);
 	}
-	
+
 	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
 		e.printStackTrace();
-		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(), ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getCause().toString());
+		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(),
+				ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getCause().toString());
 	}
 
 	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {
@@ -85,16 +87,17 @@ public class Utils {
 		System.out.println("returnError -> " + vio);
 		if (vio.getMessageTemplate().equals("{" + NotBlank.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-					vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED",
-					"Bạn không được bỏ trống trường này.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống.");
+					vio.getPropertyPath().toString().toUpperCase() + "_REQUIRED", "Bạn không được bỏ trống trường này.",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được để trống.");
 		if (vio.getMessageTemplate().equals("{" + NotNull.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-					vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL",
-					"Bạn không được bỏ trống trường này.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL.");
+					vio.getPropertyPath().toString().toUpperCase() + "_NOT_NULL", "Bạn không được bỏ trống trường này.",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " không được NULL.");
 		if (vio.getMessageTemplate().equals("{" + Size.class.getName() + ".message}"))
 			return Utils.responseErrors(HttpStatus.BAD_REQUEST,
 					vio.getPropertyPath().toString().toUpperCase() + "_INVALID_SIZE",
-					"Trường này đã nhập quá kí tự cho phép.", "Trường " + vio.getPropertyPath().toString().toUpperCase() + " đã nhập quá kí tự cho phép.");
+					"Trường này đã nhập quá kí tự cho phép.",
+					"Trường " + vio.getPropertyPath().toString().toUpperCase() + " đã nhập quá kí tự cho phép.");
 		return Utils.responseErrors(HttpStatus.BAD_REQUEST, "UNKNOWN", "UNKNOWN", "UNKNOWN");
 	}
 
@@ -136,45 +139,6 @@ public class Utils {
 		obj = repository.save(obj);
 		return obj;
 	}
-
-	// @SuppressWarnings("rawtypes")
-	// public static <T extends Model> ResponseEntity<Object>
-	// doSave(JpaRepository<T, Long> repository, T obj,
-	// PersistentEntityResourceAssembler eass, HttpStatus status) {
-	// try {
-	// obj = save(repository, obj);
-	// } catch (ConstraintViolationException e) {
-	// return returnError(e);
-	// } catch (Exception e) {
-	// System.out.println("doSave -> " + e.getCause());
-	// if (e.getCause() instanceof ConstraintViolationException)
-	// return returnError((ConstraintViolationException) e.getCause());
-	// if (e.getCause() != null && e.getCause().getCause() instanceof
-	// ConstraintViolationException)
-	// return returnError((ConstraintViolationException)
-	// e.getCause().getCause());
-	// if (e.getCause() != null && e.getCause().getCause() != null &&
-	// e.getCause().getCause().getCause() instanceof
-	// ConstraintViolationException)
-	// return returnError((ConstraintViolationException)
-	// e.getCause().getCause());
-	// throw e;
-	// }
-	// return new ResponseEntity<>(eass.toFullResource(obj), status);
-	// }
-	//
-	// @SuppressWarnings("rawtypes")
-	// public static <T extends Model> T save(JpaRepository<T, Long> repository,
-	// T obj) {
-	// if (!obj.isNew()) {
-	// T o = repository.findOne(obj.getId());
-	// obj.setNgayTao(o.getNgayTao());
-	// obj.setNgaySua(LocalDateTime.now());
-	// obj.setNguoiTao(o.getNguoiTao());
-	// }
-	// obj = repository.save(obj);
-	// return obj;
-	// }
 
 	public static boolean isValidEmailAddress(String email) {
 		String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
@@ -309,12 +273,6 @@ public class Utils {
 		}
 		return methods;
 	}
-
-	/*
-	 * public static void main(String[] args) {
-	 * getMethodsAnnotatedWith(Utils.class); getMethodsAnnotatedWith(new
-	 * Class<?>[] { Utils.class, Don.class}); }
-	 */
 
 	public static CoQuanQuanLy getDonViByCongChuc(CongChuc congChuc, ThamSo thamSo) {
 		if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
