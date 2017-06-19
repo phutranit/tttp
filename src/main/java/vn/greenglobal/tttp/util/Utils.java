@@ -354,11 +354,17 @@ public class Utils {
 		return c;
 	}
 
+	/**
+	 * Lay so gio phut con lai neu thoi han xu ly con 1 ngay
+     * @param cal lich hien tai tai trong tuan
+     * @param gioHienTai lay gio hanh chinh hien tai
+     * @param thoiHanKetThuc thoi han ngay ket thuc
+     * @return str so gio phut con lai cua xu ly
+     */
 	@SuppressWarnings("deprecation")
-	public static String getLaySoGioPhut(LocalDateTime thoiHanKetThuc) {
-		// Main m = new Main();
-		Calendar cal = Calendar.getInstance();
-		LocalDateTime gioHienTai = LocalDateTime.now();
+	public static String getLaySoGioPhut(Calendar cal, LocalDateTime gioHienTai, LocalDateTime thoiHanKetThuc) {
+		//Calendar cal = Calendar.getInstance();
+		//LocalDateTime gioHienTai = LocalDateTime.now();
 		Calendar batDau = getMocThoiGianLocalDateTime(gioHienTai, gioHienTai.getHour(), gioHienTai.getMinute());
 
 		int gio = 0;
@@ -434,11 +440,19 @@ public class Utils {
 		return flag;
 	}
 
-	public static Long getLaySoNgay(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+	/**
+	 * Lay so ngay cua thoi han xu ly
+     * @param cal lich hien tai tai trong tuan
+     * @param ngayBatDau thoi han tu ngay bat dau
+     * @param ngayKetThuc thoi han ngay ket thuc
+     * @param gioHanhChinhHienTai gio hanh chinh lam viec hien tai
+     * @return soNgayXuLy so ngay con lai de xu ly
+     */
+	public static Long getLaySoNgay(Calendar cal, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc, LocalDateTime gioHanhChinhHienTai) {
 		long soNgayXuLy = 0;
 		boolean checkNgayNghi = false;
-		LocalDateTime gioHanhChinh = LocalDateTime.now();
-		Calendar cal = Calendar.getInstance();
+		//LocalDateTime gioHanhChinh = LocalDateTime.now();
+		//Calendar cal = Calendar.getInstance();
 		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
 
@@ -462,7 +476,9 @@ public class Utils {
 							if (cal.get(Calendar.AM_PM) == 0) {
 								// AM
 								// check thoi gian gio hanh chinh
-								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinh, startMorning,
+//								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinh, startMorning,
+//										minuteStartMorning);
+								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, startMorning,
 										minuteStartMorning);
 								long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
 								if (cal.getTimeInMillis() <= gioBuoiSang) {
@@ -475,7 +491,9 @@ public class Utils {
 							} else {
 								// PM
 								if (DateUtils.isSameDay(cal, Calendar.getInstance())) {
-									Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, endAfternoon,
+//									Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinh, endAfternoon,
+//											minuteEndAfternoon);
+									Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, endAfternoon,
 											minuteEndAfternoon);
 									long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
 									if (cal.getTimeInMillis() < gioBuoiChieu) {
@@ -504,9 +522,16 @@ public class Utils {
 		return soNgayXuLy;
 	}
 
-	public static Long getLayNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+	/**
+	 * Lay so ngay da tre han xu ly
+     * @param lichHienTai lich hien tai tai trong tuan
+     * @param ngayBatDau thoi han tu ngay bat dau
+     * @param ngayKetThuc thoi han ngay ket thuc
+     * @return soNgayXuLy so ngay da tre han cua xu ly
+     */
+	public static Long getLayNgayTreHan(Calendar lichHienTai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
-		Calendar ngayHienTai = Calendar.getInstance();
+		//Calendar lichHienTai = Calendar.getInstance();
 		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
 
@@ -520,8 +545,8 @@ public class Utils {
 			}
 		}
 
-		if (end.before(ngayHienTai)) {
-			while (end.before(ngayHienTai)) {
+		if (end.before(lichHienTai)) {
+			while (end.before(lichHienTai)) {
 				soNgayXuLy += 1;
 				end.add(Calendar.DATE, 1);
 			}
