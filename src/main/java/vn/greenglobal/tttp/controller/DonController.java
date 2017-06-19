@@ -458,7 +458,7 @@ public class DonController extends TttpController<Don> {
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 				lichSuThayDoiService.save(lichSu, congChucId);
 				lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-				return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
+				return donService.doSave(donMoi, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -646,7 +646,7 @@ public class DonController extends TttpController<Don> {
 					lichSuThayDoiService.save(lichSu, congChucId);
 				}
 				
-				return Utils.doSave(repo, don,
+				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
 			}
