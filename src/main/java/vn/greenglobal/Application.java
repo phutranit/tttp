@@ -48,8 +48,6 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
-import vn.greenglobal.tttp.model.ChucVu;
-import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
