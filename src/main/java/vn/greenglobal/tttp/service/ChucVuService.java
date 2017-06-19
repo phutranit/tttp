@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -27,8 +28,9 @@ public class ChucVuService {
 
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QChucVu.chucVu.ten.containsIgnoreCase(ten));
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
+			predAll = predAll.and(QChucVu.chucVu.ten.containsIgnoreCase(ten.trim())
+					.or(QChucVu.chucVu.moTa.containsIgnoreCase(ten.trim())));
 		}
 		return predAll;
 	}

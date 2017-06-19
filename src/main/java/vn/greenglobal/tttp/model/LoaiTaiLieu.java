@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,7 +24,9 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	private static final long serialVersionUID = -3826710912952156958L;
 
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ApiModelProperty(position = 1, required = true)

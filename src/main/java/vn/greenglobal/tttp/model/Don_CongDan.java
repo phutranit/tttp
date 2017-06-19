@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
@@ -26,30 +27,43 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@ManyToOne
 	private CongDan congDan;
 
+	@Size(max=255)
 	private String tenCoQuan = "";
+	@Size(max=255)
 	private String diaChiCoQuan = "";
+	@Size(max=255)
 	private String soDienThoai = "";
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String soCMNDHoChieu = "";
+	@Size(max=255)
 	private String diaChi = "";
+	@Size(max=255)
 	private String soDienThoaiCoQuan = "";
-	private String thongTinGioiThieu = "";
-	private String noiCapTheLuatSu = "";
-	private String donVi = "";
-	private String chucVu = "";
-	private String soTheLuatSu = "";
 
 	// Người đứng đơn, ủy quyền, khiếu tố
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
 
+	@Size(max=255)
+	private String soTheLuatSu = "";
 	private boolean gioiTinh;
 	private boolean luatSu = false;
 
 	private LocalDateTime ngayCapTheLuatSu;
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
+
+	@Size(max=255)
+	private String thongTinGioiThieu = "";
+	@Size(max=255)
+	private String noiCapTheLuatSu = "";
+	@Size(max=255)
+	private String donVi = "";
+	@Size(max=255)
+	private String chucVu = "";
 	
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;

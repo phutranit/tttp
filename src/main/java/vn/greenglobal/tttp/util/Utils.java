@@ -113,7 +113,7 @@ public class Utils {
 				return returnError((ConstraintViolationException) e.getCause().getCause());
 			if (e.getCause() != null && e.getCause().getCause() != null
 					&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
-				return returnError((ConstraintViolationException) e.getCause().getCause());
+				return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
 			throw e;
 		}
 		return new ResponseEntity<>(eass.toFullResource(obj), status);

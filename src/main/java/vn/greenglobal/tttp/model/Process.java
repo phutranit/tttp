@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,7 +21,9 @@ public class Process extends Model<Process>{
 	private static final long serialVersionUID = -421604915416180673L;
 	
 	@NotBlank
+	@Size(max=255)
 	private String tenQuyTrinh;
+	@Size(max=255)
 	private String ghiChu;
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;

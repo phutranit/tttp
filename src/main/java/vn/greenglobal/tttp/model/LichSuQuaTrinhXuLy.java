@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.querydsl.core.annotations.QueryInit;
 
@@ -31,7 +32,9 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 		
 	}
 	
+	@Size(max=255)
 	private String ten = "";
+	//@Lob
 	private String noiDung = "";
 	private int thuTuThucHien = 0;
 	

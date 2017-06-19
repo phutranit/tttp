@@ -191,8 +191,8 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			if (StringUtils.isNotEmpty(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			if (StringUtils.isNotBlank(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, donViHanhChinh,
@@ -242,7 +242,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 			}
 
 			donViHanhChinh.setId(id);
-			if (StringUtils.isNotEmpty(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
+			if (StringUtils.isNotBlank(donViHanhChinh.getTen()) && donViHanhChinhService.checkExistsData(repo, donViHanhChinh)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			

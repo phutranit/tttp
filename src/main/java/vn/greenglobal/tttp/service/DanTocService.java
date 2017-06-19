@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -21,10 +22,11 @@ public class DanTocService {
 
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(
-					QDanToc.danToc.ten.containsIgnoreCase(tuKhoa).or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
-							.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QDanToc.danToc.ten.containsIgnoreCase(tuKhoa.trim())
+					.or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa.trim()))
+					.or(QDanToc.danToc.ma.containsIgnoreCase(tuKhoa.trim()))
+					.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		return predAll;

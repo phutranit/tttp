@@ -84,7 +84,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 
 			if (chucVuService.checkExistsData(repo, chucVu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			return Utils.doSave(repo, chucVu,
@@ -134,7 +134,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 			chucVu.setId(id);
 			if (chucVuService.checkExistsData(repo, chucVu)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
 			if (!chucVuService.isExists(repo, id)) {

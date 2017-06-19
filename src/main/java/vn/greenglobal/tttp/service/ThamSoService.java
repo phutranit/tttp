@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -16,9 +17,9 @@ public class ThamSoService {
 
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(
-					QThamSo.thamSo.ten.containsIgnoreCase(tuKhoa).or(QThamSo.thamSo.giaTri.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QThamSo.thamSo.ten.containsIgnoreCase(tuKhoa.trim())
+					.or(QThamSo.thamSo.giaTri.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		return predAll;

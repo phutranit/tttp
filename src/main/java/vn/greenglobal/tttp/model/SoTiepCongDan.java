@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -56,7 +57,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
 	//@Lob
-	private String noiDungTiepCongDan = " ";
+	private String noiDungTiepCongDan = "";
+	@Size(max=255)
 	private String ketQuaGiaiQuyet = "";
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;
@@ -68,9 +70,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
+	@Size(max=255)
 	private String trangThaiKetQua = "";
 	//@Lob
-	private String noiDungBoSung = " ";
+	private String noiDungBoSung = "";
+	@Size(max=255)
 	private String diaDiemGapLanhDao = "";
 	private boolean hoanThanhTCDLanhDao;
 	private boolean hoanThanhTCDThuongXuyen;
@@ -95,7 +99,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
+	@Size(max=255)
 	private String yKienXuLy = "";
+	@Size(max=255)
 	private String ghiChuXuLy = "";
 	@Transient
 	private boolean chuyenDonViKiemTra;

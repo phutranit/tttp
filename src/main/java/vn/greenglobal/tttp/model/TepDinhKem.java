@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +22,9 @@ public class TepDinhKem extends Model<TepDinhKem>{
 	 */
 	private static final long serialVersionUID = 4888057108535944010L;
 	
+	@Size(max=255)
 	private String tenFile = "";
+	@Size(max=255)
 	private String urlFile = "";
 	@ManyToOne
 	private Don don;
