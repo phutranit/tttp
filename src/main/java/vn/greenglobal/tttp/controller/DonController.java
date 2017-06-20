@@ -259,7 +259,6 @@ public class DonController extends TttpController<Don> {
 		
 		return listProcess;
 	}
-
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -417,7 +416,6 @@ public class DonController extends TttpController<Don> {
 									ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 						}
 					}
-				
 					
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
