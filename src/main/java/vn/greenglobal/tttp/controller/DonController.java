@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -784,7 +786,7 @@ public class DonController extends TttpController<Don> {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/thongKeDonMoiNhat")
-	@ApiOperation(value = "Lấy danh sách đơn mới nhất của đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "Lấy danh sách đơn mới nhất của đơn vị", position = 4, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy danh sách đơn mới nhất của đơn vị thành công", response = Don.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
@@ -808,7 +810,7 @@ public class DonController extends TttpController<Don> {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/thongKeDonTreHan")
-	@ApiOperation(value = "Lấy danh sách đơn trễ hạn của đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "Lấy danh sách đơn trễ hạn của đơn vị", position = 5, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy danh sách đơn trễ hạn của đơn vị thành công", response = Don.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
@@ -828,5 +830,41 @@ public class DonController extends TttpController<Don> {
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/thongKeDonTaiDonVi")
+	@ApiOperation(value = "Thống kê đơn tại đơn vị", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getThongKeDonTaiDonVi(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapDonThongKe = new HashMap<>();
+		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDon(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyet(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHan(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		map.put("ten", "ĐƠN TẠI ĐƠN VỊ " +StringUtils.upperCase(donVi != null ? donVi.getDonVi().getTen() : "") +" " +LocalDateTime.now().getYear());
+		map.put("thongKe", mapDonThongKe);
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/thongKeDonTaiDiaBan")
+	@ApiOperation(value = "Thống kê đơn tại địa bàn", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getThongKeDonTaiDiaBan(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
+		if (donVi.getCha() != null) { 
+			donViXuLyXLD = donVi.getCha().getId();
+		}
+		System.out.println("donViXuLyXLD " +donViXuLyXLD);
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapDonThongKe = new HashMap<>();
+		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDon(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyet(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHan(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		map.put("ten", "ĐƠN TẠI ĐỊA BÀN " +StringUtils.upperCase(donVi != null ? donVi.getDonVi().getTen() : "") +" " +LocalDateTime.now().getYear());
+		map.put("thongKe", mapDonThongKe);
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }

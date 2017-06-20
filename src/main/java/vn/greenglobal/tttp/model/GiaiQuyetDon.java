@@ -23,9 +23,6 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 @ApiModel
 public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -626978002365811586L;
 
 	// @Lob
