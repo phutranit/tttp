@@ -41,7 +41,6 @@ public class ThoiHanXuLyServiceTest {
 	public void testTestLayGioPhut() {
 		lichHienTaiTrongTuan = Calendar.getInstance();
 		String result = Utils.getLaySoGioPhut(lichHienTaiTrongTuan, gioHanhChinhHienTai, ngayKetThuc);
-		System.out.println(String.format("Còn %s phút", result));
 		Assert.assertEquals(true, !StringUtils.isEmpty(result));
 	}
 	
