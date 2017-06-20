@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1383,19 +1382,18 @@ public class Don extends Model<Don> {
 	@Transient
 	public Map<String, Object> getThoiHanXuLyInfo() {
 		Map<String, Object> mapType = new HashMap<>();
-		Calendar lichHienTai = Calendar.getInstance();
 		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
-			long soNgayXuLy = Utils.getLaySoNgay(lichHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
 				mapType.put("type", "DAY");
 				mapType.put("value", soNgayXuLy);
 			} else if (soNgayXuLy == -1) {
 				mapType.put("type", "DAY");
-				mapType.put("value", -Utils.getLayNgayTreHan(lichHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD()));
+				mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD()));
 			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
 				mapType.put("type", "TIME");
-				mapType.put("value", Utils.getLaySoGioPhut(lichHienTai, gioHanhChinhHienTai, getThoiHanXuLyXLD()));
+				mapType.put("value", Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD()));
 			} 
 		}
 		return mapType;

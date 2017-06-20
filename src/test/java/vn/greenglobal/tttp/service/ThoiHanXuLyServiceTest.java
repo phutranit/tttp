@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -16,38 +15,97 @@ import vn.greenglobal.tttp.util.Utils;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ThoiHanXuLyServiceTest {
 	
-	private Calendar lichHienTaiTrongTuan;
 	private LocalDateTime ngayBatDau;
 	private LocalDateTime ngayKetThuc;
 	private LocalDateTime gioHanhChinhHienTai;
 
 	@Before
 	public void setup() {
-		lichHienTaiTrongTuan = Calendar.getInstance();
 		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
 		ngayKetThuc = LocalDateTime.of(2017, 6, 20, 17, 31);
-		gioHanhChinhHienTai = LocalDateTime.now();
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 20, 11, 31);
 	}
 	
 	@Test
-	public void testTestLaySoNgayXuLy() {
-		Long result = Utils.getLaySoNgay(lichHienTaiTrongTuan, ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
-		
+	public void testTestCoSoNgayXuLy() {
+		Long result = Utils.getLaySoNgay(ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
 		boolean actual = result == 3;
 		assertEquals(true, actual);
 	}
 	
 	@Test
-	public void testTestLayGioPhut() {
-		lichHienTaiTrongTuan = Calendar.getInstance();
-		String result = Utils.getLaySoGioPhut(lichHienTaiTrongTuan, gioHanhChinhHienTai, ngayKetThuc);
+	public void testTestKhongCoSoNgayXuLy() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 17, 17, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 17, 11, 31);
+		Long result = Utils.getLaySoNgay(ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
+		boolean actual = result == 0;
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testSoNgayXuLyAmMot() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 15, 16, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 19, 11, 31);
+		Long result = Utils.getLaySoNgay(ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
+		boolean actual = result == -1;
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testSoNgayXuLyAmBa() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 17, 16, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 20, 07, 31);
+		Long result = Utils.getLaySoNgay(ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
+		boolean actual = result == -3;
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testSoNgayXuLyAmHai() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 17, 16, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 20, 14, 31);
+		Long result = Utils.getLaySoNgay(ngayBatDau, ngayKetThuc, gioHanhChinhHienTai);
+		boolean actual = result == -2;
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testTruongHopLayDungNgayGioPhutHienTai() {
+		ngayKetThuc = LocalDateTime.of(2017, 6, 20, 17, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 20, 13, 31);
+		String result = Utils.getLaySoGioPhut(gioHanhChinhHienTai, ngayKetThuc);
 		Assert.assertEquals(true, !StringUtils.isEmpty(result));
 	}
 	
 	@Test
-	public void testTestNgayTreHan() {
-		Long actual = Utils.getLayNgayTreHan(lichHienTaiTrongTuan, ngayBatDau, ngayKetThuc);
+	public void testTruongHopLaySaiNgayGioPhutHienTai() {
+		ngayKetThuc = LocalDateTime.of(2017, 6, 25, 17, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 23, 14, 30);
+		String result = Utils.getLaySoGioPhut(gioHanhChinhHienTai, ngayKetThuc);
+		Assert.assertEquals(true, StringUtils.isEmpty(result));
+	}
+	
+	@Test
+	public void testTestKhongCoNgayTreHan() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 20, 17, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 23, 11, 31);
+		Long actual = Utils.getLayNgayTreHan(gioHanhChinhHienTai, ngayBatDau, ngayKetThuc);
 		Long expected = 0L;
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTestCoNgayTreHan() {
+		ngayBatDau = LocalDateTime.of(2017, 6, 11, 17, 31);
+		ngayKetThuc = LocalDateTime.of(2017, 6, 20, 17, 31);
+		gioHanhChinhHienTai = LocalDateTime.of(2017, 6, 24, 11, 31);
+		Long actual = Utils.getLayNgayTreHan(gioHanhChinhHienTai, ngayBatDau, ngayKetThuc);
+		Long expected = 1L;
 		Assert.assertEquals(expected, actual);
 	}
 }
