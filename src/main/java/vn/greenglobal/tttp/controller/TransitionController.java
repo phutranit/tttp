@@ -108,7 +108,7 @@ public class TransitionController extends TttpController<Transition> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
-			return Utils.doSave(transitionRepo, transition,
+			return transitionService.doSave(transition,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -143,7 +143,7 @@ public class TransitionController extends TttpController<Transition> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
-			return Utils.doSave(transitionRepo, transition,
+			return transitionService.doSave(transition,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -169,7 +169,7 @@ public class TransitionController extends TttpController<Transition> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(transitionRepo, transition,
+			transitionService.save(transition,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

@@ -67,7 +67,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getDoanDiCungs().size() > 0) {
 							for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
-								DoanDiCung ddc = Utils.save(repo, doanDiCung, Long.valueOf(
+								DoanDiCung ddc = doanDiCungService.save(doanDiCung, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDoanDiCungs().add(ddc);
 							}
@@ -109,7 +109,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 								listUpdate.add(doanDiCung);
 							}
 							for (DoanDiCung doanDiCung : listUpdate) {
-								DoanDiCung ddc = Utils.save(repo, doanDiCung, Long.valueOf(
+								DoanDiCung ddc = doanDiCungService.save(doanDiCung, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDoanDiCungs().add(ddc);
 							}
@@ -144,7 +144,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 					listDelete.add(ddc);
 				}
 				for (DoanDiCung doanDiCung : listDelete) {
-					Utils.save(repo, doanDiCung, Long
+					doanDiCungService.save(doanDiCung, Long
 							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
 			}

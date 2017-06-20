@@ -39,9 +39,9 @@ import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_DonCongDan_Post_Patch;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
-import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.service.CongDanService;
 import vn.greenglobal.tttp.service.DonCongDanService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -57,12 +57,12 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 
 	@Autowired
 	private CongDanRepository congDanRepo;
-
-	@Autowired
-	private LichSuThayDoiRepository lichSuRepo;
 	
 	@Autowired
 	private CongDanService congDanService;
+	
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
 
 	public DonCongDanController(BaseRepository<Don_CongDan, Long> repo) {
 		super(repo);
@@ -101,9 +101,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			lichSu.setIdDoiTuong(donCongDan.getDon().getId());
 			lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-			Utils.save(lichSuRepo, lichSu,
+			lichSuThayDoiService.save(lichSu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return Utils.doSave(repo, donCongDan,
+			return donCongDanService.doSave(donCongDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -153,10 +153,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
 									
-								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								if (congDanUpdate != null) {
 									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									result.getDonCongDans().add(dcd);
 								}
 								
@@ -166,7 +166,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								lichSu.setIdDoiTuong(donCongDan.getDon().getId());
 								lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 								lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-								Utils.save(lichSuRepo, lichSu,
+								lichSuThayDoiService.save(lichSu,
 										Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							}
 						}
@@ -221,10 +221,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 				lichSu.setIdDoiTuong(donCongDan.getDon().getId());
 				lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-				Utils.save(lichSuRepo, lichSu,
+				lichSuThayDoiService.save(lichSu,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
-			return Utils.doSave(repo, donCongDan,
+			return donCongDanService.doSave(donCongDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -281,10 +281,10 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
 									
-								CongDan congDanUpdate = Utils.save(congDanRepo, congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								if (congDanUpdate != null) {
 									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									result.getDonCongDans().add(dcd);
 								}
 								
@@ -296,7 +296,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 									lichSu.setIdDoiTuong(donCongDan.getDon().getId());
 									lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
 									lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-									Utils.save(lichSuRepo, lichSu,
+									lichSuThayDoiService.save(lichSu,
 											Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								}
 							}
@@ -330,9 +330,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			lichSu.setIdDoiTuong(dcd.getDon().getId());
 			lichSu.setNoiDung("Xóa thông tin công dân " + dcd.getHoVaTen());
 			lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
-			Utils.save(lichSuRepo, lichSu,
+			lichSuThayDoiService.save(lichSu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			Utils.save(repo, dcd,
+			donCongDanService.save(dcd,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -359,13 +359,13 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 					listDelete.add(dcd);
 				}
 				for (Don_CongDan donCongDan : listDelete) {
-					Utils.save(repo, donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 					LichSuThayDoi lichSu = new LichSuThayDoi();
 					lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 					lichSu.setIdDoiTuong(donCongDan.getDon().getId());
 					lichSu.setNoiDung("Xóa thông tin công dân " + donCongDan.getHoVaTen());
 					lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
-					Utils.save(lichSuRepo, lichSu,
+					lichSuThayDoiService.save(lichSu,
 							Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
 			}	

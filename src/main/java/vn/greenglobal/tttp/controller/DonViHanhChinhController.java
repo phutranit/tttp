@@ -195,7 +195,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
-			return Utils.doSave(repo, donViHanhChinh,
+			return donViHanhChinhService.doSave(donViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -251,7 +251,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, donViHanhChinh,
+			return donViHanhChinhService.doSave(donViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -282,7 +282,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, donViHanhChinh,
+			donViHanhChinhService.save(donViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

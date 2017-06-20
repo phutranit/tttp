@@ -2,6 +2,10 @@ package vn.greenglobal.tttp.service;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -22,9 +26,13 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class TransitionService {
+	
+	@Autowired
+	private TransitionRepository transitionRepository;
 
 	BooleanExpression base = QTransition.transition.daXoa.eq(false);
 
@@ -123,5 +131,13 @@ public class TransitionService {
 		}
 
 		return transition;
+	}
+	
+	public Transition save(Transition obj, Long congChucId) {
+		return Utils.save(transitionRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(Transition obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(transitionRepository, obj, congChucId, eass, status);		
 	}
 }

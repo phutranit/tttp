@@ -38,6 +38,7 @@ import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -66,6 +67,9 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@Autowired
+	private NguoiDungService nguoiDungService;
 
 	public CongChucController(BaseRepository<CongChuc, Long> repo) {
 		super(repo);
@@ -217,9 +221,9 @@ public class CongChucController extends TttpController<CongChuc> {
 				@Override
 				public Object doInTransaction(TransactionStatus arg0) {
 					congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
-					Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(
+					nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(
 							profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-					return Utils.doSave(repo, congChuc,
+					return congChucService.doSave(congChuc,
 							Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 							eass, HttpStatus.CREATED);
@@ -329,9 +333,9 @@ public class CongChucController extends TttpController<CongChuc> {
 						congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
 						congChuc.getNguoiDung().setSalkey(nd.getSalkey());
 					}
-					Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(
+					nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(
 							profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-					return Utils.doSave(repo, congChuc,
+					return congChucService.doSave(congChuc,
 							Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 							eass, HttpStatus.CREATED);
@@ -368,8 +372,8 @@ public class CongChucController extends TttpController<CongChuc> {
 				congChuc.getNguoiDung().setActive(false);
 			}
 
-			Utils.save(repo, congChuc, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			Utils.save(repoNguoiDung, congChuc.getNguoiDung(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			congChucService.save(congChuc, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

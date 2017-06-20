@@ -4,6 +4,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -16,9 +20,13 @@ import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.FormRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class FormService {
+	
+	@Autowired
+	private FormRepository formRepository;
 
 	BooleanExpression base = QForm.form.daXoa.eq(false);
 
@@ -77,5 +85,13 @@ public class FormService {
 	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QForm.form.id.eq(id));
+	}
+	
+	public Form save(Form obj, Long congChucId) {
+		return Utils.save(formRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(Form obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(formRepository, obj, congChucId, eass, status);		
 	}
 }

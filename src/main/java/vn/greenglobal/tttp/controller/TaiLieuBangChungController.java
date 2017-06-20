@@ -74,7 +74,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
 		try {
-			return Utils.doSave(repo, taiLieuBangChung,
+			return taiLieuBangChungService.doSave(taiLieuBangChung,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -101,7 +101,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getTaiLieuBangChungs().size() > 0) {
 							for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
-								TaiLieuBangChung tlbc = Utils.save(repo, taiLieuBangChung, Long.valueOf(
+								TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuBangChungs().add(tlbc);
 							}
@@ -151,7 +151,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, taiLieuBangChung,
+			return taiLieuBangChungService.doSave(taiLieuBangChung,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -185,7 +185,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 								listUpdate.add(taiLieuBangChung);
 							}
 							for (TaiLieuBangChung taiLieuBangChung : listUpdate) {
-								TaiLieuBangChung tlbc = Utils.save(repo, taiLieuBangChung, Long.valueOf(
+								TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuBangChungs().add(tlbc);
 							}
@@ -214,7 +214,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, taiLieuBangChung,
+			taiLieuBangChungService.save(taiLieuBangChung,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -241,7 +241,7 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 					listDelete.add(tlbc);
 				}
 				for (TaiLieuBangChung tlbc : listDelete) {
-					Utils.save(repo, tlbc, Long
+					taiLieuBangChungService.save(tlbc, Long
 							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
 			}

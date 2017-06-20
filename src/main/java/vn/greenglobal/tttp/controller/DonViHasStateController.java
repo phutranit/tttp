@@ -108,7 +108,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
-			return Utils.doSave(donViHasStateRepo, donViHasState,
+			return donViHasStateService.doSave(donViHasState,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -141,7 +141,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(donViHasStateRepo, donViHasState,
+			return donViHasStateService.doSave(donViHasState,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -167,7 +167,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(donViHasStateRepo, donViHasState,
+			donViHasStateService.save(donViHasState,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
