@@ -1,6 +1,10 @@
 package vn.greenglobal.tttp.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -11,9 +15,14 @@ import vn.greenglobal.tttp.model.DonViHasState;
 import vn.greenglobal.tttp.model.QDonViHasState;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.repository.DonViHasStateRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class DonViHasStateService {
+	
+	@Autowired
+	private DonViHasStateRepository donViHasStateRepository;
+	
 	BooleanExpression base = QDonViHasState.donViHasState.daXoa.eq(false);
 	
 	public Predicate predicateFindAll(String processType) {
@@ -62,4 +71,13 @@ public class DonViHasStateService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDonViHasState.donViHasState.id.eq(id));
 	}
+	
+	public DonViHasState save(DonViHasState obj, Long congChucId) {
+		return Utils.save(donViHasStateRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(DonViHasState obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(donViHasStateRepository, obj, congChucId, eass, status);		
+	}
+	
 }

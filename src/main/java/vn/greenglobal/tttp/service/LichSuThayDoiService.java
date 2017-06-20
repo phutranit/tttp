@@ -41,4 +41,5 @@ public class LichSuThayDoiService {
 	public ResponseEntity<Object> doSave(LichSuThayDoi obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		return Utils.doSave(lichSuThayDoiRepository, obj, congChucId, eass, status);		
 	}
+	
 }

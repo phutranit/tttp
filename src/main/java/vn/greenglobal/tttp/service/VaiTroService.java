@@ -3,6 +3,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -15,9 +19,13 @@ import vn.greenglobal.tttp.model.QVaiTro;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class VaiTroService {
+	
+	@Autowired
+	private VaiTroRepository vaiTroRepository;
 
 	BooleanExpression base = QVaiTro.vaiTro.daXoa.eq(false);
 
@@ -77,6 +85,14 @@ public class VaiTroService {
 		}
 
 		return false;
+	}
+	
+	public VaiTro save(VaiTro obj, Long congChucId) {
+		return Utils.save(vaiTroRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(VaiTro obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(vaiTroRepository, obj, congChucId, eass, status);		
 	}
 
 }

@@ -1,5 +1,9 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -8,9 +12,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.QTaiLieuVanThu;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class TaiLieuVanThuService {
+	
+	@Autowired
+	private TaiLieuVanThuRepository taiLieuVanThuRepository;
 
 	BooleanExpression base = QTaiLieuVanThu.taiLieuVanThu.daXoa.eq(false);
 
@@ -52,6 +60,14 @@ public class TaiLieuVanThuService {
 		TaiLieuVanThu taiLieuVanThu = repo.findOne(predAll);
 
 		return taiLieuVanThu != null ? true : false;
+	}
+	
+	public TaiLieuVanThu save(TaiLieuVanThu obj, Long congChucId) {
+		return Utils.save(taiLieuVanThuRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(TaiLieuVanThu obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(taiLieuVanThuRepository, obj, congChucId, eass, status);		
 	}
 
 }

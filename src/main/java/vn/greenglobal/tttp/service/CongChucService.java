@@ -3,6 +3,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -15,10 +19,14 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CongChucService {
 
+	@Autowired
+	private CongChucRepository congChucRepository;
+	
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa, String vaiTro, Long coQuanQuanLyId, Long congChucId,
@@ -134,5 +142,13 @@ public class CongChucService {
 		}
 		
 		return predAll;
+	}
+	
+	public CongChuc save(CongChuc obj, Long congChucId) {
+		return Utils.save(congChucRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CongChuc obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(congChucRepository, obj, congChucId, eass, status);		
 	}
 }

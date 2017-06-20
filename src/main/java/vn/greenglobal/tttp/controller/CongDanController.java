@@ -128,7 +128,7 @@ public class CongDanController extends TttpController<CongDan> {
 				}
 			}
 
-			return Utils.doSave(repo, congDan,
+			return congDanService.doSave(congDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -320,10 +320,10 @@ public class CongDanController extends TttpController<CongDan> {
 				lichSu.setIdDoiTuong(id);
 				lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-				Utils.save(repoLichSu, lichSu,
+				lichSuThayDoiService.save(lichSu,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}			
-			return Utils.doSave(repo, congDan,
+			return congDanService.doSave(congDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -354,7 +354,7 @@ public class CongDanController extends TttpController<CongDan> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, congDan,
+			congDanService.save(congDan,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

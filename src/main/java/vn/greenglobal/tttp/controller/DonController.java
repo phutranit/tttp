@@ -259,7 +259,6 @@ public class DonController extends TttpController<Don> {
 		
 		return listProcess;
 	}
-
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -417,7 +416,6 @@ public class DonController extends TttpController<Don> {
 									ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 						}
 					}
-				
 					
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
@@ -458,7 +456,7 @@ public class DonController extends TttpController<Don> {
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 				lichSuThayDoiService.save(lichSu, congChucId);
 				lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-				return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
+				return donService.doSave(donMoi, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -466,7 +464,6 @@ public class DonController extends TttpController<Don> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-
 
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}")
 	@ApiOperation(value = "Lấy Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -646,7 +643,7 @@ public class DonController extends TttpController<Don> {
 					lichSuThayDoiService.save(lichSu, congChucId);
 				}
 				
-				return Utils.doSave(repo, don,
+				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
 			}

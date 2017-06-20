@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -26,9 +29,13 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CongDanService {
+	
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	@Autowired
 	private DanTocRepository danTocRepo;
@@ -193,6 +200,14 @@ public class CongDanService {
 		}
 
 		return false;
+	}
+	
+	public CongDan save(CongDan obj, Long congChucId) {
+		return Utils.save(congDanRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CongDan obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(congDanRepository, obj, congChucId, eass, status);		
 	}
 
 }

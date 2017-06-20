@@ -93,7 +93,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
-			return Utils.doSave(repo, loaiTaiLieu,
+			return loaiTaiLieuService.doSave(loaiTaiLieu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -149,7 +149,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, loaiTaiLieu,
+			return loaiTaiLieuService.doSave(loaiTaiLieu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -180,7 +180,7 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, loaiTaiLieu,
+			loaiTaiLieuService.save(loaiTaiLieu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
