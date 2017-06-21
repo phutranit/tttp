@@ -71,7 +71,6 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		
 		object.put("ten", ProcessTypeEnum.TIEP_CONG_DAN.getText());
 		object.put("giaTri", ProcessTypeEnum.TIEP_CONG_DAN.name());
 		list.add(object);
@@ -96,20 +95,20 @@ public class EnumController {
 		object.put("giaTri", ProcessTypeEnum.THAM_TRA_XAC_MINH.name());
 		list.add(object);
 		
-		object = new HashMap<>();
-		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.getText());
-		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.name());
-		list.add(object);
-		
-		object = new HashMap<>();
-		object.put("ten", ProcessTypeEnum.GIAI_QUYET_TO_CAO.getText());
-		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_TO_CAO.name());
-		list.add(object);
-		
-		object = new HashMap<>();
-		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.getText());
-		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.name());
-		list.add(object);
+//		object = new HashMap<>();
+//		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.getText());
+//		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KHIEU_NAI.name());
+//		list.add(object);
+//		
+//		object = new HashMap<>();
+//		object.put("ten", ProcessTypeEnum.GIAI_QUYET_TO_CAO.getText());
+//		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_TO_CAO.name());
+//		list.add(object);
+//		
+//		object = new HashMap<>();
+//		object.put("ten", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.getText());
+//		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_KIEN_NGHI_PHAN_ANH.name());
+//		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);

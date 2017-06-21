@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,30 +37,29 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "states", description = "Trang thái")
 public class StateController extends TttpController<State> {
-	
+
 	@Autowired
 	private DonViHasStateRepository donViHasStateRepo;
-	
+
 	@Autowired
 	private TransitionRepository transitionRepo;
-	
+
 	@Autowired
 	private StateRepository stateRepo;
-	
+
 	@Autowired
 	private StateService stateService;
-	
+
 	public StateController(BaseRepository<State, Long> repo) {
 		super(repo);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/states")
 	@ApiOperation(value = "Lấy danh sách Thạng Thái", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable,  @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
-			@RequestParam(value = "type", required = false) String type,
-			PersistentEntityResourceAssembler eass) {
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "type", required = false) String type, PersistentEntityResourceAssembler eass) {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
@@ -73,12 +73,12 @@ public class StateController extends TttpController<State> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/states/{id}")
 	@ApiOperation(value = "Lấy Thạng Thái theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Thạng Thái thành công", response = State.class) })
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+			@PathVariable("id") Long id, PersistentEntityResourceAssembler eass) {
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
@@ -96,7 +96,7 @@ public class StateController extends TttpController<State> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/states")
 	@ApiOperation(value = "Thêm mới Trạng Thái", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -110,20 +110,21 @@ public class StateController extends TttpController<State> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			
-			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
+
+			if (StringUtils.isNotBlank(state.getTen()) && state.getType() != null
+					&& stateService.checkExistsData(stateRepo, state)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
-			
+
 			return stateService.doSave(state,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/states/{id}")
 	@ApiOperation(value = "Cập nhật Trạng Thái", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -143,20 +144,21 @@ public class StateController extends TttpController<State> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			
-			if (state.getType() != null && stateService.checkExistsData(stateRepo, state)) {
+
+			if (StringUtils.isNotBlank(state.getTen()) && state.getType() != null
+					&& stateService.checkExistsData(stateRepo, state)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
-			
+
 			return stateService.doSave(state,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/states/{id}")
 	@ApiOperation(value = "Xoá Trạng Thái", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Trạng Thái thành công") })
@@ -168,12 +170,12 @@ public class StateController extends TttpController<State> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			
+
 			if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
 						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
-			
+
 			State state = stateService.delete(stateRepo, id);
 			if (state == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),

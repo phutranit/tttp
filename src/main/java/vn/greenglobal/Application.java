@@ -90,7 +90,6 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 	
-
 //	@Value("${cors.allowedOrigins}")
 //	private String[] myAllowedOriginList;
 //	

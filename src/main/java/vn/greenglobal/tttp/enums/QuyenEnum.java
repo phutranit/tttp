@@ -2,18 +2,6 @@ package vn.greenglobal.tttp.enums;
 
 public enum QuyenEnum {
 	
-	FORM_LIETKE("Liệt kê"),
-	FORM_XEM("Xem"),
-	FORM_THEM("Thêm mới"),
-	FORM_SUA("Chỉnh sửa"),
-	FORM_XOA("Xoá"),
-	
-	DONVIHASSTATE_LIETKE("Liệt kê"),
-	DONVIHASSTATE_XEM("Xem"),
-	DONVIHASSTATE_THEM("Thêm mới"),
-	DONVIHASSTATE_SUA("Chỉnh sửa"),
-	DONVIHASSTATE_XOA("Xoá"),
-	
 	THAMQUYENGIAIQUYET_LIETKE("Liệt kê"),
 	THAMQUYENGIAIQUYET_XEM("Xem"),
 	THAMQUYENGIAIQUYET_THEM("Thêm mới"),
@@ -160,17 +148,29 @@ public enum QuyenEnum {
 	STATE_SUA("Chỉnh sửa"),
 	STATE_XOA("Xoá"),
 	
-	TRANSITION_LIETKE("Liệt kê"),
-	TRANSITION_XEM("Xem"),
-	TRANSITION_THEM("Thêm mới"),
-	TRANSITION_SUA("Chỉnh sửa"),
-	TRANSITION_XOA("Xoá"),
+	DONVIHASSTATE_LIETKE("Liệt kê"),
+	DONVIHASSTATE_XEM("Xem"),
+	DONVIHASSTATE_THEM("Thêm mới"),
+	DONVIHASSTATE_SUA("Chỉnh sửa"),
+	DONVIHASSTATE_XOA("Xoá"),
+	
+	FORM_LIETKE("Liệt kê"),
+	FORM_XEM("Xem"),
+	FORM_THEM("Thêm mới"),
+	FORM_SUA("Chỉnh sửa"),
+	FORM_XOA("Xoá"),
 
 	PROCESS_LIETKE("Liệt kê"),
 	PROCESS_XEM("Xem"),
 	PROCESS_THEM("Thêm mới"),
 	PROCESS_SUA("Chỉnh sửa"),
-	PROCESS_XOA("Xoá");
+	PROCESS_XOA("Xoá"),
+	
+	TRANSITION_LIETKE("Liệt kê"),
+	TRANSITION_XEM("Xem"),
+	TRANSITION_THEM("Thêm mới"),
+	TRANSITION_SUA("Chỉnh sửa"),
+	TRANSITION_XOA("Xoá");
 	
 	QuyenEnum(String text) {
 		this.text = text;

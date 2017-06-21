@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +31,7 @@ import vn.greenglobal.tttp.model.QDonViHasState;
 
 @Component
 public class StateService {
-	
+
 	@Autowired
 	private StateRepository stateRepository;
 
@@ -40,30 +39,31 @@ public class StateService {
 
 	public Predicate predicateFindAll(Long currentStateId, Process process, TransitionRepository transitionRepo) {
 		BooleanExpression predAll = base;
-		BooleanExpression transitionQuery = QTransition.transition.daXoa.eq(false);		
+		BooleanExpression transitionQuery = QTransition.transition.daXoa.eq(false);
 		transitionQuery = transitionQuery.and(QTransition.transition.process.eq(process))
-			.and(QTransition.transition.currentState.id.eq(currentStateId));
-		
+				.and(QTransition.transition.currentState.id.eq(currentStateId));
+
 		Collection<Transition> transitionCollections = new ArrayList<Transition>();
 		Collection<State> stateCollections = new ArrayList<State>();
 		Iterable<Transition> transitions = transitionRepo.findAll(transitionQuery);
 
 		CollectionUtils.addAll(transitionCollections, transitions.iterator());
-		stateCollections = transitionCollections.stream().map(d -> d.getNextState()).distinct().collect(Collectors.toList());
+		stateCollections = transitionCollections.stream().map(d -> d.getNextState()).distinct()
+				.collect(Collectors.toList());
 		predAll = predAll.and(QState.state.in(stateCollections));
-		
+
 		return predAll;
 	}
-	
+
 	public Predicate predicateFindAll(String tuKhoa, String type) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(tuKhoa)) { 
-			predAll = predAll.and(QState.state.ten.containsIgnoreCase(tuKhoa)
-					.or(QState.state.tenVietTat.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QState.state.ten.containsIgnoreCase(tuKhoa.trim())
+					.or(QState.state.tenVietTat.containsIgnoreCase(tuKhoa.trim())));
 		}
-		if (StringUtils.isNotBlank(type)) { 
-			FlowStateEnum flowState = FlowStateEnum.valueOf(type);
-			predAll = predAll.and(QState.state.type.eq(flowState));
+
+		if (type != null && StringUtils.isNotBlank(type)) {
+			predAll = predAll.and(QState.state.type.eq(FlowStateEnum.valueOf(type)));
 		}
 		return predAll;
 	}
@@ -71,11 +71,11 @@ public class StateService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QState.state.id.eq(id));
 	}
-	
+
 	public Predicate predicateFindByType(FlowStateEnum type) {
 		return base.and(QState.state.type.eq(type));
 	}
-	
+
 	public boolean isExists(StateRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = base.and(QState.state.id.eq(id));
@@ -83,18 +83,18 @@ public class StateService {
 		}
 		return false;
 	}
-	
+
 	public boolean checkExistsData(StateRepository repo, State body) {
 		BooleanExpression predAll = base;
 		if (!body.isNew()) {
 			predAll = predAll.and(QState.state.id.ne(body.getId()));
 		}
-		FlowStateEnum type = body.getType();
-		predAll = predAll.and(QState.state.type.eq(type));
+		predAll = predAll.and(QState.state.ten.eq(body.getTen()));
+		predAll = predAll.and(QState.state.type.eq(body.getType()));
 		State state = repo.findOne(predAll);
 		return state != null ? true : false;
 	}
-	
+
 	public State delete(StateRepository repo, Long id) {
 		State state = repo.findOne(predicateFindOne(id));
 
@@ -104,34 +104,28 @@ public class StateService {
 
 		return state;
 	}
-	
-	public boolean checkUsedData(DonViHasStateRepository donViHasStateRepository, TransitionRepository transitionRepo, Long id) {
-		List<DonViHasState> donViHasStates = (List<DonViHasState>) donViHasStateRepository
-				.findAll(QDonViHasState.donViHasState.daXoa.eq(false)
-						.and(QDonViHasState.donViHasState.state.id.eq(id)));
-		
-		if (donViHasStates != null && donViHasStates.size() > 0) {
+
+	public boolean checkUsedData(DonViHasStateRepository donViHasStateRepository, TransitionRepository transitionRepo,
+			Long id) {
+		List<DonViHasState> donViHasStates = (List<DonViHasState>) donViHasStateRepository.findAll(
+				QDonViHasState.donViHasState.daXoa.eq(false).and(QDonViHasState.donViHasState.state.id.eq(id)));
+		List<Transition> transitions = (List<Transition>) transitionRepo.findAll(QTransition.transition.daXoa.eq(false)
+				.and(QTransition.transition.currentState.id.eq(id)).or(QTransition.transition.nextState.id.eq(id)));
+
+		if ((donViHasStates != null && donViHasStates.size() > 0) || (transitions != null && transitions.size() > 0)) {
 			return true;
 		}
-		
-		List<Transition> transitions = (List<Transition>) transitionRepo
-				.findAll(QTransition.transition.daXoa.eq(false)
-						.and(QTransition.transition.currentState.id.eq(id))
-						.or(QTransition.transition.nextState.id.eq(id)));
-		
-		if (transitions != null && transitions.size() > 0) {
-			return true;
-		}
-		
+
 		return false;
 	}
-	
+
 	public State save(State obj, Long congChucId) {
 		return Utils.save(stateRepository, obj, congChucId);
 	}
-	
-	public ResponseEntity<Object> doSave(State obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
-		return Utils.doSave(stateRepository, obj, congChucId, eass, status);		
+
+	public ResponseEntity<Object> doSave(State obj, Long congChucId, PersistentEntityResourceAssembler eass,
+			HttpStatus status) {
+		return Utils.doSave(stateRepository, obj, congChucId, eass, status);
 	}
-	
+
 }
