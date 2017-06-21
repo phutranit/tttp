@@ -142,11 +142,11 @@ public enum QuyenEnum {
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
 	THEODOIGIAMSAT_THONGKE("Thống kê"),
 	
-	FORM_LIETKE("Liệt kê"),
-	FORM_XEM("Xem"),
-	FORM_THEM("Thêm mới"),
-	FORM_SUA("Chỉnh sửa"),
-	FORM_XOA("Xoá"),
+	STATE_LIETKE("Liệt kê"),
+	STATE_XEM("Xem"),
+	STATE_THEM("Thêm mới"),
+	STATE_SUA("Chỉnh sửa"),
+	STATE_XOA("Xoá"),
 	
 	DONVIHASSTATE_LIETKE("Liệt kê"),
 	DONVIHASSTATE_XEM("Xem"),
@@ -154,23 +154,23 @@ public enum QuyenEnum {
 	DONVIHASSTATE_SUA("Chỉnh sửa"),
 	DONVIHASSTATE_XOA("Xoá"),
 	
-	STATE_LIETKE("Liệt kê"),
-	STATE_XEM("Xem"),
-	STATE_THEM("Thêm mới"),
-	STATE_SUA("Chỉnh sửa"),
-	STATE_XOA("Xoá"),
-	
-	TRANSITION_LIETKE("Liệt kê"),
-	TRANSITION_XEM("Xem"),
-	TRANSITION_THEM("Thêm mới"),
-	TRANSITION_SUA("Chỉnh sửa"),
-	TRANSITION_XOA("Xoá"),
+	FORM_LIETKE("Liệt kê"),
+	FORM_XEM("Xem"),
+	FORM_THEM("Thêm mới"),
+	FORM_SUA("Chỉnh sửa"),
+	FORM_XOA("Xoá"),
 
 	PROCESS_LIETKE("Liệt kê"),
 	PROCESS_XEM("Xem"),
 	PROCESS_THEM("Thêm mới"),
 	PROCESS_SUA("Chỉnh sửa"),
-	PROCESS_XOA("Xoá");
+	PROCESS_XOA("Xoá"),
+	
+	TRANSITION_LIETKE("Liệt kê"),
+	TRANSITION_XEM("Xem"),
+	TRANSITION_THEM("Thêm mới"),
+	TRANSITION_SUA("Chỉnh sửa"),
+	TRANSITION_XOA("Xoá");
 	
 	QuyenEnum(String text) {
 		this.text = text;
