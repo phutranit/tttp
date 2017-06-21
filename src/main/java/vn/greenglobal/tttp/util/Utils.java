@@ -572,9 +572,6 @@ public class Utils {
 		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 		Calendar end = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
 		
-		System.out.println("start# " +start.getTime());
-		System.out.println("end# " +end.getTime());
-		
 		if (start.before(end) || DateUtils.isSameDay(start, end)) {
 			while (start.before(end) || DateUtils.isSameDay(start, end)) {
 				// check ngay nghi
@@ -585,12 +582,8 @@ public class Utils {
 			}
 		}
 		
-		System.out.println("ketThuc " +ketThuc.getTime());
-		System.out.println("end " +end.getTime());
 		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
-			System.out.println("++");
 			if (ketThuc.after(end) && !DateUtils.isSameDay(ketThuc, end)) {
-				System.out.println("+++");
 				isValid = true;
 			}
 		}
