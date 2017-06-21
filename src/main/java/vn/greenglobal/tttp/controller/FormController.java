@@ -111,7 +111,7 @@ public class FormController extends TttpController<Form> {
 
 			if (StringUtils.isNotBlank(form.getTen()) && formService.checkExistsData(formRepo, form)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			return formService.doSave(form,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -138,7 +138,7 @@ public class FormController extends TttpController<Form> {
 			form.setId(id);
 			if (StringUtils.isNotBlank(form.getTen()) && formService.checkExistsData(formRepo, form)) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 
 			if (!formService.isExists(formRepo, id)) {
