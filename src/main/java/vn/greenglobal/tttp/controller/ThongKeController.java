@@ -1,7 +1,9 @@
 package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,11 +33,15 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -56,7 +62,16 @@ public class ThongKeController extends TttpController<Don> {
 	private GiaiQuyetDonRepository giaiQuyetDonRepo;
 	
 	@Autowired
+	private ThamSoRepository repoThamSo;
+	
+	@Autowired
 	private DonService donService;
+	
+	@Autowired
+	private ThamSoService thamSoService;
+	
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
 	
 	public ThongKeController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -132,15 +147,51 @@ public class ThongKeController extends TttpController<Don> {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
-		if (donVi.getCha() != null) { 
-			donViXuLyXLD = donVi.getCha().getId();
+		Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
+		ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+		ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+		ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+		ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+		ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+		ThamSo thamSoCCQQLUBNDTinhTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+		ThamSo thamSoCCQQLChiCuc = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_CHI_CUC"));
+		
+		List<CoQuanQuanLy> coQuans = new ArrayList<CoQuanQuanLy>();
+		if (donViXuLyXLD == Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString())
+				|| donViXuLyXLD == Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString())) {
+			// Danh sach don vi thuoc UBNDTP Da Nang
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
+			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(
+					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+					"CQQL_UBNDTP_DA_NANG"));
+			coQuans.addAll(list);
+		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
+			// Danh sach don vi thuoc Quan Huyen
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
+			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
+					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds,
+					"CCQQL_UBND_QUAN_HUYEN")));
+		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())) {
+			// Danh sach don vi thuoc So Ban Nganh
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLChiCuc.getGiaTri().toString()));
+			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
+					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds, "CCQQL_SO_BAN_NGANH")));
+		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
+			// Danh sach don vi thuoc Phuong Xa
+			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donViXuLyXLD)));
 		}
-		System.out.println("donViXuLyXLD " +donViXuLyXLD);
+		
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> mapDonThongKe = new HashMap<>();
-		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDon(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyet(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHan(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDonThuocNhieuCoQuan(coQuans, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyetCuaNhieuCoQuan(coQuans, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHanCuaNhieuCoQuan(coQuans, xuLyRepo, repo, giaiQuyetDonRepo));
 		map.put("ten", "ĐƠN TẠI ĐỊA BÀN " +StringUtils.upperCase(donVi != null ? donVi.getDonVi().getTen() : "") +" NĂM " +LocalDateTime.now().getYear());
 		map.put("thongKe", mapDonThongKe);
 		return new ResponseEntity<>(map, HttpStatus.OK);
