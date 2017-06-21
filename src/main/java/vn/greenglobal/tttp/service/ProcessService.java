@@ -4,6 +4,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -18,9 +22,13 @@ import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class ProcessService {
+	
+	@Autowired
+	private ProcessRepository processRepository;
 
 	BooleanExpression base = QProcess.process.daXoa.eq(false);
 
@@ -99,6 +107,14 @@ public class ProcessService {
 			.and(QProcess.process.coQuanQuanLy.eq(donVi))
 			.and(QProcess.process.processType.eq(processType));
 		return predAll;
+	}
+	
+	public Process save(Process obj, Long congChucId) {
+		return Utils.save(processRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(Process obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(processRepository, obj, congChucId, eass, status);		
 	}
 
 }

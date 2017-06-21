@@ -89,7 +89,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
-			return Utils.doSave(repo, capDonViHanhChinh,
+			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -145,7 +145,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, capDonViHanhChinh,
+			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.OK);
 		} catch (Exception e) {
@@ -176,7 +176,7 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, capDonViHanhChinh,
+			capDonViHanhChinhService.save(capDonViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

@@ -1,5 +1,9 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -8,9 +12,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class NguoiDungService {
+	
+	@Autowired
+	private NguoiDungRepository nguoiDungRepository;
 
 	BooleanExpression base = QNguoiDung.nguoiDung.daXoa.eq(false);
 
@@ -46,6 +54,14 @@ public class NguoiDungService {
 		}
 
 		return nguoiDung;
+	}
+	
+	public NguoiDung save(NguoiDung obj, Long congChucId) {
+		return Utils.save(nguoiDungRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(NguoiDung obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(nguoiDungRepository, obj, congChucId, eass, status);		
 	}
 
 }

@@ -61,7 +61,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
 						ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 			}
-			return Utils.doSave(repo, tepDinhKem,
+			return TepDinhKemService.doSave(tepDinhKem,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 								listCreate.add(tepDinhKem);
 							}
 							for (TepDinhKem tepDinhKem : listCreate) {
-								TepDinhKem tlvt = Utils.save(repo, tepDinhKem, Long.valueOf(
+								TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTepDinhKems().add(tlvt);
 							}
@@ -153,7 +153,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
 			}
 
-			return Utils.doSave(repo, tepDinhKem,
+			return TepDinhKemService.doSave(tepDinhKem,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
 		} catch (Exception e) {
@@ -192,7 +192,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 								listUpdate.add(tepDinhKem);
 							}
 							for (TepDinhKem tepDinhKem : listUpdate) {
-								TepDinhKem tlvt = Utils.save(repo, tepDinhKem, Long.valueOf(
+								TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTepDinhKems().add(tlvt);
 							}
@@ -221,7 +221,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, tepDinhKem,
+			TepDinhKemService.save(tepDinhKem,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -248,7 +248,7 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 					listDelete.add(tlvt);
 				}
 				for (TepDinhKem tlvt : listDelete) {
-					Utils.save(repo, tlvt, Long
+					TepDinhKemService.save(tlvt, Long
 							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				}
 			}

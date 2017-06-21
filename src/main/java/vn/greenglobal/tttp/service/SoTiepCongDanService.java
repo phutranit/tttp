@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -25,6 +29,9 @@ import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class SoTiepCongDanService {
+	
+	@Autowired
+	private SoTiepCongDanRepository soTiepCongDanRepository;
 
 	BooleanExpression base = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
@@ -134,5 +141,13 @@ public class SoTiepCongDanService {
 		}
 
 		return soTiepCongDan;
+	}
+	
+	public SoTiepCongDan save(SoTiepCongDan obj, Long congChucId) {
+		return Utils.save(soTiepCongDanRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(SoTiepCongDan obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(soTiepCongDanRepository, obj, congChucId, eass, status);		
 	}
 }

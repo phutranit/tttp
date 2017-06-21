@@ -29,9 +29,9 @@ import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.DonRepository;
-import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -48,9 +48,9 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 
 	@Autowired
 	private DonRepository donRepo;
-
+	
 	@Autowired
-	private LichSuThayDoiRepository lichSuRepo;
+	private LichSuThayDoiService lichSuThayDoiService;
 	
 	@Autowired
 	private DonService donService;
@@ -81,7 +81,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 
 			Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
 			don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
-			Utils.save(donRepo, don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			
 			ThongTinGiaiQuyetDon thongTinOld = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
 			List<PropertyChangeObject> listThayDoi = thongTinGiaiQuyetDonService.getListThayDoi(thongTinGiaiQuyetDon, thongTinOld);
@@ -91,11 +91,10 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 				lichSu.setIdDoiTuong(thongTinOld.getDon().getId());
 				lichSu.setNoiDung("Cập nhật thông tin giải quyết đơn");
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-				Utils.save(lichSuRepo, lichSu,
-						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				lichSuThayDoiService.save(lichSu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
 			
-			return Utils.doSave(repo, thongTinGiaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+			return thongTinGiaiQuyetDonService.doSave(thongTinGiaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
