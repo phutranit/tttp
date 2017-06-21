@@ -22,7 +22,7 @@ public enum ApiErrorEnum {
 	CONGDAN_EXISTS("Công dân đã tồn tại trong hệ thống."),
 	DATA_EXISTS("Dữ liệu này đã tồn tại trong hệ thống."),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống."),
-	ROLE_FORBIDDEN("Không có quyền thực hiện chức năng này."),
+	ROLE_FORBIDDEN("Tài khoản hiện tại Không có quyền thực hiện chức năng này."),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator."),
 	DATA_USED("Dữ liệu này đang được sử dụng."),
 	EMAIL_INVALID("Trường email không đúng định dạng."),

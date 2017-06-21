@@ -2,18 +2,6 @@ package vn.greenglobal.tttp.enums;
 
 public enum QuyenEnum {
 	
-	FORM_LIETKE("Liệt kê"),
-	FORM_XEM("Xem"),
-	FORM_THEM("Thêm mới"),
-	FORM_SUA("Chỉnh sửa"),
-	FORM_XOA("Xoá"),
-	
-	DONVIHASSTATE_LIETKE("Liệt kê"),
-	DONVIHASSTATE_XEM("Xem"),
-	DONVIHASSTATE_THEM("Thêm mới"),
-	DONVIHASSTATE_SUA("Chỉnh sửa"),
-	DONVIHASSTATE_XOA("Xoá"),
-	
 	THAMQUYENGIAIQUYET_LIETKE("Liệt kê"),
 	THAMQUYENGIAIQUYET_XEM("Xem"),
 	THAMQUYENGIAIQUYET_THEM("Thêm mới"),
@@ -153,6 +141,18 @@ public enum QuyenEnum {
 	
 	THEODOIGIAMSAT_LIETKE("Liệt kê"),
 	THEODOIGIAMSAT_THONGKE("Thống kê"),
+	
+	FORM_LIETKE("Liệt kê"),
+	FORM_XEM("Xem"),
+	FORM_THEM("Thêm mới"),
+	FORM_SUA("Chỉnh sửa"),
+	FORM_XOA("Xoá"),
+	
+	DONVIHASSTATE_LIETKE("Liệt kê"),
+	DONVIHASSTATE_XEM("Xem"),
+	DONVIHASSTATE_THEM("Thêm mới"),
+	DONVIHASSTATE_SUA("Chỉnh sửa"),
+	DONVIHASSTATE_XOA("Xoá"),
 	
 	STATE_LIETKE("Liệt kê"),
 	STATE_XEM("Xem"),
