@@ -268,25 +268,30 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getCurrentForm(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,
-			@RequestParam(value = "donId", required = false) Long donId,
-			@RequestParam(value = "processType", required = true) String processType,
-			@RequestParam(value = "currentStateId", required = false) Long currentStateId, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "donId", required = false) Long donId, PersistentEntityResourceAssembler eass) {
 
 		try {
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 			if (nguoiDung != null) {
 				Medial_Form_State media = new Medial_Form_State();
 				State currentState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-				Long currentStateId2 = (currentStateId != null && currentStateId.longValue() > 0) ? currentStateId : currentState.getId();
+				
 				Long nguoiTaoId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				Don don = null;
 				if (donId != null && donId.longValue() > 0) {
-					Don don = repo.findOne(donService.predicateFindOne(donId));
+					don = repo.findOne(donService.predicateFindOne(donId));
 					if (don == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
 								ApiErrorEnum.DON_REQUIRED.getText(), ApiErrorEnum.DON_REQUIRED.getText());
 					}
 					nguoiTaoId = don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L;
 					currentState = don.getCurrentState();
+				}
+				Long currentStateId2 = currentState.getId();
+				String processType = "XU_LY_DON";
+				if (don != null) {
+					currentStateId2 = (don.getCurrentState() != null && don.getCurrentState().getId().longValue() > 0) ? don.getCurrentState().getId() : currentState.getId();
+					processType = don.getProcessType() != null ? don.getProcessType().toString() : processType;
 				}
 				
 				List<Process> listProcess = getProcess(authorization, nguoiTaoId, processType);
