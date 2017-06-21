@@ -171,7 +171,6 @@ public class ThongKeController extends TttpController<Don> {
 		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
 			// Danh sach don vi thuoc Quan Huyen
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
 			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
 					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds,
