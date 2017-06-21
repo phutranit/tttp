@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class FormService {
-	
+
 	@Autowired
 	private FormRepository formRepository;
 
@@ -32,39 +31,38 @@ public class FormService {
 
 	public Predicate predicateFindAll(String tuKhoa, String processType) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(tuKhoa)) { 
-			predAll = predAll.and(QForm.form.ten.eq(tuKhoa))
-					.or(QForm.form.alias.eq(tuKhoa));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QForm.form.ten.equalsIgnoreCase(tuKhoa))
+					.or(QForm.form.alias.equalsIgnoreCase(tuKhoa));
 		}
-		if (StringUtils.isNotBlank(processType)) { 
-			ProcessTypeEnum type = ProcessTypeEnum.valueOf(processType);
-			predAll = predAll.and(QForm.form.processType.eq(type));
+		if (processType != null && StringUtils.isNotBlank(processType)) {
+			predAll = predAll.and(QForm.form.processType.eq(ProcessTypeEnum.valueOf(processType)));
 		}
 		return predAll;
 	}
-	
+
 	public boolean checkExistsData(FormRepository repo, Form body) {
 		BooleanExpression predAll = base;
 		if (!body.isNew()) {
 			predAll = predAll.and(QForm.form.id.ne(body.getId()));
 		}
-		ProcessTypeEnum processType = body.getProcessType();
-		predAll = predAll.and(QForm.form.alias.eq(body.getAlias()))
-				.and(QForm.form.processType.eq(processType));
-		
+		predAll = predAll.and(QForm.form.ten.eq(body.getTen()));
+		predAll = predAll.and(QForm.form.alias.eq(body.getAlias()));
+		predAll = predAll.and(QForm.form.processType.eq(body.getProcessType()));
+
 		Form form = repo.findOne(predAll);
 		return form != null ? true : false;
 	}
-	
+
 	public boolean checkUsedData(TransitionRepository repo, Long id) {
-		List<Transition> transitionList = (List<Transition>) repo.findAll(QTransition.transition.daXoa.eq(false)
-						.and(QTransition.transition.form.id.eq(id)));
+		List<Transition> transitionList = (List<Transition>) repo
+				.findAll(QTransition.transition.daXoa.eq(false).and(QTransition.transition.form.id.eq(id)));
 		if (transitionList != null && transitionList.size() > 0) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean isExists(FormRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = base.and(QForm.form.id.eq(id));
@@ -82,16 +80,17 @@ public class FormService {
 
 		return form;
 	}
-	
+
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QForm.form.id.eq(id));
 	}
-	
+
 	public Form save(Form obj, Long congChucId) {
 		return Utils.save(formRepository, obj, congChucId);
 	}
-	
-	public ResponseEntity<Object> doSave(Form obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
-		return Utils.doSave(formRepository, obj, congChucId, eass, status);		
+
+	public ResponseEntity<Object> doSave(Form obj, Long congChucId, PersistentEntityResourceAssembler eass,
+			HttpStatus status) {
+		return Utils.doSave(formRepository, obj, congChucId, eass, status);
 	}
 }
