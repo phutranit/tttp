@@ -244,13 +244,24 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
-		if (getThongTinGiaiQuyetDon() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("thongTinGiaiQuyetDonId", getThongTinGiaiQuyetDon().getId());
-			return map;
-		}
-		return null;
+	public ThongTinGiaiQuyetDon getThongTinGiaiQuyetDonInfo() {
+//		if (getThongTinGiaiQuyetDon() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("thongTinGiaiQuyetDonId", getThongTinGiaiQuyetDon().getId());
+//			map.put("thoiGianDoiThoai", getThongTinGiaiQuyetDon().getThoiGianDoiThoai());
+//			map.put("ngayBaoCaoKetQuaTTXM", getThongTinGiaiQuyetDon().getNgayBaoCaoKetQuaTTXM());
+//			map.put("ngayBatDauGiaiQuyet", getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet());
+//			map.put("ngayKetThucGiaiQuyet", getThongTinGiaiQuyetDon().getNgayKetThucGiaiQuyet());
+//			map.put("ngayHetHanGiaiQuyet", getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet());
+//			map.put("ngayBatDauTTXM", getThongTinGiaiQuyetDon().getNgayBatDauTTXM());
+//			map.put("ngayKetThucTTXM", getThongTinGiaiQuyetDon().getNgayKetThucTTXM());
+//			map.put("ngayHetHanTTXM", getThongTinGiaiQuyetDon().getNgayHetHanTTXM());
+//			map.put("ngayHetHanSauKhiGiaHanTTXM", getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+//			map.put("ngayRaQuyetDinhGiaHanTTXM", getThongTinGiaiQuyetDon().getNgayRaQuyetDinhGiaHanTTXM());
+//			return map;
+//		}
+//		return null;
+		return getThongTinGiaiQuyetDon();
 	}
 
 	@Transient

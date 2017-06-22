@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +11,8 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,10 +30,19 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CongDan;
+import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
+import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.model.medial.Medial_Process_Post_Patch;
+import vn.greenglobal.tttp.model.medial.Medial_TaiLieuVanThu_Post_Patch;
 
 @RestController
 @RepositoryRestController
@@ -44,6 +57,9 @@ public class ProcessController extends TttpController<Process> {
 	
 	@Autowired
 	private TransitionRepository transitionRepo;
+	
+	@Autowired
+	private TransitionService transitionService;
 	
 	public ProcessController(BaseRepository<Process, Long> repo) {
 		super(repo);
@@ -179,6 +195,52 @@ public class ProcessController extends TttpController<Process> {
 			processService.save(process,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.POST, value = "/maTran")
+	@ApiOperation(value = "Thêm mới Ma Trận", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới Ma Trận thành công", response = Process.class),
+			@ApiResponse(code = 201, message = "Thêm mới Ma Trận thành công", response = Process.class) })
+	public ResponseEntity<Object> createMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
+			
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getProcess() != null && params.getTransitions().size() > 0) {
+							Long congChucId = 1L;
+							Process process = processService.save(params.getProcess(), congChucId);
+//							if (HttpStatus.BAD_REQUEST.equals(processSaved.getStatusCode())) {
+//								return processSaved;
+//							} else if (HttpStatus.CREATED.equals(processSaved.getStatusCode())) {
+//								for (Transition transition : params.getTransitions()) {
+//									transition.setProcess(process);
+//									ResponseEntity<Object> transitionSaved = transitionService.doSave(transition, congChucId, eass, HttpStatus.CREATED);
+//									if (HttpStatus.BAD_REQUEST.equals(transitionSaved.getStatusCode())) {
+//										return transitionSaved;
+//									}
+//								}
+//							}
+						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+					}
+				});
+			}
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
