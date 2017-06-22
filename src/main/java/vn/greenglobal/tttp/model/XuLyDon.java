@@ -27,6 +27,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 public class XuLyDon extends Model<XuLyDon> {
 	private static final long serialVersionUID = -8406016838422350892L;
 
+	@QueryInit("*.*")
 	@ManyToOne
 	private Don don;
 	@ManyToOne
