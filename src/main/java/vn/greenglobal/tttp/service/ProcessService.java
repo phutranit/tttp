@@ -76,7 +76,7 @@ public class ProcessService {
 		if (!body.isNew()) {
 			predAll = predAll.and(QProcess.process.id.ne(body.getId()));
 		}
-		predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(body.getTenQuyTrinh()));
+		predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(body.getTenQuyTrinh().trim()));
 		predAll = predAll.and(QProcess.process.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()));
 		predAll = predAll.and(QProcess.process.vaiTro.id.eq(body.getVaiTro().getId()));
 		ProcessTypeEnum processType = body.getProcessType();
