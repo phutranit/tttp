@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -221,20 +222,40 @@ public class ProcessController extends TttpController<Process> {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
-						if (params.getProcess() != null && params.getTransitions().size() > 0) {
-							Long congChucId = 1L;
-							Process process = processService.save(params.getProcess(), congChucId);
-//							if (HttpStatus.BAD_REQUEST.equals(processSaved.getStatusCode())) {
-//								return processSaved;
-//							} else if (HttpStatus.CREATED.equals(processSaved.getStatusCode())) {
-//								for (Transition transition : params.getTransitions()) {
-//									transition.setProcess(process);
-//									ResponseEntity<Object> transitionSaved = transitionService.doSave(transition, congChucId, eass, HttpStatus.CREATED);
-//									if (HttpStatus.BAD_REQUEST.equals(transitionSaved.getStatusCode())) {
-//										return transitionSaved;
-//									}
-//								}
-//							}
+						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Process process = params.getProcess();
+						if (process != null && params.getTransitions().size() > 0) {
+							if (process.getTenQuyTrinh() == null || StringUtils.isBlank(process.getTenQuyTrinh().trim())
+									|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
+									|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
+									|| process.getVaiTro().getId() <= 0) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+										ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+							}
+							
+							for (Transition transition : params.getTransitions()) {
+								if (transition.getForm() == null || transition.getForm().getId() <= 0
+										|| transition.getCurrentState() == null || transition.getCurrentState().getId() <= 0
+										|| transition.getNextState() == null || transition.getCurrentState().getId() <= 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								}
+							}
+								
+							if (processService.checkExistsData(processRepo, process)) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+										ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+							}
+							
+							process = processService.save(params.getProcess(), congChucId);
+							if (!process.isNew()) {
+								result.setProcess(process);
+								for (Transition transition : params.getTransitions()) {
+									transition.setProcess(process);
+									transitionService.save(transition, congChucId);
+									result.getTransitions().add(transition);
+								}
+							}
 						}
 						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}

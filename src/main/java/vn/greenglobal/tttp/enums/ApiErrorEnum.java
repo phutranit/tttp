@@ -6,6 +6,7 @@ public enum ApiErrorEnum {
 	SOQUYETDINH_REQUIRED("Số quyết định không được để trống."),
 	NGAYQUYETDINH_REQUIRED("Ngày quyết định không được để trống."),
 	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phongBanGiaiQuyet không được để trống."),
+	DATA_REQUIRED("Bạn không được bỏ trống trường này."),
 	HOVATEN_REQUIRED("Trường Họ và tên không được để trống."),
 	NGAYSINH_REQUIRED("Trường ngày sinh không được để trống."),
 	COQUANQUANLY_REQUIRED("Trường cơ quan quản lý không được để trống."),
