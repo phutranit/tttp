@@ -72,7 +72,7 @@ public class DonViHasState extends Model<DonViHasState> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCoQuanQuanLyInfor() {
+	public Map<String, Object> getCoQuanQuanLyInfo() {
 		if (getCoQuanQuanLy() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId());
@@ -84,7 +84,7 @@ public class DonViHasState extends Model<DonViHasState> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getStateInfor() {
+	public Map<String, Object> getStateInfo() {
 		if (getState() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("stateId", getState().getId());
@@ -96,7 +96,7 @@ public class DonViHasState extends Model<DonViHasState> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getProcessTypeInfor() {
+	public Map<String, Object> getProcessTypeInfo() {
 		if (getProcessType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getProcessType().getText());

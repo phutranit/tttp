@@ -64,7 +64,7 @@ public class Form extends Model<Form> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getProcessTypeInfor() {
+	public Map<String, Object> getProcessTypeInfo() {
 		if (getProcessType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getProcessType().getText());

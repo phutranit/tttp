@@ -74,7 +74,7 @@ public class Transition extends Model<Transition>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCurrentStateInfor() {
+	public Map<String, Object> getCurrentStateInfo() {
 		if (getCurrentState() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("stateId", getCurrentState().getId());
@@ -86,7 +86,7 @@ public class Transition extends Model<Transition>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getNextStateInfor() {
+	public Map<String, Object> getNextStateInfo() {
 		if (getNextState() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("stateId", getNextState().getId());
@@ -98,7 +98,7 @@ public class Transition extends Model<Transition>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getProcessInfor() {
+	public Map<String, Object> getProcessInfo() {
 		if (getProcess() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("processId", getProcess().getId());
@@ -110,7 +110,7 @@ public class Transition extends Model<Transition>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getFormInfor() {
+	public Map<String, Object> getFormInfo() {
 		if (getForm() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("formId", getForm().getId());

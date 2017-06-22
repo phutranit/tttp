@@ -62,7 +62,7 @@ public class State extends Model<State>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getTypeInfor() {
+	public Map<String, Object> getTypeInfo() {
 		if (getType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getType().getText());

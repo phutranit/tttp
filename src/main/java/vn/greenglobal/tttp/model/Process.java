@@ -111,7 +111,7 @@ public class Process extends Model<Process>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getVaiTroInfor() {
+	public Map<String, Object> getVaiTroInfo() {
 		if (getVaiTro() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("vaiTroId", getVaiTro().getId());
@@ -123,7 +123,7 @@ public class Process extends Model<Process>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCoQuanQuanLyInfor() {
+	public Map<String, Object> getCoQuanQuanLyInfo() {
 		if (getCoQuanQuanLy() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId());
@@ -135,7 +135,7 @@ public class Process extends Model<Process>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getChaInfor() {
+	public Map<String, Object> getChaInfo() {
 		if (getCha() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("quyTrinhId", getCha().getId());
@@ -147,7 +147,7 @@ public class Process extends Model<Process>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getProcessTypeInfor() {
+	public Map<String, Object> getProcessTypeInfo() {
 		if (getProcessType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getProcessType().getText());
