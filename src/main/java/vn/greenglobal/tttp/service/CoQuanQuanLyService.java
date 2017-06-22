@@ -219,15 +219,12 @@ public class CoQuanQuanLyService {
 	
 	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
 		BooleanExpression predAll = base;
-		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
 					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
-			
 			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))));
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))));
 			} else if ("CCQQL_SO_BAN_NGANH".equals(type)) { 
 				System.out.println("CCQQL_SO_BAN_NGANH");
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0)));
@@ -235,7 +232,6 @@ public class CoQuanQuanLyService {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0)));
 			} 
 		}
-
 		return predAll;
 	}
 	

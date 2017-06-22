@@ -146,14 +146,15 @@ public class ThongKeController extends TttpController<Don> {
 	public @ResponseBody ResponseEntity<Object> getThongKeDonTaiDiaBan(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
+		CoQuanQuanLy coQuanQuanLy = coQuanQuanLyRepo.findOne(coQuanQuanLyId);
 		Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
 		ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 		ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 		ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 		ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 		ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
-		ThamSo thamSoCCQQLUBNDTinhTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 		ThamSo thamSoCCQQLChiCuc = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_CHI_CUC"));
 		
 		List<CoQuanQuanLy> coQuans = new ArrayList<CoQuanQuanLy>();
@@ -161,13 +162,15 @@ public class ThongKeController extends TttpController<Don> {
 				|| donViXuLyXLD == Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString())) {
 			// Danh sach don vi thuoc UBNDTP Da Nang
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
 			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonVi(
 					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
 					"CQQL_UBNDTP_DA_NANG"));
 			coQuans.addAll(list);
+			if (coQuans.contains(coQuanQuanLy)) { 
+				coQuans.remove(coQuanQuanLy);
+			}
 		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
 			// Danh sach don vi thuoc Quan Huyen
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
