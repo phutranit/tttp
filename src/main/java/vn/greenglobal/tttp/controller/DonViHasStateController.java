@@ -50,6 +50,8 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 	@ApiOperation(value = "Lấy danh sách trạng thái của đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "processType", required = false) String processType,
+			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId,
+			@RequestParam(value = "stateId", required = false) Long stateId,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -59,7 +61,7 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<DonViHasState> page = donViHasStateRepo.findAll(donViHasStateService.predicateFindAll(processType), pageable);
+			Page<DonViHasState> page = donViHasStateRepo.findAll(donViHasStateService.predicateFindAll(coQuanQuanLyId, stateId, processType), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -103,9 +105,10 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			} 
 
-			if (donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			if (donViHasState.getProcessType() != null && donViHasState.getCoQuanQuanLy() != null && donViHasState.getState() != null 
+					&& donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return donViHasStateService.doSave(donViHasState,
@@ -131,9 +134,10 @@ public class DonViHasStateController extends TttpController<DonViHasState> {
 			}
 
 			donViHasState.setId(id);
-			if (donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			if (donViHasState.getProcessType() != null && donViHasState.getCoQuanQuanLy() != null && donViHasState.getState() != null &&
+					donViHasStateService.checkExistsData(donViHasStateRepo, donViHasState)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 
 			if (!donViHasStateService.isExists(donViHasStateRepo, id)) {

@@ -25,8 +25,14 @@ public class DonViHasStateService {
 	
 	BooleanExpression base = QDonViHasState.donViHasState.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String processType) {
+	public Predicate predicateFindAll(Long coQuanQuanLyId, Long stateId, String processType) {
 		BooleanExpression predAll = base;
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) { 
+			predAll = predAll.and(QDonViHasState.donViHasState.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		if (stateId != null && stateId > 0) { 
+			predAll = predAll.and(QDonViHasState.donViHasState.state.id.eq(stateId));
+		}
 		if (StringUtils.isNotBlank(processType)) { 
 			ProcessTypeEnum type = ProcessTypeEnum.valueOf(processType);
 			predAll = predAll.and(QDonViHasState.donViHasState.processType.eq(type));
@@ -42,9 +48,9 @@ public class DonViHasStateService {
 		ProcessTypeEnum processType = body.getProcessType();
 		State state = body.getState();
 		
-		predAll = predAll.and(QDonViHasState.donViHasState.processType.eq(processType))
-				.and(QDonViHasState.donViHasState.state.eq(state))
-				.and(QDonViHasState.donViHasState.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()));
+		predAll = predAll.and(QDonViHasState.donViHasState.processType.eq(processType));
+		predAll = predAll.and(QDonViHasState.donViHasState.state.eq(state));
+		predAll = predAll.and(QDonViHasState.donViHasState.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()));
 		
 		DonViHasState donViHasState = repo.findOne(predAll);
 		return donViHasState != null ? true : false;

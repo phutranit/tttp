@@ -109,9 +109,10 @@ public class FormController extends TttpController<Form> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(form.getTen()) && formService.checkExistsData(formRepo, form)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+			if (StringUtils.isNotBlank(form.getTen()) && StringUtils.isNotBlank(form.getAlias()) &&
+					form.getProcessType() != null && formService.checkExistsData(formRepo, form)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			return formService.doSave(form,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -136,9 +137,10 @@ public class FormController extends TttpController<Form> {
 			}
 
 			form.setId(id);
-			if (StringUtils.isNotBlank(form.getTen()) && formService.checkExistsData(formRepo, form)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+			if (StringUtils.isNotBlank(form.getTen()) && StringUtils.isNotBlank(form.getAlias()) &&
+					form.getProcessType() != null && formService.checkExistsData(formRepo, form)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 
 			if (!formService.isExists(formRepo, id)) {

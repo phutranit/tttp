@@ -49,7 +49,10 @@ public class TransitionController extends TttpController<Transition> {
 	@ApiOperation(value = "Lấy danh sách Transition", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,
-			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "form_id", required = false) Long form_id,
+			@RequestParam(value = "process_id", required = false) Long process_id,
+			@RequestParam(value = "currentState_id", required = false) Long currentState_id,
+			@RequestParam(value = "nextState_id", required = false) Long nextState_id,
 			PersistentEntityResourceAssembler eass) {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TRANSITION_LIETKE) == null
@@ -58,7 +61,7 @@ public class TransitionController extends TttpController<Transition> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<Transition> page = transitionRepo.findAll(transitionService.predicateFindAll(), pageable);
+			Page<Transition> page = transitionRepo.findAll(transitionService.predicateFindAll(form_id, process_id, currentState_id, nextState_id), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
