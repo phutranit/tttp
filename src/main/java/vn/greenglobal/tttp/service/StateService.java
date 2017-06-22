@@ -88,8 +88,9 @@ public class StateService {
 		BooleanExpression predAll = base;
 		if (!body.isNew()) {
 			predAll = predAll.and(QState.state.id.ne(body.getId()));
-		}
-		predAll = predAll.and(QState.state.ten.eq(body.getTen()));
+		}		
+		predAll = predAll.and(QState.state.ten.eq(body.getTen().trim()));
+		predAll = predAll.and(QState.state.tenVietTat.eq(body.getTenVietTat().trim()));
 		predAll = predAll.and(QState.state.type.eq(body.getType()));
 		State state = repo.findOne(predAll);
 		return state != null ? true : false;
@@ -97,11 +98,9 @@ public class StateService {
 
 	public State delete(StateRepository repo, Long id) {
 		State state = repo.findOne(predicateFindOne(id));
-
 		if (state != null) {
 			state.setDaXoa(true);
 		}
-
 		return state;
 	}
 
@@ -111,11 +110,9 @@ public class StateService {
 				QDonViHasState.donViHasState.daXoa.eq(false).and(QDonViHasState.donViHasState.state.id.eq(id)));
 		List<Transition> transitions = (List<Transition>) transitionRepo.findAll(QTransition.transition.daXoa.eq(false)
 				.and(QTransition.transition.currentState.id.eq(id)).or(QTransition.transition.nextState.id.eq(id)));
-
 		if ((donViHasStates != null && donViHasStates.size() > 0) || (transitions != null && transitions.size() > 0)) {
 			return true;
 		}
-
 		return false;
 	}
 

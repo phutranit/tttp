@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,6 +56,8 @@ public class ProcessController extends TttpController<Process> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable,  @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "processType", required = false) String processType,
+			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId,
+			@RequestParam(value = "vaiTroId", required = false) Long vaiTroId,
 			PersistentEntityResourceAssembler eass) {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_LIETKE) == null
@@ -63,7 +66,7 @@ public class ProcessController extends TttpController<Process> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<Process> page = processRepo.findAll(processService.predicateFindAll(tuKhoa, processType), pageable);
+			Page<Process> page = processRepo.findAll(processService.predicateFindAll(tuKhoa, processType, coQuanQuanLyId, vaiTroId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -107,9 +110,10 @@ public class ProcessController extends TttpController<Process> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			if (process.getCoQuanQuanLy() != null && process.getProcessType() != null && process.getVaiTro() != null &&  processService.checkExistsData(processRepo, process)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getCoQuanQuanLy() != null && process.getProcessType() != null && 
+					process.getVaiTro() != null &&  processService.checkExistsData(processRepo, process)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return processService.doSave(process,
@@ -140,9 +144,10 @@ public class ProcessController extends TttpController<Process> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
-			if (process.getProcessType() != null && process.getCoQuanQuanLy() != null && process.getVaiTro() != null && processService.checkExistsData(processRepo, process)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getProcessType() != null && process.getCoQuanQuanLy() != null && 
+					process.getVaiTro() != null && processService.checkExistsData(processRepo, process)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 			
 			return processService.doSave(process,

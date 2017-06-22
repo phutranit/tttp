@@ -41,14 +41,20 @@ public class ProcessService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll(String tuKhoa, String type) {
+	public Predicate predicateFindAll(String tuKhoa, String type, Long coQuanQuanLyId, Long vaiTroId) {
 		BooleanExpression predAll = base;
 		if (StringUtils.isNotBlank(tuKhoa)) { 
-			predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(tuKhoa));
+			predAll = predAll.and(QProcess.process.tenQuyTrinh.equalsIgnoreCase(tuKhoa.trim()));
 		}
 		if (StringUtils.isNotBlank(type)) { 
 			ProcessTypeEnum processType = ProcessTypeEnum.valueOf(type);
 			predAll = predAll.and(QProcess.process.processType.eq(processType));
+		}
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) { 
+			predAll = predAll.and(QProcess.process.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
+		if (vaiTroId != null && vaiTroId > 0) { 
+			predAll = predAll.and(QProcess.process.vaiTro.id.eq(vaiTroId));
 		}
 		return predAll;
 	}
@@ -70,9 +76,9 @@ public class ProcessService {
 		if (!body.isNew()) {
 			predAll = predAll.and(QProcess.process.id.ne(body.getId()));
 		}
-		predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(body.getTenQuyTrinh()))
-				.and(QProcess.process.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()))
-				.and(QProcess.process.vaiTro.id.eq(body.getVaiTro().getId()));
+		predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(body.getTenQuyTrinh()));
+		predAll = predAll.and(QProcess.process.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()));
+		predAll = predAll.and(QProcess.process.vaiTro.id.eq(body.getVaiTro().getId()));
 		ProcessTypeEnum processType = body.getProcessType();
 		predAll = predAll.and(QProcess.process.processType.eq(processType));
 		Process process = repo.findOne(predAll);
