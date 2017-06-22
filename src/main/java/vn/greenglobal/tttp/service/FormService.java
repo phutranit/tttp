@@ -32,8 +32,8 @@ public class FormService {
 	public Predicate predicateFindAll(String tuKhoa, String processType) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QForm.form.ten.equalsIgnoreCase(tuKhoa))
-					.or(QForm.form.alias.equalsIgnoreCase(tuKhoa));
+			predAll = predAll.and(QForm.form.ten.equalsIgnoreCase(tuKhoa.trim()))
+					.or(QForm.form.alias.equalsIgnoreCase(tuKhoa.trim()));
 		}
 		if (processType != null && StringUtils.isNotBlank(processType)) {
 			predAll = predAll.and(QForm.form.processType.eq(ProcessTypeEnum.valueOf(processType)));
@@ -46,10 +46,9 @@ public class FormService {
 		if (!body.isNew()) {
 			predAll = predAll.and(QForm.form.id.ne(body.getId()));
 		}
-		predAll = predAll.and(QForm.form.ten.eq(body.getTen()));
-		predAll = predAll.and(QForm.form.alias.eq(body.getAlias()));
+		predAll = predAll.and(QForm.form.ten.eq(body.getTen().trim()));
+		predAll = predAll.and(QForm.form.alias.eq(body.getAlias().trim()));
 		predAll = predAll.and(QForm.form.processType.eq(body.getProcessType()));
-
 		Form form = repo.findOne(predAll);
 		return form != null ? true : false;
 	}

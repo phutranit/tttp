@@ -111,10 +111,10 @@ public class StateController extends TttpController<State> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (StringUtils.isNotBlank(state.getTen()) && state.getType() != null
+			if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
 					&& stateService.checkExistsData(stateRepo, state)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 
 			return stateService.doSave(state,
@@ -145,10 +145,10 @@ public class StateController extends TttpController<State> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			if (StringUtils.isNotBlank(state.getTen()) && state.getType() != null
+			if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
 					&& stateService.checkExistsData(stateRepo, state)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.TEN_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
 			}
 
 			return stateService.doSave(state,

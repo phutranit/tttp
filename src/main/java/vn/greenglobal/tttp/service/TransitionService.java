@@ -93,8 +93,20 @@ public class TransitionService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll() { 
+	public Predicate predicateFindAll(Long form_id, Long process_id, Long currentState_id, Long nextState_id) { 
 		BooleanExpression predAll = base;
+		if (form_id != null && form_id > 0) {
+			predAll = predAll.and(QTransition.transition.form.id.ne(form_id));
+		}
+		if (process_id != null && process_id > 0) {
+			predAll = predAll.and(QTransition.transition.process.id.ne(process_id));
+		}
+		if (currentState_id != null && currentState_id > 0) {
+			predAll = predAll.and(QTransition.transition.currentState.id.ne(currentState_id));
+		}
+		if (nextState_id != null && nextState_id > 0) {
+			predAll = predAll.and(QTransition.transition.nextState.id.ne(nextState_id));
+		}
 		return predAll;
 	}
 	
