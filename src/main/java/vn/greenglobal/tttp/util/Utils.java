@@ -289,8 +289,8 @@ public class Utils {
 	private static void genVietHolidays() {
 		if (vietHolidays == null) {
 			vietHolidays = new ArrayList<Calendar>();
-			vietHolidays.add(getHoliday(2017, 06, 04));
-			vietHolidays.add(getHoliday(2017, 06, 05));
+			vietHolidays.add(getHoliday(2017, 05, 04));
+			vietHolidays.add(getHoliday(2017, 05, 05));
 		}
 	}
 
@@ -541,6 +541,53 @@ public class Utils {
 		}
 		
 		return soNgayXuLy;
+	}
+	
+	public static boolean isValidNgayTreHan(Long id, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar ngayHienTai = Calendar.getInstance();
+		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
+		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		
+		if (start.before(end) || DateUtils.isSameDay(start, end)) {
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				// check ngay nghi
+				if (isInvalidNgayNghi(start.getTime())) {
+					end.add(Calendar.DATE, 1);
+				}
+				start.add(Calendar.DATE, 1);
+			}
+		}
+		
+		if (ngayHienTai.after(end) && !DateUtils.isSameDay(ngayHienTai, end)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayTreHanTinhTheoNgayKetThuc(Long id, LocalDateTime ngayBatDau, LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar ketThuc = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
+		Calendar end = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
+		
+		if (start.before(end) || DateUtils.isSameDay(start, end)) {
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				// check ngay nghi
+				if (isInvalidNgayNghi(start.getTime())) {
+					end.add(Calendar.DATE, 1);
+				}
+				start.add(Calendar.DATE, 1);
+			}
+		}
+		
+		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
+			if (ketThuc.after(end) && !DateUtils.isSameDay(ketThuc, end)) {
+				isValid = true;
+			}
+		}
+		return isValid;
 	}
 
 	public static String getMaDon() {
