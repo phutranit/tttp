@@ -517,4 +517,10 @@ public class XuLyDon extends Model<XuLyDon> {
 		}
 		return map;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getXuLyDonId() {
+		return getId();
+	}
 }
