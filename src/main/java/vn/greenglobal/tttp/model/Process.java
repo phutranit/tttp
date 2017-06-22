@@ -33,6 +33,8 @@ public class Process extends Model<Process>{
 	@Size(max=255)
 	private String ghiChu;
 	
+	private boolean owner = false;
+	
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
@@ -40,8 +42,6 @@ public class Process extends Model<Process>{
 	@NotNull
 	@ManyToOne
 	private VaiTro vaiTro;
-	
-	private boolean owner = false;
 	
 	@OneToOne
 	private Process cha;
@@ -107,6 +107,12 @@ public class Process extends Model<Process>{
 
 	public void setProcessType(ProcessTypeEnum processType) {
 		this.processType = processType;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getProcessId() {
+		return getId();
 	}
 	
 	@Transient

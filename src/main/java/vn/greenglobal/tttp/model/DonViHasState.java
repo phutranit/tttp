@@ -72,6 +72,12 @@ public class DonViHasState extends Model<DonViHasState> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Long getDonViHasStateId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCoQuanQuanLyInfo() {
 		if (getCoQuanQuanLy() != null) {
 			Map<String, Object> map = new HashMap<>();

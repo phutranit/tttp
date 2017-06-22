@@ -74,6 +74,12 @@ public class Transition extends Model<Transition>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Long getTransitionId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCurrentStateInfo() {
 		if (getCurrentState() != null) {
 			Map<String, Object> map = new HashMap<>();
