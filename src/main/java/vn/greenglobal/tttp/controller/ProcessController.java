@@ -105,10 +105,10 @@ public class ProcessController extends TttpController<Process> {
 			@RequestBody Process process, PersistentEntityResourceAssembler eass) {
 
 		try {
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 			
 			if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getCoQuanQuanLy() != null && process.getProcessType() != null && 
 					process.getVaiTro() != null &&  processService.checkExistsData(processRepo, process)) {
