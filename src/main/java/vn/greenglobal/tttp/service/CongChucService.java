@@ -32,9 +32,10 @@ public class CongChucService {
 	public Predicate predicateFindAll(String tuKhoa, String vaiTro, Long coQuanQuanLyId, Long congChucId,
 			CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;
-
+		System.out.println("Tu khoa: " + tuKhoa);
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa.trim()));
+			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.or(QCongChuc.congChuc.nguoiDung.email.containsIgnoreCase(tuKhoa.trim())));
 		}
 
         if (congChucId.equals(1L)) {
