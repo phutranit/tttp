@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,15 @@ public class LinhVucDonThuService {
 	private LinhVucDonThuRepository linhVucDonThuRepository;
 
 	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
-
+	
+	public List<LinhVucDonThu> linhVucDonThusTheoId(List<Long> ids) { 
+		BooleanExpression predAll = base;
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.in(ids));
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
