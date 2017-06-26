@@ -185,11 +185,11 @@ public class Utils {
 		return ngayKetThuc != null ? ngayKetThuc : null;
 	}
 
-	public static LocalDateTime convertNumberToLocalDateTimeGoc(LocalDateTime ngayBatDau, Long soNgayXuLy) {
+	public static LocalDateTime convertNumberToLocalDateTimeGoc(LocalDateTime ngayBatDau, Long soNgayGiaHan) {
 		long i = 1;
 		LocalDateTime ngayKetThuc = ngayBatDau;
-		if (ngayKetThuc != null && soNgayXuLy != null && soNgayXuLy > 0) {
-			while (i < soNgayXuLy) {
+		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
+			while (i < soNgayGiaHan) {
 				ngayKetThuc = ngayKetThuc.plusDays(1);
 				i++;
 			}

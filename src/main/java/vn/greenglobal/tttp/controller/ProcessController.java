@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +13,8 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,13 +29,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
-import vn.greenglobal.tttp.repository.ProcessRepository;
-import vn.greenglobal.tttp.repository.TransitionRepository;
-import vn.greenglobal.tttp.service.ProcessService;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.model.medial.Medial_Process_Post_Patch;
+import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.TransitionService;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
@@ -45,6 +53,9 @@ public class ProcessController extends TttpController<Process> {
 	
 	@Autowired
 	private TransitionRepository transitionRepo;
+	
+	@Autowired
+	private TransitionService transitionService;
 	
 	public ProcessController(BaseRepository<Process, Long> repo) {
 		super(repo);
@@ -188,4 +199,154 @@ public class ProcessController extends TttpController<Process> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.POST, value = "/maTran")
+	@ApiOperation(value = "Thêm mới Ma Trận", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới Ma Trận thành công", response = Process.class),
+			@ApiResponse(code = 201, message = "Thêm mới Ma Trận thành công", response = Process.class) })
+	public ResponseEntity<Object> createMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
+			
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Process process = params.getProcess();
+						if (process != null && params.getTransitions().size() > 0) {
+							if (process.getTenQuyTrinh() == null || StringUtils.isBlank(process.getTenQuyTrinh().trim())
+									|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
+									|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
+									|| process.getVaiTro().getId() <= 0) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+										ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+							}
+							
+							for (Transition transition : params.getTransitions()) {
+								if (transition.getForm() == null || transition.getForm().getId() <= 0
+										|| transition.getCurrentState() == null || transition.getCurrentState().getId() <= 0
+										|| transition.getNextState() == null || transition.getCurrentState().getId() <= 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								}
+							}
+								
+							if (processService.checkExistsData(processRepo, process)) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+										ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+							}
+							
+							process = processService.save(params.getProcess(), congChucId);
+							if (process != null && process.getId() > 0) {
+								result.setProcess(process);
+								for (Transition transition : params.getTransitions()) {
+									transition.setProcess(process);
+									transitionService.save(transition, congChucId);
+									result.getTransitions().add(transition);
+								}
+							}
+						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+					}
+				});
+			}
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.PATCH, value = "/maTran")
+	@ApiOperation(value = "Cập nhật Ma Trận", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật Ma Trận thành công", response = Process.class) })
+	public ResponseEntity<Object> updateMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
+			List<Transition> listUpdate = new ArrayList<Transition>();
+			
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						try {
+							System.out.println("111111111111");
+							Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+							Process process = params.getProcess();
+							if (process != null && params.getTransitions().size() > 0) {
+								if (process.getId() <= 0 || process.getTenQuyTrinh() == null
+										|| StringUtils.isBlank(process.getTenQuyTrinh().trim())
+										|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
+										|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
+										|| process.getVaiTro().getId() <= 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								}
+								
+								for (Transition transition : params.getTransitions()) {
+									transition.setProcess(process);
+									if (transition.getId() <= 0 || transition.getForm() == null
+											|| transition.getForm().getId() <= 0 || transition.getCurrentState() == null
+											|| transition.getCurrentState().getId() <= 0
+											|| transition.getNextState() == null
+											|| transition.getCurrentState().getId() <= 0) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+												ApiErrorEnum.DATA_REQUIRED.name(), ApiErrorEnum.DATA_REQUIRED.getText(),
+												ApiErrorEnum.DATA_REQUIRED.getText());
+									}
+									
+									if (transitionService.checkExistsData(transitionRepo, transition)) {
+										return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+												ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+									}
+									
+									listUpdate.add(transition);
+								}
+									
+								if (processService.checkExistsData(processRepo, process)) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+											ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+								}
+								
+								process = processService.save(params.getProcess(), congChucId);
+								if (process != null && process.getId() > 0) {
+									result.setProcess(process);
+									for (Transition transition : listUpdate) {
+										transition.setProcess(process);
+										transitionService.save(transition, congChucId);
+										result.getTransitions().add(transition);
+									}
+								}
+							}
+							System.out.println("222222222222");
+							return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+						} catch (Exception e) {
+							return Utils.responseInternalServerErrors(e);
+						}
+					}
+				});
+			}
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 }

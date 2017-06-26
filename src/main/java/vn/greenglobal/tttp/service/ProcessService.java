@@ -79,8 +79,7 @@ public class ProcessService {
 		predAll = predAll.and(QProcess.process.tenQuyTrinh.eq(body.getTenQuyTrinh().trim()));
 		predAll = predAll.and(QProcess.process.coQuanQuanLy.id.eq(body.getCoQuanQuanLy().getId()));
 		predAll = predAll.and(QProcess.process.vaiTro.id.eq(body.getVaiTro().getId()));
-		ProcessTypeEnum processType = body.getProcessType();
-		predAll = predAll.and(QProcess.process.processType.eq(processType));
+		predAll = predAll.and(QProcess.process.processType.eq(body.getProcessType()));
 		Process process = repo.findOne(predAll);
 		return process != null ? true : false;
 	}

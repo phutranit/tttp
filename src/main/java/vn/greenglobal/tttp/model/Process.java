@@ -1,18 +1,26 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
@@ -33,6 +41,8 @@ public class Process extends Model<Process>{
 	@Size(max=255)
 	private String ghiChu;
 	
+	private boolean owner = false;
+	
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy coQuanQuanLy;
@@ -41,8 +51,6 @@ public class Process extends Model<Process>{
 	@ManyToOne
 	private VaiTro vaiTro;
 	
-	private boolean owner = false;
-	
 	@OneToOne
 	private Process cha;
 	
@@ -50,6 +58,19 @@ public class Process extends Model<Process>{
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
 	
+	@OneToMany(mappedBy = "process", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<Transition> transitions = new ArrayList<Transition>();
+	
+	public List<Transition> getTransitions() {
+		return transitions;
+	}
+
+	public void setTransitions(List<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
 	public String getTenQuyTrinh() {
 		return tenQuyTrinh;
 	}
@@ -107,6 +128,24 @@ public class Process extends Model<Process>{
 
 	public void setProcessType(ProcessTypeEnum processType) {
 		this.processType = processType;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getProcessId() {
+		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<Transition> getListTransition() {
+		List<Transition> list = new ArrayList<Transition>();
+		for (Transition transition : getTransitions()) {
+			if (!transition.isDaXoa()) {
+				list.add(transition);
+			}
+		}
+		return list;
 	}
 	
 	@Transient
