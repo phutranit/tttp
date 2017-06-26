@@ -13,8 +13,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
@@ -469,6 +467,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapYeuCauGapLanhDao = new HashMap<String, Object>();
 		Map<String, Object> mapTrangThaiXuLyDon = new HashMap<String, Object>();
 		Map<String, Object> mapChucVuGiaoViec = new HashMap<String, Object>();
+		Map<String, Object> mapDinhChi = new HashMap<String, Object>();
 		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
@@ -489,12 +488,16 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
 		
-		mapTrangThaiXuLyDon.put("ten", getTrangThaiDon().getText());
-		mapTrangThaiXuLyDon.put("enum", getTrangThaiDon().name());
+		if (getTrangThaiDon() != null) {
+			mapTrangThaiXuLyDon.put("ten", getTrangThaiDon().getText());
+			mapTrangThaiXuLyDon.put("enum", getTrangThaiDon().name());
+		}
 		map.put("trangThaiXuLyDon", mapTrangThaiXuLyDon);
 		
-		mapChucVuGiaoViec.put("ten", getChucVuGiaoViec().getText());
-		mapChucVuGiaoViec.put("giaTri", VaiTroEnum.valueOf(getChucVuGiaoViec().name()));
+		if (getChucVuGiaoViec() != null) { 
+			mapChucVuGiaoViec.put("ten", getChucVuGiaoViec().getText());
+			mapChucVuGiaoViec.put("giaTri", VaiTroEnum.valueOf(getChucVuGiaoViec().name()));
+		}
 		map.put("chucVuGiaoViec", mapChucVuGiaoViec);
 		
 		if (getHuongXuLy() != null) {
@@ -518,8 +521,14 @@ public class XuLyDon extends Model<XuLyDon> {
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)) {
 				mapYeuCauGapLanhDao.put("diaDiem", getDiaDiem());
 				mapYeuCauGapLanhDao.put("ngayHenGapLanhDao", getNgayHenGapLanhDao());
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.DINH_CHI)) {
+				mapDinhChi = new HashMap<String, Object>();
+				mapDinhChi.put("soQuyetDinhDinhChi", getSoQuyetDinhDinhChi() != null ? getSoQuyetDinhDinhChi() : "");
+				mapDinhChi.put("ngayQuyetDinhDinhChi", getNgayQuyetDinhDinhChi() != null ? getNgayQuyetDinhDinhChi() : "");
+				mapDinhChi.put("noiDung", getDon().getLyDoDinhChi()!= null ? getDon().getLyDoDinhChi() : "");
 			}
 			
+			map.put("dinhChi", mapDinhChi);
 			map.put("yeuCauGapLanhDao", mapYeuCauGapLanhDao);
 			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
