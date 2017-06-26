@@ -467,7 +467,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapCanBoXuLyChiDinh = new HashMap<>();
 		Map<String, Object> mapPhongBanChiDinh = new HashMap<>();
 		Map<String, Object> mapYeuCauGapLanhDao = new HashMap<String, Object>();
-			
+		Map<String, Object> mapTrangThaiXuLyDon = new HashMap<String, Object>();
+		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
 		map.put("thamQuyenGiaiQuyet", "");
@@ -485,8 +486,11 @@ public class XuLyDon extends Model<XuLyDon> {
 		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
 		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
-		
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
+		
+		mapTrangThaiXuLyDon.put("ten", getTrangThaiDon().getText());
+		mapTrangThaiXuLyDon.put("enum", getTrangThaiDon().name());
+		map.put("trangThaiXuLyDon", mapTrangThaiXuLyDon);
 		
 		if (getHuongXuLy() != null) {
 			mapHuongXuLy.put("ten", getHuongXuLy().getText());
