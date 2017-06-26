@@ -13,6 +13,8 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
@@ -115,6 +117,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.old = old;
 	}
 
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}
@@ -173,6 +177,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.diaDiem = diaDiem;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public LocalDateTime getThoiHanXuLy() {
 		return thoiHanXuLy;
 	}
@@ -243,6 +248,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public int getThuTuThucHien() {
 		return thuTuThucHien;
@@ -252,6 +258,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thuTuThucHien = thuTuThucHien;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public String getGhiChu() {
 		return ghiChu;
@@ -265,7 +272,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		}
 	}
 
-	@ApiModelProperty(position = 4)
+	@ApiModelProperty(hidden = true)
 	public String getyKienXuLy() {
 		return yKienXuLy;
 	}
@@ -274,6 +281,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.yKienXuLy = yKienXuLy;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
@@ -283,7 +291,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.moTaTrangThai = moTaTrangThai;
 	}
 
-	@ApiModelProperty(position = 18)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
 	}
@@ -292,7 +300,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-	@ApiModelProperty(position = 19)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
@@ -311,7 +319,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
 
-	@ApiModelProperty(position = 4)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungXuLy() {
 		return noiDungXuLy;
 	}
@@ -320,15 +328,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungXuLy = noiDungXuLy;
 	}
 	
-//	@ApiModelProperty(position = 5)
-//	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
-//		return quyTrinhXuLy;
-//	}
-//
-//	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
-//		this.quyTrinhXuLy = quyTrinhXuLy;
-//	}
-
 	@ApiModelProperty(position = 10)
 	public HuongXuLyXLDEnum getHuongXuLy() {
 		return huongXuLy;
@@ -405,7 +404,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 	
 	@Transient
-	@ApiModelProperty(hidden = true)
+	@JsonIgnore
 	public Long getNgayConLai() {
 		return Utils.convertLocalDateTimeToNumber(this.getThoiHanXuLy());
 	}
@@ -423,11 +422,11 @@ public class XuLyDon extends Model<XuLyDon> {
 		return null;
 	}
 
+	@JsonIgnore
 	@Transient
-	@ApiModelProperty(hidden = true)
 	public Long getSoNgayCuaThoiHanXuLy() {
 		long soNgay = 0; 
-		soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
+		//soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
 		return soNgay;
 	}
 
@@ -467,7 +466,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapCanBoXuLy = new HashMap<>();
 		Map<String, Object> mapCanBoXuLyChiDinh = new HashMap<>();
 		Map<String, Object> mapPhongBanChiDinh = new HashMap<>();
-		
+		Map<String, Object> mapYeuCauGapLanhDao = new HashMap<String, Object>();
+			
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
 		map.put("thamQuyenGiaiQuyet", "");
@@ -506,7 +506,12 @@ public class XuLyDon extends Model<XuLyDon> {
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
 				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)) {
+				mapYeuCauGapLanhDao.put("diaDiem", getDiaDiem());
+				mapYeuCauGapLanhDao.put("ngayHenGapLanhDao", getNgayHenGapLanhDao());
 			}
+			
+			map.put("yeuCauGapLanhDao", mapYeuCauGapLanhDao);
 			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
