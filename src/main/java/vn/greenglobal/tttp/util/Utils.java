@@ -543,7 +543,7 @@ public class Utils {
 		return soNgayXuLy;
 	}
 	
-	public static boolean isValidNgayTreHan(Long id, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+	public static boolean isValidNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
 		boolean isValid = false;
 		Calendar ngayHienTai = Calendar.getInstance();
 		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
