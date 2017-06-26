@@ -441,7 +441,7 @@ public class Utils {
 				}
 				
 				// check ngay hop le
-				if (cal.before(end) || DateUtils.isSameDay(cal, end)) {
+				if (cal.before(end) || DateUtils.isSameDay(cal, end)) {	
 					// lay so ngay de xu ly
 					while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
 						// check ngay nghi
