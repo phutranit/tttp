@@ -2,7 +2,6 @@ package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -258,14 +257,27 @@ public class ThongKeController extends TttpController<Don> {
 		int year = LocalDateTime.now().getYear();
 		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, loaiDon, xuLyRepo, repo, giaiQuyetDonRepo);
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-		List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L, 39L, 50L, 52L);		
-		linhVucs.addAll(linhVucDonThuService.linhVucDonThusTheoId(ids));
+		//List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L, 39L, 50L, 52L);		
+		linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus());
 		
 		Long tongSoDon = 0L;
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		for (LinhVucDonThu linhVuc : linhVucs) {
 			BooleanExpression predDon = predAll;
-			Double phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVuc.getId(), tongSoDon, repo);
+			Long linhVucId = 0L;
+			Long chiTietLinhVucChaId = 0L;
+			Long chiTietLinhVucConId = 0L;
+			if (linhVuc.getCha() == null) { 
+				linhVucId = linhVuc.getId();
+			} else if (linhVuc.getCha() != null) { 
+				if (linhVuc.getCha().getCha() == null) {
+					chiTietLinhVucChaId = linhVuc.getId();
+				} else {
+					chiTietLinhVucConId = linhVuc.getId();
+				}
+			}
+			
+			Double phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVucId, chiTietLinhVucChaId, chiTietLinhVucConId, tongSoDon, repo);
 			if (phanTram > 0) { 
 				mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
 				mapDonThongKe.put("phanTram", phanTram);

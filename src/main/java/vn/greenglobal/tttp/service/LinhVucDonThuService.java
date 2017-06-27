@@ -38,6 +38,13 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
+	public List<LinhVucDonThu> getDanhSachLinhVucDonThus() { 
+		BooleanExpression predAll = base;
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {

@@ -39,13 +39,32 @@ public class ThongKeService {
 		return tongPhanLoaiDon;
 	}
 	
-	public Double getPhanTramTongSoDonTheoLinhVuc(BooleanExpression predAll, Long linhVucId, Long tongSoDon, DonRepository donRepo) { 
+	public Double getPhanTramTongSoDonTheoLinhVuc(BooleanExpression predAll, Long linhVucId, Long chiTietLinhVucChaId, Long chiTietLinhVucConId, Long tongSoDon, DonRepository donRepo) { 
 		Double phanTramDouble = 0d;
 		Long tongPhanLoaiDon = 0L;
-		predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId));
+		
+		if ((linhVucId != null && linhVucId > 0) && (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) &&
+				(chiTietLinhVucConId != null && chiTietLinhVucConId > 0)) {
+			return phanTramDouble;
+		}
+		
+		if (linhVucId != null && linhVucId > 0) { 
+			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId));
+		}
+		
+		if (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) { 
+			predAll = predAll.and(QDon.don.linhVucDonThuChiTiet.id.eq(chiTietLinhVucChaId));
+		}
+		
+		if (chiTietLinhVucConId != null && chiTietLinhVucConId > 0) { 
+			predAll = predAll.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId));
+		}
+		
 		tongPhanLoaiDon = Long.valueOf(((List<Don>)donRepo.findAll(predAll)).size());
 		Double tongPhanTramLinhVucDon = (tongPhanLoaiDon.doubleValue() / tongSoDon.doubleValue()) * 100;
-		phanTramDouble = Utils.round(tongPhanTramLinhVucDon, 2);
+		if (tongPhanTramLinhVucDon > 0) { 
+			phanTramDouble = Utils.round(tongPhanTramLinhVucDon, 2);
+		}
 		return phanTramDouble;
 	}
 	
@@ -55,7 +74,9 @@ public class ThongKeService {
 		predAll = predAll.and(QDon.don.loaiDon.eq(loaiDon));
 		tongPhanLoaiDon = Long.valueOf(((List<Don>)donRepo.findAll(predAll)).size());
 		Double tongPhanTramPhanLoaiDon = (tongPhanLoaiDon.doubleValue() / tongSoDon.doubleValue()) * 100;
-		phanTramDouble = Utils.round(tongPhanTramPhanLoaiDon, 2);
+		if (tongPhanTramPhanLoaiDon > 0) { 
+			phanTramDouble = Utils.round(tongPhanTramPhanLoaiDon, 2);
+		}
 		return phanTramDouble;
 	}
 	
