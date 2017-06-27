@@ -123,12 +123,13 @@ public class ThongKeController extends TttpController<Don> {
 
 		try {
 			int year = LocalDateTime.now().getYear();
+			int month = LocalDateTime.now().getMonthValue();
 			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
 					.toString();
 
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTao")));
-			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHan(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHan(donViXuLyXLD, vaiTroNguoiDungHienTai, month,
 					xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {

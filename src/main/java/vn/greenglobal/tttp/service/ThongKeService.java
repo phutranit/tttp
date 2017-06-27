@@ -481,15 +481,17 @@ public class ThongKeService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu, int year,
+	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu, int month,
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) { 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY)
 						.or(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET)))
-				.and(QDon.don.ngayTao.year().eq(year));
+				.and(QDon.don.ngayTao.month().eq(month));
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false));
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				.or(QXuLyDon.xuLyDon.donChuyen.eq(true));
+				
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 		
