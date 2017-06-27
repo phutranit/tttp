@@ -469,6 +469,7 @@ public class DonController extends TttpController<Don> {
 					
 					//set thoi han xu ly
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
+					donMoi.setNgayTiepNhan(donMoi.getNgayBatDauXLD());
 					donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
 					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
@@ -555,6 +556,7 @@ public class DonController extends TttpController<Don> {
 				}
 				if (don.isThanhLapDon()) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+					don.setNgayTiepNhan(donOld.getNgayBatDauXLD());
 					if (donOld.getThoiHanXuLyXLD() == null) {
 						don.setNgayBatDauXLD(LocalDateTime.now());
 						if (don.getThoiHanXuLyXLD() == null) {
