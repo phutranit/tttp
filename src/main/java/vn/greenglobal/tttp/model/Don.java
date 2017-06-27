@@ -1412,7 +1412,7 @@ public class Don extends Model<Don> {
 			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
 				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);
 				if (soNgayXuLy == -1) {
-					mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
+					mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
 				}	
 			}
 		}
