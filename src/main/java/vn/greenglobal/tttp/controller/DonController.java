@@ -407,6 +407,7 @@ public class DonController extends TttpController<Don> {
 				Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 				
+				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 				Don donMoi = Utils.save(repo, don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
@@ -536,7 +537,8 @@ public class DonController extends TttpController<Don> {
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 				
 				don.setId(id);
-
+				don = checkDataThongTinDon(don);
+				
 				if (!donService.isExists(repo, id)) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
@@ -765,6 +767,18 @@ public class DonController extends TttpController<Don> {
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
+	}
+	
+	private Don checkDataThongTinDon(Don thongTinDon) {
+		if (!thongTinDon.isCoThongTinCoQuanDaGiaiQuyet()) {
+			thongTinDon.setCoQuanDaGiaiQuyet(null);
+			thongTinDon.setThamQuyenGiaiQuyet(null);
+			thongTinDon.setHinhThucDaGiaiQuyet(null);
+			thongTinDon.setSoVanBanDaGiaiQuyet("");
+			thongTinDon.setNgayBanHanhVanBanDaGiaiQuyet(null);
+			thongTinDon.setHuongGiaiQuyetDaThucHien("");
+		}
+		return thongTinDon;
 	}
 	
 }
