@@ -79,6 +79,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			checkDataThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 			Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
 			don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
 			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -121,5 +122,47 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
-	} 
+	}
+	
+	private ThongTinGiaiQuyetDon checkDataThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
+		if (!thongTinGiaiQuyetDon.isLapToDoanXacMinh()) {
+			thongTinGiaiQuyetDon.setSoQuyetDinhThanhLapDTXM("");
+			thongTinGiaiQuyetDon.setTruongDoanTTXM(null);
+		}
+		if (!thongTinGiaiQuyetDon.isGiaHanGiaiQuyet()) {
+			thongTinGiaiQuyetDon.setSoQuyetDinhGiaHan("");
+			thongTinGiaiQuyetDon.setNgayRaQuyetDinhGiaHanTTXM(null);
+			thongTinGiaiQuyetDon.setNgayHetHanSauKhiGiaHanTTXM(null);
+			thongTinGiaiQuyetDon.setLyDoGiaHan("");
+		}
+		if (!thongTinGiaiQuyetDon.isDoiThoai()) {
+			thongTinGiaiQuyetDon.setThoiGianDoiThoai(null);
+			thongTinGiaiQuyetDon.setDiaDiemDoiThoai("");
+		}
+		if (!thongTinGiaiQuyetDon.isGiaoCoQuanDieuTra()) {
+			thongTinGiaiQuyetDon.setCoQuanDieuTra(null);
+			thongTinGiaiQuyetDon.setSoVuGiaoCoQuanDieuTra(0);
+			thongTinGiaiQuyetDon.setSoDoiTuongGiaoCoQuanDieuTra(0);
+		}
+		if (!thongTinGiaiQuyetDon.isQuyetDinhGiaiQuyetKhieuNai()) {
+			thongTinGiaiQuyetDon.setTienPhaiThuNhaNuoc(0l);
+			thongTinGiaiQuyetDon.setDatPhaiThuNhaNuoc(0l);
+			thongTinGiaiQuyetDon.setTienPhaiTraCongDan(0l);
+			thongTinGiaiQuyetDon.setDatPhaiTraCongDan(0l);
+			thongTinGiaiQuyetDon.setTongSoNguoiXuLyHanhChinh(0);
+			thongTinGiaiQuyetDon.setSoNguoiDaBiXuLyHanhChinh(0);
+		}
+		if (!thongTinGiaiQuyetDon.isTheoDoiThucHien()) {
+			thongTinGiaiQuyetDon.setHinhThucTheoDoi(null);
+			thongTinGiaiQuyetDon.setCoQuanTheoDoi(null);
+			thongTinGiaiQuyetDon.setKetQuaThucHienTheoDoi(null);
+			thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
+			thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
+			thongTinGiaiQuyetDon.setTienDaThuNhaNuoc(0l);
+			thongTinGiaiQuyetDon.setDatDaThuNhaNuoc(0l);
+			thongTinGiaiQuyetDon.setTienDaTraCongDan(0l);
+			thongTinGiaiQuyetDon.setDatDaTraCongDan(0l);
+		}
+		return thongTinGiaiQuyetDon;
+	}
 }
