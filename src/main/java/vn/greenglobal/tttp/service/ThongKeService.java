@@ -2,12 +2,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -40,29 +39,27 @@ public class ThongKeService {
 		return tongPhanLoaiDon;
 	}
 	
-	public int getPhanTramTongSoDonTheoLinhVuc(BooleanExpression predAll, Long linhVucId, Long tongSoDon, DonRepository donRepo) { 
-		Float tongSoDonFloat = tongSoDon.floatValue();
+	public Double getPhanTramTongSoDonTheoLinhVuc(BooleanExpression predAll, Long linhVucId, Long tongSoDon, DonRepository donRepo) { 
+		Double phanTramDouble = 0d;
 		Long tongPhanLoaiDon = 0L;
 		predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId));
 		tongPhanLoaiDon = Long.valueOf(((List<Don>)donRepo.findAll(predAll)).size());
-		
-		Float tongPhanLoaiDonFloat = tongPhanLoaiDon.floatValue();
-		int tongPhanTramLinhVucDon = Math.round(((Float) (tongPhanLoaiDonFloat / tongSoDonFloat) * 100));
-		return tongPhanTramLinhVucDon;
+		Double tongPhanTramLinhVucDon = (tongPhanLoaiDon.doubleValue() / tongSoDon.doubleValue()) * 100;
+		phanTramDouble = Utils.round(tongPhanTramLinhVucDon, 2);
+		return phanTramDouble;
 	}
 	
-	public int getPhanTramTongSoDonTheoPhanLoai(BooleanExpression predAll, LoaiDonEnum loaiDon, Long tongSoDon, DonRepository donRepo) { 
-		Float tongSoDonFloat = tongSoDon.floatValue();
+	public Double getPhanTramTongSoDonTheoPhanLoai(BooleanExpression predAll, LoaiDonEnum loaiDon, Long tongSoDon, DonRepository donRepo) { 
+		Double phanTramDouble = 0d;
 		Long tongPhanLoaiDon = 0L;
 		predAll = predAll.and(QDon.don.loaiDon.eq(loaiDon));
 		tongPhanLoaiDon = Long.valueOf(((List<Don>)donRepo.findAll(predAll)).size());
-		
-		Float tongPhanLoaiDonFloat = tongPhanLoaiDon.floatValue();
-		int tongPhanTramPhanLoaiDon = Math.round(((Float) (tongPhanLoaiDonFloat / tongSoDonFloat) * 100));
-		return tongPhanTramPhanLoaiDon;
+		Double tongPhanTramPhanLoaiDon = (tongPhanLoaiDon.doubleValue() / tongSoDon.doubleValue()) * 100;
+		phanTramDouble = Utils.round(tongPhanTramPhanLoaiDon, 2);
+		return phanTramDouble;
 	}
 	
-	public Predicate predicateFindDanhSachDonsTheoDonVi(Long donViXuLyXLD, int year, XuLyDonRepository xuLyRepo,
+	public Predicate predicateFindDanhSachDonsTheoDonVi(Long donViXuLyXLD, int year, String loaiDon, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.ngayTiepNhan.year().eq(year));
@@ -71,10 +68,15 @@ public class ThongKeService {
 		List<Don> donCollections = new ArrayList<Don>();
 		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		
+		if (StringUtils.isNotBlank(loaiDon)) { 
+			LoaiDonEnum loaiDonEnum = LoaiDonEnum.valueOf(loaiDon);
+			predAll = predAll.and(QDon.don.loaiDon.eq(loaiDonEnum));
+		}
+		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
-
+		
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
@@ -486,35 +488,18 @@ public class ThongKeService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu, int year,
+	public Predicate predicateFindDSDonTreHanGQ(Long donViXuLyXLD, String chucVu, int year,
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) { 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
-				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY)
-						.or(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET)))
+				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET))
 				.and(QDon.don.ngayTiepNhan.year().eq(year));
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 		
-		List<Don> donCollections = new ArrayList<Don>();
-		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
-		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 			giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViXuLyXLD));
 		}
-		
-		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
-		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
-		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		donCollections = donCollections.stream().filter(d -> {
-			if (d.getNgayBatDauXLD() == null || d.getThoiHanXuLyXLD() == null) {
-				return false;
-			}
-			return Utils.isValidNgayTreHan(d.getNgayBatDauXLD(), d.getThoiHanXuLyXLD());
-		}).collect(Collectors.toList());
 		
 		List<Don> donCollections2 = new ArrayList<Don>();
 		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery);
@@ -530,10 +515,7 @@ public class ThongKeService {
 			return Utils.isValidNgayTreHan(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet());
 		}).collect(Collectors.toList());
 		
-		Set<Don> setDons = new HashSet<Don>();
-		setDons.addAll(donCollections2);
-		setDons.addAll(donCollections);
-		predAll = predAll.and(QDon.don.in(setDons));
+		predAll = predAll.and(QDon.don.in(donCollections2));
 		return predAll;
 	}
 }

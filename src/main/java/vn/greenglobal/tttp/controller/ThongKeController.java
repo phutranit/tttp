@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -128,7 +129,7 @@ public class ThongKeController extends TttpController<Don> {
 					.toString();
 
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
-			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHan(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHanGQ(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
 					xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -217,7 +218,8 @@ public class ThongKeController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeBieuDoDonTheoPhanLoai")
 	@ApiOperation(value = "Thống kê biểu đồ đơn theo phân loại", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonTheoPhanLoai(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> mapDonThongKe = new HashMap<>();
@@ -225,16 +227,18 @@ public class ThongKeController extends TttpController<Don> {
 		
 		Long tongSoDon = 0L;
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, loaiDon, xuLyRepo, repo, giaiQuyetDonRepo);
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		
-		for (LoaiDonEnum loaiDon : LoaiDonEnum.values()) {
+		for (LoaiDonEnum loaiDonEnum : LoaiDonEnum.values()) {
 			BooleanExpression predDon = predAll;
-			int phanTram = thongKeService.getPhanTramTongSoDonTheoPhanLoai(predDon, loaiDon, tongSoDon, repo);
-			mapDonThongKe.put("tenPhanLoaiDon", loaiDon.getText());
-			mapDonThongKe.put("phanTram", phanTram);
-			list.add(mapDonThongKe);
-			mapDonThongKe = new HashMap<>();
+			Double phanTram = thongKeService.getPhanTramTongSoDonTheoPhanLoai(predDon, loaiDonEnum, tongSoDon, repo);
+			if (phanTram > 0) { 
+				mapDonThongKe.put("tenPhanLoaiDon", loaiDonEnum.getText());
+				mapDonThongKe.put("phanTram", phanTram);
+				list.add(mapDonThongKe);
+				mapDonThongKe = new HashMap<>();
+			}
 		}
 		map.put("ten", "THỐNG KÊ ĐƠN THEO PHÂN LOẠI ĐƠN " +" NĂM " +year);
 		map.put("phanLoaiDons", list);
@@ -244,28 +248,30 @@ public class ThongKeController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeBieuDoDonTheoLinhVuc")
 	@ApiOperation(value = "Thống kê biểu đồ đơn theo lĩnh vực", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonTheoLinhVuc(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> mapDonThongKe = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
 		
+		int year = LocalDateTime.now().getYear();
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, loaiDon, xuLyRepo, repo, giaiQuyetDonRepo);
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
 		List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L, 39L, 50L, 52L);		
 		linhVucs.addAll(linhVucDonThuService.linhVucDonThusTheoId(ids));
 		
 		Long tongSoDon = 0L;
-		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
-		
 		for (LinhVucDonThu linhVuc : linhVucs) {
 			BooleanExpression predDon = predAll;
-			int phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVuc.getId(), tongSoDon, repo);
-			mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
-			mapDonThongKe.put("phanTram", phanTram);
-			list.add(mapDonThongKe);
-			mapDonThongKe = new HashMap<>();
+			Double phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVuc.getId(), tongSoDon, repo);
+			if (phanTram > 0) { 
+				mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
+				mapDonThongKe.put("phanTram", phanTram);
+				list.add(mapDonThongKe);
+				mapDonThongKe = new HashMap<>();
+			}
 		}
 		map.put("ten", "THỐNG KÊ ĐƠN THEO LĨNH VỰC " +" NĂM " +year);
 		map.put("linhVucs", list);
@@ -282,7 +288,7 @@ public class ThongKeController extends TttpController<Don> {
 		List<Map<String, Object>> listLoaiDon = new ArrayList<>();
 		
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, "", xuLyRepo, repo, giaiQuyetDonRepo);
 		
 		for (LoaiDonEnum loaiDon : LoaiDonEnum.values()) {
 			BooleanExpression predDon = predAll;

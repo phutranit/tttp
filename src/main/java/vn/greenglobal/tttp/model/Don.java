@@ -1401,6 +1401,26 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
+	public Map<String, Object> getTreHanGiaiQuyetDonInfo() {
+		Map<String, Object> mapType = new HashMap<>();
+		long soNgayXuLy = 0L;
+		mapType.put("type", "DAY");
+		mapType.put("value", soNgayXuLy);
+		if (getThongTinGiaiQuyetDon() != null) { 
+			LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+			ThongTinGiaiQuyetDon ttgqd = getThongTinGiaiQuyetDon();
+			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);
+				if (soNgayXuLy == -1) {
+					mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
+				}	
+			}
+		}
+		return mapType;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
 	public Map<String, Object> getHuongXuLyXLDInfo() {
 		if (getHuongXuLyXLD() != null) {
 			Map<String, Object> map = new HashMap<>();
