@@ -45,9 +45,9 @@ import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
-import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LinhVucDonThuService;
 import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.service.ThongKeService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -71,9 +71,6 @@ public class ThongKeController extends TttpController<Don> {
 	private ThamSoRepository repoThamSo;
 	
 	@Autowired
-	private DonService donService;
-	
-	@Autowired
 	private ThamSoService thamSoService;
 	
 	@Autowired
@@ -81,6 +78,9 @@ public class ThongKeController extends TttpController<Don> {
 	
 	@Autowired
 	private LinhVucDonThuService linhVucDonThuService;
+	
+	@Autowired
+	private ThongKeService thongKeService;
 	
 	public ThongKeController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -97,13 +97,13 @@ public class ThongKeController extends TttpController<Don> {
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
 		try {
-			int year = LocalDateTime.now().getYear();
+			int month = LocalDateTime.now().getMonthValue();
 			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
 					.toString();
 
-			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTao")));
-			Page<Don> pageData = repo.findAll(donService.predicateFindDSDonMoiNhat(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
+			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonMoiNhat(donViXuLyXLD, vaiTroNguoiDungHienTai, month,
 					xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -127,8 +127,8 @@ public class ThongKeController extends TttpController<Don> {
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
 					.toString();
 
-			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTao")));
-			Page<Don> pageData = repo.findAll(donService.predicateFindDSDonTreHan(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
+			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHan(donViXuLyXLD, vaiTroNguoiDungHienTai, year,
 					xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -145,9 +145,10 @@ public class ThongKeController extends TttpController<Don> {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> mapDonThongKe = new HashMap<>();
 		int year = LocalDateTime.now().getYear();
-		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDon(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyet(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHan(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDon", thongKeService.getThongKeTongSoDon(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		//mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyet(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonTreHanCuaXuLyDon", thongKeService.getThongKeTongSoDonTreHanXLD(donViXuLyXLD, year, xuLyRepo, repo));
+		mapDonThongKe.put("tongSoDonTreHanCuaGiaiQuyetDon", thongKeService.getThongKeTongSoDonTreHanGQD(donViXuLyXLD, year, repo, giaiQuyetDonRepo));
 		map.put("ten", "ĐƠN TẠI ĐƠN VỊ " +StringUtils.upperCase(donVi != null ? donVi.getDonVi().getTen() : "") +" NĂM " +year);
 		map.put("thongKe", mapDonThongKe);
 		return new ResponseEntity<>(map, HttpStatus.OK);
@@ -204,16 +205,17 @@ public class ThongKeController extends TttpController<Don> {
 		
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> mapDonThongKe = new HashMap<>();
-		mapDonThongKe.put("tongSoDon", donService.getThongKeTongSoDonThuocNhieuCoQuan(coQuans, year, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyetCuaNhieuCoQuan(coQuans, year, xuLyRepo, repo, giaiQuyetDonRepo));
-		mapDonThongKe.put("tongSoDonTreHan", donService.getThongKeTongSoDonTreHanCuaNhieuCoQuan(coQuans, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDon", thongKeService.getThongKeTongSoDonThuocNhieuCoQuan(coQuans, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		//mapDonThongKe.put("tongSoDonChuaGiaiQuyet", donService.getThongKeTongSoDonChuaGiaiQuyetCuaNhieuCoQuan(coQuans, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		mapDonThongKe.put("tongSoDonTreHanCuaXuLyDon", thongKeService.getThongKeTongSoDonTreHanCuaNhieuCoQuanXLD(coQuans, year, xuLyRepo, repo));
+		mapDonThongKe.put("tongSoDonTreHanCuaGiaiQuyetDon", thongKeService.getThongKeTongSoDonTreHanCuaNhieuCoQuanGQD(coQuans, year, repo, giaiQuyetDonRepo));
 		map.put("ten", "ĐƠN TẠI ĐỊA BÀN " +StringUtils.upperCase(donVi != null ? donVi.getDonVi().getTen() : "") +" NĂM " +year);
 		map.put("thongKe", mapDonThongKe);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeBieuDoDonTheoPhanLoai")
-	@ApiOperation(value = "Thống kê biểu đồ đơn theo phân loại", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Thống kê biểu đồ đơn theo phân loại", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonTheoPhanLoai(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -223,12 +225,12 @@ public class ThongKeController extends TttpController<Don> {
 		
 		Long tongSoDon = 0L;
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) donService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		
 		for (LoaiDonEnum loaiDon : LoaiDonEnum.values()) {
 			BooleanExpression predDon = predAll;
-			int phanTram = donService.getPhanTramTongSoDonTheoPhanLoai(predDon, loaiDon, tongSoDon, repo);
+			int phanTram = thongKeService.getPhanTramTongSoDonTheoPhanLoai(predDon, loaiDon, tongSoDon, repo);
 			mapDonThongKe.put("tenPhanLoaiDon", loaiDon.getText());
 			mapDonThongKe.put("phanTram", phanTram);
 			list.add(mapDonThongKe);
@@ -240,7 +242,7 @@ public class ThongKeController extends TttpController<Don> {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeBieuDoDonTheoLinhVuc")
-	@ApiOperation(value = "Thống kê biểu đồ đơn theo lĩnh vực", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Thống kê biểu đồ đơn theo lĩnh vực", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonTheoLinhVuc(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -254,12 +256,12 @@ public class ThongKeController extends TttpController<Don> {
 		
 		Long tongSoDon = 0L;
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) donService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		
 		for (LinhVucDonThu linhVuc : linhVucs) {
 			BooleanExpression predDon = predAll;
-			int phanTram = donService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVuc.getId(), tongSoDon, repo);
+			int phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVuc.getId(), tongSoDon, repo);
 			mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
 			mapDonThongKe.put("phanTram", phanTram);
 			list.add(mapDonThongKe);
@@ -267,6 +269,33 @@ public class ThongKeController extends TttpController<Don> {
 		}
 		map.put("ten", "THỐNG KÊ ĐƠN THEO LĨNH VỰC " +" NĂM " +year);
 		map.put("linhVucs", list);
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeBieuDoDonCuaNam")
+	@ApiOperation(value = "Thống kê biểu đồ đơn của năm", position = 10, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonCuaNam(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapDonThongKe = new HashMap<>();
+		List<Map<String, Object>> listLoaiDon = new ArrayList<>();
+		
+		int year = LocalDateTime.now().getYear();
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
+		
+		for (LoaiDonEnum loaiDon : LoaiDonEnum.values()) {
+			BooleanExpression predDon = predAll;
+			Long tongSo = thongKeService.getTongSoDonTheoPhanLoai(predDon, loaiDon, repo);
+			mapDonThongKe.put("tongSoDon", tongSo);
+			mapDonThongKe.put("loaiDon", loaiDon.getText());
+			listLoaiDon.add(mapDonThongKe);
+			mapDonThongKe = new HashMap<>();
+		}
+		map.put("ten", "THỐNG KÊ SỐ LƯỢNG ĐƠN TRONG " +" NĂM " +year);
+		map.put("tongSoDon", thongKeService.getThongKeTongSoDon(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		map.put("donTreHan", thongKeService.getThongKeTongSoDonTreHan(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo));
+		map.put("phanLoaiDons", listLoaiDon);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }
