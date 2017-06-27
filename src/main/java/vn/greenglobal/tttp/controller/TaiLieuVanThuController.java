@@ -28,7 +28,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.model.medial.Medial_TaiLieuVanThu;
 import vn.greenglobal.tttp.model.medial.Medial_TaiLieuVanThu_Delete;
@@ -76,19 +75,19 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
 		
 		try {
-			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
-			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
-				}
-				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
-				}
-			}
+//			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+//						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
+//			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+//							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
+//				}
+//				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+//							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
+//				}
+//			}
 			return taiLieuVanThuService.doSave(taiLieuVanThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -109,34 +108,39 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 		try {
 			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-			List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
+//			List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
 
 			if (params != null) {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getTaiLieuVanThus().size() > 0) {
+//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+//								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+//								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//									if (taiLieuVanThu.getSoQuyetDinh() == null
+//											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+//									}
+//									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+//									}
+//								}
+//								listCreate.add(taiLieuVanThu);
+//							}
+//							for (TaiLieuVanThu taiLieuVanThu : listCreate) {
+//								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+//								result.getTaiLieuVanThus().add(tlvt);
+//							}
 							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-									if (taiLieuVanThu.getSoQuyetDinh() == null
-											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
-									}
-									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
-									}
-								}
-								listCreate.add(taiLieuVanThu);
-							}
-							for (TaiLieuVanThu taiLieuVanThu : listCreate) {
 								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuVanThus().add(tlvt);
@@ -187,19 +191,19 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
-			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
-				}
-				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
-				}
-			}
+//			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+//						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
+//			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+//							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
+//				}
+//				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+//							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
+//				}
+//			}
 
 			return taiLieuVanThuService.doSave(taiLieuVanThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -220,38 +224,43 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 
 		try {
 			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-			List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
+//			List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
 
 			if (params != null) {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getTaiLieuVanThus().size() > 0) {
+//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+//								if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
+//									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+//											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+//								}
+//								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+//								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//									if (taiLieuVanThu.getSoQuyetDinh() == null
+//											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+//									}
+//									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+//									}
+//								}
+//								listUpdate.add(taiLieuVanThu);
+//							}
+//							for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
+//								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+//								result.getTaiLieuVanThus().add(tlvt);
+//							}
 							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-								if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-								}
-								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-									if (taiLieuVanThu.getSoQuyetDinh() == null
-											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
-									}
-									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
-									}
-								}
-								listUpdate.add(taiLieuVanThu);
-							}
-							for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
 								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
 										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getTaiLieuVanThus().add(tlvt);

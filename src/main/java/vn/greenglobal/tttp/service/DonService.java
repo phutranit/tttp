@@ -213,9 +213,9 @@ public class DonService {
 					.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct()
 					.collect(Collectors.toList());
-			for (GiaiQuyetDon gqd : giaiQuyetDons) {
-				System.out.println(gqd.getId());
-			}
+			// for (GiaiQuyetDon gqd : giaiQuyetDons) {
+			// System.out.println(gqd.getId());
+			// }
 			// if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			// BooleanExpression donViKiemTraDeXuat =
 			// QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)

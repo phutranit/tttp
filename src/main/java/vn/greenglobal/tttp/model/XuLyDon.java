@@ -87,7 +87,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private TrangThaiDonEnum trangThaiDon;
 	
 	//@Lob
-	//private String ghiChu = "";
+	private String ghiChu = "";
 	
 	@Transient
 	private String yKienXuLy = "";
@@ -114,6 +114,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.old = old;
 	}
 
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	public Long getSoNgayXuLy() {
 		return soNgayXuLy;
 	}
@@ -172,6 +174,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.diaDiem = diaDiem;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public LocalDateTime getThoiHanXuLy() {
 		return thoiHanXuLy;
 	}
@@ -242,6 +245,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public int getThuTuThucHien() {
 		return thuTuThucHien;
@@ -251,7 +255,21 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thuTuThucHien = thuTuThucHien;
 	}
 
-	@ApiModelProperty(position = 4)
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		if (ghiChu != null && ghiChu.length() == 0) {
+			this.ghiChu = " ";
+		} else {
+			this.ghiChu = ghiChu;
+		}
+	}
+
+	@ApiModelProperty(hidden = true)
 	public String getyKienXuLy() {
 		return yKienXuLy;
 	}
@@ -260,6 +278,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.yKienXuLy = yKienXuLy;
 	}
 
+	@JsonIgnore
 	@ApiModelProperty(position = 16)
 	public String getMoTaTrangThai() {
 		return moTaTrangThai;
@@ -269,7 +288,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.moTaTrangThai = moTaTrangThai;
 	}
 
-	@ApiModelProperty(position = 18)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
 	}
@@ -278,7 +297,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungThongTinTrinhLanhDao = noiDungThongTinTrinhLanhDao;
 	}
 
-	@ApiModelProperty(position = 19)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungYeuCauXuLy() {
 		return noiDungYeuCauXuLy;
 	}
@@ -297,7 +316,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
 
-	@ApiModelProperty(position = 4)
+	@ApiModelProperty(hidden = true)
 	public String getNoiDungXuLy() {
 		return noiDungXuLy;
 	}
@@ -306,15 +325,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.noiDungXuLy = noiDungXuLy;
 	}
 	
-//	@ApiModelProperty(position = 5)
-//	public QuyTrinhXuLyDonEnum getQuyTrinhXuLy() {
-//		return quyTrinhXuLy;
-//	}
-//
-//	public void setQuyTrinhXuLy(QuyTrinhXuLyDonEnum quyTrinhXuLy) {
-//		this.quyTrinhXuLy = quyTrinhXuLy;
-//	}
-
 	@ApiModelProperty(position = 10)
 	public HuongXuLyXLDEnum getHuongXuLy() {
 		return huongXuLy;
@@ -391,7 +401,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 	
 	@Transient
-	@ApiModelProperty(hidden = true)
+	@JsonIgnore
 	public Long getNgayConLai() {
 		return Utils.convertLocalDateTimeToNumber(this.getThoiHanXuLy());
 	}
@@ -421,11 +431,11 @@ public class XuLyDon extends Model<XuLyDon> {
 		return null;
 	}
 
+	@JsonIgnore
 	@Transient
-	@ApiModelProperty(hidden = true)
 	public Long getSoNgayCuaThoiHanXuLy() {
 		long soNgay = 0; 
-		soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
+		//soNgay = Utils.convertLocalDateTimeToNumber(getNgayTao(), getThoiHanXuLy());
 		return soNgay;
 	}
 
@@ -465,6 +475,10 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapCanBoXuLy = new HashMap<>();
 		Map<String, Object> mapCanBoXuLyChiDinh = new HashMap<>();
 		Map<String, Object> mapPhongBanChiDinh = new HashMap<>();
+		Map<String, Object> mapYeuCauGapLanhDao = new HashMap<String, Object>();
+		Map<String, Object> mapTrangThaiXuLyDon = new HashMap<String, Object>();
+		Map<String, Object> mapChucVuGiaoViec = new HashMap<String, Object>();
+		Map<String, Object> mapDinhChi = new HashMap<String, Object>();
 		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
@@ -483,8 +497,19 @@ public class XuLyDon extends Model<XuLyDon> {
 		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
 		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
-		
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
+		
+		if (getTrangThaiDon() != null) {
+			mapTrangThaiXuLyDon.put("ten", getTrangThaiDon().getText());
+			mapTrangThaiXuLyDon.put("enum", getTrangThaiDon().name());
+		}
+		map.put("trangThaiXuLyDon", mapTrangThaiXuLyDon);
+		
+		if (getChucVuGiaoViec() != null) { 
+			mapChucVuGiaoViec.put("ten", getChucVuGiaoViec().getText());
+			mapChucVuGiaoViec.put("giaTri", VaiTroEnum.valueOf(getChucVuGiaoViec().name()));
+		}
+		map.put("chucVuGiaoViec", mapChucVuGiaoViec);
 		
 		if (getHuongXuLy() != null) {
 			mapHuongXuLy.put("ten", getHuongXuLy().getText());
@@ -504,7 +529,18 @@ public class XuLyDon extends Model<XuLyDon> {
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
 				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)) {
+				mapYeuCauGapLanhDao.put("diaDiem", getDiaDiem());
+				mapYeuCauGapLanhDao.put("ngayHenGapLanhDao", getNgayHenGapLanhDao());
+			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.DINH_CHI)) {
+				mapDinhChi = new HashMap<String, Object>();
+				mapDinhChi.put("soQuyetDinhDinhChi", getSoQuyetDinhDinhChi() != null ? getSoQuyetDinhDinhChi() : "");
+				mapDinhChi.put("ngayQuyetDinhDinhChi", getNgayQuyetDinhDinhChi() != null ? getNgayQuyetDinhDinhChi() : "");
+				mapDinhChi.put("noiDung", getDon().getLyDoDinhChi()!= null ? getDon().getLyDoDinhChi() : "");
 			}
+			
+			map.put("dinhChi", mapDinhChi);
+			map.put("yeuCauGapLanhDao", mapYeuCauGapLanhDao);
 			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);

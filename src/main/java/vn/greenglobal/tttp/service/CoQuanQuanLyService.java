@@ -226,7 +226,6 @@ public class CoQuanQuanLyService {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))));
 			} else if ("CCQQL_SO_BAN_NGANH".equals(type)) { 
-				System.out.println("CCQQL_SO_BAN_NGANH");
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0)));
 			} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0)));
