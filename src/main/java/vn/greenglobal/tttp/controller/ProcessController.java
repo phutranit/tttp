@@ -287,7 +287,6 @@ public class ProcessController extends TttpController<Process> {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
 						try {
-							System.out.println("111111111111");
 							Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 							Process process = params.getProcess();
 							if (process != null && params.getTransitions().size() > 0) {
@@ -335,7 +334,6 @@ public class ProcessController extends TttpController<Process> {
 									}
 								}
 							}
-							System.out.println("222222222222");
 							return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 						} catch (Exception e) {
 							return Utils.responseInternalServerErrors(e);
