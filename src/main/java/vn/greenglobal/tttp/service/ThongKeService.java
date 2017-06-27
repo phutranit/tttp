@@ -64,8 +64,10 @@ public class ThongKeService {
 	
 	public Predicate predicateFindDanhSachDonsTheoDonVi(Long donViXuLyXLD, int year, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true)).and(QDon.don.ngayTao.year().eq(year));
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		List<Don> donCollections = new ArrayList<Don>();
 		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		
@@ -84,8 +86,10 @@ public class ThongKeService {
 	
 	public Long getThongKeTongSoDonThuocNhieuCoQuan(List<CoQuanQuanLy> coQuans, int year, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true)).and(QDon.don.ngayTao.year().eq(year));
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		
 		Long tongSo = 0L;
 		List<Don> donCollections = new ArrayList<Don>();
@@ -113,7 +117,7 @@ public class ThongKeService {
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET))
-				.and(QDon.don.ngayTao.year().eq(year));
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.in(coQuans)
 						.or(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.in(coQuans)))
@@ -135,12 +139,12 @@ public class ThongKeService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.and(QXuLyDon.xuLyDon.don.ngayTao.year().eq(year))
+				.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
 				.and(QXuLyDon.xuLyDon.don.thanhLapDon.eq(true))
 				.and(QXuLyDon.xuLyDon.don.daXoa.eq(false));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false))
-				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTao.year().eq(year))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTiepNhan.year().eq(year))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.thanhLapDon.eq(true))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.daXoa.eq(false));
 		Long tongSo = 0L;
@@ -205,7 +209,7 @@ public class ThongKeService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false))
-				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTao.year().eq(year))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTiepNhan.year().eq(year))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.thanhLapDon.eq(true))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.daXoa.eq(false));
@@ -240,7 +244,7 @@ public class ThongKeService {
 	public Long getThongKeTongSoDonTreHanCuaNhieuCoQuanXLD(List<CoQuanQuanLy> coQuans, int year, XuLyDonRepository xuLyRepo, DonRepository donRepo) {
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.and(QXuLyDon.xuLyDon.don.ngayTao.year().eq(year))
+				.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
 				.and(QXuLyDon.xuLyDon.don.thanhLapDon.eq(true))
 				.and(QXuLyDon.xuLyDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY))
 				.and(QXuLyDon.xuLyDon.don.daXoa.eq(false));
@@ -275,7 +279,7 @@ public class ThongKeService {
 	public Long getThongKeTongSoDon(Long donViXuLyXLD, int year, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
-				.and(QDon.don.ngayTao.year().eq(year));
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		
@@ -300,7 +304,7 @@ public class ThongKeService {
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET))
-				.and(QDon.don.ngayTao.year().eq(year));
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViXuLyXLD))
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false))
@@ -321,7 +325,7 @@ public class ThongKeService {
 	public Long getThongKeTongSoDonTreHanXLD(Long donViXuLyXLD, int year, XuLyDonRepository xuLyRepo, DonRepository donRepo) {
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.and(QXuLyDon.xuLyDon.don.ngayTao.year().eq(year))
+				.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
 				.and(QXuLyDon.xuLyDon.don.thanhLapDon.eq(true))
 				.and(QXuLyDon.xuLyDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY))
 				.and(QXuLyDon.xuLyDon.don.daXoa.eq(false));
@@ -356,7 +360,7 @@ public class ThongKeService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false))
-				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTao.year().eq(year))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTiepNhan.year().eq(year))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.thanhLapDon.eq(true))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.daXoa.eq(false));
@@ -391,12 +395,12 @@ public class ThongKeService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.and(QXuLyDon.xuLyDon.don.ngayTao.year().eq(year))
+				.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
 				.and(QXuLyDon.xuLyDon.don.thanhLapDon.eq(true))
 				.and(QXuLyDon.xuLyDon.don.daXoa.eq(false));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false))
-				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTao.year().eq(year))
+				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.ngayTiepNhan.year().eq(year))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.thanhLapDon.eq(true))
 				.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.daXoa.eq(false));
 		
@@ -453,11 +457,12 @@ public class ThongKeService {
 		return tongSo;
 	}
 	
-	public Predicate predicateFindDSDonMoiNhat(Long donViXuLyXLD, String chucVu, int year, XuLyDonRepository xuLyRepo,
+	public Predicate predicateFindDSDonMoiNhat(Long donViXuLyXLD, String chucVu, int month, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
-				.and(QDon.don.ngayTao.year().eq(year));
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
+				.and(QDon.don.ngayTiepNhan.month().eq(month));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 		
@@ -481,17 +486,15 @@ public class ThongKeService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu, int month,
+	public Predicate predicateFindDSDonTreHan(Long donViXuLyXLD, String chucVu, int year,
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) { 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY)
 						.or(QDon.don.trangThaiDon.eq(TrangThaiDonEnum.DANG_GIAI_QUYET)))
-				.and(QDon.don.ngayTao.month().eq(month));
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.or(QXuLyDon.xuLyDon.donChuyen.eq(true));
-				
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 		
