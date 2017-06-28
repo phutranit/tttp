@@ -1506,7 +1506,7 @@ public class Don extends Model<Don> {
 					map = new HashMap<>();
 					map.put("idDonVi", idDonViXuLy);
 					if (xld.isDonChuyen()) {					
-						map.put("nguonDonText", "Chuyển đơn");
+						map.put("nguonDonText", NguonTiepNhanDonEnum.CHUYEN_DON.getText());
 						map.put("donViChuyenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getDonVi().getTen() : "");
 					} else {
 						map.put("nguonDonText", xld.getDon().getNguonTiepNhanDon().getText());
@@ -1525,10 +1525,10 @@ public class Don extends Model<Don> {
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
 						if (gqd.isLaTTXM()) {					
-							map.put("nguonDonText", "Giao thẩm tra xác minh");
+							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
 						} else if (gqd.isDonChuyen()){
-							map.put("nguonDonText", "Giao kiểm tra đề xuất");
+							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_KTDX.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
 						}
 						list.add(map);
