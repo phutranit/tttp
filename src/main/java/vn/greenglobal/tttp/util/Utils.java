@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.util;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.validation.ConstraintViolation;
@@ -511,8 +513,6 @@ public class Utils {
      */
 	public static Long getLayNgayTreHan(LocalDateTime ngayHienTai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
 		long soNgayXuLy = 0;
-		//Calendar lichHienTai = Calendar.getInstance();
-		
 		try {
 			if (ngayHienTai != null && ngayBatDau != null && ngayKetThuc != null) { 
 				Calendar lichHienTai = getMocThoiGianLocalDateTime(ngayHienTai, ngayHienTai.getHour(), ngayHienTai.getMinute());
@@ -530,7 +530,8 @@ public class Utils {
 				}
 				
 				if (end.before(lichHienTai) && !DateUtils.isSameDay(end, lichHienTai)) {
-					while (end.before(lichHienTai)) {
+					end.add(Calendar.DATE, 1);
+					while (end.before(lichHienTai) || DateUtils.isSameDay(end, lichHienTai)) {
 						soNgayXuLy += 1;
 						end.add(Calendar.DATE, 1);
 					}
@@ -600,5 +601,14 @@ public class Utils {
 			randomNumberStr = "0" + randomNumberStr;
 		}
 		return out + randomNumberStr;
+	}
+	
+	public static Double round(Number src, int decimalPlaces) {
+	    return Optional.ofNullable(src)
+	            .map(Number::doubleValue)
+	            .map(BigDecimal::new)
+	            .map(dbl -> dbl.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP))
+	            .map(BigDecimal::doubleValue)
+	            .orElse(null);
 	}
 }
