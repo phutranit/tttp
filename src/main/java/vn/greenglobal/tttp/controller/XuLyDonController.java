@@ -890,7 +890,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonTruongPhong.setDonChuyen(xuLyDonHienTai.isDonChuyen());
 					xuLyDonTruongPhong.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 				}
-				xuLyDonTruongPhong.setNextForm(xuLyDon.getNextForm());
+				xuLyDonTruongPhong.setNextForm(xuLyDonHienTai.getNextForm());
 				xuLyDonTruongPhong.setNextState(xuLyDon.getNextState());
 				xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 			}
