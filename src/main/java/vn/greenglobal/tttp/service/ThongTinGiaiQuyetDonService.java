@@ -51,9 +51,22 @@ public class ThongTinGiaiQuyetDonService {
 			list.add(new PropertyChangeObject("Số quyết định thành lập đoàn tổ xác minh", thongTinOld.getSoQuyetDinhThanhLapDTXM(), thongTinNew.getSoQuyetDinhThanhLapDTXM()));
 		}
 		
-		if (thongTinNew.getSoQuyetDinhGiaHan() != null 
-				&& !thongTinNew.getSoQuyetDinhGiaHan().equals(thongTinOld.getSoQuyetDinhGiaHan())) {
-			list.add(new PropertyChangeObject("Số quyết định gia hạn", thongTinOld.getSoQuyetDinhGiaHan(), thongTinNew.getSoQuyetDinhGiaHan()));
+		if (thongTinNew.getSoQuyetDinhGiaHanGiaiQuyet() != null 
+				&& !thongTinNew.getSoQuyetDinhGiaHanGiaiQuyet().equals(thongTinOld.getSoQuyetDinhGiaHanGiaiQuyet())) {
+			list.add(new PropertyChangeObject("Số quyết định gia hạn giải quyết", thongTinOld.getSoQuyetDinhGiaHanGiaiQuyet(), thongTinNew.getSoQuyetDinhGiaHanGiaiQuyet()));
+		}
+		
+		if (thongTinNew.getSoQuyetDinhGiaHanTTXM() != null 
+				&& !thongTinNew.getSoQuyetDinhGiaHanTTXM().equals(thongTinOld.getSoQuyetDinhGiaHanTTXM())) {
+			list.add(new PropertyChangeObject("Số quyết định gia hạn thẩm tra xác minh", thongTinOld.getSoQuyetDinhGiaHanTTXM(), thongTinNew.getSoQuyetDinhGiaHanTTXM()));
+		}
+		
+		if (thongTinNew.getNgayRaQuyetDinhGiaHanGiaiQuyet() != null 
+				&& !thongTinNew.getNgayRaQuyetDinhGiaHanGiaiQuyet().format(formatter).equals(
+						thongTinOld.getNgayRaQuyetDinhGiaHanGiaiQuyet() != null ? thongTinOld.getNgayRaQuyetDinhGiaHanGiaiQuyet().format(formatter) : "")) {
+			list.add(new PropertyChangeObject("Ngày ra quyết định gia hạn giải quyết", 
+					thongTinOld.getNgayRaQuyetDinhGiaHanGiaiQuyet() != null ? thongTinOld.getNgayRaQuyetDinhGiaHanGiaiQuyet().format(formatter) : "",
+							thongTinNew.getNgayRaQuyetDinhGiaHanGiaiQuyet().format(formatter)));
 		}
 		
 		if (thongTinNew.getDiaDiemDoiThoai() != null 
@@ -61,9 +74,14 @@ public class ThongTinGiaiQuyetDonService {
 			list.add(new PropertyChangeObject("Địa điểm đối thoại", thongTinOld.getDiaDiemDoiThoai(), thongTinNew.getDiaDiemDoiThoai()));
 		}
 		
-		if (thongTinNew.getLyDoGiaHan() != null 
-				&& !thongTinNew.getLyDoGiaHan().equals(thongTinOld.getLyDoGiaHan())) {
-			list.add(new PropertyChangeObject("Lý do gia hạn", thongTinOld.getLyDoGiaHan(), thongTinNew.getLyDoGiaHan()));
+		if (thongTinNew.getLyDoGiaHanGiaiQuyet() != null 
+				&& !thongTinNew.getLyDoGiaHanGiaiQuyet().equals(thongTinOld.getLyDoGiaHanGiaiQuyet())) {
+			list.add(new PropertyChangeObject("Lý do gia hạn giải quyết", thongTinOld.getLyDoGiaHanGiaiQuyet(), thongTinNew.getLyDoGiaHanGiaiQuyet()));
+		}
+		
+		if (thongTinNew.getLyDoGiaHanTTXM() != null 
+				&& !thongTinNew.getLyDoGiaHanTTXM().equals(thongTinOld.getLyDoGiaHanTTXM())) {
+			list.add(new PropertyChangeObject("Lý do gia hạn thẩm tra xác minh", thongTinOld.getLyDoGiaHanTTXM(), thongTinNew.getLyDoGiaHanTTXM()));
 		}
 		
 		if (thongTinNew.getNoiDung() != null 
