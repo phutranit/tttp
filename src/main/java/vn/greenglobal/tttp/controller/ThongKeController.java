@@ -189,42 +189,29 @@ public class ThongKeController extends TttpController<Don> {
 			if (coQuanQuanLy.getCapCoQuanQuanLy() != null) { 
 				if (coQuanQuanLy.getCapCoQuanQuanLy().getId()
 						.equals(Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()))) { 
-					System.out.println("phong ban");
 					if (coQuanQuanLy.getCha() != null) { 
 						CoQuanQuanLy cha = coQuanQuanLy.getCha();
-						System.out.println("cha " +cha.getTen());
 						if (coQuans.contains(cha)) { 
 							coQuans.remove(cha);
 						}
 					}
 				}
 			}
-			
-			coQuans.forEach(cq -> {
-				System.out.println("cq " +cq.getId() + " ten " +cq.getTen() + " --  cha " +cq.getCha().getId());
-			});
-		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
+		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()) ||
+				(donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())))) {
 			// Danh sach don vi thuoc Quan Huyen
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
 			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
 					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds,
 					"CCQQL_UBND_QUAN_HUYEN")));
-			coQuans.forEach(cq -> {
-				System.out.println("QH " +cq.getId() + " ten " +cq.getTen() + " --  cha " +cq.getCha().getId());
-			});
-		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())) {
+		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()) ||
+				(donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))) {
 			// Danh sach don vi thuoc So Ban Nganh
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLChiCuc.getGiaTri().toString()));
 			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
 					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds, "CCQQL_SO_BAN_NGANH")));
-			coQuans.forEach(cq -> {
-				System.out.println("cq " +cq.getId() + " ten " +cq.getTen() + " --  cha " +cq.getCha().getId());
-			});
-		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
-			// Danh sach don vi thuoc Phuong Xa
-			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donViXuLyXLD)));
 		}
 		
 		Map<String, Object> map = new HashMap<>();
@@ -331,12 +318,10 @@ public class ThongKeController extends TttpController<Don> {
 			int month = i;
 			Long tongSoDon = 0L;
 			BooleanExpression predThang = (BooleanExpression) thongKeService.getPredDonTheoThang(predAll, month, repo);
-			System.out.println("month " +month);
 			List<Map<String, Object>> listLoaiDon = new ArrayList<>();
 			for (LoaiDonEnum loaiDon : LoaiDonEnum.values()) {
 				BooleanExpression predDon = predThang;
 				Long tongSoLoaiDon = thongKeService.getTongSoDonTheoPhanLoai(predDon, loaiDon, repo);
-				System.out.println("tongSoLoaiDon " +loaiDon.name() + " : " +tongSoLoaiDon);
 				mapDonThongKe.put("tongSoLoaiDon", tongSoLoaiDon);
 				mapDonThongKe.put("tenLoaiDon", loaiDon.getText());
 				listLoaiDon.add(mapDonThongKe);
