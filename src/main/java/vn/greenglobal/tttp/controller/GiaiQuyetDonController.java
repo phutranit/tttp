@@ -597,6 +597,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setPhongBanGiaiQuyet(congChuc.getCoQuanQuanLy());
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
+		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
 		Don don = donRepo.findOne(donId);
@@ -632,6 +633,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		// set them 1 dong lich su qua trinh cho don vi TTXM
 		lichSuQTXLDTaiDonViTTXM = lichSuQTXLD;
+		lichSuQTXLDTaiDonViTTXM.setId(null);
 		lichSuQTXLDTaiDonViTTXM.setDonViXuLy(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
 		lichSuQTXLDTaiDonViTTXM.setThuTuThucHien(0);
 		

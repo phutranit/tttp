@@ -40,11 +40,15 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	@Size(max=255)
 	private String soQuyetDinhThanhLapDTXM = "";
 	@Size(max=255)
-	private String soQuyetDinhGiaHan = "";
+	private String soQuyetDinhGiaHanGiaiQuyet = "";
+	@Size(max=255)
+	private String soQuyetDinhGiaHanTTXM = "";
 	@Size(max=255)
 	private String diaDiemDoiThoai = "";
 	@Size(max=255)
-	private String lyDoGiaHan = "";
+	private String lyDoGiaHanGiaiQuyet = "";
+	@Size(max=255)
+	private String lyDoGiaHanTTXM = "";
 	@Size(max=255)
 	private String noiDung = "";
 
@@ -58,9 +62,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
+	private LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet;
 
 	private boolean lapToDoanXacMinh;
 	private boolean giaHanGiaiQuyet;
+	private boolean giaHanTTXM;
 	private boolean doiThoai;
 	private boolean giaoCoQuanDieuTra;
 	private boolean khoiTo;
@@ -123,12 +129,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.soQuyetDinhThanhLapDTXM = soQuyetDinhThanhLapDTXM;
 	}
 
-	public String getSoQuyetDinhGiaHan() {
-		return soQuyetDinhGiaHan;
+	public String getSoQuyetDinhGiaHanGiaiQuyet() {
+		return soQuyetDinhGiaHanGiaiQuyet;
 	}
 
-	public void setSoQuyetDinhGiaHan(String soQuyetDinhGiaHan) {
-		this.soQuyetDinhGiaHan = soQuyetDinhGiaHan;
+	public void setSoQuyetDinhGiaHanGiaiQuyet(String soQuyetDinhGiaHanGiaiQuyet) {
+		this.soQuyetDinhGiaHanGiaiQuyet = soQuyetDinhGiaHanGiaiQuyet;
 	}
 
 	public String getDiaDiemDoiThoai() {
@@ -139,12 +145,20 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.diaDiemDoiThoai = diaDiemDoiThoai;
 	}
 
-	public String getLyDoGiaHan() {
-		return lyDoGiaHan;
+	public String getLyDoGiaHanGiaiQuyet() {
+		return lyDoGiaHanGiaiQuyet;
 	}
 
-	public void setLyDoGiaHan(String lyDoGiaHan) {
-		this.lyDoGiaHan = lyDoGiaHan;
+	public void setLyDoGiaHanGiaiQuyet(String lyDoGiaHanGiaiQuyet) {
+		this.lyDoGiaHanGiaiQuyet = lyDoGiaHanGiaiQuyet;
+	}
+
+	public String getLyDoGiaHanTTXM() {
+		return lyDoGiaHanTTXM;
+	}
+
+	public void setLyDoGiaHanTTXM(String lyDoGiaHanTTXM) {
+		this.lyDoGiaHanTTXM = lyDoGiaHanTTXM;
 	}
 
 	public String getNoiDung() {
@@ -153,6 +167,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
+	}
+
+	public String getSoQuyetDinhGiaHanTTXM() {
+		return soQuyetDinhGiaHanTTXM;
+	}
+
+	public void setSoQuyetDinhGiaHanTTXM(String soQuyetDinhGiaHanTTXM) {
+		this.soQuyetDinhGiaHanTTXM = soQuyetDinhGiaHanTTXM;
 	}
 
 	public LocalDateTime getThoiGianDoiThoai() {
@@ -238,6 +260,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return ngayRaQuyetDinhGiaHanTTXM;
 	}
 
+	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
+		return ngayRaQuyetDinhGiaHanGiaiQuyet;
+	}
+
+	public void setNgayRaQuyetDinhGiaHanGiaiQuyet(LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet) {
+		this.ngayRaQuyetDinhGiaHanGiaiQuyet = ngayRaQuyetDinhGiaHanGiaiQuyet;
+	}
+
 	public void setNgayRaQuyetDinhGiaHanTTXM(LocalDateTime ngayRaQuyetDinhGiaHanTTXM) {
 		this.ngayRaQuyetDinhGiaHanTTXM = ngayRaQuyetDinhGiaHanTTXM;
 	}
@@ -256,6 +286,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setGiaHanGiaiQuyet(boolean giaHanGiaiQuyet) {
 		this.giaHanGiaiQuyet = giaHanGiaiQuyet;
+	}
+
+	public boolean isGiaHanTTXM() {
+		return giaHanTTXM;
+	}
+
+	public void setGiaHanTTXM(boolean giaHanTTXM) {
+		this.giaHanTTXM = giaHanTTXM;
 	}
 
 	public boolean isDoiThoai() {
