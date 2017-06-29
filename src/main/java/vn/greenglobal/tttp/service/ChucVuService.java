@@ -2,6 +2,12 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +20,14 @@ import vn.greenglobal.tttp.model.QChucVu;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class ChucVuService {
 
+	@Autowired
+	private ChucVuRepository chucVuRepository;
+	
 	BooleanExpression base = QChucVu.chucVu.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String ten) {
@@ -31,6 +41,18 @@ public class ChucVuService {
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QChucVu.chucVu.id.eq(id));
+	}
+	
+	public Page<ChucVu> findAll(String ten, Pageable pageable) {
+		return chucVuRepository.findAll(predicateFindAll(ten), pageable);
+	}
+	
+	public List<ChucVu> findAll(String ten) {
+		return (List<ChucVu>) chucVuRepository.findAll(predicateFindAll(ten));
+	}
+	
+	public List<ChucVu> findAll() {
+		return (List<ChucVu>) chucVuRepository.findAll();
 	}
 
 	public boolean isExists(ChucVuRepository repo, Long id) {
@@ -73,6 +95,14 @@ public class ChucVuService {
 		}
 
 		return false;
+	}
+	
+	public ChucVu save(ChucVu obj, Long congChucId) {
+		return Utils.save(chucVuRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(ChucVu obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(chucVuRepository, obj, congChucId, eass, status);		
 	}
 
 }

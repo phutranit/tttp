@@ -49,7 +49,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	@Size(max=255)
 	private String soTheLuatSu = "";
-
 	private boolean gioiTinh;
 	private boolean luatSu = false;
 

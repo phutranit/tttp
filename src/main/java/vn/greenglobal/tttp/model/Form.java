@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,20 +22,18 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 @ApiModel
 public class Form extends Model<Form> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	
 	@NotBlank
 	@Size(max=255)
 	private String alias = "";
 	
-	@Enumerated(EnumType.STRING)
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
 
 	@ApiModelProperty(position = 1, required = true)
@@ -63,7 +64,45 @@ public class Form extends Model<Form> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getProcessTypeInfo() {
+		if (getProcessType() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getProcessType().getText());
+			map.put("giaiTri", getProcessType().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getFormId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("congChucId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
 	}
 }

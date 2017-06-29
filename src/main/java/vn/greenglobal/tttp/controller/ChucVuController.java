@@ -55,7 +55,6 @@ public class ChucVuController extends TttpController<ChucVu> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
-
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CHUCVU_XEM) == null) {
@@ -63,7 +62,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<ChucVu> page = repo.findAll(chucVuService.predicateFindAll(ten), pageable);
+			Page<ChucVu> page = chucVuService.findAll(ten, pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -88,7 +87,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
-			return Utils.doSave(repo, chucVu,
+			return chucVuService.doSave(chucVu, 
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -143,7 +142,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			return Utils.doSave(repo, chucVu,
+			return chucVuService.doSave(chucVu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.OK);
 		} catch (Exception e) {
@@ -174,7 +173,7 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
-			Utils.save(repo, chucVu,
+			chucVuService.save(chucVu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

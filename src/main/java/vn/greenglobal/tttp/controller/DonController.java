@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
@@ -48,8 +50,10 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
@@ -60,12 +64,14 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
+import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.TransitionService;
@@ -98,6 +104,9 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	private StateRepository repoState;
+	
+	@Autowired
+	private LichSuThayDoiRepository lichSuRepo;
 
 	@Autowired
 	private GiaiQuyetDonRepository giaiQuyetDonRepo;
@@ -128,7 +137,13 @@ public class DonController extends TttpController<Don> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyService lichSuQuaTrinhXuLyService;
+	
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
 
+	@Autowired
+	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
+		
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
@@ -205,7 +220,14 @@ public class DonController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
+			NguoiDung nguoiDung = null;
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_LIETKE) != null) {
+				nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_LIETKE);
+			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) != null) {
+				nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM);
+			}
+
 			if (nguoiDung != null) {
 				String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
@@ -244,53 +266,6 @@ public class DonController extends TttpController<Don> {
 		
 		return listProcess;
 	}
-
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	@RequestMapping(method = RequestMethod.GET, value = "/listNextStates")
-//	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
-//			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
-//			@ApiResponse(code = 204, message = "Không có dữ liệu"),
-//			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
-//	public @ResponseBody Object getListNextStates(@RequestHeader(value = "Authorization", required = true) String authorization,
-//			Pageable pageable,
-//			@RequestParam(value = "donId", required = true) Long donId,
-//			@RequestParam(value = "processType", required = true) String processType,
-//			@RequestParam(value = "currentStateId", required = true) Long currentStateId, PersistentEntityResourceAssembler eass) {
-//
-//		NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
-//		if (nguoiDung != null) {
-//			Don don = repo.findOne(donService.predicateFindOne(donId));
-//			if (don == null) {
-//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
-//						ApiErrorEnum.DON_REQUIRED.getText());
-//			}
-//			Process process = getProcess(authorization, don.getNguoiTao() != null ? don.getNguoiTao().getId() : 0L, processType);
-//			if (process == null) {
-//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
-//						ApiErrorEnum.PROCESS_NOT_FOUND.getText());
-//			}
-//			
-//			Predicate predicate = serviceState.predicateFindAll(currentStateId, process, repoTransition);
-//			List<State> listState = ((List<State>) repoState.findAll(predicate));
-//			if (listState.size() < 1) {
-//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-//						ApiErrorEnum.TRANSITION_INVALID.getText());
-//			} else {
-//				for (State nextState : listState) {
-//					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
-//					if (transition == null) {
-//						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-//								ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-//					}
-//				}
-//			}
-//			Page<State> pageData = repoState.findAll(predicate, pageable);
-//			return assemblerState.toResource(pageData, (ResourceAssembler) eass);
-//		}
-//		return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//				ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -303,7 +278,15 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "donId", required = false) Long donId, PersistentEntityResourceAssembler eass) {
 
 		try {
-			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
+			NguoiDung nguoiDung = null;
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) != null) {
+				nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) != null) {
+				nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA);			
+			}
+			
 			if (nguoiDung != null) {
 				Medial_Form_State media = new Medial_Form_State();
 				State currentState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -409,7 +392,7 @@ public class DonController extends TttpController<Don> {
 				
 				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
-				Don donMoi = Utils.save(repo, don, congChucId);
+				Don donMoi = donService.save(don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				
 				//tao lich su qua trinh xu ly don
@@ -421,7 +404,8 @@ public class DonController extends TttpController<Don> {
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
-					List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+					List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 					donMoi.setCurrentState(beginState);
 					
 					//Vai tro tiep theo
@@ -453,7 +437,6 @@ public class DonController extends TttpController<Don> {
 									ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 						}
 					}
-				
 					
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
@@ -481,14 +464,21 @@ public class DonController extends TttpController<Don> {
 						long soNgayXuLyMacDinh = 10;
 						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
-					Utils.save(xuLyRepo, xuLyDon, congChucId);
+					xuLyDonService.save(xuLyDon, congChucId);
 				} else { 
-					lichSuQTXLD.setTen("Tạo mới đơn thư");
+					lichSuQTXLD.setTen("Tạo mới xử lý đơn");
 				}
 				lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
 				lichSuQTXLD.setThuTuThucHien(0);
-				Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
-				return Utils.doSave(repo, donMoi, congChucId, eass, HttpStatus.CREATED);
+				List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(donMoi, new Don());
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(donMoi.getId());
+				lichSu.setNoiDung("Tạo mới đơn");
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				lichSuThayDoiService.save(lichSu, congChucId);
+				lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+				return donService.doSave(donMoi, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -543,8 +533,7 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				Don donOld = repo.findOne(id);
-				don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
+				Don donOld = repo.findOne(donService.predicateFindOne(id));
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
@@ -572,9 +561,10 @@ public class DonController extends TttpController<Don> {
 					}
 					
 					// Them xu ly don
-					if(donOld.getXuLyDons().size() <= 0) {
+					if(donOld.getXuLyDons().size() <= 0) {						
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-						List<Process> listProcess = getProcess(authorization, congChucId, ProcessTypeEnum.XU_LY_DON.toString());
+						Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+						List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 						if (don.getProcessType() == null) {
 							don.setProcessType(ProcessTypeEnum.XU_LY_DON);
 						}
@@ -636,8 +626,8 @@ public class DonController extends TttpController<Don> {
 						int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId(), 
 								donVi.getId());
 						lichSuQTXLD.setThuTuThucHien(thuTu);
-						Utils.save(xuLyRepo, xuLyDon, congChucId);
-						Utils.save(lichSuQuaTrinhXuLyRepo, lichSuQTXLD, congChucId);
+						xuLyDonService.save(xuLyDon, congChucId);
+						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 					} else {
 						XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
 						if (xuLyDonHienTai != null) {
@@ -645,7 +635,7 @@ public class DonController extends TttpController<Don> {
 								xuLyDonHienTai.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
 								xuLyDonHienTai.setNoiDungThongTinTrinhLanhDao(don.getNoiDungThongTinTrinhLanhDao());
 							}
-							Utils.save(xuLyRepo, xuLyDonHienTai, congChucId);
+							xuLyDonService.save(xuLyDonHienTai, congChucId);
 						}
 					}
 					
@@ -667,7 +657,17 @@ public class DonController extends TttpController<Don> {
 					}
 				}
 
-				return Utils.doSave(repo, don,
+				List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(don, donOld);
+				if (listThayDoi.size() > 0) {
+					LichSuThayDoi lichSu = new LichSuThayDoi();
+					lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+					lichSu.setIdDoiTuong(id);
+					lichSu.setNoiDung("Cập nhật thông tin đơn");
+					lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+					lichSuThayDoiService.save(lichSu, congChucId);
+				}
+				
+				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
 			}
@@ -691,8 +691,7 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				Utils.save(repo, don,
-						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -769,6 +768,34 @@ public class DonController extends TttpController<Don> {
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}/lichSus")
+	@ApiOperation(value = "Lấy lịch sử thay đổi của Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy lịch sử thay đổi của Đơn thành công", response = LichSuThayDoi.class) })
+	public PagedResources<Object> getLichSuThayDoiDon(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+		Page<LichSuThayDoi> page = lichSuRepo
+				.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.DON, id), pageable);
+		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}/lichSus/{idLichSu}")
+	@ApiOperation(value = "Lấy chi tiết lịch sử thay đổi của Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Lấy chi tiết lịch sử thay đổi của Đơn thành công", response = LichSuThayDoi.class) })
+	public ResponseEntity<Object> getLichSuById(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@PathVariable("idLichSu") long idLichSu, PersistentEntityResourceAssembler eass) {
+
+		LichSuThayDoi lichSuThayDoi = lichSuRepo.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
+		if (lichSuThayDoi == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
+	}
+
 	private Don checkDataThongTinDon(Don thongTinDon) {
 		if (!thongTinDon.isCoThongTinCoQuanDaGiaiQuyet()) {
 			thongTinDon.setCoQuanDaGiaiQuyet(null);

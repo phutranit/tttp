@@ -17,6 +17,21 @@ import io.swagger.annotations.ApiModelProperty;
 public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	private static final long serialVersionUID = 1L;
 
+	public LichSuQuaTrinhXuLy(Don don, CongChuc nguoiXuLy, LocalDateTime ngayXuLy, 
+			String ten, String noiDung, CoQuanQuanLy donViXuLy, int thuTuThucHien) {
+		this.don = don;
+		this.nguoiXuLy = nguoiXuLy;
+		this.ngayXuLy = ngayXuLy;
+		this.ten = ten;
+		this.noiDung = noiDung;
+		this.donViXuLy = donViXuLy;
+		this.thuTuThucHien = thuTuThucHien;
+	}
+	
+	public LichSuQuaTrinhXuLy() {
+		
+	}
+	
 	@Size(max=255)
 	private String ten = "";
 	//@Lob

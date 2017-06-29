@@ -12,6 +12,7 @@ public enum FlowStateEnum {
 	CAN_BO_DE_XUAT_HUONG_XU_LY("Cán bộ đề xuất hướng xử lý"),
 	CAN_BO_CHUYEN_VAN_THU_GIAO_TTXM("Cán bộ chuyển văn thư giao TTXM"),
 	VAN_THU_CHUYEN_DON_VI_TTXM("Văn thư chuyển đơn vị TTXM"),
+	CAN_BO_CHUYEN_DON_VI_TTXM("Cán bộ chuyển đơn vị TTXM"),
 	CAN_BO_NHAN_KET_QUA_TTXM("Cán bộ nhận kết quả TTXM"),
 	CAN_BO_CHUYEN_VAN_THU_KET_QUA_TTXM("Cán bộ chuyển văn thư kết quả TTXM"),
 	CAN_BO_CHUYEN_KET_QUA_DON_VI_GIAO("Cán bộ chuyển kết quả đơn vị giao"),

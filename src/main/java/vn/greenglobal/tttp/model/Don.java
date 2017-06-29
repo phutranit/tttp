@@ -395,7 +395,7 @@ public class Don extends Model<Don> {
 		this.donLanTruoc = donLanTruoc;
 	}
 
-	@ApiModelProperty(position = 11, example = "{}")
+	@ApiModelProperty(position = 14, example = "{}")
 	public CongChuc getCanBoXuLy() {
 		return canBoXuLy;
 	}
@@ -744,6 +744,18 @@ public class Don extends Model<Don> {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 			if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())) {
 				list.add(tlvt);
 			}
 		}
@@ -1370,19 +1382,39 @@ public class Don extends Model<Don> {
 	@Transient
 	public Map<String, Object> getThoiHanXuLyInfo() {
 		Map<String, Object> mapType = new HashMap<>();
-		
+		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
-			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
 				mapType.put("type", "DAY");
 				mapType.put("value", soNgayXuLy);
 			} else if (soNgayXuLy == -1) {
 				mapType.put("type", "DAY");
-				mapType.put("value", -Utils.getLayNgayTreHan(getNgayBatDauXLD(), getThoiHanXuLyXLD()));
+				mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD()));
 			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
 				mapType.put("type", "TIME");
-				mapType.put("value", Utils.getLaySoGioPhut(getThoiHanXuLyXLD()));
+				mapType.put("value", Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD()));
 			} 
+		}
+		return mapType;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTreHanGiaiQuyetDonInfo() {
+		Map<String, Object> mapType = new HashMap<>();
+		long soNgayXuLy = 0L;
+		mapType.put("type", "DAY");
+		mapType.put("value", soNgayXuLy);
+		if (getThongTinGiaiQuyetDon() != null) { 
+			LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+			ThongTinGiaiQuyetDon ttgqd = getThongTinGiaiQuyetDon();
+			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);
+				if (soNgayXuLy == -1) {
+					mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
+				}	
+			}
 		}
 		return mapType;
 	}
@@ -1474,15 +1506,17 @@ public class Don extends Model<Don> {
 					map = new HashMap<>();
 					map.put("idDonVi", idDonViXuLy);
 					if (xld.isDonChuyen()) {					
-						map.put("nguonDonText", "Chuyển đơn");
+						map.put("nguonDonText", NguonTiepNhanDonEnum.CHUYEN_DON.getText());
 						map.put("donViChuyenText", xld.getCoQuanChuyenDon() != null ? xld.getCoQuanChuyenDon().getDonVi().getTen() : "");
+						map.put("type", NguonTiepNhanDonEnum.CHUYEN_DON.name());
 					} else {
 						map.put("nguonDonText", xld.getDon().getNguonTiepNhanDon().getText());
+						map.put("type", xld.getDon().getNguonTiepNhanDon().name());
 					}
 					list.add(map);
 				}
 			}
-		}		
+		}	
 		if (getThongTinGiaiQuyetDon() != null) {
 			List<GiaiQuyetDon> giaiQuyetDons = thongTinGiaiQuyetDon.getGiaiQuyetDons();
 			if (giaiQuyetDons != null) {
@@ -1493,11 +1527,13 @@ public class Don extends Model<Don> {
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
 						if (gqd.isLaTTXM()) {					
-							map.put("nguonDonText", "Giao thẩm tra xác minh");
+							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+							map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
 						} else if (gqd.isDonChuyen()){
-							map.put("nguonDonText", "Giao kiểm tra đề xuất");
+							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_KTDX.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+							map.put("type", NguonTiepNhanDonEnum.GIAO_KTDX.name());
 						}
 						list.add(map);
 					}

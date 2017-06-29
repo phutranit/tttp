@@ -13,8 +13,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
@@ -27,7 +25,7 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private static final long serialVersionUID = -9223009647319074416L;
 
-	@NotBlank
+//	@NotBlank
 	@Size(max=255)
 	private String ten = "";
 	@Size(max=255)
@@ -156,6 +154,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("congChucId", getNguoiTao().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+							? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;
@@ -169,6 +169,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+					? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;

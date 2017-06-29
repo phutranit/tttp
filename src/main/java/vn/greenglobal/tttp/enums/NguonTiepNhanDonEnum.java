@@ -5,6 +5,9 @@ public enum NguonTiepNhanDonEnum {
 	TRUC_TIEP("Trực tiếp"),
 	BUU_CHINH("Bưu chính"),
 	LANH_DAO_THANH_PHO("Lãnh đạo thành phố"),
+	CHUYEN_DON("Chuyển đơn"),
+	GIAO_TTXM("Giao thẩm tra xác minh"),
+	GIAO_KTDX("Giao kiểm tra đề xuất"),
 	KHAC("Khác");
 
 	NguonTiepNhanDonEnum(String text) {

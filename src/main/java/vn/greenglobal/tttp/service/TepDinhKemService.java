@@ -1,5 +1,9 @@
 package vn.greenglobal.tttp.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -8,9 +12,13 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.model.QTepDinhKem;
 import vn.greenglobal.tttp.model.TepDinhKem;
 import vn.greenglobal.tttp.repository.TepDinhKemRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class TepDinhKemService {
+	
+	@Autowired
+	private TepDinhKemRepository tepDinhKemRepository;
 
 	BooleanExpression base = QTepDinhKem.tepDinhKem.daXoa.eq(false);
 
@@ -39,6 +47,14 @@ public class TepDinhKemService {
 		}
 
 		return tepDinhKem;
+	}
+	
+	public TepDinhKem save(TepDinhKem obj, Long congChucId) {
+		return Utils.save(tepDinhKemRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(TepDinhKem obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(tepDinhKemRepository, obj, congChucId, eass, status);		
 	}
 
 }

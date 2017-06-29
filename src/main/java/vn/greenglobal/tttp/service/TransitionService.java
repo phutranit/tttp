@@ -2,6 +2,10 @@ package vn.greenglobal.tttp.service;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -17,12 +21,18 @@ import vn.greenglobal.tttp.model.QProcess;
 import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class TransitionService {
+	
+	@Autowired
+	private TransitionRepository transitionRepository;
 
 	BooleanExpression base = QTransition.transition.daXoa.eq(false);
 
@@ -40,6 +50,15 @@ public class TransitionService {
 					.and(QTransition.transition.currentState.type.eq(FlowStateEnum.BAT_DAU))
 					.and(QTransition.transition.nextState.id.eq(nextState.getId()));
 		}
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindFromCurrent(FlowStateEnum current, Process process) {
+		BooleanExpression predAll = base;		
+		predAll = predAll
+				.and(QTransition.transition.process.eq(process))
+				.and(QTransition.transition.currentState.type.eq(current));
 		
 		return predAll;
 	}
@@ -73,8 +92,64 @@ public class TransitionService {
 		predAll = predAll.and(QTransition.transition.process.eq(process)).and(QTransition.transition.currentState.eq(currentState));
 		return predAll;
 	}
-
+	
+	public Predicate predicateFindAll(Long form_id, Long process_id, Long currentState_id, Long nextState_id) { 
+		BooleanExpression predAll = base;
+		if (form_id != null && form_id > 0) {
+			predAll = predAll.and(QTransition.transition.form.id.ne(form_id));
+		}
+		if (process_id != null && process_id > 0) {
+			predAll = predAll.and(QTransition.transition.process.id.ne(process_id));
+		}
+		if (currentState_id != null && currentState_id > 0) {
+			predAll = predAll.and(QTransition.transition.currentState.id.ne(currentState_id));
+		}
+		if (nextState_id != null && nextState_id > 0) {
+			predAll = predAll.and(QTransition.transition.nextState.id.ne(nextState_id));
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QTransition.transition.id.eq(id));
+	}
+	
+	public boolean checkExistsData(TransitionRepository repo, Transition body) {
+		BooleanExpression predAll = base;
+		if (!body.isNew()) {
+			predAll = predAll.and(QTransition.transition.id.ne(body.getId()));
+		}
+		predAll = predAll.and(QTransition.transition.nextState.eq(body.getNextState()))
+				.and(QTransition.transition.form.eq(body.getForm()))
+				.and(QTransition.transition.currentState.eq(body.getCurrentState()))
+				.and(QTransition.transition.process.eq(body.getProcess()));
+		Transition transition = repo.findOne(predAll);
+		return transition != null ? true : false;
+	}
+	
+	public boolean isExists(TransitionRepository repo, Long id) {
+		if (id != null && id > 0) {
+			Predicate predicate = base.and(QTransition.transition.id.eq(id));
+			return repo.exists(predicate);
+		}
+		return false;
+	}
+	
+	public Transition delete(TransitionRepository repo, Long id) {
+		Transition transition = repo.findOne(predicateFindOne(id));
+
+		if (transition != null) {
+			transition.setDaXoa(true);
+		}
+
+		return transition;
+	}
+	
+	public Transition save(Transition obj, Long congChucId) {
+		return Utils.save(transitionRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(Transition obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(transitionRepository, obj, congChucId, eass, status);		
 	}
 }
