@@ -107,8 +107,16 @@ public class DonService {
 		}
 
 		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
-			predAll = predAll
-					.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
+			if (nguonDonEnum != null) { 
+				if (!nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) {
+					predAll = predAll
+							.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+				
+				}
+			}
 		}
 
 		if (phanLoaiDon != null && StringUtils.isNotBlank(phanLoaiDon.trim())) {
@@ -176,7 +184,16 @@ public class DonService {
 		if (StringUtils.isNotBlank(trangThaiDon)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
-
+		
+		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
+			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
+			if (nguonDonEnum != null) { 
+				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON)) { 
+					xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donChuyen.isTrue());
+				}
+			}
+		}
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
@@ -196,7 +213,6 @@ public class DonService {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
 						.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.eq(tinhTrangGiaiQuyet));
 			}
-
 			if (StringUtils.isNotBlank(chucVu)) {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
 						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))));
@@ -206,7 +222,22 @@ public class DonService {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
 						.and(QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViXuLyXLD));
 			}
-
+			
+			// query don chuyen cua giai quyet don
+			if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
+				NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
+				if (nguonDonEnum != null) { 
+					if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) { 
+						giaiQuyetDonQuery = giaiQuyetDonQuery
+								.and(QGiaiQuyetDon.giaiQuyetDon.donChuyen.isTrue());
+					}
+					if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM)) {
+						giaiQuyetDonQuery = giaiQuyetDonQuery
+								.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.isTrue());
+					}
+				}
+			}
+			
 			List<Don> donCollections2 = new ArrayList<Don>();
 			OrderSpecifier<Integer> sortOrder2 = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
 			Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo
@@ -235,7 +266,6 @@ public class DonService {
 		} else {
 			predAll = predAll.and(QDon.don.in(donCollections));
 		}
-
 		return predAll;
 	}
 
@@ -258,8 +288,15 @@ public class DonService {
 		}
 
 		if (StringUtils.isNotBlank(nguonDon)) {
-			predAll = predAll
-					.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
+			if (nguonDonEnum != null) {
+				if (!nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) {
+					predAll = predAll
+							.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon))));
+				}
+			}
 		}
 
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
@@ -313,7 +350,22 @@ public class DonService {
 						.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoGiaiQuyetId));
 			}
 		}
-
+		
+		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
+			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
+			if (nguonDonEnum != null) { 
+				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX) || 
+						nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON)) {
+					giaiQuyetDonQuery = giaiQuyetDonQuery
+							.and(QGiaiQuyetDon.giaiQuyetDon.donChuyen.isTrue());
+				}
+				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM)) {
+					giaiQuyetDonQuery = giaiQuyetDonQuery
+							.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.isTrue());
+				}
+			}
+		}
+		
 		List<Don> donCollections = new ArrayList<Don>();
 		OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
 		Collection<GiaiQuyetDon> giaiQuyetDons = (Collection<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonQuery,

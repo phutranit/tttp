@@ -154,6 +154,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("congChucId", getNguoiTao().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+							? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;
@@ -167,6 +169,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+					? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;
