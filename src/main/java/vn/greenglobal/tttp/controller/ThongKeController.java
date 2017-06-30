@@ -279,7 +279,7 @@ public class ThongKeController extends TttpController<Don> {
 		//List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L, 39L, 50L, 52L);		
 		linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus(loaiDon));
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVitHEOlINHvUC(donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonViTheoLinhVuc(donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);
 		
 		Long tongSoDon = 0L;
 		

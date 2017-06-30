@@ -93,7 +93,7 @@ public class ThongKeService {
 		return predThang;
 	}
 	
-	public Predicate predicateFindDanhSachDonsTheoDonVitHEOlINHvUC(Long donViXuLyXLD, int year, List<LinhVucDonThu> linhVucs, XuLyDonRepository xuLyRepo,
+	public Predicate predicateFindDanhSachDonsTheoDonViTheoLinhVuc(Long donViXuLyXLD, int year, List<LinhVucDonThu> linhVucs, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.ngayTiepNhan.year().eq(year));
