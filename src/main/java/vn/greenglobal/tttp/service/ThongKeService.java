@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -17,6 +16,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
@@ -93,7 +93,7 @@ public class ThongKeService {
 		return predThang;
 	}
 	
-	public Predicate predicateFindDanhSachDonsTheoDonVi(Long donViXuLyXLD, int year, String loaiDon, XuLyDonRepository xuLyRepo,
+	public Predicate predicateFindDanhSachDonsTheoDonVitHEOlINHvUC(Long donViXuLyXLD, int year, List<LinhVucDonThu> linhVucs, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
 				.and(QDon.don.ngayTiepNhan.year().eq(year));
@@ -102,10 +102,36 @@ public class ThongKeService {
 		List<Don> donCollections = new ArrayList<Don>();
 		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		
-		if (StringUtils.isNotBlank(loaiDon)) { 
-			LoaiDonEnum loaiDonEnum = LoaiDonEnum.valueOf(loaiDon);
-			predAll = predAll.and(QDon.don.loaiDon.eq(loaiDonEnum));
+		if (linhVucs != null && linhVucs.size() > 0) {
+//			predAll = predAll.and(QDon.don.linhVucDonThu.in(linhVucs)
+//					.or(QDon.don.linhVucDonThuChiTiet.in(linhVucs)
+//					.or(QDon.don.chiTietLinhVucDonThuChiTiet.in(linhVucs))));
+			
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.don.linhVucDonThu.in(linhVucs)
+					.or(QXuLyDon.xuLyDon.don.linhVucDonThuChiTiet.in(linhVucs)
+					.or(QXuLyDon.xuLyDon.don.chiTietLinhVucDonThuChiTiet.in(linhVucs))));
 		}
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery);
+		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
+		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		predAll = predAll.and(QDon.don.in(donCollections));
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindDanhSachDonsTheoDonVi(Long donViXuLyXLD, int year, XuLyDonRepository xuLyRepo,
+			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
+		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
+				.and(QDon.don.ngayTiepNhan.year().eq(year));
+		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
+				.and(QXuLyDon.xuLyDon.old.eq(false));
+		List<Don> donCollections = new ArrayList<Don>();
+		List<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
