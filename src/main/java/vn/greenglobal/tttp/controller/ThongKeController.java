@@ -169,6 +169,7 @@ public class ThongKeController extends TttpController<Don> {
 		ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 		ThamSo thamSoCCQQLChiCuc = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_CHI_CUC"));
 		ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+		ThamSo thamSoCCQQLPhuongXaTT = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 		
 		List<CoQuanQuanLy> coQuans = new ArrayList<CoQuanQuanLy>();
 		int year = LocalDateTime.now().getYear();
@@ -198,10 +199,20 @@ public class ThongKeController extends TttpController<Don> {
 				}
 			}
 		} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()) ||
-				(donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())))) {
+				(donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()))) ||
+				donVi.getCha() != null && donVi.getCha().getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()))) {
 			// Danh sach don vi thuoc Quan Huyen
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
+			if (coQuanQuanLy.getCapCoQuanQuanLy() != null) {
+				if (coQuanQuanLy.getCapCoQuanQuanLy().getId()
+						.equals(Long.valueOf(thamSoCCQQLPhuongXaTT.getGiaTri().toString()))) {
+					if (donVi.getCha() != null) { 
+						donViXuLyXLD = donVi.getCha().getId();
+					}
+				}
+			}
+			
 			coQuans.addAll((List<CoQuanQuanLy>)coQuanQuanLyRepo.findAll(coQuanQuanLyService
 					.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds,
 					"CCQQL_UBND_QUAN_HUYEN")));
@@ -236,7 +247,7 @@ public class ThongKeController extends TttpController<Don> {
 		
 		Long tongSoDon = 0L;
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, "", xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		
 		for (LoaiDonEnum loaiDonEnum : LoaiDonEnum.values()) {
@@ -264,13 +275,14 @@ public class ThongKeController extends TttpController<Don> {
 		Map<String, Object> mapDonThongKe = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();
 		
-		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, loaiDon, xuLyRepo, repo, giaiQuyetDonRepo);
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();		
 		//List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L, 39L, 50L, 52L);		
-		linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus());
+		linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus(loaiDon));
+		int year = LocalDateTime.now().getYear();
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonViTheoLinhVuc(donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);
 		
 		Long tongSoDon = 0L;
+		
 		tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 		for (LinhVucDonThu linhVuc : linhVucs) {
 			BooleanExpression predDon = predAll;
@@ -287,8 +299,8 @@ public class ThongKeController extends TttpController<Don> {
 				}
 			}
 			
-			
 			Double phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVucId, chiTietLinhVucChaId, chiTietLinhVucConId, tongSoDon, repo);
+			
 			if (phanTram > 0) { 
 				mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
 				mapDonThongKe.put("phanTram", phanTram);
@@ -312,7 +324,7 @@ public class ThongKeController extends TttpController<Don> {
 		Map<String, Object> mapThangs = new HashMap<>();
 		
 		int year = LocalDateTime.now().getYear();
-		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, "", xuLyRepo, repo, giaiQuyetDonRepo);
+		BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD, year, xuLyRepo, repo, giaiQuyetDonRepo);
 		for (int i = 1; i <= 12; i++) {
 			mapThangs.put("thang", i);
 			int month = i;
