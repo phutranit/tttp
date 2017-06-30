@@ -49,6 +49,7 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_DinhChiDonGiaiQuyet;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -58,6 +59,7 @@ import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonService;
@@ -67,6 +69,7 @@ import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.TransitionService;
+import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.util.WordUtil;
 
@@ -74,7 +77,10 @@ import vn.greenglobal.tttp.util.WordUtil;
 @RepositoryRestController
 @Api(value = "giaiQuyetDons", description = "Giải quyết đơn")
 public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
-
+	
+	@Autowired
+	private XuLyDonRepository xuLyDonRepository;
+	
 	@Autowired
 	private GiaiQuyetDonRepository repo;
 	
@@ -125,6 +131,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@Autowired
 	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
+	
+	@Autowired
+	private XuLyDonService xuLyDonService;
 
 	public GiaiQuyetDonController(BaseRepository<GiaiQuyetDon, Long> repo) {
 		super(repo);
@@ -587,6 +596,18 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		
+		// disable XULYDON cua VANTHU
+		List<XuLyDon> xuLyDonCu = (List<XuLyDon>) xuLyDonRepository.findAll(xuLyDonService.predFindLanhDaoVanThuOld(
+				VaiTroEnum.VAN_THU, don.getId(), giaiQuyetDonHienTai.getDonViGiaiQuyet().getId()));
+		if (xuLyDonCu != null) {
+			for (XuLyDon xld : xuLyDonCu) {
+				if (!xld.isOld()) {
+					xld.setOld(true);
+					xuLyDonService.save(xld, congChucId);
+				}
+			}
+		}
 		
 		return giaiQuyetDonTiepTheo;
 	}
