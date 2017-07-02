@@ -91,7 +91,7 @@ public class Don extends Model<Don> {
 	private boolean lanhDaoDuyet = false;
 	//private boolean hoanThanh = false;
 	
-	@NotNull
+	//@NotNull
 	private LocalDateTime ngayTiepNhan;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private LocalDateTime ngayLapDonGapLanhDaoTmp;

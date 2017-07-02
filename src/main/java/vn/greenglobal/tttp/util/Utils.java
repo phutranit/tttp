@@ -81,8 +81,17 @@ public class Utils {
 
 	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
 		e.printStackTrace();
+		if (e instanceof ConstraintViolationException)
+			return returnError((ConstraintViolationException) e);
+		if (e.getCause() instanceof ConstraintViolationException)
+			return returnError((ConstraintViolationException) e.getCause());
+		if (e.getCause() != null && e.getCause().getCause() instanceof ConstraintViolationException)
+			return returnError((ConstraintViolationException) e.getCause().getCause());
+		if (e.getCause() != null && e.getCause().getCause() != null
+				&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
 		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(),
-				ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getCause().toString());
+				ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getMessage());
 	}
 
 	public static ResponseEntity<Object> returnError(ConstraintViolationException e) {
