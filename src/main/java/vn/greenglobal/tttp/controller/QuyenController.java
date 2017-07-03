@@ -144,8 +144,8 @@ public class QuyenController {
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Giải quyết đơn");
-		quyenObj.put("tenQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.getText() + "," + QuyenEnum.GIAIQUYETDON_XEM.getText() + "," + QuyenEnum.GIAIQUYETDON_THEM.getText() + "," + QuyenEnum.GIAIQUYETDON_SUA.getText() + "," + QuyenEnum.GIAIQUYETDON_DINHCHI.getText() + "," + QuyenEnum.GIAIQUYETDON_XOA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.name() + "," + QuyenEnum.GIAIQUYETDON_XEM.name() + "," + QuyenEnum.GIAIQUYETDON_THEM.name() + "," + QuyenEnum.GIAIQUYETDON_SUA.name() + "," + QuyenEnum.GIAIQUYETDON_DINHCHI.name() + "," + QuyenEnum.GIAIQUYETDON_XOA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.getText() + "," + QuyenEnum.GIAIQUYETDON_XEM.getText() + "," + QuyenEnum.GIAIQUYETDON_SUA.getText() + "," + QuyenEnum.GIAIQUYETDON_DINHCHI.getText() + "," + QuyenEnum.GIAIQUYETDON_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.GIAIQUYETDON_LIETKE.name() + "," + QuyenEnum.GIAIQUYETDON_XEM.name() + "," + QuyenEnum.GIAIQUYETDON_SUA.name() + "," + QuyenEnum.GIAIQUYETDON_DINHCHI.name() + "," + QuyenEnum.GIAIQUYETDON_XOA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
