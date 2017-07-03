@@ -32,6 +32,7 @@ import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -39,11 +40,18 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.VaiTroService;
 import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.util.Utils;
@@ -60,6 +68,29 @@ public class AuthController {
 
 	@Autowired
 	ProfileUtils profileUtil;
+	
+
+	
+	@Autowired
+	StateRepository stateRepository;
+	
+	@Autowired
+	ProcessRepository processRepository;
+	
+	@Autowired
+	CoQuanQuanLyRepository coQuanQuanLyRepository;
+
+	@Autowired
+	TransitionRepository transitionRepository;
+	
+	@Autowired
+	TransitionService transitionService;
+	
+	@Autowired
+	StateService stateService;
+	
+	@Autowired
+	ProcessService processService;
 
 	@Autowired
 	NguoiDungRepository nguoiDungRepository;
@@ -201,26 +232,20 @@ public class AuthController {
 					commonProfile.addAttribute("congChucId", congChuc.getId());
 					commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 					commonProfile.addAttribute("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
-					commonProfile.addAttribute("loaiVaiTro",
-							user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
-					commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
-					commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
+					commonProfile.addAttribute("loaiVaiTro", user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
+					commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+					commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
+					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 
 					result.put("congChucId", congChuc.getId());
 					result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
-					result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
-					result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
+					result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+					result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 					result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
-					result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
-					result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
-							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
+					result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
+					result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
 					result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
-
+					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 				}
 
 				String token = generator.generate(commonProfile);
@@ -238,42 +263,40 @@ public class AuthController {
 		}
 	}
 	
-//	private boolean checkQuyenBatDauQuyTrinhXuLyDon() {
-//		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
-//		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
-//		List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
-//		
-//		//Vai tro tiep theo
-//		List<State> listState = new ArrayList<State>();
-//		Process process = null;
-//		for (Process processFromList : listProcess) {
-//			Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
-//			listState = ((List<State>) repoState.findAll(predicate));
-//			if (listState.size() > 0) {
-//				process = processFromList;
-//				break;
-//			}
-//		}
-//		
-//		Transition transition = null;
-//		
-//		if (listState.size() < 1) {
-//			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-//					ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
-//		} else {
-//			for (State stateFromList : listState) {
-//				transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-//				if (transition != null) {
-//					break;
-//				} 						
-//			}					
-//			if (transition == null) {
-//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-//						ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-//			}
-//		}
-//		
-//		return false;
-//	}
+	private boolean checkQuyenBatDauQuyTrinhXuLyDon(Long donViId, VaiTroEnum loaiVaiTro) {
+		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));					
+		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepository.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+		List<Process> listProcess = (List<Process>) processRepository.findAll(predicateProcess);
+		
+		//Vai tro tiep theo
+		List<State> listState = new ArrayList<State>();
+		Process process = null;
+		for (Process processFromList : listProcess) {
+			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList, transitionRepository);
+			listState = ((List<State>) stateRepository.findAll(predicate));
+			if (listState.size() > 0) {
+				process = processFromList;
+				break;
+			}
+		}
+		
+		Transition transition = null;
+		
+		if (listState.size() < 1) {
+			return false;
+		} else {
+			for (State stateFromList : listState) {
+				transition = transitionRepository.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+				if (transition != null) {
+					break;
+				}	
+			}					
+			if (transition != null) {
+				return transition.getProcess().getVaiTro().getLoaiVaiTro().equals(loaiVaiTro);
+			}
+		}
+		
+		return false;
+	}
 
 }

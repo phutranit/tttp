@@ -381,7 +381,15 @@ public class DonController extends TttpController<Don> {
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 		
 		try {
-			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
+			NguoiDung nguoiDungHienTai = null;
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_THEM);			
+			}
+			
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
@@ -517,7 +525,15 @@ public class DonController extends TttpController<Don> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
 		try {
-			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM);
+			NguoiDung nguoiDungHienTai = null;
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA);			
+			}
+			
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
