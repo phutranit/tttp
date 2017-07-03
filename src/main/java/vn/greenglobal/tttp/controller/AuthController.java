@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +26,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.Predicate;
+
 import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
@@ -228,5 +237,43 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+//	private boolean checkQuyenBatDauQuyTrinhXuLyDon() {
+//		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+//		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+//		List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
+//		
+//		//Vai tro tiep theo
+//		List<State> listState = new ArrayList<State>();
+//		Process process = null;
+//		for (Process processFromList : listProcess) {
+//			Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
+//			listState = ((List<State>) repoState.findAll(predicate));
+//			if (listState.size() > 0) {
+//				process = processFromList;
+//				break;
+//			}
+//		}
+//		
+//		Transition transition = null;
+//		
+//		if (listState.size() < 1) {
+//			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+//					ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
+//		} else {
+//			for (State stateFromList : listState) {
+//				transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+//				if (transition != null) {
+//					break;
+//				} 						
+//			}					
+//			if (transition == null) {
+//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+//						ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+//			}
+//		}
+//		
+//		return false;
+//	}
 
 }

@@ -270,6 +270,14 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	public static NguoiDung tokenValidate(ProfileUtils profileUtil, String authorization) {
+		NguoiDung nguoiDung = profileUtil.getUserInfo(authorization);
+		if (nguoiDung != null) {
+			return nguoiDung;
+		}
+		return null;
+	}
 
 	public static List<Method> getMethodsAnnotatedWith(final Class<?>... types) {
 		final List<Method> methods = new ArrayList<Method>();

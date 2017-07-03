@@ -537,7 +537,12 @@ public class EnumController {
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDsTheoDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
 			@RequestParam(value = "donId", required = false) Long donId) {
-		Don don = donRepo.findOne(donId);
+		
+		Don don = null;
+		if (donId != null && donId > 0) {
+			don = donRepo.findOne(donId);
+		}
+		
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
