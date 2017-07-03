@@ -54,8 +54,7 @@ public class ThamSoController extends TttpController<ThamSo> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAMSO_XEM) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}

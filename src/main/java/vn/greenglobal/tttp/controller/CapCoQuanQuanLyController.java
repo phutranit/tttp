@@ -67,8 +67,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -88,7 +87,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
