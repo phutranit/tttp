@@ -38,8 +38,13 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
-	public List<LinhVucDonThu> getDanhSachLinhVucDonThus() { 
+	public List<LinhVucDonThu> getDanhSachLinhVucDonThus(String loaiDon) {
 		BooleanExpression predAll = base;
+		if (StringUtils.isNotBlank(loaiDon)) { 
+			LoaiDonEnum loaiDonEnum = LoaiDonEnum.valueOf(loaiDon);
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(loaiDonEnum));
+		}
+
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
 		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
 		return linhVucs;

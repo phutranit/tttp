@@ -235,7 +235,7 @@ public class DonController extends TttpController<Don> {
 				Page<Don> pageData = repo.findAll(
 						donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
-								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo),
+								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo, xuLyRepo),
 						pageable);
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}

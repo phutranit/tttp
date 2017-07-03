@@ -30,8 +30,6 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.ProfileUtils;
-import vn.greenglobal.tttp.util.Utils;
-import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
@@ -381,6 +379,33 @@ public class EnumController {
 
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
+		
+		if (StringUtils.equals(vaiTro, VaiTroEnum.TRUONG_PHONG.name())) {
+
+			object.put("ten", HuongXuLyXLDEnum.DE_XUAT_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.DE_XUAT_THU_LY.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.CHUYEN_DON.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.CHUYEN_DON.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.getText());
+			object.put("giaTri", HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.name());
+			list.add(object);
+		}
 
 		if (StringUtils.equals(vaiTro, VaiTroEnum.LANH_DAO.name())) {
 
@@ -511,12 +536,23 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDsTheoDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestParam(value = "donId", required = true) Long donId) {
+			@RequestParam(value = "donId", required = false) Long donId) {
 		Don don = donRepo.findOne(donId);
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		
 		if (don == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
-					ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
+			for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
+				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)) { 
+					object.put("ten", hxl.getText());
+					object.put("giaTri", hxl.name());
+					list.add(object);
+					object = new HashMap<>();
+				}
+			}
+			errorBody.put("list", list);
+			return new ResponseEntity<>(list, HttpStatus.OK);
 		}
 		
 		CommonProfile commonProfile =  profileUtil.getCommonProfile(authorization);
@@ -524,9 +560,6 @@ public class EnumController {
 		
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
 				.and(QXuLyDon.xuLyDon.don.eq(don));
-		
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> object = new HashMap<>();
 		
 		if (congChucId != null && congChucId > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId));
@@ -556,9 +589,7 @@ public class EnumController {
 			}
 		}
 		
-		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
-
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
