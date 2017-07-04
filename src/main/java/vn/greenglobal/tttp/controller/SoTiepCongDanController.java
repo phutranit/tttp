@@ -64,6 +64,7 @@ import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
+import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
@@ -141,6 +142,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@Autowired
 	private ProcessService processService;
 	
+	@Autowired
+	private CongChucService congChucService;
+	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -158,6 +162,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "loaiTiepCongDan", required = false) String loaiTiepCongDan,
 			@RequestParam(value = "lanhDaoId", required = false) Long lanhDaoId,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
+			@RequestParam(value = "tenLanhDao", required = false) String tenLanhDao,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan,
 			PersistentEntityResourceAssembler eass) {
@@ -169,7 +174,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 
 			Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
-					tuNgay, denNgay, loaiTiepCongDan, donViId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), pageable);
+					tuNgay, denNgay, loaiTiepCongDan, donViId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), pageable);
 
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -548,6 +553,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			@RequestParam(value = "coQuanQuanLyId", required = true) Long coQuanQuanLyId,
 			@RequestParam(value = "lanhDaoId", required = false) Long lanhDaoId,
 			@RequestParam(value = "tenNguoiDungDon", required = false) String tenNguoiDungDon,
+			@RequestParam(value = "tenLanhDao", required = false) String tenLanhDao,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "ketQuaTiepDan", required = false) String ketQuaTiepDan) throws IOException {
 		
@@ -557,13 +563,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				ExcelUtil.exportDanhSachTiepDanThuongXuyen(response,
 						"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, 
-										tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, repoCongChuc, repoDonCongDan), order),
+										tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
 						"Danh sách sổ tiếp dân");
 			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
-								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenNguoiDungDon, tinhTrangXuLy, 
-								ketQuaTiepDan, repoCongChuc, repoDonCongDan), order),
+								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
+								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
 						"Danh sách sổ tiếp dân định kỳ");
 			}
 		} catch (Exception e) {

@@ -17,6 +17,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.QDon_CongDan;
@@ -41,8 +43,8 @@ public class SoTiepCongDanService {
 	}
 
 	public Predicate predicateFindAllTCD(String tuKhoa, String phanLoaiDon, String huongXuLy, String tuNgay,
-			String denNgay, String loaiTiepCongDan, Long donViId, Long lanhDaoId, String tenNguoiDungDon, String tinhTrangXuLy,
-			String ketQuaTiepDan, CongChucRepository congChucRepo, DonCongDanRepository donCongDanRepo) {
+			String denNgay, String loaiTiepCongDan, Long donViId, Long lanhDaoId, String tenLanhDao, String tenNguoiDungDon, String tinhTrangXuLy,
+			String ketQuaTiepDan, CongChucService congChucService, CongChucRepository congChucRepo, DonCongDanRepository donCongDanRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression donCongDanQuery = baseDonCongDan;
 		
@@ -50,6 +52,16 @@ public class SoTiepCongDanService {
 			predAll = predAll
 					.and(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
 							.or(QSoTiepCongDan.soTiepCongDan.don.donCongDans.any().congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())));
+		}
+		
+		if (tenLanhDao != null && StringUtils.isNotBlank(tenLanhDao.trim())) {
+			System.out.println("lanh dao");
+			List<CongChuc> lanhDaos = new ArrayList<CongChuc>();
+			lanhDaos.addAll((List<CongChuc>)congChucRepo.findAll(congChucService.predicateFindByTenLD(tenLanhDao)));
+			lanhDaos.forEach(l -> {
+				System.out.println("l " +l.getId() + " " +l.getHoVaTen());
+			});
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.in(lanhDaos));
 		}
 		
 		if (phanLoaiDon != null && StringUtils.isNotBlank(phanLoaiDon.trim())) {
@@ -110,7 +122,7 @@ public class SoTiepCongDanService {
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons));
 		}
-		
+
 		return predAll;
 	}
 
