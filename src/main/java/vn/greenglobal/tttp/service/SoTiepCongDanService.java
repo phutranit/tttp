@@ -55,12 +55,8 @@ public class SoTiepCongDanService {
 		}
 		
 		if (tenLanhDao != null && StringUtils.isNotBlank(tenLanhDao.trim())) {
-			System.out.println("lanh dao");
 			List<CongChuc> lanhDaos = new ArrayList<CongChuc>();
 			lanhDaos.addAll((List<CongChuc>)congChucRepo.findAll(congChucService.predicateFindByTenLD(tenLanhDao)));
-			lanhDaos.forEach(l -> {
-				System.out.println("l " +l.getId() + " " +l.getHoVaTen());
-			});
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.in(lanhDaos));
 		}
 		
