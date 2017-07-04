@@ -629,7 +629,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
 					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
-					//donOld.setdi
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
@@ -643,11 +642,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (xuLyDon.getNgayQuyetDinhDinhChi() != null) { 
 					xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
-					//donOld.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
+					donOld.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 				}
 				if (xuLyDon.getSoQuyetDinhDinhChi() != null) { 
 					xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
-					//donOld.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
+					donOld.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 				}
 				
 				donService.save(donOld, congChucId);

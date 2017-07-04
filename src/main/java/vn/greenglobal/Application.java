@@ -90,25 +90,25 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 	
-	@Value("${cors.allowedOrigins}")
-	private String[] myAllowedOriginList;
-	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins(myAllowedOriginList)
-						.allowCredentials(true)
-						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
-						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
-								"email", "password", "authorization", "client-security-token",
-								"X-Application-Context", "Date", "Content-Disposition")
-						.maxAge(3600);
-			}
-		};
-	}
+//	@Value("${cors.allowedOrigins}")
+//	private String[] myAllowedOriginList;
+//	
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//						.allowedOrigins(myAllowedOriginList)
+//						.allowCredentials(true)
+//						.allowedMethods("POST", "PATCH", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
+//						.allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Content-Length",
+//								"email", "password", "authorization", "client-security-token",
+//								"X-Application-Context", "Date", "Content-Disposition")
+//						.maxAge(3600);
+//			}
+//		};
+//	}
 
 	@Bean
 	public WebSecurityConfigurerAdapter securityConfiguration() {
