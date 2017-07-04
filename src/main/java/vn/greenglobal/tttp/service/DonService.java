@@ -74,7 +74,16 @@ public class DonService {
 
 		return predAll;
 	}
-
+	
+	public Predicate predFindOld(Long id, Long phongBanId, Long donViId) {
+		BooleanExpression predAll = base;
+		if (id > 0) {
+			predAll = predAll.and(QDon.don.donGoc.id.eq(id));
+			predAll = predAll.and(QDon.don.donChuyen.eq(true));
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,

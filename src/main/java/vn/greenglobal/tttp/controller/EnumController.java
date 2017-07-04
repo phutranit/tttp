@@ -588,10 +588,23 @@ public class EnumController {
 				}
 			}
 			if (xld.isDonChuyen()) {
+				System.out.println("don chuyen");
 				object.put("ten", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
 				object.put("giaTri", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
 				list.add(object);
 			}
+		}
+		
+		Map<String, Object> mapRemove = new HashMap<>();
+		if (don.isDonChuyen()) { 
+			System.out.println("baby love");
+			for (Map<String, Object> obj : list) {
+				if (obj.get("giaTri").equals(HuongXuLyXLDEnum.CHUYEN_DON.name())) { 
+					mapRemove = obj;
+					break;
+				}
+			}
+			list.remove(mapRemove);
 		}
 		
 		errorBody.put("list", list);
