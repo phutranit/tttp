@@ -564,6 +564,9 @@ public class DonController extends TttpController<Don> {
 				if (don.isThanhLapDon()) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setNgayTiepNhan(donOld.getNgayBatDauXLD());
+					if (donOld.getNgayTiepNhan() == null) {
+						don.setNgayTiepNhan(LocalDateTime.now());
+					}
 					if (donOld.getThoiHanXuLyXLD() == null) {
 						don.setNgayBatDauXLD(LocalDateTime.now());
 						if (don.getThoiHanXuLyXLD() == null) {

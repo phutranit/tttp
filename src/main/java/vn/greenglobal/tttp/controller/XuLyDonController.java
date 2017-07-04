@@ -502,11 +502,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/dinhChiDon")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/{id}/dinhChiDon")
 	@ApiOperation(value = "Đình chỉ đơn	", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Đình chỉ đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> dinhChiDon(
-			@RequestHeader(value = "Authorization", required = true) String authorization, @RequestParam Long id,
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -580,31 +581,36 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
 			@PathVariable("id") long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
-		
 		try {
 			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 					&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-				XuLyDon xuLyDonHienTai = repo.findOne(id);
-				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-
+				Don donOld = donRepo.findOne(id);
+				if (donOld == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+				}
+				XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyDonRepo, donOld.getId());
 				if (xuLyDonHienTai == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-
+				
+				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				if (xuLyDon.getHuongXuLy() != null) { 
 					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 				}
 				if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 					xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
+					donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 				}
 				if (xuLyDon.getCoQuanTiepNhan() != null) { 
 					xuLyDonHienTai.setCoQuanTiepNhan(xuLyDon.getCoQuanTiepNhan());
 				}
 				if (xuLyDon.getPhongBanGiaiQuyet() != null) { 
 					xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
+					donOld.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 				}
 				if (xuLyDon.getNgayHenGapLanhDao() != null) { 
 					xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
@@ -627,9 +633,23 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
 				}
-				xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
-				xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
-							
+				if (StringUtils.isNotBlank(xuLyDon.getNoiDungThongTinTrinhLanhDao())) {
+					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+					donOld.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+				}
+				if (xuLyDon.getThoiHanXuLy() != null) { 
+					donOld.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
+				}
+				if (xuLyDon.getNgayQuyetDinhDinhChi() != null) { 
+					xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
+					donOld.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
+				}
+				if (xuLyDon.getSoQuyetDinhDinhChi() != null) { 
+					xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
+					donOld.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
+				}
+				
+				donService.save(donOld, congChucId);
 				return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
