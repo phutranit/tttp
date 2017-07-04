@@ -50,6 +50,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CongChuc canBoGiaiQuyet;
+	@ManyToOne
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
@@ -243,6 +245,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+	
+	@ApiModelProperty(example = "{}", position = 6)
+	public CongChuc getCanBoGiaiQuyet() {
+		return canBoGiaiQuyet;
+	}
+
+	public void setCanBoGiaiQuyet(CongChuc canBoGiaiQuyet) {
+		this.canBoGiaiQuyet = canBoGiaiQuyet;
 	}
 
 	@JsonIgnore
