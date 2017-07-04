@@ -437,27 +437,34 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							List<CoQuanQuanLy> listPhongBan = new ArrayList<CoQuanQuanLy>();
 							listPhongBan = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(
 									coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donVi.getId(), thamSoService, thamSoRepo));
+							Transition transitionGQD = null;
+							CoQuanQuanLy donViGiaiQuyet = null;
 							if (listPhongBan.size() > 0) {
 								if (xuLyDon.getPhongBanGiaiQuyet() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
 											ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
 								}
+								CoQuanQuanLy phongBanGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId());
+								donViGiaiQuyet = phongBanGiaiQuyet.getDonVi();
 							} else {
 								if (xuLyDon.getCanBoGiaiQuyet() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.name(),
 											ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText());
 								}
+								CongChuc canBoGiaiQuyet = congChucRepo.findOne(xuLyDon.getCanBoGiaiQuyet().getId());
+								donViGiaiQuyet = canBoGiaiQuyet.getCoQuanQuanLy().getDonVi();
+								xuLyDon.setPhongBanGiaiQuyet(canBoGiaiQuyet.getCoQuanQuanLy());
 							}
 							
 							//Tim kiem VaiTro giai quyet don
-							CoQuanQuanLy phongBanGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId());
-							Predicate predicate = processService.predicateFindAllByDonVi(phongBanGiaiQuyet.getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
+							
+							Predicate predicate = processService.predicateFindAllByDonVi(donViGiaiQuyet, ProcessTypeEnum.GIAI_QUYET_DON);
 							List<Process> listProcessGQD = (List<Process>) repoProcess.findAll(predicate);
 							if (listProcessGQD.size() < 1) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
 										ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 							}
-							Transition transitionGQD = null;
+							
 							for (Process processFromList : listProcessGQD) {
 								transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 								if (transitionGQD != null) {
@@ -1246,6 +1253,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		giaiQuyetDon.setChucVu(vaiTroNhanGQD);
 		giaiQuyetDon.setDonChuyen(true);
 		giaiQuyetDon.setDonViGiaiQuyet(donViGiaiQuyet);
+		giaiQuyetDon.setCanBoXuLyChiDinh(xuLyDon.getCanBoGiaiQuyet());
 		giaiQuyetDon.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
