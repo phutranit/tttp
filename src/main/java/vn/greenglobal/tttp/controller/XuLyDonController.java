@@ -502,7 +502,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/dinhChiDon/{id}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/xuLyDons/{id}/dinhChiDon")
 	@ApiOperation(value = "Đình chỉ đơn	", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Đình chỉ đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> dinhChiDon(
