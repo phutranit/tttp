@@ -61,13 +61,16 @@ import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
@@ -102,12 +105,21 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepo;
+	
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
 
 	@Autowired
 	private TransitionRepository transitionRepo;
 
 	@Autowired
 	private TransitionService transitionService;
+	
+	@Autowired
+	private ThamSoService thamSoService;
+	
+	@Autowired
+	private ThamSoRepository thamSoRepo;
 	
 	@Autowired
 	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
@@ -244,6 +256,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
 						: congChucId.longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 				CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
+				
 				List<Process> listProcess = new ArrayList<Process>();
 				for (VaiTroEnum vaiTroEnum : listVaiTro) {
 					Process process = repoProcess.findOne(processService.predicateFindAll(vaiTroEnum.toString(), donVi, isOwner, don.getProcessType()));			
@@ -420,10 +433,19 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId);
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
-							if (xuLyDon.getPhongBanGiaiQuyet() == null) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
-										ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+							//TODO tim kiem don vi do co phong ban hay khong
+							List<CoQuanQuanLy> listPhongBan = new ArrayList<CoQuanQuanLy>();
+							listPhongBan = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(
+									coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donVi.getId(), thamSoService, thamSoRepo));
+							if (listPhongBan.size() > 0) {
+								if (xuLyDon.getPhongBanGiaiQuyet() == null) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
+											ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
+								}
+							} else {
+								
 							}
+							
 							//Tim kiem VaiTro giai quyet don
 							CoQuanQuanLy phongBanGiaiQuyet = coQuanQuanLyRepo.findOne(xuLyDon.getPhongBanGiaiQuyet().getId());
 							Predicate predicate = processService.predicateFindAllByDonVi(phongBanGiaiQuyet.getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
