@@ -451,6 +451,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public String getHuongGiaiQuyetTCDLanhDaoStr() {
+		return getHuongGiaiQuyetTCDLanhDao() != null ? getHuongGiaiQuyetTCDLanhDao().getText() : "";
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungBoSungs() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
 		for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
