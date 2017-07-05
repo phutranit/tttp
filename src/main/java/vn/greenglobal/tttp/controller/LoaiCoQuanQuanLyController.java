@@ -56,14 +56,18 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_LIETKE) == null
-				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		Page<LoaiCoQuanQuanLy> page = repo.findAll(loaiCoQuanQuanLyService.predicateFindAll(ten), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+			Page<LoaiCoQuanQuanLy> page = repo.findAll(loaiCoQuanQuanLyService.predicateFindAll(ten), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/loaiCoQuanQuanLys")
@@ -74,19 +78,23 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody LoaiCoQuanQuanLy loaiCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+			return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiCoQuanQuanLys/{id}")
@@ -96,16 +104,20 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		LoaiCoQuanQuanLy loaiCoQuanQuanLy = repo.findOne(loaiCoQuanQuanLyService.predicateFindOne(id));
-		if (loaiCoQuanQuanLy == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			LoaiCoQuanQuanLy loaiCoQuanQuanLy = repo.findOne(loaiCoQuanQuanLyService.predicateFindOne(id));
+			if (loaiCoQuanQuanLy == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(loaiCoQuanQuanLy), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		return new ResponseEntity<>(eass.toFullResource(loaiCoQuanQuanLy), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/loaiCoQuanQuanLys/{id}")
@@ -116,25 +128,29 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody LoaiCoQuanQuanLy loaiCoQuanQuanLy, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		loaiCoQuanQuanLy.setId(id);
-		if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			loaiCoQuanQuanLy.setId(id);
+			if (loaiCoQuanQuanLyService.checkExistsData(repo, loaiCoQuanQuanLy)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		if (!loaiCoQuanQuanLyService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			if (!loaiCoQuanQuanLyService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+			return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/loaiCoQuanQuanLys/{id}")
@@ -143,24 +159,28 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LOAICOQUANQUANLY_XOA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (loaiCoQuanQuanLyService.checkUsedData(coQuanQuanLyRepository, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-		}
+			if (loaiCoQuanQuanLyService.checkUsedData(coQuanQuanLyRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
 
-		LoaiCoQuanQuanLy loaiCoQuanQuanLy = loaiCoQuanQuanLyService.delete(repo, id);
-		if (loaiCoQuanQuanLy == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			LoaiCoQuanQuanLy loaiCoQuanQuanLy = loaiCoQuanQuanLyService.delete(repo, id);
+			if (loaiCoQuanQuanLy == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		loaiCoQuanQuanLyService.save(loaiCoQuanQuanLy,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			loaiCoQuanQuanLyService.save(loaiCoQuanQuanLy,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 }

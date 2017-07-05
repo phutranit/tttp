@@ -58,8 +58,12 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
-		Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		try {
+			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/taiLieuVanThus")
@@ -70,22 +74,26 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
 		
-//		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-//					"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
-//		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-//			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-//						"Số quyết định không được để trống.", "Số quyết định không được để trống.");
+		try {
+//			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+//						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
+//			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+//							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
+//				}
+//				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+//							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
+//				}
 //			}
-//			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-//						"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
-//			}
-//		}
-		return taiLieuVanThuService.doSave(taiLieuVanThu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+			return taiLieuVanThuService.doSave(taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -98,51 +106,55 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-//		List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
+		try {
+			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
+//			List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getTaiLieuVanThus().size() > 0) {
-//						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-//							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-//								return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-//										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-//							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-//								if (taiLieuVanThu.getSoQuyetDinh() == null
-//										|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getTaiLieuVanThus().size() > 0) {
+//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+//								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 //									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//											ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-//											ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+//								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//									if (taiLieuVanThu.getSoQuyetDinh() == null
+//											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+//									}
+//									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+//									}
 //								}
-//								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-//									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//											ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-//											ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
-//								}
+//								listCreate.add(taiLieuVanThu);
 //							}
-//							listCreate.add(taiLieuVanThu);
-//						}
-//						for (TaiLieuVanThu taiLieuVanThu : listCreate) {
-//							TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
-//									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//							result.getTaiLieuVanThus().add(tlvt);
-//						}
-						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-							TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
-									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getTaiLieuVanThus().add(tlvt);
+//							for (TaiLieuVanThu taiLieuVanThu : listCreate) {
+//								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+//								result.getTaiLieuVanThus().add(tlvt);
+//							}
+							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getTaiLieuVanThus().add(tlvt);
+							}
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuVanThus/{id}")
@@ -152,12 +164,16 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
-		TaiLieuVanThu taiLieuVanThu = repo.findOne(taiLieuVanThuService.predicateFindOne(id));
-		if (taiLieuVanThu == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		try {
+			TaiLieuVanThu taiLieuVanThu = repo.findOne(taiLieuVanThuService.predicateFindOne(id));
+			if (taiLieuVanThu == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(taiLieuVanThu), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(taiLieuVanThu), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/taiLieuVanThus/{id}")
@@ -168,29 +184,33 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody TaiLieuVanThu taiLieuVanThu, PersistentEntityResourceAssembler eass) {
 
-		taiLieuVanThu.setId(id);
-		if (!taiLieuVanThuService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			taiLieuVanThu.setId(id);
+			if (!taiLieuVanThuService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+
+//			if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
+//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+//						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
+//			} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//				if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
+//							"Số quyết định không được để trống.", "Số quyết định không được để trống.");
+//				}
+//				if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//					return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
+//							"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
+//				}
+//			}
+
+			return taiLieuVanThuService.doSave(taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-
-//		if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-//			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-//					"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
-//		} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-//			if (taiLieuVanThu.getSoQuyetDinh() == null || taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "SOQUYETDINH_REQUIRED",
-//						"Số quyết định không được để trống.", "Số quyết định không được để trống.");
-//			}
-//			if (taiLieuVanThu.getNgayQuyetDinh() == null) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "NGAYQUYETDINH_REQUIRED",
-//						"Ngày quyết định không được để trống.", "Ngày quyết định không được để trống.");
-//			}
-//		}
-
-		return taiLieuVanThuService.doSave(taiLieuVanThu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -202,55 +222,59 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-//		List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
+		try {
+			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
+//			List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getTaiLieuVanThus().size() > 0) {
-//						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-//							if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
-//								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-//										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-//							}
-//							if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
-//								return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-//										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-//							} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
-//								if (taiLieuVanThu.getSoQuyetDinh() == null
-//										|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
-//									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//											ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
-//											ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getTaiLieuVanThus().size() > 0) {
+//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+//								if (!taiLieuVanThuService.isExists(repo, taiLieuVanThu.getId())) {
+//									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+//											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 //								}
-//								if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//								if (taiLieuVanThu.getLoaiTepDinhKem() == null) {
 //									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-//											ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
-//											ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+//											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
+//								} else if (LoaiTepDinhKemEnum.QUYET_DINH.equals(taiLieuVanThu.getLoaiTepDinhKem())) {
+//									if (taiLieuVanThu.getSoQuyetDinh() == null
+//											|| taiLieuVanThu.getSoQuyetDinh().isEmpty()) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.SOQUYETDINH_REQUIRED.getText(), ApiErrorEnum.SOQUYETDINH_REQUIRED.getText());
+//									}
+//									if (taiLieuVanThu.getNgayQuyetDinh() == null) {
+//										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.name(),
+//												ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText(), ApiErrorEnum.NGAYQUYETDINH_REQUIRED.getText());
+//									}
 //								}
+//								listUpdate.add(taiLieuVanThu);
 //							}
-//							listUpdate.add(taiLieuVanThu);
-//						}
-//						for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
-//							TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
-//									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//							result.getTaiLieuVanThus().add(tlvt);
-//						}
-						for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-							TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
-									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getTaiLieuVanThus().add(tlvt);
+//							for (TaiLieuVanThu taiLieuVanThu : listUpdate) {
+//								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+//								result.getTaiLieuVanThus().add(tlvt);
+//							}
+							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+								TaiLieuVanThu tlvt = taiLieuVanThuService.save(taiLieuVanThu, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getTaiLieuVanThus().add(tlvt);
+							}
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/{id}")
@@ -259,15 +283,19 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		TaiLieuVanThu taiLieuVanThu = taiLieuVanThuService.delete(repo, id);
-		if (taiLieuVanThu == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+		try {
+			TaiLieuVanThu taiLieuVanThu = taiLieuVanThuService.delete(repo, id);
+			if (taiLieuVanThu == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		taiLieuVanThuService.save(taiLieuVanThu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			taiLieuVanThuService.save(taiLieuVanThu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/multi")
@@ -276,22 +304,26 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuVanThu_Delete params) {
 
-		List<TaiLieuVanThu> listDelete = new ArrayList<TaiLieuVanThu>();
-		if (params != null && params.getTaiLieuVanThus().size() > 0) {
-			for (Medial_TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-				TaiLieuVanThu tlvt = taiLieuVanThuService.delete(repo, taiLieuVanThu.getId());
-				if (tlvt == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			List<TaiLieuVanThu> listDelete = new ArrayList<TaiLieuVanThu>();
+			if (params != null && params.getTaiLieuVanThus().size() > 0) {
+				for (Medial_TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
+					TaiLieuVanThu tlvt = taiLieuVanThuService.delete(repo, taiLieuVanThu.getId());
+					if (tlvt == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(tlvt);
 				}
-				listDelete.add(tlvt);
+				for (TaiLieuVanThu tlvt : listDelete) {
+					taiLieuVanThuService.save(tlvt, Long
+							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
 			}
-			for (TaiLieuVanThu tlvt : listDelete) {
-				taiLieuVanThuService.save(tlvt, Long
-						.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
-		}
 
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 }

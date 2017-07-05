@@ -78,8 +78,12 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestParam(value = "phanLoai", required = false) String phanLoai, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 		
-		Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+		try {
+			Page<Don_CongDan> page = repo.findAll(donCongDanService.predicateFindAll(don, congDan, phanLoai), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/donCongDans")
@@ -90,17 +94,21 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don_CongDan donCongDan, PersistentEntityResourceAssembler eass) {
 
-		List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
-		LichSuThayDoi lichSu = new LichSuThayDoi();
-		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-		lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-		lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
-		lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-		lichSuThayDoiService.save(lichSu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return donCongDanService.doSave(donCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+		try {
+			List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+			lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			lichSuThayDoiService.save(lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return donCongDanService.doSave(donCongDan,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -113,60 +121,64 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+		try {
+			Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDonCongDans().size() > 0) {
-						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							CongDan congDan = null;
-							
-							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-							}	
-							if (congDan == null) {
-								congDan = new CongDan();
-							}
-							congDan.setHoVaTen(donCongDan.getHoVaTen());
-							congDan.setDanToc(donCongDan.getDanToc());
-							congDan.setQuocTich(donCongDan.getQuocTich());
-							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
-							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
-							congDan.setDiaChi(donCongDan.getDiaChi());
-							congDan.setNgaySinh(donCongDan.getNgaySinh());
-							congDan.setNgayCap(donCongDan.getNgayCap());
-							congDan.setGioiTinh(donCongDan.isGioiTinh());
-							congDan.setTinhThanh(donCongDan.getTinhThanh());
-							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
-							congDan.setPhuongXa(donCongDan.getPhuongXa());
-							congDan.setToDanPho(donCongDan.getToDanPho());
-							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDonCongDans().size() > 0) {
+							for (Don_CongDan donCongDan : params.getDonCongDans()) {
+								CongDan congDan = null;
 								
-							CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDanUpdate != null) {
-								donCongDan.setCongDan(congDanUpdate);
-								Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getDonCongDans().add(dcd);
+								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}	
+								if (congDan == null) {
+									congDan = new CongDan();
+								}
+								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setDanToc(donCongDan.getDanToc());
+								congDan.setQuocTich(donCongDan.getQuocTich());
+								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setNgaySinh(donCongDan.getNgaySinh());
+								congDan.setNgayCap(donCongDan.getNgayCap());
+								congDan.setGioiTinh(donCongDan.isGioiTinh());
+								congDan.setTinhThanh(donCongDan.getTinhThanh());
+								congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+								congDan.setPhuongXa(donCongDan.getPhuongXa());
+								congDan.setToDanPho(donCongDan.getToDanPho());
+								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+									
+								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								if (congDanUpdate != null) {
+									donCongDan.setCongDan(congDanUpdate);
+									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									result.getDonCongDans().add(dcd);
+								}
+								
+								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
+								LichSuThayDoi lichSu = new LichSuThayDoi();
+								lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+								lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+								lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+								lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+								lichSuThayDoiService.save(lichSu,
+										Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 							}
-							
-							List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
-							LichSuThayDoi lichSu = new LichSuThayDoi();
-							lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-							lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-							lichSu.setNoiDung("Thêm mới thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
-							lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-							lichSuThayDoiService.save(lichSu,
-									Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/donCongDans/{id}")
@@ -176,11 +188,15 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	public Object getDonCongDan(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 		
-		Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
-		if (donCongDan == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		try {
+			Don_CongDan donCongDan = repo.findOne(donCongDanService.predicateFindOne(id));
+			if (donCongDan == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(donCongDan), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		return new ResponseEntity<>(eass.toFullResource(donCongDan), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/donCongDans/{id}")
@@ -190,26 +206,30 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 		
-		donCongDan.setId(id);
+		try {
+			donCongDan.setId(id);
 
-		if (!donCongDanService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			if (!donCongDanService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
+			List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
+			if (listThayDoi.size() > 0) {
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+				lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				lichSuThayDoiService.save(lichSu,
+						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}
+			return donCongDanService.doSave(donCongDan,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
-		List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
-		if (listThayDoi.size() > 0) {
-			LichSuThayDoi lichSu = new LichSuThayDoi();
-			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-			lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-			lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
-			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-			lichSuThayDoiService.save(lichSu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		}
-		return donCongDanService.doSave(donCongDan,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -220,72 +240,76 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
-		List<Don_CongDan> listUpdate = new ArrayList<Don_CongDan>();
+		try {
+			Medial_DonCongDan_Post_Patch result = new Medial_DonCongDan_Post_Patch();
+			List<Don_CongDan> listUpdate = new ArrayList<Don_CongDan>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDonCongDans().size() > 0) {
-						for (Don_CongDan donCongDan : params.getDonCongDans()) {
-							if (!donCongDanService.isExists(repo, donCongDan.getId())) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDonCongDans().size() > 0) {
+							for (Don_CongDan donCongDan : params.getDonCongDans()) {
+								if (!donCongDanService.isExists(repo, donCongDan.getId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+								}
+								listUpdate.add(donCongDan);
 							}
-							listUpdate.add(donCongDan);
-						}
-						for (Don_CongDan donCongDan : listUpdate) {
-							
-							CongDan congDan = null;
-							
-							if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-								congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-							}		
-							if (congDan == null) {
-								congDan = new CongDan();
-							}
-							congDan.setHoVaTen(donCongDan.getHoVaTen());
-							congDan.setDanToc(donCongDan.getDanToc());
-							congDan.setQuocTich(donCongDan.getQuocTich());
-							congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
-							congDan.setSoDienThoai(donCongDan.getSoDienThoai());
-							congDan.setDiaChi(donCongDan.getDiaChi());
-							congDan.setNgaySinh(donCongDan.getNgaySinh());
-							congDan.setNgayCap(donCongDan.getNgayCap());
-							congDan.setGioiTinh(donCongDan.isGioiTinh());
-							congDan.setTinhThanh(donCongDan.getTinhThanh());
-							congDan.setQuanHuyen(donCongDan.getQuanHuyen());
-							congDan.setPhuongXa(donCongDan.getPhuongXa());
-							congDan.setToDanPho(donCongDan.getToDanPho());
-							congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+							for (Don_CongDan donCongDan : listUpdate) {
 								
-							CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							if (congDanUpdate != null) {
-								donCongDan.setCongDan(congDanUpdate);
-								Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getDonCongDans().add(dcd);
-							}
-							
-							Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
-							List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
-							if (listThayDoi.size() > 0) {
-								LichSuThayDoi lichSu = new LichSuThayDoi();
-								lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-								lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-								lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
-								lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-								lichSuThayDoiService.save(lichSu,
-										Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								CongDan congDan = null;
+								
+								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
+									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+								}		
+								if (congDan == null) {
+									congDan = new CongDan();
+								}
+								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setDanToc(donCongDan.getDanToc());
+								congDan.setQuocTich(donCongDan.getQuocTich());
+								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
+								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
+								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setNgaySinh(donCongDan.getNgaySinh());
+								congDan.setNgayCap(donCongDan.getNgayCap());
+								congDan.setGioiTinh(donCongDan.isGioiTinh());
+								congDan.setTinhThanh(donCongDan.getTinhThanh());
+								congDan.setQuanHuyen(donCongDan.getQuanHuyen());
+								congDan.setPhuongXa(donCongDan.getPhuongXa());
+								congDan.setToDanPho(donCongDan.getToDanPho());
+								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+									
+								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								if (congDanUpdate != null) {
+									donCongDan.setCongDan(congDanUpdate);
+									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									result.getDonCongDans().add(dcd);
+								}
+								
+								Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
+								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
+								if (listThayDoi.size() > 0) {
+									LichSuThayDoi lichSu = new LichSuThayDoi();
+									lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+									lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+									lichSu.setNoiDung("Cập nhật thông tin " + donCongDan.getPhanLoaiCongDan().getText() + " " + donCongDan.getHoVaTen());
+									lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+									lichSuThayDoiService.save(lichSu,
+											Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								}
 							}
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/{id}")
@@ -294,21 +318,26 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		Don_CongDan dcd = donCongDanService.delete(repo, id);
-		if (dcd == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		
+		try {
+			Don_CongDan dcd = donCongDanService.delete(repo, id);
+			if (dcd == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(dcd.getDon().getId());
+			lichSu.setNoiDung("Xóa thông tin công dân " + dcd.getHoVaTen());
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+			lichSuThayDoiService.save(lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			donCongDanService.save(dcd,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		LichSuThayDoi lichSu = new LichSuThayDoi();
-		lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-		lichSu.setIdDoiTuong(dcd.getDon().getId());
-		lichSu.setNoiDung("Xóa thông tin công dân " + dcd.getHoVaTen());
-		lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
-		lichSuThayDoiService.save(lichSu,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		donCongDanService.save(dcd,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/donCongDans/multi")
@@ -318,28 +347,32 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DonCongDan_Delete params) {
 
-		List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
-		if (params != null && params.getDonCongDans().size() > 0) {
-			for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
-				Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
-				if (dcd == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			List<Don_CongDan> listDelete = new ArrayList<Don_CongDan>();
+			if (params != null && params.getDonCongDans().size() > 0) {
+				for (Medial_DonCongDan donCongDan : params.getDonCongDans()) {
+					Don_CongDan dcd = donCongDanService.delete(repo, donCongDan.getId());
+					if (dcd == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(dcd);
 				}
-				listDelete.add(dcd);
-			}
-			for (Don_CongDan donCongDan : listDelete) {
-				donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				LichSuThayDoi lichSu = new LichSuThayDoi();
-				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-				lichSu.setIdDoiTuong(donCongDan.getDon().getId());
-				lichSu.setNoiDung("Xóa thông tin công dân " + donCongDan.getHoVaTen());
-				lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
-				lichSuThayDoiService.save(lichSu,
-						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
-		}	
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				for (Don_CongDan donCongDan : listDelete) {
+					donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					LichSuThayDoi lichSu = new LichSuThayDoi();
+					lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+					lichSu.setIdDoiTuong(donCongDan.getDon().getId());
+					lichSu.setNoiDung("Xóa thông tin công dân " + donCongDan.getHoVaTen());
+					lichSu.setChiTietThayDoi(getChiTietThayDoi(new ArrayList<>()));
+					lichSuThayDoiService.save(lichSu,
+							Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
+			}	
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 }

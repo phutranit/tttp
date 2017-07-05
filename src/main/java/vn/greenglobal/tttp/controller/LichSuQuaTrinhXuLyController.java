@@ -62,21 +62,24 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "donId", required = true) Long donId,
 			PersistentEntityResourceAssembler eass) {
-
-		CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
-		Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
-		Don don = donRepo.findOne(donService.predicateFindOne(donId));
-		
-		if (don == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+			Don don = donRepo.findOne(donService.predicateFindOne(donId));
+			
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			List<LichSuQuaTrinhXuLy> list = new ArrayList<LichSuQuaTrinhXuLy>();
+			list.addAll((List<LichSuQuaTrinhXuLy>)repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId)));
+			if (list.size() > 0) {
+				pageable = new PageRequest(0, list.size(), new Sort(new Order(Direction.ASC, "thuTuThucHien")));
+			}
+			Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		List<LichSuQuaTrinhXuLy> list = new ArrayList<LichSuQuaTrinhXuLy>();
-		list.addAll((List<LichSuQuaTrinhXuLy>)repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId)));
-		if (list.size() > 0) {
-			pageable = new PageRequest(0, list.size(), new Sort(new Order(Direction.ASC, "thuTuThucHien")));
-		}
-		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }
