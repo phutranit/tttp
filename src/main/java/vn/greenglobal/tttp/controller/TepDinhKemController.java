@@ -56,17 +56,13 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TepDinhKem tepDinhKem, PersistentEntityResourceAssembler eass) {
 		
-		try {
-			if (tepDinhKem.getLoaiFileDinhKem() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-						ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-			}
-			return TepDinhKemService.doSave(tepDinhKem,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (tepDinhKem.getLoaiFileDinhKem() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+					ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 		}
+		return TepDinhKemService.doSave(tepDinhKem,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -79,38 +75,34 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TepDinhKem_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		try {
-			Medial_TepDinhKem_Post_Patch result = new Medial_TepDinhKem_Post_Patch();
-			List<TepDinhKem> listCreate = new ArrayList<TepDinhKem>();
+		Medial_TepDinhKem_Post_Patch result = new Medial_TepDinhKem_Post_Patch();
+		List<TepDinhKem> listCreate = new ArrayList<TepDinhKem>();
 
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
-						if (params.getTepDinhKems().size() > 0) {
-							for (TepDinhKem tepDinhKem : params.getTepDinhKems()) {
-								if (tepDinhKem.getLoaiFileDinhKem() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-								}
-								listCreate.add(tepDinhKem);
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getTepDinhKems().size() > 0) {
+						for (TepDinhKem tepDinhKem : params.getTepDinhKems()) {
+							if (tepDinhKem.getLoaiFileDinhKem() == null) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 							}
-							for (TepDinhKem tepDinhKem : listCreate) {
-								TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getTepDinhKems().add(tlvt);
-							}
+							listCreate.add(tepDinhKem);
 						}
-						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+						for (TepDinhKem tepDinhKem : listCreate) {
+							TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							result.getTepDinhKems().add(tlvt);
+						}
 					}
-				});
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+				}
+			});
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/tepDinhKems/{id}")
@@ -121,16 +113,12 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
-		try {
-			TepDinhKem tepDinhKem = repo.findOne(TepDinhKemService.predicateFindOne(id));
-			if (tepDinhKem == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(tepDinhKem), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		TepDinhKem tepDinhKem = repo.findOne(TepDinhKemService.predicateFindOne(id));
+		if (tepDinhKem == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(tepDinhKem), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/tepDinhKems/{id}")
@@ -141,24 +129,20 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody TepDinhKem tepDinhKem, PersistentEntityResourceAssembler eass) {
 
-		try {
-			tepDinhKem.setId(id);
-			if (!TepDinhKemService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			if (tepDinhKem.getLoaiFileDinhKem() == null) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
-						"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
-			}
-
-			return TepDinhKemService.doSave(tepDinhKem,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		tepDinhKem.setId(id);
+		if (!TepDinhKemService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
+		if (tepDinhKem.getLoaiFileDinhKem() == null) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, "LOAITEPDINHKEM_REQUIRED",
+					"Loại tệp đính kèm không được để trống.", "Loại tệp đính kèm không được để trống.");
+		}
+
+		return TepDinhKemService.doSave(tepDinhKem,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -170,42 +154,38 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TepDinhKem_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		try {
-			Medial_TepDinhKem_Post_Patch result = new Medial_TepDinhKem_Post_Patch();
-			List<TepDinhKem> listUpdate = new ArrayList<TepDinhKem>();
+		Medial_TepDinhKem_Post_Patch result = new Medial_TepDinhKem_Post_Patch();
+		List<TepDinhKem> listUpdate = new ArrayList<TepDinhKem>();
 
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
-						if (params.getTepDinhKems().size() > 0) {
-							for (TepDinhKem tepDinhKem : params.getTepDinhKems()) {
-								if (!TepDinhKemService.isExists(repo, tepDinhKem.getId())) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-								}
-								if (tepDinhKem.getLoaiFileDinhKem() == null) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
-											ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
-								}
-								listUpdate.add(tepDinhKem);
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getTepDinhKems().size() > 0) {
+						for (TepDinhKem tepDinhKem : params.getTepDinhKems()) {
+							if (!TepDinhKemService.isExists(repo, tepDinhKem.getId())) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 							}
-							for (TepDinhKem tepDinhKem : listUpdate) {
-								TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getTepDinhKems().add(tlvt);
+							if (tepDinhKem.getLoaiFileDinhKem() == null) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.name(),
+										ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText(), ApiErrorEnum.LOAITEPDINHKEM_REQUIRED.getText());
 							}
+							listUpdate.add(tepDinhKem);
 						}
-						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+						for (TepDinhKem tepDinhKem : listUpdate) {
+							TepDinhKem tlvt = TepDinhKemService.save(tepDinhKem, Long.valueOf(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							result.getTepDinhKems().add(tlvt);
+						}
 					}
-				});
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+				}
+			});
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/tepDinhKems/{id}")
@@ -214,19 +194,15 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			TepDinhKem tepDinhKem = TepDinhKemService.delete(repo, id);
-			if (tepDinhKem == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			TepDinhKemService.save(tepDinhKem,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		TepDinhKem tepDinhKem = TepDinhKemService.delete(repo, id);
+		if (tepDinhKem == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
+		TepDinhKemService.save(tepDinhKem,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/tepDinhKems/multi")
@@ -236,26 +212,22 @@ public class TepDinhKemController extends TttpController<TepDinhKem> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TepDinhKem_Delete params) {
 
-		try {
-			List<TepDinhKem> listDelete = new ArrayList<TepDinhKem>();
-			if (params != null && params.getTepDinhKems().size() > 0) {
-				for (Medial_TepDinhKem TepDinhKem : params.getTepDinhKems()) {
-					TepDinhKem tlvt = TepDinhKemService.delete(repo, TepDinhKem.getId());
-					if (tlvt == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-					}
-					listDelete.add(tlvt);
+		List<TepDinhKem> listDelete = new ArrayList<TepDinhKem>();
+		if (params != null && params.getTepDinhKems().size() > 0) {
+			for (Medial_TepDinhKem TepDinhKem : params.getTepDinhKems()) {
+				TepDinhKem tlvt = TepDinhKemService.delete(repo, TepDinhKem.getId());
+				if (tlvt == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				for (TepDinhKem tlvt : listDelete) {
-					TepDinhKemService.save(tlvt, Long
-							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				}
+				listDelete.add(tlvt);
 			}
-
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+			for (TepDinhKem tlvt : listDelete) {
+				TepDinhKemService.save(tlvt, Long
+						.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}
 		}
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -58,18 +58,14 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			@RequestParam(value = "cha", required = false) String cha,
 			@RequestParam(value = "loaiDon", required = false) String loaiDon, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -81,17 +77,13 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			@RequestParam(value = "cha", required = false) String cha,
 			@RequestParam(value = "loaiDon", required = false) String loaiDon, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/linhVucDonThus")
@@ -102,22 +94,18 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody LinhVucDonThu linhVucDonThu, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (StringUtils.isNotBlank(linhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-			}
-			return linhVucDonThuService.doSave(linhVucDonThu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (StringUtils.isNotBlank(linhVucDonThu.getTen()) && linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
+		return linhVucDonThuService.doSave(linhVucDonThu,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/{id}")
@@ -127,21 +115,17 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			LinhVucDonThu linhVucDonThu = repo.findOne(linhVucDonThuService.predicateFindOne(id));
-			if (linhVucDonThu == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(linhVucDonThu), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		LinhVucDonThu linhVucDonThu = repo.findOne(linhVucDonThuService.predicateFindOne(id));
+		if (linhVucDonThu == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(linhVucDonThu), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/linhVucDonThus/{id}")
@@ -152,30 +136,26 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody LinhVucDonThu linhVucDonThu, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			linhVucDonThu.setId(id);
-			if (StringUtils.isNotBlank(linhVucDonThu.getTen())
-					&& linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-			}
-
-			if (!linhVucDonThuService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			return linhVucDonThuService.doSave(linhVucDonThu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		linhVucDonThu.setId(id);
+		if (StringUtils.isNotBlank(linhVucDonThu.getTen())
+				&& linhVucDonThuService.checkExistsData(repo, linhVucDonThu)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
+
+		if (!linhVucDonThuService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		return linhVucDonThuService.doSave(linhVucDonThu,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/linhVucDonThus/{id}")
@@ -184,28 +164,24 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (linhVucDonThuService.checkUsedData(repo, donRepository, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
-
-			LinhVucDonThu linhVucDonThu = linhVucDonThuService.delete(repo, id);
-			if (linhVucDonThu == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			linhVucDonThuService.save(linhVucDonThu,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (linhVucDonThuService.checkUsedData(repo, donRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+		}
+
+		LinhVucDonThu linhVucDonThu = linhVucDonThuService.delete(repo, id);
+		if (linhVucDonThu == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		linhVucDonThuService.save(linhVucDonThu,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

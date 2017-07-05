@@ -67,38 +67,34 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ThongTinGiaiQuyetDon thongTinGiaiQuyetDon, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			thongTinGiaiQuyetDon.setId(id);
-			if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			checkDataThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-			Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
-			don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
-			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			
-			ThongTinGiaiQuyetDon thongTinOld = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
-			List<PropertyChangeObject> listThayDoi = thongTinGiaiQuyetDonService.getListThayDoi(thongTinGiaiQuyetDon, thongTinOld);
-			if (listThayDoi.size() > 0) {
-				LichSuThayDoi lichSu = new LichSuThayDoi();
-				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-				lichSu.setIdDoiTuong(thongTinOld.getDon().getId());
-				lichSu.setNoiDung("Cập nhật thông tin giải quyết đơn");
-				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-				lichSuThayDoiService.save(lichSu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
-			
-			return thongTinGiaiQuyetDonService.doSave(thongTinGiaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		thongTinGiaiQuyetDon.setId(id);
+		if (!thongTinGiaiQuyetDonService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		checkDataThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
+		Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
+		don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
+		donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		
+		ThongTinGiaiQuyetDon thongTinOld = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
+		List<PropertyChangeObject> listThayDoi = thongTinGiaiQuyetDonService.getListThayDoi(thongTinGiaiQuyetDon, thongTinOld);
+		if (listThayDoi.size() > 0) {
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+			lichSu.setIdDoiTuong(thongTinOld.getDon().getId());
+			lichSu.setNoiDung("Cập nhật thông tin giải quyết đơn");
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			lichSuThayDoiService.save(lichSu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}
+		
+		return thongTinGiaiQuyetDonService.doSave(thongTinGiaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/thongTinGiaiQuyetDons/{id}")
@@ -108,20 +104,16 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
-			if (thongTinGiaiQuyetDon == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(eass.toFullResource(thongTinGiaiQuyetDon), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));
+		if (thongTinGiaiQuyetDon == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(thongTinGiaiQuyetDon), HttpStatus.OK);
 	}
 	
 	private ThongTinGiaiQuyetDon checkDataThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
