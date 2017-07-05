@@ -1197,12 +1197,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
 		xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+		
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 		don.setNgayLapDonGapLanhDaoTmp(xuLyDon.getNgayHenGapLanhDao());
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setNgayKetThucXLD(LocalDateTime.now());
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
-
+		don.setHuongXuLyXLD(xuLyDonHienTai.getHuongXuLy());
+		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+	
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
@@ -1230,11 +1233,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 
-		Don donGoc = new Don();
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
-		if (don.getDonGoc() != null) { 
-			donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGoc().getId()));
-		}
+		
 		//tao ma don
 		if (don.getMa() == null || don.getMa().isEmpty()) {
 			don.setMa(donService.getMaDon(donRepo, don.getId()));
@@ -1461,12 +1461,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				donVi.getDonVi().getId());
 		lichSuQTXLDChuyenDon.setThuTuThucHien(thuTuChuyenDon);
 		
+		disableDonChuyenCu(donOld.getId(), congChucId, donVi.getDonVi().getId());
 		donService.save(donOld, congChucId);
 		donService.save(donMoi, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLDChuyenDon, congChucId);
-		disableDonChuyenCu(donOld.getId(), congChucId, donVi.getDonVi().getId());
 		return xuLyDonTiepTheo;
 	}
 
