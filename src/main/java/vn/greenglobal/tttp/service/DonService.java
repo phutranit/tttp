@@ -74,7 +74,17 @@ public class DonService {
 
 		return predAll;
 	}
-
+	
+	public Predicate predFindOld(Long id, Long donViId) {
+		BooleanExpression predAll = base;
+		if (id > 0) {
+			predAll = predAll.and(QDon.don.donGoc.id.eq(id));
+			predAll = predAll.and(QDon.don.donChuyen.eq(true));
+			predAll = predAll.and(QDon.don.donViXuLyDonChuyen.id.eq(donViId));
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
@@ -83,7 +93,9 @@ public class DonService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
-		predAll = predAll.and(QDon.don.xuLyDons.isNotEmpty()
+		predAll = predAll
+				.and(QDon.don.old.eq(false))
+				.and(QDon.don.xuLyDons.isNotEmpty()
 				.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
 		
 		// Query don
@@ -293,7 +305,9 @@ public class DonService {
 			String tiepNhanDenNgay, boolean thanhLapDon, String tinhTrangGiaiQuyet, String trangThaiDon,
 			Long phongBanGiaiQuyetId, Long canBoGiaiQuyetId, String chucVu, String hoTen,
 			GiaiQuyetDonRepository giaiQuyetDonRepo, XuLyDonRepository xuLyRepo) {
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
+		BooleanExpression predAll = base
+				.and(QDon.don.old.eq(false))
+				.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		
 		// Query don
 		if (StringUtils.isNotBlank(maDon)) {
