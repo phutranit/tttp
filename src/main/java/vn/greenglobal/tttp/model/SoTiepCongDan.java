@@ -46,6 +46,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private Don don;
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private CongChuc canBoTiepDan;
 	@NotNull
 	@ManyToOne
@@ -447,6 +448,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
 		return getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getHuongGiaiQuyetTCDLanhDaoStr() {
+		return getHuongGiaiQuyetTCDLanhDao() != null ? getHuongGiaiQuyetTCDLanhDao().getText() : "";
 	}
 	
 	@Transient

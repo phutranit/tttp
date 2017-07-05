@@ -17,6 +17,7 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -82,7 +83,18 @@ public class CongChucService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCongChuc.congChuc.id.eq(id));
 	}
-
+	
+	public Predicate predicateFindByTenLD(String ten) {
+		BooleanExpression predAll = base;
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) { 
+			return predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(ten.trim()))
+					.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.LANH_DAO)
+							.or(QCongChuc.congChuc.nguoiDung.vaiTros.any().loaiVaiTro.eq(VaiTroEnum.LANH_DAO)));
+			
+		}
+		return null;
+	}
+	
 	public Predicate predicateFindByNguoiDungId(long id) {
 		return base.and(QCongChuc.congChuc.nguoiDung.id.eq(id));
 	}
