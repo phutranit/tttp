@@ -597,7 +597,6 @@ public class EnumController {
 		
 		Map<String, Object> mapRemove = new HashMap<>();
 		if (don.isDonChuyen()) { 
-			System.out.println("baby love");
 			object.put("ten", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
 			object.put("giaTri", HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
 			list.add(object);
