@@ -648,6 +648,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 					donOld.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 				}
+				List<LichSuQuaTrinhXuLy> lichSuList = new ArrayList<LichSuQuaTrinhXuLy>();
+				lichSuList.addAll(lichSuQuaTrinhXuLyService.getDSLichSuQuaTrinhXuLys(lichSuQuaTrinhXuLyRepo, donOld.getId(), xuLyDonHienTai.getDonViXuLy().getId()));
+				if (lichSuList.size() == 1) { 
+					for (LichSuQuaTrinhXuLy lichSuQuaTrinhXuLy : lichSuList) {
+						if (StringUtils.isNotBlank(xuLyDon.getNoiDungThongTinTrinhLanhDao())) {
+							lichSuQuaTrinhXuLy.setNoiDung(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+						}
+						lichSuQuaTrinhXuLyService.save(lichSuQuaTrinhXuLy, congChucId);
+					}
+				}
 				
 				donService.save(donOld, congChucId);
 				return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);

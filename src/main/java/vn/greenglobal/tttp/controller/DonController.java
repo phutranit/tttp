@@ -379,7 +379,6 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 201, message = "Thêm mới Đơn thành công", response = Don.class) })
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
-		
 		try {
 			NguoiDung nguoiDungHienTai = null;
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM) != null) {
@@ -402,12 +401,6 @@ public class DonController extends TttpController<Don> {
 				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 				Don donMoi = donService.save(don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-				
-				//tao lich su qua trinh xu ly don
-				LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-				lichSuQTXLD.setDon(donMoi);
-				lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-				lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
 				
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -461,11 +454,24 @@ public class DonController extends TttpController<Don> {
 					
 					//set thoi han xu ly
 					donMoi.setNgayBatDauXLD(LocalDateTime.now());
-					donMoi.setNgayTiepNhan(donMoi.getNgayBatDauXLD());
+					if (don.getNgayTiepNhan() != null) {
+						donMoi.setNgayTiepNhan(don.getNgayTiepNhan());
+					} else { 
+						donMoi.setNgayTiepNhan(donMoi.getNgayBatDauXLD());
+					}
+					
 					donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-					lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+					
+					//tao lich su qua trinh xu ly don
+					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+					lichSuQTXLD.setDon(donMoi);
+					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
 					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
-
+					lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
+					lichSuQTXLD.setThuTuThucHien(0);
+					
 					if (don.getThoiHanXuLyXLD() != null) {
 						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 					} else {
@@ -473,11 +479,13 @@ public class DonController extends TttpController<Don> {
 						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
 					xuLyDonService.save(xuLyDon, congChucId);
-				} else { 
-					lichSuQTXLD.setTen("Tạo mới xử lý đơn");
-				}
-				lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
-				lichSuQTXLD.setThuTuThucHien(0);
+					lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+				} 
+//				else {
+//					lichSuQTXLD.setNoiDung("Tạo mới hồ sơ tiếp công dân");
+//					lichSuQTXLD.setTen("Tiếp công dân");
+//				}
+				
 				List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(donMoi, new Don());
 				LichSuThayDoi lichSu = new LichSuThayDoi();
 				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
@@ -485,7 +493,6 @@ public class DonController extends TttpController<Don> {
 				lichSu.setNoiDung("Tạo mới đơn");
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 				lichSuThayDoiService.save(lichSu, congChucId);
-				lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 				return donService.doSave(donMoi, congChucId, eass, HttpStatus.CREATED);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -563,10 +570,16 @@ public class DonController extends TttpController<Don> {
 				}
 				if (don.isThanhLapDon()) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
-					don.setNgayTiepNhan(donOld.getNgayBatDauXLD());
 					if (donOld.getNgayTiepNhan() == null) {
-						don.setNgayTiepNhan(LocalDateTime.now());
+						if (don.getNgayTiepNhan() == null) {
+							don.setNgayTiepNhan(LocalDateTime.now());
+						}
+					} else {
+						if (don.getNgayTiepNhan() == null) {
+							don.setNgayTiepNhan(donOld.getNgayTiepNhan());
+						}
 					}
+					
 					if (donOld.getThoiHanXuLyXLD() == null) {
 						don.setNgayBatDauXLD(LocalDateTime.now());
 						if (don.getThoiHanXuLyXLD() == null) {
@@ -639,7 +652,10 @@ public class DonController extends TttpController<Don> {
 						lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 						lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
 						lichSuQTXLD.setTen("Chuyển Xử lý đơn");
-						lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+						lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
+						if (StringUtils.isNotBlank(xuLyDon.getNoiDungXuLy())) { 
+							lichSuQTXLD.setNoiDung(xuLyDon.getNoiDungXuLy());
+						}
 						CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
 						lichSuQTXLD.setDonViXuLy(donVi);
 						int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId(), 

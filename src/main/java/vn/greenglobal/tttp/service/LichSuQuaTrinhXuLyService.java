@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,13 @@ public class LichSuQuaTrinhXuLyService {
 				.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.donViXuLy.id.eq(donViId));
 		return predAll;
 	}
-
+	
+	public List<LichSuQuaTrinhXuLy> getDSLichSuQuaTrinhXuLys(LichSuQuaTrinhXuLyRepository repo, Long donId, Long donViId) {
+		List<LichSuQuaTrinhXuLy> lichSuList = new ArrayList<LichSuQuaTrinhXuLy>();
+		lichSuList.addAll((List<LichSuQuaTrinhXuLy>) repo.findAll(predicateFindAll(donId, donViId)));
+		return lichSuList;
+	}
+	
 	public int timThuTuLichSuQuaTrinhXuLyHienTai(LichSuQuaTrinhXuLyRepository repo, Long donId, Long donViId) {
 		int thuTu = 0;
 		List<LichSuQuaTrinhXuLy> lichSuList = (List<LichSuQuaTrinhXuLy>) repo.findAll(predicateFindAll(donId, donViId));
