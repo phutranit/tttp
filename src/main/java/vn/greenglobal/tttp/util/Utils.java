@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -33,6 +36,9 @@ import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import airbrake.AirbrakeNotice;
+import airbrake.AirbrakeNoticeBuilder;
+import airbrake.AirbrakeNotifier;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
@@ -90,6 +96,17 @@ public class Utils {
 		if (e.getCause() != null && e.getCause().getCause() != null
 				&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
 			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
+		try {
+			Writer result = new StringWriter();
+		    PrintWriter printWriter = new PrintWriter(result);
+		    e.printStackTrace(printWriter);
+
+			AirbrakeNotice notice = new AirbrakeNoticeBuilder("f5618c7df1dbcd6181c3266abfac85eb", result.toString(), "test").newNotice();
+			AirbrakeNotifier notifier = new AirbrakeNotifier("http://tracker.thanhtratp.greenglobal.vn:9836/notifier_api/v2/notices");
+			notifier.notify(notice);
+		} catch (Exception ex) {
+			//
+		}
 		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(),
 				ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getMessage());
 	}
