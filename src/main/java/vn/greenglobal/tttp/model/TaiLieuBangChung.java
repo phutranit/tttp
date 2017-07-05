@@ -131,6 +131,12 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public String getTinhTrangTaiLieuStr() {
+		return getTinhTrangTaiLieu() != null ? getTinhTrangTaiLieu().getText() : "";
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
