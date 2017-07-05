@@ -738,6 +738,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTruongPhong.setDonChuyen(true);
 			giaiQuyetDonTruongPhong.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			giaiQuyetDonTruongPhong.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
+			giaiQuyetDonTruongPhong.setCongChuc(congChuc);
+			giaiQuyetDonTruongPhong.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+			giaiQuyetDonTruongPhong.setNextForm(giaiQuyetDonHienTai.getNextForm());
+			giaiQuyetDonTruongPhong.setNextState(giaiQuyetDon.getNextState());
 			if (!isLaTTXM) {
 				giaiQuyetDonTruongPhong.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 			}
