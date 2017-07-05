@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -237,17 +238,19 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 										ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
 							}						
 							Transition transitionTTXM = null;
+							List<Transition> listTransitionHaveBegin = new ArrayList<Transition>();
 							for (Process processFromList : listProcess) {
 								transitionTTXM = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 								if (transitionTTXM != null) {
-									break;
+									listTransitionHaveBegin.add(transitionTTXM);
 								}
 							}
 							if (transitionTTXM == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
 										ApiErrorEnum.TRANSITION_TTXM_INVALID.getText(), ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
 							}						
-							giaiQuyetDonHienTai = vanThuChuyenVanThuDonViTTXM(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
+							giaiQuyetDonHienTai = vanThuChuyenVanThuDonViTTXM(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, 
+									listTransitionHaveBegin.size() == 1 ? transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro() : null);
 							return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (FlowStateEnum.CAN_BO_CHUYEN_DON_VI_TTXM.equals(nextStateType)) {
 							if (giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh() == null) {
