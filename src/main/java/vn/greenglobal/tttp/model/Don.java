@@ -106,8 +106,6 @@ public class Don extends Model<Don> {
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
 	private Don donLanTruoc;
-	@OneToOne
-	private Don donGoc;
 	@ManyToOne
 	private CongChuc canBoXuLy;
 	@ManyToOne
@@ -129,7 +127,11 @@ public class Don extends Model<Don> {
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 	@ManyToOne
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
-
+	@ManyToOne
+	private Don donGoc;
+	@ManyToOne
+	private CoQuanQuanLy donViXuLyDonChuyen;
+	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -405,6 +407,15 @@ public class Don extends Model<Don> {
 
 	public void setDonGoc(Don donGoc) {
 		this.donGoc = donGoc;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getDonViXuLyDonChuyen() {
+		return donViXuLyDonChuyen;
+	}
+
+	public void setDonViXuLyDonChuyen(CoQuanQuanLy donViXuLyDonChuyen) {
+		this.donViXuLyDonChuyen = donViXuLyDonChuyen;
 	}
 
 	@ApiModelProperty(position = 14, example = "{}")
