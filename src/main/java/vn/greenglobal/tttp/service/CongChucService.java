@@ -17,7 +17,6 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
-import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.util.Utils;
