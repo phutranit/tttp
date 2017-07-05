@@ -1,9 +1,16 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.ResourceAssembler;
@@ -64,9 +71,12 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-
+			List<LichSuQuaTrinhXuLy> list = new ArrayList<LichSuQuaTrinhXuLy>();
+			list.addAll((List<LichSuQuaTrinhXuLy>)repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId)));
+			if (list.size() > 0) {
+				pageable = new PageRequest(0, list.size(), new Sort(new Order(Direction.ASC, "thuTuThucHien")));
+			}
 			Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
-
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

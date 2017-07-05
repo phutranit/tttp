@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -328,7 +329,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, soTiepCongDan.getDon().getId(), donViId);
 				lichSuQTXL.setThuTuThucHien(thuTu);
 				donService.save(don, congChucId);
-				lichSuQuaTrinhXuLyService.save(lichSuQTXL, congChucId);
+				int size = 0;
+				size = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), lichSuQTXL.getDonViXuLy().getId());
+				if (size == 0) {
+					lichSuQTXL.setTen("Tiếp công dân");
+					lichSuQTXL.setNoiDung("Tạo mới hồ sơ tiếp công dân");
+					if (StringUtils.isNoneBlank(soTiepCongDan.getNoiDungTiepCongDan())) { 
+						lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
+					}
+					lichSuQuaTrinhXuLyService.save(lichSuQTXL, congChucId);
+				}
 			}
 			return output;
 		} catch (Exception e) {
