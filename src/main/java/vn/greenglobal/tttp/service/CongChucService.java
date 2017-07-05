@@ -82,7 +82,18 @@ public class CongChucService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCongChuc.congChuc.id.eq(id));
 	}
-
+	
+	public Predicate predicateFindByTenLD(String ten) {
+		BooleanExpression predAll = base;
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) { 
+			return predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(ten.trim()))
+					.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.LANH_DAO)
+							.or(QCongChuc.congChuc.nguoiDung.vaiTros.any().loaiVaiTro.eq(VaiTroEnum.LANH_DAO)));
+			
+		}
+		return null;
+	}
+	
 	public Predicate predicateFindByNguoiDungId(long id) {
 		return base.and(QCongChuc.congChuc.nguoiDung.id.eq(id));
 	}

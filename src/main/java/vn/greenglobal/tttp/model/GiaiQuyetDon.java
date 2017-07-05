@@ -310,6 +310,18 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhongBanGiaiQuyetInfo() {
+		if (getPhongBanGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhongBanGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
+			return map;
+		}
+		return null;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
