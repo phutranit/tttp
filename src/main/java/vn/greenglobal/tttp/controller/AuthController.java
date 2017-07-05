@@ -69,8 +69,6 @@ public class AuthController {
 	@Autowired
 	ProfileUtils profileUtil;
 	
-
-	
 	@Autowired
 	StateRepository stateRepository;
 	
