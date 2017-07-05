@@ -31,6 +31,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -57,6 +58,7 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private VaiTro vaiTroMacDinh;
 
 	private boolean active;
