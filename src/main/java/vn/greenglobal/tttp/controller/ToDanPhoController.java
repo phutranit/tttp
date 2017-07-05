@@ -58,18 +58,14 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -81,12 +77,8 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
 			PersistentEntityResourceAssembler eass) {
 
-		try {
-			Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/toDanPhos")
@@ -97,23 +89,19 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-			}
-
-			return toDanPhoService.doSave(toDanPho,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		
+		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
+
+		return toDanPhoService.doSave(toDanPho,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/toDanPhos/{id}")
@@ -123,21 +111,17 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			ToDanPho toDanPho = repo.findOne(toDanPhoService.predicateFindOne(id));
-			if (toDanPho == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(toDanPho), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		ToDanPho toDanPho = repo.findOne(toDanPhoService.predicateFindOne(id));
+		if (toDanPho == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(toDanPho), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/toDanPhos/{id}")
@@ -148,29 +132,25 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody ToDanPho toDanPho, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			toDanPho.setId(id);
-			if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-			}
-			
-			if (!toDanPhoService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			return toDanPhoService.doSave(toDanPho,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		toDanPho.setId(id);
+		if (StringUtils.isNotBlank(toDanPho.getTen()) && toDanPhoService.checkExistsData(repo, toDanPho)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+		}
+		
+		if (!toDanPhoService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		return toDanPhoService.doSave(toDanPho,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/toDanPhos/{id}")
@@ -179,28 +159,24 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (toDanPhoService.checkUsedData(congDanRepository, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
-
-			ToDanPho toDanPho = toDanPhoService.delete(repo, id);
-			if (toDanPho == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			toDanPhoService.save(toDanPho,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (toDanPhoService.checkUsedData(congDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+		}
+
+		ToDanPho toDanPho = toDanPhoService.delete(repo, id);
+		if (toDanPho == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		toDanPhoService.save(toDanPho,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

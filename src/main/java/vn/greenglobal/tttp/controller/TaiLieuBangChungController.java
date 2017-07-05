@@ -57,12 +57,8 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
-		try {
-			Page<TaiLieuBangChung> page = repo.findAll(taiLieuBangChungService.predicateFindAll(), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		Page<TaiLieuBangChung> page = repo.findAll(taiLieuBangChungService.predicateFindAll(), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/taiLieuBangChungs")
@@ -73,13 +69,9 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
-		try {
-			return taiLieuBangChungService.doSave(taiLieuBangChung,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		return taiLieuBangChungService.doSave(taiLieuBangChung,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -92,29 +84,25 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuBangChung_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		try {
-			Medial_TaiLieuBangChung_Post_Patch result = new Medial_TaiLieuBangChung_Post_Patch();
+		Medial_TaiLieuBangChung_Post_Patch result = new Medial_TaiLieuBangChung_Post_Patch();
 
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
-						if (params.getTaiLieuBangChungs().size() > 0) {
-							for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
-								TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getTaiLieuBangChungs().add(tlbc);
-							}
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getTaiLieuBangChungs().size() > 0) {
+						for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
+							TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							result.getTaiLieuBangChungs().add(tlbc);
 						}
-						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-				});
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+				}
+			});
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuBangChungs/{id}")
@@ -124,16 +112,12 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
-		try {
-			TaiLieuBangChung taiLieuBangChung = repo.findOne(taiLieuBangChungService.predicateFindOne(id));
-			if (taiLieuBangChung == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(taiLieuBangChung), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		TaiLieuBangChung taiLieuBangChung = repo.findOne(taiLieuBangChungService.predicateFindOne(id));
+		if (taiLieuBangChung == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(taiLieuBangChung), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/taiLieuBangChungs/{id}")
@@ -144,19 +128,15 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody TaiLieuBangChung taiLieuBangChung, PersistentEntityResourceAssembler eass) {
 
-		try {
-			taiLieuBangChung.setId(id);
-			if (!taiLieuBangChungService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			return taiLieuBangChungService.doSave(taiLieuBangChung,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		taiLieuBangChung.setId(id);
+		if (!taiLieuBangChungService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
+		return taiLieuBangChungService.doSave(taiLieuBangChung,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -168,37 +148,33 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuBangChung_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		try {
-			Medial_TaiLieuBangChung_Post_Patch result = new Medial_TaiLieuBangChung_Post_Patch();
-			List<TaiLieuBangChung> listUpdate = new ArrayList<TaiLieuBangChung>();
+		Medial_TaiLieuBangChung_Post_Patch result = new Medial_TaiLieuBangChung_Post_Patch();
+		List<TaiLieuBangChung> listUpdate = new ArrayList<TaiLieuBangChung>();
 
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
-						if (params.getTaiLieuBangChungs().size() > 0) {
-							for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
-								if (!taiLieuBangChungService.isExists(repo, taiLieuBangChung.getId())) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-								}
-								listUpdate.add(taiLieuBangChung);
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					if (params.getTaiLieuBangChungs().size() > 0) {
+						for (TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
+							if (!taiLieuBangChungService.isExists(repo, taiLieuBangChung.getId())) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 							}
-							for (TaiLieuBangChung taiLieuBangChung : listUpdate) {
-								TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
-										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								result.getTaiLieuBangChungs().add(tlbc);
-							}
+							listUpdate.add(taiLieuBangChung);
 						}
-						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+						for (TaiLieuBangChung taiLieuBangChung : listUpdate) {
+							TaiLieuBangChung tlbc = taiLieuBangChungService.save(taiLieuBangChung, Long.valueOf(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+							result.getTaiLieuBangChungs().add(tlbc);
+						}
 					}
-				});
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+				}
+			});
 		}
+
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuBangChungs/{id}")
@@ -207,19 +183,15 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			TaiLieuBangChung taiLieuBangChung = taiLieuBangChungService.delete(repo, id);
-			if (taiLieuBangChung == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			taiLieuBangChungService.save(taiLieuBangChung,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		TaiLieuBangChung taiLieuBangChung = taiLieuBangChungService.delete(repo, id);
+		if (taiLieuBangChung == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 		}
+
+		taiLieuBangChungService.save(taiLieuBangChung,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuBangChungs/multi")
@@ -229,27 +201,23 @@ public class TaiLieuBangChungController extends TttpController<TaiLieuBangChung>
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_TaiLieuBangChung_Delete params) {
 
-		try {
-			List<TaiLieuBangChung> listDelete = new ArrayList<TaiLieuBangChung>();
-			if (params != null && params.getTaiLieuBangChungs().size() > 0) {
-				for (Medial_TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
-					TaiLieuBangChung tlbc = taiLieuBangChungService.delete(repo, taiLieuBangChung.getId());
-					if (tlbc == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-					}
-					listDelete.add(tlbc);
+		List<TaiLieuBangChung> listDelete = new ArrayList<TaiLieuBangChung>();
+		if (params != null && params.getTaiLieuBangChungs().size() > 0) {
+			for (Medial_TaiLieuBangChung taiLieuBangChung : params.getTaiLieuBangChungs()) {
+				TaiLieuBangChung tlbc = taiLieuBangChungService.delete(repo, taiLieuBangChung.getId());
+				if (tlbc == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				for (TaiLieuBangChung tlbc : listDelete) {
-					taiLieuBangChungService.save(tlbc, Long
-							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-				}
+				listDelete.add(tlbc);
 			}
-
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+			for (TaiLieuBangChung tlbc : listDelete) {
+				taiLieuBangChungService.save(tlbc, Long
+						.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			}
 		}
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 }

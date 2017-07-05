@@ -60,18 +60,15 @@ public class StateController extends TttpController<State> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "type", required = false) String type, PersistentEntityResourceAssembler eass) {
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<State> page = stateRepo.findAll(stateService.predicateFindAll(tuKhoa, type), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<State> page = stateRepo.findAll(stateService.predicateFindAll(tuKhoa, type), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/states/{id}")
@@ -80,21 +77,17 @@ public class StateController extends TttpController<State> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			State state = stateRepo.findOne(stateService.predicateFindOne(id));
-			if (state == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(state), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		State state = stateRepo.findOne(stateService.predicateFindOne(id));
+		if (state == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(state), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/states")
@@ -105,24 +98,20 @@ public class StateController extends TttpController<State> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody State state, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
-					&& stateService.checkExistsData(stateRepo, state)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-			}
-
-			return stateService.doSave(state,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
+				&& stateService.checkExistsData(stateRepo, state)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+		}
+
+		return stateService.doSave(state,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+				eass, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/states/{id}")
@@ -133,30 +122,26 @@ public class StateController extends TttpController<State> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody State state, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			state.setId(id);
-			if (!stateService.isExists(stateRepo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
-					&& stateService.checkExistsData(stateRepo, state)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-			}
-
-			return stateService.doSave(state,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		state.setId(id);
+		if (!stateService.isExists(stateRepo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		if (StringUtils.isNotBlank(state.getTen()) && StringUtils.isNotBlank(state.getTenVietTat()) && state.getType() != null
+				&& stateService.checkExistsData(stateRepo, state)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+		}
+
+		return stateService.doSave(state,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+				eass, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/states/{id}")
@@ -165,28 +150,24 @@ public class StateController extends TttpController<State> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
-
-			State state = stateService.delete(stateRepo, id);
-			if (state == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			stateService.save(state,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.STATE_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (stateService.checkUsedData(donViHasStateRepo, transitionRepo, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+		}
+
+		State state = stateService.delete(stateRepo, id);
+		if (state == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		stateService.save(state,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

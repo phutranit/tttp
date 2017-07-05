@@ -89,19 +89,15 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "phuongXa", required = false) Long phuongXa,
 			@RequestParam(value = "toDanPho", required = false) Long toDanPho, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<CongDan> page = repo
-					.findAll(congDanService.predicateFindAll(tuKhoa, tinhThanh, quanHuyen, phuongXa, toDanPho), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<CongDan> page = repo
+				.findAll(congDanService.predicateFindAll(tuKhoa, tinhThanh, quanHuyen, phuongXa, toDanPho), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/congDans")
@@ -112,28 +108,24 @@ public class CongDanController extends TttpController<CongDan> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
-					&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
-				CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
-						congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
-				if (congDanExists != null) {
-					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
-							ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
-				}
-			}
-
-			return congDanService.doSave(congDan,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
+				&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
+					congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
+
+		return congDanService.doSave(congDan,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -145,18 +137,14 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "soCMNND", required = false) String soCMNND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi),
-					pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<CongDan> page = repo.findAll(congDanService.predicateFindCongDanBySuggests(tuKhoa, soCMNND, diaChi),
+				pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/congDanExists")
@@ -167,24 +155,20 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "diaChi", required = false) String diaChi, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
-				List<CongDan> congDanExists = (List<CongDan>) repo
-						.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
-				if (!congDanExists.isEmpty()) {
-					return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
-				}
-			}
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (StringUtils.isNotBlank(tuKhoa) && StringUtils.isNotBlank(soCMND) && StringUtils.isNotBlank(diaChi)) {
+			List<CongDan> congDanExists = (List<CongDan>) repo
+					.findAll(congDanService.predicateFindCongDanExists(tuKhoa, soCMND, diaChi));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
+			}
+		}
+		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+				ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cmndExists")
@@ -193,24 +177,20 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "soCMND", required = false) String soCMND, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (StringUtils.isNotBlank(soCMND)) {
-				List<CongDan> congDanExists = (List<CongDan>) repo
-						.findAll(congDanService.predicateFindCongDanExists(soCMND));
-				if (!congDanExists.isEmpty()) {
-					return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
-				}
-			}
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (StringUtils.isNotBlank(soCMND)) {
+			List<CongDan> congDanExists = (List<CongDan>) repo
+					.findAll(congDanService.predicateFindCongDanExists(soCMND));
+			if (!congDanExists.isEmpty()) {
+				return new ResponseEntity<>(eass.toFullResource(congDanExists.get(0)), HttpStatus.OK);
+			}
+		}
+		return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+				ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -221,12 +201,8 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			Page<Don> page = donRepository.findAll(donService.predicateFindByCongDan(id), pageable);
-			return donAssembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		Page<Don> page = donRepository.findAll(donService.predicateFindByCongDan(id), pageable);
+		return donAssembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}")
@@ -235,20 +211,16 @@ public class CongDanController extends TttpController<CongDan> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			CongDan congDan = repo.findOne(congDanService.predicateFindOne(id));
-			if (congDan == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(eass.toFullResource(congDan), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		CongDan congDan = repo.findOne(congDanService.predicateFindOne(id));
+		if (congDan == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(eass.toFullResource(congDan), HttpStatus.OK);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -260,12 +232,8 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 		
-		try {
-			Page<LichSuThayDoi> page = repoLichSu.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.CONG_DAN, id), pageable);
-			return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		Page<LichSuThayDoi> page = repoLichSu.findAll(lichSuThayDoiService.predicateFindAll(DoiTuongThayDoiEnum.CONG_DAN, id), pageable);
+		return lichSuThayDoiAssembler.toResource(page, (ResourceAssembler) eass);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/congDans/{id}/lichSus/{idLichSu}")
@@ -275,15 +243,11 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@PathVariable("idLichSu") long idLichSu, PersistentEntityResourceAssembler eass) {
 
-		try {
-			LichSuThayDoi lichSuThayDoi = repoLichSu.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
-			if (lichSuThayDoi == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		LichSuThayDoi lichSuThayDoi = repoLichSu.findOne(lichSuThayDoiService.predicateFindOne(idLichSu));
+		if (lichSuThayDoi == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<>(eass.toFullResource(lichSuThayDoi), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/congDans/{id}")
@@ -293,42 +257,38 @@ public class CongDanController extends TttpController<CongDan> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CongDan congDan, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(),ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			congDan.setId(id);
-			if (!congDanService.isExists(repo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-			if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
-					&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
-				CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
-						congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
-				if (congDanExists != null && id != congDanExists.getId().longValue()) {
-					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
-							ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
-				}
-			}
-			CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
-			List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
-			if (listThayDoi.size() > 0) {
-				LichSuThayDoi lichSu = new LichSuThayDoi();
-				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
-				lichSu.setIdDoiTuong(id);
-				lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
-				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
-				lichSuThayDoiService.save(lichSu,
-						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}			
-			return congDanService.doSave(congDan,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(),ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		congDan.setId(id);
+		if (!congDanService.isExists(repo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		if (StringUtils.isNotBlank(congDan.getHoVaTen()) && StringUtils.isNotBlank(congDan.getDiaChi())
+				&& StringUtils.isNotBlank(congDan.getSoCMNDHoChieu())) {
+			CongDan congDanExists = repo.findOne(congDanService.predicateFindCongDanExists(congDan.getHoVaTen(),
+					congDan.getSoCMNDHoChieu(), congDan.getDiaChi()));
+			if (congDanExists != null && id != congDanExists.getId().longValue()) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.CONGDAN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.CONGDAN_EXISTS.getText());
+			}
+		}
+		CongDan congDanOld = repo.findOne(congDanService.predicateFindOne(id));
+		List<PropertyChangeObject> listThayDoi = congDanService.getListThayDoi(congDan, congDanOld);
+		if (listThayDoi.size() > 0) {
+			LichSuThayDoi lichSu = new LichSuThayDoi();
+			lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.CONG_DAN);
+			lichSu.setIdDoiTuong(id);
+			lichSu.setNoiDung("Cập nhật thông tin công dân " + congDanOld.getHoVaTen());
+			lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+			lichSuThayDoiService.save(lichSu,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		}			
+		return congDanService.doSave(congDan,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/congDans/{id}")
@@ -337,28 +297,24 @@ public class CongDanController extends TttpController<CongDan> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (congDanService.checkUsedData(donCongDanRepository, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
-
-			CongDan congDan = congDanService.delete(repo, id);
-			if (congDan == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			congDanService.save(congDan,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGDAN_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		if (congDanService.checkUsedData(donCongDanRepository, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+		}
+
+		CongDan congDan = congDanService.delete(repo, id);
+		if (congDan == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		congDanService.save(congDan,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

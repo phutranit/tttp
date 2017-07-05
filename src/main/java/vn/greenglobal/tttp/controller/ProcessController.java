@@ -70,18 +70,15 @@ public class ProcessController extends TttpController<Process> {
 			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId,
 			@RequestParam(value = "vaiTroId", required = false) Long vaiTroId,
 			PersistentEntityResourceAssembler eass) {
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
 
-			Page<Process> page = processRepo.findAll(processService.predicateFindAll(tuKhoa, processType, coQuanQuanLyId, vaiTroId), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_LIETKE) == null
+				&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Page<Process> page = processRepo.findAll(processService.predicateFindAll(tuKhoa, processType, coQuanQuanLyId, vaiTroId), pageable);
+		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/processes/{id}")
@@ -90,21 +87,17 @@ public class ProcessController extends TttpController<Process> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			Process process = processRepo.findOne(processService.predicateFindOne(id));
-			if (process == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-
-			return new ResponseEntity<>(eass.toFullResource(process), HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		Process process = processRepo.findOne(processService.predicateFindOne(id));
+		if (process == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(eass.toFullResource(process), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/processes")
@@ -115,24 +108,20 @@ public class ProcessController extends TttpController<Process> {
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Process process, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getCoQuanQuanLy() != null && process.getProcessType() != null && 
-					process.getVaiTro() != null &&  processService.checkExistsData(processRepo, process)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-			}
-			
-			return processService.doSave(process,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		
+		if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getCoQuanQuanLy() != null && process.getProcessType() != null && 
+				process.getVaiTro() != null &&  processService.checkExistsData(processRepo, process)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+		}
+		
+		return processService.doSave(process,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.PATCH, value = "/processes/{id}")
@@ -143,30 +132,26 @@ public class ProcessController extends TttpController<Process> {
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody Process process, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			process.setId(id);
-			if (!processService.isExists(processRepo, id)) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-			
-			if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getProcessType() != null && process.getCoQuanQuanLy() != null && 
-					process.getVaiTro() != null && processService.checkExistsData(processRepo, process)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-			}
-			
-			return processService.doSave(process,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+
+		process.setId(id);
+		if (!processService.isExists(processRepo, id)) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+		
+		if (StringUtils.isNotBlank(process.getTenQuyTrinh()) && process.getProcessType() != null && process.getCoQuanQuanLy() != null && 
+				process.getVaiTro() != null && processService.checkExistsData(processRepo, process)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+					ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+		}
+		
+		return processService.doSave(process,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
+				HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/processes/{id}")
@@ -175,29 +160,25 @@ public class ProcessController extends TttpController<Process> {
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XOA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			if (processService.checkUsedData(transitionRepo, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
-			
-			Process process = processService.delete(processRepo, id);
-			if (process == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-			}
-
-			processService.save(process,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_XOA) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		}
+		
+		if (processService.checkUsedData(transitionRepo, id)) {
+			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+					ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+		}
+		
+		Process process = processService.delete(processRepo, id);
+		if (process == null) {
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		}
+
+		processService.save(process,
+				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -209,22 +190,84 @@ public class ProcessController extends TttpController<Process> {
 	public ResponseEntity<Object> createMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
-			
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
+		
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+					Process process = params.getProcess();
+					if (process != null && params.getTransitions().size() > 0) {
+						if (process.getTenQuyTrinh() == null || StringUtils.isBlank(process.getTenQuyTrinh().trim())
+								|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
+								|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
+								|| process.getVaiTro().getId() <= 0) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+						}
+						
+						for (Transition transition : params.getTransitions()) {
+							if (transition.getForm() == null || transition.getForm().getId() <= 0
+									|| transition.getCurrentState() == null || transition.getCurrentState().getId() <= 0
+									|| transition.getNextState() == null || transition.getCurrentState().getId() <= 0) {
+								return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+										ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+							}
+						}
+							
+						if (processService.checkExistsData(processRepo, process)) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+									ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+						}
+						
+						process = processService.save(params.getProcess(), congChucId);
+						if (process != null && process.getId() > 0) {
+							result.setProcess(process);
+							for (Transition transition : params.getTransitions()) {
+								transition.setProcess(process);
+								transitionService.save(transition, congChucId);
+								result.getTransitions().add(transition);
+							}
+						}
+					}
+					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+				}
+			});
+		}
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.PATCH, value = "/maTran")
+	@ApiOperation(value = "Cập nhật Ma Trận", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật Ma Trận thành công", response = Process.class) })
+	public ResponseEntity<Object> updateMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		}
+		
+		Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
+		List<Transition> listUpdate = new ArrayList<Transition>();
+		
+		if (params != null) {
+			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+				@Override
+				public Object doInTransaction(TransactionStatus arg0) {
+					try {
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 						Process process = params.getProcess();
 						if (process != null && params.getTransitions().size() > 0) {
-							if (process.getTenQuyTrinh() == null || StringUtils.isBlank(process.getTenQuyTrinh().trim())
+							if (process.getId() <= 0 || process.getTenQuyTrinh() == null
+									|| StringUtils.isBlank(process.getTenQuyTrinh().trim())
 									|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
 									|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
 									|| process.getVaiTro().getId() <= 0) {
@@ -233,12 +276,23 @@ public class ProcessController extends TttpController<Process> {
 							}
 							
 							for (Transition transition : params.getTransitions()) {
-								if (transition.getForm() == null || transition.getForm().getId() <= 0
-										|| transition.getCurrentState() == null || transition.getCurrentState().getId() <= 0
-										|| transition.getNextState() == null || transition.getCurrentState().getId() <= 0) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								transition.setProcess(process);
+								if (transition.getId() <= 0 || transition.getForm() == null
+										|| transition.getForm().getId() <= 0 || transition.getCurrentState() == null
+										|| transition.getCurrentState().getId() <= 0
+										|| transition.getNextState() == null
+										|| transition.getCurrentState().getId() <= 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST,
+											ApiErrorEnum.DATA_REQUIRED.name(), ApiErrorEnum.DATA_REQUIRED.getText(),
+											ApiErrorEnum.DATA_REQUIRED.getText());
 								}
+								
+								if (transitionService.checkExistsData(transitionRepo, transition)) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
+											ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
+								}
+								
+								listUpdate.add(transition);
 							}
 								
 							if (processService.checkExistsData(processRepo, process)) {
@@ -249,7 +303,7 @@ public class ProcessController extends TttpController<Process> {
 							process = processService.save(params.getProcess(), congChucId);
 							if (process != null && process.getId() > 0) {
 								result.setProcess(process);
-								for (Transition transition : params.getTransitions()) {
+								for (Transition transition : listUpdate) {
 									transition.setProcess(process);
 									transitionService.save(transition, congChucId);
 									result.getTransitions().add(transition);
@@ -257,94 +311,13 @@ public class ProcessController extends TttpController<Process> {
 							}
 						}
 						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+					} catch (Exception e) {
+						return Utils.responseInternalServerErrors(e);
 					}
-				});
-			}
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
+				}
+			});
 		}
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.PATCH, value = "/maTran")
-	@ApiOperation(value = "Cập nhật Ma Trận", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật Ma Trận thành công", response = Process.class) })
-	public ResponseEntity<Object> updateMaTran(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestBody Medial_Process_Post_Patch params, PersistentEntityResourceAssembler eass) {
-
-		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			Medial_Process_Post_Patch result = new Medial_Process_Post_Patch();
-			List<Transition> listUpdate = new ArrayList<Transition>();
-			
-			if (params != null) {
-				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-					@Override
-					public Object doInTransaction(TransactionStatus arg0) {
-						try {
-							Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-							Process process = params.getProcess();
-							if (process != null && params.getTransitions().size() > 0) {
-								if (process.getId() <= 0 || process.getTenQuyTrinh() == null
-										|| StringUtils.isBlank(process.getTenQuyTrinh().trim())
-										|| process.getProcessType() == null || process.getCoQuanQuanLy() == null
-										|| process.getCoQuanQuanLy().getId() <= 0 || process.getVaiTro() == null
-										|| process.getVaiTro().getId() <= 0) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-								}
-								
-								for (Transition transition : params.getTransitions()) {
-									transition.setProcess(process);
-									if (transition.getId() <= 0 || transition.getForm() == null
-											|| transition.getForm().getId() <= 0 || transition.getCurrentState() == null
-											|| transition.getCurrentState().getId() <= 0
-											|| transition.getNextState() == null
-											|| transition.getCurrentState().getId() <= 0) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST,
-												ApiErrorEnum.DATA_REQUIRED.name(), ApiErrorEnum.DATA_REQUIRED.getText(),
-												ApiErrorEnum.DATA_REQUIRED.getText());
-									}
-									
-									if (transitionService.checkExistsData(transitionRepo, transition)) {
-										return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-												ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-									}
-									
-									listUpdate.add(transition);
-								}
-									
-								if (processService.checkExistsData(processRepo, process)) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_EXISTS.name(),
-											ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.DATA_EXISTS.getText());
-								}
-								
-								process = processService.save(params.getProcess(), congChucId);
-								if (process != null && process.getId() > 0) {
-									result.setProcess(process);
-									for (Transition transition : listUpdate) {
-										transition.setProcess(process);
-										transitionService.save(transition, congChucId);
-										result.getTransitions().add(transition);
-									}
-								}
-							}
-							return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-						} catch (Exception e) {
-							return Utils.responseInternalServerErrors(e);
-						}
-					}
-				});
-			}
-			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
+		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 	
 }
