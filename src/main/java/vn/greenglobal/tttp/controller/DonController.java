@@ -463,14 +463,14 @@ public class DonController extends TttpController<Don> {
 					donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					
 					//tao lich su qua trinh xu ly don
-					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-					lichSuQTXLD.setDon(donMoi);
-					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
-					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
-					lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
-					lichSuQTXLD.setThuTuThucHien(0);
+//					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+//					lichSuQTXLD.setDon(donMoi);
+//					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
+//					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+//					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
+//					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
+//					lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
+//					lichSuQTXLD.setThuTuThucHien(0);
 					
 					if (don.getThoiHanXuLyXLD() != null) {
 						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
@@ -479,12 +479,10 @@ public class DonController extends TttpController<Don> {
 						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
 					xuLyDonService.save(xuLyDon, congChucId);
-					lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-				} 
-//				else {
-//					lichSuQTXLD.setNoiDung("Tạo mới hồ sơ tiếp công dân");
-//					lichSuQTXLD.setTen("Tiếp công dân");
-//				}
+//					if (donMoi.isTuTCDChuyenQua()) { 
+//						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+//					}
+				}
 				
 				List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(donMoi, new Don());
 				LichSuThayDoi lichSu = new LichSuThayDoi();
@@ -593,7 +591,7 @@ public class DonController extends TttpController<Don> {
 					}
 					
 					// Them xu ly don
-					if(donOld.getXuLyDons().size() <= 0) {						
+					if(donOld.getXuLyDons().size() <= 0) {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 						Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 						List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
@@ -661,8 +659,12 @@ public class DonController extends TttpController<Don> {
 						int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId(), 
 								donVi.getId());
 						lichSuQTXLD.setThuTuThucHien(thuTu);
+						int size = 0;
+						size = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId(), lichSuQTXLD.getDonViXuLy().getId());
+						if (size == 1) { 
+							lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+						}
 						xuLyDonService.save(xuLyDon, congChucId);
-						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 					} else {
 						XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(xuLyRepo, don.getId());
 						if (xuLyDonHienTai != null) {
