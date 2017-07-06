@@ -340,6 +340,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo = chuyenVienGiaoViecLai(xuLyDon, xuLyDonHienTai, congChucId);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 
+					} else if (FlowStateEnum.YEU_CAU_GAP_LANH_DAO.equals(nextState)) {						
+						xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO);
+						xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId);						
+						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.equals(nextState)) {
 						HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 						// huongXuLy

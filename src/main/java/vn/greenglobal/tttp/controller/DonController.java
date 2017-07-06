@@ -311,7 +311,6 @@ public class DonController extends TttpController<Don> {
 				
 				List<Process> listProcess = getProcess(authorization, nguoiTaoId, processType);
 				if (listProcess.size() < 1) {
-					System.out.println("process not found");
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
@@ -416,15 +415,18 @@ public class DonController extends TttpController<Don> {
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
 					for (Process processFromList : listProcess) {
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
-						listState = ((List<State>) repoState.findAll(predicate));
+						listState = ((List<State>) repoState.findAll(predicate));						
 						if (listState.size() > 0) {
-							listProcessHaveBeginState.add(processFromList);
+							State state = listState.get(0);
+							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+								listProcessHaveBeginState.add(processFromList);
+								break;
+							}						
 						}
 					}
 					
 					Transition transition = null;
-					
-					if (listProcessHaveBeginState.size() == 1) {
+					if (listProcessHaveBeginState.size() > 0) {
 						process = listProcessHaveBeginState.get(0);
 						if (listState.size() < 1) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
