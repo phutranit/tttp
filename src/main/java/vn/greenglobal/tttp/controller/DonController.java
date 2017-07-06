@@ -311,7 +311,6 @@ public class DonController extends TttpController<Don> {
 				
 				List<Process> listProcess = getProcess(authorization, nguoiTaoId, processType);
 				if (listProcess.size() < 1) {
-					System.out.println("process not found");
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
@@ -415,7 +414,6 @@ public class DonController extends TttpController<Don> {
 					Process process = null;
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
 					for (Process processFromList : listProcess) {
-						System.out.println("processFromList.getTenQuyTrinh(): " + processFromList.getTenQuyTrinh());
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 						listState = ((List<State>) repoState.findAll(predicate));						
 						if (listState.size() > 0) {
@@ -428,7 +426,6 @@ public class DonController extends TttpController<Don> {
 					}
 					
 					Transition transition = null;
-					System.out.println("=============listState.size(): " + listState.size());
 					if (listProcessHaveBeginState.size() > 0) {
 						process = listProcessHaveBeginState.get(0);
 						if (listState.size() < 1) {

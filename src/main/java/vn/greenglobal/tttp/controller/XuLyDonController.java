@@ -524,7 +524,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 					}
 				}
-				System.out.println("==================================DATA_NOT_FOUND");
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
@@ -1223,7 +1222,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
-		don.setNgayLapDonGapLanhDaoTmp(xuLyDon.getNgayHenGapLanhDao());
+		don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setNgayKetThucXLD(LocalDateTime.now());
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
