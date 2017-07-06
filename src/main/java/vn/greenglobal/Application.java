@@ -199,6 +199,9 @@ public class Application extends SpringBootServletInitializer {
 	@Value("${airbrake.active}")
 	public boolean airBrakeActive;
 
+	@Value("${airbrake.active}")
+	public boolean airBrakeActive;
+	
 	@Value("${salt}")
 	private String salt;
 
