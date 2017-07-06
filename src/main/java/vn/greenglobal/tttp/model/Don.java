@@ -1080,10 +1080,16 @@ public class Don extends Model<Don> {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			// hxl
 			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null).collect(Collectors.toList());
+			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+					xld.isDonChuyen()).collect(Collectors.toList());
 			if (xlds.size() > 0) {
+				XuLyDon xld = xlds.get(xlds.size() - 1);
 				// ttd ht
-				trangThaiDonText = "Hoàn thành";
+				if (xld != null) {
+					if (xld.getHuongXuLy() != null) { 
+						trangThaiDonText = "Hoàn thành";
+					}
+				}
 			}
 		}
 		return trangThaiDonText;
@@ -1113,17 +1119,35 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getQuyTrinhXuLyText() {
 		String out = "";
-		trangThaiDonText = "Đang xử lý";
 		if (xuLyDons.size() > 0) {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			// hxl
 			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null).collect(Collectors.toList());
+			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+					xld.isDonChuyen()).collect(Collectors.toList());
 			if (xlds.size() > 0) {
 				XuLyDon xld = xlds.get(xlds.size() - 1);
-				out = xld != null ? xld.getHuongXuLy().getText() : "";
 				// ttd ht
-				trangThaiDonText = "Hoàn thành";
+				if (xld != null) { 
+					if (xld.getHuongXuLy() != null) { 
+						out = xld.getHuongXuLy().getText();
+						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+							out = "Đơn chuyển";
+							if (xld.getCoQuanTiepNhan() != null) { 
+								out = "Đơn chuyển cho đơn vị " +xld.getCoQuanTiepNhan().getDonVi().getTen();
+							}
+						}
+					} else {
+						out = "";
+						if (xld.isDonTra()) {
+							out = "Đơn chuyển được trả lại";
+						} else if (!xld.isDonTra() && xld.isDonChuyen()) {
+							if (xld.getCoQuanChuyenDon() != null) { 
+								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+							}
+						}
+					}
+				}
 			}
 		}
 		return out;
