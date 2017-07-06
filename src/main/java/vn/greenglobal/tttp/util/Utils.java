@@ -39,6 +39,8 @@ import org.springframework.http.ResponseEntity;
 import airbrake.AirbrakeNotice;
 import airbrake.AirbrakeNoticeBuilder;
 import airbrake.AirbrakeNotifier;
+import airbrake.Backtrace;
+import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
@@ -96,17 +98,26 @@ public class Utils {
 		if (e.getCause() != null && e.getCause().getCause() != null
 				&& e.getCause().getCause().getCause() instanceof ConstraintViolationException)
 			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
-		try {
-			Writer result = new StringWriter();
-		    PrintWriter printWriter = new PrintWriter(result);
-		    e.printStackTrace(printWriter);
+		
+		System.out.println("Application.app.airBrakeActive: " + Application.app.airBrakeActive);
+		if (Application.app.airBrakeActive) {
+			try {
+				Writer result = new StringWriter();
+			    PrintWriter printWriter = new PrintWriter(result);
+			    e.printStackTrace(printWriter);
 
-			AirbrakeNotice notice = new AirbrakeNoticeBuilder("f5618c7df1dbcd6181c3266abfac85eb", result.toString(), "test").newNotice();
-			AirbrakeNotifier notifier = new AirbrakeNotifier("http://tracker.thanhtratp.greenglobal.vn:9836/notifier_api/v2/notices");
-			notifier.notify(notice);
-		} catch (Exception ex) {
-			//
+			    Backtrace backtrace = new Backtrace(e);
+				AirbrakeNotice notice = new AirbrakeNoticeBuilder("f5618c7df1dbcd6181c3266abfac85eb", backtrace, e, "test").newNotice();
+				AirbrakeNotifier notifier = new AirbrakeNotifier("http://tracker.thanhtratp.greenglobal.vn:9836/notifier_api/v2/notices");
+				notifier.notify(notice);
+			} catch (Exception ex) {
+				Writer result = new StringWriter();
+			    PrintWriter printWriter = new PrintWriter(result);
+			    ex.printStackTrace(printWriter);
+				System.out.println("[AirBrakeActive: ERROR]: " + ex);
+			}
 		}
+		
 		return Utils.responseErrors(HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorEnum.INTERNAL_SERVER_ERROR.name(),
 				ApiErrorEnum.INTERNAL_SERVER_ERROR.getText(), e.getMessage());
 	}

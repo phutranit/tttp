@@ -196,6 +196,9 @@ public class Application extends SpringBootServletInitializer {
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
 
+	@Value("${airbrake.active}")
+	public boolean airBrakeActive;
+	
 	@Value("${salt}")
 	private String salt;
 
