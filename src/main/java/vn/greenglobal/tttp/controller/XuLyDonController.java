@@ -1110,7 +1110,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		donService.save(don, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
-		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());
+
 		lichSuQuaTrinhXuLyService.saveLichSuQuaTrinhXuLy(xuLyDon.getDon(), congChucRepo.findOne(congChucId),
 				xuLyDonHienTai.getNoiDungXuLy(), xuLyDonTiepTheo.getDonViXuLy(), QuaTrinhXuLyEnum.GIAO_CAN_BO_XU_LY.getText());		
 		return xuLyDonTiepTheo;
