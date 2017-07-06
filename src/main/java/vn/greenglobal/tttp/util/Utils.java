@@ -107,7 +107,7 @@ public class Utils {
 			    e.printStackTrace(printWriter);
 
 			    Backtrace backtrace = new Backtrace(e);
-				AirbrakeNotice notice = new AirbrakeNoticeBuilder("f5618c7df1dbcd6181c3266abfac85eb", backtrace, e, "test").newNotice();
+				AirbrakeNotice notice = new AirbrakeNoticeBuilder("a01791c869495905d093abee088c4370", backtrace, e, "test").newNotice();
 				AirbrakeNotifier notifier = new AirbrakeNotifier("http://tracker.thanhtratp.greenglobal.vn:9836/notifier_api/v2/notices");
 				notifier.notify(notice);
 			} catch (Exception ex) {
