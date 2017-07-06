@@ -415,16 +415,21 @@ public class DonController extends TttpController<Don> {
 					Process process = null;
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
 					for (Process processFromList : listProcess) {
+						System.out.println("processFromList.getTenQuyTrinh(): " + processFromList.getTenQuyTrinh());
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
-						listState = ((List<State>) repoState.findAll(predicate));
+						listState = ((List<State>) repoState.findAll(predicate));						
 						if (listState.size() > 0) {
-							listProcessHaveBeginState.add(processFromList);
+							State state = listState.get(0);
+							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+								listProcessHaveBeginState.add(processFromList);
+								break;
+							}						
 						}
 					}
 					
 					Transition transition = null;
-					
-					if (listProcessHaveBeginState.size() == 1) {
+					System.out.println("=============listState.size(): " + listState.size());
+					if (listProcessHaveBeginState.size() > 0) {
 						process = listProcessHaveBeginState.get(0);
 						if (listState.size() < 1) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
