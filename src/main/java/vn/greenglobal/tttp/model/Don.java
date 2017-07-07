@@ -1585,6 +1585,28 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoDangXuLyInfo() {
+		if (getXuLyDons() != null) {
+			int xuLyDonSize = getXuLyDons().size();
+			if (xuLyDonSize > 0) {
+				XuLyDon xld = getXuLyDons().get(getXuLyDons().size() - 1) ;
+				if (xld.getTrangThaiDon().equals(TrangThaiDonEnum.DANG_XU_LY)) {
+					CongChuc congChuc = xld.getCanBoXuLyChiDinh();
+					if (congChuc != null) {
+						Map<String, Object> map = new HashMap<>();
+						map.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getId() : 0);
+						map.put("hoVaTen", congChuc.getHoVaTen());
+						map.put("congChucId", congChuc.getId());
+						return map;
+					}
+				}
+			}
+		}		
+		return null;
+	}
+	
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<Map<String, Object>> getNguonDonInfo() {

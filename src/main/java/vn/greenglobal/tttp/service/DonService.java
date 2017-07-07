@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -31,6 +33,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
@@ -208,11 +211,19 @@ public class DonService {
 			}
 		}
 		
+		NumberExpression<Integer> canBoXuLyChiDinh = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+				.then(Expressions.numberTemplate(Integer.class, "0"))					
+				.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
-		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, canBoXuLyChiDinh.asc(), sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+		
+//		for (Don d : donCollections) {
+//			System.out.println("donCollections: " + d.getNoiDung());
+//		}
 		
 		//Neu search chuyen don xua xu ly don
 		if (StringUtils.isNotBlank(searchXLD)) { 
@@ -298,6 +309,13 @@ public class DonService {
 		} else {
 			predAll = predAll.and(QDon.don.in(donCollections));
 		}
+		
+//		OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+//		
+//		List<Don> listXuLyDon = (List<Don>) donRepo.findAll(predAll, sortOrderDon);
+//		for (Don d : listXuLyDon) {
+//			System.out.println("listXuLyDon: " + d.getNoiDung());
+//		}
 		return predAll;
 	}
 
