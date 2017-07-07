@@ -631,9 +631,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
 					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 				}
-				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
-					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
-				}
+//				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
+//					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
+//				}
 				if (StringUtils.isNotBlank(xuLyDon.getNoiDungThongTinTrinhLanhDao())) {
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 					donOld.setNoiDungThongTinTrinhLanhDao(xuLyDon.getNoiDungThongTinTrinhLanhDao());
