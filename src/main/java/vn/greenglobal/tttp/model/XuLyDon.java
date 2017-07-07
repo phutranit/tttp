@@ -38,6 +38,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private CongChuc canBoChuyenDon;
 	
 	@QueryInit("*.*.*")
 	@ManyToOne
@@ -326,6 +328,15 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ApiModelProperty(position = 12)
 	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
 		this.canBoXuLyChiDinh = canBoChiDinh;
+	}
+	
+	@ApiModelProperty(example = "{}")
+	public CongChuc getCanBoChuyenDon() {
+		return canBoChuyenDon;
+	}
+
+	public void setCanBoChuyenDon(CongChuc canBoChuyenDon) {
+		this.canBoChuyenDon = canBoChuyenDon;
 	}
 
 	@ApiModelProperty(hidden = true)

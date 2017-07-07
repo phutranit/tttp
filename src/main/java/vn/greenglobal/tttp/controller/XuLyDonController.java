@@ -969,6 +969,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (xuLyDonHienTai.isDonChuyen()) {
 					xuLyDonTruongPhong.setDonChuyen(xuLyDonHienTai.isDonChuyen());
 					xuLyDonTruongPhong.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+					xuLyDonTruongPhong.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
 				}
 				if (xuLyDonHienTai.isDonTra()) {
 					xuLyDonTruongPhong.setDonTra(true);
@@ -982,6 +983,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDonHienTai.isDonChuyen()) {
 			xuLyDonTiepTheo.setDonChuyen(true);
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+			xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
 		}
 		if (xuLyDonHienTai.isDonTra()) {
 			xuLyDonTiepTheo.setDonTra(true);
@@ -1056,6 +1058,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDonHienTai.isDonChuyen()) {
 			xuLyDonTiepTheo.setDonChuyen(true);
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+			xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
 		}
 		
 		if (xuLyDonHienTai.isDonTra()) {
@@ -1158,6 +1161,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDonHienTai.isDonChuyen()) {
 			xuLyDonTiepTheo.setDonChuyen(true);
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+			xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
 		}
 		if (xuLyDonHienTai.isDonTra()) {
 			xuLyDonTiepTheo.setDonTra(true);
@@ -1452,6 +1456,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		xuLyDonTiepTheo.setDonChuyen(true);
 		xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
+		xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoXuLyChiDinh());
 		xuLyDonTiepTheo.setCoQuanTiepNhan(xuLyDonHienTai.getCoQuanTiepNhan());
 		xuLyDonTiepTheo.setNoiDungXuLy(xuLyDonHienTai.getyKienXuLy());
 		xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
@@ -1635,7 +1640,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		xuLyDonTiepTheo.setDon(donGoc);
 		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
-		xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+		xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
+		xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoChuyenDon());
+		//xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
+		
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		xuLyDonTiepTheo.setDonChuyen(true);
 		xuLyDonTiepTheo.setDonTra(true);
