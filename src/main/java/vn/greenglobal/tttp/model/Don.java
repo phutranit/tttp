@@ -26,6 +26,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -990,14 +991,6 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getNguonDonText() {
 		nguonDonText = nguonTiepNhanDon != null ? nguonTiepNhanDon.getText() : "";
-
-		/*if (xuLyDons.size() > 0) {
-			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			if (xld.isDonChuyen()) {
-				nguonDonText = xld.getCoQuanTiepNhan().getTen();
-			}
-		}*/
 		return nguonDonText;
 	}
 
@@ -1011,65 +1004,26 @@ public class Don extends Model<Don> {
 		return getThamQuyenGiaiQuyet();
 	}
 
+	@JsonIgnore
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getThoiHanXuLyDon() {
-		long thoiHan = -1;
-		if (xuLyDons.size() > 0) {
-			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			if (xld.getThoiHanXuLy() != null) {
-				thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
-			} else {
-				return null;
-			}
+	public String getThoiHanXuLyDon() {
+		String str = "";
+		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
+			if (soNgayXuLy >= 0) {
+				str = "Còn " +soNgayXuLy + " ngày";
+			} else if (soNgayXuLy == -1) {
+				long treHan = 0L;
+				treHan = -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD());
+				str = "Số ngày trễ hạn " +treHan;
+			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
+				
+				str = "Còn " + Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD());
+			} 
 		}
-		return thoiHan;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getNoiDungVaHanXuLy() {
-		String nd = getNoiDung();
-		Long hanXuLy = getThoiHanXuLyDon();
-		String out = "";
-		if (nd != null && !nd.isEmpty()) {
-			out += " - " + nd;
-		}
-		if (hanXuLy != null) {
-			out += "\n - " + "Còn " + hanXuLy + " ngày";
-		}
-		return out;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getPhanLoaiDonSoNguoi() {
-		String nd = getLoaiDon() != null ? getLoaiDon().getText() : "";
-		Long hanXuLy = getThoiHanXuLyDon();
-		String out = "";
-		if (nd != null && !nd.isEmpty()) {
-			out += " - " + nd;
-		}
-		if (hanXuLy != null) {
-			out += "\n - " + "Còn " + hanXuLy + " ngày";
-		}
-		return out;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getTinhTrangXuLyText() {
-		TrangThaiDonEnum ttd = getTrangThaiDon();
-		QuyTrinhXuLyDonEnum qtxl = getQuyTrinhXuLy();
-		String out = "- ";
-		if (ttd != null) {
-			out += ttd.name().equalsIgnoreCase(TrangThaiDonEnum.DANG_XU_LY.name()) ? "Đang giải quyết" : "Hoàn thành";
-		}
-		if (qtxl != null) {
-			out += "\n - " + qtxl.getText();
-		}
-		return out;
+		return str;
 	}
 
 	@Transient
@@ -1141,11 +1095,12 @@ public class Don extends Model<Don> {
 						out = "";
 						if (xld.isDonTra()) {
 							out = "Đơn chuyển được trả lại";
-						} else if (!xld.isDonTra() && xld.isDonChuyen()) {
-							if (xld.getCoQuanChuyenDon() != null) { 
-								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
-							}
-						}
+						} 
+//						else if (!xld.isDonTra() && xld.isDonChuyen()) {
+//							if (xld.getCoQuanChuyenDon() != null) { 
+//								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+//							}
+//						}
 					}
 				}
 			}

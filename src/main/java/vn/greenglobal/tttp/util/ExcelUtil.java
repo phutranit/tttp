@@ -520,7 +520,7 @@ public class ExcelUtil {
 				c.setCellValue(don.getLoaiDon().getText() + "/" +don.getSoNguoi());
 				c.setCellStyle(cellCenter);
 				c = row.createCell(7);
-				c.setCellValue("");
+				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(8);
 				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
