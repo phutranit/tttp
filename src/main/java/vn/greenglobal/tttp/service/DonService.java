@@ -559,7 +559,7 @@ public class DonService {
 		return don;
 	}
 
-	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay) {
+	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId) {
 		BooleanExpression predAll = base
 				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
 				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)))
@@ -578,7 +578,26 @@ public class DonService {
 				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.before(dtDenNgay));
 			}
 		}
+		
+		if ((linhVucId != null && linhVucId > 0) && ((linhVucChiTietChaId == null && linhVucChiTietChaId == null) )) { 
+			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId));
+		}
 
+		if ((linhVucChiTietChaId != null && linhVucChiTietChaId > 0) && (linhVucId != null && linhVucId > 0) && 
+				(linhVucChiTietConId == null)) { 
+			predAll = predAll
+					.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
+					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId));
+		}
+		
+		if ((linhVucChiTietConId != null && linhVucChiTietConId > 0) && (linhVucId != null && linhVucId > 0) && 
+				(linhVucChiTietChaId != null && linhVucChiTietChaId > 0)) { 
+			predAll = predAll
+					.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
+					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId))
+					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
+		}
+		
 		return predAll;
 	}
 
