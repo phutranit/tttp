@@ -132,6 +132,8 @@ public class Don extends Model<Don> {
 	private Don donGoc;
 	@ManyToOne
 	private CoQuanQuanLy donViXuLyDonChuyen;
+	@ManyToOne
+	private CongChuc canBoXuLyChiDinh;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -215,6 +217,15 @@ public class Don extends Model<Don> {
 
 	public void setThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
 		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -1562,6 +1573,19 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoDangXuLyInfo() {
+		if (getCanBoXuLyChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			return map;
+		}
+		return null;	
 	}
 	
 	@ApiModelProperty(hidden = true)
