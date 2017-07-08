@@ -56,6 +56,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
+	private boolean donTra = false;
 	private int thuTuThucHien = 0;
 	@Size(max=255)
 	private String diaDiem;
@@ -389,6 +390,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.donChuyen = donChuyen;
 	}
 	
+	public boolean isDonTra() {
+		return donTra;
+	}
+
+	public void setDonTra(boolean donTra) {
+		this.donTra = donTra;
+	}
+
 	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getPhongBanXuLyChiDinh() {
 		return phongBanXuLyChiDinh;
