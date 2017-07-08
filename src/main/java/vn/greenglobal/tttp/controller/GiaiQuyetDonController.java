@@ -1002,18 +1002,21 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai")
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
-			@RequestParam(value = "ghiChu", required = false) String ghiChu,
+	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuanThuLyGQKN", required = false) String tenCoQuanThuLyGQKN,
+			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
+			@RequestParam(value = "hoTenNguoiKhieuNai", required = false) String hoTenNguoiKhieuNai,
+			@RequestParam(value = "noiDungTTXM", required = false) String noiDungTTXM,
 			HttpServletResponse response) {
 
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
-			mappings.put("hoVaTen", tenCoQuan);
-			mappings.put("ghiChu", ghiChu);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI.docx").getFile(), mappings);
+			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
+			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
+			mappings.put("noiDungTTXM", noiDungTTXM);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
-	}
-	
+	}	
 }
