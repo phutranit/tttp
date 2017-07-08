@@ -133,7 +133,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								CongDan congDan = null;
 								
 								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
-									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
+									congDan = congDanRepo.findOne(donCongDan.getCongDan().getId());
 								}	
 								if (congDan == null) {
 									congDan = new CongDan();

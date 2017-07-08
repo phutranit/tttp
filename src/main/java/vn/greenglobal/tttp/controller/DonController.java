@@ -13,7 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -33,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -173,6 +178,13 @@ public class DonController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
+			
+			//Order order = new Order("abc");
+			
+			//Sort sort = new Sort(order);
+			
+			//pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
+			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 			if (nguoiDung != null) {
 				Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -191,6 +203,7 @@ public class DonController extends TttpController<Don> {
 								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
 								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo),
 						pageable);
+				
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),

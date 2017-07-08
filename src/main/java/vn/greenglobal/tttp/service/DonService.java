@@ -211,20 +211,14 @@ public class DonService {
 			}
 		}
 		
-		NumberExpression<Integer> canBoXuLyChiDinh = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
-				.then(Expressions.numberTemplate(Integer.class, "0"))					
-				.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+		
 		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
-		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, canBoXuLyChiDinh.asc(), sortOrder);
+		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		
-//		for (Don d : donCollections) {
-//			System.out.println("donCollections: " + d.getNoiDung());
-//		}
-		
+				
 		//Neu search chuyen don xua xu ly don
 		if (StringUtils.isNotBlank(searchXLD)) { 
 			predAll = predAll.and(QDon.don.in(donCollections));
@@ -310,10 +304,20 @@ public class DonService {
 			predAll = predAll.and(QDon.don.in(donCollections));
 		}
 		
+//		NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+//				.then(Expressions.numberTemplate(Integer.class, "0"))					
+//				.otherwise(Expressions.numberTemplate(Integer.class, "1"));
 //		OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
 //		
-//		List<Don> listXuLyDon = (List<Don>) donRepo.findAll(predAll, sortOrderDon);
+//		List<Don> listXuLyDon = (List<Don>) donRepo.findAll(predAll, canBoXuLyChiDinh.asc(), sortOrderDon);
 //		for (Don d : listXuLyDon) {
+//			System.out.println("listXuLyDon: " + d.getNoiDung());
+//		}
+//		
+//		BooleanExpression predAllX = base.and(QDon.don.in(listXuLyDon));
+//		
+//		List<Don> listXuLyDon2 = (List<Don>) donRepo.findAll(predAllX);
+//		for (Don d : listXuLyDon2) {
 //			System.out.println("listXuLyDon: " + d.getNoiDung());
 //		}
 		return predAll;

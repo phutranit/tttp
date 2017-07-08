@@ -131,6 +131,8 @@ public class Don extends Model<Don> {
 	private Don donGoc;
 	@ManyToOne
 	private CoQuanQuanLy donViXuLyDonChuyen;
+	@ManyToOne
+	private CongChuc canBoXuLyChiDinh;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -214,6 +216,15 @@ public class Don extends Model<Don> {
 
 	public void setThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
 		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
