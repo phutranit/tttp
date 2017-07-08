@@ -11,6 +11,8 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,7 +171,7 @@ public class Utils {
 		if (!obj.isNew()) {
 			T o = repository.findOne(obj.getId());
 			obj.setNgayTao(o.getNgayTao());
-			obj.setNgaySua(LocalDateTime.now());
+			obj.setNgaySua(Utils.localDateTimeNow());
 			obj.setNguoiTao(o.getNguoiTao());
 			obj.setNguoiSua(cc);
 		} else {
@@ -268,7 +270,7 @@ public class Utils {
 		long soNgayXuLy = 0;
 		if (ngayKetThuc != null) {
 			soNgayXuLy = 1;
-			LocalDateTime ngayHienTai = LocalDateTime.now();
+			LocalDateTime ngayHienTai = Utils.localDateTimeNow();
 			ngayHienTai = LocalDateTime.of(
 					LocalDate.of(ngayHienTai.getYear(), ngayHienTai.getMonth(), ngayHienTai.getDayOfMonth()),
 					LocalTime.MAX);
@@ -368,7 +370,7 @@ public class Utils {
 	@SuppressWarnings("deprecation")
 	public static String getLaySoGioPhut(LocalDateTime gioHienTai, LocalDateTime thoiHanKetThuc) {
 		//Calendar cal = Calendar.getInstance();
-		//LocalDateTime gioHienTai = LocalDateTime.now();
+		//LocalDateTime gioHienTai = Utils.localDateTimeNow();
 		int gio = 0;
 		int phut = 0;
 		String str = "";
@@ -663,5 +665,9 @@ public class Utils {
 	            .map(dbl -> dbl.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP))
 	            .map(BigDecimal::doubleValue)
 	            .orElse(null);
+	}
+	
+	public static LocalDateTime localDateTimeNow() {
+		return LocalDateTime.now().atZone(ZoneId.of("Etc/GMT+7")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 	}
 }

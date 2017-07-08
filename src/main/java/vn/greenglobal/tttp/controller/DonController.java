@@ -398,7 +398,7 @@ public class DonController extends TttpController<Don> {
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 				
 				don = checkDataThongTinDon(don);
-				don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				
@@ -453,7 +453,7 @@ public class DonController extends TttpController<Don> {
 					xuLyDon.setDonViXuLy(coQuanQuanLyRepo.findOne((donViId)));
 					
 					//set thoi han xu ly
-					donMoi.setNgayBatDauXLD(LocalDateTime.now());
+					donMoi.setNgayBatDauXLD(Utils.localDateTimeNow());
 					if (don.getNgayTiepNhan() != null) {
 						donMoi.setNgayTiepNhan(don.getNgayTiepNhan());
 					} else { 
@@ -466,7 +466,7 @@ public class DonController extends TttpController<Don> {
 //					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 //					lichSuQTXLD.setDon(donMoi);
 //					lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-//					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+//					lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 //					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
 //					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
 //					lichSuQTXLD.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
@@ -559,7 +559,7 @@ public class DonController extends TttpController<Don> {
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
-					don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				}
 				don.setProcessType(donOld.getProcessType());
 				don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDaGiaiQuyet());
@@ -570,7 +570,7 @@ public class DonController extends TttpController<Don> {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
-							don.setNgayTiepNhan(LocalDateTime.now());
+							don.setNgayTiepNhan(Utils.localDateTimeNow());
 						}
 					} else {
 						if (don.getNgayTiepNhan() == null) {
@@ -579,7 +579,7 @@ public class DonController extends TttpController<Don> {
 					}
 					
 					if (donOld.getThoiHanXuLyXLD() == null) {
-						don.setNgayBatDauXLD(LocalDateTime.now());
+						don.setNgayBatDauXLD(Utils.localDateTimeNow());
 						if (don.getThoiHanXuLyXLD() == null) {
 							long soNgayXuLyMacDinh = 10;
 							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
@@ -648,7 +648,7 @@ public class DonController extends TttpController<Don> {
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 						lichSuQTXLD.setDon(donOld);
 						lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-						lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+						lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 						lichSuQTXLD.setTen("Chuyển Xử lý đơn");
 						lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
 						if (StringUtils.isNotBlank(xuLyDon.getNoiDungXuLy())) { 
@@ -777,7 +777,7 @@ public class DonController extends TttpController<Don> {
 		
 		try {
 			Long soNgayMacDinh = 10L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
@@ -795,7 +795,7 @@ public class DonController extends TttpController<Don> {
 		
 		try {
 			Long soNgayMacDinh = 45L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}

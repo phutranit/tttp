@@ -302,9 +302,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 						thongTinGiaiQuyetDon.setDon(don);
 					}
-					thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+					thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 					Long soNgayGiaiQuyetMacDinh = 45L;
-					LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+					LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
 					thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 					thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
@@ -321,7 +321,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				
 				LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
 				lichSuQTXL.setDon(soTiepCongDan.getDon());
-				lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+				lichSuQTXL.setNgayXuLy(Utils.localDateTimeNow());
 				lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
 				lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
 				lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
@@ -342,7 +342,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 					lichSuQTXLD.setDon(don);
 					lichSuQTXLD.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-					lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+					lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
 					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
 					lichSuQTXLD.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
@@ -405,9 +405,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 								thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 								thongTinGiaiQuyetDon.setDon(don);						
 							}
-							thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(LocalDateTime.now());
+							thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 							Long soNgayGiaiQuyetMacDinh = 45L;
-							LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(LocalDateTime.now(), soNgayGiaiQuyetMacDinh);
+							LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
 							thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 							thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 							thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
@@ -437,7 +437,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
 //				LichSuQuaTrinhXuLy lichSuQTXL = new LichSuQuaTrinhXuLy();
 //				lichSuQTXL.setDon(soTiepCongDan.getDon());
-//				lichSuQTXL.setNgayXuLy(LocalDateTime.now());
+//				lichSuQTXL.setNgayXuLy(Utils.localDateTimeNow());
 //				lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
 //				lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
 //				lichSuQTXL.setNoiDung(soTiepCongDan.getGhiChuXuLy());
