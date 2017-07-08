@@ -1667,7 +1667,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
 		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(xuLyDonTiepTheo.getPhongBanXuLy().getId());
 		xuLyDonTiepTheo.setDonViXuLy(donVi.getDonVi());
-		disableXuLyDonLanhDaoVanThuCu(VaiTroEnum.VAN_THU, donGoc.getId(), congChucId, donVi.getDonVi().getId());
+		//disableXuLyDonLanhDaoVanThuCu(VaiTroEnum.VAN_THU, donGoc.getId(), congChucId, donVi.getDonVi().getId());
+		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donGoc.getId(), congChucId, xuLyDonTiepTheo.getCanBoXuLyChiDinh().getId(), 
+				xuLyDonTiepTheo.getPhongBanXuLy().getId(), donVi.getDonVi().getId());
 		
 		don.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
