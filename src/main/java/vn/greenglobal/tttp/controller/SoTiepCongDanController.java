@@ -498,14 +498,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "denNgay", required = false) String denNgay, 
+			@RequestParam(value = "linhVucId", required = false) Long linhVucId, 
+			@RequestParam(value = "linhVucChiTietChaId", required = false) Long linhVucChiTietChaId, 
+			@RequestParam(value = "linhVucChiTietConId", required = false) Long linhVucChiTietConId,
+			PersistentEntityResourceAssembler eass) {
 		
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
