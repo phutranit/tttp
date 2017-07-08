@@ -761,7 +761,7 @@ public class EnumController {
 		
 		object = new HashMap<>();
 		object.put("ten", HinhThucGiaiQuyetEnum.KET_LUAN_THONG_BAO_BAO_CAO.getText());
-		object.put("giaTri", HinhThucGiaiQuyetEnum.TRA_LOI_BANG_VAN_BAN.name());
+		object.put("giaTri", HinhThucGiaiQuyetEnum.KET_LUAN_THONG_BAO_BAO_CAO.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

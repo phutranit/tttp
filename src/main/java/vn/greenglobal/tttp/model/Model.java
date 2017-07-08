@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.katharsis.resource.annotations.JsonApiId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.util.Utils;
 
 @SuppressWarnings("rawtypes")
 @MappedSuperclass
@@ -33,8 +34,8 @@ public class Model<T extends Model<T>> implements Persistable {
 	@JsonApiId
 	private Long id;
 
-	private LocalDateTime ngayTao = LocalDateTime.now();
-	private LocalDateTime ngaySua = LocalDateTime.now();
+	private LocalDateTime ngayTao = Utils.localDateTimeNow();
+	private LocalDateTime ngaySua = Utils.localDateTimeNow();
 
 	private boolean daXoa;
 	@ManyToOne

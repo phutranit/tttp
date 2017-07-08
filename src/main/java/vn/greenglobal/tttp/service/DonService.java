@@ -574,7 +574,7 @@ public class DonService {
 			don = new Don();
 			don.setId(id);
 			don.setYeuCauGapTrucTiepLanhDao(true);
-			don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+			don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 		}
 		return don;
 	}
