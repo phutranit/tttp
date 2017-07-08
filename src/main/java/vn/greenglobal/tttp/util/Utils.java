@@ -436,7 +436,7 @@ public class Utils {
 					gio = 4;
 				}
 			}
-			str = (gio < 0 ? 0 : "0" + gio) + ":" + (phut < 0 ? 0 : 0 + phut);
+			str = ((String.valueOf(gio).length() == 1 ? "0" + gio : gio)) + ":" + (String.valueOf(phut).length() == 1 ? "0" + phut : phut);
 		}
 		return str;
 	}
