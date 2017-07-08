@@ -41,6 +41,7 @@ import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -323,14 +324,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				lichSuQTXL.setDon(soTiepCongDan.getDon());
 				lichSuQTXL.setNgayXuLy(Utils.localDateTimeNow());
 				lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-				lichSuQTXL.setTen(soTiepCongDan.getHuongXuLy() != null ? soTiepCongDan.getHuongXuLy().getText() : "");
+				lichSuQTXL.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 				lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
 				lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
 				donService.save(don, congChucId);
 				int size = 0;
 				size = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), lichSuQTXL.getDonViXuLy().getId());
 				if (size == 0) {
-					lichSuQTXL.setTen("Tiếp công dân");
+					lichSuQTXL.setTen(QuaTrinhXuLyEnum.TIEP_CONG_DAN.getText());
 					lichSuQTXL.setNoiDung("Tạo mới hồ sơ tiếp công dân");
 					lichSuQTXL.setThuTuThucHien(0);
 					if (StringUtils.isNoneBlank(soTiepCongDan.getNoiDungTiepCongDan())) { 
@@ -344,7 +345,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					lichSuQTXLD.setNguoiXuLy(repoCongChuc.findOne(congChucId));
 					lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 					lichSuQTXLD.setNoiDung("Tiếp nhận đơn và chuyển đơn sang bộ phận xử lý");
-					lichSuQTXLD.setTen("Chuyển Xử lý đơn");
+					lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_XU_LY_DON.getText());
 					lichSuQTXLD.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
 					lichSuQTXLD.setThuTuThucHien(1);
 					lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
