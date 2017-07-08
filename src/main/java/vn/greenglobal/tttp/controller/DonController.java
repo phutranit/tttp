@@ -222,6 +222,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getListGiaiQuyetDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
@@ -246,7 +247,7 @@ public class DonController extends TttpController<Don> {
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
 				Page<Don> pageData = repo.findAll(
-						donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+						donService.predicateFindAllGQD(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
 								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo, xuLyRepo),
 						pageable);
