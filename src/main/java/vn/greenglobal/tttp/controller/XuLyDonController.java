@@ -703,6 +703,23 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen")
+	@ApiOperation(value = "In phiếu trả đơn chuyển không đúng thẩm quyền", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordTraDonChuyenKhongDungThamQuyen(@RequestParam(value = "doiTuongChuyenDon", required = true) String doiTuongChuyenDon,
+			@RequestParam(value = "hoTenNguoiCoDon", required = true) String hoTenNguoiCoDon,
+			@RequestParam(value = "noiDung", required = true) String noiDung,
+			HttpServletResponse response) {
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("doiTuongChuyenDon", doiTuongChuyenDon);
+			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_TRA_DON_CHUYEN_KHONG_DUNG_THAM_QUYEN.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
 	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuDeXuatThuLy(@RequestParam(value = "loaiDon", required = true) String loaiDon,
