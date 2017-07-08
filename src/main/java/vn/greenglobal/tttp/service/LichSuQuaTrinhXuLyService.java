@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class LichSuQuaTrinhXuLyService {
 	public void saveLichSuQuaTrinhXuLy(Don don, CongChuc congChuc, String noiDungXuLy, CoQuanQuanLy donViXuLy,
 			String ten) {
 		int thuTu = timThuTuLichSuQuaTrinhXuLyHienTai(don.getId(), donViXuLy.getId());
-		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy(don, congChuc, LocalDateTime.now(), ten, noiDungXuLy,
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy(don, congChuc, Utils.localDateTimeNow(), ten, noiDungXuLy,
 				donViXuLy, thuTu);
 		save(lichSuQTXLD, congChuc.getId());
 	}
