@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -31,6 +33,7 @@ import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
@@ -208,12 +211,14 @@ public class DonService {
 			}
 		}
 		
+		
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
 		CollectionUtils.addAll(xldCollections, xuLyDons.iterator());
 		donCollections = xldCollections.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-		
+				
 		//Neu search chuyen don xua xu ly don
 		if (StringUtils.isNotBlank(searchXLD)) { 
 			predAll = predAll.and(QDon.don.in(donCollections));
@@ -298,10 +303,27 @@ public class DonService {
 		} else {
 			predAll = predAll.and(QDon.don.in(donCollections));
 		}
+		
+//		NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+//				.then(Expressions.numberTemplate(Integer.class, "0"))					
+//				.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+//		OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+//		
+//		List<Don> listXuLyDon = (List<Don>) donRepo.findAll(predAll, canBoXuLyChiDinh.asc(), sortOrderDon);
+//		for (Don d : listXuLyDon) {
+//			System.out.println("listXuLyDon: " + d.getNoiDung());
+//		}
+//		
+//		BooleanExpression predAllX = base.and(QDon.don.in(listXuLyDon));
+//		
+//		List<Don> listXuLyDon2 = (List<Don>) donRepo.findAll(predAllX);
+//		for (Don d : listXuLyDon2) {
+//			System.out.println("listXuLyDon: " + d.getNoiDung());
+//		}
 		return predAll;
 	}
 
-	public Predicate predicateFindAllGQD(String maDon, String nguonDon, String phanLoaiDon, String tiepNhanTuNgay,
+	public Predicate predicateFindAllGQD(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon, String tiepNhanTuNgay,
 			String tiepNhanDenNgay, boolean thanhLapDon, String tinhTrangGiaiQuyet, String trangThaiDon,
 			Long phongBanGiaiQuyetId, Long canBoGiaiQuyetId, String chucVu, String hoTen,
 			GiaiQuyetDonRepository giaiQuyetDonRepo, XuLyDonRepository xuLyRepo) {
@@ -320,7 +342,15 @@ public class DonService {
 							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
-
+		
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll
+					.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
+							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())))
+					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+		}
+		
 		if (StringUtils.isNotBlank(nguonDon)) {
 			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
 			if (nguonDonEnum != null) {
