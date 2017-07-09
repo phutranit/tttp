@@ -166,6 +166,15 @@ public class CongChucService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindDSNguoiDaiDienByCoQuanDonViId(Long coQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId)
+					.or(QCongChuc.congChuc.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+		}
+		return predAll;
+	}
+	
 	public CongChuc save(CongChuc obj, Long congChucId) {
 		return Utils.save(congChucRepository, obj, congChucId);
 	}

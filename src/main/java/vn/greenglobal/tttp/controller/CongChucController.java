@@ -352,7 +352,6 @@ public class CongChucController extends TttpController<CongChuc> {
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Công Chức thành công") })
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
-
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -382,7 +381,7 @@ public class CongChucController extends TttpController<CongChuc> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/truongDoanTTXMs")
-	@ApiOperation(value = "Lấy danh sách trưởng đoàn TTXM", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách trưởng đoàn TTXM", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Lấy danh sách trưởng đoàn TTXM thành công", response = CongChuc.class) })
 	public @ResponseBody Object getListTruongDoanTTXM(
@@ -403,5 +402,28 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/danhSachNguoiDaiDiens/{coQuanDonViId}")
+	@ApiOperation(value = "Lấy Danh sách người đại diện theo cơ quan đơn vị id", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDSNguoiDaiDienByCoQuanDonViId(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("coQuanDonViId") long id,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			CoQuanQuanLy coQuanDonVi = repoCoQuanQuanLy.findOne(id);
+			if (coQuanDonVi == null) { 
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			Page<CongChuc> page = repo.findAll(congChucService.predicateFindDSNguoiDaiDienByCoQuanDonViId(coQuanDonVi.getId()),
+					pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 }

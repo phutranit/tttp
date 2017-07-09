@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,39 +16,70 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4101233843699537605L;
 
-	@Size(max=255)
-	private String ten = "";
-	@Size(max=255)
-	private String nguoiDaiDien = "";
-	@Size(max=255)
-	private String chucVu = "";
+//	@Size(max=255)
+//	private String ten = "";
+//	@Size(max=255)
+//	private String nguoiDaiDien = "";
+//	@Size(max=255)
+//	private String chucVu = "";
 
-	public String getTen() {
-		return ten;
+//	public String getTen() {
+//		return ten;
+//	}
+//
+//	public void setTen(String ten) {
+//		this.ten = ten;
+//	}
+//
+//	public String getNguoiDaiDien() {
+//		return nguoiDaiDien;
+//	}
+//
+//	public void setNguoiDaiDien(String nguoiDaiDien) {
+//		this.nguoiDaiDien = nguoiDaiDien;
+//	}
+//
+//	public String getChucVu() {
+//		return chucVu;
+//	}
+//
+//	public void setChucVu(String chucVu) {
+//		this.chucVu = chucVu;
+//	}
+
+	@ManyToOne
+	private CoQuanQuanLy tenCoQuanDonVi;
+	@ManyToOne
+	private CongChuc nguoiDaiDien;
+	@ManyToOne
+	private ChucVu chucVu;
+
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getTenCoQuanDonVi() {
+		return tenCoQuanDonVi;
 	}
 
-	public void setTen(String ten) {
-		this.ten = ten;
+	public void setTenCoQuanDonVi(CoQuanQuanLy tenCoQuanDonVi) {
+		this.tenCoQuanDonVi = tenCoQuanDonVi;
 	}
 
-	public String getNguoiDaiDien() {
+	@ApiModelProperty(example = "{}")
+	public CongChuc getNguoiDaiDien() {
 		return nguoiDaiDien;
 	}
 
-	public void setNguoiDaiDien(String nguoiDaiDien) {
+	public void setNguoiDaiDien(CongChuc nguoiDaiDien) {
 		this.nguoiDaiDien = nguoiDaiDien;
 	}
 
-	public String getChucVu() {
+	@ApiModelProperty(example = "{}")
+	public ChucVu getChucVu() {
 		return chucVu;
 	}
 
-	public void setChucVu(String chucVu) {
+	public void setChucVu(ChucVu chucVu) {
 		this.chucVu = chucVu;
 	}
 
@@ -57,7 +88,43 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	public Long getCoQuanToChucTiepDanId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDonViInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getTenCoQuanDonVi() != null ? getTenCoQuanDonVi().getId() : 0);
+			map.put("ten", getTenCoQuanDonVi().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiDaiDienInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("nguoiDaiDienId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
+			map.put("ten", getNguoiDaiDien().getHoVaTen());
+			return map;
+		}
+		return null;
+	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getChucVuInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("chucVuId", getChucVu() != null ? getChucVu().getId() : 0);
+			map.put("ten", getChucVu().getTen());
+			return map;
+		}
+		return null;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
