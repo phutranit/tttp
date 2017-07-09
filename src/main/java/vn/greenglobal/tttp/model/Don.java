@@ -1027,8 +1027,8 @@ public class Don extends Model<Don> {
 				str = "Còn " +soNgayXuLy + " ngày";
 			} else if (soNgayXuLy == -1) {
 				long treHan = 0L;
-				treHan = -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD());
-				str = "Số ngày trễ hạn " +treHan;
+				treHan = Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD());
+				str = "Số ngày trễ hạn " + treHan;
 			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
 				
 				str = "Còn " + Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD());
@@ -1462,42 +1462,68 @@ public class Don extends Model<Don> {
 		this.old = old;
 	}
 
-	@ApiModelProperty(hidden = true)
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
-		Map<String, Object> mapType = new HashMap<>();
-		LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
-		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
-			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
-			if (soNgayXuLy >= 0) {
-				mapType.put("type", "DAY");
-				mapType.put("value", soNgayXuLy);
-			} else if (soNgayXuLy == -1) {
-				mapType.put("type", "DAY");
-				mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD()));
-			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
-				mapType.put("type", "TIME");
-				mapType.put("value", Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD()));
-			} 
+		return Utils.convertThoiHan(getNgayBatDauXLD(), getNgayKetThucXLD(), null);
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanGiaiQuyetInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet(),
+					getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaiQuyet());
 		}
-		return mapType;
+		return new HashMap<>();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanTTXMInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
+					getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+		}
+		return new HashMap<>();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanKTDXInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
+					getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+		}
+		return new HashMap<>();
 	}
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getTreHanGiaiQuyetDonInfo() {
 		Map<String, Object> mapType = new HashMap<>();
+		LocalDateTime ngayBatDau = null;
+		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0L;
 		mapType.put("type", "DAY");
 		mapType.put("value", soNgayXuLy);
-		if (getThongTinGiaiQuyetDon() != null) { 
+		
+		if (getThongTinGiaiQuyetDon() != null && getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet() != null) { 
 			LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 			ThongTinGiaiQuyetDon ttgqd = getThongTinGiaiQuyetDon();
-			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);
-				if (soNgayXuLy == -1) {
-					mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
-				}	
+			ngayBatDau = ttgqd.getNgayBatDauGiaiQuyet();
+			if (ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+				ngayHetHan = ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet();
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			} else if (ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+				ngayHetHan = ttgqd.getNgayHetHanGiaiQuyet();
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			}
+			if (soNgayXuLy == -1) {
+				mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ngayBatDau, ngayHetHan));
 			}
 		}
 		return mapType;

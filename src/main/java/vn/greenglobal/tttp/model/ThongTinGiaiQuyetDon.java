@@ -54,13 +54,22 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
+	
 	private LocalDateTime ngayBatDauGiaiQuyet;
 	private LocalDateTime ngayKetThucGiaiQuyet;
 	private LocalDateTime ngayHetHanGiaiQuyet;
+	private LocalDateTime ngayHetHanSauKhiGiaHanGiaiQuyet;
+	
 	private LocalDateTime ngayBatDauTTXM;
 	private LocalDateTime ngayKetThucTTXM;
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
+	
+	private LocalDateTime ngayBatDauKTDX;
+	private LocalDateTime ngayKetThucKTDX;
+	private LocalDateTime ngayHetHanKTDX;
+	private LocalDateTime ngayHetHanSauKhiGiaHanKTDX;
+	
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
 	private LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet;
 
@@ -224,6 +233,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayHetHanGiaiQuyet = ngayHetHanGiaiQuyet;
 	}
 
+	public LocalDateTime getNgayHetHanSauKhiGiaHanGiaiQuyet() {
+		return ngayHetHanSauKhiGiaHanGiaiQuyet;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanGiaiQuyet(LocalDateTime ngayHetHanSauKhiGiaHanGiaiQuyet) {
+		this.ngayHetHanSauKhiGiaHanGiaiQuyet = ngayHetHanSauKhiGiaHanGiaiQuyet;
+	}
+
 	public LocalDateTime getNgayBatDauTTXM() {
 		return ngayBatDauTTXM;
 	}
@@ -254,6 +271,38 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
 		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayBatDauKTDX() {
+		return ngayBatDauKTDX;
+	}
+
+	public void setNgayBatDauKTDX(LocalDateTime ngayBatDauKTDX) {
+		this.ngayBatDauKTDX = ngayBatDauKTDX;
+	}
+
+	public LocalDateTime getNgayKetThucKTDX() {
+		return ngayKetThucKTDX;
+	}
+
+	public void setNgayKetThucKTDX(LocalDateTime ngayKetThucKTDX) {
+		this.ngayKetThucKTDX = ngayKetThucKTDX;
+	}
+
+	public LocalDateTime getNgayHetHanKTDX() {
+		return ngayHetHanKTDX;
+	}
+
+	public void setNgayHetHanKTDX(LocalDateTime ngayHetHanKTDX) {
+		this.ngayHetHanKTDX = ngayHetHanKTDX;
+	}
+
+	public LocalDateTime getNgayHetHanSauKhiGiaHanKTDX() {
+		return ngayHetHanSauKhiGiaHanKTDX;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanKTDX(LocalDateTime ngayHetHanSauKhiGiaHanKTDX) {
+		this.ngayHetHanSauKhiGiaHanKTDX = ngayHetHanSauKhiGiaHanKTDX;
 	}
 
 	public LocalDateTime getNgayRaQuyetDinhGiaHanTTXM() {
