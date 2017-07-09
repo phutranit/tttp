@@ -602,18 +602,7 @@ public class Utils {
 	public static boolean isValidNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
 		boolean isValid = false;
 		Calendar ngayHienTai = Calendar.getInstance();
-//		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
-		
-//		if (start.before(end) || DateUtils.isSameDay(start, end)) {
-//			while (start.before(end) || DateUtils.isSameDay(start, end)) {
-//				// check ngay nghi
-//				if (isInvalidNgayNghi(start.getTime())) {
-//					end.add(Calendar.DATE, 1);
-//				}
-//				start.add(Calendar.DATE, 1);
-//			}
-//		}
 		
 		if (ngayHienTai.after(end) && !DateUtils.isSameDay(ngayHienTai, end)) {
 			isValid = true;
@@ -625,18 +614,7 @@ public class Utils {
 		boolean isValid = false;
 		Calendar now = Calendar.getInstance();
 		Calendar ketThuc = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
-//		Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 		Calendar end = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
-		
-//		if (start.before(end) || DateUtils.isSameDay(start, end)) {
-//			while (start.before(end) || DateUtils.isSameDay(start, end)) {
-//				// check ngay nghi
-//				if (isInvalidNgayNghi(start.getTime())) {
-//					end.add(Calendar.DATE, 1);
-//				}
-//				start.add(Calendar.DATE, 1);
-//			}
-//		}
 		
 		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
 			if (ketThuc.after(end) && !DateUtils.isSameDay(ketThuc, end)) {
@@ -669,5 +647,35 @@ public class Utils {
 	
 	public static LocalDateTime localDateTimeNow() {
 		return LocalDateTime.now().atZone(ZoneId.of("Etc/GMT+7")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+	}
+	
+	public static Map<String, Object> convertThoiHan(LocalDateTime ngayBatDauTmp, LocalDateTime ngayHetHanTmp, LocalDateTime ngayHetHanSauKhiGianHanTmp) {
+		Map<String, Object> mapType = new HashMap<>();
+		LocalDateTime gioHanhChinhHienTai = localDateTimeNow();
+		LocalDateTime ngayBatDau = null;
+		LocalDateTime ngayHetHan = null;
+		long soNgayXuLy = 0;
+		
+		if (ngayBatDauTmp != null) {
+			ngayBatDau = ngayBatDauTmp;
+			if (ngayHetHanTmp != null && ngayHetHanSauKhiGianHanTmp != null) {
+				ngayHetHan = ngayHetHanSauKhiGianHanTmp;
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			} else if (ngayHetHanTmp != null && ngayHetHanSauKhiGianHanTmp == null) {
+				ngayHetHan = ngayHetHanTmp;
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			}
+			if (soNgayXuLy >= 0) {
+				mapType.put("type", "DAY");
+				mapType.put("value", soNgayXuLy);
+			} else if (soNgayXuLy == -1) {
+				mapType.put("type", "DAY");
+				mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, ngayBatDau, ngayHetHan));
+			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
+				mapType.put("type", "TIME");
+				mapType.put("value", Utils.getLaySoGioPhut(gioHanhChinhHienTai, ngayHetHan));
+			} 
+		}
+		return mapType;
 	}
 }
