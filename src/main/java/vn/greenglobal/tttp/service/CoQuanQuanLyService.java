@@ -236,16 +236,13 @@ public class CoQuanQuanLyService {
 	
 	public Predicate predicateFindDSCoQuanDonViThamGiaTiepDan(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds) {
 		BooleanExpression predAll = base;
-		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId))
-					.or(QCoQuanQuanLy.coQuanQuanLy.cha.isNotNull());
-		}
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 				.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(4)))))
-						));
+					)));
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId));
+		}
 		return predAll;
 	}
 	

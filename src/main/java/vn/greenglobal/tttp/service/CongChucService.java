@@ -170,7 +170,7 @@ public class CongChucService {
 		BooleanExpression predAll = base;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId)
-					.or(QCongChuc.congChuc.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+					.or(QCongChuc.congChuc.coQuanQuanLy.donVi.id.eq(coQuanQuanLyId)));
 		}
 		return predAll;
 	}

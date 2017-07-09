@@ -597,7 +597,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/danhSachCoQuanCungThamGiaTiepDanComboBox")
-	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách đơn cùng tham gia tiếp dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDanhSachCoQuanThamGiaTiepDans(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
@@ -611,19 +611,16 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			Page<CoQuanQuanLy> page = null;
 			//Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			//Long capCoQuanQuanLyCuaDonViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyCuaDonViId").toString());
-			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
-			ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 			ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
-			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
-			page = repo.findAll(coQuanQuanLyService.predicateFindDSCoQuanDonViThamGiaTiepDan(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds), pageable);
+			page = repo.findAll(coQuanQuanLyService.predicateFindDSCoQuanDonViThamGiaTiepDan(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds), pageable);
 			
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
