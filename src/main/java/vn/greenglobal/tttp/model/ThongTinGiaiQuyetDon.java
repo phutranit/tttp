@@ -11,7 +11,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -51,9 +50,9 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String lyDoGiaHanGiaiQuyet = "";
 	@Size(max=255)
 	private String lyDoGiaHanTTXM = "";
-	@Lob
+	//@Lob
 	private String noiDung = "";
-	@Lob
+	//@Lob
 	private String noiDungKetLuanGiaiQuyetLai = "";
 
 	private LocalDateTime thoiGianDoiThoai;
