@@ -75,6 +75,37 @@ public class ThongKeService {
 		return phanTramDouble;
 	}
 	
+	public int getTongSoDonTheoLinhVuc(BooleanExpression predAll, Long linhVucId, Long chiTietLinhVucChaId, Long chiTietLinhVucConId, DonRepository donRepo) {
+		int tongSoDon = 0;
+		
+		if ((linhVucId != null && linhVucId > 0) && (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) &&
+				(chiTietLinhVucConId != null && chiTietLinhVucConId > 0)) {
+			return tongSoDon;
+		}
+		
+		if (linhVucId != null && linhVucId > 0) { 
+			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
+					.and(QDon.don.linhVucDonThuChiTiet.isNull())
+					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+		}
+		
+		if (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) { 
+			predAll = predAll.and(QDon.don.linhVucDonThuChiTiet.id.eq(chiTietLinhVucChaId))
+					.and(QDon.don.linhVucDonThu.isNotNull())
+					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+		}
+		
+		if (chiTietLinhVucConId != null && chiTietLinhVucConId > 0) { 
+			predAll = predAll
+					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId))
+					.and(QDon.don.linhVucDonThu.isNotNull())
+					.and(QDon.don.linhVucDonThuChiTiet.isNotNull());
+		}
+		
+		tongSoDon = ((List<Don>) donRepo.findAll(predAll)).size();
+		return tongSoDon;
+	}
+	
 	public Double getPhanTramTongSoDonTheoPhanLoai(BooleanExpression predAll, LoaiDonEnum loaiDon, Long tongSoDon, DonRepository donRepo) { 
 		Double phanTramDouble = 0d;
 		Long tongPhanLoaiDon = 0L;
@@ -85,6 +116,13 @@ public class ThongKeService {
 			phanTramDouble = Utils.round(tongPhanTramPhanLoaiDon, 2);
 		}
 		return phanTramDouble;
+	}
+	
+	public int getTongSoDonTheoLoaiDon(BooleanExpression predAll, LoaiDonEnum loaiDon, DonRepository donRepo) { 
+		int tongPhanLoaiDon = 0;
+		predAll = predAll.and(QDon.don.loaiDon.eq(loaiDon));
+		tongPhanLoaiDon = ((List<Don>) donRepo.findAll(predAll)).size();
+		return tongPhanLoaiDon;
 	}
 	
 	public Predicate getPredDonTheoThang(BooleanExpression predAll, int month, DonRepository donRepo) { 

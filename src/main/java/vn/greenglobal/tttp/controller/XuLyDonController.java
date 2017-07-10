@@ -957,7 +957,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
 		xuLyDonTiepTheo.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
 		xuLyDonTiepTheo.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
-		xuLyDonTiepTheo.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+//		xuLyDonTiepTheo.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
 		if (xuLyDon.getCanBoXuLyChiDinh() == null) {
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId(), donViId);			
