@@ -157,6 +157,11 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setTienDaTraCongDan(0l);
 			thongTinGiaiQuyetDon.setDatDaTraCongDan(0l);
 		}
+		if (!thongTinGiaiQuyetDon.isGiaiQuyetLanLai()) {
+			thongTinGiaiQuyetDon.setSoLanGiaiQuyetLai(0);
+			thongTinGiaiQuyetDon.setKetLuanGiaiQuyetLai(null);
+			thongTinGiaiQuyetDon.setNoiDungKetLuanGiaiQuyetLai("");
+		}
 		return thongTinGiaiQuyetDon;
 	}
 }
