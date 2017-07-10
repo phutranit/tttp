@@ -339,7 +339,7 @@ public class ThongKeController extends TttpController<Don> {
 	@ApiOperation(value = "Thống kê biểu đồ đơn theo lĩnh vực", position = 9, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getThongKeBieuDoDonTheoLinhVuc(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "loaiDon", required = false) String loaiDon) {
+			@RequestParam(value = "loaiDon", required = true) String loaiDon) {
 		try {
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),

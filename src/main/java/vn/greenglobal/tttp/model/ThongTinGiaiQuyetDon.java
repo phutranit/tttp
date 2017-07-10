@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
+import vn.greenglobal.tttp.enums.KetLuanGiaiQuyetLaiEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 
@@ -49,8 +51,10 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String lyDoGiaHanGiaiQuyet = "";
 	@Size(max=255)
 	private String lyDoGiaHanTTXM = "";
-	@Size(max=255)
+	@Lob
 	private String noiDung = "";
+	@Lob
+	private String noiDungKetLuanGiaiQuyetLai = "";
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
@@ -84,6 +88,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private boolean daThuLy;
 	private boolean daThamTraXacMinhVuViec;
 	private boolean daRaQuyetDinhGiaiQuyet;
+	private boolean giaiQuyetLanLai;
 
 	private int soVuGiaoCoQuanDieuTra;
 	private int soDoiTuongGiaoCoQuanDieuTra;
@@ -91,6 +96,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int soDoiTuongBiKhoiTo;
 	private int tongSoNguoiXuLyHanhChinh;
 	private int soNguoiDaBiXuLyHanhChinh;
+	private int soLanGiaiQuyetLai;
 
 	private long tienPhaiThuNhaNuoc;
 	private long datPhaiThuNhaNuoc;
@@ -129,6 +135,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private HinhThucTheoDoiEnum hinhThucTheoDoi;
 	@Enumerated(EnumType.STRING)
 	private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
+	@Enumerated(EnumType.STRING)
+	private KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai;
 
 	public String getSoQuyetDinhThanhLapDTXM() {
 		return soQuyetDinhThanhLapDTXM;
@@ -176,6 +184,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
+	}
+
+	public String getNoiDungKetLuanGiaiQuyetLai() {
+		return noiDungKetLuanGiaiQuyetLai;
+	}
+
+	public void setNoiDungKetLuanGiaiQuyetLai(String noiDungKetLuanGiaiQuyetLai) {
+		this.noiDungKetLuanGiaiQuyetLai = noiDungKetLuanGiaiQuyetLai;
 	}
 
 	public String getSoQuyetDinhGiaHanTTXM() {
@@ -409,6 +425,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.daRaQuyetDinhGiaiQuyet = daRaQuyetDinhGiaiQuyet;
 	}
 
+	public boolean isGiaiQuyetLanLai() {
+		return giaiQuyetLanLai;
+	}
+
+	public void setGiaiQuyetLanLai(boolean giaiQuyetLanLai) {
+		this.giaiQuyetLanLai = giaiQuyetLanLai;
+	}
+
 	public int getSoVuGiaoCoQuanDieuTra() {
 		return soVuGiaoCoQuanDieuTra;
 	}
@@ -455,6 +479,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setSoNguoiDaBiXuLyHanhChinh(int soNguoiDaBiXuLyHanhChinh) {
 		this.soNguoiDaBiXuLyHanhChinh = soNguoiDaBiXuLyHanhChinh;
+	}
+
+	public int getSoLanGiaiQuyetLai() {
+		return soLanGiaiQuyetLai;
+	}
+
+	public void setSoLanGiaiQuyetLai(int soLanGiaiQuyetLai) {
+		this.soLanGiaiQuyetLai = soLanGiaiQuyetLai;
 	}
 
 	public long getTienPhaiThuNhaNuoc() {
@@ -607,8 +639,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ketQuaThucHienTheoDoi = ketQuaThucHienTheoDoi;
 	}
 	
-	
-	
+	public KetLuanGiaiQuyetLaiEnum getKetLuanGiaiQuyetLai() {
+		return ketLuanGiaiQuyetLai;
+	}
+
+	public void setKetLuanGiaiQuyetLai(KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai) {
+		this.ketLuanGiaiQuyetLai = ketLuanGiaiQuyetLai;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getThongTinGiaiQuyetDonId() {
