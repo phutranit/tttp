@@ -516,7 +516,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Đình chỉ đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> dinhChiDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam Long id,
+			@PathVariable("id") Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -524,7 +524,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 					&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-
+				
 				Long donId = xuLyDon.getDon().getId();
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
 				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
