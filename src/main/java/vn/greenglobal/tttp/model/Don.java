@@ -1465,7 +1465,7 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
-		return Utils.convertThoiHan(getNgayBatDauXLD(), getNgayKetThucXLD(), null);
+		return Utils.convertThoiHan(getNgayBatDauXLD(), getThoiHanXuLyXLD(), null);
 	}
 
 	@Transient
