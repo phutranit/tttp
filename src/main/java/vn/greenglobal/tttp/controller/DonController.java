@@ -590,6 +590,10 @@ public class DonController extends TttpController<Don> {
 						}
 					}
 					
+					if (donOld.isHoanThanhDon()) {
+						don.setHoanThanhDon(donOld.isHoanThanhDon());
+					}
+					
 					// Them xu ly don
 					if(donOld.getXuLyDons().size() <= 0) {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));

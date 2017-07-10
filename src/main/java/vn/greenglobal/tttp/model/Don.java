@@ -89,7 +89,7 @@ public class Don extends Model<Don> {
 	private boolean thanhLapTiepDanGapLanhDao = false;
 	private boolean coThongTinCoQuanDaGiaiQuyet = false;
 	private boolean lanhDaoDuyet = false;
-	//private boolean hoanThanh = false;
+	private boolean hoanThanhDon = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -1359,6 +1359,7 @@ public class Don extends Model<Don> {
 	
 	}
 	
+	
 	/*@Transient
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLy() {
@@ -1377,7 +1378,15 @@ public class Don extends Model<Don> {
 		}
 		return str;
 	}*/
-	
+
+	public boolean isHoanThanhDon() {
+		return hoanThanhDon;
+	}
+
+	public void setHoanThanhDon(boolean hoanThanhDon) {
+		this.hoanThanhDon = hoanThanhDon;
+	}
+
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getThoiHanXuLyInfo() {
