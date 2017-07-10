@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +33,7 @@ import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -513,11 +513,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_CAN_BO_GIAI_QUYET.getText());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
@@ -586,12 +586,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_CHUYEN_VIEN_NHAP_LIEU.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -642,12 +642,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		LichSuQuaTrinhXuLy lichSuQTXLDTaiDonViTTXM = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_TTXM.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -694,12 +694,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.TRINH_LANH_DAO.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -708,6 +708,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	}
 	
 	private GiaiQuyetDon lanhDaoDonViTTXMGiaoViec(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, boolean isLaTTXM, Long donViId) {
+		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		GiaiQuyetDon giaiQuyetDonTruongPhong = new GiaiQuyetDon();
@@ -721,6 +722,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			disableGiaiQuyetDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChuc);
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
+
+			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_PHONG_BAN.getText());
 		} else {			
 			// set giao viec cho truong phong
 			disableGiaiQuyetDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChuc);
@@ -747,6 +750,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 			giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 2);
+			
+			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_CAN_BO_GIAI_QUYET.getText());
 		}
 		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDon.getPhongBanGiaiQuyet());
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDon.getThongTinGiaiQuyetDon());
@@ -767,13 +772,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonService.save(giaiQuyetDonTruongPhong, congChucId);
 		
 		//tao lich su qua trinh xu ly don
-		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen(state.getTenVietTat());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -813,12 +816,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
-		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
+		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen(state.getTenVietTat());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_CAN_BO_GIAI_QUYET.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -859,7 +862,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		lichSuQTXLD.setTen(state.getTenVietTat());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
@@ -901,7 +904,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		lichSuQTXLD.setTen(state.getTenVietTat());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
@@ -942,9 +945,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen("Chuyển kết quả về đơn vị giải quyết");
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GUI_BAO_CAO_TTXM_CHO_DON_VI_GIAO.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -972,8 +975,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		lichSuQTXLD.setDon(don);
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
-		lichSuQTXLD.setNgayXuLy(LocalDateTime.now());
-		lichSuQTXLD.setTen("Chuyển kết quả về đơn vị giao");
+		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_KET_QUA_VE_DON_VI_GIAI_QUYET.getText());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
@@ -1002,18 +1005,21 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai")
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
-			@RequestParam(value = "ghiChu", required = false) String ghiChu,
+	public void exportWordPhieuXacMinhToCao(@RequestParam(value = "tenCoQuanThuLyGQKN", required = false) String tenCoQuanThuLyGQKN,
+			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
+			@RequestParam(value = "hoTenNguoiKhieuNai", required = false) String hoTenNguoiKhieuNai,
+			@RequestParam(value = "noiDungTTXM", required = false) String noiDungTTXM,
 			HttpServletResponse response) {
 
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
-			mappings.put("hoVaTen", tenCoQuan);
-			mappings.put("ghiChu", ghiChu);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI.docx").getFile(), mappings);
+			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
+			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
+			mappings.put("noiDungTTXM", noiDungTTXM);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
-	}
-	
+	}	
 }

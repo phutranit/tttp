@@ -1391,7 +1391,7 @@ public class Don extends Model<Don> {
 	@Transient
 	public Map<String, Object> getThoiHanXuLyInfo() {
 		Map<String, Object> mapType = new HashMap<>();
-		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+		LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
@@ -1416,7 +1416,7 @@ public class Don extends Model<Don> {
 		mapType.put("type", "DAY");
 		mapType.put("value", soNgayXuLy);
 		if (getThongTinGiaiQuyetDon() != null) { 
-			LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+			LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 			ThongTinGiaiQuyetDon ttgqd = getThongTinGiaiQuyetDon();
 			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
 				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);

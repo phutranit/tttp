@@ -74,6 +74,7 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
+//		System.setProperty("user.timezone", "GMT+7");
 		SpringApplication.run(Application.class, args);
 	}
 
