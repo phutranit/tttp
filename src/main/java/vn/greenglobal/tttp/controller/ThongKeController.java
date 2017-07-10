@@ -310,18 +310,18 @@ public class ThongKeController extends TttpController<Don> {
 			Map<String, Object> mapDonThongKe = new HashMap<>();
 			List<Map<String, Object>> list = new ArrayList<>();
 
-			Long tongSoDon = 0L;
+//			Long tongSoDon = 0L;
 			int year = Utils.localDateTimeNow().getYear();
 			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD,
 					year, xuLyRepo, repo, giaiQuyetDonRepo);
-			tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
+//			tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
 
 			for (LoaiDonEnum loaiDonEnum : LoaiDonEnum.values()) {
 				BooleanExpression predDon = predAll;
-				Double phanTram = thongKeService.getPhanTramTongSoDonTheoPhanLoai(predDon, loaiDonEnum, tongSoDon, repo);
-				if (phanTram > 0) {
+				int tongSoDon = thongKeService.getTongSoDonTheoLoaiDon(predDon, loaiDonEnum, repo);
+				if (tongSoDon > 0) {
 					mapDonThongKe.put("tenPhanLoaiDon", loaiDonEnum.getText());
-					mapDonThongKe.put("phanTram", phanTram);
+					mapDonThongKe.put("tongSoDon", tongSoDon);
 					list.add(mapDonThongKe);
 					mapDonThongKe = new HashMap<>();
 				}
@@ -359,10 +359,10 @@ public class ThongKeController extends TttpController<Don> {
 			int year = Utils.localDateTimeNow().getYear();
 			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonViTheoLinhVuc(
 					donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);
-
-			Long tongSoDon = 0L;
-
-			tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
+			
+//			Long tongSoDon = 0L;
+//			tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predAll)).size());
+			
 			for (LinhVucDonThu linhVuc : linhVucs) {
 				BooleanExpression predDon = predAll;
 				Long linhVucId = 0L;
@@ -378,12 +378,12 @@ public class ThongKeController extends TttpController<Don> {
 					}
 				}
 
-				Double phanTram = thongKeService.getPhanTramTongSoDonTheoLinhVuc(predDon, linhVucId, chiTietLinhVucChaId,
-						chiTietLinhVucConId, tongSoDon, repo);
+				int tongSoDon = thongKeService.getTongSoDonTheoLinhVuc(predDon, linhVucId, chiTietLinhVucChaId,
+						chiTietLinhVucConId, repo);
 
-				if (phanTram > 0) {
+				if (tongSoDon > 0) {
 					mapDonThongKe.put("tenLinhVucDon", linhVuc.getTen());
-					mapDonThongKe.put("phanTram", phanTram);
+					mapDonThongKe.put("tongSoDon", tongSoDon);
 					list.add(mapDonThongKe);
 					mapDonThongKe = new HashMap<>();
 				}
