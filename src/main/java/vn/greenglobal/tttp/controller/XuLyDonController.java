@@ -1083,7 +1083,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		if (xuLyDonHienTai.isDonTra()) {
 			xuLyDonTiepTheo.setDonTra(true);
-			System.out.println("cq " +xuLyDonHienTai.getCoQuanChuyenDon().getDonVi().getTen());
 		}
 		// set don
 		Don don = donRepo.findOne(donId);
