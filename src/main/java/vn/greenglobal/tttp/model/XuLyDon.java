@@ -513,7 +513,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		
 		if (getHuongXuLy() != null) {
 			mapHuongXuLy.put("ten", getHuongXuLy().getText());
-			mapHuongXuLy.put("giatTri", getHuongXuLy().name());
+			mapHuongXuLy.put("giaTri", getHuongXuLy().name());
 			if (getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
 				mapPhongBanGiaiQuyet.put("id", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getId() : "");
 				mapPhongBanGiaiQuyet.put("ten", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getTen() : "");
