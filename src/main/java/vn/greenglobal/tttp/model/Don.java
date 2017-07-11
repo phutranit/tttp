@@ -92,6 +92,7 @@ public class Don extends Model<Don> {
 	private boolean lanhDaoDuyet = false;
 	private boolean donChuyen = false;
 	private boolean old = false;
+	private boolean hoanThanhDon = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -1460,6 +1461,14 @@ public class Don extends Model<Don> {
 
 	public void setOld(boolean old) {
 		this.old = old;
+	}
+	
+	public boolean isHoanThanhDon() {
+		return hoanThanhDon;
+	}
+
+	public void setHoanThanhDon(boolean hoanThanhDon) {
+		this.hoanThanhDon = hoanThanhDon;
 	}
 
 	@Transient
