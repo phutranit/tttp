@@ -405,6 +405,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 								|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
 								|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
+									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+								don.setHoanThanhDon(true);
+							}
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 							don.setHuongXuLyXLD(huongXuLyXLD);
@@ -490,6 +494,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 								xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 							}
+							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
+									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+								don.setHoanThanhDon(true);
+							}
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 							don.setHuongXuLyXLD(huongXuLyXLD);
@@ -542,7 +550,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiResponses(value = { @ApiResponse(code = 202, message = "Đình chỉ đơn thành công", response = XuLyDon.class) })
 	public ResponseEntity<Object> dinhChiDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam Long id,
+			@PathVariable("id") Long id,
 			@RequestBody XuLyDon xuLyDon, PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -550,7 +558,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
 					&& commonProfile.containsAttribute("coQuanQuanLyId")) {
-
+				
 				Long donId = xuLyDon.getDon().getId();
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindCurrent(repo, donId);
 				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
@@ -1587,6 +1595,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Don don = donRepo.findOne(donId);
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		don.setHoanThanhDon(true);
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		donService.save(don, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
