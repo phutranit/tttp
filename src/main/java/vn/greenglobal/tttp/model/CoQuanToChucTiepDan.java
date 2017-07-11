@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
@@ -21,27 +22,6 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 
 	@Size(max=255)
 	private String chucVu = "";
-	
-//	@Size(max=255)
-//	private String ten = "";
-//	@Size(max=255)
-//	private String nguoiDaiDien = "";
-
-//	public String getTen() {
-//		return ten;
-//	}
-//
-//	public void setTen(String ten) {
-//		this.ten = ten;
-//	}
-//
-//	public String getNguoiDaiDien() {
-//		return nguoiDaiDien;
-//	}
-//
-//	public void setNguoiDaiDien(String nguoiDaiDien) {
-//		this.nguoiDaiDien = nguoiDaiDien;
-//	}
 
 	public String getChucVu() {
 		return chucVu;
@@ -51,8 +31,10 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		this.chucVu = chucVu;
 	}
 
+	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy coQuanDonVi;
+	@NotNull
 	@ManyToOne
 	private CongChuc nguoiDaiDien;
 
@@ -97,7 +79,7 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	public Map<String, Object> getNguoiDaiDienInfo() {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("nguoiDaiDienId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
+			map.put("congChucId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
 			map.put("ten", getNguoiDaiDien().getHoVaTen());
 			return map;
 		}
