@@ -447,6 +447,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
+		System.out.println("id " +getId());
 		String str = "";
 		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
 			System.out.println("++");
@@ -454,19 +455,27 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
 			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
 				System.out.println("+cho");
-				//str = huongGiaiQuyetTCDLanhDao.getText();
+				//str = tinhTrangXuLyTCDLanhDao.getText();
 				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
-					str += tinhTrangXuLyTCDLanhDao.getText();
+					str = tinhTrangXuLyTCDLanhDao.getText();
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
-					str += "Giao kiểm tra đề xuất";
+					str = "Giao kiểm tra đề xuất";
 					if (getDonViChuTri() != null) { 
 						str += "/" +getDonViChuTri().getTen();
 					}
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.HOAN_THANH)) {
 					str = tinhTrangXuLyTCDLanhDao.getText();
 				}
+			} else { 
+				str = getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
 			}
 			return str;
+		} else if (getHuongGiaiQuyetTCDLanhDao() != null) {
+//			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
+//			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
+//				str = "Đang xử lý 1";
+//			}
+			return str = "Đang xử lý";
 		}
 		return getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
 	}
@@ -474,6 +483,13 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getHuongGiaiQuyetTCDLanhDaoStr() {
+		if (getHuongGiaiQuyetTCDLanhDao() != null) { 
+			System.out.println("getHuongGiaiQuyetTCDLanhDao " +getHuongGiaiQuyetTCDLanhDao().getText());
+			if (getHuongGiaiQuyetTCDLanhDao().equals(HuongGiaiQuyetTCDEnum.KHOI_TAO)) {
+				System.out.println("dmm");
+				return "Chờ tiếp";
+			}
+		}
 		return getHuongGiaiQuyetTCDLanhDao() != null ? getHuongGiaiQuyetTCDLanhDao().getText() : "";
 	}
 	
