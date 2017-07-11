@@ -447,6 +447,27 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
+		String str = "";
+		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
+			System.out.println("++");
+			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
+			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
+			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
+				System.out.println("+cho");
+				//str = huongGiaiQuyetTCDLanhDao.getText();
+				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
+					str += tinhTrangXuLyTCDLanhDao.getText();
+				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
+					str += "Giao kiểm tra đề xuất";
+					if (getDonViChuTri() != null) { 
+						str += "/" +getDonViChuTri().getTen();
+					}
+				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.HOAN_THANH)) {
+					str = tinhTrangXuLyTCDLanhDao.getText();
+				}
+			}
+			return str;
+		}
 		return getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
 	}
 	
