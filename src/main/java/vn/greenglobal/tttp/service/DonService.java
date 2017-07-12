@@ -192,10 +192,6 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD).or(QXuLyDon.xuLyDon.chucVu.isNull()));
 		}
 		
-		if (StringUtils.isNotBlank(chucVu) && ("LANH_DAO".equals(chucVu))) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD));
-		}
-		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}

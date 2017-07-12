@@ -341,7 +341,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
-	
+
 	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoChuyenDon() {
 		return canBoChuyenDon;
@@ -539,13 +539,13 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("phongBanXuLyChiDinh", mapPhongBanChiDinh);
 		
 		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
-		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
+		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
 		
-		if (getNextStateTmp() != null) { 
-			mapNextState.put("id", getNextStateTmp().getId());
-			mapNextState.put("type", getNextStateTmp().getType());
+		if (getNextState() != null) { 
+			mapNextState.put("id", getNextState().getId());
+			mapNextState.put("type", getNextState().getType());
 			map.put("nextState", mapNextState);
 		}
 		
