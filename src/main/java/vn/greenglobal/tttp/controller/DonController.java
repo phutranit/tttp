@@ -581,7 +581,8 @@ public class DonController extends TttpController<Don> {
 				if (don.getNoiDungThongTinTrinhLanhDao().isEmpty()) { 
 					don.setNoiDungThongTinTrinhLanhDao(donOld.getNoiDungThongTinTrinhLanhDao());
 				}
-				if (don.isThanhLapDon()) {
+
+				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
@@ -651,7 +652,6 @@ public class DonController extends TttpController<Don> {
 							}
 						}
 						
-						
 						XuLyDon xuLyDon = new XuLyDon();
 						xuLyDon.setDon(don);
 						xuLyDon.setChucVu(transition.getProcess().getVaiTro().getLoaiVaiTro());
@@ -710,6 +710,25 @@ public class DonController extends TttpController<Don> {
 					if (don.getCurrentState() == null) {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 						don.setCurrentState(beginState);
+					}
+				} else { 
+					if (don.isThanhLapDon()) {
+						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+						don.setTrangThaiDon(donOld.getTrangThaiDon());
+						don.setCurrentState(donOld.getCurrentState());
+						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
+						if (donOld.getThoiHanXuLyXLD() == null) {
+							don.setNgayBatDauXLD(Utils.localDateTimeNow());
+							if (don.getThoiHanXuLyXLD() == null) {
+								long soNgayXuLyMacDinh = 10;
+								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+							}
+						} else {
+							if (don.getThoiHanXuLyXLD() == null) {
+								don.setThoiHanXuLyXLD(donOld.getThoiHanXuLyXLD());
+							}
+						}
 					}
 				}
 
