@@ -404,10 +404,10 @@ public class CongChucController extends TttpController<CongChuc> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/danhSachNguoiDaiDiens/{coQuanDonViId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/{donViId}")
 	@ApiOperation(value = "Lấy Danh sách người đại diện theo cơ quan đơn vị id", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDSNguoiDaiDienByCoQuanDonViId(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("coQuanDonViId") long id,
+			@PathVariable("donViId") long id, @RequestParam(value = "isTruongPhong", required = false) boolean isTruongPhong,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
@@ -419,7 +419,7 @@ public class CongChucController extends TttpController<CongChuc> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			Page<CongChuc> page = repo.findAll(congChucService.predicateFindDSNguoiDaiDienByCoQuanDonViId(coQuanDonVi.getId()),
+			Page<CongChuc> page = repo.findAll(congChucService.predicateFindDSNguoiDaiDienByCoQuanDonViId(coQuanDonVi.getId(), isTruongPhong),
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
