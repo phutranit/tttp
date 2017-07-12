@@ -57,10 +57,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
+	private LocalDateTime ngayBaoCaoKetQua;
+	private LocalDateTime ngayGuiKetQua;
 	//@Lob
 	private String noiDungTiepCongDan = "";
 	@Size(max=255)
 	private String ketQuaGiaiQuyet = "";
+	private String noiDungBaoCaoKetQuaKiemTra = "";
+	
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;
 	
@@ -124,6 +128,30 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<TaiLieuBangChung> taiLieuBangChungs = new ArrayList<TaiLieuBangChung>();
+	
+	public String getNoiDungBaoCaoKetQuaKiemTra() {
+		return noiDungBaoCaoKetQuaKiemTra;
+	}
+
+	public void setNoiDungBaoCaoKetQuaKiemTra(String noiDungBaoCaoKetQuaKiemTra) {
+		this.noiDungBaoCaoKetQuaKiemTra = noiDungBaoCaoKetQuaKiemTra;
+	}
+
+	public LocalDateTime getNgayBaoCaoKetQua() {
+		return ngayBaoCaoKetQua;
+	}
+
+	public void setNgayBaoCaoKetQua(LocalDateTime ngayBaoCaoKetQua) {
+		this.ngayBaoCaoKetQua = ngayBaoCaoKetQua;
+	}
+
+	public LocalDateTime getNgayGuiKetQua() {
+		return ngayGuiKetQua;
+	}
+
+	public void setNgayGuiKetQua(LocalDateTime ngayGuiKetQua) {
+		this.ngayGuiKetQua = ngayGuiKetQua;
+	}
 
 	public List<CoQuanToChucTiepDan> getCoQuanToChucTiepDans() {
 		return coQuanToChucTiepDans;

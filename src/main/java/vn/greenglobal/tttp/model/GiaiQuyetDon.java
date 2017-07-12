@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -33,7 +35,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	private boolean old;
 	private boolean donChuyen;
-
+	private boolean guiBaoCaoKiemTraDeXuat = false;
+	
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
@@ -55,13 +58,13 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-
+	
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
 
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
-
+	
 	@ApiModelProperty(hidden = true)
 	public VaiTroEnum getChucVu() {
 		return chucVu;
@@ -77,6 +80,14 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
 		this.yKienGiaiQuyet = yKienGiaiQuyet;
+	}
+
+	public boolean isGuiBaoCaoKiemTraDeXuat() {
+		return guiBaoCaoKiemTraDeXuat;
+	}
+
+	public void setGuiBaoCaoKiemTraDeXuat(boolean guiBaoCaoKiemTraDeXuat) {
+		this.guiBaoCaoKiemTraDeXuat = guiBaoCaoKiemTraDeXuat;
 	}
 
 	@JsonIgnore
@@ -347,4 +358,33 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		return null;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
+		if (getSoTiepCongDan() != null) {
+			SoTiepCongDan soTiepCongdan = getSoTiepCongDan();
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
+			Map<String, Object> mapDonViPhoiHop = new HashMap<>();
+			List<Map<String, Object>> list = new ArrayList<>();		
+			mapDonViDuocGiaoTTXM.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
+			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
+			map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
+			
+			if (soTiepCongdan.getDonViPhoiHops() != null) { 
+				for (CoQuanQuanLy donViPhoihop : soTiepCongdan.getDonViPhoiHops()) {
+					mapDonViPhoiHop.put("ten", donViPhoihop.getTen());
+					mapDonViPhoiHop.put("coQuanQuanLyId", donViPhoihop.getId());
+					list.add(mapDonViPhoiHop);
+					mapDonViPhoiHop = new HashMap<>();
+				}
+			}
+			map.put("donViPhoiHops", list);
+			map.put("yKienXuLy", getyKienGiaiQuyet());
+			map.put("ngayBaoCaoKQ", soTiepCongdan.getNgayBaoCaoKetQua() != null ? soTiepCongdan.getNgayBaoCaoKetQua() : "");
+			map.put("ngayGuiKQ", soTiepCongdan.getNgayGuiKetQua() != null ? soTiepCongdan.getNgayGuiKetQua() : "");
+			return map;
+		}
+		return null;
+	}
 }

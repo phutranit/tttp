@@ -388,21 +388,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
 					|| LoaiTiepDanEnum.DOT_XUAT.equals(soTiepCongDan.getLoaiTiepDan())) {
-				System.out.println("DINH_KY - DOT_XUAT");
 				soTiepCongDan.setHuongXuLy(HuongXuLyTCDEnum.KHOI_TAO);
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null || HuongGiaiQuyetTCDEnum.KHOI_TAO.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
-					System.out.println("CHO_GIAI_QUYET");
 					if (soTiepCongDan.getDonViChuTri() == null) {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
 								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
-						System.out.println("isChuyenDonViKiemTra");
 						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
-							System.out.println("!GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT");
 							soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 							State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
