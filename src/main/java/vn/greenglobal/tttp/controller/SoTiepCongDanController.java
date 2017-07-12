@@ -299,6 +299,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
 					don.setThanhLapDon(true);
+					don.setNgayTiepNhan(Utils.localDateTimeNow());
 					
 					ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 					if (thongTinGiaiQuyetDon == null) {
@@ -415,12 +416,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
+						System.out.println("!");
 						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
+							System.out.println("@");
 							soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 							State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
 							don.setThanhLapDon(true);
+							don.setNgayTiepNhan(Utils.localDateTimeNow());
+							
 							ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 							if (thongTinGiaiQuyetDon == null) {
 								thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();

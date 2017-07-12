@@ -2,6 +2,8 @@ package vn.greenglobal.tttp.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
