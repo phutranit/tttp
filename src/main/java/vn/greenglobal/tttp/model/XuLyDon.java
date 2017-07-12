@@ -38,6 +38,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private CongChuc canBoChuyenDon;
 	
 	@QueryInit("*.*.*")
 	@ManyToOne
@@ -50,10 +52,13 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CongChuc canBoGiaiQuyet;
+	@ManyToOne
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
 	private boolean donChuyen = false;
+	private boolean donTra = false;
 	private int thuTuThucHien = 0;
 	@Size(max=255)
 	private String diaDiem;
@@ -244,6 +249,15 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
 	}
+	
+	@ApiModelProperty(example = "{}", position = 6)
+	public CongChuc getCanBoGiaiQuyet() {
+		return canBoGiaiQuyet;
+	}
+
+	public void setCanBoGiaiQuyet(CongChuc canBoGiaiQuyet) {
+		this.canBoGiaiQuyet = canBoGiaiQuyet;
+	}
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
@@ -315,6 +329,15 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
+	
+	@ApiModelProperty(example = "{}")
+	public CongChuc getCanBoChuyenDon() {
+		return canBoChuyenDon;
+	}
+
+	public void setCanBoChuyenDon(CongChuc canBoChuyenDon) {
+		this.canBoChuyenDon = canBoChuyenDon;
+	}
 
 	@ApiModelProperty(hidden = true)
 	public String getNoiDungXuLy() {
@@ -378,6 +401,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.donChuyen = donChuyen;
 	}
 	
+	public boolean isDonTra() {
+		return donTra;
+	}
+
+	public void setDonTra(boolean donTra) {
+		this.donTra = donTra;
+	}
+
 	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getPhongBanXuLyChiDinh() {
 		return phongBanXuLyChiDinh;

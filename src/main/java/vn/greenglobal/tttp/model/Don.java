@@ -26,6 +26,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -89,6 +90,8 @@ public class Don extends Model<Don> {
 	private boolean thanhLapTiepDanGapLanhDao = false;
 	private boolean coThongTinCoQuanDaGiaiQuyet = false;
 	private boolean lanhDaoDuyet = false;
+	private boolean donChuyen = false;
+	private boolean old = false;
 	private boolean hoanThanhDon = false;
 	
 	//@NotNull
@@ -126,7 +129,13 @@ public class Don extends Model<Don> {
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 	@ManyToOne
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
-
+	@ManyToOne
+	private Don donGoc;
+	@ManyToOne
+	private CoQuanQuanLy donViXuLyDonChuyen;
+	@ManyToOne
+	private CongChuc canBoXuLyChiDinh;
+	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -209,6 +218,15 @@ public class Don extends Model<Don> {
 
 	public void setThongTinGiaiQuyetDon(ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
 		this.thongTinGiaiQuyetDon = thongTinGiaiQuyetDon;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -393,6 +411,24 @@ public class Don extends Model<Don> {
 
 	public void setDonLanTruoc(Don donLanTruoc) {
 		this.donLanTruoc = donLanTruoc;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public Don getDonGoc() {
+		return donGoc;
+	}
+
+	public void setDonGoc(Don donGoc) {
+		this.donGoc = donGoc;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getDonViXuLyDonChuyen() {
+		return donViXuLyDonChuyen;
+	}
+
+	public void setDonViXuLyDonChuyen(CoQuanQuanLy donViXuLyDonChuyen) {
+		this.donViXuLyDonChuyen = donViXuLyDonChuyen;
 	}
 
 	@ApiModelProperty(position = 14, example = "{}")
@@ -659,11 +695,20 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getListNguoiDungDon() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-				list.add(dcd);
+		if (getDonGoc() != null) { 
+			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
+				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+					list.add(dcd);
+				}
+			}
+		} else { 
+			for (Don_CongDan dcd : getDonCongDans()) {
+				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+					list.add(dcd);
+				}
 			}
 		}
+		
 		return list;
 	}
 	
@@ -671,9 +716,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<DoanDiCung> getListDoanDiCung() {
 		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
-		for (DoanDiCung dcd : getDoanDiCungs()) {
-			if (!dcd.isDaXoa()) {
-				list.add(dcd);
+		if (getDonGoc() != null) { 
+			for (DoanDiCung dcd : getDonGoc().getDoanDiCungs()) {
+				if (!dcd.isDaXoa()) {
+					list.add(dcd);
+				}
+			}
+		} else { 
+			for (DoanDiCung dcd : getDoanDiCungs()) {
+				if (!dcd.isDaXoa()) {
+					list.add(dcd);
+				}
 			}
 		}
 		return list;
@@ -682,9 +735,17 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getNguoiDuocUyQuyen() {
-		for (Don_CongDan dcd : getDonCongDans()) {
-			if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-				return dcd;
+		if (getDonGoc() != null) { 
+			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
+				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+					return dcd;
+				}
+			}
+		} else { 
+			for (Don_CongDan dcd : getDonCongDans()) {
+				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+					return dcd;
+				}
 			}
 		}
 		return null;
@@ -694,11 +755,20 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepUyQuyen() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		for (TepDinhKem tdk : getTepDinhKems()) {
-			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
-				list.add(tdk);
+		if (getDonGoc() != null) {
+			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
+			}
+		} else { 
+			for (TepDinhKem tdk : getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
 			}
 		}
+		
 		return list;
 	}
 	
@@ -706,9 +776,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepChungChiHanhNghe() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		for (TepDinhKem tdk : getTepDinhKems()) {
-			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
-				list.add(tdk);
+		if (getDonGoc() != null) {
+			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
+			}
+		} else { 
+			for (TepDinhKem tdk : getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
 			}
 		}
 		return list;
@@ -718,9 +796,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepVanBanDaGiaiQuyet() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		for (TepDinhKem tdk : getTepDinhKems()) {
-			if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
-				list.add(tdk);
+		if (getDonGoc() != null) {
+			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
+			}
+		} else { 
+			for (TepDinhKem tdk : getTepDinhKems()) {
+				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
+					list.add(tdk);
+				}
 			}
 		}
 		return list;
@@ -730,11 +816,20 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
-		for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
-			if (!tlbc.isDaXoa()) {
-				list.add(tlbc);
+		if (getDonGoc() != null) {
+			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa()) {
+					list.add(tlbc);
+				}
+			}
+		} else { 
+			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa()) {
+					list.add(tlbc);
+				}
 			}
 		}
+		
 		return list;
 	}
 	
@@ -742,9 +837,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
-				list.add(tlvt);
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
+					list.add(tlvt);
+				}
+			}
+		} else {
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
+					list.add(tlvt);
+				}
 			}
 		}
 		return list;
@@ -754,9 +857,17 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())) {
-				list.add(tlvt);
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())) {
+					list.add(tlvt);
+				}
 			}
 		}
 		return list;
@@ -892,14 +1003,6 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getNguonDonText() {
 		nguonDonText = nguonTiepNhanDon != null ? nguonTiepNhanDon.getText() : "";
-
-		/*if (xuLyDons.size() > 0) {
-			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			if (xld.isDonChuyen()) {
-				nguonDonText = xld.getCoQuanTiepNhan().getTen();
-			}
-		}*/
 		return nguonDonText;
 	}
 
@@ -913,65 +1016,26 @@ public class Don extends Model<Don> {
 		return getThamQuyenGiaiQuyet();
 	}
 
+	@JsonIgnore
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getThoiHanXuLyDon() {
-		long thoiHan = -1;
-		if (xuLyDons.size() > 0) {
-			int thuTu = xuLyDons.size();
-			XuLyDon xld = xuLyDons.get(thuTu - 1);
-			if (xld.getThoiHanXuLy() != null) {
-				thoiHan = Utils.convertLocalDateTimeToNumber(xld.getThoiHanXuLy());
-			} else {
-				return null;
-			}
+	public String getThoiHanXuLyDon() {
+		String str = "";
+		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
+			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
+			if (soNgayXuLy >= 0) {
+				str = "Còn " +soNgayXuLy + " ngày";
+			} else if (soNgayXuLy == -1) {
+				long treHan = 0L;
+				treHan = Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD());
+				str = "Số ngày trễ hạn " + treHan;
+			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
+				
+				str = "Còn " + Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD());
+			} 
 		}
-		return thoiHan;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getNoiDungVaHanXuLy() {
-		String nd = getNoiDung();
-		Long hanXuLy = getThoiHanXuLyDon();
-		String out = "";
-		if (nd != null && !nd.isEmpty()) {
-			out += " - " + nd;
-		}
-		if (hanXuLy != null) {
-			out += "\n - " + "Còn " + hanXuLy + " ngày";
-		}
-		return out;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getPhanLoaiDonSoNguoi() {
-		String nd = getLoaiDon() != null ? getLoaiDon().getText() : "";
-		Long hanXuLy = getThoiHanXuLyDon();
-		String out = "";
-		if (nd != null && !nd.isEmpty()) {
-			out += " - " + nd;
-		}
-		if (hanXuLy != null) {
-			out += "\n - " + "Còn " + hanXuLy + " ngày";
-		}
-		return out;
-	}
-
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getTinhTrangXuLyText() {
-		TrangThaiDonEnum ttd = getTrangThaiDon();
-		QuyTrinhXuLyDonEnum qtxl = getQuyTrinhXuLy();
-		String out = "- ";
-		if (ttd != null) {
-			out += ttd.name().equalsIgnoreCase(TrangThaiDonEnum.DANG_XU_LY.name()) ? "Đang giải quyết" : "Hoàn thành";
-		}
-		if (qtxl != null) {
-			out += "\n - " + qtxl.getText();
-		}
-		return out;
+		return str;
 	}
 
 	@Transient
@@ -982,10 +1046,16 @@ public class Don extends Model<Don> {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			// hxl
 			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null).collect(Collectors.toList());
+			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+					xld.isDonChuyen()).collect(Collectors.toList());
 			if (xlds.size() > 0) {
+				XuLyDon xld = xlds.get(xlds.size() - 1);
 				// ttd ht
-				trangThaiDonText = "Hoàn thành";
+				if (xld != null) {
+					if (xld.getHuongXuLy() != null) { 
+						trangThaiDonText = "Hoàn thành";
+					}
+				}
 			}
 		}
 		return trangThaiDonText;
@@ -1015,17 +1085,36 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getQuyTrinhXuLyText() {
 		String out = "";
-		trangThaiDonText = "Đang xử lý";
 		if (xuLyDons.size() > 0) {
 			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
 			// hxl
 			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null).collect(Collectors.toList());
+			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+					xld.isDonChuyen()).collect(Collectors.toList());
 			if (xlds.size() > 0) {
 				XuLyDon xld = xlds.get(xlds.size() - 1);
-				out = xld != null ? xld.getHuongXuLy().getText() : "";
 				// ttd ht
-				trangThaiDonText = "Hoàn thành";
+				if (xld != null) { 
+					if (xld.getHuongXuLy() != null) { 
+						out = xld.getHuongXuLy().getText();
+						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+							out = "Đơn chuyển";
+							if (xld.getCoQuanTiepNhan() != null) { 
+								out = "Đơn chuyển cho đơn vị " +xld.getCoQuanTiepNhan().getDonVi().getTen();
+							}
+						}
+					} else {
+						out = "";
+						if (xld.isDonTra()) {
+							out = "Đơn chuyển được trả lại";
+						} 
+//						else if (!xld.isDonTra() && xld.isDonChuyen()) {
+//							if (xld.getCoQuanChuyenDon() != null) { 
+//								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+//							}
+//						}
+					}
+				}
 			}
 		}
 		return out;
@@ -1355,30 +1444,25 @@ public class Don extends Model<Don> {
 	}
 
 	public void setLanhDaoDuyet(boolean lanhDaoDuyet) {
-		this.lanhDaoDuyet = lanhDaoDuyet;
-	
+		this.lanhDaoDuyet = lanhDaoDuyet;	
+	}
+
+	public boolean isDonChuyen() {
+		return donChuyen;
+	}
+
+	public void setDonChuyen(boolean donChuyen) {
+		this.donChuyen = donChuyen;
+	}
+
+	public boolean isOld() {
+		return old;
+	}
+
+	public void setOld(boolean old) {
+		this.old = old;
 	}
 	
-	
-	/*@Transient
-	@ApiModelProperty(hidden = true)
-	public String getThoiHanXuLy() {
-		String str = "";
-		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
-			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD());
-			if (soNgayXuLy > 0) {
-				return "Còn " +  soNgayXuLy + " ngày";
-			} else if (soNgayXuLy == -1) {
-				return "-1";
-			} else if (soNgayXuLy == 0) {
-				str = "Còn " + Utils.getLaySoGioPhut(getThoiHanXuLyXLD());
-			} else {
-				str = "Còn " + Utils.getLaySoGioPhut(getThoiHanXuLyXLD());
-			}
-		}
-		return str;
-	}*/
-
 	public boolean isHoanThanhDon() {
 		return hoanThanhDon;
 	}
@@ -1387,42 +1471,68 @@ public class Don extends Model<Don> {
 		this.hoanThanhDon = hoanThanhDon;
 	}
 
-	@ApiModelProperty(hidden = true)
 	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
-		Map<String, Object> mapType = new HashMap<>();
-		LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
-		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
-			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
-			if (soNgayXuLy >= 0) {
-				mapType.put("type", "DAY");
-				mapType.put("value", soNgayXuLy);
-			} else if (soNgayXuLy == -1) {
-				mapType.put("type", "DAY");
-				mapType.put("value", -Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD()));
-			} else if (soNgayXuLy == -2 || soNgayXuLy == -3) {
-				mapType.put("type", "TIME");
-				mapType.put("value", Utils.getLaySoGioPhut(gioHanhChinhHienTai, getThoiHanXuLyXLD()));
-			} 
+		return Utils.convertThoiHan(getNgayBatDauXLD(), getThoiHanXuLyXLD(), null);
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanGiaiQuyetInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet(),
+					getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaiQuyet());
 		}
-		return mapType;
+		return new HashMap<>();
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanTTXMInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
+					getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+		}
+		return new HashMap<>();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanKTDXInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
+					getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+		}
+		return new HashMap<>();
 	}
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getTreHanGiaiQuyetDonInfo() {
 		Map<String, Object> mapType = new HashMap<>();
+		LocalDateTime ngayBatDau = null;
+		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0L;
 		mapType.put("type", "DAY");
 		mapType.put("value", soNgayXuLy);
-		if (getThongTinGiaiQuyetDon() != null) { 
+		
+		if (getThongTinGiaiQuyetDon() != null && getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet() != null) { 
 			LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 			ThongTinGiaiQuyetDon ttgqd = getThongTinGiaiQuyetDon();
-			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-				soNgayXuLy = Utils.getLaySoNgay(ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet(), gioHanhChinhHienTai);
-				if (soNgayXuLy == -1) {
-					mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ttgqd.getNgayBatDauGiaiQuyet(), ttgqd.getNgayHetHanGiaiQuyet()));
-				}	
+			ngayBatDau = ttgqd.getNgayBatDauGiaiQuyet();
+			if (ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+				ngayHetHan = ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet();
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			} else if (ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+				ngayHetHan = ttgqd.getNgayHetHanGiaiQuyet();
+				soNgayXuLy = Utils.getLaySoNgay(ngayBatDau, ngayHetHan, gioHanhChinhHienTai);
+			}
+			if (soNgayXuLy == -1) {
+				mapType.put("value", Utils.getLayNgayTreHan(gioHanhChinhHienTai, ngayBatDau, ngayHetHan));
 			}
 		}
 		return mapType;
@@ -1498,6 +1608,19 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoDangXuLyInfo() {
+		if (getCanBoXuLyChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			return map;
+		}
+		return null;	
 	}
 	
 	@ApiModelProperty(hidden = true)

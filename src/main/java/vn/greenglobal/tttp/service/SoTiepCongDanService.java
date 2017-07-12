@@ -91,8 +91,10 @@ public class SoTiepCongDanService {
 		}
 		
 		if (lanhDaoId != null && lanhDaoId > 0) {
+			List<CongChuc> lanhDaos = new ArrayList<CongChuc>();
+			lanhDaos.addAll((List<CongChuc>)congChucRepo.findAll(congChucService.predicateFindByIdLD(lanhDaoId)));
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.isNotNull()
-					.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.id.eq(lanhDaoId)));
+					.and(QSoTiepCongDan.soTiepCongDan.canBoTiepDan.in(lanhDaos)));
 		}
 		
 		if (tinhTrangXuLy != null && StringUtils.isNotBlank(tinhTrangXuLy.trim())) {

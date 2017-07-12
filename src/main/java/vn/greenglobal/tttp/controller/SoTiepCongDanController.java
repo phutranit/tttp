@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -271,6 +272,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			Transition transitionTTXM = null;
+			List<Transition> listTransitionHaveBegin = new ArrayList<Transition>();
 			if (flagChuyenDonViKiemTra) {
 				Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
 				List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
@@ -281,7 +283,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				for (Process processFromList : listProcess) {
 					transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 					if (transitionTTXM != null) {
-						break;
+						listTransitionHaveBegin.add(transitionTTXM);
 					}
 				}
 				if (transitionTTXM == null) {
@@ -311,7 +313,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro());
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
@@ -497,14 +499,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "denNgay", required = false) String denNgay, 
+			@RequestParam(value = "linhVucId", required = false) Long linhVucId, 
+			@RequestParam(value = "linhVucChiTietChaId", required = false) Long linhVucChiTietChaId, 
+			@RequestParam(value = "linhVucChiTietConId", required = false) Long linhVucChiTietConId,
+			PersistentEntityResourceAssembler eass) {
 		
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay), pageable);
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

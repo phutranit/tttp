@@ -132,6 +132,7 @@ public class Application extends SpringBootServletInitializer {
 						"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
 						"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai", "/swagger-resources",
 						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
+						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen",
 						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
@@ -196,7 +197,7 @@ public class Application extends SpringBootServletInitializer {
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
-
+	
 	@Value("${airbrake.active}")
 	public boolean airBrakeActive;
 	

@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -173,6 +172,13 @@ public class DonController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
+			
+			//Order order = new Order("abc");
+			
+			//Sort sort = new Sort(order);
+			
+			//pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
+			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 			if (nguoiDung != null) {
 				Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
@@ -191,6 +197,7 @@ public class DonController extends TttpController<Don> {
 								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
 								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo),
 						pageable);
+				
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -209,6 +216,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getListGiaiQuyetDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
@@ -233,7 +241,7 @@ public class DonController extends TttpController<Don> {
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
 				Page<Don> pageData = repo.findAll(
-						donService.predicateFindAllGQD(maDon, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+						donService.predicateFindAllGQD(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
 								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo, xuLyRepo),
 						pageable);
@@ -412,37 +420,44 @@ public class DonController extends TttpController<Don> {
 					//Vai tro tiep theo
 					List<State> listState = new ArrayList<State>();
 					Process process = null;
+					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
 					for (Process processFromList : listProcess) {
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
-						listState = ((List<State>) repoState.findAll(predicate));
+						listState = ((List<State>) repoState.findAll(predicate));						
 						if (listState.size() > 0) {
-							process = processFromList;
-							break;
+							State state = listState.get(0);
+							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+								listProcessHaveBeginState.add(processFromList);
+								break;
+							}						
 						}
 					}
 					
 					Transition transition = null;
-					
-					if (listState.size() < 1) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-								ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
-					} else {
-						for (State stateFromList : listState) {
-							transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-							if (transition != null) {
-								break;
-							} 						
-						}					
-						if (transition == null) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-									ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+					if (listProcessHaveBeginState.size() > 0) {
+						process = listProcessHaveBeginState.get(0);
+						if (listState.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
+									ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
+						} else {
+							for (State stateFromList : listState) {
+								transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+								if (transition != null) {
+									break;
+								} 						
+							}					
+							if (transition == null) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
+										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
+							}
 						}
-					}
+					}					
+					
 					
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(donMoi);
-					xuLyDon.setChucVu(transition.getProcess().getVaiTro().getLoaiVaiTro());
+					xuLyDon.setChucVu(transition != null ? transition.getProcess().getVaiTro().getLoaiVaiTro() : null);
 					//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
@@ -566,6 +581,7 @@ public class DonController extends TttpController<Don> {
 				if (don.getNoiDungThongTinTrinhLanhDao().isEmpty()) { 
 					don.setNoiDungThongTinTrinhLanhDao(donOld.getNoiDungThongTinTrinhLanhDao());
 				}
+
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					if (donOld.getNgayTiepNhan() == null) {
