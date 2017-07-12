@@ -649,7 +649,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //					xuLyDonHienTai.setNextStateTmp(xuLyDon.getNextStateTmp());
 //				}
 				if (xuLyDon.getNextState() != null) {
-					System.out.println("don state " +xuLyDon.getNextState().getId() );
 					xuLyDonHienTai.setNextStateTmp(xuLyDon.getNextState());
 				}
 				if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
