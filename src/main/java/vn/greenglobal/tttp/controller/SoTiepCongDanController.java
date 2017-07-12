@@ -304,11 +304,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					if (thongTinGiaiQuyetDon == null) {
 						thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 						thongTinGiaiQuyetDon.setDon(don);
+						thongTinGiaiQuyetDon.setNgayBatDauKTDX(Utils.localDateTimeNow());
 					}
-					thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
-					Long soNgayGiaiQuyetMacDinh = 45L;
-					LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
-					thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
+					//thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
+					//Long soNgayGiaiQuyetMacDinh = 45L;
+					//LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
+					//thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
+					if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
+						thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
+					} else { 
+						Long soNgayKTDXMacDinh = 45L;
+						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+						thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
+					}
 					thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
@@ -380,6 +388,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+			SoTiepCongDan soTiepCongDanOld = repo.findOne(soTiepCongDan.getId());
 			
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
@@ -391,10 +400,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null || HuongGiaiQuyetTCDEnum.KHOI_TAO.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
+				if (soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao() != null) { 
+					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao());
+				} else { 
+					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
+				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					if (soTiepCongDan.getDonViChuTri() == null) {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
 								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
+					}
+					if (soTiepCongDan.getDonViPhoiHops() != null && 
+							soTiepCongDan.getDonViPhoiHops().size() > 0) {
+						
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
@@ -406,12 +424,22 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 							if (thongTinGiaiQuyetDon == null) {
 								thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
-								thongTinGiaiQuyetDon.setDon(don);						
+								thongTinGiaiQuyetDon.setDon(don);
+								thongTinGiaiQuyetDon.setNgayBatDauKTDX(Utils.localDateTimeNow());
 							}
-							thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
-							Long soNgayGiaiQuyetMacDinh = 45L;
-							LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
-							thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
+							//thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
+							//Long soNgayGiaiQuyetMacDinh = 45L;
+							//LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
+							//thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
+							
+							if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
+								thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
+							} else { 
+								Long soNgayKTDXMacDinh = 45L;
+								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+								thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
+							}
+							
 							thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 							thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 							GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();

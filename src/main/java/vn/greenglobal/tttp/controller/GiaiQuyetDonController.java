@@ -979,13 +979,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		//giaiQuyetDonHienTai.setGuiBaoCaoKiemTraDeXuat(true);
+		giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().setNgayKetThucKTDX(Utils.localDateTimeNow());
 		
 		SoTiepCongDan stcd = giaiQuyetDonHienTai.getSoTiepCongDan();
 		stcd.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT);
-		stcd.setKetQuaGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
-		stcd.setNgayGuiKetQua(LocalDateTime.now());
-		stcd.setNgayBaoCaoKetQua(LocalDateTime.now());
-		
+		//stcd.setKetQuaGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
+		stcd.setNoiDungBaoCaoKetQuaKiemTra(giaiQuyetDon.getyKienGiaiQuyet());
+		stcd.setNgayGuiKetQua(Utils.localDateTimeNow());
 		soTiepCongDanService.save(stcd, congChucId);
 		
 		Don don = donRepo.findOne(donId);
@@ -1005,6 +1005,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		thongTinGiaiQuyetDonService.save(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon(), congChucId);
 		return giaiQuyetDonHienTai;
 	}
 	

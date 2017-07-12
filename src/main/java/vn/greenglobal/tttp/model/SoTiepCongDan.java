@@ -414,7 +414,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())) {
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) ||
+					ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
 				list.add(tlvt);
 			}
 		}
@@ -479,30 +480,29 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
-			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
-				//str = tinhTrangXuLyTCDLanhDao.getText();
+			str = huongGiaiQuyetTCDLanhDao.getText();
+			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {		
 				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
-					str = tinhTrangXuLyTCDLanhDao.getText();
+					str += " - "+tinhTrangXuLyTCDLanhDao.getText();
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
-					str = "Giao kiểm tra đề xuất";
+					str += " - Giao kiểm tra đề xuất";
 					if (getDonViChuTri() != null) { 
 						str += "/" +getDonViChuTri().getTen();
 					}
-				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.HOAN_THANH)) {
-					str = tinhTrangXuLyTCDLanhDao.getText();
+				} else {
+					str += " - " +tinhTrangXuLyTCDLanhDao.getText();
 				}
-			} else { 
-				str = getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
+			} else {
+				str += " - " +tinhTrangXuLyTCDLanhDao.getText();
 			}
-			return str;
-		} else if (getHuongGiaiQuyetTCDLanhDao() != null) {
-//			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
-//			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
-//				str = "Đang xử lý 1";
-//			}
-			return str = "Đang xử lý";
+		} else { 
+			if (getHuongGiaiQuyetTCDLanhDao() != null) {
+				HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
+				str = huongGiaiQuyetTCDLanhDao.getText();
+				str += " - Đang xử lý";
+			}
 		}
-		return getTrinhTrangXuLyTCDLanhDao() != null ? getTrinhTrangXuLyTCDLanhDao().getText() : "";
+		return str;
 	}
 	
 	@Transient
@@ -551,6 +551,29 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		map.put("yKienXuLy", getNoiDungBaoCaoKetQuaKiemTra());
 		map.put("ngayBaoCaoKQ", getNgayBaoCaoKetQua() != null ? getNgayBaoCaoKetQua() : "");
 		map.put("ngayGuiKQ", getNgayGuiKetQua() != null ? getNgayGuiKetQua() : "");
+		return map;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<CoQuanQuanLy> getDanhSachDonViPhoiHops() {
+		List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+		for (CoQuanQuanLy donViPhoiHop : getDonViPhoiHops()) {
+			if (!donViPhoiHop.isDaXoa()) {
+				list.add(donViPhoiHop);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViChuTriInfo() {
+		Map<String, Object> map = new HashMap<>();
+		if (getDonViChuTri() != null) {
+			map.put("ten", getDonViChuTri().getTen());
+			map.put("coQuanQuanLyId", getDonViChuTri().getId());
+		}
 		return map;
 	}
 	
