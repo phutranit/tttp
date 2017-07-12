@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -35,7 +33,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	private boolean old;
 	private boolean donChuyen;
-	//private boolean guiBaoCaoKiemTraDeXuat = false;
 	
 	@ManyToOne
 	@QueryInit("*.*.*")
@@ -81,14 +78,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
 		this.yKienGiaiQuyet = yKienGiaiQuyet;
 	}
-
-//	public boolean isGuiBaoCaoKiemTraDeXuat() {
-//		return guiBaoCaoKiemTraDeXuat;
-//	}
-//
-//	public void setGuiBaoCaoKiemTraDeXuat(boolean guiBaoCaoKiemTraDeXuat) {
-//		this.guiBaoCaoKiemTraDeXuat = guiBaoCaoKiemTraDeXuat;
-//	}
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
