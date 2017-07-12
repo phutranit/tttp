@@ -699,8 +699,9 @@ public class DonController extends TttpController<Don> {
 					if (don.isThanhLapDon()) {
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-						don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
+						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
+						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
 						if (donOld.getThoiHanXuLyXLD() == null) {
 							don.setNgayBatDauXLD(Utils.localDateTimeNow());
 							if (don.getThoiHanXuLyXLD() == null) {
