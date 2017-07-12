@@ -72,9 +72,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private boolean old;
 	
 	@ManyToOne
-	private State nextStateTmp;
-	
-	@ManyToOne
 	private State nextState;
 	
 	@ManyToOne
@@ -135,15 +132,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	public void setNextState(State nextState) {
 		this.nextState = nextState;
-	}
-	
-	@ApiModelProperty(example = "{}")
-	public State getNextStateTmp() {
-		return nextStateTmp;
-	}
-
-	public void setNextStateTmp(State nextStateTmp) {
-		this.nextStateTmp = nextStateTmp;
 	}
 
 	@ApiModelProperty(hidden = true)
