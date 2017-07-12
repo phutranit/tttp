@@ -72,6 +72,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private boolean old;
 	
 	@ManyToOne
+	private State nextStateTmp;
+	
+	@ManyToOne
 	private State nextState;
 	
 	@ManyToOne
@@ -132,6 +135,15 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	public void setNextState(State nextState) {
 		this.nextState = nextState;
+	}
+	
+	@ApiModelProperty(example = "{}")
+	public State getNextStateTmp() {
+		return nextStateTmp;
+	}
+
+	public void setNextStateTmp(State nextStateTmp) {
+		this.nextStateTmp = nextStateTmp;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -510,6 +522,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapTrangThaiXuLyDon = new HashMap<String, Object>();
 		Map<String, Object> mapChucVuGiaoViec = new HashMap<String, Object>();
 		Map<String, Object> mapDinhChi = new HashMap<String, Object>();
+		Map<String, Object> mapNextState = new HashMap<String, Object>();
 		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
@@ -529,6 +542,12 @@ public class XuLyDon extends Model<XuLyDon> {
 		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
+		
+		if (getNextStateTmp() != null) { 
+			mapNextState.put("id", getNextStateTmp().getId());
+			mapNextState.put("type", getNextStateTmp().getType());
+			map.put("nextState", mapNextState);
+		}
 		
 		if (getTrangThaiDon() != null) {
 			mapTrangThaiXuLyDon.put("ten", getTrangThaiDon().getText());
@@ -563,6 +582,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)) {
 				mapYeuCauGapLanhDao.put("diaDiem", getDiaDiem());
 				mapYeuCauGapLanhDao.put("ngayHenGapLanhDao", getNgayHenGapLanhDao());
+				map.put("yeuCauGapLanhDao", mapYeuCauGapLanhDao);
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.DINH_CHI)) {
 				mapDinhChi = new HashMap<String, Object>();
 				mapDinhChi.put("soQuyetDinhDinhChi", getSoQuyetDinhDinhChi() != null ? getSoQuyetDinhDinhChi() : "");
@@ -571,7 +591,6 @@ public class XuLyDon extends Model<XuLyDon> {
 			}
 			
 			map.put("dinhChi", mapDinhChi);
-			map.put("yeuCauGapLanhDao", mapYeuCauGapLanhDao);
 			map.put("phongBanGiaiQuyet", mapPhongBanGiaiQuyet);
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
