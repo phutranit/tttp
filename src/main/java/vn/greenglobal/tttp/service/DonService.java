@@ -191,7 +191,11 @@ public class DonService {
 		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD).or(QXuLyDon.xuLyDon.chucVu.isNull()));
 		}
-
+		
+		if (StringUtils.isNotBlank(chucVu) && ("LANH_DAO".equals(chucVu))) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD));
+		}
+		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
 		}
@@ -206,9 +210,7 @@ public class DonService {
 				}
 			}
 		}
-		
-		
-		
+
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
