@@ -166,11 +166,14 @@ public class CongChucService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDSNguoiDaiDienByCoQuanDonViId(Long coQuanQuanLyId) {
+	public Predicate predicateFindDSNguoiDaiDienByCoQuanDonViId(Long coQuanQuanLyId, boolean isTruongPhong) {
 		BooleanExpression predAll = base;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId)
 					.or(QCongChuc.congChuc.coQuanQuanLy.donVi.id.eq(coQuanQuanLyId)));
+			if (isTruongPhong) {
+				predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.TRUONG_PHONG));
+			}
 		}
 		return predAll;
 	}
