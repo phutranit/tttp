@@ -248,7 +248,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
-						System.out.println("@!#");
 						flagChuyenDonViKiemTra = true;
 						soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 					}

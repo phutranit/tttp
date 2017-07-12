@@ -475,14 +475,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
-		System.out.println("id " +getId());
 		String str = "";
 		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
-			System.out.println("++");
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
 			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
-				System.out.println("+cho");
 				//str = tinhTrangXuLyTCDLanhDao.getText();
 				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
 					str = tinhTrangXuLyTCDLanhDao.getText();
@@ -512,9 +509,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public String getHuongGiaiQuyetTCDLanhDaoStr() {
 		if (getHuongGiaiQuyetTCDLanhDao() != null) { 
-			System.out.println("getHuongGiaiQuyetTCDLanhDao " +getHuongGiaiQuyetTCDLanhDao().getText());
 			if (getHuongGiaiQuyetTCDLanhDao().equals(HuongGiaiQuyetTCDEnum.KHOI_TAO)) {
-				System.out.println("dmm");
 				return "Chờ tiếp";
 			}
 		}

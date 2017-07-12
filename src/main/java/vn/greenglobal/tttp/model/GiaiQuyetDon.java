@@ -35,7 +35,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	private boolean old;
 	private boolean donChuyen;
-	private boolean guiBaoCaoKiemTraDeXuat = false;
+	//private boolean guiBaoCaoKiemTraDeXuat = false;
 	
 	@ManyToOne
 	@QueryInit("*.*.*")
@@ -82,13 +82,13 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.yKienGiaiQuyet = yKienGiaiQuyet;
 	}
 
-	public boolean isGuiBaoCaoKiemTraDeXuat() {
-		return guiBaoCaoKiemTraDeXuat;
-	}
-
-	public void setGuiBaoCaoKiemTraDeXuat(boolean guiBaoCaoKiemTraDeXuat) {
-		this.guiBaoCaoKiemTraDeXuat = guiBaoCaoKiemTraDeXuat;
-	}
+//	public boolean isGuiBaoCaoKiemTraDeXuat() {
+//		return guiBaoCaoKiemTraDeXuat;
+//	}
+//
+//	public void setGuiBaoCaoKiemTraDeXuat(boolean guiBaoCaoKiemTraDeXuat) {
+//		this.guiBaoCaoKiemTraDeXuat = guiBaoCaoKiemTraDeXuat;
+//	}
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
