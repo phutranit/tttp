@@ -90,6 +90,9 @@ public class Utils {
 	}
 
 	public static ResponseEntity<Object> responseInternalServerErrors(Exception e) {
+		Writer result = new StringWriter();
+	    PrintWriter printWriter = new PrintWriter(result);
+		
 		e.printStackTrace();
 		if (e instanceof ConstraintViolationException)
 			return returnError((ConstraintViolationException) e);
@@ -104,17 +107,12 @@ public class Utils {
 		System.out.println("Application.app.airBrakeActive: " + Application.app.airBrakeActive);
 		if (Application.app.airBrakeActive) {
 			try {
-				Writer result = new StringWriter();
-			    PrintWriter printWriter = new PrintWriter(result);
 			    e.printStackTrace(printWriter);
-
 			    Backtrace backtrace = new Backtrace(e);
 				AirbrakeNotice notice = new AirbrakeNoticeBuilder("a01791c869495905d093abee088c4370", backtrace, e, "test").newNotice();
 				AirbrakeNotifier notifier = new AirbrakeNotifier("http://tracker.thanhtratp.greenglobal.vn:9836/notifier_api/v2/notices");
 				notifier.notify(notice);
 			} catch (Exception ex) {
-				Writer result = new StringWriter();
-			    PrintWriter printWriter = new PrintWriter(result);
 			    ex.printStackTrace(printWriter);
 				System.out.println("[AirBrakeActive: ERROR]: " + ex);
 			}
