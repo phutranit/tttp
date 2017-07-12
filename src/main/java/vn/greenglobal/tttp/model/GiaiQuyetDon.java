@@ -358,33 +358,34 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		return null;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
-		if (getSoTiepCongDan() != null) {
-			SoTiepCongDan soTiepCongdan = getSoTiepCongDan();
-			Map<String, Object> map = new HashMap<>();
-			Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
-			Map<String, Object> mapDonViPhoiHop = new HashMap<>();
-			List<Map<String, Object>> list = new ArrayList<>();		
-			mapDonViDuocGiaoTTXM.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
-			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
-			map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
-			
-			if (soTiepCongdan.getDonViPhoiHops() != null) { 
-				for (CoQuanQuanLy donViPhoihop : soTiepCongdan.getDonViPhoiHops()) {
-					mapDonViPhoiHop.put("ten", donViPhoihop.getTen());
-					mapDonViPhoiHop.put("coQuanQuanLyId", donViPhoihop.getId());
-					list.add(mapDonViPhoiHop);
-					mapDonViPhoiHop = new HashMap<>();
-				}
-			}
-			map.put("donViPhoiHops", list);
-			map.put("yKienXuLy", getyKienGiaiQuyet());
-			map.put("ngayBaoCaoKQ", soTiepCongdan.getNgayBaoCaoKetQua() != null ? soTiepCongdan.getNgayBaoCaoKetQua() : "");
-			map.put("ngayGuiKQ", soTiepCongdan.getNgayGuiKetQua() != null ? soTiepCongdan.getNgayGuiKetQua() : "");
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
+//		if (getSoTiepCongDan() != null) {
+//			SoTiepCongDan soTiepCongdan = getSoTiepCongDan();
+//			Map<String, Object> map = new HashMap<>();
+//			Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
+//			Map<String, Object> mapDonViPhoiHop = new HashMap<>();
+//			List<Map<String, Object>> list = new ArrayList<>();		
+//			mapDonViDuocGiaoTTXM.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
+//			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
+//			map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
+//			
+//			if (soTiepCongdan.getDonViPhoiHops() != null) { 
+//				for (CoQuanQuanLy donViPhoihop : soTiepCongdan.getDonViPhoiHops()) {
+//					mapDonViPhoiHop.put("ten", donViPhoihop.getTen());
+//					mapDonViPhoiHop.put("coQuanQuanLyId", donViPhoihop.getId());
+//					list.add(mapDonViPhoiHop);
+//					mapDonViPhoiHop = new HashMap<>();
+//				}
+//			}
+//			map.put("donViPhoiHops", list);
+//			map.put("yKienXuLy", getyKienGiaiQuyet());
+//			map.put("ngayBaoCaoKQ", soTiepCongdan.getNgayBaoCaoKetQua() != null ? soTiepCongdan.getNgayBaoCaoKetQua() : "");
+//			map.put("ngayGuiKQ", soTiepCongdan.getNgayGuiKetQua() != null ? soTiepCongdan.getNgayGuiKetQua() : "");
+//			return map;
+//		}
+//		return null;
+//	}
+	
 }

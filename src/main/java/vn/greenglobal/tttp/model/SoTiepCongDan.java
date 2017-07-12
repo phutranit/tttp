@@ -530,6 +530,32 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
+		Map<String, Object> mapDonViPhoiHop = new HashMap<>();
+		List<Map<String, Object>> list = new ArrayList<>();		
+		mapDonViDuocGiaoTTXM.put("ten", getDonViChuTri() != null ? getDonViChuTri().getTen() : "");
+		mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuTri() != null ? getDonViChuTri().getId() : "");
+		map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
+		
+		if (getDonViPhoiHops() != null) { 
+			for (CoQuanQuanLy donViPhoihop : getDonViPhoiHops()) {
+				mapDonViPhoiHop.put("ten", donViPhoihop.getTen());
+				mapDonViPhoiHop.put("coQuanQuanLyId", donViPhoihop.getId());
+				list.add(mapDonViPhoiHop);
+				mapDonViPhoiHop = new HashMap<>();
+			}
+		}
+		map.put("donViPhoiHops", list);
+		map.put("yKienXuLy", getNoiDungBaoCaoKetQuaKiemTra());
+		map.put("ngayBaoCaoKQ", getNgayBaoCaoKetQua() != null ? getNgayBaoCaoKetQua() : "");
+		map.put("ngayGuiKQ", getNgayGuiKetQua() != null ? getNgayGuiKetQua() : "");
+		return map;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Long getSoTiepCongDanId() {
 		return getId();
 	}
