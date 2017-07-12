@@ -86,7 +86,7 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanDonVi() != null ? getCoQuanDonVi().getId() : 0);
-			map.put("ten", getCoQuanDonVi().getTen());
+			map.put("ten", getCoQuanDonVi() != null ? getCoQuanDonVi().getTen() : "");
 			return map;
 		}
 		return null;
@@ -98,7 +98,7 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		if (getNguoiTao() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("nguoiDaiDienId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
-			map.put("ten", getNguoiDaiDien().getHoVaTen());
+			map.put("ten",  getNguoiDaiDien() != null ? getNguoiDaiDien().getHoVaTen() : "");
 			return map;
 		}
 		return null;
