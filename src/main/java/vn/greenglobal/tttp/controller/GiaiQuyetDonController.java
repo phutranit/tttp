@@ -593,7 +593,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_CHUYEN_VIEN_NHAP_LIEU.getText());
-		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
+		lichSuQTXLD.setNoiDung("");
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
