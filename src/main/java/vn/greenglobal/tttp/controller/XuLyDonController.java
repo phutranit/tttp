@@ -663,9 +663,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setDiaDiem(null);
 						xuLyDonHienTai.setNgayQuyetDinhDinhChi(null);
 						xuLyDonHienTai.setSoQuyetDinhDinhChi(null);
+						xuLyDonHienTai.setTruongPhongChiDinh(null);
+						xuLyDonHienTai.setChuyenVienChiDinh(null);
 					}
 				}
-				
+
 				if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 					xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 					donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
@@ -712,8 +714,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					donOld.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 				}
 				if (xuLyDon.getCanBoXuLyChiDinh() != null) {
-					
 					xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+				}
+				if (xuLyDon.getTruongPhongChiDinh() != null) {
+					xuLyDonHienTai.setTruongPhongChiDinh(xuLyDon.getTruongPhongChiDinh());
+					xuLyDonHienTai.setChuyenVienChiDinh(null);
+				}
+				if (xuLyDon.getChuyenVienChiDinh() != null) {
+					xuLyDonHienTai.setChuyenVienChiDinh(xuLyDon.getChuyenVienChiDinh());
 				}
 				List<LichSuQuaTrinhXuLy> lichSuList = new ArrayList<LichSuQuaTrinhXuLy>();
 				lichSuList.addAll(lichSuQuaTrinhXuLyService.getDSLichSuQuaTrinhXuLys(lichSuQuaTrinhXuLyRepo, donOld.getId(), xuLyDonHienTai.getDonViXuLy().getId()));
