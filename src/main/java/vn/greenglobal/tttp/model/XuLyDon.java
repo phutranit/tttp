@@ -40,6 +40,10 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private CongChuc canBoChuyenDon;
+	@ManyToOne
+	private CongChuc truongPhongChiDinh;
+	@ManyToOne
+	private CongChuc chuyenVienChiDinh;
 	
 	@QueryInit("*.*.*")
 	@ManyToOne
@@ -70,9 +74,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private boolean old;
-	
-	@ManyToOne
-	private State nextStateTmp;
 	
 	@ManyToOne
 	private State nextState;
@@ -135,15 +136,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	public void setNextState(State nextState) {
 		this.nextState = nextState;
-	}
-	
-	@ApiModelProperty(example = "{}")
-	public State getNextStateTmp() {
-		return nextStateTmp;
-	}
-
-	public void setNextStateTmp(State nextStateTmp) {
-		this.nextStateTmp = nextStateTmp;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -341,7 +333,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCanBoXuLyChiDinh(CongChuc canBoChiDinh) {
 		this.canBoXuLyChiDinh = canBoChiDinh;
 	}
-	
+
 	@ApiModelProperty(example = "{}")
 	public CongChuc getCanBoChuyenDon() {
 		return canBoChuyenDon;
@@ -349,6 +341,24 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCanBoChuyenDon(CongChuc canBoChuyenDon) {
 		this.canBoChuyenDon = canBoChuyenDon;
+	}
+	
+	@ApiModelProperty(example = "{}")
+	public CongChuc getTruongPhongChiDinh() {
+		return truongPhongChiDinh;
+	}
+
+	public void setTruongPhongChiDinh(CongChuc truongPhongChiDinh) {
+		this.truongPhongChiDinh = truongPhongChiDinh;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public CongChuc getChuyenVienChiDinh() {
+		return chuyenVienChiDinh;
+	}
+
+	public void setChuyenVienChiDinh(CongChuc chuyenVienChiDinh) {
+		this.chuyenVienChiDinh = chuyenVienChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -523,6 +533,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapChucVuGiaoViec = new HashMap<String, Object>();
 		Map<String, Object> mapDinhChi = new HashMap<String, Object>();
 		Map<String, Object> mapNextState = new HashMap<String, Object>();
+		Map<String, Object> mapTruongPhongChiDinh = new HashMap<>();
+		Map<String, Object> mapChuyenVienChiDinh = new HashMap<>();
 		
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
@@ -539,13 +551,22 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("phongBanXuLyChiDinh", mapPhongBanChiDinh);
 		
 		mapCanBoXuLyChiDinh.put("id", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getId() : "");
-		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ?getCanBoXuLyChiDinh().getHoVaTen() : "");
+		mapCanBoXuLyChiDinh.put("ten", getCanBoXuLyChiDinh() != null ? getCanBoXuLyChiDinh().getHoVaTen() : "");
 		map.put("canBoXuLyChiDinh", mapCanBoXuLyChiDinh);
+		
+		mapTruongPhongChiDinh.put("id", getTruongPhongChiDinh() != null ?  getTruongPhongChiDinh().getId() : "");
+		mapTruongPhongChiDinh.put("ten", getTruongPhongChiDinh() != null ? getTruongPhongChiDinh().getHoVaTen() : "");
+		map.put("truongPhongChiDinh", mapTruongPhongChiDinh);
+		
+		mapChuyenVienChiDinh.put("id", getChuyenVienChiDinh() != null ?  getChuyenVienChiDinh().getId() : "");
+		mapChuyenVienChiDinh.put("ten", getChuyenVienChiDinh() != null ? getChuyenVienChiDinh().getHoVaTen() : "");
+		map.put("chuyenVienChiDinh", mapChuyenVienChiDinh);
+		
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
 		
-		if (getNextStateTmp() != null) { 
-			mapNextState.put("id", getNextStateTmp().getId());
-			mapNextState.put("type", getNextStateTmp().getType());
+		if (getNextState() != null) { 
+			mapNextState.put("id", getNextState().getId());
+			mapNextState.put("type", getNextState().getType());
 			map.put("nextState", mapNextState);
 		}
 		
