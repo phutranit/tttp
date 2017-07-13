@@ -678,11 +678,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (xuLyDon.getPhongBanGiaiQuyet() != null) { 
 					xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 					donOld.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
+				} else { 
+					xuLyDonHienTai.setPhongBanGiaiQuyet(null);
+					donOld.setPhongBanGiaiQuyet(null);
 				}
 				if (xuLyDon.getNgayHenGapLanhDao() != null) { 
 					xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
+				} else {
+					xuLyDonHienTai.setNgayHenGapLanhDao(null);
 				}
-				
+				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
+					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
+				} else {
+					xuLyDonHienTai.setDiaDiem("");
+				}
 				if (xuLyDon.getPhongBanXuLyChiDinh() != null) {
 					xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
 				}
@@ -691,9 +700,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getNoiDungYeuCauXuLy())) {
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-				}
-				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
-					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
@@ -715,13 +721,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (xuLyDon.getCanBoXuLyChiDinh() != null) {
 					xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+				} else {
+					xuLyDonHienTai.setCanBoXuLyChiDinh(null);
 				}
 				if (xuLyDon.getTruongPhongChiDinh() != null) {
 					xuLyDonHienTai.setTruongPhongChiDinh(xuLyDon.getTruongPhongChiDinh());
 					xuLyDonHienTai.setChuyenVienChiDinh(null);
+				} else {
+					xuLyDonHienTai.setTruongPhongChiDinh(null);
 				}
 				if (xuLyDon.getChuyenVienChiDinh() != null) {
 					xuLyDonHienTai.setChuyenVienChiDinh(xuLyDon.getChuyenVienChiDinh());
+					xuLyDonHienTai.setTruongPhongChiDinh(null);
+				} else {
+					xuLyDonHienTai.setChuyenVienChiDinh(null);
 				}
 				List<LichSuQuaTrinhXuLy> lichSuList = new ArrayList<LichSuQuaTrinhXuLy>();
 				lichSuList.addAll(lichSuQuaTrinhXuLyService.getDSLichSuQuaTrinhXuLys(lichSuQuaTrinhXuLyRepo, donOld.getId(), xuLyDonHienTai.getDonViXuLy().getId()));
@@ -1097,8 +1110,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
-
 		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+		xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		
@@ -1365,7 +1378,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		don.setTrangThaiDon(TrangThaiDonEnum.DANG_GIAI_QUYET);
-		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
+			don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -1382,8 +1398,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 			Long soNgayGiaiQuyetMacDinh = 45L;
 			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
-			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
-			
+			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);	
 			thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		}
 		
