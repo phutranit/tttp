@@ -30,6 +30,13 @@ public class LinhVucDonThuService {
 
 	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
 	
+	public List<LinhVucDonThu> getTatCaDanhSachLinhVucDonThus() {
+		BooleanExpression predAll = base.or(QLinhVucDonThu.linhVucDonThu.daXoa.eq(true));
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
 	public List<LinhVucDonThu> linhVucDonThusTheoId(List<Long> ids) { 
 		BooleanExpression predAll = base;
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
@@ -54,7 +61,7 @@ public class LinhVucDonThuService {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa.trim())
-					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
+//					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
 					.or(QLinhVucDonThu.linhVucDonThu.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 
@@ -137,4 +144,17 @@ public class LinhVucDonThuService {
 		return Utils.doSave(linhVucDonThuRepository, obj, congChucId, eass, status);		
 	}
 
+	public String getMaLinhVuc() {
+		String ma = "";
+		int count = getTatCaDanhSachLinhVucDonThus().size();
+		String str = String.valueOf(count);
+		if (str.length() == 1) {
+			ma += "00" + (count + 1);
+		} else if (str.length() == 2) {
+			ma += "0" + (count + 1);
+		} else {
+			ma += (count + 1);
+		}
+		return ma;
+	}
 }
