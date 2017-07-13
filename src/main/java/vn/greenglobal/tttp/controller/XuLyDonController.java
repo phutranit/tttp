@@ -312,7 +312,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.getText(), ApiErrorEnum.PHONGBANXULYCHIDINH_REQUIRED.getText());
 						}					
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
-						xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId);
+						xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId, nextState);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
 						if (xuLyDon.getPhongBanXuLyChiDinh() == null) {
@@ -325,7 +325,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						
-						xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId);
+						xuLyDonTiepTheo = lanhDaoGiaoViec(xuLyDon, xuLyDonHienTai, donViId, congChucId, nextState);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} else if (FlowStateEnum.TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI.equals(nextState)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
@@ -678,11 +678,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (xuLyDon.getPhongBanGiaiQuyet() != null) { 
 					xuLyDonHienTai.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 					donOld.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
+				} else { 
+					xuLyDonHienTai.setPhongBanGiaiQuyet(null);
+					donOld.setPhongBanGiaiQuyet(null);
 				}
 				if (xuLyDon.getNgayHenGapLanhDao() != null) { 
 					xuLyDonHienTai.setNgayHenGapLanhDao(xuLyDon.getNgayHenGapLanhDao());
+				} else {
+					xuLyDonHienTai.setNgayHenGapLanhDao(null);
 				}
-				
+				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
+					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
+				} else {
+					xuLyDonHienTai.setDiaDiem("");
+				}
 				if (xuLyDon.getPhongBanXuLyChiDinh() != null) {
 					xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
 				}
@@ -691,9 +700,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getNoiDungYeuCauXuLy())) {
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-				}
-				if (StringUtils.isNotBlank(xuLyDon.getDiaDiem())) { 
-					xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getyKienXuLy())) { 
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
@@ -715,13 +721,20 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (xuLyDon.getCanBoXuLyChiDinh() != null) {
 					xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+				} else {
+					xuLyDonHienTai.setCanBoXuLyChiDinh(null);
 				}
 				if (xuLyDon.getTruongPhongChiDinh() != null) {
 					xuLyDonHienTai.setTruongPhongChiDinh(xuLyDon.getTruongPhongChiDinh());
 					xuLyDonHienTai.setChuyenVienChiDinh(null);
+				} else {
+					xuLyDonHienTai.setTruongPhongChiDinh(null);
 				}
 				if (xuLyDon.getChuyenVienChiDinh() != null) {
 					xuLyDonHienTai.setChuyenVienChiDinh(xuLyDon.getChuyenVienChiDinh());
+					xuLyDonHienTai.setTruongPhongChiDinh(null);
+				} else {
+					xuLyDonHienTai.setChuyenVienChiDinh(null);
 				}
 				List<LichSuQuaTrinhXuLy> lichSuList = new ArrayList<LichSuQuaTrinhXuLy>();
 				lichSuList.addAll(lichSuQuaTrinhXuLyService.getDSLichSuQuaTrinhXuLys(lichSuQuaTrinhXuLyRepo, donOld.getId(), xuLyDonHienTai.getDonViXuLy().getId()));
@@ -981,7 +994,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 	
-	public XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId) {
+	public XuLyDon lanhDaoGiaoViec(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId,
+			FlowStateEnum nextState) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		XuLyDon xuLyDonTruongPhong = new XuLyDon();
@@ -998,7 +1012,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
 //		xuLyDonTiepTheo.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 		xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-		if (xuLyDon.getCanBoXuLyChiDinh() == null) {
+		
+		if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState)) {
+			if (xuLyDon.getCanBoXuLyChiDinh() != null) {
+				xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			}
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId(), donViId);			
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		} else {
@@ -1011,30 +1029,28 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					xuLyDonTiepTheo.getPhongBanXuLy().getId(), donViId);
 			
 			//Tat ca truong phong
-			if (xuLyDonHienTai.getChucVu().equals(VaiTroEnum.LANH_DAO)) {
-				xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
-				xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-				xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
-				xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
-				xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
-				xuLyDonTruongPhong.setChucVu(VaiTroEnum.TRUONG_PHONG);
-				xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
-				xuLyDonTruongPhong.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
-				xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
-				xuLyDonTruongPhong.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-				xuLyDonTruongPhong.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
-				if (xuLyDonHienTai.isDonChuyen()) {
-					xuLyDonTruongPhong.setDonChuyen(xuLyDonHienTai.isDonChuyen());
-					xuLyDonTruongPhong.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
-					xuLyDonTruongPhong.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
-				}
-				if (xuLyDonHienTai.isDonTra()) {
-					xuLyDonTruongPhong.setDonTra(true);
-				}
-				xuLyDonTruongPhong.setNextForm(xuLyDonHienTai.getNextForm());
-				xuLyDonTruongPhong.setNextState(xuLyDon.getNextState());
-				xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
+			xuLyDonTruongPhong.setNguoiTao(congChucRepo.findOne(congChucId));
+			xuLyDonTruongPhong.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+			xuLyDonTruongPhong.setDon(xuLyDonHienTai.getDon());
+			xuLyDonTruongPhong.setPhongBanXuLy(xuLyDon.getPhongBanXuLyChiDinh());
+			xuLyDonTruongPhong.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
+			xuLyDonTruongPhong.setChucVu(VaiTroEnum.TRUONG_PHONG);
+			xuLyDonTruongPhong.setChucVuGiaoViec(VaiTroEnum.LANH_DAO);
+			xuLyDonTruongPhong.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+			xuLyDonTruongPhong.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+			xuLyDonTruongPhong.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			xuLyDonTruongPhong.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
+			if (xuLyDonHienTai.isDonChuyen()) {
+				xuLyDonTruongPhong.setDonChuyen(xuLyDonHienTai.isDonChuyen());
+				xuLyDonTruongPhong.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+				xuLyDonTruongPhong.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
 			}
+			if (xuLyDonHienTai.isDonTra()) {
+				xuLyDonTruongPhong.setDonTra(true);
+			}
+			xuLyDonTruongPhong.setNextForm(xuLyDonHienTai.getNextForm());
+			xuLyDonTruongPhong.setNextState(xuLyDon.getNextState());
+			xuLyDonTiepTheo.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 2);
 		}
 
 		if (xuLyDonHienTai.isDonChuyen()) {
@@ -1084,7 +1100,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donService.save(don, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-		if (xuLyDon.getCanBoXuLyChiDinh() != null && xuLyDonHienTai.getChucVu().equals(VaiTroEnum.LANH_DAO)) {
+		// Luu buoc cua trương phong khi lanh dao giao viec can bo
+		if (FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTruongPhong.getPhongBanXuLy().getId(), donViId);
 			xuLyDonService.save(xuLyDonTruongPhong, congChucId);
 		}
@@ -1097,8 +1114,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
-
 		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungThongTinTrinhLanhDao());
+		xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		
@@ -1365,7 +1382,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
 		don.setTrangThaiDon(TrangThaiDonEnum.DANG_GIAI_QUYET);
-		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
+			don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -1382,8 +1402,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 			Long soNgayGiaiQuyetMacDinh = 45L;
 			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
-			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
-			
+			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);	
 			thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		}
 		
