@@ -1,7 +1,6 @@
 package vn.greenglobal.tttp.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +12,7 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Document;
 import vn.greenglobal.tttp.model.DocumentMetaData;
 import vn.greenglobal.tttp.repository.DocumentMetaDataRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Service
 public class FileUploadService {
@@ -35,7 +35,7 @@ public class FileUploadService {
 		
 		byte[] content = file.getBytes();
 		Document document = new Document(fileName, content);
-		DocumentMetaData documentMetaData = new DocumentMetaData(salkey, originalFilename, getFileStorageLocation(), LocalDateTime.now());
+		DocumentMetaData documentMetaData = new DocumentMetaData(salkey, originalFilename, getFileStorageLocation(), Utils.localDateTimeNow());
 		documentFileSystemService.add(document);
 		CongChuc cc = new CongChuc();
 		cc.setId(congChucId);

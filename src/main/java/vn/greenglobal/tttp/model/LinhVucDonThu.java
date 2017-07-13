@@ -35,6 +35,8 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	private String ten = "";
 	@Size(max=255)
 	private String moTa = "";
+	
+	private int soThuTu = 0;
 
 	private boolean linhVucKhac;
 
@@ -70,6 +72,14 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	public int getSoThuTu() {
+		return soThuTu;
+	}
+
+	public void setSoThuTu(int soThuTu) {
+		this.soThuTu = soThuTu;
 	}
 
 	@ApiModelProperty(position = 4)

@@ -129,12 +129,6 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setSoQuyetDinhThanhLapDTXM("");
 			thongTinGiaiQuyetDon.setTruongDoanTTXM(null);
 		}
-//		if (!thongTinGiaiQuyetDon.isGiaHanGiaiQuyet()) {
-//			thongTinGiaiQuyetDon.setSoQuyetDinhGiaHanGiaiQuyet("");
-//			thongTinGiaiQuyetDon.setNgayRaQuyetDinhGiaHanTTXM(null);
-//			thongTinGiaiQuyetDon.setNgayHetHanSauKhiGiaHanTTXM(null);
-//			thongTinGiaiQuyetDon.setLyDoGiaHanTTXM("");
-//		}
 		if (!thongTinGiaiQuyetDon.isDoiThoai()) {
 			thongTinGiaiQuyetDon.setThoiGianDoiThoai(null);
 			thongTinGiaiQuyetDon.setDiaDiemDoiThoai("");
@@ -162,6 +156,11 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setDatDaThuNhaNuoc(0l);
 			thongTinGiaiQuyetDon.setTienDaTraCongDan(0l);
 			thongTinGiaiQuyetDon.setDatDaTraCongDan(0l);
+		}
+		if (!thongTinGiaiQuyetDon.isGiaiQuyetLanLai()) {
+			thongTinGiaiQuyetDon.setSoLanGiaiQuyetLai(0);
+			thongTinGiaiQuyetDon.setKetLuanGiaiQuyetLai(null);
+			thongTinGiaiQuyetDon.setNoiDungKetLuanGiaiQuyetLai("");
 		}
 		return thongTinGiaiQuyetDon;
 	}

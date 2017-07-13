@@ -2,6 +2,8 @@ package vn.greenglobal.tttp.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +17,7 @@ import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 
@@ -33,7 +36,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	private boolean old;
 	private boolean donChuyen;
-
+	
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
@@ -55,13 +58,13 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-
+	
 	@Enumerated(EnumType.STRING)
 	private TinhTrangGiaiQuyetEnum tinhTrangGiaiQuyet;
 
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
-
+	
 	@ApiModelProperty(hidden = true)
 	public VaiTroEnum getChucVu() {
 		return chucVu;
@@ -347,4 +350,48 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		return null;
 	}
 
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
+		if (getSoTiepCongDan() != null) {
+			SoTiepCongDan soTiepCongdan = getSoTiepCongDan();
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
+			Map<String, Object> mapDonViPhoiHop = new HashMap<>();
+			List<Map<String, Object>> list = new ArrayList<>();		
+			mapDonViDuocGiaoTTXM.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
+			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
+			map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
+			
+			if (soTiepCongdan.getDonViPhoiHops() != null) { 
+				for (CoQuanQuanLy donViPhoihop : soTiepCongdan.getDonViPhoiHops()) {
+					mapDonViPhoiHop.put("ten", donViPhoihop.getTen());
+					mapDonViPhoiHop.put("coQuanQuanLyId", donViPhoihop.getId());
+					list.add(mapDonViPhoiHop);
+					mapDonViPhoiHop = new HashMap<>();
+				}
+			}
+			map.put("donViPhoiHops", list);
+			map.put("yKienXuLy", getyKienGiaiQuyet());
+			map.put("ngayBaoCaoKQ", soTiepCongdan.getNgayBaoCaoKetQua() != null ? soTiepCongdan.getNgayBaoCaoKetQua() : "");
+			map.put("ngayGuiKQ", soTiepCongdan.getNgayGuiKetQua() != null ? soTiepCongdan.getNgayGuiKetQua() : "");
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<TaiLieuVanThu> getListTaiLieuDinhKems() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getSoTiepCongDan() != null) {
+			for (TaiLieuVanThu tlvt : getSoTiepCongDan().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) 
+						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
 }
