@@ -112,6 +112,8 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
+			String ma = linhVucDonThuService.getMaLinhVuc();	
+			linhVucDonThu.setMa(ma);
 			return linhVucDonThuService.doSave(linhVucDonThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
