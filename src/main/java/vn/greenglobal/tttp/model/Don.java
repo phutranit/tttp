@@ -143,8 +143,8 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//	@Fetch(value = FetchMode.SELECT)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
