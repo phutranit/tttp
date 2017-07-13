@@ -171,7 +171,9 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-
+			
+			LinhVucDonThu linhVucDonThuOld = repo.findOne(id);
+			linhVucDonThu.setMa(linhVucDonThuOld.getMa());
 			return linhVucDonThuService.doSave(linhVucDonThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
