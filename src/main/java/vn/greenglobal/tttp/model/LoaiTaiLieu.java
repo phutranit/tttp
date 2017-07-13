@@ -28,6 +28,8 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 	private String ten = "";
 	@Size(max=255)
 	private String moTa = "";
+	
+	private int soThuTu = 0;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -45,6 +47,14 @@ public class LoaiTaiLieu extends Model<LoaiTaiLieu> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	public int getSoThuTu() {
+		return soThuTu;
+	}
+
+	public void setSoThuTu(int soThuTu) {
+		this.soThuTu = soThuTu;
 	}
 
 	@Transient

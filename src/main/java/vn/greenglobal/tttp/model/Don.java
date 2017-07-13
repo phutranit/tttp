@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -142,8 +143,8 @@ public class Don extends Model<Don> {
 	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-//	@Fetch(value = FetchMode.JOIN)
-	@Cache(usage = CacheConcurrencyStrategy.NONE)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
@@ -653,16 +654,16 @@ public class Don extends Model<Don> {
 		this.doanDiCungs = doanDiCungs;
 	}
 
-	@ApiModelProperty(hidden = true)
-	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
-		for (Don_CongDan obj : donCongDans) {
-			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
-				donCongDan = obj;
-				break;
-			}
-		}
-		return donCongDan;
-	}
+//	@ApiModelProperty(hidden = true)
+//	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
+//		for (Don_CongDan obj : donCongDans) {
+//			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
+//				donCongDan = obj;
+//				break;
+//			}
+//		}
+//		return donCongDan;
+//	}
 
 	@ApiModelProperty(hidden = true)
 	public State getCurrentState() {
@@ -696,17 +697,25 @@ public class Don extends Model<Don> {
 	public List<Don_CongDan> getListNguoiDungDon() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		if (getDonGoc() != null) { 
-			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-					list.add(dcd);
-				}
-			}
-		} else { 
-			for (Don_CongDan dcd : getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-					list.add(dcd);
-				}
-			}
+//			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
+//				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+//					list.add(dcd);
+//				}
+//			}
+			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
+							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
+		} else {
+//			for (Don_CongDan dcd : getDonCongDans()) {
+//				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+//					list.add(dcd);
+//				}
+//			}
+			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+					.findAll(QDon_CongDan.don_CongDan.don.id.eq(getId())
+							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
+							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		}
 		
 		return list;
@@ -735,20 +744,30 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getNguoiDuocUyQuyen() {
+		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
 		if (getDonGoc() != null) { 
-			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-					return dcd;
-				}
-			}
+//			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
+//				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+//					return dcd;
+//				}
+//			}
+			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN))
+							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		} else { 
-			for (Don_CongDan dcd : getDonCongDans()) {
-				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
-					return dcd;
-				}
-			}
+//			for (Don_CongDan dcd : getDonCongDans()) {
+//				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
+//					return dcd;
+//				}
+//			}
+			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+					.findAll(QDon_CongDan.don_CongDan.don.id.eq(getId())
+							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan
+									.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN))
+							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		}
-		return null;
+		return list != null && list.size() > 0 ? list.get(0) : null;
 	}
 	
 	@Transient
