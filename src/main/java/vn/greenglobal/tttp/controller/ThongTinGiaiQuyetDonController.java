@@ -139,6 +139,8 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setSoDoiTuongGiaoCoQuanDieuTra(0);
 		}
 		if (!thongTinGiaiQuyetDon.isQuyetDinhGiaiQuyetKhieuNai()) {
+			thongTinGiaiQuyetDon.setKetLuanNoiDungKhieuNai(null);
+			thongTinGiaiQuyetDon.setSoVuGiaiQuyetKhieuNai(0);
 			thongTinGiaiQuyetDon.setTienPhaiThuNhaNuoc(0l);
 			thongTinGiaiQuyetDon.setDatPhaiThuNhaNuoc(0l);
 			thongTinGiaiQuyetDon.setTienPhaiTraCongDan(0l);
@@ -150,6 +152,8 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setHinhThucTheoDoi(null);
 			thongTinGiaiQuyetDon.setCoQuanTheoDoi(null);
 			thongTinGiaiQuyetDon.setKetQuaThucHienTheoDoi(null);
+		}
+		if (!thongTinGiaiQuyetDon.isKhoiTo()) {
 			thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
 			thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
 			thongTinGiaiQuyetDon.setTienDaThuNhaNuoc(0l);
