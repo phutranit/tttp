@@ -58,7 +58,9 @@ public class XuLyDonService {
 		}
 
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.chucVu.isNull())));
 		}
 
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
@@ -91,7 +93,8 @@ public class XuLyDonService {
 		}
 
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)));
 		}	
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 
@@ -125,7 +128,9 @@ public class XuLyDonService {
 
 	public Predicate predFindChuyenVienOld(Long donId, Long canBoId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
 		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
-		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro)).and(xuLyDon.canBoXuLyChiDinh.id.eq(canBoId))
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
+				.and(xuLyDon.congChuc.id.eq(canBoId)
+						.or(xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)))
 				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId)).and(xuLyDon.donViXuLy.id.eq(donViId));
 		return predicate;
 	}

@@ -648,7 +648,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //				if (xuLyDon.getNextStateTmp() != null) { 
 //					xuLyDonHienTai.setNextStateTmp(xuLyDon.getNextStateTmp());
 //				}
-								
+				
+//				if (xuLyDon.getHuongXuLy() != null) {
+//					HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
+//					if (HuongXuLyXLDEnum.DE_XUAT_THU_LY.equals(huongXuLyXLD)) {
+//						xuLyDon.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
+//					}
+//				}
+				
 				if (xuLyDon.getNextState() != null) {					
 					if (!xuLyDon.getNextState().equals(xuLyDonHienTai.getNextState())) { 
 						xuLyDonHienTai.setNextState(xuLyDon.getNextState());
@@ -658,7 +665,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setNgayHenGapLanhDao(null);
 						xuLyDonHienTai.setCanBoXuLyChiDinh(null);
 						xuLyDonHienTai.setPhongBanXuLyChiDinh(null);
-						xuLyDonHienTai.setPhongBanXuLy(null);
 						xuLyDonHienTai.setNoiDungXuLy(null);
 						xuLyDonHienTai.setDiaDiem(null);
 						xuLyDonHienTai.setNgayQuyetDinhDinhChi(null);
@@ -694,9 +700,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				if (xuLyDon.getPhongBanXuLyChiDinh() != null) {
 					xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
-				}
-				if (xuLyDon.getPhongBanXuLy() != null) {
-					xuLyDonHienTai.setPhongBanXuLy(xuLyDon.getPhongBanXuLy());
 				}
 				if (StringUtils.isNotBlank(xuLyDon.getNoiDungYeuCauXuLy())) {
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
@@ -1543,7 +1546,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		xuLyDonTiepTheo.setDonChuyen(true);
 		xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getPhongBanXuLy());
-		xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoXuLyChiDinh());
+		//xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCanBoXuLyChiDinh());
+		xuLyDonTiepTheo.setCanBoChuyenDon(xuLyDonHienTai.getCongChuc());
 		xuLyDonTiepTheo.setCoQuanTiepNhan(xuLyDonHienTai.getCoQuanTiepNhan());
 		//xuLyDonTiepTheo.setNoiDungXuLy(xuLyDonHienTai.getyKienXuLy());
 		xuLyDonTiepTheo.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
