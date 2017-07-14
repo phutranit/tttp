@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +28,24 @@ public class XuLyDonService {
 
 	@Autowired
 	private XuLyDonRepository xuLyDonRepo;
-
+	
+	public int timThuTuXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViId) {
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId));
+		
+		int thuTu = 0;
+		List<XuLyDon> xuLyDonList = new ArrayList<XuLyDon>();
+		xuLyDonList.addAll((List<XuLyDon>) repo.findAll(where));
+		if (xuLyDonList != null) {
+			thuTu = xuLyDonList.size();
+		}
+		return thuTu;
+	}
+	
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
-		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(id))
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();
 			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(where, sortOrder);
