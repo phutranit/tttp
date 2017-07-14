@@ -52,8 +52,8 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "thongKes", description = "Thống kê danh sách Đơn")
-public class ThongKeController extends TttpController<Don> {
+@Api(value = "thongKes", description = "Thống kê ở trang chủ")
+public class TrangChuController extends TttpController<Don> {
 
 	@Autowired
 	private DonRepository repo;
@@ -82,7 +82,7 @@ public class ThongKeController extends TttpController<Don> {
 	@Autowired
 	private ThongKeService thongKeService;
 
-	public ThongKeController(BaseRepository<Don, Long> repo) {
+	public TrangChuController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
 
