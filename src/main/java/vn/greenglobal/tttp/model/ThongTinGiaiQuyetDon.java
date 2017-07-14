@@ -89,21 +89,13 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private boolean daRaQuyetDinhGiaiQuyet;
 	private boolean giaiQuyetLanLai;
 
-	@Size(max=11)
 	private int soVuGiaoCoQuanDieuTra;
-	@Size(max=11)
 	private int soDoiTuongGiaoCoQuanDieuTra;
-	@Size(max=11)
 	private int soVuBiKhoiTo;
-	@Size(max=11)
 	private int soDoiTuongBiKhoiTo;
-	@Size(max=11)
 	private int tongSoNguoiXuLyHanhChinh;
-	@Size(max=11)
 	private int soNguoiDaBiXuLyHanhChinh;
-	@Size(max=11)
 	private int soLanGiaiQuyetLai;
-	@Size(max=11)
 	private int soVuGiaiQuyetKhieuNai;
 	
 	private long tienPhaiThuNhaNuoc;
