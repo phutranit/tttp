@@ -189,7 +189,9 @@ public class DonService {
 		}
 
 		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
+					.or(QXuLyDon.xuLyDon.chucVu.isNull())
+					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD)));
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
