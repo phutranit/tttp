@@ -640,11 +640,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				
-				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-//				if (xuLyDon.getHuongXuLy() != null) { 
-//					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
-//				}
-				
+				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());				
 //				if (xuLyDon.getNextStateTmp() != null) { 
 //					xuLyDonHienTai.setNextStateTmp(xuLyDon.getNextStateTmp());
 //				}
@@ -671,9 +667,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setSoQuyetDinhDinhChi(null);
 						xuLyDonHienTai.setTruongPhongChiDinh(null);
 						xuLyDonHienTai.setChuyenVienChiDinh(null);
+						xuLyDonHienTai.setHuongXuLy(null);
 					}
 				}
 
+				if (xuLyDon.getHuongXuLy() != null) { 
+					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
+				}
+				
 				if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 					xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 					donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
