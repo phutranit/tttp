@@ -404,7 +404,7 @@ public class CongChucController extends TttpController<CongChuc> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/{donViId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/{donViId}/thuocDonVi")
 	@ApiOperation(value = "Lấy Danh sách người đại diện theo cơ quan đơn vị id", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDSNguoiDaiDienByCoQuanDonViId(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("donViId") long id, @RequestParam(value = "isTruongPhong", required = false) boolean isTruongPhong,
