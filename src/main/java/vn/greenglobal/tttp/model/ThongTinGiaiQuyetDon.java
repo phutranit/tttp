@@ -89,14 +89,23 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private boolean daRaQuyetDinhGiaiQuyet;
 	private boolean giaiQuyetLanLai;
 
+	@Size(max=11)
 	private int soVuGiaoCoQuanDieuTra;
+	@Size(max=11)
 	private int soDoiTuongGiaoCoQuanDieuTra;
+	@Size(max=11)
 	private int soVuBiKhoiTo;
+	@Size(max=11)
 	private int soDoiTuongBiKhoiTo;
+	@Size(max=11)
 	private int tongSoNguoiXuLyHanhChinh;
+	@Size(max=11)
 	private int soNguoiDaBiXuLyHanhChinh;
+	@Size(max=11)
 	private int soLanGiaiQuyetLai;
-
+	@Size(max=11)
+	private int soVuGiaiQuyetKhieuNai;
+	
 	private long tienPhaiThuNhaNuoc;
 	private long datPhaiThuNhaNuoc;
 	private long tienPhaiTraCongDan;
@@ -131,11 +140,77 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	@Enumerated(EnumType.STRING)
 	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai;
 	@Enumerated(EnumType.STRING)
+	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNaiGiaoTTXM;
+	@Enumerated(EnumType.STRING)
 	private HinhThucTheoDoiEnum hinhThucTheoDoi;
 	@Enumerated(EnumType.STRING)
 	private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
 	@Enumerated(EnumType.STRING)
 	private KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai;
+	
+	/**
+	 * Bat dau tao fields Luu thong tin tam thoi.
+	 */
+//	@Lob
+	private String yKienGiaiQuyet = "";
+//	@Lob
+	private String yKienCuaDonViGiaoTTXM = "";
+//	@Lob
+	private String yKienXuLyDon = "";
+	private CongChuc canBoXuLyChiDinh;
+	private CoQuanQuanLy phongBanGiaiQuyet;
+	private State nextState;
+
+	public String getyKienGiaiQuyet() {
+		return yKienGiaiQuyet;
+	}
+
+	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
+		this.yKienGiaiQuyet = yKienGiaiQuyet;
+	}
+
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public String getyKienCuaDonViGiaoTTXM() {
+		return yKienCuaDonViGiaoTTXM;
+	}
+
+	public String getyKienXuLyDon() {
+		return yKienXuLyDon;
+	}
+
+	public void setyKienXuLyDon(String yKienXuLyDon) {
+		this.yKienXuLyDon = yKienXuLyDon;
+	}
+
+	public void setyKienCuaDonViGiaoTTXM(String yKienCuaDonViGiaoTTXM) {
+		this.yKienCuaDonViGiaoTTXM = yKienCuaDonViGiaoTTXM;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
+	}
+
+	public CoQuanQuanLy getPhongBanGiaiQuyet() {
+		return phongBanGiaiQuyet;
+	}
+
+	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
+		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	public State getNextState() {
+		return nextState;
+	}
+
+	public void setNextState(State nextState) {
+		this.nextState = nextState;
+	}
+	/**
+	 * Ket thuc tao fields Luu thong tin tam thoi.
+	 */
 
 	public String getSoQuyetDinhThanhLapDTXM() {
 		return soQuyetDinhThanhLapDTXM;
@@ -488,6 +563,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.soLanGiaiQuyetLai = soLanGiaiQuyetLai;
 	}
 
+	public int getSoVuGiaiQuyetKhieuNai() {
+		return soVuGiaiQuyetKhieuNai;
+	}
+
+	public void setSoVuGiaiQuyetKhieuNai(int soVuGiaiQuyetKhieuNai) {
+		this.soVuGiaiQuyetKhieuNai = soVuGiaiQuyetKhieuNai;
+	}
+
 	public long getTienPhaiThuNhaNuoc() {
 		return tienPhaiThuNhaNuoc;
 	}
@@ -620,6 +703,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setKetLuanNoiDungKhieuNai(KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai) {
 		this.ketLuanNoiDungKhieuNai = ketLuanNoiDungKhieuNai;
+	}
+
+	public KetLuanNoiDungKhieuNaiEnum getKetLuanNoiDungKhieuNaiGiaoTTXM() {
+		return ketLuanNoiDungKhieuNaiGiaoTTXM;
+	}
+
+	public void setKetLuanNoiDungKhieuNaiGiaoTTXM(KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNaiGiaoTTXM) {
+		this.ketLuanNoiDungKhieuNaiGiaoTTXM = ketLuanNoiDungKhieuNaiGiaoTTXM;
 	}
 
 	public HinhThucTheoDoiEnum getHinhThucTheoDoi() {
