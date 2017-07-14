@@ -1753,7 +1753,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//disableXuLyDonLanhDaoVanThuCu(VaiTroEnum.VAN_THU, donGoc.getId(), congChucId, donVi.getDonVi().getId());
 		int thuTuThucHienXLD = xuLyDonService.timThuTuXuLyDonHienTai(repo, donGoc.getId(), donVi.getDonVi().getId());
 		xuLyDonTiepTheo.setThuTuThucHien(thuTuThucHienXLD);
-		System.out.println("thuTuThucHienXLD " +thuTuThucHienXLD);
 		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donGoc.getId(), congChucId, xuLyDonTiepTheo.getCanBoXuLyChiDinh().getId(), 
 				xuLyDonTiepTheo.getPhongBanXuLy().getId(), donVi.getDonVi().getId());
 
