@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,9 +28,22 @@ public class XuLyDonService {
 
 	@Autowired
 	private XuLyDonRepository xuLyDonRepo;
-
+	
+	public int timThuTuXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViId) {
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId));		
+		int thuTu = 0;
+		List<XuLyDon> xuLyDonList = new ArrayList<XuLyDon>();
+		xuLyDonList.addAll((List<XuLyDon>) repo.findAll(where));
+		if (xuLyDonList != null) {
+			thuTu = xuLyDonList.size();
+		}
+		return thuTu;
+	}
+	
 	public XuLyDon predFindCurrent(XuLyDonRepository repo, Long id) {
-		BooleanExpression where = base.and(xuLyDon.don.id.eq(id));
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(id))
+				.and(QXuLyDon.xuLyDon.old.eq(false));
 		if (repo.exists(where)) {
 			OrderSpecifier<Integer> sortOrder = xuLyDon.thuTuThucHien.desc();
 			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(where, sortOrder);
@@ -58,7 +72,9 @@ public class XuLyDonService {
 		}
 
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.chucVu.isNull())));
 		}
 
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
@@ -91,7 +107,8 @@ public class XuLyDonService {
 		}
 
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId));
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)));
 		}	
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 
@@ -125,7 +142,9 @@ public class XuLyDonService {
 
 	public Predicate predFindChuyenVienOld(Long donId, Long canBoId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
 		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
-		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro)).and(xuLyDon.canBoXuLyChiDinh.id.eq(canBoId))
+		predicate = predicate.and(xuLyDon.chucVu.eq(vaiTro))
+				.and(xuLyDon.congChuc.id.eq(canBoId)
+						.or(xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)))
 				.and(xuLyDon.phongBanXuLy.id.eq(phongBanId)).and(xuLyDon.donViXuLy.id.eq(donViId));
 		return predicate;
 	}
