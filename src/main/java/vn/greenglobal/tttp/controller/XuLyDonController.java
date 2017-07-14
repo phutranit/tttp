@@ -1741,6 +1741,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
 		xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 		xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoChuyenDon());
+		xuLyDonTiepTheo.setCongChuc(xuLyDonHienTai.getCanBoChuyenDon());
 		//xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
 		
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
@@ -1750,8 +1751,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(xuLyDonTiepTheo.getPhongBanXuLy().getId());
 		xuLyDonTiepTheo.setDonViXuLy(donVi.getDonVi());
 		//disableXuLyDonLanhDaoVanThuCu(VaiTroEnum.VAN_THU, donGoc.getId(), congChucId, donVi.getDonVi().getId());
-		int thuTu = xuLyDonService.timThuTuXuLyDonHienTai(repo, donGoc.getId(), donVi.getDonVi().getId());
-				xuLyDonTiepTheo.setThuTuThucHien(thuTu);
+		int thuTuThucHienXLD = xuLyDonService.timThuTuXuLyDonHienTai(repo, donGoc.getId(), donVi.getDonVi().getId());
+		xuLyDonTiepTheo.setThuTuThucHien(thuTuThucHienXLD);
+		System.out.println("thuTuThucHienXLD " +thuTuThucHienXLD);
 		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donGoc.getId(), congChucId, xuLyDonTiepTheo.getCanBoXuLyChiDinh().getId(), 
 				xuLyDonTiepTheo.getPhongBanXuLy().getId(), donVi.getDonVi().getId());
 

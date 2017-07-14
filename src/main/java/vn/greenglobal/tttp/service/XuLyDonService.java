@@ -31,9 +31,7 @@ public class XuLyDonService {
 	
 	public int timThuTuXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViId) {
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId))
-				.and(QXuLyDon.xuLyDon.old.eq(false))
-				.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId));
-		
+				.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId));		
 		int thuTu = 0;
 		List<XuLyDon> xuLyDonList = new ArrayList<XuLyDon>();
 		xuLyDonList.addAll((List<XuLyDon>) repo.findAll(where));
