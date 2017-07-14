@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,11 +56,13 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	@RequestMapping(method = RequestMethod.GET, value = "/taiLieuVanThus")
 	@ApiOperation(value = "Lấy danh sách Tài liệu văn thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "donId", required = false) Long donId,
+			@RequestParam(value = "loaiTaiLieu", required = false) String loaiTaiLieu, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(), pageable);
+			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(donId, loaiTaiLieu), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
