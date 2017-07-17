@@ -125,6 +125,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy coQuanTheoDoi;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
+	@ManyToOne
+	private CoQuanQuanLy donViGiaoThamTraXacMinh;
 	
 	@OneToOne
 	@JoinColumn(name = "don_id")
@@ -718,10 +720,24 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.coQuanTheoDoi = coQuanTheoDoi;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
 		return donViThamTraXacMinh;
 	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
+	}
 	
+	@ApiModelProperty(example = "{}", position = 2)
+	public CoQuanQuanLy getDonViGiaoThamTraXacMinh() {
+		return donViGiaoThamTraXacMinh;
+	}
+
+	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
+		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
+	}
+
 	@ApiModelProperty(example = "{}", position = 2)
 	public Don getDon() {
 		return don;
@@ -729,10 +745,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDon(Don don) {
 		this.don = don;
-	}
-
-	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
-		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
 	public KetLuanNoiDungKhieuNaiEnum getKetLuanNoiDungKhieuNai() {
@@ -883,6 +895,18 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getDonViThamTraXacMinh().getTen());
 			map.put("coQuanQuanLyId", getDonViThamTraXacMinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViGiaoThamTraXacMinhInfo() {
+		if (getDonViGiaoThamTraXacMinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getDonViGiaoThamTraXacMinh().getTen());
+			map.put("coQuanQuanLyId", getDonViGiaoThamTraXacMinh().getId());
 			return map;
 		}
 		return null;
