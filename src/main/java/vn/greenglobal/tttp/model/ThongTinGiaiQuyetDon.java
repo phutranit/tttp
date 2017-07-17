@@ -97,7 +97,13 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int soNguoiDaBiXuLyHanhChinh;
 	private int soLanGiaiQuyetLai;
 	private int soVuGiaiQuyetKhieuNai;
+	private int soNguoiDuocTraLaiQuyenLoi;
 	
+	private long tienPhaiThuNhaNuocQDGQ;
+	private long datPhaiThuNhaNuocQDGQ;
+	private long tienPhaiTraCongDanQDGQ;
+	private long datPhaiTraCongDanQDGQ;
+
 	private long tienPhaiThuNhaNuoc;
 	private long datPhaiThuNhaNuoc;
 	private long tienPhaiTraCongDan;
@@ -119,6 +125,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy coQuanTheoDoi;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
+	@ManyToOne
+	private CoQuanQuanLy donViGiaoThamTraXacMinh;
 	
 	@OneToOne
 	@JoinColumn(name = "don_id")
@@ -563,6 +571,46 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.soVuGiaiQuyetKhieuNai = soVuGiaiQuyetKhieuNai;
 	}
 
+	public int getSoNguoiDuocTraLaiQuyenLoi() {
+		return soNguoiDuocTraLaiQuyenLoi;
+	}
+
+	public long getTienPhaiThuNhaNuocQDGQ() {
+		return tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setTienPhaiThuNhaNuocQDGQ(long tienPhaiThuNhaNuocQDGQ) {
+		this.tienPhaiThuNhaNuocQDGQ = tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getDatPhaiThuNhaNuocQDGQ() {
+		return datPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setDatPhaiThuNhaNuocQDGQ(long datPhaiThuNhaNuocQDGQ) {
+		this.datPhaiThuNhaNuocQDGQ = datPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getTienPhaiTraCongDanQDGQ() {
+		return tienPhaiTraCongDanQDGQ;
+	}
+
+	public void setTienPhaiTraCongDanQDGQ(long tienPhaiTraCongDanQDGQ) {
+		this.tienPhaiTraCongDanQDGQ = tienPhaiTraCongDanQDGQ;
+	}
+
+	public long getDatPhaiTraCongDanQDGQ() {
+		return datPhaiTraCongDanQDGQ;
+	}
+
+	public void setDatPhaiTraCongDanQDGQ(long datPhaiTraCongDanQDGQ) {
+		this.datPhaiTraCongDanQDGQ = datPhaiTraCongDanQDGQ;
+	}
+
+	public void setSoNguoiDuocTraLaiQuyenLoi(int soNguoiDuocTraLaiQuyenLoi) {
+		this.soNguoiDuocTraLaiQuyenLoi = soNguoiDuocTraLaiQuyenLoi;
+	}
+
 	public long getTienPhaiThuNhaNuoc() {
 		return tienPhaiThuNhaNuoc;
 	}
@@ -672,10 +720,24 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.coQuanTheoDoi = coQuanTheoDoi;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
 		return donViThamTraXacMinh;
 	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
+	}
 	
+	@ApiModelProperty(example = "{}", position = 2)
+	public CoQuanQuanLy getDonViGiaoThamTraXacMinh() {
+		return donViGiaoThamTraXacMinh;
+	}
+
+	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
+		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
+	}
+
 	@ApiModelProperty(example = "{}", position = 2)
 	public Don getDon() {
 		return don;
@@ -683,10 +745,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDon(Don don) {
 		this.don = don;
-	}
-
-	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
-		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
 	public KetLuanNoiDungKhieuNaiEnum getKetLuanNoiDungKhieuNai() {
@@ -837,6 +895,18 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getDonViThamTraXacMinh().getTen());
 			map.put("coQuanQuanLyId", getDonViThamTraXacMinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViGiaoThamTraXacMinhInfo() {
+		if (getDonViGiaoThamTraXacMinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getDonViGiaoThamTraXacMinh().getTen());
+			map.put("coQuanQuanLyId", getDonViGiaoThamTraXacMinh().getId());
 			return map;
 		}
 		return null;
