@@ -97,7 +97,13 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int soNguoiDaBiXuLyHanhChinh;
 	private int soLanGiaiQuyetLai;
 	private int soVuGiaiQuyetKhieuNai;
+	private int soNguoiDuocTraLaiQuyenLoi;
 	
+	private long tienPhaiThuNhaNuocQDGQ;
+	private long datPhaiThuNhaNuocQDGQ;
+	private long tienPhaiTraCongDanQDGQ;
+	private long datPhaiTraCongDanQDGQ;
+
 	private long tienPhaiThuNhaNuoc;
 	private long datPhaiThuNhaNuoc;
 	private long tienPhaiTraCongDan;
@@ -561,6 +567,46 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setSoVuGiaiQuyetKhieuNai(int soVuGiaiQuyetKhieuNai) {
 		this.soVuGiaiQuyetKhieuNai = soVuGiaiQuyetKhieuNai;
+	}
+
+	public int getSoNguoiDuocTraLaiQuyenLoi() {
+		return soNguoiDuocTraLaiQuyenLoi;
+	}
+
+	public long getTienPhaiThuNhaNuocQDGQ() {
+		return tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setTienPhaiThuNhaNuocQDGQ(long tienPhaiThuNhaNuocQDGQ) {
+		this.tienPhaiThuNhaNuocQDGQ = tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getDatPhaiThuNhaNuocQDGQ() {
+		return datPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setDatPhaiThuNhaNuocQDGQ(long datPhaiThuNhaNuocQDGQ) {
+		this.datPhaiThuNhaNuocQDGQ = datPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getTienPhaiTraCongDanQDGQ() {
+		return tienPhaiTraCongDanQDGQ;
+	}
+
+	public void setTienPhaiTraCongDanQDGQ(long tienPhaiTraCongDanQDGQ) {
+		this.tienPhaiTraCongDanQDGQ = tienPhaiTraCongDanQDGQ;
+	}
+
+	public long getDatPhaiTraCongDanQDGQ() {
+		return datPhaiTraCongDanQDGQ;
+	}
+
+	public void setDatPhaiTraCongDanQDGQ(long datPhaiTraCongDanQDGQ) {
+		this.datPhaiTraCongDanQDGQ = datPhaiTraCongDanQDGQ;
+	}
+
+	public void setSoNguoiDuocTraLaiQuyenLoi(int soNguoiDuocTraLaiQuyenLoi) {
+		this.soNguoiDuocTraLaiQuyenLoi = soNguoiDuocTraLaiQuyenLoi;
 	}
 
 	public long getTienPhaiThuNhaNuoc() {
