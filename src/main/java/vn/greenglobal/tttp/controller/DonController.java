@@ -522,8 +522,20 @@ public class DonController extends TttpController<Don> {
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		try {
-			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM);
-			if (nguoiDung != null) {
+			NguoiDung nguoiDungHienTai = null;
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA);			
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA);			
+			}
+			
+			if (nguoiDungHienTai != null) {
 				Don don = repo.findOne(donService.predicateFindOne(id));
 				if (don == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -552,6 +564,10 @@ public class DonController extends TttpController<Don> {
 			
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) != null) {
 				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA);			
+			}
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) != null) {
+				nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA);			
 			}
 			
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);

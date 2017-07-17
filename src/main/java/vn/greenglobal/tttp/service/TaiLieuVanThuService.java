@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.model.QTaiLieuVanThu;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
@@ -23,7 +24,7 @@ public class TaiLieuVanThuService {
 
 	BooleanExpression base = QTaiLieuVanThu.taiLieuVanThu.daXoa.eq(false);
 
-	public Predicate predicateFindAll(Long donId, String loaiTaiLieu) {
+	public Predicate predicateFindAll(Long donId, String loaiTaiLieu, String buocGiaiQuyet) {
 		BooleanExpression predAll = base;
 		
 		if (donId != null && donId > 0) {
@@ -32,6 +33,10 @@ public class TaiLieuVanThuService {
 		
 		if (loaiTaiLieu != null && !"".equals(loaiTaiLieu.trim())) {
 			predAll.and(QTaiLieuVanThu.taiLieuVanThu.loaiQuyTrinh.eq(ProcessTypeEnum.valueOf(loaiTaiLieu.trim())));
+		}
+		
+		if (buocGiaiQuyet != null && !"".equals(buocGiaiQuyet.trim())) {
+			predAll.and(QTaiLieuVanThu.taiLieuVanThu.buocGiaiQuyet.eq(BuocGiaiQuyetEnum.valueOf(buocGiaiQuyet.trim())));
 		}
 		
 		return predAll;
