@@ -25,7 +25,6 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private static final long serialVersionUID = -9223009647319074416L;
 
-//	@NotBlank
 	@Size(max=255)
 	private String ten = "";
 	@Size(max=255)
