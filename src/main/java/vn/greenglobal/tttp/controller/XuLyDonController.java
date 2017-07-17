@@ -60,6 +60,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.TaiLieuBangChung;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
 import vn.greenglobal.tttp.model.TepDinhKem;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -69,6 +70,7 @@ import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
@@ -76,6 +78,7 @@ import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
@@ -143,6 +146,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 	@Autowired
 	private StateService serviceState;
+	
+	@Autowired
+	private ThamSoRepository thamSoRepository;
+	
+	@Autowired
+	private ThamSoService thamSoService;
 	
 	public XuLyDonController(BaseRepository<XuLyDon, Long> repo) {
 		super(repo);
@@ -1406,7 +1415,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setDon(don);
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
-			Long soNgayGiaiQuyetMacDinh = 45L;
+			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
+			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
 			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);	
 			thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
@@ -1574,7 +1584,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		donMoi.setNgayBatDauXLD(LocalDateTime.now());
 		donMoi.setNgayTiepNhan(LocalDateTime.now());
-		long soNgayXuLyMacDinh = 10;
+		ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+		Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 		donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 		donMoi.setDonCongDans(new ArrayList<Don_CongDan>());
 		donMoi.setTaiLieuBangChungs(new ArrayList<TaiLieuBangChung>());

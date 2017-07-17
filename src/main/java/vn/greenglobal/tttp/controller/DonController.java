@@ -55,6 +55,7 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
@@ -66,6 +67,7 @@ import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.DonService;
@@ -73,6 +75,7 @@ import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.ExcelUtil;
@@ -142,6 +145,12 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
+	
+	@Autowired
+	private ThamSoRepository thamSoRepository;
+	
+	@Autowired
+	private ThamSoService thamSoService;
 		
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -490,7 +499,8 @@ public class DonController extends TttpController<Don> {
 					if (don.getThoiHanXuLyXLD() != null) {
 						donMoi.setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 					} else {
-						long soNgayXuLyMacDinh = 10;
+						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+						Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
 					xuLyDonService.save(xuLyDon, congChucId);
@@ -617,7 +627,8 @@ public class DonController extends TttpController<Don> {
 					if (donOld.getThoiHanXuLyXLD() == null) {
 						don.setNgayBatDauXLD(Utils.localDateTimeNow());
 						if (don.getThoiHanXuLyXLD() == null) {
-							long soNgayXuLyMacDinh = 10;
+							ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+							Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 						}
 					} else {
@@ -741,7 +752,8 @@ public class DonController extends TttpController<Don> {
 						if (donOld.getThoiHanXuLyXLD() == null) {
 							don.setNgayBatDauXLD(Utils.localDateTimeNow());
 							if (don.getThoiHanXuLyXLD() == null) {
-								long soNgayXuLyMacDinh = 10;
+								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+								Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 							}
 						} else {
@@ -834,7 +846,8 @@ public class DonController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			Long soNgayMacDinh = 10L;
+			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
@@ -852,7 +865,8 @@ public class DonController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			Long soNgayMacDinh = 45L;
+			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
+			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
