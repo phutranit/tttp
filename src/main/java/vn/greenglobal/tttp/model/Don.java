@@ -1071,7 +1071,7 @@ public class Don extends Model<Don> {
 				XuLyDon xld = xlds.get(xlds.size() - 1);
 				// ttd ht
 				if (xld != null) {
-					if (xld.getHuongXuLy() != null) { 
+					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
 						trangThaiDonText = "Hoàn thành";
 					}
 				}
@@ -1114,7 +1114,7 @@ public class Don extends Model<Don> {
 				XuLyDon xld = xlds.get(xlds.size() - 1);
 				// ttd ht
 				if (xld != null) { 
-					if (xld.getHuongXuLy() != null) { 
+					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
 						out = xld.getHuongXuLy().getText();
 						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
 							out = "Đơn chuyển";
@@ -1126,7 +1126,7 @@ public class Don extends Model<Don> {
 						out = "";
 						if (xld.isDonTra()) {
 							out = "Đơn chuyển được trả lại";
-						} 
+						}
 //						else if (!xld.isDonTra() && xld.isDonChuyen()) {
 //							if (xld.getCoQuanChuyenDon() != null) { 
 //								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
