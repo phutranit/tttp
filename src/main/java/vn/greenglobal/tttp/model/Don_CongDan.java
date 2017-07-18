@@ -16,11 +16,10 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
-@Table(name = "don_congdan", indexes = {@Index(columnList = "phanLoaiCongDan, don_id, daXoa", name = "IndexPhanLoaiDonDaXoa"),
-		@Index(columnList = "phanLoaiCongDan, don_id, congDan_id", name = "IndexPhanLoaiDonCongDan"),
-		@Index(columnList = "phanLoaiCongDan, don_id, congDan_id, tenCoQUan", name = "IndexPhanLoaiDonCongDanTenCoQuan"),
-		@Index(columnList = "don_id, daXoa", name = "IndexDonDaXoa"), @Index(columnList = "id, daXoa", name = "IndexIdDaXoa"),
-		@Index(columnList = "congDan_id, daXoa", name = "IndexCongDanDaXoa"), @Index(columnList = "daXoa", name = "IndexDaXoa")})
+@Table(name = "don_congdan", indexes = {@Index(columnList = "phanLoaiCongDan, don_id, daXoa", name = "IndexPLDDX"),
+		@Index(columnList = "phanLoaiCongDan, don_id, congDan_id", name = "IndexPLDCD"),
+		@Index(columnList = "don_id, daXoa", name = "IndexDDX"), @Index(columnList = "id, daXoa", name = "IndexIDDX"),
+		@Index(columnList = "congDan_id, daXoa", name = "IndexCDDX"), @Index(columnList = "daXoa", name = "IndexDX")})
 public class Don_CongDan extends Model<Don_CongDan> {
 
 	private static final long serialVersionUID = -7123036795988588832L;
