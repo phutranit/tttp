@@ -59,7 +59,7 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "donId", required = false) Long donId,
 			@RequestParam(value = "loaiQuyTrinh", required = false) String loaiQuyTrinh,
-			@RequestParam(value = "buocGiaiQuyet", required = false) String buocGiaiQuyet,Pageable pageable,
+			@RequestParam(value = "buocGiaiQuyet", required = false) String buocGiaiQuyet, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {

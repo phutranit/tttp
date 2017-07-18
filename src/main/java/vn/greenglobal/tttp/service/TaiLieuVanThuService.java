@@ -28,15 +28,15 @@ public class TaiLieuVanThuService {
 		BooleanExpression predAll = base;
 		
 		if (donId != null && donId > 0) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.don.id.eq(donId));
+			predAll = predAll.and(QTaiLieuVanThu.taiLieuVanThu.don.id.eq(donId));
 		}
 		
 		if (loaiQuyTrinh != null && !"".equals(loaiQuyTrinh.trim())) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.loaiQuyTrinh.eq(ProcessTypeEnum.valueOf(loaiQuyTrinh.trim())));
+			predAll =predAll.and(QTaiLieuVanThu.taiLieuVanThu.loaiQuyTrinh.eq(ProcessTypeEnum.valueOf(loaiQuyTrinh.trim())));
 		}
 		
 		if (buocGiaiQuyet != null && !"".equals(buocGiaiQuyet.trim())) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.buocGiaiQuyet.eq(BuocGiaiQuyetEnum.valueOf(buocGiaiQuyet.trim())));
+			predAll = predAll.and(QTaiLieuVanThu.taiLieuVanThu.buocGiaiQuyet.eq(BuocGiaiQuyetEnum.valueOf(buocGiaiQuyet.trim())));
 		}
 		
 		return predAll;
