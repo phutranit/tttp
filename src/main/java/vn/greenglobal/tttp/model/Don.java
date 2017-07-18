@@ -126,6 +126,8 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViXuLyGiaiQuyet;
+	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
@@ -206,7 +208,7 @@ public class Don extends Model<Don> {
 	private TrangThaiDonEnum trangThaiTTXM;
 	
 	@Enumerated(EnumType.STRING)
-	private KetQuaTrangThaiDonEnum ketQuaTrangThaiXLDGiaiQuyet;
+	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	
 	@ManyToOne
 	private State currentState;
@@ -988,12 +990,21 @@ public class Don extends Model<Don> {
 	}
 
 	@ApiModelProperty(hidden = true)
-	public KetQuaTrangThaiDonEnum getKetQuaTrangThaiXLDGiaiQuyet() {
-		return ketQuaTrangThaiXLDGiaiQuyet;
+	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
+		return ketQuaXLDGiaiQuyet;
 	}
 
-	public void setKetQuaTrangThaiXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaTrangThaiXLDGiaiQuyet) {
-		this.ketQuaTrangThaiXLDGiaiQuyet = ketQuaTrangThaiXLDGiaiQuyet;
+	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
+		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
+	}
+
+	@ManyToOne
+	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
+		return donViXuLyGiaiQuyet;
+	}
+
+	public void setDonViXuLyGiaiQuyet(CoQuanQuanLy donViXuLyGiaiQuyet) {
+		this.donViXuLyGiaiQuyet = donViXuLyGiaiQuyet;
 	}
 
 	@ApiModelProperty(hidden = true)

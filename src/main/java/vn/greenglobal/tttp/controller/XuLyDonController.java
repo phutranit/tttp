@@ -1168,6 +1168,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+		don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 		//don.setNoiDungThongTinTrinhLanhDao(xuLyDonHienTai.getNoiDungXuLy());
 		
 		//tao lich su qua trinh xu ly don
@@ -1358,7 +1359,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setHuongXuLyXLD(xuLyDonHienTai.getHuongXuLy());
 		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_XU_LY);
-		don.setKetQuaTrangThaiXLDGiaiQuyet(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO);
+		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO);
+		if (don.getDonViXuLyGiaiQuyet() == null) {
+			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
+		}
 	
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -1575,6 +1579,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donOld.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 		donOld.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		donOld.setCanBoXuLyChiDinh(null);
+		donOld.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_XU_LY);
+		donOld.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.CHUYEN_DON);
 		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 		donOld.setCurrentState(beginState);
 		donOld.setCoQuanDangGiaiQuyet(donVi.getDonVi());
@@ -1598,6 +1604,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTiepCongDans(new ArrayList<SoTiepCongDan>());
 		donMoi.setTaiLieuVanThus(new ArrayList<TaiLieuVanThu>());
 		donMoi.setTepDinhKems(new ArrayList<TepDinhKem>());
+		donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+		donMoi.setDonViXuLyGiaiQuyet(donVi.getDonVi());
+		donMoi.setKetQuaXLDGiaiQuyet(null);
 		donMoi.setDonViXuLyDonChuyen(donVi.getDonVi());
 		donMoi.setCanBoXuLyChiDinh(null);
 		xuLyDonTiepTheo.setDon(donMoi);

@@ -426,7 +426,7 @@ public class DonController extends TttpController<Don> {
 					List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 					donMoi.setCurrentState(beginState);
 					donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
-					
+					donMoi.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					//Vai tro tiep theo
 					List<State> listState = new ArrayList<State>();
 					Process process = null;
@@ -600,7 +600,7 @@ public class DonController extends TttpController<Don> {
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
-				
+				don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				
@@ -747,6 +747,7 @@ public class DonController extends TttpController<Don> {
 				} else { 
 					if (don.isThanhLapDon()) {
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
