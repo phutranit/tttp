@@ -77,14 +77,13 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		return predAll;
 	}
 	
-	public Long getTongSoLuocTiepCongDan(BooleanExpression predAll, LoaiTiepDanEnum loaiTiepCongDan, Long donViId) { 
+	public Long getTongSoLuocTiepCongDanThuongXuyen(BooleanExpression predAll, Long donViId) { 
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		
-		if (loaiTiepCongDan != null) {
-			predAll = predAll
-					.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(loaiTiepCongDan));
-		}
+		predAll = predAll
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+		
 		if (donViId != null && donViId > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
@@ -101,16 +100,14 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoNguoiDungTenTiepCongDan(BooleanExpression predAll, LoaiTiepDanEnum loaiTiepCongDan, Long donViId, boolean isCaNhanVaToChuc, 
+	public Long getTongSoNguoiDungTenTiepCongDanThuongXuyen(BooleanExpression predAll, Long donViId, boolean isCaNhanVaToChuc, 
 			boolean isDoanDongNguoi) { 
 		Long tongSo = 0L;
 		BooleanExpression donCongDanQuery = baseDonCongDan;
 		
-		System.out.println("--------------------------------------------------------" +donViId);
-		if (loaiTiepCongDan != null) {
-			predAll = predAll
-					.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(loaiTiepCongDan));
-		}
+		System.out.println("-------------------------thuong xuyen-------------------------------" +donViId);
+		predAll = predAll
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
 		if (donViId != null && donViId > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
@@ -176,14 +173,13 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoDoanDongNguoiTiepCongDan(BooleanExpression predAll, LoaiTiepDanEnum loaiTiepCongDan, Long donViId, boolean isDoanDongNguoi) { 
+	public Long getTongSoDoanDongNguoiTiepCongDanThuongXuyen(BooleanExpression predAll, Long donViId, boolean isDoanDongNguoi) { 
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		
-		if (loaiTiepCongDan != null) {
-			predAll = predAll
-					.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(loaiTiepCongDan));
-		}
+		predAll = predAll
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+		
 		if (donViId != null && donViId > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
@@ -196,23 +192,108 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			
 			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(doanDongNguoi));
 			dons.addAll((List<Don>) donRepo.findAll(donQuery));
-			
-			dons.forEach(d -> {
-				System.out.println("DDN don 1 " +d.getId());
-				System.out.println("DDN loai don 2 " +d.getLoaiDon());
-			});
-			
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons));
 		}
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		tongSo = Long.valueOf(soTiepCongDans.size());
-
-		soTiepCongDans.forEach(st -> {
-			System.out.println("DDN " +st.getId() + " donViId " +donViId);
-			System.out.println("DDN don vi tiep " +st.getDonViTiepDan().getId());
-		});
+		return tongSo;
+	}
+	
+	public Long getTongSoLuocTiepCongDanDinhKyDotXuat(BooleanExpression predAll, Long donViId) { 
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		
+		predAll = predAll
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+		
+		if (donViId != null && donViId > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		}
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		tongSo = Long.valueOf(soTiepCongDans.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(BooleanExpression predAll, Long donViId, boolean isCaNhanVaToChuc, 
+			boolean isDoanDongNguoi) { 
+		Long tongSo = 0L;
+		BooleanExpression donCongDanQuery = baseDonCongDan;
+		
+		System.out.println("-------------------------dinh ky dot xuat-------------------------------" +donViId);
+		predAll = predAll
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+		
+		if (donViId != null && donViId > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		}
+		if (isCaNhanVaToChuc) {
+			List<Don> dons = new ArrayList<Don>();
+			LoaiNguoiDungDonEnum caNhan = LoaiNguoiDungDonEnum.CA_NHAN;
+			LoaiNguoiDungDonEnum toChuc = LoaiNguoiDungDonEnum.CO_QUAN_TO_CHUC;
+			BooleanExpression donQuery = baseDon;
+			
+			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(caNhan)
+					.or(QDon.don.loaiNguoiDungDon.eq(toChuc)));
+			dons.addAll((List<Don>) donRepo.findAll(donQuery));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons));
+		}
+		if (isDoanDongNguoi) {
+			List<Don> dons = new ArrayList<Don>();
+			LoaiNguoiDungDonEnum doanDongNguoi = LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI;
+			BooleanExpression donQuery = baseDon;
+			
+			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(doanDongNguoi));
+			dons.addAll((List<Don>) donRepo.findAll(donQuery));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons));
+		}
+		
+		List<Don> dons = new ArrayList<Don>();
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
+		
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+
+		PhanLoaiDonCongDanEnum nguoiDungDon = PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON;
+		donCongDanQuery = donCongDanQuery.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(nguoiDungDon));
+		donCongDanQuery = donCongDanQuery.and(QDon_CongDan.don_CongDan.don.in(dons));
+		
+		donCongDans.addAll((List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery));
+		tongSo = Long.valueOf(donCongDans.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDoanDongNguoiTiepCongDanDinhKyDotXuat(BooleanExpression predAll, Long donViId, boolean isDoanDongNguoi) { 
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+		
+		if (donViId != null && donViId > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		}
+		if (isDoanDongNguoi) {
+			List<Don> dons = new ArrayList<Don>();
+			LoaiNguoiDungDonEnum doanDongNguoi = LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI;
+			BooleanExpression donQuery = baseDon;
+			
+			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(doanDongNguoi));
+			dons.addAll((List<Don>) donRepo.findAll(donQuery));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons));
+		}
+		
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		tongSo = Long.valueOf(soTiepCongDans.size());
 		return tongSo;
 	}
 }
