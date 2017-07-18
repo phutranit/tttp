@@ -151,11 +151,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
 	 */
-//	@Lob
+	//@Lob
 	private String yKienGiaiQuyet = "";
-//	@Lob
+	//@Lob
 	private String yKienCuaDonViGiaoTTXM = "";
-//	@Lob
+	//@Lob
 	private String yKienXuLyDon = "";
 	private CongChuc canBoXuLyChiDinh;
 	private CoQuanQuanLy phongBanGiaiQuyet;

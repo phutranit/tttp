@@ -1,9 +1,9 @@
 package vn.greenglobal.tttp.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,7 +28,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	private static final long serialVersionUID = -626978002365811586L;
 
-	// @Lob
+	//@Lob
 	private String yKienGiaiQuyet;
 
 	private int thuTuThucHien;
