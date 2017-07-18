@@ -33,6 +33,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
@@ -135,7 +136,7 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy donViXuLyDonChuyen;
 	@ManyToOne
-	private CongChuc canBoXuLyChiDinh;
+	private CongChuc canBoXuLyChiDinh;	
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -197,7 +198,16 @@ public class Don extends Model<Don> {
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
-
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiXLDGiaiQuyet;
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiTTXM;
+	
+	@Enumerated(EnumType.STRING)
+	private KetQuaTrangThaiDonEnum ketQuaTrangThaiXLDGiaiQuyet;
+	
 	@ManyToOne
 	private State currentState;
 	@Enumerated(EnumType.STRING)
@@ -957,6 +967,33 @@ public class Don extends Model<Don> {
 
 	public void setThanhLapTiepDanGapLanhDao(boolean thanhLapTiepDanGapLanhDao) {
 		this.thanhLapTiepDanGapLanhDao = thanhLapTiepDanGapLanhDao;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public TrangThaiDonEnum getTrangThaiXLDGiaiQuyet() {
+		return trangThaiXLDGiaiQuyet;
+	}
+
+	public void setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum trangThaiXLDGiaiQuyet) {
+		this.trangThaiXLDGiaiQuyet = trangThaiXLDGiaiQuyet;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public TrangThaiDonEnum getTrangThaiTTXM() {
+		return trangThaiTTXM;
+	}
+
+	public void setTrangThaiTTXM(TrangThaiDonEnum trangThaiTTXM) {
+		this.trangThaiTTXM = trangThaiTTXM;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public KetQuaTrangThaiDonEnum getKetQuaTrangThaiXLDGiaiQuyet() {
+		return ketQuaTrangThaiXLDGiaiQuyet;
+	}
+
+	public void setKetQuaTrangThaiXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaTrangThaiXLDGiaiQuyet) {
+		this.ketQuaTrangThaiXLDGiaiQuyet = ketQuaTrangThaiXLDGiaiQuyet;
 	}
 
 	@ApiModelProperty(hidden = true)
