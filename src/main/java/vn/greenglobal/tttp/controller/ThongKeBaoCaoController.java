@@ -185,7 +185,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapTCDDinhKyVaDotXuatCuaLanhDao.put("doanDongNguoi", mapDoanDongNguoiDKDX);
 				mapDonVi.put("mapTCDDinhKyDotXuatCuaLanhDao", mapTCDDinhKyVaDotXuatCuaLanhDao);
 				
-				mapNoiDungTiepCongDan.put("kienNghiPhanAnh", "");
+				mapNoiDungTiepCongDan.put("kienNghiPhanAnh", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKienNghiPhanAnh(predAllDSTCDDonVi, cq.getId()));
+				mapDonVi.put("noiDungTiepCongDan", mapNoiDungTiepCongDan);
 				
 				coQuans.add(mapDonVi);	
 				mapVuViecTX = new HashMap<String, Object>();
