@@ -58,12 +58,12 @@ public class TaiLieuVanThuController extends TttpController<TaiLieuVanThu> {
 	public @ResponseBody Object getList(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "donId", required = false) Long donId,
-			@RequestParam(value = "loaiTaiLieu", required = false) String loaiTaiLieu,
+			@RequestParam(value = "loaiQuyTrinh", required = false) String loaiQuyTrinh,
 			@RequestParam(value = "buocGiaiQuyet", required = false) String buocGiaiQuyet,Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(donId, loaiTaiLieu, buocGiaiQuyet), pageable);
+			Page<TaiLieuVanThu> page = repo.findAll(taiLieuVanThuService.predicateFindAll(donId, loaiQuyTrinh, buocGiaiQuyet), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
