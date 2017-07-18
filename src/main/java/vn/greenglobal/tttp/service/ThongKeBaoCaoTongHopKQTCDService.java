@@ -271,8 +271,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 	public Long getTongSoVuViecTiepCongDanDonKienNghiPhanAnh(BooleanExpression predAll, Long donViId) { 
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
-		List<Long> soVuViecs = new ArrayList<Long>();
-		
+		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.eq(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH));
 		
 		if (donViId != null && donViId > 0) { 
@@ -281,17 +280,17 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
 		}
 		
-		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));		
-		soTiepCongDans.forEach(st -> { 
-			System.out.println("st " +st.getId() + " don " +st.getDon().getId());
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+		dons.forEach(d -> { 
+			System.out.println("d " +d.getId() );
 		});
 		
-		tongSo = Long.valueOf(soTiepCongDans.stream().map(tcd -> {
+		tongSo = Long.valueOf(dons.stream().map(d -> {
 			Long tongSoVuViec = 0L;
-			Don don = tcd.getDon();
-			if (don.getThongTinGiaiQuyetDon() != null) {
+			if (d.getThongTinGiaiQuyetDon() != null) {
 				System.out.println("ttgq " + donViId);
-				ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
 				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
 			} else {
 				tongSoVuViec += 1;
@@ -300,7 +299,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		}).distinct().mapToLong(Long::longValue).sum());
 		
 		System.out.println("tongSo " +tongSo);
-		System.out.println("soVuViecs " +soVuViecs.size());
 		return tongSo;
 	}
 }
