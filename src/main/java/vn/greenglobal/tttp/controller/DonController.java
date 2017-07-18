@@ -425,6 +425,7 @@ public class DonController extends TttpController<Don> {
 					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 					List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 					donMoi.setCurrentState(beginState);
+					donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					
 					//Vai tro tiep theo
 					List<State> listState = new ArrayList<State>();
@@ -614,6 +615,7 @@ public class DonController extends TttpController<Don> {
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
