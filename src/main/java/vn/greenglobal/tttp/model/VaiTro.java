@@ -42,7 +42,7 @@ public class VaiTro extends Model<VaiTro> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
-	// @Lob
+	//@Lob
 	@Transient
 	private String quyen = "";
 

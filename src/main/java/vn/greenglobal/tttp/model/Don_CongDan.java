@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -15,7 +16,10 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
-@Table(name = "don_congdan")
+@Table(name = "don_congdan", indexes = {@Index(columnList = "phanLoaiCongDan, don_id, daXoa", name = "IndexPLDDX"),
+		@Index(columnList = "phanLoaiCongDan, don_id, congDan_id", name = "IndexPLDCD"),
+		@Index(columnList = "don_id, daXoa", name = "IndexDDX"), @Index(columnList = "id, daXoa", name = "IndexIDDX"),
+		@Index(columnList = "congDan_id, daXoa", name = "IndexCDDX"), @Index(columnList = "daXoa", name = "IndexDX")})
 public class Don_CongDan extends Model<Don_CongDan> {
 
 	private static final long serialVersionUID = -7123036795988588832L;
