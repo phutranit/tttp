@@ -28,6 +28,7 @@ import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetLuanGiaiQuyetLaiEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 
 @Entity
 @Table(name = "thongtingiaiquyetdon")
@@ -147,15 +148,17 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
 	@Enumerated(EnumType.STRING)
 	private KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai;
+	@Enumerated(EnumType.STRING)
+	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
 	 */
-//	@Lob
+	//@Lob
 	private String yKienGiaiQuyet = "";
-//	@Lob
+	//@Lob
 	private String yKienCuaDonViGiaoTTXM = "";
-//	@Lob
+	//@Lob
 	private String yKienXuLyDon = "";
 	private CongChuc canBoXuLyChiDinh;
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -785,6 +788,15 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setKetLuanGiaiQuyetLai(KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai) {
 		this.ketLuanGiaiQuyetLai = ketLuanGiaiQuyetLai;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
+		return ketQuaXLDGiaiQuyet;
+	}
+
+	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
+		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
 	@Transient

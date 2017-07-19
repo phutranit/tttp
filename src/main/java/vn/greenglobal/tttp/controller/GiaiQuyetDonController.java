@@ -571,6 +571,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCurrentState(giaiQuyetDon.getNextState());
 		don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setHoanThanhDon(true);
+		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
+		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
 		donService.save(don, congChucId);
 		
 		giaiQuyetDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
@@ -969,6 +971,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setCurrentState(canBoNhanKetQuaState);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1008,6 +1011,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setProcessType(null);
 		don.setCurrentState(null);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		donService.save(don, congChucId);
 		
 		//tao lich su qua trinh xu ly don

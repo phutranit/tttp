@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import io.swagger.annotations.ApiModel;
 
 @Entity

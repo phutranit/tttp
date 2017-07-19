@@ -16,10 +16,10 @@ import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
-import vn.greenglobal.tttp.util.Utils;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "xulydon")

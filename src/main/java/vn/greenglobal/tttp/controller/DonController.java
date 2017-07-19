@@ -177,7 +177,9 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "hoTen", required = false) String hoTen, 
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -204,7 +206,7 @@ public class DonController extends TttpController<Don> {
 						donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo),
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo),
 						pageable);
 				
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
@@ -234,6 +236,8 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "tinhTrangGiaiQuyet", required = false) String tinhTrangGiaiQuyet,
 			@RequestParam(value = "trangThaiDon", required = true) String trangThaiDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -247,12 +251,13 @@ public class DonController extends TttpController<Don> {
 
 			if (nguoiDung != null) {
 				String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+				Long donViGiaiQuyetId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
 				Page<Don> pageData = repo.findAll(
 						donService.predicateFindAllGQD(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
-								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo, xuLyRepo),
+								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), donViGiaiQuyetId,
+								congChuc.getId(), vaiTro, hoTen, trangThaiDonToanHT, ketQuaToanHT, giaiQuyetDonRepo, xuLyRepo),
 						pageable);
 				return assembler.toResource(pageData, (ResourceAssembler) eass);
 			}
@@ -828,14 +833,17 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "donViXuLyXLD", required = false) Long donViXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
 			@RequestParam(value = "vaiTro", required = true) String vaiTro,
-			@RequestParam(value = "hoTen", required = false) String hoTen) throws IOException {
+			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT) throws IOException {
 		
 		try {
 			OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
 			ExcelUtil.exportDanhSachXuLyDon(response, "DanhSachXuLyDon", "sheetName", 
 					(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
-							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo), order),
+							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, 
+							congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), order),
 					"Danh sách xử lý đơn");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);

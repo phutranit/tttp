@@ -13,7 +13,7 @@ public enum KetQuaTrangThaiDonEnum {
 	DANG_TTXM("Đang TTXM"),
 	DA_CO_KET_QUA_TTXM("Đã có kết quả TTXM"),
 	CHO_DOI_THOAI("Chờ đối thoại"),
-	DA_CA_KET_QUA_DOI_THOAI("Đã có kết quả đối thoại"),
+	DA_CO_KET_QUA_DOI_THOAI("Đã có kết quả đối thoại"),
 	CHO_RA_QUYET_DINH_GIAI_QUYET("Chờ ra quyết định giải quyết"),
 	DA_CO_QUYET_DINH_GIAI_QUYET("Đã có quyết định giải quyết"),
 	LUU_HO_SO("Lưu hồ sơ");

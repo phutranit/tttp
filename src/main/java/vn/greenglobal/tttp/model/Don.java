@@ -54,11 +54,11 @@ public class Don extends Model<Don> {
 	@Size(max=255)
 	private String ma = "";
 	@NotBlank
-	// @Lob
+	//@Lob
 	private String noiDung = " ";
 	@Size(max=255)
 	private String yeuCauCuaCongDan = "";
-	// @Lob
+	//@Lob
 	private String huongGiaiQuyetDaThucHien = " ";
 	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
@@ -1738,6 +1738,27 @@ public class Don extends Model<Don> {
 					}
 				}
 			}
+		}
+		return list;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getTrangThaiDonInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet().getText());
+			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+			list.add(map);
+		}
+		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			map.put("trangThaiDonText", getTrangThaiTTXM().getText());
+			map.put("ketQuaStr", "");
+			list.add(map);
 		}
 		return list;
 	}

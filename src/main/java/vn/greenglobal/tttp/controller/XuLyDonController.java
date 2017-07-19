@@ -603,6 +603,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 						don.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
 						don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
+						don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_XU_LY);
+						don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DINH_CHI);
 						// set ngay ket thuc xu ly don cho don
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
 
