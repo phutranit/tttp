@@ -824,7 +824,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "donViXuLyXLD", required = false) Long donViXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "vaiTro", required = true) String vaiTro,
+			@RequestParam(value = "vaiTro", required = false) String vaiTro,
 			@RequestParam(value = "hoTen", required = false) String hoTen) throws IOException {
 		
 		try {
