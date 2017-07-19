@@ -14,7 +14,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
-import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
@@ -344,7 +343,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 	}
 	
 	public Long getTongSoVuViecTiepCongDanDonKhieuNaiLinhVucChiTietCha(BooleanExpression predAll, Long donViId, LinhVucDonThu linhVuc) {
-		System.out.println("------------------------ linh vuc chi tiet cha --------------------------- " +donViId);
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		List<Don> dons = new ArrayList<Don>();
@@ -364,10 +362,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
-		dons.forEach(d -> { 
-			System.out.println("d " +d.getId() +" don lv chi tiet " +d.getLinhVucDonThuChiTiet().getTen());
-		});
-		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
 			Long tongSoVuViec = 0L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
@@ -378,13 +372,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());
-		
-		System.out.println("tongSo " +tongSo);
 		return tongSo;
 	}
 	
 	public Long getTongSoVuViecTiepCongDanDonKhieuNaiLinhVuc(BooleanExpression predAll, Long donViId, LinhVucDonThu linhVuc) {
-		System.out.println("------------------------ linh vuc chi tiet cha --------------------------- " +donViId);
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		List<Don> dons = new ArrayList<Don>();
@@ -404,10 +395,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
-		dons.forEach(d -> { 
-			System.out.println("d " +d.getId() +" don lv chi tiet " +d.getLinhVucDonThuChiTiet().getTen());
-		});
-		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
 			Long tongSoVuViec = 0L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
@@ -418,13 +405,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());
-		
-		System.out.println("tongSo " +tongSo);
 		return tongSo;
 	}
 	
 	public Long getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCon(BooleanExpression predAll, Long donViId, List<LinhVucDonThu> linhVucs) {
-		System.out.println("------------------------ linh vuc chi tiet con --------------------------- " +donViId);
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		List<Don> dons = new ArrayList<Don>();
@@ -444,9 +428,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
-		dons.forEach(d -> { 
-			System.out.println("d " +d.getId() +" don lv chi tiet " +d.getLinhVucDonThuChiTiet().getTen());
-		});
 		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
 			Long tongSoVuViec = 0L;
@@ -457,9 +438,71 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 				tongSoVuViec += 1;
 			}
 			return tongSoVuViec;
-		}).mapToLong(Long::longValue).sum());
+		}).mapToLong(Long::longValue).sum());		
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecTiepCongDanDonChuaCoQuyetDinhGiaiQuyet(BooleanExpression predAll, Long donViId) {
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don> dons = new ArrayList<Don>();
 		
-		System.out.println("tongSo " +tongSo);
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.isTrue())
+				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.isNotNull())
+				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.isNull());
+		
+		if (donViId != null && donViId > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		}
+		
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+		
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());		
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecTiepCongDanDonDaCoQuyetDinhGiaiQuyet(BooleanExpression predAll, Long donViId) {
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don> dons = new ArrayList<Don>();
+		
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.isTrue())
+				.and(QSoTiepCongDan.soTiepCongDan.don.coThongTinCoQuanDaGiaiQuyet.isTrue())
+				.and(QSoTiepCongDan.soTiepCongDan.don.coQuanDaGiaiQuyet.isNotNull())
+				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.isNotNull())
+				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.isNotNull());
+		
+		if (donViId != null && donViId > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		}
+		
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+		
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());		
 		return tongSo;
 	}
 }

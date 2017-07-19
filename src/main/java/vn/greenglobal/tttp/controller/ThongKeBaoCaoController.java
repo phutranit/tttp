@@ -123,6 +123,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapDonKhieuNaiTuPhap = new HashMap<>();
 			Map<String, Object> mapDonKhieuNaiChinhTriVanHoaXaHoi = new HashMap<>();
 			Map<String, Object> mapKetQuaQuaTiepDan = new HashMap<>();
+			Map<String, Object> mapKetQuaQuaTiepDanChuaDuocGiaiQuyet = new HashMap<>();
+			Map<String, Object> mapKetQuaQuaTiepDanDaDuocGiaiQuyet = new HashMap<>();
+			Map<String, Object> mapKetQuaQuaTiepDanDaDuocGiaiQuyetChuaCoQuyetDinhGiaiQuyet = new HashMap<>();
+			Map<String, Object> mapKetQuaQuaTiepDanDaDuocGiaiQuyetDaCoQuyetDinhGiaiQuyet = new HashMap<>();
 			Map<String, Object> mapDonVi = new HashMap<>();
 			Map<String, Object> map = new HashMap<>();
 			List<Map<String, Object>> coQuans = new ArrayList<>();
@@ -149,6 +153,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			LinhVucDonThu linhVucCheDoChinhSach = linhVucDonThuRepo.findOne(3L);
 			LinhVucDonThu linhVucDatDaiNhaCuaVaTaiSan = linhVucDonThuRepo.findOne(4L);
 			LinhVucDonThu linhVucKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
+			LinhVucDonThu linhVucKhieuNaiTonGiaoTinNguong = linhVucDonThuRepo.findOne(2L);
+			
 			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
 			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucDatDaiNhaCuaVaTaiSan));
 			List<LinhVucDonThu> linhVucCheDoChinhSachs = new ArrayList<LinhVucDonThu>();
@@ -268,9 +274,34 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapDonKhieuNai.put("linhVucHanhChinh", mapDonKhieuNaiLinhVucHanhChinh);
 				mapDonKhieuNai.put("linhVucTuPhap", mapDonKhieuNaiTuPhap);
 				mapDonKhieuNai.put("linhVucChinhTriVanHoaXaHoi", mapDonKhieuNaiChinhTriVanHoaXaHoi);
+				mapNoiDungTiepCongDan.put("ten", "Nội dung tiếp công dân (số vụ việc)");
 				mapNoiDungTiepCongDan.put("khieuNai", mapDonKhieuNai);
-				
 				mapDonVi.put("noiDungTiepCongDan", mapNoiDungTiepCongDan);
+				
+				//ket qua tiep dan
+				//chua duoc giai quyet
+				mapKetQuaQuaTiepDanChuaDuocGiaiQuyet = new HashMap<String, Object>();
+				mapKetQuaQuaTiepDanChuaDuocGiaiQuyet.put("ten", "Chưa được giải quyết");
+				mapKetQuaQuaTiepDanChuaDuocGiaiQuyet.put("giaTri", "");
+				mapKetQuaQuaTiepDan.put("chuaDuocGiaiQuyet", mapKetQuaQuaTiepDanChuaDuocGiaiQuyet);
+				
+				//da duoc giai quyet
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyet = new HashMap<String, Object>();
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetChuaCoQuyetDinhGiaiQuyet = new HashMap<String, Object>();
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetDaCoQuyetDinhGiaiQuyet = new HashMap<String, Object>();
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyet.put("ten", "Đã được giải quyết");
+				
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetChuaCoQuyetDinhGiaiQuyet.put("ten", "Chưa có QĐ giải quyết");
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetChuaCoQuyetDinhGiaiQuyet.put("giaTri", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonChuaCoQuyetDinhGiaiQuyet(predAllDSTCDDonVi, cq.getId()));
+				
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetDaCoQuyetDinhGiaiQuyet.put("ten", "Đã có QĐ giải quyết (lần 1,2, cuối cùng)");
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyetDaCoQuyetDinhGiaiQuyet.put("giaTri", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonDaCoQuyetDinhGiaiQuyet(predAllDSTCDDonVi, cq.getId()));
+				
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyet.put("chuaCoQuyetDinhGiaiQuyet", mapKetQuaQuaTiepDanDaDuocGiaiQuyetChuaCoQuyetDinhGiaiQuyet);
+				mapKetQuaQuaTiepDanDaDuocGiaiQuyet.put("daCoQuyetDinhGiaiQuyet", mapKetQuaQuaTiepDanDaDuocGiaiQuyetDaCoQuyetDinhGiaiQuyet);
+				mapKetQuaQuaTiepDan.put("ten", "Kết quả qua tiếp dân (số vụ việc)");
+				mapKetQuaQuaTiepDan.put("daDuocGiaiQuyet", mapKetQuaQuaTiepDanDaDuocGiaiQuyet);
+				mapDonVi.put("ketQuaTiepCongDan", mapKetQuaQuaTiepDan);
 				
 				coQuans.add(mapDonVi);	
 				mapVuViecTX = new HashMap<String, Object>();
@@ -283,6 +314,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapDonKhieuNai = new HashMap<>();
 				mapDonKhieuNaiLinhVucHanhChinh = new HashMap<>();
 				mapNoiDungTiepCongDan = new HashMap<String, Object>();
+				mapKetQuaQuaTiepDan = new HashMap<String, Object>();
 				mapDonVi = new HashMap<String, Object>();
 			}
 			map.put("donVis", coQuans);
