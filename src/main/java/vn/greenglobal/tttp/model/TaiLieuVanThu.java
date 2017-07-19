@@ -34,6 +34,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	@Size(max=255)
 	private String soQuyetDinh = "";
 	
+	@Size(max=255)
+	private String typeRequired = "";
 	private boolean required;
 	
 	private LocalDateTime ngayQuyetDinh;
@@ -59,6 +61,14 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 
 	public void setRequired(boolean required) {
 		this.required = required;
+	}
+
+	public String getTypeRequired() {
+		return typeRequired;
+	}
+
+	public void setTypeRequired(String typeRequired) {
+		this.typeRequired = typeRequired;
 	}
 
 	public String getTen() {
