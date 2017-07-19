@@ -206,10 +206,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				
 				if (don != null) {
-					XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
-					if (xuLyDon != null) {
-						return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
-					}
+					if (don.getGiaiQuyetDonCuoiCung() == null) {
+						if (don.getXuLyDonCuoiCung() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+							return new ResponseEntity<>(eass.toFullResource(don.getXuLyDonCuoiCung()), HttpStatus.OK);
+						} else {
+							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+							if (xuLyDon != null) {
+								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
+							}
+						}						
+					}					
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}

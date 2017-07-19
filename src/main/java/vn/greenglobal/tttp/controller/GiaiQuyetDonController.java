@@ -481,10 +481,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				}
 				
 				if (don != null) {
-					GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
-					if (giaiQuyetDon != null) {
-						return new ResponseEntity<>(eass.toFullResource(giaiQuyetDon), HttpStatus.OK);
+					if (don.getGiaiQuyetDonCuoiCung() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetDonCuoiCung()), HttpStatus.OK);
+					} else {
+						GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+						if (giaiQuyetDon != null) {
+							return new ResponseEntity<>(eass.toFullResource(giaiQuyetDon), HttpStatus.OK);
+						}
 					}
+					
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}

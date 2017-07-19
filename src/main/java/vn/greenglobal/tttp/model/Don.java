@@ -138,7 +138,11 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy donViXuLyDonChuyen;
 	@ManyToOne
-	private CongChuc canBoXuLyChiDinh;	
+	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private XuLyDon xuLyDonCuoiCung;
+	@ManyToOne
+	private GiaiQuyetDon giaiQuyetDonCuoiCung;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -557,7 +561,7 @@ public class Don extends Model<Don> {
 
 	public void setHuongXuLyXLD(HuongXuLyXLDEnum huongXuLyXLD) {
 		this.huongXuLyXLD = huongXuLyXLD;
-	}
+	}	
 
 	@ApiModelProperty(position = 13)
 	public TrangThaiDonEnum getTrangThaiDon() {
@@ -610,6 +614,22 @@ public class Don extends Model<Don> {
 
 	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
 		this.tiepCongDans = tiepCongDans;
+	}
+	
+	public XuLyDon getXuLyDonCuoiCung() {
+		return xuLyDonCuoiCung;
+	}
+
+	public void setXuLyDonCuoiCung(XuLyDon xuLyDonCuoiCung) {
+		this.xuLyDonCuoiCung = xuLyDonCuoiCung;
+	}
+
+	public GiaiQuyetDon getGiaiQuyetDonCuoiCung() {
+		return giaiQuyetDonCuoiCung;
+	}
+
+	public void setGiaiQuyetDonCuoiCung(GiaiQuyetDon giaiQuyetDonCuoiCung) {
+		this.giaiQuyetDonCuoiCung = giaiQuyetDonCuoiCung;
 	}
 
 	@Transient
@@ -969,9 +989,8 @@ public class Don extends Model<Don> {
 
 	public void setThanhLapTiepDanGapLanhDao(boolean thanhLapTiepDanGapLanhDao) {
 		this.thanhLapTiepDanGapLanhDao = thanhLapTiepDanGapLanhDao;
-	}
+	}	
 	
-	@ApiModelProperty(hidden = true)
 	public TrangThaiDonEnum getTrangThaiXLDGiaiQuyet() {
 		return trangThaiXLDGiaiQuyet;
 	}
@@ -979,8 +998,7 @@ public class Don extends Model<Don> {
 	public void setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum trangThaiXLDGiaiQuyet) {
 		this.trangThaiXLDGiaiQuyet = trangThaiXLDGiaiQuyet;
 	}
-
-	@ApiModelProperty(hidden = true)
+	
 	public TrangThaiDonEnum getTrangThaiTTXM() {
 		return trangThaiTTXM;
 	}
@@ -988,8 +1006,7 @@ public class Don extends Model<Don> {
 	public void setTrangThaiTTXM(TrangThaiDonEnum trangThaiTTXM) {
 		this.trangThaiTTXM = trangThaiTTXM;
 	}
-
-	@ApiModelProperty(hidden = true)
+	
 	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
 		return ketQuaXLDGiaiQuyet;
 	}
