@@ -67,6 +67,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private LocalDateTime ngayKetThucTTXM;
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
+	private LocalDateTime ngayTraBaoCaoTTXM;
 	
 	private LocalDateTime ngayBatDauKTDX;
 	private LocalDateTime ngayKetThucKTDX;
@@ -361,6 +362,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNgayHetHanSauKhiGiaHanTTXM(LocalDateTime ngayHetHanSauKhiGiaHanTTXM) {
 		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayTraBaoCaoTTXM() {
+		return ngayTraBaoCaoTTXM;
+	}
+
+	public void setNgayTraBaoCaoTTXM(LocalDateTime ngayTraBaoCaoTTXM) {
+		this.ngayTraBaoCaoTTXM = ngayTraBaoCaoTTXM;
 	}
 
 	public LocalDateTime getNgayBatDauKTDX() {
