@@ -104,8 +104,8 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
-	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
+	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
 	private Don donLanTruoc;

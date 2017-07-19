@@ -256,7 +256,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 				//ket qua tiep dan
 				//chua duoc giai quyet - 27
-				mapMaSo.put("chuaDuocGiaiQuyet", "");
+				mapMaSo.put("chuaDuocGiaiQuyet", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonChuaChotHuongXuLyXLD(predAllDSTCDDonVi));
 
 				//da duoc giai quyet
 				//chua co quyet dinh giai quyet - 28
