@@ -24,19 +24,19 @@ public class TaiLieuVanThuService {
 
 	BooleanExpression base = QTaiLieuVanThu.taiLieuVanThu.daXoa.eq(false);
 
-	public Predicate predicateFindAll(Long donId, String loaiTaiLieu, String buocGiaiQuyet) {
+	public Predicate predicateFindAll(Long donId, String loaiQuyTrinh, String buocGiaiQuyet) {
 		BooleanExpression predAll = base;
 		
 		if (donId != null && donId > 0) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.don.id.eq(donId));
+			predAll = predAll.and(QTaiLieuVanThu.taiLieuVanThu.don.id.eq(donId));
 		}
 		
-		if (loaiTaiLieu != null && !"".equals(loaiTaiLieu.trim())) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.loaiQuyTrinh.eq(ProcessTypeEnum.valueOf(loaiTaiLieu.trim())));
+		if (loaiQuyTrinh != null && !"".equals(loaiQuyTrinh.trim())) {
+			predAll =predAll.and(QTaiLieuVanThu.taiLieuVanThu.loaiQuyTrinh.eq(ProcessTypeEnum.valueOf(loaiQuyTrinh.trim())));
 		}
 		
 		if (buocGiaiQuyet != null && !"".equals(buocGiaiQuyet.trim())) {
-			predAll.and(QTaiLieuVanThu.taiLieuVanThu.buocGiaiQuyet.eq(BuocGiaiQuyetEnum.valueOf(buocGiaiQuyet.trim())));
+			predAll = predAll.and(QTaiLieuVanThu.taiLieuVanThu.buocGiaiQuyet.eq(BuocGiaiQuyetEnum.valueOf(buocGiaiQuyet.trim())));
 		}
 		
 		return predAll;
