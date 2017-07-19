@@ -943,6 +943,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 
 	private GiaiQuyetDon canBoChuyenVeDonViGiaiQuyet(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD) {
 		giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().setNgayKetThucTTXM(Utils.localDateTimeNow());
+		giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().setNgayBaoCaoKetQuaTTXM(Utils.localDateTimeNow());
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
