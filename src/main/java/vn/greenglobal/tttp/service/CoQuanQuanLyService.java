@@ -132,6 +132,11 @@ public class CoQuanQuanLyService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}
+	
+	public Predicate predicateFindByDonVi(Long id) {
+		return base.and(QCoQuanQuanLy.coQuanQuanLy.donVi.id.eq(id)
+				.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id)));
+	}
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
 		if (id != null && id > 0) {
@@ -197,8 +202,8 @@ public class CoQuanQuanLyService {
 		BooleanExpression predAll = base;
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
-					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId))
+					.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(coQuanQuanLyId));
 			
 			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
