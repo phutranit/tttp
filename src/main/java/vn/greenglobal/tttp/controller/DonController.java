@@ -606,6 +606,11 @@ public class DonController extends TttpController<Don> {
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
 				don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				don.setXuLyDonCuoiCung(donOld.getXuLyDonCuoiCung());
+				don.setGiaiQuyetDonCuoiCung(donOld.getGiaiQuyetDonCuoiCung());
+				don.setTrangThaiXLDGiaiQuyet(donOld.getTrangThaiXLDGiaiQuyet());
+				don.setTrangThaiTTXM(donOld.getTrangThaiTTXM());
+				don.setDonViXuLyGiaiQuyet(donOld.getDonViXuLyGiaiQuyet());
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				

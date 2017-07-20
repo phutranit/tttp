@@ -616,6 +616,7 @@ public class Don extends Model<Don> {
 		this.tiepCongDans = tiepCongDans;
 	}
 	
+	@JsonIgnore
 	public XuLyDon getXuLyDonCuoiCung() {
 		return xuLyDonCuoiCung;
 	}
@@ -624,6 +625,7 @@ public class Don extends Model<Don> {
 		this.xuLyDonCuoiCung = xuLyDonCuoiCung;
 	}
 
+	@JsonIgnore
 	public GiaiQuyetDon getGiaiQuyetDonCuoiCung() {
 		return giaiQuyetDonCuoiCung;
 	}
@@ -991,6 +993,7 @@ public class Don extends Model<Don> {
 		this.thanhLapTiepDanGapLanhDao = thanhLapTiepDanGapLanhDao;
 	}	
 	
+	@JsonIgnore
 	public TrangThaiDonEnum getTrangThaiXLDGiaiQuyet() {
 		return trangThaiXLDGiaiQuyet;
 	}
@@ -999,6 +1002,7 @@ public class Don extends Model<Don> {
 		this.trangThaiXLDGiaiQuyet = trangThaiXLDGiaiQuyet;
 	}
 	
+	@JsonIgnore
 	public TrangThaiDonEnum getTrangThaiTTXM() {
 		return trangThaiTTXM;
 	}
@@ -1007,6 +1011,7 @@ public class Don extends Model<Don> {
 		this.trangThaiTTXM = trangThaiTTXM;
 	}
 	
+	@JsonIgnore
 	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
 		return ketQuaXLDGiaiQuyet;
 	}
@@ -1015,7 +1020,7 @@ public class Don extends Model<Don> {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
-	@ManyToOne
+	@JsonIgnore
 	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
 		return donViXuLyGiaiQuyet;
 	}
