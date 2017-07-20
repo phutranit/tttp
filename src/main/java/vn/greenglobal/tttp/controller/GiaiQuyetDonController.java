@@ -443,16 +443,20 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			Long thongTinGiaiQuyetDonId = don.getThongTinGiaiQuyetDon().getId();
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
+			GiaiQuyetDon giaiQuyetDonHienTaiTTXM = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
 
 			giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+			giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			
 			don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 			don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 			don.setLyDoDinhChi(params.getLyDoDinhChi());
 			don.setSoQuyetDinhDinhChi(params.getSoQuyetDinhDinhChi());
 			don.setNgayQuyetDinhDinhChi(params.getNgayQuyetDinhDinhChi());
+			don.setHoanThanhDon(true);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
+			giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
 			donService.save(don, congChucId);
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
