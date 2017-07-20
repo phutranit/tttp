@@ -443,16 +443,20 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			Long thongTinGiaiQuyetDonId = don.getThongTinGiaiQuyetDon().getId();
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
+			GiaiQuyetDon giaiQuyetDonHienTaiTTXM = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
 
 			giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			
 			don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 			don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 			don.setLyDoDinhChi(params.getLyDoDinhChi());
 			don.setSoQuyetDinhDinhChi(params.getSoQuyetDinhDinhChi());
 			don.setNgayQuyetDinhDinhChi(params.getNgayQuyetDinhDinhChi());
+			don.setHoanThanhDon(true);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
+			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
 			donService.save(don, congChucId);
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -943,6 +947,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 
 	private GiaiQuyetDon canBoChuyenVeDonViGiaiQuyet(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD) {
 		giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().setNgayKetThucTTXM(Utils.localDateTimeNow());
+		giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().setNgayTraBaoCaoTTXM(Utils.localDateTimeNow());
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
