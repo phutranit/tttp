@@ -446,7 +446,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			GiaiQuyetDon giaiQuyetDonHienTaiTTXM = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, true);
 
 			giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
-			giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			
 			don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 			don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
@@ -456,7 +456,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			don.setHoanThanhDon(true);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
-			giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
+			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
 			donService.save(don, congChucId);
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
