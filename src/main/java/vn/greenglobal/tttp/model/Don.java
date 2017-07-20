@@ -1677,7 +1677,7 @@ public class Don extends Model<Don> {
 						listIdDonVi.add(idDonViGiaiQuyet);
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
-						if (gqd.isLaTTXM()) {					
+						if (gqd.isLaTTXM()) {
 							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
 							map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
