@@ -481,7 +481,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			CoQuanQuanLy coQuanQuanLy = repo.findOne(coQuanQuanLyService.predicateFindByDonVi(id));
+			CoQuanQuanLy coQuanQuanLy = repo.findOne(coQuanQuanLyService.predicateFindOne(id));
 			if (coQuanQuanLy == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

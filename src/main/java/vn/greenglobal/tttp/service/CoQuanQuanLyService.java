@@ -134,8 +134,9 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindByDonVi(Long id) {
-		return base.and(QCoQuanQuanLy.coQuanQuanLy.donVi.id.eq(id)
-				.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id)));
+		return base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)
+				.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id))
+				.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(6L)));
 	}
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
