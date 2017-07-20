@@ -12,6 +12,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
@@ -25,9 +28,11 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private static final long serialVersionUID = -7123036795988588832L;
 
 	@NotNull
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private Don don;
 	@NotNull
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CongDan congDan;
 
@@ -69,22 +74,25 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Size(max=255)
 	private String chucVu = "";
 	
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;
-	
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh quanHuyen;
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh phuongXa;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private ToDanPho toDanPho;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private QuocTich quocTich;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DanToc danToc;
 
