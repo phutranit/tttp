@@ -1281,13 +1281,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDonHienTai.isDonTra()) {
 			xuLyDonTiepTheo.setDonTra(true);
 		}
-		
+		xuLyDonTiepTheo = xuLyDonService.save(xuLyDonTiepTheo, congChucId);
 		// set don
 		Don don = donRepo.findOne(donId);
 		don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		
 		//tao lich su qua trinh xu ly don

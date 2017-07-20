@@ -143,6 +143,8 @@ public class Don extends Model<Don> {
 	private XuLyDon xuLyDonCuoiCung;
 	@ManyToOne
 	private GiaiQuyetDon giaiQuyetDonCuoiCung;
+	@ManyToOne
+	private GiaiQuyetDon giaiQuyetTTXMCuoiCung;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -632,6 +634,15 @@ public class Don extends Model<Don> {
 
 	public void setGiaiQuyetDonCuoiCung(GiaiQuyetDon giaiQuyetDonCuoiCung) {
 		this.giaiQuyetDonCuoiCung = giaiQuyetDonCuoiCung;
+	}
+	
+	@JsonIgnore
+	public GiaiQuyetDon getGiaiQuyetTTXMCuoiCung() {
+		return giaiQuyetTTXMCuoiCung;
+	}
+
+	public void setGiaiQuyetTTXMCuoiCung(GiaiQuyetDon giaiQuyetTTXMCuoiCung) {
+		this.giaiQuyetTTXMCuoiCung = giaiQuyetTTXMCuoiCung;
 	}
 
 	@Transient

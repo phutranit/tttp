@@ -483,7 +483,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				if (don != null) {
 					if (don.getGiaiQuyetDonCuoiCung() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
 						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetDonCuoiCung()), HttpStatus.OK);
-					} else {
+					} else if (don.getGiaiQuyetTTXMCuoiCung() != null && donViId.equals(don.getDonViThamTraXacMinh().getId())) {
+						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetTTXMCuoiCung()), HttpStatus.OK);
+				 	} else {
 						GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 						if (giaiQuyetDon != null) {
 							return new ResponseEntity<>(eass.toFullResource(giaiQuyetDon), HttpStatus.OK);
@@ -800,10 +802,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		if (!isLaTTXM) {
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		}
+		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
 		Don don = donRepo.findOne(donId);
 		don.setDonViThamTraXacMinh(don.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setCurrentState(giaiQuyetDon.getNextState());
+		don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonTiepTheo);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonTruongPhong, congChucId);
@@ -845,10 +849,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		if (!isLaTTXM) {
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		}
+		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
 		Don don = donRepo.findOne(donId);
 		don.setDonViThamTraXacMinh(don.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setCurrentState(giaiQuyetDon.getNextState());
+		don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonTiepTheo);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
