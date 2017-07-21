@@ -740,7 +740,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		GiaiQuyetDon giaiQuyetDonTruongPhong = new GiaiQuyetDon();
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
-		giaiQuyetDonHienTai.setPhongBanGiaiQuyet(congChuc.getCoQuanQuanLy());
+		giaiQuyetDonHienTai.setPhongBanGiaiQuyet(giaiQuyetDon.getPhongBanGiaiQuyet());
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
