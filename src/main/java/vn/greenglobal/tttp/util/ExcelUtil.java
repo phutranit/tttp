@@ -1,28 +1,46 @@
 package vn.greenglobal.tttp.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
 import vn.greenglobal.tttp.model.Don;
@@ -1117,4 +1135,300 @@ public class ExcelUtil {
 
 		}
 	}
+	
+	public static void exportTongHopBaoCaoXuLyDonThu(HttpServletResponse response, String fileName, String sheetName,
+			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title) throws IOException {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		
+		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
+				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
+				StringUtils.isNotBlank(denNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(denNgay)) : "");
+		
+		
+		List<String[]> header1 = new LinkedList<>();
+		// Colname, fromRow, toRow, fromCol, toCol
+		header1.add(new String[] {"Đơn vị", "8", "12", "0", "0"});
+		header1.add(new String[] {"Tiếp nhận", "8", "8", "1", "6"});
+		header1.add(new String[] {"Tổng số đơn", "9", "12", "1", "1"});
+		header1.add(new String[] {"Đơn tiếp nhận trong kỳ", "9", "10", "2", "3"});
+		header1.add(new String[] {"Đơn có nhiều người đứng tên", "11", "12", "2", "2"});
+		header1.add(new String[] {"Đơn một người đứng tên", "11", "12", "3", "3"});
+		header1.add(new String[] {"Đơn kỳ trước chuyển sang", "9", "10", "4", "5"});
+		header1.add(new String[] {"Đơn có nhiều người đứng tên", "11", "12", "4", "4"});
+		header1.add(new String[] {"Đơn một người đứng tên", "11", "12", "5", "5"});
+		header1.add(new String[] {"Đơn đủ điều kiện xử lý", "9", "12", "6", "6"});
+		
+		header1.add(new String[] {"Phân loại đơn khiếu nại, tố cáo (số đơn)", "8", "8", "7", "25"});
+		header1.add(new String[] {"Theo nội dung", "9", "9", "7", "19"});
+		
+		header1.add(new String[] {"Khiếu nại", "10", "10", "7", "13"});
+		header1.add(new String[] {"Lĩnh vực hành chính", "11", "11", "7", "11"});
+		header1.add(new String[] {"Tổng", "12", "12", "7", "7"});
+		header1.add(new String[] {"Liên quan đến  đất đai", "12", "12", "8", "8"});
+		header1.add(new String[] {"Về nhà, tài sản", "12", "12", "9", "9"});
+		header1.add(new String[] {"Về chính sách, chế độ CC,VC", "12", "12", "10", "10"});
+		header1.add(new String[] {"Lĩnh vực CT,VH,XH khác", "12", "12", "11", "11"});
+		header1.add(new String[] {"Lĩnh vực tư pháp", "11", "12", "12", "12"});
+		header1.add(new String[] {"Về Đảng", "11", "12", "13", "13"});
+		
+		header1.add(new String[] {"Tố cáo", "10", "10", "14", "19"});
+		header1.add(new String[] {"Tổng", "11", "12", "14", "14"});
+		header1.add(new String[] {"Lĩnh vực hành chính", "11", "12", "15", "15"});
+		header1.add(new String[] {"Lĩnh vực tư pháp", "11", "12", "16", "16"});
+		header1.add(new String[] {"Tham nhũng", "11", "12", "17", "17"});
+		header1.add(new String[] {"Về Đảng", "11", "12", "18", "18"});
+		header1.add(new String[] {"Lĩnh vực khác", "11", "12", "19", "19"});
+		
+		header1.add(new String[] {"Theo thẩm quyền giải quyết", "9", "9", "20", "22"});
+		header1.add(new String[] {"Của các cơ quan hành chính các cấp", "10", "12", "20", "20"});
+		header1.add(new String[] {"Của cơ quan tư pháp các cấp", "10", "12", "21", "21"});
+		header1.add(new String[] {"Của cơ quan Đảng", "10", "12", "22", "22"});
+		
+		header1.add(new String[] {"Theo trình tự giải quyết", "9", "9", "23", "25"});
+		header1.add(new String[] {"Chưa được giải quyết", "10", "12", "23", "23"});
+		header1.add(new String[] {"Đã được giải quyết lần đầu", "10", "12", "24", "24"});
+		header1.add(new String[] {"Đã được giải quyết nhiều lần", "10", "12", "25", "25"});
+		
+		header1.add(new String[] {"Đơn khác (kiến nghị, phản ánh, đơn nặc danh)", "8", "12", "26", "26"});
+		header1.add(new String[] {"Kết quả xử lý đơn khiếu nại, tố cáo", "8", "8", "27", "31"});
+		header1.add(new String[] {"Số văn bản hướng dẫn", "9", "12", "27", "27"});
+		header1.add(new String[] {"Số đơn chuyển cơ quan có thẩm quyền", "9", "12", "28", "28"});
+		header1.add(new String[] {"Số công văn đôn đốc việc giải quyết", "9", "12", "29", "29"});
+		header1.add(new String[] {"Đơn thuộc thẩm quyền", "9", "10", "30", "31"});
+		header1.add(new String[] {"Khiếu nại", "11", "12", "30", "30"});
+		header1.add(new String[] {"Tố cáo", "11", "12", "31", "31"});
+		header1.add(new String[] {"Ghi chú", "8", "12", "32", "32"});
+		
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+				
+		Map<String, CellStyle> styles = createStylesMap(wb);
+		
+		try {
+			
+			// New Sheet
+			Sheet sheet1 = wb.createSheet(sheetName);
+			sheet1.getPrintSetup().setLandscape(true);
+			sheet1.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+			sheet1.createFreezePane(0, 3);
+			
+			// Row and column indexes
+			int idx = 0;
+			Row row;
+			Cell c;
+			
+			//Ten don vi
+			row = sheet1.createRow(++idx); //idx 1
+			c  = row.createCell(0);
+			c.setCellValue("BỘ, NGÀNH (UBND TỈNH, THÀNH PHỐ)...");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 12));
+			
+			idx+=3;
+			row = sheet1.createRow(idx); //idx 4
+			c  = row.createCell(0);
+			c.setCellValue("TỔNG HỢP KẾT QUẢ XỬ LÝ ĐƠN THƯ KHIẾU NẠI, TỐ CÁO");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			
+			row = sheet1.createRow(++idx); //idx 5
+			c  = row.createCell(0);
+			c.setCellValue(soLieuStr);
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			
+			for (int j = 8; j <= 12; j++) {
+				row = sheet1.createRow(idx);
+				idx++;
+			}
+			
+			String name;
+			Integer row1, row2, col1, col2;
+			//Calendar calendar = Calendar.getInstance();
+			CellRangeAddress range;
+			
+			for (String[] head : header1) {
+				name = (String) head[0];
+				row1 = Integer.valueOf((String) head[1]);
+				row2 = Integer.valueOf((String) head[2]);
+				col1 = Integer.valueOf((String) head[3]);
+				col2 = Integer.valueOf((String) head[4]);
+				row = sheet1.getRow(row1);
+				
+				c  = row.createCell(col1);
+				c.setCellValue(name);
+				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER"));
+				
+				if(row1 == row2 && col1 == col2){
+				} else {
+					range = new CellRangeAddress(row1, row2, col1, col2);
+					sheet1.addMergedRegion(range);
+					RegionUtil.setBorderBottom(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderTop(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderLeft(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderRight(BorderStyle.THIN.getCode(), range, sheet1);
+				}
+			}
+			
+			row = sheet1.createRow(13);
+			for (int i = 0; i < 32; i++) {
+				c  = row.createCell(i);
+				if(i==0) { c.setCellValue("MS"); }
+				if(i==1) { c.setCellValue("1=2+3+4+5"); }
+				if(i==7) { c.setCellValue("7=8+9+10+11"); }
+				if(i==14) { c.setCellValue("14=15+16+17+18+19"); }
+				else {
+					c.setCellValue(i);
+				}
+				c.setCellValue(i);
+				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER"));
+			}
+			
+			int recordSize = maSos.size();
+			for (int i = 0; i < recordSize; i++) {
+				row = sheet1.createRow(i+13);
+				
+			}
+			
+			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+			wb.write(fileOut);
+			String mimeType = "application/octet-stream";
+			response.setContentType(mimeType);
+			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"" + fileName + ".xlsx" + "\""));
+			response.setContentLength((int) fileOut.size());
+
+			//InputStream inputStream = new ByteArrayInputStream(fileOut.toByteArray());
+			FileCopyUtils.copy(fileOut.toByteArray(), response.getOutputStream());
+			response.flushBuffer();
+			//inputStream.close();
+		} finally {
+			wb.close();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	public static CellStyle setBorderAndFont(final Workbook workbook,
+			final BorderStyle borderStyle, final boolean isTitle, final int fontSize,
+			final String fontColor, final String textAlign) {
+		
+		final CellStyle cellStyle = workbook.createCellStyle();
+		cellStyle.setWrapText(true);
+		
+		if(borderStyle!=null){
+			cellStyle.setBorderTop(borderStyle); // single line border
+			cellStyle.setBorderBottom(borderStyle); // single line border
+			cellStyle.setBorderLeft(borderStyle); // single line border
+			cellStyle.setBorderRight(borderStyle); // single line border
+		}
+		
+		if (textAlign.equals("RIGHT")) {
+			cellStyle.setAlignment(HorizontalAlignment.RIGHT);
+		} else if (textAlign.equals("CENTER")) {
+			cellStyle.setAlignment(HorizontalAlignment.CENTER);
+		} else if (textAlign.equals("LEFT")) {
+			cellStyle.setAlignment(HorizontalAlignment.LEFT);
+		}
+		cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		
+		final Font font = workbook.createFont();
+		font.setFontName("Times New Roman");
+		if (isTitle) {
+			font.setBold(true);
+		} 
+		if (fontColor.equals("RED")) {
+			font.setColor(Font.COLOR_RED);
+		} else if (fontColor.equals("BLUE")) {
+			font.setColor(HSSFColor.BLUE.index);
+		} else if (fontColor.equals("ORANGE")){
+			font.setColor(HSSFColor.ORANGE.index);
+		} else {
+			
+		}
+		font.setFontHeightInPoints((short) fontSize);
+		cellStyle.setFont(font);
+
+		return cellStyle;
+	}
+	
+	public static Map<String, CellStyle> createStylesMap(Workbook wb){
+		Map<String, CellStyle> styles = new HashMap<>();
+		DataFormat df = wb.createDataFormat();
+		CellStyle style;
+		
+		Font titleFont = wb.createFont();
+		titleFont.setFontHeightInPoints((short) 14);
+		titleFont.setFontName("Times New Roman");
+		titleFont.setBold(true);
+		style = wb.createCellStyle();
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+		style.setFont(titleFont);
+		styles.put("title", style);
+		
+		style = createBorderedStyleCell(wb);
+		Font fontcell = wb.createFont();
+		fontcell.setFontHeightInPoints((short) 12);
+		fontcell.setFontName("Times New Roman");
+		style.setAlignment(HorizontalAlignment.LEFT);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+		style.setWrapText(true);
+		style.setFont(fontcell);
+		styles.put("cell", style);
+		
+		style = createBorderedStyleCell(wb);
+		Font fontNumber = wb.createFont();
+		fontNumber.setFontHeightInPoints((short) 12);
+		fontNumber.setFontName("Times New Roman");
+		style.setAlignment(HorizontalAlignment.RIGHT);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+		style.setWrapText(true);
+		style.setFont(fontNumber);
+		styles.put("cell_number", style);
+		
+		style = createBorderedStyleCell(wb);
+		Font fontDay = wb.createFont();
+		fontDay.setFontHeightInPoints((short) 12);
+		fontDay.setFontName("Times New Roman");
+		style.setAlignment(HorizontalAlignment.RIGHT);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+		style.setWrapText(true);
+		style.setFont(fontDay);
+		style.setDataFormat(df.getFormat("dd/MM/yyyy"));
+		styles.put("cell_day", style);
+		
+		CellStyle cell_sub = wb.createCellStyle();
+		Font fontSubTitle = wb.createFont();
+		fontSubTitle.setFontHeightInPoints((short) 10);
+		fontSubTitle.setFontName("Times New Roman");
+		fontSubTitle.setItalic(true);
+		cell_sub.setAlignment(HorizontalAlignment.LEFT);
+		cell_sub.setVerticalAlignment(VerticalAlignment.CENTER);
+		cell_sub.setWrapText(true);
+		cell_sub.setFont(fontSubTitle);
+		styles.put("cell_sub", cell_sub);
+		
+		return styles;
+	}
+	
+	private static CellStyle createBorderedStyleCell(Workbook wb) {
+		CellStyle style = wb.createCellStyle();
+		style.setBorderRight(BorderStyle.THIN);
+		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderTop(BorderStyle.THIN);
+		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		return style;
+	}
+	
 }
