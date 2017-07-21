@@ -862,7 +862,8 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else {
+		} 
+		else {
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())) {
 					list.add(tlvt);

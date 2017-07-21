@@ -105,7 +105,7 @@ public class ExcelUtil {
 			}
 
 			if (i == (end - 1)) {
-				cellStyle.setBorderRight((short) 2);
+//				cellStyle.setBorderRight((short) 2);
 			} else {
 				cellStyle.setBorderRight((short) 1);
 			}
@@ -687,7 +687,7 @@ public class ExcelUtil {
 			
 			c = row.createCell(9);
 			c.setCellValue("Tiếp định kỳ và đột xuất của Lãnh đạo");
-			c.setCellStyle(cellStyleFalse12BlackCenter);
+			c.setCellStyle(cellStyleFalse9BlackCenter);
 			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 9, 16));
 			
 			c = row.createCell(17);

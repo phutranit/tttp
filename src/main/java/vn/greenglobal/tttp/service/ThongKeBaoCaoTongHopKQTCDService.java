@@ -15,6 +15,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
@@ -44,25 +45,59 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
 	BooleanExpression baseDon = QDon.don.daXoa.eq(false);
 	
-	public Predicate predicateFindAllTCD(String tuNgay, String denNgay, Long donViId) { 
+	public Predicate predicateFindAllTCD(String loaiKy, int quy, int year, int month, String tuNgay, String denNgay, Long donViId) { 
 		BooleanExpression predAll = baseTCD;
-		
-		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
-			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+		ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
-		} else {
-			if (StringUtils.isNotBlank(tuNgay)) {
-				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.after(dtTuNgay));
-			}
-			if (StringUtils.isNotBlank(denNgay)) {
-				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.before(dtDenNgay));
-			}
+		if (year > 0) { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.year().eq(year));
 		}
 		
+		if (loaiKyEnum != null) { 
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) { 
+				if (quy == 1) { 
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(1, 3));
+				}
+				if (quy == 2) { 
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(4, 6));
+				}
+				if (quy == 3) { 
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(7, 9));
+				}
+				if (quy == 4) { 
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(10, 12));
+				}
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(1, 6));
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(6, 12));
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+				if (month > 0) {
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().eq(month));
+				}
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NGAY)) {
+				if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+					LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
+				} else {
+					if (StringUtils.isNotBlank(tuNgay)) {
+						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.after(dtTuNgay));
+					}
+					if (StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.before(dtDenNgay));
+					}
+				}
+			}
+		}
+
 		if (donViId != null && donViId > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
