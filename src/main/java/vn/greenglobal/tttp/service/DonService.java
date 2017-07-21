@@ -20,6 +20,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
@@ -88,7 +89,7 @@ public class DonService {
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu,
-			Set<VaiTro> vaitros, String hoTen, XuLyDonRepository xuLyRepo, DonRepository donRepo,
+			Set<VaiTro> vaitros, String hoTen, String trangThaiDonToanHT, String ketQuaToanHT, XuLyDonRepository xuLyRepo, DonRepository donRepo,
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
@@ -133,6 +134,20 @@ public class DonService {
 		if (phanLoaiDon != null && StringUtils.isNotBlank(phanLoaiDon.trim())) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
 		}
+		
+		if (trangThaiDonToanHT != null && StringUtils.isNotBlank(trangThaiDonToanHT.trim())) {
+			TrangThaiDonEnum trangThaiDonValue = TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDonToanHT));
+			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViXuLyXLD)
+						.and(QDon.don.trangThaiXLDGiaiQuyet.eq(trangThaiDonValue)))
+					.or(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD)
+							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue))));
+		}
+		
+		if (ketQuaToanHT != null && StringUtils.isNotBlank(ketQuaToanHT.trim())) {
+			KetQuaTrangThaiDonEnum ketQuaValue = KetQuaTrangThaiDonEnum.valueOf(StringUtils.upperCase(ketQuaToanHT));
+			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViXuLyXLD)
+						.and(QDon.don.ketQuaXLDGiaiQuyet.eq(ketQuaValue))));
+		}
 
 		if (tiepNhanTuNgay != null && tiepNhanDenNgay != null && StringUtils.isNotBlank(tiepNhanTuNgay.trim())
 				&& StringUtils.isNotBlank(tiepNhanDenNgay.trim())) {
@@ -146,6 +161,9 @@ public class DonService {
 			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
 			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
 		}
+		
+		
+		
 		List<Don> donCollections = new ArrayList<Don>();
 		// Query xu ly don
 		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.old.eq(false));
@@ -321,7 +339,7 @@ public class DonService {
 
 	public Predicate predicateFindAllGQD(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon, String tiepNhanTuNgay,
 			String tiepNhanDenNgay, boolean thanhLapDon, String tinhTrangGiaiQuyet, String trangThaiDon,
-			Long phongBanGiaiQuyetId, Long canBoGiaiQuyetId, String chucVu, String hoTen,
+			Long phongBanGiaiQuyetId, Long donViGiaiQuyetId, Long canBoGiaiQuyetId, String chucVu, String hoTen, String trangThaiDonToanHT, String ketQuaToanHT,
 			GiaiQuyetDonRepository giaiQuyetDonRepo, XuLyDonRepository xuLyRepo) {
 		BooleanExpression predAll = base
 				.and(QDon.don.old.eq(false))
@@ -347,6 +365,8 @@ public class DonService {
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 		
+		
+		
 		if (StringUtils.isNotBlank(nguonDon)) {
 			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
 			if (nguonDonEnum != null) {
@@ -361,6 +381,20 @@ public class DonService {
 
 		if (StringUtils.isNotBlank(phanLoaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(StringUtils.upperCase(phanLoaiDon))));
+		}
+		
+		if (trangThaiDonToanHT != null && StringUtils.isNotBlank(trangThaiDonToanHT.trim())) {
+			TrangThaiDonEnum trangThaiDonValue = TrangThaiDonEnum.valueOf(StringUtils.upperCase(trangThaiDonToanHT));
+			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViGiaiQuyetId)
+						.and(QDon.don.trangThaiXLDGiaiQuyet.eq(trangThaiDonValue)))
+					.or(QDon.don.donViThamTraXacMinh.id.eq(donViGiaiQuyetId)
+							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue))));
+		}
+		
+		if (ketQuaToanHT != null && StringUtils.isNotBlank(ketQuaToanHT.trim())) {
+			KetQuaTrangThaiDonEnum ketQuaValue = KetQuaTrangThaiDonEnum.valueOf(StringUtils.upperCase(ketQuaToanHT));
+			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViGiaiQuyetId)
+						.and(QDon.don.ketQuaXLDGiaiQuyet.eq(ketQuaValue))));
 		}
 
 		if (StringUtils.isNotBlank(tinhTrangGiaiQuyet)) {
