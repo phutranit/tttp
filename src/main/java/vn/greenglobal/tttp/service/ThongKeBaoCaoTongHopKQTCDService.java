@@ -48,7 +48,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 	public Predicate predicateFindAllTCD(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay, Long donViId) { 
 		BooleanExpression predAll = baseTCD;
 		
-		if (year > 0) { 
+		if (year!=null && year > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.year().eq(year));
 		}
 		
