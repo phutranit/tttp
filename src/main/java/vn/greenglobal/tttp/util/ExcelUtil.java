@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -1245,7 +1247,7 @@ public class ExcelUtil {
 			
 			String name;
 			Integer row1, row2, col1, col2;
-			//Calendar calendar = Calendar.getInstance();
+			
 			CellRangeAddress range;
 			
 			for (String[] head : header1) {
@@ -1284,27 +1286,36 @@ public class ExcelUtil {
 				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER"));
 			}
 			
-			int recordSize = maSos.size();
-			for (int i = 0; i < recordSize; i++) {
-				row = sheet1.createRow(i+14);
-				// Add data here
-				/*if(data.get(e)!=null){
-					if (data.get(e) instanceof Number) {
-						c.setCellValue(formatNumber(data.get(e)));
-						c.setCellStyle(styles.get("cell_number"));
-						if(e==0){
-							c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+			
+			if(!maSos.isEmpty()){
+				int recordSize = maSos.size();
+				Calendar calendar = Calendar.getInstance();
+				Map<String, Object> mapMaSo;
+				Object obj;
+				for (int i = 0; i < recordSize; i++) {
+					row = sheet1.createRow(i+14);
+					// Add data here
+					mapMaSo = maSos.get(i);
+					for (int j = 0; j < mapMaSo.entrySet().size(); j++) {
+						obj = mapMaSo.get(String.valueOf(j));
+						if (obj instanceof Number) {
+							c.setCellValue(Integer.valueOf(String.valueOf(obj)));
+							c.setCellStyle(styles.get("cell_number"));
+							if(j==0){
+								c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+							}
+						} else if (obj instanceof Date) {
+							calendar.setTime((Date)(obj));
+							c.setCellValue(calendar);
+							c.setCellStyle(styles.get("cell_day"));
+						} else {
+							c.setCellValue(String.valueOf(obj));
+							c.setCellStyle(styles.get("cell"));
 						}
-					} else if (data.get(e) instanceof Date) {
-						calendar.setTime((Date)(data.get(e)));
-						c.setCellValue(calendar);
-						c.setCellStyle(styles.get("cell_day"));
-					} else {
-						c.setCellValue(data.get(e).toString());
-						c.setCellStyle(styles.get("cell"));
 					}
-				}*/
+				}
 			}
+			
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
 			wb.write(fileOut);
