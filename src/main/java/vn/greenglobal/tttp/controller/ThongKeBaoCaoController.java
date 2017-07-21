@@ -286,9 +286,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "quy", required = false) int quy,
-			@RequestParam(value = "year", required = false) int year,
-			@RequestParam(value = "month", required = false) int month,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
 			@RequestParam(value = "donViId", required = false) Long donViId
 			) throws IOException {
 		
@@ -474,9 +474,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "quy", required = false) int quy,
-			@RequestParam(value = "year", required = false) int year,
-			@RequestParam(value = "month", required = false) int month,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
 			@RequestParam(value = "donViId", required = false) Long donViId
 			) throws IOException {
 		
