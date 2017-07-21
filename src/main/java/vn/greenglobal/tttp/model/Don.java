@@ -1782,14 +1782,14 @@ public class Don extends Model<Don> {
 		Map<String, Object> map = new HashMap<>();
 		if (getDonViXuLyGiaiQuyet() != null) {
 			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
-			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet().getText());
+			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().getText() : "");
 			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 			list.add(map);
 		}
 		if (getDonViThamTraXacMinh() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViThamTraXacMinh().getId());
-			map.put("trangThaiDonText", getTrangThaiTTXM().getText());
+			map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
 			map.put("ketQuaStr", "");
 			list.add(map);
 		}
