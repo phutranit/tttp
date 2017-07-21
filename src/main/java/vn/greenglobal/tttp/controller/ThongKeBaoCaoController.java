@@ -496,10 +496,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-			
-			//List<LinhVucDonThu> linhVucKienNghiPhanAnhs = new ArrayList<LinhVucDonThu>();
-			//linhVucKienNghiPhanAnhs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.name()));
-			
+	
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
