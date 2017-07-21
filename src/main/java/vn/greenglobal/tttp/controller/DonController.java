@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -33,6 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -201,15 +205,24 @@ public class DonController extends TttpController<Don> {
 						|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
 					phongBanXuLyXLD = 0L;
 				}
-
-				Page<Don> pageData = repo.findAll(
-						donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
-								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo),
-						pageable);
 				
-				return assembler.toResource(pageData, (ResourceAssembler) eass);
+				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+						.then(Expressions.numberTemplate(Integer.class, "0"))					
+						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				
+				List<Don> listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+						hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+						phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+						vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+						canBoXuLyChiDinh.asc(), sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				
+				Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
+				
+				return assembler.toResource(pages, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -254,12 +267,23 @@ public class DonController extends TttpController<Don> {
 				Long donViGiaiQuyetId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
-				Page<Don> pageData = repo.findAll(
+				
+				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(congChucId)					
+						.then(Expressions.numberTemplate(Integer.class, "0"))					
+						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				
+				List<Don> listDon = (List<Don>) repo.findAll(
 						donService.predicateFindAllGQD(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), donViGiaiQuyetId,
-								congChuc.getId(), vaiTro, hoTen, trangThaiDonToanHT, ketQuaToanHT, giaiQuyetDonRepo, xuLyRepo),
-						pageable);
-				return assembler.toResource(pageData, (ResourceAssembler) eass);
+								congChuc.getId(), vaiTro, hoTen, trangThaiDonToanHT, ketQuaToanHT, giaiQuyetDonRepo, xuLyRepo), 
+						canBoXuLyChiDinh.asc(), sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				
+				Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
+				return assembler.toResource(pages, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
