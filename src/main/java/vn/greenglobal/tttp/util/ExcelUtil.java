@@ -13,6 +13,7 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1287,6 +1288,22 @@ public class ExcelUtil {
 			for (int i = 0; i < recordSize; i++) {
 				row = sheet1.createRow(i+14);
 				// Add data here
+				/*if(data.get(e)!=null){
+					if (data.get(e) instanceof Number) {
+						c.setCellValue(formatNumber(data.get(e)));
+						c.setCellStyle(styles.get("cell_number"));
+						if(e==0){
+							c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+						}
+					} else if (data.get(e) instanceof Date) {
+						calendar.setTime((Date)(data.get(e)));
+						c.setCellValue(calendar);
+						c.setCellStyle(styles.get("cell_day"));
+					} else {
+						c.setCellValue(data.get(e).toString());
+						c.setCellStyle(styles.get("cell"));
+					}
+				}*/
 			}
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
