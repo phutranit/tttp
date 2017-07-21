@@ -471,11 +471,13 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel")
 	@ApiOperation(value = "Xuất file excel tổng hợp báo cáo xử lý đơn thư", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExceluLyDonThu(HttpServletResponse response,
+			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "donViXuLyXLD", required = false) Long donViXuLyXLD,
-			@RequestParam(value = "coQuanQuanLyId", required = false) Long coQuanQuanLyId,
-			@RequestParam(value = "capCoQuanQuanLyId", required = false) Long capCoQuanQuanLyId
+			@RequestParam(value = "quy", required = false) int quy,
+			@RequestParam(value = "year", required = false) int year,
+			@RequestParam(value = "month", required = false) int month,
+			@RequestParam(value = "donViId", required = false) Long donViId
 			) throws IOException {
 		
 		try {
@@ -508,7 +510,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			donVis.addAll(list);
 			System.out.println("donVis " +donVis.size());
 			
-			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(tuNgay, denNgay, 0L);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
 			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
 			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
