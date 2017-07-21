@@ -906,7 +906,16 @@ public class Don extends Model<Don> {
 	public Long getDonId() {
 		return getId();
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDonGocId() {
+		if (getDonGoc() != null) { 
+			return getDonGoc().getId();
+		}
+		return 0L;
+	}
+	
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
