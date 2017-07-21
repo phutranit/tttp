@@ -605,6 +605,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 						don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 						don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+						don.setHoanThanhDon(true);
 						don.setLyDoDinhChi(xuLyDon.getyKienXuLy());
 						don.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 						don.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
@@ -613,7 +614,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DINH_CHI);
 						// set ngay ket thuc xu ly don cho don
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
-
+						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 						lichSuQTXLD.setDon(don);
