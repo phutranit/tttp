@@ -1784,6 +1784,13 @@ public class Don extends Model<Don> {
 			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
 			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().getText() : "");
 			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+			if (getKetQuaXLDGiaiQuyet() != null 
+					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet()) || KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet())) 
+					&& getDonViThamTraXacMinh() != null) {
+				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
+			} else {
+				map.put("donViTTXM", "");
+			}
 			list.add(map);
 		}
 		if (getDonViThamTraXacMinh() != null) {
@@ -1791,6 +1798,7 @@ public class Don extends Model<Don> {
 			map.put("donViId", getDonViThamTraXacMinh().getId());
 			map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
 			map.put("ketQuaStr", "");
+			map.put("donViTTXM", "");
 			list.add(map);
 		}
 		return list;
