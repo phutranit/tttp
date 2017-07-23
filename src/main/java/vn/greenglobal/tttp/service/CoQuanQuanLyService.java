@@ -280,6 +280,13 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindDonViTheoChaTHTKBC(Long coQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId))
+				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
+		return predAll;
+	}
+	
 	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
 		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
 	}

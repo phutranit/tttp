@@ -48,11 +48,11 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 	public Predicate predicateFindAllTCD(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay, Long donViId) { 
 		BooleanExpression predAll = baseTCD;
 		
-		if (year > 0) { 
+		if (year != null && year > 0) { 
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.year().eq(year));
 		}
 		
-		if(loaiKy!=null){
+		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
 			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 			if (loaiKyEnum != null && quy!=null) { 
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) { 
@@ -76,7 +76,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(6, 12));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG) && month!=null) {
-					if (month > 0) {
+					if (month != null && month > 0) {
 						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().eq(month));
 					}
 				}

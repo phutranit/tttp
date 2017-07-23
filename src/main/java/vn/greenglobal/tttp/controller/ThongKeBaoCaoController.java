@@ -80,9 +80,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "quy", required = false) int quy,
-			@RequestParam(value = "year", required = false) int year,
-			@RequestParam(value = "month", required = false) int month,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
 			@RequestParam(value = "donViId", required = false) Long donViId,
 			PersistentEntityResourceAssembler eass) {
 		try {
@@ -94,7 +94,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			
 			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-			CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
 			CoQuanQuanLy coQuanQuanLy = coQuanQuanLyRepo.findOne(coQuanQuanLyId);
 			Long capCoQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyId").toString());
 			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
@@ -111,16 +110,26 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-						
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+			
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
-			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
-					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
-					"CQQL_UBNDTP_DA_NANG"));
+			
+			CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
+			if (donVi != null) { 
+				list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViTheoChaTHTKBC(donVi.getId()));
+			} else { 
+				list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+						Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+						"CQQL_UBNDTP_DA_NANG"));
+			}
 			donVis.addAll(list);
-			System.out.println("donVis " +donVis.size());
+			donVis.forEach(cq -> {
+				System.out.println("cq" +cq.getId() +" ten " +cq.getTen());
+			});
+			
 			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
@@ -565,6 +574,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("29", cq.getTen());
 				mapMaSo.put("20", cq.getTen());
 				mapMaSo.put("31", cq.getTen());
+				mapMaSo.put("32", cq.getTen());
 				
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();

@@ -58,8 +58,8 @@ import vn.greenglobal.tttp.util.upload.StorageProperties;
 @EnableAutoConfiguration(exclude = { ElasticsearchAutoConfiguration.class })
 @EnableConfigurationProperties(StorageProperties.class)
 @Controller
-@ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
-		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
+//@ComponentScan(basePackages = { "vn.greenglobal.core.model.common", "vn.greenglobal.tttp.controller",
+//		"vn.greenglobal.tttp.service", "vn.greenglobal.tttp" })
 public class Application extends SpringBootServletInitializer {
 
 	public static Application app;
