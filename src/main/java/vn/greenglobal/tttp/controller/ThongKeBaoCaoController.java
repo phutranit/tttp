@@ -540,42 +540,39 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				predAllDSTCDLanhDao = predAllDSTCDLanhDao.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
 						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
 						
-				mapMaSo = new HashMap<String, Object>();
-				
-				mapMaSo.put("0", cq.getTen());
-				mapMaSo.put("1", cq.getTen());
-				mapMaSo.put("2", cq.getTen());
-				mapMaSo.put("3", cq.getTen());
-				mapMaSo.put("4", cq.getTen());
-				mapMaSo.put("5", cq.getTen());
-				mapMaSo.put("6", cq.getTen());
-				mapMaSo.put("7", cq.getTen());
-				mapMaSo.put("8", cq.getTen());
-				mapMaSo.put("9", cq.getTen());
-				mapMaSo.put("10", cq.getTen());
-				mapMaSo.put("11", cq.getTen());
-				mapMaSo.put("12", cq.getTen());
-				mapMaSo.put("13", cq.getTen());
-				mapMaSo.put("14", cq.getTen());
-				mapMaSo.put("15", cq.getTen());
-				mapMaSo.put("16", cq.getTen());
-				mapMaSo.put("17", cq.getTen());
-				mapMaSo.put("18", cq.getTen());
-				mapMaSo.put("19", cq.getTen());
-				mapMaSo.put("20", cq.getTen());
-				mapMaSo.put("21", cq.getTen());
-				mapMaSo.put("22", cq.getTen());
-				mapMaSo.put("23", cq.getTen());
-				mapMaSo.put("24", cq.getTen());
-				mapMaSo.put("25", cq.getTen());
-				mapMaSo.put("26", cq.getTen());
-				mapMaSo.put("27", cq.getTen());
-				mapMaSo.put("28", cq.getTen());
-				mapMaSo.put("29", cq.getTen());
-				mapMaSo.put("20", cq.getTen());
-				mapMaSo.put("31", cq.getTen());
-				mapMaSo.put("32", cq.getTen());
-				
+				mapMaSo = new HashMap<String, Object>()
+				mapMaSo.put("1", 1);
+				mapMaSo.put("2", 2);
+				mapMaSo.put("3", 3);
+				mapMaSo.put("4", 4);
+				mapMaSo.put("5", 5);
+				mapMaSo.put("6", 6);
+				mapMaSo.put("7", 7);
+				mapMaSo.put("8", 8);
+				mapMaSo.put("9", 9);
+				mapMaSo.put("10", 0);
+				mapMaSo.put("11", 11);
+				mapMaSo.put("12", 12);
+				mapMaSo.put("13", 13);
+				mapMaSo.put("14", 14);
+				mapMaSo.put("15", 15);
+				mapMaSo.put("16", 16);
+				mapMaSo.put("17", 17);
+				mapMaSo.put("18", 18);
+				mapMaSo.put("19", 19);
+				mapMaSo.put("20", 20);
+				mapMaSo.put("21", 21);
+				mapMaSo.put("22", 22);
+				mapMaSo.put("23", 23);
+				mapMaSo.put("24", 24);
+				mapMaSo.put("25", 25);
+				mapMaSo.put("26", 26);
+				mapMaSo.put("27", 27);
+				mapMaSo.put("28", 28);
+				mapMaSo.put("29", 29);
+				mapMaSo.put("30", 30);
+				mapMaSo.put("31", 31);
+				mapMaSo.put("32", 32);
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();
 			}

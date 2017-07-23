@@ -39,6 +39,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpHeaders;
@@ -1230,6 +1231,7 @@ public class ExcelUtil {
 			
 			idx+=3;
 			row = sheet1.createRow(idx); //idx 4
+			row.setHeight((short)600);
 			c  = row.createCell(0);
 			c.setCellValue("TỔNG HỢP KẾT QUẢ XỬ LÝ ĐƠN THƯ KHIẾU NẠI, TỐ CÁO");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
@@ -1241,9 +1243,17 @@ public class ExcelUtil {
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
 			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
 			
+			idx+=2; //idx = 7
 			for (int j = 8; j <= 12; j++) {
 				row = sheet1.createRow(j);
+				if(j==12){
+					row.setHeight((short)1200);
+				} else {
+					row.setHeight((short)400);
+				}
+				idx++;
 			}
+			//idx = 12
 			
 			String name;
 			Integer row1, row2, col1, col2;
@@ -1273,8 +1283,9 @@ public class ExcelUtil {
 				}
 			}
 			
-			row = sheet1.createRow(13);
-			for (int i = 0; i < 32; i++) {
+			row = sheet1.createRow(++idx); //idx = 13
+			row.setHeight((short)900);
+			for (int i = 0; i <= 32; i++) {
 				c  = row.createCell(i);
 				if(i==0) { c.setCellValue("MS"); }
 				else if(i==1) { c.setCellValue("1=2+3+4+5"); }
@@ -1286,36 +1297,141 @@ public class ExcelUtil {
 				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER"));
 			}
 			
+			idx+=1; //idx = 14
+			int recordSize = 0;
+			int colSize = 0;
+			String formula = "SUM()";
+			String colName = "A";
 			
 			if(!maSos.isEmpty()){
-				int recordSize = maSos.size();
+				recordSize = maSos.size();
+				colSize = maSos.get(0).size();
+				
 				Calendar calendar = Calendar.getInstance();
-				Map<String, Object> mapMaSo;
+				Map<String, Object> mapMaSo = null;
 				Object obj;
-				for (int i = 0; i < recordSize; i++) {
-					row = sheet1.createRow(i+14);
+				for (int i = 0; i <= recordSize; i++) {
+					row = sheet1.createRow(i+idx);
+					row.setHeight((short)400);
 					// Add data here
-					mapMaSo = maSos.get(i);
-					for (int j = 0; j < mapMaSo.entrySet().size(); j++) {
-						obj = mapMaSo.get(String.valueOf(j));
-						if (obj instanceof Number) {
-							c.setCellValue(Integer.valueOf(String.valueOf(obj)));
-							c.setCellStyle(styles.get("cell_number"));
-							if(j==0){
-								c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+					if(i < recordSize){
+						mapMaSo = maSos.get(i);
+						for (int j = 0; j <= colSize; j++) {
+							c  = row.createCell(j);
+							obj = mapMaSo.get(String.valueOf(j));
+							if (obj instanceof Number) {
+								c.setCellValue(Integer.valueOf(String.valueOf(obj)));
+								c.setCellStyle(styles.get("cell_number"));
+								if(j==0){
+									c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+								}
+							} else if (obj instanceof Date) {
+								calendar.setTime((Date)(obj));
+								c.setCellValue(calendar);
+								c.setCellStyle(styles.get("cell_day"));
+							} else {
+								c.setCellValue(String.valueOf(obj));
+								c.setCellStyle(styles.get("cell"));
 							}
-						} else if (obj instanceof Date) {
-							calendar.setTime((Date)(obj));
-							c.setCellValue(calendar);
-							c.setCellStyle(styles.get("cell_day"));
-						} else {
-							c.setCellValue(String.valueOf(obj));
-							c.setCellStyle(styles.get("cell"));
+						}
+					} else {
+						for (int k = 0; k <= colSize; k++) {
+							c  = row.createCell(k);
+							//Add TONG row
+							if(k==0){
+								c.setCellValue("Tổng");
+								c.setCellStyle(styles.get("cell"));
+							} else if(k==colSize){
+								c.setCellStyle(styles.get("cell"));
+							} else {
+								colName = CellReference.convertNumToColString(k);
+								formula = "SUM(" + colName + (idx+1) + ":" + colName + row.getRowNum() + ")";
+								c.setCellFormula(formula);
+								c.setCellStyle(styles.get("cell_number"));
+							}
 						}
 					}
 				}
 			}
+			idx = idx + recordSize + 3;
 			
+			row = sheet1.createRow(idx);
+			c = row.createCell(25);
+			c.setCellValue("....., ngày     tháng     năm");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			
+			row = sheet1.createRow(++idx);
+			c = row.createCell(25);
+			c.setCellValue("THỦ TRƯỞNG ĐƠN VỊ");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			
+			row = sheet1.createRow(++idx);
+			c = row.createCell(25);
+			c.setCellValue("(ký tên, đóng dấu)");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("Lưu ý:");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER"));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("- Tổng đơn cột số (7) + cột (14) = Tổng số đơn từ cột (20) đến cột (22) = Tổng số đơn từ cột (23) đến cột (25)");
+			c.setCellStyle(styles.get("cell_sub"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("- Cột (6) đủ điều kiện xử lý là loại đơn không trùng lặp, có danh và rõ nội dung, địa chỉ");
+			c.setCellStyle(styles.get("cell_sub"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("- Cột \"Đơn vị\" để các bộ, ngành, địa phương thống kê kết quả thực hiện của các đơn vị trực thuộc");
+			c.setCellStyle(styles.get("cell_sub"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
+			
+			int width = (int) (10 * 256);
+			// set column width
+			sheet1.setColumnWidth(0, 35 * 256);
+			sheet1.setColumnWidth(1, width);
+			sheet1.setColumnWidth(2, width);
+			sheet1.setColumnWidth(3, width);
+			sheet1.setColumnWidth(4, width);
+			sheet1.setColumnWidth(5, width);
+			sheet1.setColumnWidth(6, width);
+			sheet1.setColumnWidth(7, width);
+			sheet1.setColumnWidth(8, width);
+			sheet1.setColumnWidth(9, width);
+			sheet1.setColumnWidth(10, width);
+			sheet1.setColumnWidth(11, width);
+			sheet1.setColumnWidth(12, width);
+			sheet1.setColumnWidth(13, width);
+			sheet1.setColumnWidth(14, width);
+			sheet1.setColumnWidth(15, width);
+			sheet1.setColumnWidth(16, width);
+			sheet1.setColumnWidth(17, width);
+			sheet1.setColumnWidth(18, width);
+			sheet1.setColumnWidth(19, width);
+			sheet1.setColumnWidth(20, width);
+			sheet1.setColumnWidth(21, width);
+			sheet1.setColumnWidth(22, width);
+			sheet1.setColumnWidth(23, width);
+			sheet1.setColumnWidth(24, width);
+			sheet1.setColumnWidth(25, width);
+			sheet1.setColumnWidth(26, width);
+			sheet1.setColumnWidth(27, width);
+			sheet1.setColumnWidth(28, width);
+			sheet1.setColumnWidth(29, width);
+			sheet1.setColumnWidth(30, width);
+			sheet1.setColumnWidth(31, width);
+			sheet1.setColumnWidth(32, width);
+			//END
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
 			wb.write(fileOut);
@@ -1331,14 +1447,6 @@ public class ExcelUtil {
 		} finally {
 			wb.close();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	public static CellStyle setBorderAndFont(final Workbook workbook,
