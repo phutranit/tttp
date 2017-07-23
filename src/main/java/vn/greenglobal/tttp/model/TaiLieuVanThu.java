@@ -164,7 +164,16 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	public Long getTaiLieuVanThuId() {
 		return getId();
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDonId() {
+		if (getDon() != null) { 
+			return getDon().getId();
+		}
+		return 0L;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {

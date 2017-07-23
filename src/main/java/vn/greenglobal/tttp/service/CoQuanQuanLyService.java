@@ -133,9 +133,13 @@ public class CoQuanQuanLyService {
 		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}
 	
-	public Predicate predicateFindByDonVi(Long id) {
-		return base.and(QCoQuanQuanLy.coQuanQuanLy.donVi.id.eq(id)
+	public Predicate predicateFindByDonVi(Long id, Long capCoQuanQuanLyId) {
+		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)
 				.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id)));
+		if (capCoQuanQuanLyId != null) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyId));
+		}
+		return predAll;
 	}
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
@@ -202,10 +206,10 @@ public class CoQuanQuanLyService {
 		BooleanExpression predAll = base;
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId))
-					.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(coQuanQuanLyId));
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
 			
 			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
+				predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId));
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))));
