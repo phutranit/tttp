@@ -106,8 +106,8 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
-	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
+	@QueryInit("*.*.*")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
 	private Don donLanTruoc;
@@ -910,7 +910,8 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else {
+		} 
+		else {
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
@@ -928,7 +929,8 @@ public class Don extends Model<Don> {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		if (getDonGoc() != null) {
 			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 					list.add(tlvt);
@@ -936,7 +938,8 @@ public class Don extends Model<Don> {
 			}
 		} else { 
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 					list.add(tlvt);
@@ -1776,7 +1779,7 @@ public class Don extends Model<Don> {
 						listIdDonVi.add(idDonViGiaiQuyet);
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
-						if (gqd.isLaTTXM()) {					
+						if (gqd.isLaTTXM()) {
 							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
 							map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
