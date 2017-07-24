@@ -127,6 +127,7 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private CoQuanQuanLy donViXuLyGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
