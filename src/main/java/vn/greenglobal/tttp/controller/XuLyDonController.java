@@ -1350,7 +1350,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
-		don.setNgayLapDonGapLanhDaoTmp(LocalDateTime.now());
+		don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
@@ -1584,8 +1584,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setDonGoc(donOld);
 		donMoi.setDonChuyen(true);
 		donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
-		donMoi.setNgayBatDauXLD(LocalDateTime.now());
-		donMoi.setNgayTiepNhan(LocalDateTime.now());
+		donMoi.setNgayBatDauXLD(Utils.localDateTimeNow());
+		donMoi.setNgayTiepNhan(Utils.localDateTimeNow());
 		ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 		Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 		donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
@@ -1741,7 +1741,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCurrentState(endState);
 		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-		don.setNgayKetThucXLD(LocalDateTime.now());
+		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		
 		Don donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGoc().getId()));
 		//donGoc.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
