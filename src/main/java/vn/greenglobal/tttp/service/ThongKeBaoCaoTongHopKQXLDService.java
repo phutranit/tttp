@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
@@ -178,7 +179,21 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(soTiepCongDans.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
-		System.out.println("---------");
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi(BooleanExpression predAllXLD) {
+		System.out.println("getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi");
+		Long tongSo = 0L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNotNull())
+				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
+				.and(QXuLyDon.xuLyDon.don.hoanThanhDon.isTrue());
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
+		System.out.println("---------");	
 		dons.forEach(d -> {
 			System.out.println("d " +d.getId() + " ngay " +d.getNgayTiepNhan());
 		});

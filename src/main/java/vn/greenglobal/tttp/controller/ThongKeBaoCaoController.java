@@ -564,27 +564,25 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo = new HashMap<String, Object>();
 				mapMaSo.put("donVi", mapDonVi);
 				
-				// tong so don - 1
+				//tong so don - 1
 				mapMaSo.put("tongSoDonTiepNhanXLDTCD", thongKeBaoCaoTongHopKQXLDService.getTongSoDonTiepNhanXLDTCD(predAllDXLDDonVi, predAllDSTCDDonVi));
 				
-//				//nguoi - 2
-//				mapMaSo.put("tiepCongDanThuongXuyenNguoi", thongKeBaoCaoTongHopKQTCDService.getTongSoNguoiDungTenTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, 
-//						true, false));
-//				
-//				//vu viec cu - 3
-//				mapMaSo.put("tiepCongDanThuongXuyenVuViecCu", "");
-//				
-//				//vu viec moi phat sinh - 4
-//				mapMaSo.put("tiepCongDanThuongXuyenVuViecMoiPhatSinh", "");
-//				
-//				//doan dong nguoi
-//				//so doan - 5
-//				mapMaSo.put("tiepCongDanThuongXuyenDoanDongNguoiSoDoan", thongKeBaoCaoTongHopKQTCDService.getTongSoDoanDongNguoiTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, true));
-//				
-//				//nguoi - 6
-//				mapMaSo.put("tiepCongDanThuongXuyenDoanDongNguoiSoNguoi", thongKeBaoCaoTongHopKQTCDService.getTongSoNguoiDungTenTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, 
-//						false, true));
-//				
+				//don co nhieu nguoi dung ten - trong ky - 2
+				mapMaSo.put("tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy", "");
+				
+				//don co mot nguoi dung ten - trong ky - 3
+				mapMaSo.put("tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy", "");
+				
+				
+				//don co nhieu nguoi dung ten - truoc ky - 4
+				mapMaSo.put("tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang", "");
+				
+				//don co mot nguoi dung ten - truoc ky - 4
+				mapMaSo.put("tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang", "");
+				
+				//don du dieu kien xu ly - 6
+				mapMaSo.put("tongSoDonDuDieuKienThuLy", thongKeBaoCaoTongHopKQXLDService.getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi(predAllDXLDDonVi));
+				
 //				//doan dong nguoi - vu viec
 //				//cu - 7
 //				mapMaSo.put("tiepCongDanThuongXuyenDoanDongNguoiVuViecCu", "");
