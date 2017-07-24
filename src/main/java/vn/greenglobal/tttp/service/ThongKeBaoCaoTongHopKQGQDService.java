@@ -1,21 +1,31 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
+import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class ThongKeBaoCaoTongHopKQGQDService {	
+	
+	@Autowired
+	private DonRepository donRepo;
+
 	
 	BooleanExpression baseTCD = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
@@ -79,5 +89,13 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		}
 		
 		return predAll;
+	}
+	
+	public Long getTongSoDonKhieuNai(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
 	}
 }
