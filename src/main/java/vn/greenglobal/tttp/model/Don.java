@@ -910,13 +910,12 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else {
-			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
-						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
-					list.add(tlvt);
-				}
+		} 
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+					|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+					|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+				list.add(tlvt);
 			}
 		}
 		return list;
@@ -1141,7 +1140,7 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLyDon() {
 		String str = "";
-		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+		LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
