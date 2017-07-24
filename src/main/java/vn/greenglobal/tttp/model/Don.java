@@ -1804,8 +1804,9 @@ public class Don extends Model<Don> {
 			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
 			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().getText() : "");
 			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
-			if (getKetQuaXLDGiaiQuyet() != null 
-					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet()) || KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet())) 
+			if (getKetQuaXLDGiaiQuyet() != null
+					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
+							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
 					&& getDonViThamTraXacMinh() != null) {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
 			} else {
@@ -1823,7 +1824,7 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getDonViThamTraXacMinhInfo() {
@@ -1835,7 +1836,7 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
-	
+
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public Map<String, Object> getDonViXuLyGiaiQuyetInfo() {
