@@ -1823,4 +1823,29 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getDonViThamTraXacMinhInfo() {
+		if (getDonViThamTraXacMinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getDonViThamTraXacMinh().getId());
+			map.put("ten", getDonViThamTraXacMinh().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getDonViXuLyGiaiQuyetInfo() {
+		if (getDonViXuLyGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getDonViXuLyGiaiQuyet().getId());
+			map.put("ten", getDonViXuLyGiaiQuyet().getTen());
+			return map;
+		}
+		return null;
+	}
+	
 }
