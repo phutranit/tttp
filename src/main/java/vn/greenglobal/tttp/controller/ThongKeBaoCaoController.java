@@ -695,3 +695,4 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 		}
 	}
 }
+
