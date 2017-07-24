@@ -27,6 +27,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
+import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
@@ -87,10 +88,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			PersistentEntityResourceAssembler eass) {
 		try {
 			
-//			if (Utils.tokenValidate(profileUtil, authorization) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 			
 			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -117,21 +118,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
 			
-			CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
-			if (donVi != null) { 
-				list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViTheoChaTHTKBC(donVi.getId()));
+			
+			if (donViId != null && donViId > 0) {
+				CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
+				if (donVi != null) {
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donVi.getId())));
+				}
 			} else { 
-				list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+				list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
 						Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
-						"CQQL_UBNDTP_DA_NANG"));
+						"CQQL_UBNDTP_DA_NANG")));
 			}
 			donVis.addAll(list);
-			donVis.forEach(cq -> {
-				System.out.println("cq" +cq.getId() +" ten " +cq.getTen());
-			});
 			
-			
-			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
 			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
 			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
@@ -144,10 +144,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucDatDaiNhaCuaVaTaiSan));
 			List<LinhVucDonThu> linhVucCheDoChinhSachs = new ArrayList<LinhVucDonThu>();
 			linhVucCheDoChinhSachs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucCheDoChinhSach));
-			
-			linhVucCheDoChinhSachs.forEach(lv -> {
-				System.out.println("lv " +lv.getId() + " ten " +lv.getTen());
-			});
 			
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
@@ -317,17 +313,26 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-						
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+			
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString()));
-			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
-					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
-					"CQQL_UBNDTP_DA_NANG"));
+			
+			if (donViId != null && donViId > 0) {
+				CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
+				if (donVi != null) {
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donVi.getId())));
+				}
+			} else { 
+				list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+						Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+						"CQQL_UBNDTP_DA_NANG")));
+			}
 			donVis.addAll(list);
 			
-			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
 			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
 			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
@@ -479,7 +484,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel")
 	@ApiOperation(value = "Xuất file excel tổng hợp báo cáo xử lý đơn thư", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportExcelXuLyDonThu(HttpServletResponse response,
+	public void exportExceluLyDonThu(HttpServletResponse response,
 			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
@@ -505,15 +510,26 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-	
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+			
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
 			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
-			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
-					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
-					"CQQL_UBNDTP_DA_NANG"));
+			
+			if (donViId != null && donViId > 0) {
+				CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
+				if (donVi != null) {
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donVi.getId())));
+				}
+			} else { 
+				list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+						Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+						"CQQL_UBNDTP_DA_NANG")));
+			}
 			donVis.addAll(list);
-			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
+			
+			
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
 			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
 			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
@@ -541,6 +557,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
 						
 				mapMaSo = new HashMap<String, Object>();
+				
 				mapMaSo.put("1", 1);
 				mapMaSo.put("2", 2);
 				mapMaSo.put("3", 3);
@@ -619,7 +636,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
 					"CQQL_UBNDTP_DA_NANG"));
 			donVis.addAll(list);
-			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay, donViId);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
 			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
 			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
@@ -695,4 +712,3 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 		}
 	}
 }
-
