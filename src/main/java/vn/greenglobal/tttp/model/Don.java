@@ -1060,7 +1060,7 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public String getThoiHanXuLyDon() {
 		String str = "";
-		LocalDateTime gioHanhChinhHienTai = LocalDateTime.now();
+		LocalDateTime gioHanhChinhHienTai = Utils.localDateTimeNow();
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
