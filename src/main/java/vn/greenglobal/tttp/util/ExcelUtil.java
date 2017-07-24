@@ -1095,6 +1095,33 @@ public class ExcelUtil {
 				i++;
 				idx++;
 			}
+			
+//			int recordSize = 0;
+//			int colSize = 0;
+//			String formula = "SUM()";
+//			String colName = "A";
+//			
+//			if(!maSos.isEmpty()){
+//				//Add TONG row
+//				recordSize = maSos.size();
+//				colSize = maSos.get(0).size();
+//				for (int k = 0; k <= colSize; k++) {
+//					row = sheet1.createRow(k);
+//					if(k==0){
+//						c.setCellValue("Tổng");
+//						c.setCellStyle(cellCenter);
+//					} else if(k==colSize){
+//						c.setCellStyle(cellCenter);
+//					} else {
+//						colName = CellReference.convertNumToColString(k);
+//						formula = "SUM(" + colName + (idx+1) + ":" + colName + row.getRowNum() + ")";
+//						c.setCellFormula(formula);
+//						c.setCellStyle(cellCenter);
+//					}
+//				}
+//				
+//			}
+			
 			idx++;
 			idx++;
 			row = sheet1.createRow(idx);
