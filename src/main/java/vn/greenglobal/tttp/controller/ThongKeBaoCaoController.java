@@ -685,7 +685,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel")
-	@ApiOperation(value = "Xuất file excel tổng hợp báo cáo xử lý đơn thư", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Xuất file excel tổng hợp báo cáo xử lý đơn thư", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExceluLyDonThu(HttpServletResponse response,
 			@RequestParam(value = "loaiKy", required = false) String loaiKy,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -790,4 +790,227 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonKhieuNai/xuatExcel")
+	@ApiOperation(value = "Xuất file excel tổng hợp kết quả giải quyết đơn khiếu nại", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportExcelGiaiQuyetKhieuNai(HttpServletResponse response,
+			@RequestParam(value = "loaiKy", required = false) String loaiKy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
+			@RequestParam(value = "donViId", required = false) Long donViId
+			) throws IOException {
+		
+		try {
+			//CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
+			//CoQuanQuanLy coQuanQuanLy = coQuanQuanLyRepo.findOne(coQuanQuanLyId);
+			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoCCQQLPhuongXaTT = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoCCQQLChiCuc = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_CHI_CUC"));
+			
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapMaSo = new HashMap<>();
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
+			List<Map<String, Object>> maSos = new ArrayList<>();
+	
+			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
+			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
+			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+					"CQQL_UBNDTP_DA_NANG"));
+			donVis.addAll(list);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
+			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
+			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
+			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
+			LinhVucDonThu linhVucCheDoChinhSach = linhVucDonThuRepo.findOne(3L);
+			LinhVucDonThu linhVucDatDaiNhaCuaVaTaiSan = linhVucDonThuRepo.findOne(4L);
+			LinhVucDonThu linhVucKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
+			LinhVucDonThu linhVucChinhTriVanHoaXaHoiKhac = linhVucDonThuRepo.findOne(53L);
+			
+			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
+			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucDatDaiNhaCuaVaTaiSan));
+			List<LinhVucDonThu> linhVucCheDoChinhSachs = new ArrayList<LinhVucDonThu>();
+			linhVucCheDoChinhSachs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucCheDoChinhSach));
+			
+			for (CoQuanQuanLy cq : donVis) {
+				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
+				predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId())
+						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
+						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
+				
+				BooleanExpression predAllDSTCDThuongXuyen = predAllDSTCDDonVi;
+				predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+				
+				BooleanExpression predAllDSTCDLanhDao = predAllDSTCDDonVi;
+				predAllDSTCDLanhDao = predAllDSTCDLanhDao.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+						
+				mapMaSo = new HashMap<String, Object>();
+				mapMaSo.put("1", 1);
+				mapMaSo.put("2", 2);
+				mapMaSo.put("3", 3);
+				mapMaSo.put("4", 4);
+				mapMaSo.put("5", 5);
+				mapMaSo.put("6", 6);
+				mapMaSo.put("7", 7);
+				mapMaSo.put("8", 8);
+				mapMaSo.put("9", 9);
+				mapMaSo.put("10", 0);
+				mapMaSo.put("11", 11);
+				mapMaSo.put("12", 12);
+				mapMaSo.put("13", 13);
+				mapMaSo.put("14", 14);
+				mapMaSo.put("15", 15);
+				mapMaSo.put("16", 16);
+				mapMaSo.put("17", 17);
+				mapMaSo.put("18", 18);
+				mapMaSo.put("19", 19);
+				mapMaSo.put("20", 20);
+				mapMaSo.put("21", 21);
+				mapMaSo.put("22", 22);
+				mapMaSo.put("23", 23);
+				mapMaSo.put("24", 24);
+				mapMaSo.put("25", 25);
+				mapMaSo.put("26", 26);
+				mapMaSo.put("27", 27);
+				mapMaSo.put("28", 28);
+				mapMaSo.put("29", 29);
+				mapMaSo.put("30", 30);
+				mapMaSo.put("31", 31);
+				mapMaSo.put("32", 32);
+				mapMaSo.put("33", 33);
+				mapMaSo.put("34", 34);
+				mapMaSo.put("35", 35);
+				mapMaSo.put("36", 36);
+				mapMaSo.put("37", 37);
+				mapMaSo.put("38", 38);
+				maSos.add(mapMaSo);
+				mapMaSo = new HashMap<String, Object>();
+			}
+			map.put("maSos", maSos);
+			ExcelUtil.exportTongHopBaoCaoGiaiQuyetKhieuNai(response, "DanhSachTongHopThongKeBaoCaoGiaiQuyetKhieuNai", "sheetName", maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo giải quyết đơn khiếu nại");
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel")
+	@ApiOperation(value = "Xuất file excel tổng hợp kết quả giải quyết đơn tố cáo", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportExcelGiaiQuyetToCao(HttpServletResponse response,
+			@RequestParam(value = "loaiKy", required = false) String loaiKy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
+			@RequestParam(value = "donViId", required = false) Long donViId
+			) throws IOException {
+		
+		try {
+			//CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViXuLyXLD);
+			//CoQuanQuanLy coQuanQuanLy = coQuanQuanLyRepo.findOne(coQuanQuanLyId);
+			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoCCQQLPhuongXaTT = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoCCQQLChiCuc = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_CHI_CUC"));
+			
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapMaSo = new HashMap<>();
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
+			List<Map<String, Object>> maSos = new ArrayList<>();
+	
+			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()));
+			//capCoQuanQuanLyIds.add(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
+			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
+					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
+					"CQQL_UBNDTP_DA_NANG"));
+			donVis.addAll(list);
+			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
+			LinhVucDonThu linhVucHanhChinh = linhVucDonThuRepo.findOne(15L);
+			LinhVucDonThu linhVucTuPhap = linhVucDonThuRepo.findOne(16L);
+			LinhVucDonThu linhVucThamNhung = linhVucDonThuRepo.findOne(37L);
+			LinhVucDonThu linhVucCheDoChinhSach = linhVucDonThuRepo.findOne(3L);
+			LinhVucDonThu linhVucDatDaiNhaCuaVaTaiSan = linhVucDonThuRepo.findOne(4L);
+			LinhVucDonThu linhVucKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
+			LinhVucDonThu linhVucChinhTriVanHoaXaHoiKhac = linhVucDonThuRepo.findOne(53L);
+			
+			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
+			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucDatDaiNhaCuaVaTaiSan));
+			List<LinhVucDonThu> linhVucCheDoChinhSachs = new ArrayList<LinhVucDonThu>();
+			linhVucCheDoChinhSachs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucCheDoChinhSach));
+			
+			for (CoQuanQuanLy cq : donVis) {
+				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
+				predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId())
+						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
+						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
+				
+				BooleanExpression predAllDSTCDThuongXuyen = predAllDSTCDDonVi;
+				predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+				
+				BooleanExpression predAllDSTCDLanhDao = predAllDSTCDDonVi;
+				predAllDSTCDLanhDao = predAllDSTCDLanhDao.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+						
+				mapMaSo = new HashMap<String, Object>();
+				mapMaSo.put("1", 1);
+				mapMaSo.put("2", 2);
+				mapMaSo.put("3", 3);
+				mapMaSo.put("4", 4);
+				mapMaSo.put("5", 5);
+				mapMaSo.put("6", 6);
+				mapMaSo.put("7", 7);
+				mapMaSo.put("8", 8);
+				mapMaSo.put("9", 9);
+				mapMaSo.put("10", 0);
+				mapMaSo.put("11", 11);
+				mapMaSo.put("12", 12);
+				mapMaSo.put("13", 13);
+				mapMaSo.put("14", 14);
+				mapMaSo.put("15", 15);
+				mapMaSo.put("16", 16);
+				mapMaSo.put("17", 17);
+				mapMaSo.put("18", 18);
+				mapMaSo.put("19", 19);
+				mapMaSo.put("20", 20);
+				mapMaSo.put("21", 21);
+				mapMaSo.put("22", 22);
+				mapMaSo.put("23", 23);
+				mapMaSo.put("24", 24);
+				mapMaSo.put("25", 25);
+				mapMaSo.put("26", 26);
+				mapMaSo.put("27", 27);
+				mapMaSo.put("28", 28);
+				mapMaSo.put("29", 29);
+				mapMaSo.put("30", 30);
+				mapMaSo.put("31", 31);
+				mapMaSo.put("32", 32);
+				mapMaSo.put("33", 33);
+				mapMaSo.put("34", 34);
+				mapMaSo.put("35", 35);
+				mapMaSo.put("36", 36);
+				mapMaSo.put("37", 37);
+				mapMaSo.put("38", 38);
+				maSos.add(mapMaSo);
+				mapMaSo = new HashMap<String, Object>();
+			}
+			map.put("maSos", maSos);
+			ExcelUtil.exportTongHopBaoCaoGiaiQuyetToCao(response, "DanhSachTongHopThongKeBaoCaoGiaiQuyetToCao", "sheetName", maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo giải quyết đơn tố cáo");
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
 }
