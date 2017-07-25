@@ -28,6 +28,7 @@ import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
@@ -284,6 +285,20 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThuChiTiet.eq(linhVucChiTiet));
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAllTCD));
 		dons.addAll(soTiepCongDans.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonXLDTheoThamQuyenGiaiQuyet(BooleanExpression predAllXLD, ThamQuyenGiaiQuyet thamQuyenGiaiQuyet) {
+		Long tongSo = 0L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		if (thamQuyenGiaiQuyet == null) { 
+			return tongSo;
+		}
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.thamQuyenGiaiQuyet.eq(thamQuyenGiaiQuyet));
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
 	}
