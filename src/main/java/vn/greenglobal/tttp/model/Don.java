@@ -946,6 +946,21 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuKiemTraDeXuat() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getTaiLieuVanThus() != null) {
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) 
+						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -1881,20 +1896,5 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
-	}
-	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public List<TaiLieuVanThu> getListTaiLieuDinhKems() {
-		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getTaiLieuVanThus() != null) {
-			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) 
-						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
-					list.add(tlvt);
-				}
-			}
-		}
-		return list;
 	}
 }
