@@ -594,6 +594,7 @@ public class ExcelUtil {
 				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
 				StringUtils.isNotBlank(denNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(denNgay)) : "");
 		
+		Map<String, CellStyle> styles = createStylesMap(wb);
 		try {
 			
 			CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "", "CENTER");
@@ -969,158 +970,191 @@ public class ExcelUtil {
 				c.setCellStyle(cellCenter);
 				
 				c = row.createCell(1);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenNguoi").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenNguoi").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(2);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenLuot").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenLuot").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(3);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenVuViecCu").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenVuViecCu").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(4);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenVuViecMoiPhatSinh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenVuViecMoiPhatSinh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(5);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenDoanDongNguoiSoDoan").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenDoanDongNguoiSoDoan").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(6);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenDoanDongNguoiSoNguoi").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenDoanDongNguoiSoNguoi").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(7);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenDoanDongNguoiVuViecCu").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenDoanDongNguoiVuViecCu").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(8);
-				c.setCellValue(map.get("tiepCongDanThuongXuyenDoanDongNguoiVuViecMoiPhatSinh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanThuongXuyenDoanDongNguoiVuViecMoiPhatSinh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(9);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoLuot").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoLuot").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(10);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoNguoi").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoNguoi").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(11);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecCu").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecCu").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(12);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecMoiPhatSinh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecMoiPhatSinh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(13);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoDoan").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoDoan").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(14);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(15);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(16);
-				c.setCellValue(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(17);
-				c.setCellValue(map.get("linhVucKhieuNaiVeTranhChap").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiVeTranhChap").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(18);
-				c.setCellValue(map.get("linhVucKhieuNaiVeChinhSach").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiVeChinhSach").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(19);
-				c.setCellValue(map.get("linhVucKhieuNaiVeNhaCuaVaTaiSan").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiVeNhaCuaVaTaiSan").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(20);
-				c.setCellValue(map.get("linhVucKhieuNaiVeCheDoCCVC").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiVeCheDoCCVC").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(21);
-				c.setCellValue(map.get("linhVucKhieuNaiTuPhap").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiTuPhap").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(22);
-				c.setCellValue(map.get("linhVucKhieuNaiChinhTriVanHoaXaHoiKhac").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucKhieuNaiChinhTriVanHoaXaHoiKhac").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(23);
-				c.setCellValue(map.get("linhVucToCaoHanhChinh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucToCaoHanhChinh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(24);
-				c.setCellValue(map.get("linhVucToCaoTuPhap").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucToCaoTuPhap").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(25);
-				c.setCellValue(map.get("linhVucToCaoThamNhung").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("linhVucToCaoThamNhung").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(26);
-				c.setCellValue(map.get("kienNghiPhanAnh").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("kienNghiPhanAnh").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(27);
-				c.setCellValue(map.get("chuaDuocGiaiQuyet").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("chuaDuocGiaiQuyet").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(28);
-				c.setCellValue(map.get("chuaCoQuyetDinhGiaiQuyet").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("chuaCoQuyetDinhGiaiQuyet").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(29);
-				c.setCellValue(map.get("daCoQuyetDinhGiaiQuyet").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("daCoQuyetDinhGiaiQuyet").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(30);
-				c.setCellValue(map.get("daCoBanAnCuaToa").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("daCoBanAnCuaToa").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(31);
-				c.setCellValue(map.get("ghiChu").toString());
-				c.setCellStyle(cellCenter);
+				c.setCellValue(Integer.valueOf(map.get("ghiChu").toString()));
+				//c.setCellStyle(cellCenter);
+				c.setCellStyle(styles.get("cell_number"));
 				
 				i++;
 				idx++;
 			}
 			
-//			int recordSize = 0;
-//			int colSize = 0;
-//			String formula = "SUM()";
-//			String colName = "A";
-//			
-//			if(!maSos.isEmpty()){
-//				//Add TONG row
-//				recordSize = maSos.size();
-//				colSize = maSos.get(0).size();
-//				for (int k = 0; k <= colSize; k++) {
-//					row = sheet1.createRow(k);
-//					if(k==0){
-//						c.setCellValue("Tổng");
-//						c.setCellStyle(cellCenter);
-//					} else if(k==colSize){
-//						c.setCellStyle(cellCenter);
-//					} else {
-//						colName = CellReference.convertNumToColString(k);
-//						formula = "SUM(" + colName + (idx+1) + ":" + colName + row.getRowNum() + ")";
-//						c.setCellFormula(formula);
-//						c.setCellStyle(cellCenter);
-//					}
-//				}
-//				
-//			}
+			int recordSize = 0;
+			int colSize = 0;
+			String formula = "SUM()";
+			String colName = "A";
+			
+			if(!maSos.isEmpty()){
+				//Add TONG row
+				row = sheet1.createRow(idx);
+				row.setHeight((short)400);
+				recordSize = maSos.size();
+				colSize = maSos.get(0).size();
+				for (int k = 0; k < colSize; k++) {
+					c = row.createCell(k);
+					if(k==0){
+						c.setCellValue("Tổng");
+						c.setCellStyle(styles.get("cell"));
+					} else if(k==colSize){
+						c.setCellStyle(styles.get("cell"));
+					} else {
+						colName = CellReference.convertNumToColString(k);
+						formula = "SUM(" + colName + (idx+1) + ":" + colName + (row.getRowNum() - 1) + ")";
+						System.out.println("formula "+formula);
+						c.setCellFormula(formula);
+						c.setCellStyle(styles.get("cell_number"));
+					}
+				}
+			}
 			
 			idx++;
 			idx++;
