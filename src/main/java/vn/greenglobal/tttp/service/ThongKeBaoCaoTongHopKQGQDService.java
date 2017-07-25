@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
@@ -95,6 +96,15 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 	public Long getTongSoDonKhieuNai(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonKhieuNaiDinhChi(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI));
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
