@@ -368,7 +368,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("soDonThuocThamQuyen", thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
 				
 				//6 - So vu viec thuoc tham quyen
-				mapMaSo.put("soVuViecThuocThamQuyen", 0L);
+				mapMaSo.put("soVuViecThuocThamQuyen",thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
 				
 				//7 - So vu viec giai quyet bang QD hanh chinh
 				mapMaSo.put("soVuViecGiaiQuyetBangQDHanhChinh", thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiCoQuyetDinh(predAllDSGQDDonVi));

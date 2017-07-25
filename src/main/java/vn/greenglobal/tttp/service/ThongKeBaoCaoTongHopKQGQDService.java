@@ -129,6 +129,25 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
+	public Long getTongSoVuViecKhieuNaiThuocThamQuyen(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI)
+				.or(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET)));
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
 	public Long getTongSoVuViecKhieuNai(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
