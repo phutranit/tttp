@@ -17,6 +17,7 @@ import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -96,6 +97,23 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		List<Don> dons = new ArrayList<Don>();
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
 		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecKhieuNai(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
 		return tongSo;
 	}
 }
