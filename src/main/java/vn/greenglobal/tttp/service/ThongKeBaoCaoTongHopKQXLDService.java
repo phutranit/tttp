@@ -298,8 +298,35 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		}
 		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.thamQuyenGiaiQuyet.eq(thamQuyenGiaiQuyet));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
-		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
+		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetLanDau(BooleanExpression predAllXLD) {
+		Long tongSo = 0L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.coThongTinCoQuanDaGiaiQuyet.isTrue());
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetNhieuLan(BooleanExpression predAllXLD) {
+		Long tongSo = 0L;
+		Long soLanGiaiQuyet = 2L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		Set<Don> donGQDs = new HashSet<Don>();
+		BooleanExpression predAllDon = baseDon.and(QDon.don.thanhLapDon.isTrue());
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
+		predAllDon = predAllDon.and(QDon.don.in(dons));
+		predAllDon = predAllDon.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.goe(soLanGiaiQuyet));
+		donGQDs.addAll((List<Don>) donRepo.findAll(predAllDon));
+		tongSo = Long.valueOf(donGQDs.size());
 		return tongSo;
 	}
 }

@@ -661,12 +661,12 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				//theo trinh tu giai quyet - chua giai quyet - 23
 				mapMaSo.put("tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet", "0");
 				
-//				//linhVucHanhChinh - 24
-//				mapMaSo.put("linhVucTuPhap", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonToCaoLinhVucHanhChinhVaTuPhap(predAllDSTCDDonVi, linhVucTuPhap));
-//				
-//				//linhVucThamNhung - 25
-//				mapMaSo.put("linhVucThamNhung", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonToCaoLinhVucThamNhung(predAllDSTCDDonVi, linhVucThamNhung));
-//				
+				//theo trinh tu giai quyet - da duoc giai quyet lan dau - 24
+				mapMaSo.put("tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau", thongKeBaoCaoTongHopKQXLDService.getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetLanDau(predAllDXLDDonVi));
+				
+				//theo trinh tu giai quyet - da duoc giai quyet nhieu lan - 25
+				mapMaSo.put("tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetNhieuLan", thongKeBaoCaoTongHopKQXLDService.getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetNhieuLan(predAllDXLDDonVi));
+				
 //				//don kien nghi phan anh
 //				//kienNghiPhanAnh - 26
 //				mapMaSo.put("kienNghiPhanAnh", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKienNghiPhanAnh(predAllDSTCDDonVi));
