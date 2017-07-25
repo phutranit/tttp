@@ -269,4 +269,22 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
 	}
+	
+	public Long getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChiTietCha(BooleanExpression predAllTCD,
+			LinhVucDonThu linhVuc, LinhVucDonThu linhVucChiTiet) {
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		Set<Don> dons = new HashSet<Don>();
+		if (linhVuc == null && linhVucChiTiet == null) { 
+			return tongSo;
+		}
+		predAllTCD = predAllTCD
+				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_TO_CAO))
+				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.eq(linhVuc))
+				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThuChiTiet.eq(linhVucChiTiet));
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAllTCD));
+		dons.addAll(soTiepCongDans.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
 }

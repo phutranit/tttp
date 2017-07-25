@@ -2216,6 +2216,16 @@ public class ExcelUtil {
 		styles.put("cell_number", style);
 		
 		style = createBorderedStyleCell(wb);
+		Font fontNumberCenter = wb.createFont();
+		fontNumber.setFontHeightInPoints((short) 12);
+		fontNumber.setFontName("Times New Roman");
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+		style.setWrapText(true);
+		style.setFont(fontNumberCenter);
+		styles.put("cell_number_center", style);
+		
+		style = createBorderedStyleCell(wb);
 		Font fontDay = wb.createFont();
 		fontDay.setFontHeightInPoints((short) 12);
 		fontDay.setFontName("Times New Roman");

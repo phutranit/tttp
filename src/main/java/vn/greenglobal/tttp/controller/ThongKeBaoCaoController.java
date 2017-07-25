@@ -534,23 +534,24 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLD(loaiKy, quy, year, month, tuNgay, denNgay);
-			LinhVucDonThu linhVucHanhChinhKhieuNai = linhVucDonThuRepo.findOne(1L);
-			LinhVucDonThu linhVucHanhChinhKhieuNaiDatDaiNhaCua = linhVucDonThuRepo.findOne(4L);
-			LinhVucDonThu linhVucHanhChinhKhieuNaiDatDaiNhaCuaDoiDat = linhVucDonThuRepo.findOne(33L);
-			LinhVucDonThu linhVucHanhChinhKhieuNaiDatDaiNhaCuaDoiNha = linhVucDonThuRepo.findOne(16L);
-			LinhVucDonThu linhVucHanhChinhKhieuNaiChinhTriVanHoaXaHoiKhac = linhVucDonThuRepo.findOne(53L);
+			LinhVucDonThu linhVucHanhChinhDonKhieuNai = linhVucDonThuRepo.findOne(1L);
+			LinhVucDonThu linhVucHanhChinhDonKhieuNaiDatDaiNhaCua = linhVucDonThuRepo.findOne(4L);
+			LinhVucDonThu linhVucHanhChinhDonKhieuNaiDatDaiNhaCuaDoiDat = linhVucDonThuRepo.findOne(33L);
+			LinhVucDonThu linhVucHanhChinhDonKhieuNaiDatDaiNhaCuaDoiNha = linhVucDonThuRepo.findOne(16L);
+			LinhVucDonThu linhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhac = linhVucDonThuRepo.findOne(53L);
 			
 			LinhVucDonThu linhVucHanhChinhKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
 			LinhVucDonThu linhVucHanhChinhKhieuNaiVeDang = linhVucDonThuRepo.findOne(11L);
 			
-			LinhVucDonThu linhVucHanhChinhToCaoThamNhung = linhVucDonThuRepo.findOne(37L);
-			LinhVucDonThu linhVucCheDoChinhSach = linhVucDonThuRepo.findOne(3L);
-			LinhVucDonThu linhVucDatDaiNhaCuaVaTaiSan = linhVucDonThuRepo.findOne(4L);
-			
+			LinhVucDonThu linhVucHanhChinhDonToCao = linhVucDonThuRepo.findOne(15L);
+			LinhVucDonThu linhVucTuPhapDonToCao = linhVucDonThuRepo.findOne(16L);
+			LinhVucDonThu linhVucThamNhungDonToCao = linhVucDonThuRepo.findOne(37L);
+			LinhVucDonThu linhVucVeDangDonToCao = linhVucDonThuRepo.findOne(17L);
+			LinhVucDonThu linhVucKhacDonToCao = linhVucDonThuRepo.findOne(39L);
 			
 			
 			List<LinhVucDonThu> linhVucLienQuanDenDatDais = new ArrayList<LinhVucDonThu>();
-			linhVucLienQuanDenDatDais.add(linhVucHanhChinhKhieuNaiDatDaiNhaCuaDoiDat);
+			linhVucLienQuanDenDatDais.add(linhVucHanhChinhDonKhieuNaiDatDaiNhaCuaDoiDat);
 			
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDXLDDonVi = predAllDSXLD;
@@ -612,28 +613,31 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				//linh vuc ve dang - 13
 				mapMaSo.put("tongSoDonKhieuNaiLinhVucVeDang", thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonKhieuNaiTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucHanhChinhKhieuNaiVeDang));
 				
-//				//so nguoi - 14
-//				mapMaSo.put("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi", thongKeBaoCaoTongHopKQTCDService.getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao,
-//						false, true));
-//				
-//				//tiep cong dan cua lanh dao - doan dong nguoi - vu viec
-//				//cu - 15
-//				mapMaSo.put("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu", "");
-//				
-//				//moi phat sinh - 16
-//				mapMaSo.put("tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh", "");
-//				
-//				//Noi dung tiep cong dan
-//				//don khieu nai - linh vuc hanh chinh
-//				//veTranhChap - 17
-//				mapMaSo.put("linhVucVeTranhChap", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCon(predAllDSTCDDonVi, linhVucTranhChapVeDatDais));
-//								
-//				//veChinhSach - 18
-//				mapMaSo.put("linhVucVeChinhSach", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKhieuNaiLinhVucChiTietCha(predAllDSTCDDonVi, linhVucCheDoChinhSach));
-//
-//				//veNhaCuaVaTaiSan - 19
-//				mapMaSo.put("linhVucVeNhaCuaVaTaiSan", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKhieuNaiLinhVucChiTietCha(predAllDSTCDDonVi, linhVucDatDaiNhaCuaVaTaiSan));
-//										
+				Long tongSoDonToCaoLinhVucHanhChinh = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucHanhChinhDonToCao);
+				Long tongSoDonToCaoLinhVucTuPhap = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucTuPhapDonToCao);
+				Long tongSoDonToCaoLinhVucThamNhung = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChiTietCha(predAllDSTCDDonVi, linhVucTuPhapDonToCao, linhVucThamNhungDonToCao);
+				Long tongSoDonToCaoLinhVucVeDang = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucVeDangDonToCao);
+				Long tongSoDonToCaoLinhVucKhac= thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucKhacDonToCao);
+				Long tongSoDonLinhVucToCao = tongSoDonToCaoLinhVucHanhChinh + tongSoDonToCaoLinhVucTuPhap + tongSoDonToCaoLinhVucThamNhung + tongSoDonToCaoLinhVucVeDang+ tongSoDonToCaoLinhVucKhac;
+				
+				//tong so don linh vuc to cao - 14
+				mapMaSo.put("tongSoDonLinhVucToCao", tongSoDonLinhVucToCao);
+				
+				//don to cao linh vuc hanh chinh - 15
+				mapMaSo.put("tongSoDonToCaoLinhVucHanhChinh", tongSoDonToCaoLinhVucHanhChinh);
+				
+				//don to cao linh vuc tu phap - 16
+				mapMaSo.put("tongSoDonToCaoLinhVucTuPhap", tongSoDonToCaoLinhVucTuPhap);
+				
+				//don to cao linh vuc tham nhung - 17 // ?
+				mapMaSo.put("tongSoDonToCaoLinhVucThamNhung", tongSoDonToCaoLinhVucThamNhung);
+								
+				//don to cao linh vuc ve dang - 18
+				mapMaSo.put("tongSoDonToCaoLinhVucVeDang", tongSoDonToCaoLinhVucVeDang);
+
+				//don to cao linh vuc khac - 19
+				mapMaSo.put("tongSoDonToCaoLinhVucKhac", tongSoDonToCaoLinhVucKhac);
+										
 //				//veCheDoCC,VC - 20
 //				mapMaSo.put("linhVucVeCheDoCCVC", thongKeBaoCaoTongHopKQTCDService.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCon(predAllDSTCDDonVi, linhVucCheDoChinhSachs));
 //				
