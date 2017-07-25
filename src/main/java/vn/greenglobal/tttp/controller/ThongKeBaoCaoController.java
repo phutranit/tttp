@@ -383,7 +383,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("khieuNaiSai", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi));
 				
 				//11 - Khieu nai dung 1 phan
-				mapMaSo.put("khieuNaiDungMotPhan",0L);
+				mapMaSo.put("khieuNaiDungMotPhan",thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDungMotPhan(predAllDSGQDDonVi));
 				
 				//12 - Giai quyet lan 1
 				mapMaSo.put("giaiQuyetLan1",0L);
