@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
@@ -82,6 +83,13 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			checkDataThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 			Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
 			don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
+			if (thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet() != null) {
+				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+				if (KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet()) 
+						&& thongTinGiaiQuyetDon.getNgayKetThucGiaiQuyet() == null) {
+					thongTinGiaiQuyetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
+				}
+			}
 			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			
 			ThongTinGiaiQuyetDon thongTinOld = repo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(id));

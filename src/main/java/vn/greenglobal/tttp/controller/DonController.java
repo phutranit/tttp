@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -33,6 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -177,7 +181,9 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "hoTen", required = false) String hoTen, 
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -199,15 +205,24 @@ public class DonController extends TttpController<Don> {
 						|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
 					phongBanXuLyXLD = 0L;
 				}
-
-				Page<Don> pageData = repo.findAll(
-						donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
-								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo),
-						pageable);
 				
-				return assembler.toResource(pageData, (ResourceAssembler) eass);
+				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+						.then(Expressions.numberTemplate(Integer.class, "0"))					
+						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				
+				List<Don> listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+						hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+						phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+						vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+						canBoXuLyChiDinh.asc(), sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				
+				Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
+				
+				return assembler.toResource(pages, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -234,6 +249,8 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "tinhTrangGiaiQuyet", required = false) String tinhTrangGiaiQuyet,
 			@RequestParam(value = "trangThaiDon", required = true) String trangThaiDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -247,14 +264,26 @@ public class DonController extends TttpController<Don> {
 
 			if (nguoiDung != null) {
 				String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+				Long donViGiaiQuyetId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
-				Page<Don> pageData = repo.findAll(
+				
+				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(congChucId)					
+						.then(Expressions.numberTemplate(Integer.class, "0"))					
+						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				
+				List<Don> listDon = (List<Don>) repo.findAll(
 						donService.predicateFindAllGQD(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), 
-								congChuc.getId(), vaiTro, hoTen, giaiQuyetDonRepo, xuLyRepo),
-						pageable);
-				return assembler.toResource(pageData, (ResourceAssembler) eass);
+								thanhLapDon, tinhTrangGiaiQuyet, trangThaiDon, congChuc.getCoQuanQuanLy().getId(), donViGiaiQuyetId,
+								congChuc.getId(), vaiTro, hoTen, trangThaiDonToanHT, ketQuaToanHT, giaiQuyetDonRepo, xuLyRepo), 
+						canBoXuLyChiDinh.asc(), sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				
+				Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
+				return assembler.toResource(pages, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -425,7 +454,8 @@ public class DonController extends TttpController<Don> {
 					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 					List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
 					donMoi.setCurrentState(beginState);
-					
+					donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+					donMoi.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					//Vai tro tiep theo
 					List<State> listState = new ArrayList<State>();
 					Process process = null;
@@ -599,7 +629,12 @@ public class DonController extends TttpController<Don> {
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
-				
+				don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				don.setXuLyDonCuoiCung(donOld.getXuLyDonCuoiCung());
+				don.setGiaiQuyetDonCuoiCung(donOld.getGiaiQuyetDonCuoiCung());
+				don.setTrangThaiXLDGiaiQuyet(donOld.getTrangThaiXLDGiaiQuyet());
+				don.setTrangThaiTTXM(donOld.getTrangThaiTTXM());
+				don.setDonViXuLyGiaiQuyet(donOld.getDonViXuLyGiaiQuyet());
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				
@@ -614,6 +649,7 @@ public class DonController extends TttpController<Don> {
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
@@ -745,6 +781,7 @@ public class DonController extends TttpController<Don> {
 				} else { 
 					if (don.isThanhLapDon()) {
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
+						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
@@ -824,15 +861,18 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
 			@RequestParam(value = "donViXuLyXLD", required = false) Long donViXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
-			@RequestParam(value = "vaiTro", required = false) String vaiTro,
-			@RequestParam(value = "hoTen", required = false) String hoTen) throws IOException {
+			@RequestParam(value = "vaiTro", required = true) String vaiTro,
+			@RequestParam(value = "hoTen", required = false) String hoTen,
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT) throws IOException {
 		
 		try {
 			OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
 			ExcelUtil.exportDanhSachXuLyDon(response, "DanhSachXuLyDon", "sheetName", 
 					(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
-							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, xuLyRepo, repo, giaiQuyetDonRepo), order),
+							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, 
+							congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), order),
 					"Danh sách xử lý đơn");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
