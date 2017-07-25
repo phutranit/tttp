@@ -1139,17 +1139,17 @@ public class ExcelUtil {
 				row.setHeight((short)400);
 				recordSize = maSos.size();
 				colSize = maSos.get(0).size();
+				
 				for (int k = 0; k < colSize; k++) {
 					c = row.createCell(k);
 					if(k==0){
 						c.setCellValue("Tổng");
 						c.setCellStyle(styles.get("cell"));
-					} else if(k==colSize){
+					} else if(k==colSize-1){
 						c.setCellStyle(styles.get("cell"));
 					} else {
 						colName = CellReference.convertNumToColString(k);
-						formula = "SUM(" + colName + (idx+1) + ":" + colName + (row.getRowNum() - 1) + ")";
-						System.out.println("formula "+formula);
+						formula = "SUM(" + colName + (idx-recordSize+1) + ":" + colName + row.getRowNum() + ")";
 						c.setCellFormula(formula);
 						c.setCellStyle(styles.get("cell_number"));
 					}
