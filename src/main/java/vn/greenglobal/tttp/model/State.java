@@ -66,7 +66,7 @@ public class State extends Model<State>{
 		if (getType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getType().getText());
-			map.put("giaiTri", getType().name());
+			map.put("giaTri", getType().name());
 			return map;
 		}
 		return null;

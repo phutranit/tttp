@@ -68,7 +68,7 @@ public class Form extends Model<Form> {
 		if (getProcessType() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getProcessType().getText());
-			map.put("giaiTri", getProcessType().name());
+			map.put("giaTri", getProcessType().name());
 			return map;
 		}
 		return null;
