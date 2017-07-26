@@ -449,11 +449,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			
-			don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 			don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 			don.setLyDoDinhChi(params.getLyDoDinhChi());
 			don.setSoQuyetDinhDinhChi(params.getSoQuyetDinhDinhChi());
 			don.setNgayQuyetDinhDinhChi(params.getNgayQuyetDinhDinhChi());
+			don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
+			don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DINH_CHI);
 			don.setHoanThanhDon(true);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
