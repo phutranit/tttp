@@ -77,6 +77,30 @@ public class TransitionService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindLastTTXM(Long donViId, String processType, ProcessRepository processRepo) {
+		BooleanExpression predAll = base;
+		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
+		processQuery = processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
+			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
+		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
+
+		predAll = predAll.and(QTransition.transition.process.in(listProcess))
+				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET));
+		return predAll;
+	}
+	
+	public Predicate predicateFindLastKTDX(Long donViId, String processType, ProcessRepository processRepo) {
+		BooleanExpression predAll = base;
+		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
+		processQuery = processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
+			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
+		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
+
+		predAll = predAll.and(QTransition.transition.process.in(listProcess))
+				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_CHUYEN_KET_QUA_DON_VI_GIAO));
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(long congChucId, long nguoiTaoId, String vaiTro, String processType, 
 			State currentState, CongChucRepository congChucRepo, ProcessRepository processRepo, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
 		BooleanExpression predAll = base;

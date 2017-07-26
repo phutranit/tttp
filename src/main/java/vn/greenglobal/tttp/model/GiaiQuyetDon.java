@@ -262,6 +262,18 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 //		return null;
 		return getThongTinGiaiQuyetDon();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getProcessType() {
+		if (getNextForm() != null && getNextForm().getProcessType() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getNextForm().getProcessType().getText());
+			map.put("type", getNextForm().getProcessType());
+			return map;
+		}
+		return null;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
