@@ -389,10 +389,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("giaiQuyetLan1", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiGiaiQuyetLan1(predAllDSGQDDonVi));
 				
 				//13 - Cong nhan quyet dinh giai quyet lan 1
-				mapMaSo.put("congNhanQuyetDinhGiaiQuyetLan1",0L);
+				mapMaSo.put("congNhanQuyetDinhGiaiQuyetLan1", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiGiaiQuyetLan2CongNhan(predAllDSGQDDonVi));
 				
 				//14 - Huy, sua quyet dinh giai quyet lan 1
-				mapMaSo.put("huySuaQuyetDinhGiaiQuyetLan1",0L);
+				mapMaSo.put("huySuaQuyetDinhGiaiQuyetLan1", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiGiaiQuyetLan2HuySua(predAllDSGQDDonVi));
 				
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();

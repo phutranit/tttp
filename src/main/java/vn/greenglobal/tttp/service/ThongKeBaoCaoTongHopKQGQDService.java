@@ -12,6 +12,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
+import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.Don;
@@ -171,6 +172,45 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(1));
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecKhieuNaiGiaiQuyetLan2CongNhan(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(2))
+				.and(QDon.don.thongTinGiaiQuyetDon.ketQuaGiaiQuyetLan2.eq(KetQuaGiaiQuyetLan2.CONG_NHAN));
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} else {
+				tongSoVuViec += 1;
+			}
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecKhieuNaiGiaiQuyetLan2HuySua(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(2))
+				.and(QDon.don.thongTinGiaiQuyetDon.ketQuaGiaiQuyetLan2.eq(KetQuaGiaiQuyetLan2.HUY)
+						.or(QDon.don.thongTinGiaiQuyetDon.ketQuaGiaiQuyetLan2.eq(KetQuaGiaiQuyetLan2.SUA)));
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
 		tongSo = Long.valueOf(dons.stream().map(d -> {
 			Long tongSoVuViec = 0L;
