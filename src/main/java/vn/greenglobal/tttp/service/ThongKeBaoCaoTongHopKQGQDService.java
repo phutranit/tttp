@@ -298,7 +298,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoTienDatPhaiThuVe(BooleanExpression predAll, String tienDat) { 
+	public Long getTongSoTienDatPhaiThuVeQDGQ(BooleanExpression predAll, String tienDat) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
@@ -334,8 +334,79 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 				} 
 				return tongSoTien;
 			}).mapToLong(Long::longValue).sum());
-		}
-		
+		}		
+		return tongSo;
+	}
+	
+	public Long getTongSoTienDatPhaiThuTra(BooleanExpression predAll, String tienDat) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		if ("tienNhaNuocPhaiThu".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiThuNhaNuoc();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("tienNhaNuocDaThu".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienDaThuNhaNuoc();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("datNhaNuocPhaiThu".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiThuNhaNuoc();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("datNhaNuocDaThu".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatDaThuNhaNuoc();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("tienCongDanPhaiTra".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiTraCongDan();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("tienCongDanDaTra".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienDaTraCongDan();					
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("datCongDanPhaiTra".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiTraCongDan();				
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} else if ("datCongDanDaTra".equals(tienDat)) { 
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				Long tongSoTien = 0L;
+				if (d.getThongTinGiaiQuyetDon() != null) {
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatDaTraCongDan();				
+				} 
+				return tongSoTien;
+			}).mapToLong(Long::longValue).sum());
+		} 
 		return tongSo;
 	}
 	
