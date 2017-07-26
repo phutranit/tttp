@@ -685,6 +685,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				//tong so don thuoc tham quyen to cao - 31
 				mapMaSo.put("tongSoDonThuocThamQuyenToCao", thongKeBaoCaoTongHopKQXLDService.getTongSoDonThuocThamQuyenToCao(predAllDXLDDonVi));
 				
+				//ghi chu - 32
+				mapMaSo.put("ghiChu", "");
+				
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();
 				mapDonVi = new HashMap<String, Object>();

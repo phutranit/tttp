@@ -257,12 +257,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).distinct().mapToLong(Long::longValue).sum());
@@ -284,12 +282,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
@@ -312,12 +308,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
@@ -339,12 +333,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());
@@ -366,12 +358,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());
@@ -394,12 +384,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
@@ -437,12 +425,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
@@ -464,12 +450,10 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
 		
 		tongSo = Long.valueOf(dons.stream().map(d -> {
-			Long tongSoVuViec = 0L;
+			Long tongSoVuViec = 1L;
 			if (d.getThongTinGiaiQuyetDon() != null) {
 				ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
-			} else {
-				tongSoVuViec += 1;
+				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai());
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
