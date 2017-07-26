@@ -95,7 +95,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return predAll;
 	}
 	
-	public Long getTongSoDonKhieuNai(BooleanExpression predAll) { 
+	public Long getTongSoDon(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
@@ -103,7 +103,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoDonKhieuNaiThuocThamQuyen(BooleanExpression predAll) { 
+	public Long getTongSoDonThuocThamQuyen(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI)
@@ -113,7 +113,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoDonKhieuNaiDinhChi(BooleanExpression predAll) { 
+	public Long getTongSoDonDinhChi(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI));
@@ -122,7 +122,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoDonKhieuNaiCoQuyetDinh(BooleanExpression predAll) { 
+	public Long getTongSoDonCoQuyetDinh(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET));
@@ -131,7 +131,39 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoVuViecKhieuNaiThuocThamQuyen(BooleanExpression predAll) { 
+	public Long getTongSoVuViecGiaiQuyetKhieuNaiDungThoiHan(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET));
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+			if (ttgqd != null && ttgqd.getNgayKetThucGiaiQuyet().isBefore(ttgqd.getNgayHetHanGiaiQuyet())) {				
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} 
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecGiaiQuyetKhieuNaiQuaThoiHan(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET));
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+			if (ttgqd != null && ttgqd.getNgayKetThucGiaiQuyet().isAfter(ttgqd.getNgayHetHanGiaiQuyet())) {				
+				tongSoVuViec += ttgqd.getSoVuGiaiQuyetKhieuNai();
+			} 
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
+	public Long getTongSoVuViecThuocThamQuyen(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI)
@@ -274,7 +306,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			tongSo = Long.valueOf(dons.stream().map(d -> {
 				Long tongSoTien = 0L;
 				if (d.getThongTinGiaiQuyetDon() != null) {
-					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiThuNhaNuoc();					
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiThuNhaNuocQDGQ();					
 				} 
 				return tongSoTien;
 			}).mapToLong(Long::longValue).sum());
@@ -282,7 +314,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			tongSo = Long.valueOf(dons.stream().map(d -> {
 				Long tongSoTien = 0L;
 				if (d.getThongTinGiaiQuyetDon() != null) {
-					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiThuNhaNuoc();					
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiThuNhaNuocQDGQ();					
 				} 
 				return tongSoTien;
 			}).mapToLong(Long::longValue).sum());
@@ -290,7 +322,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			tongSo = Long.valueOf(dons.stream().map(d -> {
 				Long tongSoTien = 0L;
 				if (d.getThongTinGiaiQuyetDon() != null) {
-					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiTraCongDan();					
+					tongSoTien += d.getThongTinGiaiQuyetDon().getTienPhaiTraCongDanQDGQ();					
 				} 
 				return tongSoTien;
 			}).mapToLong(Long::longValue).sum());
@@ -298,7 +330,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			tongSo = Long.valueOf(dons.stream().map(d -> {
 				Long tongSoTien = 0L;
 				if (d.getThongTinGiaiQuyetDon() != null) {
-					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiTraCongDan();					
+					tongSoTien += d.getThongTinGiaiQuyetDon().getDatPhaiTraCongDanQDGQ();					
 				} 
 				return tongSoTien;
 			}).mapToLong(Long::longValue).sum());
@@ -307,7 +339,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoVuViecKhieuNaiGiaiQuyetLan1(BooleanExpression predAll) { 
+	public Long getTongSoVuViecGiaiQuyetLan1(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(1));
@@ -325,7 +357,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoVuViecKhieuNaiGiaiQuyetLan2CongNhan(BooleanExpression predAll) { 
+	public Long getTongSoVuViecGiaiQuyetLan2CongNhan(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(2))
@@ -344,7 +376,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoVuViecKhieuNaiGiaiQuyetLan2HuySua(BooleanExpression predAll) { 
+	public Long getTongSoVuViecGiaiQuyetLan2HuySua(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.soLanGiaiQuyetLai.eq(2))
@@ -364,7 +396,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoVuViecKhieuNaiDungMotPhan(BooleanExpression predAll) { 
+	public Long getTongSoVuViecDungMotPhan(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
 		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ketLuanNoiDungKhieuNaiGiaoTTXM.eq(KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN));
