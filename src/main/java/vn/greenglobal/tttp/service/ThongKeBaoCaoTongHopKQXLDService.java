@@ -185,7 +185,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 	}
 	
 	public Long getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi(BooleanExpression predAllXLD) {
-		System.out.println("getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi");
 		Long tongSo = 0L;
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
@@ -198,39 +197,19 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		return tongSo;
 	}
 	
-	public Long getTongSoDonTCDPhanLoaiDonKhieuNaiTheoNoiDungLinhVucHanhChinhLienQuanDenDatDai(BooleanExpression predAllTCD,
-			LinhVucDonThu linhVucCha, LinhVucDonThu linhVucHanhChinhKhieuNaiDatDaiNhaCua, 
-			List<LinhVucDonThu> linhVucLienQuanDenDatDais) {
-		System.out.println("getTongSoDonTCDPhanLoaiDonKhieuNaiTheoNoiDungLinhVucHanhChinhLienQuanDenDatDai");
-		Long tongSo = 0L;
-		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
-		Set<Don> dons = new HashSet<Don>();
-		if (linhVucCha == null && linhVucHanhChinhKhieuNaiDatDaiNhaCua == null && linhVucLienQuanDenDatDais == null) { 
-			return tongSo;
-		}
-		predAllTCD = predAllTCD
-				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
-				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.isTrue())
-				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.eq(linhVucCha))
-				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThuChiTiet.eq(linhVucHanhChinhKhieuNaiDatDaiNhaCua))
-				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucLienQuanDenDatDais));
-		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllTCD));
-		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
-		tongSo = Long.valueOf(dons.size());
-		return tongSo;
-	}
-	
-	public Long getTongSoDonTCDPhanLoaiDonKhieuNaiTheoNoiDungLinhVucHanhChinhChiTietCon(BooleanExpression predAllTCD,
-			LinhVucDonThu linhVuc) {
+	public Long getTongSoDonTCDPhanLoaiDonKhieuNaiTheoNoiDungLinhVucHanhChinhChiTiet(BooleanExpression predAllTCD,
+			LinhVucDonThu linhVuc, List<LinhVucDonThu> linhVucChiTiets) {
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		Set<Don> dons = new HashSet<Don>();
-		if (linhVuc == null) { 
+		if (linhVuc == null && linhVucChiTiets == null) {
 			return tongSo;
 		}
 		predAllTCD = predAllTCD
 				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
-				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.eq(linhVuc));
+				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThu.eq(linhVuc))
+				.and(QSoTiepCongDan.soTiepCongDan.don.linhVucDonThuChiTiet.in(linhVucChiTiets)
+						.or(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucChiTiets)));
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAllTCD));
 		dons.addAll(soTiepCongDans.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());

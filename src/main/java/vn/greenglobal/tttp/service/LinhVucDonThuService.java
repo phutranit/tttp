@@ -37,7 +37,7 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
-	public List<LinhVucDonThu> linhVucDonThusTheoId(List<Long> ids) { 
+	public List<LinhVucDonThu> getLinhVucDonThuTheoNhieuIds(List<Long> ids) { 
 		BooleanExpression predAll = base;
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
 		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.in(ids));
