@@ -72,9 +72,6 @@ public class TransitionService {
 			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
 		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
 
-		for (Process p : listProcess) {
-			System.out.println("id process: " + p.getId());
-		}
 		predAll = predAll.and(QTransition.transition.process.in(listProcess))
 				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.KET_THUC));
 		return predAll;
