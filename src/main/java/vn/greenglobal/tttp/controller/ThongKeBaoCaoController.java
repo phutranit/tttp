@@ -84,6 +84,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	@Autowired
 	private ThongKeBaoCaoTongHopKQXLDService thongKeBaoCaoTongHopKQXLDService;
 
+	@Autowired
 	private ThongKeBaoCaoTongHopKQGQDService thongKeBaoCaoTongHopKQGQDService;
 	
 	public ThongKeBaoCaoController(BaseRepository<Don, Long> repo) {
