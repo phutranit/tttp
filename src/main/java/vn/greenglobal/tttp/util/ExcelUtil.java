@@ -1377,7 +1377,7 @@ public class ExcelUtil {
 					// Add data here
 					if(i < recordSize){
 						mapMaSo = maSos.get(i);
-						for (int j = 0; j <= colSize; j++) {
+						for (int j = 0; j < colSize; j++) {
 							c  = row.createCell(j);
 							obj = mapMaSo.get(String.valueOf(j));
 							if (obj instanceof Number) {
@@ -1396,13 +1396,13 @@ public class ExcelUtil {
 							}
 						}
 					} else {
-						for (int k = 0; k <= colSize; k++) {
+						for (int k = 0; k < colSize; k++) {
 							c  = row.createCell(k);
 							//Add TONG row
 							if(k==0){
 								c.setCellValue("Tổng");
 								c.setCellStyle(styles.get("cell"));
-							} else if(k==colSize){
+							} else if(k==colSize-1){
 								c.setCellStyle(styles.get("cell"));
 							} else {
 								colName = CellReference.convertNumToColString(k);
