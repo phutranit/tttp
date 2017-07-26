@@ -196,6 +196,20 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return tongSo;
 	}
 	
+	public Long getTongSoNguoiDaBiXuLyHanhChinh(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.stream().map(d -> {
+			Long tongSoVuViec = 0L;
+			if (d.getThongTinGiaiQuyetDon() != null) {
+				tongSoVuViec += d.getThongTinGiaiQuyetDon().getSoNguoiDaBiXuLyHanhChinh();
+			} 
+			return tongSoVuViec;
+		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
 	public Long getTongSoTienDatPhaiThuVe(BooleanExpression predAll, String tienDat) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
