@@ -17,7 +17,6 @@ import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 
@@ -378,20 +377,5 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 			return map;
 		}
 		return null;
-	}
-	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public List<TaiLieuVanThu> getListTaiLieuDinhKems() {
-		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getSoTiepCongDan() != null) {
-			for (TaiLieuVanThu tlvt : getSoTiepCongDan().getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) 
-						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
-					list.add(tlvt);
-				}
-			}
-		}
-		return list;
 	}
 }
