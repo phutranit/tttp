@@ -355,11 +355,17 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		if (getSoTiepCongDan() != null) {
 			SoTiepCongDan soTiepCongdan = getSoTiepCongDan();
 			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapDonViGiaoKTDX = new HashMap<>();
 			Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
 			Map<String, Object> mapDonViPhoiHop = new HashMap<>();
 			List<Map<String, Object>> list = new ArrayList<>();		
-			mapDonViDuocGiaoTTXM.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
-			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
+			mapDonViDuocGiaoTTXM.put("ten", getDonViGiaiQuyet() != null ? getDonViGiaiQuyet().getTen() : "");
+			mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViGiaiQuyet() != null ? getDonViGiaiQuyet().getId() : "");
+			
+			mapDonViGiaoKTDX.put("ten", getDonViChuyenDon() != null ? getDonViChuyenDon().getTen() : "");
+			mapDonViGiaoKTDX.put("coQuanQuanLyId", getDonViChuyenDon() != null ? getDonViChuyenDon().getId() : "");
+			
+			map.put("donViGiaoKTDX", mapDonViGiaoKTDX);
 			map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
 			
 			if (soTiepCongdan.getDonViPhoiHops() != null) { 
