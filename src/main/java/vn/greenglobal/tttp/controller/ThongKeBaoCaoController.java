@@ -415,6 +415,24 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				//21 - Kien nghi xu ly hanh chinh So nguoi da bi xu ly
 				mapMaSo.put("21KienNghiXuLyHanhChinhSoNguoiDaBiXuLy", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiDaBiXuLyHanhChinh(predAllDSGQDDonVi));
 				
+				//22 - Chuyen co quan dieu tra so vu
+				mapMaSo.put("22soVuChuyenCoQuanDieuTra", thongKeBaoCaoTongHopKQGQDService.getTongSoVuChuyenCoQuanDieuTra(predAllDSGQDDonVi));
+				
+				//23 - Chuyen co quan dieu tra so doi tuong
+				mapMaSo.put("23soDoiTuongChuyenCoQuanDieuTra", thongKeBaoCaoTongHopKQGQDService.getTongSoDoiTuongChuyenCoQuanDieuTra(predAllDSGQDDonVi));
+				
+				//24 - So vu da khoi to
+				mapMaSo.put("24soVuDaKhoiTo", 0L);
+				
+				//25 - So doi tuong da khoi to
+				mapMaSo.put("25soDoiTuongDaKhoiTo", 0L);
+				
+				//26 - So vu viec giai quyet dung thoi han
+				mapMaSo.put("26soVuViecGiaiQuyetDungThoiHan", 0L);
+				
+				//27 - So vu viec giai quyet qua thoi han
+				mapMaSo.put("27soVuViecGiaiQuyetQuaThoiHan", 0L);
+				
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();
 				mapDonVi = new HashMap<String, Object>();
