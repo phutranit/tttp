@@ -68,9 +68,10 @@ public class TransitionService {
 	public Predicate predicateFindLast(Long donViId, String processType, ProcessRepository processRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
-		processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
+		processQuery = processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
 			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
-		List<Process> listProcess = processRepo.findAll();
+		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
+
 		predAll = predAll.and(QTransition.transition.process.in(listProcess))
 				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.KET_THUC));
 		return predAll;
