@@ -531,10 +531,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 
 		List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(donViId, 
 				ProcessTypeEnum.GIAI_QUYET_DON.toString(), processRepo));
+
 		if (listTransitionEnd.size() > 0) {
-			giaiQuyetDonTiepTheo.setNextForm(listTransitionEnd.get(0).getForm());
-		}
-		
+			for (Transition tran : listTransitionEnd) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO)) {
+					giaiQuyetDonTiepTheo.setNextForm(tran.getForm());
+				}
+			}
+		}		
 		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
 		Don don = donRepo.findOne(donId);
 		don.setCurrentState(giaiQuyetDon.getNextState());
@@ -801,8 +805,18 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 			giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 2);
-			List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(donViId, 
-					ProcessTypeEnum.XU_LY_DON.toString(), processRepo));
+
+			List<Transition> listTransitionEnd = new ArrayList<Transition>();
+			
+			if (!isLaTTXM) {
+				listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastKTDX(donViId, 
+						ProcessTypeEnum.KIEM_TRA_DE_XUAT.toString(), processRepo));
+				
+				giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
+			} else {
+				listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastTTXM(donViId, 
+						ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo));
+			}
 			if (listTransitionEnd.size() > 0) {
 				giaiQuyetDonTiepTheo.setNextForm(listTransitionEnd.get(0).getForm());
 			}
@@ -874,12 +888,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		List<Transition> listTransitionEnd = new ArrayList<Transition>();
 		
 		if (!isLaTTXM) {
-			listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(donViId, 
+			listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastKTDX(donViId, 
 					ProcessTypeEnum.KIEM_TRA_DE_XUAT.toString(), processRepo));
 			
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		} else {
-			listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(donViId, 
+			listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastTTXM(donViId, 
 					ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo));
 		}
 		if (listTransitionEnd.size() > 0) {
@@ -1023,11 +1037,22 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonBenGiaiQuyet.getThuTuThucHien() + 1);
 		
+		List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getId(), 
+				ProcessTypeEnum.GIAI_QUYET_DON.toString(), processRepo));
+		if (listTransitionEnd.size() > 0) {
+			for (Transition tran : listTransitionEnd) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM)) {
+					giaiQuyetDonTiepTheo.setNextForm(tran.getForm());
+				}
+			}
+		}	
+		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
 		State canBoNhanKetQuaState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM));		
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
+		don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
 		don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonHienTai);
 		don.setCurrentState(canBoNhanKetQuaState);
 		donService.save(don, congChucId);
