@@ -101,7 +101,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "quy", required = false) Integer quy,
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "month", required = false) Integer month,
-			@RequestParam(value = "donViId", required = false) Long donViId,
+			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
 			PersistentEntityResourceAssembler eass) {
 		try {
 			
@@ -109,7 +109,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			
+			Long donViXuLy = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 	
@@ -123,10 +123,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			
 			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));			
 			
-			if (donViId != null && donViId > 0) {
-				CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
-				if (donVi != null) {
-					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindOne(donVi.getId())));
+			if (listDonVis != null) {
+				for (CoQuanQuanLy dv : listDonVis) {
+					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+					list.add(coQuan);
 				}
 			} else { 
 				list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
