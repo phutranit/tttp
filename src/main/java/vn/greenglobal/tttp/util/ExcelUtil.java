@@ -2028,7 +2028,7 @@ public class ExcelUtil {
 							}
 						}
 					} else {
-						for (int k = 0; k <= colSize; k++) {
+						for (int k = 0; k < colSize; k++) {
 							c  = row.createCell(k);
 							//Add TONG row
 							if(k==0){
