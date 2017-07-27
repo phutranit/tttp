@@ -66,6 +66,38 @@ public class EnumController {
 	@Autowired
 	XuLyDonRepository xuLyDonRepo;
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/years")
+	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getYears(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+
+		object.put("ten", "2017");
+		object.put("giaTri", 2017);
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", "2018");
+		object.put("giaTri", 2018);
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", "2019");
+		object.put("giaTri", 2019);
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", "2020");
+		object.put("giaTri", 2020);
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiQuys")
 	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiQuys(
@@ -77,14 +109,17 @@ public class EnumController {
 		object.put("giaTri", 1);
 		list.add(object);
 
+		object = new HashMap<String, Object>();
 		object.put("ten", "II");
 		object.put("giaTri", 2);
 		list.add(object);
 
+		object = new HashMap<String, Object>();
 		object.put("ten", "III");
 		object.put("giaTri", 3);
 		list.add(object);
 		
+		object = new HashMap<String, Object>();
 		object.put("ten", "IV");
 		object.put("giaTri", 4);
 		list.add(object);
