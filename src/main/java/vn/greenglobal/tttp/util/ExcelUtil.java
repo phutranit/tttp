@@ -416,7 +416,6 @@ public class ExcelUtil {
 		}
 	}
 	
-	
 	public static void exportDanhSachXuLyDon(HttpServletResponse response, String fileName, String sheetName,
 			List<Don> list, String title) throws IOException {
 		// New Workbook
@@ -528,7 +527,7 @@ public class ExcelUtil {
 				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(8);
-				c.setCellValue(don.getTrangThaiDonText() + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
+//				c.setCellValue(don.getTrangThaiDonText() + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
 				c.setCellStyle(cellCenter);
 				c = row.createCell(9);
 				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
