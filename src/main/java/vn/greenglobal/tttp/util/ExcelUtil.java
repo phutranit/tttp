@@ -1,17 +1,11 @@
 package vn.greenglobal.tttp.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,11 +13,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -43,8 +35,6 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
 import vn.greenglobal.tttp.model.Don;
@@ -108,7 +98,7 @@ public class ExcelUtil {
 			}
 
 			if (i == (end - 1)) {
-//				cellStyle.setBorderRight((short) 2);
+				cellStyle.setBorderRight((short) 2);
 			} else {
 				cellStyle.setBorderRight((short) 1);
 			}
@@ -538,9 +528,15 @@ public class ExcelUtil {
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
+				
+				String nguonDonText = "";
+				for (Map<String, Object> map : don.getNguonDonInfo()) {
+					nguonDonText = map.get("nguonDonText").toString() + " / " +map.get("donViChuyenText").toString();
+				}
 				c = row.createCell(4);
-				c.setCellValue(don.getNguonDonText());
+				c.setCellValue(nguonDonText);
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(5);
 				c.setCellValue(don.getNoiDung() + " / " +don.getThoiHanXuLyDon());
 				c.setCellStyle(cellLeft);
@@ -550,9 +546,15 @@ public class ExcelUtil {
 				c = row.createCell(7);
 				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
+				
+				String trangThaiDonText = "";
+				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
+					trangThaiDonText = map.get("trangThaiDonText").toString();
+				}
 				c = row.createCell(8);
-//				c.setCellValue(don.getTrangThaiDonText() + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
+				c.setCellValue(trangThaiDonText + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(9);
 				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
 				c.setCellStyle(cellCenter);

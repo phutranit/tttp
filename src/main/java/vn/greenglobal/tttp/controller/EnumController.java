@@ -23,13 +23,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
-import vn.greenglobal.tttp.model.Don;
-import vn.greenglobal.tttp.model.QXuLyDon;
-import vn.greenglobal.tttp.model.XuLyDon;
-import vn.greenglobal.tttp.repository.DonRepository;
-import vn.greenglobal.tttp.repository.XuLyDonRepository;
-import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
@@ -52,6 +45,13 @@ import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.util.ProfileUtils;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -65,6 +65,33 @@ public class EnumController {
 	
 	@Autowired
 	XuLyDonRepository xuLyDonRepo;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetLan2s")
+	@ApiOperation(value = "Lấy danh sách Kết quả giải quyết lần 2", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getKetQuaGiaiQuyetLan2(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", KetQuaGiaiQuyetLan2.CONG_NHAN.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.CONG_NHAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaGiaiQuyetLan2.SUA.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.SUA.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaGiaiQuyetLan2.HUY.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.HUY.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/years")
 	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -218,33 +245,6 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.getText());
 		object.put("giaTri", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.name());
-		list.add(object);
-
-		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
-		errorBody.put("list", list);
-
-		return new ResponseEntity<>(list, HttpStatus.OK);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetLan2s")
-	@ApiOperation(value = "Lấy danh sách Kết quả giải quyết lần 2", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getKetQuaGiaiQuyetLan2(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> object = new HashMap<>();
-
-		object.put("ten", KetQuaGiaiQuyetLan2.CONG_NHAN.getText());
-		object.put("giaTri", KetQuaGiaiQuyetLan2.CONG_NHAN.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", KetQuaGiaiQuyetLan2.SUA.getText());
-		object.put("giaTri", KetQuaGiaiQuyetLan2.SUA.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", KetQuaGiaiQuyetLan2.HUY.getText());
-		object.put("giaTri", KetQuaGiaiQuyetLan2.HUY.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

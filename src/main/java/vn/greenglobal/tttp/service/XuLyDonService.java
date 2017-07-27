@@ -89,7 +89,6 @@ public class XuLyDonService {
 	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
-
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
 		}

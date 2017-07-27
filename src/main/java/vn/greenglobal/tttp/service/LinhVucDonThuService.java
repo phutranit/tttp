@@ -45,6 +45,17 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
+	public List<LinhVucDonThu> getDanhSachLinhVucDonThusByCha(LinhVucDonThu linhVuc) {
+		BooleanExpression predAll = base;
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		if (linhVuc == null) {
+			return linhVucs;
+		}
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.eq(linhVuc));
+		linhVucs.addAll((List<LinhVucDonThu>) linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
 	public List<LinhVucDonThu> getDanhSachLinhVucDonThus(String loaiDon) {
 		BooleanExpression predAll = base;
 		if (StringUtils.isNotBlank(loaiDon)) { 
@@ -53,17 +64,6 @@ public class LinhVucDonThuService {
 		}
 
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
-		return linhVucs;
-	}
-	
-	public List<LinhVucDonThu> getDanhSachLinhVucDonThusByCha(LinhVucDonThu linhVuc) {
-		BooleanExpression predAll = base;
-		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-		if (linhVuc == null) { 
-			return linhVucs;
-		}
-		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.eq(linhVuc));
 		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
 		return linhVucs;
 	}

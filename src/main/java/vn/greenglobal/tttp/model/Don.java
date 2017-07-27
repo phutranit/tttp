@@ -108,8 +108,8 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	
-	@OneToOne(mappedBy = "don")
 	@QueryInit("*.*.*")
+	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@OneToOne
 	private Don donLanTruoc;
@@ -129,7 +129,6 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	@ManyToOne
-	@QueryInit("*.*.*")
 	private CoQuanQuanLy donViXuLyGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
@@ -1831,7 +1830,7 @@ public class Don extends Model<Don> {
 						listIdDonVi.add(idDonViGiaiQuyet);
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
-						if (gqd.isLaTTXM()) {
+						if (gqd.isLaTTXM()) {					
 							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
 							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
 							map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
@@ -1930,6 +1929,18 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getDonViXuLyGiaiQuyet().getId());
 			map.put("ten", getDonViXuLyGiaiQuyet().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getLoaiVuViecInfo() {
+		if (getLoaiVuViec() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiVuViec().getText());
+			map.put("type", getLoaiVuViec().name());
 			return map;
 		}
 		return null;
