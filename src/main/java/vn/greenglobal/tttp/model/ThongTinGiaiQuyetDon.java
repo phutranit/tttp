@@ -27,7 +27,6 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetLuanGiaiQuyetLaiEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
-import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 
@@ -98,7 +97,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int soDoiTuongBiKhoiTo;
 	private int tongSoNguoiXuLyHanhChinh;
 	private int soNguoiDaBiXuLyHanhChinh;
-	private int soLanGiaiQuyetLai = 1;
+	private int soLanGiaiQuyetLai;
 	private int soVuGiaiQuyetKhieuNai;
 	private int soNguoiDuocTraLaiQuyenLoi;
 	
@@ -152,8 +151,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private KetLuanGiaiQuyetLaiEnum ketLuanGiaiQuyetLai;
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
-	@Enumerated(EnumType.STRING)
-	private KetQuaGiaiQuyetLan2 ketQuaGiaiQuyetLan2;
 	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
@@ -751,14 +748,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
 		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
-	}
-	
-	public KetQuaGiaiQuyetLan2 getKetQuaGiaiQuyetLan2() {
-		return ketQuaGiaiQuyetLan2;
-	}
-
-	public void setKetQuaGiaiQuyetLan2(KetQuaGiaiQuyetLan2 ketQuaGiaiQuyetLan2) {
-		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
 	}
 
 	@ApiModelProperty(example = "{}", position = 2)

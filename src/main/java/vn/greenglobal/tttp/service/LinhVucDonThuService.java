@@ -37,7 +37,7 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
-	public List<LinhVucDonThu> getLinhVucDonThuTheoNhieuIds(List<Long> ids) { 
+	public List<LinhVucDonThu> linhVucDonThusTheoId(List<Long> ids) { 
 		BooleanExpression predAll = base;
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
 		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.in(ids));
@@ -53,17 +53,6 @@ public class LinhVucDonThuService {
 		}
 
 		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
-		return linhVucs;
-	}
-	
-	public List<LinhVucDonThu> getDanhSachLinhVucDonThusByCha(LinhVucDonThu linhVuc) {
-		BooleanExpression predAll = base;
-		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-		if (linhVuc == null) { 
-			return linhVucs;
-		}
-		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.eq(linhVuc));
 		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
 		return linhVucs;
 	}

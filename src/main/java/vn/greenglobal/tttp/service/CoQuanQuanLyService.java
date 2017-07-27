@@ -255,50 +255,6 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDonViVaConCuaDonViTHTKBC(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, 
-			String type, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
-		ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
-		Long capPhongBanId = Long.parseLong(phongBan.getGiaTri().toString());
-		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
-		for (Long cap : capCoQuanQuanLyIds) {
-			System.out.println("id: " + cap);
-		}
-		System.out.println("type: " + type);
-		BooleanExpression predAll = base;
-		if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3)))
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(4)))
-//					
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(5)))
-//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(6)))
-					);
-		} else if ("CCQQL_SO_BAN_NGANH".equals(type)) { 
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
-					.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
-		} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
-					.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
-		}	
-		
-		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
-			predAll = predAll.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
-					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)).and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capPhongBanId)));
-			
-			
-		}
-		return predAll;
-	}
-	
-	public Predicate predicateFindDonViTheoChaTHTKBC(Long coQuanQuanLyId) {
-		BooleanExpression predAll = base;
-		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId))
-				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
-		return predAll;
-	}
-	
 	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
 		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
 	}

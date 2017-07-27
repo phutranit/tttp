@@ -43,7 +43,6 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@NotNull
 	@ManyToOne
-	@QueryInit("*.*.*")
 	private Don don;
 	@NotNull
 	@ManyToOne
