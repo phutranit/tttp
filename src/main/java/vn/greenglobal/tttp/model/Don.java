@@ -1219,7 +1219,6 @@ public class Don extends Model<Don> {
 	public String getTrangThaiDonGiaiQuyetText() {
 		return getTrangThaiDon() != null ? getTrangThaiDon().getText() : "";
 	}
-	
 
 	public void setTrangThaiDonText(String trangThaiDonText) {
 		this.trangThaiDonText = trangThaiDonText;
@@ -1230,6 +1229,19 @@ public class Don extends Model<Don> {
 	public Long getThongTinGiaiQuyetDonId() {
 		if (getThongTinGiaiQuyetDon() != null) {
 			return getThongTinGiaiQuyetDon().getId();
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ngayBatDauGiaiQuyet", getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet());
+			map.put("ngayBatDauTTXM", getThongTinGiaiQuyetDon().getNgayBatDauTTXM());
+			map.put("ngayBatDauKTDX", getThongTinGiaiQuyetDon().getNgayBatDauKTDX());
+			return map;
 		}
 		return null;
 	}
