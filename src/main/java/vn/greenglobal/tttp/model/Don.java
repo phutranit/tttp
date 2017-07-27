@@ -1933,4 +1933,17 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getLoaiVuViecInfo() {
+		if (getLoaiVuViec() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiVuViec().getText());
+			map.put("type", getLoaiVuViec().name());
+			return map;
+		}
+		return null;
+	}
+	
 }
