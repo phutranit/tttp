@@ -536,6 +536,37 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<LinhVucDonThu> linhVucCheDoChinhSachs = new ArrayList<LinhVucDonThu>();
 			linhVucCheDoChinhSachs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThusByCha(linhVucCheDoChinhSach));
 			
+			
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(4L);
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(30L);
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(31L);
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(34L);
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(33L);
+			
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachs = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeChinhSachs.add(3L);
+			idLinhVucHanhChinhDonKhieuNaiVeChinhSachs.add(28L);
+			
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(4L);
+			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(29L);
+			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(32L);
+			
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs.add(3L);
+			idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs.add(28L);
+			
+			List<LinhVucDonThu> linhVucLienQuanDenDatDais = new ArrayList<LinhVucDonThu>();
+			linhVucLienQuanDenDatDais.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais));
+			
+			List<LinhVucDonThu> linhVucVeNhaCuaTaiSans = new ArrayList<LinhVucDonThu>();
+			linhVucVeNhaCuaTaiSans.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
+			
+			List<LinhVucDonThu> linhVucVeChinhSachCCVCs = new ArrayList<LinhVucDonThu>();
+			linhVucVeChinhSachCCVCs.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs));
+			
+			
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
 				predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId())
@@ -767,7 +798,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			linhVucVeChinhSachCCVCs.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs));
 			
 			List<LinhVucDonThu> linhVucVeNhaCuaTaiSans = new ArrayList<LinhVucDonThu>();
-			linhVucVeChinhSachCCVCs.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
+			linhVucVeNhaCuaTaiSans.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
 			
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDXLDDonVi = predAllDSXLD;
