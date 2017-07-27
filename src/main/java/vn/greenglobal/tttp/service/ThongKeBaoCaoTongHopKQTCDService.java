@@ -16,7 +16,6 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
@@ -101,13 +100,6 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 				}
 			}
 		}
-		
-//		if (donVis != null) { 
-//			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.in(donVis)
-//					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.in(donVis))
-//					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.in(donVis)));
-//		}
-		
 		return predAll;
 	}
 	
