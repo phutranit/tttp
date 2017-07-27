@@ -533,11 +533,15 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThongTinYeuCauKiemTraDeXuatInfo() {		
 		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> mapDonViGiaoKTDX = new HashMap<>();
 		Map<String, Object> mapDonViDuocGiaoTTXM = new HashMap<>();
 		Map<String, Object> mapDonViPhoiHop = new HashMap<>();
 		List<Map<String, Object>> list = new ArrayList<>();		
 		mapDonViDuocGiaoTTXM.put("ten", getDonViChuTri() != null ? getDonViChuTri().getTen() : "");
 		mapDonViDuocGiaoTTXM.put("coQuanQuanLyId", getDonViChuTri() != null ? getDonViChuTri().getId() : "");
+		mapDonViGiaoKTDX.put("ten", getDonViTiepDan() != null ? getDonViTiepDan().getTen() : "");
+		mapDonViGiaoKTDX.put("coQuanQuanLyId", getDonViTiepDan() != null ? getDonViTiepDan().getId() : "");
+		map.put("donViGiaoKTDX", mapDonViGiaoKTDX);
 		map.put("donViDuocGiaoTTXM", mapDonViDuocGiaoTTXM);
 		
 		if (getDonViPhoiHops() != null) { 

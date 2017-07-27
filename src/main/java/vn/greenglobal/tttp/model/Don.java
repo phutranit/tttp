@@ -39,6 +39,7 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
@@ -96,6 +97,7 @@ public class Don extends Model<Don> {
 	private boolean donChuyen = false;
 	private boolean old = false;
 	private boolean hoanThanhDon = false;
+	private boolean dangGiaoKTDX = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -206,6 +208,7 @@ public class Don extends Model<Don> {
 
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
+	
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
 	
@@ -217,6 +220,10 @@ public class Don extends Model<Don> {
 	
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiVuViecEnum loaiVuViec;
 	
 	@ManyToOne
 	private State currentState;
@@ -567,6 +574,7 @@ public class Don extends Model<Don> {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}	
 
+	@JsonIgnore
 	@ApiModelProperty(position = 13)
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
@@ -1066,6 +1074,14 @@ public class Don extends Model<Don> {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
+	public LoaiVuViecEnum getLoaiVuViec() {
+		return loaiVuViec;
+	}
+
+	public void setLoaiVuViec(LoaiVuViecEnum loaiVuViec) {
+		this.loaiVuViec = loaiVuViec;
+	}
+
 	@JsonIgnore
 	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
 		return donViXuLyGiaiQuyet;
@@ -1173,38 +1189,37 @@ public class Don extends Model<Don> {
 		return str;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getTrangThaiDonText() {
-		trangThaiDonText = "Đang xử lý";
-		if (xuLyDons.size() > 0) {
-			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-			// hxl
-			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-					xld.isDonChuyen()).collect(Collectors.toList());
-			if (xlds.size() > 0) {
-				XuLyDon xld = xlds.get(xlds.size() - 1);
-				// ttd ht
-				if (xld != null) {
-					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-						trangThaiDonText = "Hoàn thành";
-						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
-						}
-					}
-				}
-			}
-		}
-		return trangThaiDonText;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public String getTrangThaiDonText() {
+//		trangThaiDonText = "Đang xử lý";
+//		if (xuLyDons.size() > 0) {
+//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+//			// hxl
+//			xlds.addAll(xuLyDons);
+//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+//					xld.isDonChuyen()).collect(Collectors.toList());
+//			if (xlds.size() > 0) {
+//				XuLyDon xld = xlds.get(xlds.size() - 1);
+//				// ttd ht
+//				if (xld != null) {
+//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
+//						trangThaiDonText = "Hoàn thành";
+//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+//							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return trangThaiDonText;
+//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public String getTrangThaiDonGiaiQuyetText() {
 		return getTrangThaiDon() != null ? getTrangThaiDon().getText() : "";
 	}
-	
 
 	public void setTrangThaiDonText(String trangThaiDonText) {
 		this.trangThaiDonText = trangThaiDonText;
@@ -1215,6 +1230,19 @@ public class Don extends Model<Don> {
 	public Long getThongTinGiaiQuyetDonId() {
 		if (getThongTinGiaiQuyetDon() != null) {
 			return getThongTinGiaiQuyetDon().getId();
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThongTinGiaiQuyetDonInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ngayBatDauGiaiQuyet", getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet());
+			map.put("ngayBatDauTTXM", getThongTinGiaiQuyetDon().getNgayBatDauTTXM());
+			map.put("ngayBatDauKTDX", getThongTinGiaiQuyetDon().getNgayBatDauKTDX());
+			return map;
 		}
 		return null;
 	}
@@ -1606,6 +1634,14 @@ public class Don extends Model<Don> {
 
 	public void setHoanThanhDon(boolean hoanThanhDon) {
 		this.hoanThanhDon = hoanThanhDon;
+	}
+	
+	public boolean isDangGiaoKTDX() {
+		return dangGiaoKTDX;
+	}
+
+	public void setDangGiaoKTDX(boolean dangGiaoKTDX) {
+		this.dangGiaoKTDX = dangGiaoKTDX;
 	}
 
 	@Transient
