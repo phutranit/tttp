@@ -1119,9 +1119,8 @@ public class ExcelUtil {
 				c.setCellStyle(styles.get("cell_number"));
 				
 				c = row.createCell(31);
-				c.setCellValue(Integer.valueOf(map.get("ghiChu").toString()));
-				//c.setCellStyle(cellCenter);
-				c.setCellStyle(styles.get("cell_number"));
+				c.setCellValue(map.get("ghiChu").toString());
+				c.setCellStyle(cellCenter);
 				
 				i++;
 				idx++;
