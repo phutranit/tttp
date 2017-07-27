@@ -536,6 +536,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapTruongPhongChiDinh = new HashMap<>();
 		Map<String, Object> mapChuyenVienChiDinh = new HashMap<>();
 		
+		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", "");
 		map.put("thamQuyenGiaiQuyet", "");
