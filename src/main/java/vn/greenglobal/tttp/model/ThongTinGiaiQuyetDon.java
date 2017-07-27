@@ -155,6 +155,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	@Enumerated(EnumType.STRING)
 	private KetQuaGiaiQuyetLan2 ketQuaGiaiQuyetLan2;
 	
+	public KetQuaGiaiQuyetLan2 getKetQuaGiaiQuyetLan2() {
+		return ketQuaGiaiQuyetLan2;
+	}
+
+	public void setKetQuaGiaiQuyetLan2(KetQuaGiaiQuyetLan2 ketQuaGiaiQuyetLan2) {
+		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
+	}
+	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
 	 */
@@ -751,14 +759,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
 		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
-	}
-	
-	public KetQuaGiaiQuyetLan2 getKetQuaGiaiQuyetLan2() {
-		return ketQuaGiaiQuyetLan2;
-	}
-
-	public void setKetQuaGiaiQuyetLan2(KetQuaGiaiQuyetLan2 ketQuaGiaiQuyetLan2) {
-		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
 	}
 
 	@ApiModelProperty(example = "{}", position = 2)
