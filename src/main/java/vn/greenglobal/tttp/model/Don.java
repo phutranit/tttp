@@ -573,6 +573,7 @@ public class Don extends Model<Don> {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}	
 
+	@JsonIgnore
 	@ApiModelProperty(position = 13)
 	public TrangThaiDonEnum getTrangThaiDon() {
 		return trangThaiDon;
@@ -1187,31 +1188,31 @@ public class Don extends Model<Don> {
 		return str;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getTrangThaiDonText() {
-		trangThaiDonText = "Đang xử lý";
-		if (xuLyDons.size() > 0) {
-			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-			// hxl
-			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-					xld.isDonChuyen()).collect(Collectors.toList());
-			if (xlds.size() > 0) {
-				XuLyDon xld = xlds.get(xlds.size() - 1);
-				// ttd ht
-				if (xld != null) {
-					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-						trangThaiDonText = "Hoàn thành";
-						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
-						}
-					}
-				}
-			}
-		}
-		return trangThaiDonText;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public String getTrangThaiDonText() {
+//		trangThaiDonText = "Đang xử lý";
+//		if (xuLyDons.size() > 0) {
+//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+//			// hxl
+//			xlds.addAll(xuLyDons);
+//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+//					xld.isDonChuyen()).collect(Collectors.toList());
+//			if (xlds.size() > 0) {
+//				XuLyDon xld = xlds.get(xlds.size() - 1);
+//				// ttd ht
+//				if (xld != null) {
+//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
+//						trangThaiDonText = "Hoàn thành";
+//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+//							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return trangThaiDonText;
+//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
