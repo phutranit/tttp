@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -514,9 +515,15 @@ public class ExcelUtil {
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
+				
+				String nguonDonText = "";
+				for (Map<String, Object> map : don.getNguonDonInfo()) {
+					nguonDonText = map.get("nguonDonText").toString() + " / " +map.get("donViChuyenText").toString();
+				}
 				c = row.createCell(4);
-				c.setCellValue(don.getNguonDonText());
+				c.setCellValue(nguonDonText);
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(5);
 				c.setCellValue(don.getNoiDung() + " / " +don.getThoiHanXuLyDon());
 				c.setCellStyle(cellLeft);
@@ -526,9 +533,15 @@ public class ExcelUtil {
 				c = row.createCell(7);
 				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
+				
+				String trangThaiDonText = "";
+				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
+					trangThaiDonText = map.get("trangThaiDonText").toString();
+				}
 				c = row.createCell(8);
-//				c.setCellValue(don.getTrangThaiDonText() + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
+				c.setCellValue(trangThaiDonText + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(9);
 				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
 				c.setCellStyle(cellCenter);
