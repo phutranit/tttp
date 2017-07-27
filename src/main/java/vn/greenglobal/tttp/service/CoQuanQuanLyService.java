@@ -255,7 +255,15 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindDonViVaConCuaDonViTHTKBC(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
+	public Predicate predicateFindDonViVaConCuaDonViTHTKBC(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, 
+			String type, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
+		ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+		Long capPhongBanId = Long.parseLong(phongBan.getGiaTri().toString());
+		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
+		for (Long cap : capCoQuanQuanLyIds) {
+			System.out.println("id: " + cap);
+		}
+		System.out.println("type: " + type);
 		BooleanExpression predAll = base;
 		if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
@@ -277,7 +285,7 @@ public class CoQuanQuanLyService {
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
-					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)).and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capPhongBanId)));
 			
 			
 		}
