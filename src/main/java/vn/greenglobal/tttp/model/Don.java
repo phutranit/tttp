@@ -39,6 +39,7 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
@@ -206,6 +207,7 @@ public class Don extends Model<Don> {
 
 	@Enumerated(EnumType.STRING)
 	private HinhThucGiaiQuyetEnum hinhThucDaGiaiQuyet;
+	
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyXLDEnum huongXuLyXLD;
 	
@@ -217,6 +219,10 @@ public class Don extends Model<Don> {
 	
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private LoaiVuViecEnum loaiVuViec;
 	
 	@ManyToOne
 	private State currentState;
@@ -1064,6 +1070,14 @@ public class Don extends Model<Don> {
 
 	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
+	}
+
+	public LoaiVuViecEnum getLoaiVuViec() {
+		return loaiVuViec;
+	}
+
+	public void setLoaiVuViec(LoaiVuViecEnum loaiVuViec) {
+		this.loaiVuViec = loaiVuViec;
 	}
 
 	@JsonIgnore

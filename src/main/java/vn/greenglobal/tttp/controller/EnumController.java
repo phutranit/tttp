@@ -44,6 +44,7 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
+import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
@@ -1203,6 +1204,28 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", FlowStateEnum.KET_THUC.getText());
 		object.put("giaTri", FlowStateEnum.KET_THUC.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/vuViecs")
+	@ApiOperation(value = "Lấy danh sách loại vụ việc", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiVuViecs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiVuViecEnum.CU.getText());
+		object.put("giaTri", LoaiVuViecEnum.CU.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LoaiVuViecEnum.MOI_PHAT_SINH.getText());
+		object.put("giaTri", LoaiVuViecEnum.MOI_PHAT_SINH.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
