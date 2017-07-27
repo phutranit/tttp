@@ -2009,7 +2009,7 @@ public class ExcelUtil {
 					// Add data here
 					if(i < recordSize){
 						mapMaSo = maSos.get(i);
-						for (int j = 0; j <= colSize; j++) {
+						for (int j = 0; j < colSize; j++) {
 							c  = row.createCell(j);
 							obj = mapMaSo.get(String.valueOf(j));
 							if (obj instanceof Number) {
