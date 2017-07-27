@@ -486,7 +486,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				}
 				
 				if (don != null) {
-					if (don.getGiaiQuyetDonCuoiCung() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+					if (don.getGiaiQuyetDonCuoiCung() != null && don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
 						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetDonCuoiCung()), HttpStatus.OK);
 					} else if (don.getGiaiQuyetTTXMCuoiCung() != null && donViId.equals(don.getDonViThamTraXacMinh().getId())) {
 						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetTTXMCuoiCung()), HttpStatus.OK);
