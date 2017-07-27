@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,6 +36,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -194,6 +196,49 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 
 			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", cha, null, null), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViThongKes")
+	@ApiOperation(value = "Lấy danh sách đơn vị thống kê", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDonViThongKes(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
+			List<CoQuanQuanLy> list = new ArrayList<>();
+			
+			ThamSo thamSoUBND = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoThanhTra = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			
+			if (donViId.equals(Long.parseLong(thamSoThanhTra.getGiaTri().toString()))) {
+				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService.predicateFindAll("", Long.parseLong(thamSoUBND.getGiaTri().toString()), null, null));
+				List<CoQuanQuanLy> listDonViConFinal = new ArrayList<CoQuanQuanLy>();
+				for (CoQuanQuanLy coQuan : listDonViCon) {
+					if (!coQuan.getCapCoQuanQuanLy().getId().equals(Long.parseLong(thamSoPhongBan.getGiaTri().toString()))) {
+						listDonViConFinal.add(coQuan);
+					}
+				}
+				list.addAll(listDonViConFinal);
+			} else {
+				list.add(repo.findOne(donViId));
+				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService.predicateFindAll("", donViId, null, null));
+				list.addAll(listDonViCon);
+			}
+			
+			
+			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(list, pageable, list.size());
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
