@@ -37,6 +37,7 @@ import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
+import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -48,6 +49,7 @@ import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 
@@ -63,6 +65,67 @@ public class EnumController {
 	
 	@Autowired
 	XuLyDonRepository xuLyDonRepo;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiQuys")
+	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiQuys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", "I");
+		object.put("giaTri", 1);
+		list.add(object);
+
+		object.put("ten", "II");
+		object.put("giaTri", 2);
+		list.add(object);
+
+		object.put("ten", "III");
+		object.put("giaTri", 3);
+		list.add(object);
+		
+		object.put("ten", "IV");
+		object.put("giaTri", 4);
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiKy")
+	@ApiOperation(value = "Lấy danh sách Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiKys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.THEO_QUY.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.THEO_QUY.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.THEO_THANG.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.THEO_THANG.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/processTypes")
 	@ApiOperation(value = "Lấy danh sách loại quy trình", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -120,6 +183,33 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.getText());
 		object.put("giaTri", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetLan2s")
+	@ApiOperation(value = "Lấy danh sách Kết quả giải quyết lần 2", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getKetQuaGiaiQuyetLan2(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", KetQuaGiaiQuyetLan2.CONG_NHAN.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.CONG_NHAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaGiaiQuyetLan2.SUA.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.SUA.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaGiaiQuyetLan2.HUY.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2.HUY.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
