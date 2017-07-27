@@ -45,9 +45,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 
 	@Autowired
 	private SoTiepCongDanRepository soTiepCongDanRepository;
-	
-	@Autowired
-	private DonCongDanRepository donCongDanRepo;
 
 	@Autowired
 	private XuLyDonRepository xuLyDonRepository;
