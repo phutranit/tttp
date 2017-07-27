@@ -241,7 +241,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			boolean flagChuyenDonViKiemTra = false;
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
-			System.out.println("don " +soTiepCongDan.getDon().getId());
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
 				soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
