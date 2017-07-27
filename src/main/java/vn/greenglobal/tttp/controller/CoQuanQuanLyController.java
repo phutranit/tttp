@@ -36,7 +36,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
