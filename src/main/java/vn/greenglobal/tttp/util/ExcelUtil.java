@@ -417,7 +417,7 @@ public class ExcelUtil {
 		}
 	}
 	
-	public static void exportDanhSachXuLyDon(HttpServletResponse response, String fileName, String sheetName,
+	public static void exportDanhSachXuLyDon(HttpServletResponse response, Long donViXuLy, String fileName, String sheetName,
 			List<Don> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -518,7 +518,14 @@ public class ExcelUtil {
 				
 				String nguonDonText = "";
 				for (Map<String, Object> map : don.getNguonDonInfo()) {
-					nguonDonText = map.get("nguonDonText").toString() + " / " +map.get("donViChuyenText").toString();
+					Long _donViXuLyId = 0L;
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						nguonDonText = map.get("nguonDonText").toString() + " / " +map.get("donViChuyenText").toString();
+						break;
+					}
 				}
 				c = row.createCell(4);
 				c.setCellValue(nguonDonText);
@@ -536,7 +543,14 @@ public class ExcelUtil {
 				
 				String trangThaiDonText = "";
 				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
-					trangThaiDonText = map.get("trangThaiDonText").toString();
+					Long _donViXuLyId = 0L;
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						trangThaiDonText = map.get("trangThaiDonText").toString();
+						break;
+					}
 				}
 				c = row.createCell(8);
 				c.setCellValue(trangThaiDonText + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
