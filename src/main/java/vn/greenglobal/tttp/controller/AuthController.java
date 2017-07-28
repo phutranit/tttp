@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +38,7 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
@@ -117,7 +119,7 @@ public class AuthController {
 			NguoiDung user;
 
 			if (username != null && !username.isEmpty()) {
-				user = nguoiDungRepository.findByEmail(username);
+				user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(username)));
 				if (user != null && !user.isDaXoa() && user.isActive()) {
 					if (user.checkPassword(password)) {
 						return returnUser(result, user);
