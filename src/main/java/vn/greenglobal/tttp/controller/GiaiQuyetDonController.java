@@ -453,11 +453,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			
-			don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 			don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 			don.setLyDoDinhChi(params.getLyDoDinhChi());
 			don.setSoQuyetDinhDinhChi(params.getSoQuyetDinhDinhChi());
 			don.setNgayQuyetDinhDinhChi(params.getNgayQuyetDinhDinhChi());
+			don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
+			don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DINH_CHI);
 			don.setHoanThanhDon(true);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -783,7 +784,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			disableGiaiQuyetDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChuc);
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
-			if (giaiQuyetDon.getCanBoXuLyChiDinh() == null) {
+			if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
 				giaiQuyetDonHienTai.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			}
 			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_PHONG_BAN.getText());
