@@ -2,9 +2,8 @@ package vn.greenglobal.tttp.enums;
 
 public enum LoaiDoiTuongThanhTraEnum {
 
-	CONG_DAN("Công dân"),
-	DON_CONG_DAN("Đơn - Công dân"),
-	DON("Đơn");
+	CA_NHAN("Công dân"),
+	TO_CHUC("Tổ chức");
 
 	LoaiDoiTuongThanhTraEnum(String text) {
 		this.text = text;
