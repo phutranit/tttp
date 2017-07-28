@@ -603,7 +603,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 						xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.DINH_CHI);
 						Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
-						don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
+//						don.setHuongXuLyXLD(HuongXuLyXLDEnum.DINH_CHI);
 						don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 						don.setHoanThanhDon(true);
 						don.setLyDoDinhChi(xuLyDon.getyKienXuLy());
