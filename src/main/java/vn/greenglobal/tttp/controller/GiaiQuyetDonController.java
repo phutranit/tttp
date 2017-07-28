@@ -786,6 +786,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
 				giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			}
+			giaiQuyetDonTiepTheo.setNextForm(giaiQuyetDonHienTai.getNextForm());
+			giaiQuyetDonTiepTheo.setNextState(giaiQuyetDon.getNextState());
 			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_PHONG_BAN.getText());
 		} else { 
 			// set giao viec cho truong phong da xu ly 
@@ -842,8 +844,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
 		giaiQuyetDonTiepTheo.setDonChuyen(true);
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
-		giaiQuyetDonTiepTheo.setNextForm(giaiQuyetDonHienTai.getNextForm());
-		giaiQuyetDonTiepTheo.setNextState(giaiQuyetDon.getNextState());
+		
 		if (!isLaTTXM) {
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		}
