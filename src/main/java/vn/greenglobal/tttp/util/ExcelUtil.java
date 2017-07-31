@@ -1539,51 +1539,46 @@ public class ExcelUtil {
 		header1.add(new String[] {"Tố cáo đúng", "11", "11", "7", "7"});
 		header1.add(new String[] {"Tố cáo sai", "11", "11", "8", "8"});
 		header1.add(new String[] {"Tố cáo đúng một phần", "11", "11", "9", "9"});
-		//
-		header1.add(new String[] {"Giải quyết lần 1", "10", "11", "12", "12"});
-		header1.add(new String[] {"Giải quyết lần 2", "10", "10", "13", "14"});
-		header1.add(new String[] {"Công nhận QĐ g/q lần 1", "11", "11", "13", "13"});
-		header1.add(new String[] {"Hủy, sửa QĐ g/q lần 1", "11", "11", "14", "14"});
 		
-		header1.add(new String[] {"Kiến nghị thu hồi cho Nhà nước", "9", "10", "15", "16"});
-		header1.add(new String[] {"Trả lại cho công dân", "9", "10", "17", "18"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "15", "15"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "16", "16"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "17", "17"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "18", "18"});
+		header1.add(new String[] {"Kiến nghị thu hồi cho Nhà nước", "9", "10", "10", "11"});
+		header1.add(new String[] {"Trả lại cho công dân", "9", "10", "12", "13"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "10", "10"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "11", "11"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "12", "12"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "13", "13"});
 		
-		header1.add(new String[] {"Số người được trả lại quyền lợi", "9", "11", "19", "19"});
-		header1.add(new String[] {"Kiến nghị xử lý hành chính", "9", "10", "20", "21"});
-		header1.add(new String[] {"Tổng số người", "11", "11", "20", "20"});
-		header1.add(new String[] {"Số người đã bị xử lý", "11", "11", "21", "21"});
-		header1.add(new String[] {"Chuyển cơ quan điều tra, khởi tố", "9", "9", "22", "25"});
-		header1.add(new String[] {"Số vụ", "10", "11", "22", "22"});
-		header1.add(new String[] {"Số đối tượng", "10", "11", "23", "23"});
-		header1.add(new String[] {"Kết quả ", "10", "10", "24", "25"});
-		header1.add(new String[] {"Số vụ đã khởi tố", "11", "11", "24", "24"});
-		header1.add(new String[] {"Số đối tượng đã khởi tố", "11", "11", "25", "25"});
+		header1.add(new String[] {"Số người được trả lại quyền lợi", "9", "11", "14", "14"});
+		header1.add(new String[] {"Kiến nghị xử lý hành chính", "9", "10", "15", "16"});
+		header1.add(new String[] {"Tổng số người", "11", "11", "15", "15"});
+		header1.add(new String[] {"Số người đã bị xử lý", "11", "11", "16", "16"});
+		header1.add(new String[] {"Chuyển cơ quan điều tra, khởi tố", "9", "9", "17", "20"});
+		header1.add(new String[] {"Số vụ", "10", "11", "17", "17"});
+		header1.add(new String[] {"Số đối tượng", "10", "11", "18", "18"});
+		header1.add(new String[] {"Kết quả ", "10", "10", "19", "20"});
+		header1.add(new String[] {"Số vụ đã khởi tố", "11", "11", "19", "19"});
+		header1.add(new String[] {"Số đối tượng đã khởi tố", "11", "11", "20", "20"});
 
-		header1.add(new String[] {"Chấp hành thời gian giải quyết theo quy định", "8", "9", "26", "27"});
-		header1.add(new String[] {"Số vụ việc giải quyết đúng thời hạn", "10", "11", "26", "26"});
-		header1.add(new String[] {"Số vụ việc giải quyết quá thời hạn", "10", "11", "27", "27"});
-		header1.add(new String[] {"Việc thi hành quyết định giải quyết khiếu nại", "8", "8", "28", "37"});
-		header1.add(new String[] {"Tổng số quyết định phải tổ chức thực hiện trong kỳ báo cáo", "9", "11", "28", "28"});
-		header1.add(new String[] {"Đã thực hiện", "9", "11", "29", "29"});
-		header1.add(new String[] {"Thu hồi cho nhà nước", "9", "9", "30", "33"});
-		header1.add(new String[] {"Phải thu", "10", "10", "30", "31"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "30", "30"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "31", "31"});
-		header1.add(new String[] {"Đã thu", "10", "10", "32", "33"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "32", "32"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "33", "33"});
-		header1.add(new String[] {"Trả lại cho công dân", "9", "9", "34", "37"});
-		header1.add(new String[] {"Phải trả	", "10", "10", "34", "35"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "34", "34"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "35", "35"});
-		header1.add(new String[] {"Đã trả", "10", "10", "36", "37"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "36", "36"});
-		header1.add(new String[] {"Đất (m2)", "11", "11", "37", "37"});
-		header1.add(new String[] {"Ghi chú", "8", "11", "38", "38"});
+		header1.add(new String[] {"Chấp hành thời gian giải quyết theo quy định", "8", "9", "21", "22"});
+		header1.add(new String[] {"Số vụ việc giải quyết đúng thời hạn", "10", "11", "21", "21"});
+		header1.add(new String[] {"Số vụ việc giải quyết quá thời hạn", "10", "11", "22", "22"});
+		header1.add(new String[] {"Việc thi hành quyết định giải quyết tố cáo", "8", "8", "23", "32"});
+		header1.add(new String[] {"Tổng số quyết định phải tổ chức thực hiện trong kỳ báo cáo", "9", "11", "23", "23"});
+		header1.add(new String[] {"Đã thực hiện", "9", "11", "24", "24"});
+		header1.add(new String[] {"Thu hồi cho nhà nước", "9", "9", "25", "25"});
+		header1.add(new String[] {"Phải thu", "10", "10", "25", "26"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "25", "25"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "26", "26"});
+		header1.add(new String[] {"Đã thu", "10", "10", "27", "28"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "27", "27"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "28", "28"});
+		header1.add(new String[] {"Trả lại cho công dân", "9", "9", "29", "32"});
+		header1.add(new String[] {"Phải trả	", "10", "10", "29", "30"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "29", "29"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "30", "30"});
+		header1.add(new String[] {"Đã trả", "10", "10", "31", "32"});
+		header1.add(new String[] {"Tiền (Trđ)", "11", "11", "31", "31"});
+		header1.add(new String[] {"Đất (m2)", "11", "11", "32", "32"});
+		header1.add(new String[] {"Ghi chú", "8", "11", "33", "33"});
 		
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -1695,7 +1690,7 @@ public class ExcelUtil {
 					// Add data here
 					if(i < recordSize){
 						mapMaSo = maSos.get(i);
-						for (int j = 0; j <= colSize; j++) {
+						for (int j = 0; j < colSize; j++) {
 							c  = row.createCell(j);
 							obj = mapMaSo.get(String.valueOf(j));
 							if (obj instanceof Number) {
@@ -1714,7 +1709,7 @@ public class ExcelUtil {
 							}
 						}
 					} else {
-						for (int k = 0; k <= colSize; k++) {
+						for (int k = 0; k < colSize; k++) {
 							c  = row.createCell(k);
 							//Add TONG row
 							if(k==0){
