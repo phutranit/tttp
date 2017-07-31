@@ -410,7 +410,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("kienNghiXuLyHanhChinhTongSoNguoi", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiXuLyHanhChinh(predAllDSGQDDonVi));
 				
 				//21 - Kien nghi xu ly hanh chinh So nguoi da bi xu ly
-				mapMaSo.put("KienNghiXuLyHanhChinhSoNguoiDaBiXuLy", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiDaBiXuLyHanhChinh(predAllDSGQDDonVi));
+				mapMaSo.put("kienNghiXuLyHanhChinhSoNguoiDaBiXuLy", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiDaBiXuLyHanhChinh(predAllDSGQDDonVi));
 				
 				//22 - Chuyen co quan dieu tra so vu
 				mapMaSo.put("soVuChuyenCoQuanDieuTra", thongKeBaoCaoTongHopKQGQDService.getTongSoVuChuyenCoQuanDieuTra(predAllDSGQDDonVi));
@@ -576,7 +576,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("kienNghiXuLyHanhChinhTongSoNguoi", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiXuLyHanhChinh(predAllDSGQDDonVi));
 				
 				//16 - Kien nghi xu ly hanh chinh So nguoi da bi xu ly
-				mapMaSo.put("KienNghiXuLyHanhChinhSoNguoiDaBiXuLy", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiDaBiXuLyHanhChinh(predAllDSGQDDonVi));
+				mapMaSo.put("kienNghiXuLyHanhChinhSoNguoiDaBiXuLy", thongKeBaoCaoTongHopKQGQDService.getTongSoNguoiDaBiXuLyHanhChinh(predAllDSGQDDonVi));
 				
 				//17 - Chuyen co quan dieu tra so vu
 				mapMaSo.put("soVuChuyenCoQuanDieuTra", thongKeBaoCaoTongHopKQGQDService.getTongSoVuChuyenCoQuanDieuTra(predAllDSGQDDonVi));
