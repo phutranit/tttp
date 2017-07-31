@@ -32,7 +32,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
-import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
@@ -785,8 +784,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
 			if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
-				giaiQuyetDonHienTai.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+				giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			}
+			giaiQuyetDonTiepTheo.setNextForm(giaiQuyetDonHienTai.getNextForm());
+			giaiQuyetDonTiepTheo.setNextState(giaiQuyetDon.getNextState());
 			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_PHONG_BAN.getText());
 		} else { 
 			// set giao viec cho truong phong da xu ly 
@@ -812,7 +813,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			
 			if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
-				giaiQuyetDonHienTai.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+				giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			}
 			disableGiaiQuyetDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChuc);
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
@@ -843,6 +844,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
 		giaiQuyetDonTiepTheo.setDonChuyen(true);
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
+		
 		if (!isLaTTXM) {
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		}
