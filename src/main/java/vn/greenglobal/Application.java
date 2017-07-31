@@ -136,6 +136,7 @@ public class Application extends SpringBootServletInitializer {
 						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
 						"/thongKeBaoCaos/tongHopKetQuaTiepCongDan/xuatExcel", "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonKhieuNai/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
