@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
@@ -153,12 +154,14 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
 									
-								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								if (congDanUpdate != null) {
-									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-									result.getDonCongDans().add(dcd);
+								if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
+									CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									if (congDanUpdate != null) {
+										donCongDan.setCongDan(congDanUpdate);
+									}
 								}
+								Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDonCongDans().add(dcd);
 								
 								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, new Don_CongDan());
 								LichSuThayDoi lichSu = new LichSuThayDoi();
@@ -257,12 +260,11 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								listUpdate.add(donCongDan);
 							}
 							for (Don_CongDan donCongDan : listUpdate) {
-								
 								CongDan congDan = null;
 								
 								if (donCongDan.getCongDan() != null && donCongDan.getCongDan().getId() != null) {
 									congDan = congDanRepo.findOne(congDanService.predicateFindOne(donCongDan.getCongDan().getId()));
-								}		
+								}
 								if (congDan == null) {
 									congDan = new CongDan();
 								}
@@ -280,13 +282,15 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setPhuongXa(donCongDan.getPhuongXa());
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
-									
-								CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-								if (congDanUpdate != null) {
-									donCongDan.setCongDan(congDanUpdate);
-									Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-									result.getDonCongDans().add(dcd);
+								
+								if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
+									CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+									if (congDanUpdate != null) {
+										donCongDan.setCongDan(congDanUpdate);
+									}
 								}
+								Don_CongDan dcd = donCongDanService.save(donCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDonCongDans().add(dcd);
 								
 								Don_CongDan donCongDanOld = repo.findOne(donCongDan.getId());
 								List<PropertyChangeObject> listThayDoi = donCongDanService.getListThayDoi(donCongDan, donCongDanOld);
