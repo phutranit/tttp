@@ -789,15 +789,19 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen")
 	@ApiOperation(value = "In phiếu trả đơn chuyển không đúng thẩm quyền", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordTraDonChuyenKhongDungThamQuyen(@RequestParam(value = "doiTuongChuyenDon", required = true) String doiTuongChuyenDon,
+	public void exportWordTraDonChuyenKhongDungThamQuyen(@RequestParam(value = "coQuanNhanDon", required = true) String coQuanNhanDon,
+			@RequestParam(value = "coQuanChuyenDon", required = true) String coQuanChuyenDon,
 			@RequestParam(value = "hoTenNguoiCoDon", required = true) String hoTenNguoiCoDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
+			@RequestParam(value = "diaChi", required = true) String diaChi,
 			HttpServletResponse response) {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
-			mappings.put("doiTuongChuyenDon", doiTuongChuyenDon);
+			mappings.put("coQuanNhanDon", coQuanNhanDon);
+			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
 			mappings.put("noiDung", noiDung);
+			mappings.put("diaChi", diaChi);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_TRA_DON_CHUYEN_KHONG_DUNG_THAM_QUYEN.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -877,6 +881,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
+			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
 			HttpServletResponse response) {
 
 		try {
@@ -886,6 +891,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -899,6 +905,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
+			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
 			HttpServletResponse response) {
 
 		try {
@@ -908,6 +915,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_CHUYEN_DON_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);

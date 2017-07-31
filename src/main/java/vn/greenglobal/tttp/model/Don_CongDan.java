@@ -31,7 +31,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private Don don;
-	@NotNull
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CongDan congDan;
