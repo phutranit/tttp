@@ -126,7 +126,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			if (listDonVis != null) {
 				for (CoQuanQuanLy dv : listDonVis) {
 					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-					list.add(coQuan);
+					if (coQuan != null) {
+						list.add(coQuan);
+					}					
 				}
 			} else { 
 				coQuanQuanLyRepo.findOne(donViXuLy);
@@ -667,7 +669,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			if (listDonVis != null) {
 				for (CoQuanQuanLy dv : listDonVis) {
 					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-					list.add(coQuan);
+					if (coQuan != null) {
+						list.add(coQuan);
+					}					
 				}
 			} else { 
 				if (donViId != null && donViId > 0)  {
@@ -1313,7 +1317,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 //			donVis.addAll(list);
 			for (CoQuanQuanLy dv : listDonVis) {
 				CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-				donVis.add(coQuan);
+				if (coQuan != null) {
+					donVis.add(coQuan);
+				}				
 			}
 			
 			BooleanExpression predAllDSDon = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQD(loaiKy, quy, year, month, tuNgay, denNgay);
