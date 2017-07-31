@@ -525,8 +525,10 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapThamQuyenGiaiQuyet = new HashMap<>();
 		Map<String, Object> mapPhongBanGiaiQuyet = new HashMap<>();
 		Map<String, Object> mapCoQuanTiepNhan = new HashMap<>();
+		Map<String, Object> mapCoQuanChuyenDon = new HashMap<>();
 		Map<String, Object> mapCanBoXuLy = new HashMap<>();
 		Map<String, Object> mapCanBoXuLyChiDinh = new HashMap<>();
+		Map<String, Object> mapCanBoChuyenDon = new HashMap<>();
 		Map<String, Object> mapPhongBanChiDinh = new HashMap<>();
 		Map<String, Object> mapYeuCauGapLanhDao = new HashMap<String, Object>();
 		Map<String, Object> mapTrangThaiXuLyDon = new HashMap<String, Object>();
@@ -535,6 +537,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapNextState = new HashMap<String, Object>();
 		Map<String, Object> mapTruongPhongChiDinh = new HashMap<>();
 		Map<String, Object> mapChuyenVienChiDinh = new HashMap<>();
+		Map<String, Object> mapDonViXuLyXLD = new HashMap<>();
 		
 		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
@@ -564,6 +567,18 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("chuyenVienChiDinh", mapChuyenVienChiDinh);
 		
 		map.put("thoiHanXuLy", getDon() != null ? getDon().getThoiHanXuLyXLD() : "");
+		
+		mapCoQuanChuyenDon.put("id", getCoQuanChuyenDon() != null ?  getCoQuanChuyenDon().getDonVi().getId() : "");
+		mapCoQuanChuyenDon.put("ten", getCoQuanChuyenDon() != null ? getCoQuanChuyenDon().getDonVi().getTen() : "");
+		map.put("coQuanChuyenDon", mapCoQuanChuyenDon);
+		
+		mapCanBoChuyenDon.put("id", getCanBoChuyenDon() != null ?  getCanBoChuyenDon().getId() : "");
+		mapCanBoChuyenDon.put("ten", getCanBoChuyenDon() != null ? getCanBoChuyenDon().getHoVaTen() : "");
+		map.put("canBoChuyenDon", mapCanBoChuyenDon);
+		
+		mapDonViXuLyXLD.put("id", getDonViXuLy() != null ?  getDonViXuLy().getId() : "");
+		mapDonViXuLyXLD.put("ten", getDonViXuLy() != null ? getDonViXuLy().getTen() : "");
+		map.put("donViXuLy", mapDonViXuLyXLD);
 		
 		if (getNextState() != null) { 
 			mapNextState.put("id", getNextState().getId());
@@ -595,7 +610,8 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
 				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");	
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
-				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");
+				
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {

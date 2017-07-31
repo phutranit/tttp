@@ -859,7 +859,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "phongBanGiaiQuyetXLD", required = false) Long phongBanGiaiQuyet,
 			@RequestParam(value = "canBoXuLyXLD", required = false) Long canBoXuLyXLD,
 			@RequestParam(value = "phongBanXuLyXLD", required = false) Long phongBanXuLyXLD,
-			@RequestParam(value = "donViXuLyXLD", required = false) Long donViXuLyXLD,
+			@RequestParam(value = "donViXuLyXLD", required = true) Long donViXuLyXLD,
 			@RequestParam(value = "coQuanTiepNhanXLD", required = false) Long coQuanTiepNhanXLD,
 			@RequestParam(value = "vaiTro", required = true) String vaiTro,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
@@ -869,7 +869,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
-			ExcelUtil.exportDanhSachXuLyDon(response, "DanhSachXuLyDon", "sheetName", 
+			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", 
 					(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
 							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, 
 							congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), order),

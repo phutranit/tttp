@@ -499,6 +499,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					don.setYeuCauGapTrucTiepLanhDao(true);
+					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
+				} else {
+					don.setYeuCauGapTrucTiepLanhDao(false);
+					don.setNgayLapDonGapLanhDaoTmp(null);
 				}
 			}
 
