@@ -40,6 +40,7 @@ import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
+import vn.greenglobal.tttp.enums.LoaiDoiTuongThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
@@ -1226,6 +1227,28 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiVuViecEnum.MOI_PHAT_SINH.getText());
 		object.put("giaTri", LoaiVuViecEnum.MOI_PHAT_SINH.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongThanhTras")
+	@ApiOperation(value = "Lấy danh sách loại đối tượng thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiDoiTuongThanhTraEnum.CA_NHAN.getText());
+		object.put("giaTri", LoaiDoiTuongThanhTraEnum.CA_NHAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LoaiDoiTuongThanhTraEnum.TO_CHUC.getText());
+		object.put("giaTri", LoaiDoiTuongThanhTraEnum.TO_CHUC.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
