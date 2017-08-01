@@ -154,7 +154,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
 									
-								if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
+								if (!PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
 									CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 									if (congDanUpdate != null) {
 										donCongDan.setCongDan(congDanUpdate);
