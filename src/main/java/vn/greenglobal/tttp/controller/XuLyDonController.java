@@ -789,7 +789,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen")
 	@ApiOperation(value = "In phiếu trả đơn chuyển không đúng thẩm quyền", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordTraDonChuyenKhongDungThamQuyen(@RequestParam(value = "coQuanNhanDon", required = true) String coQuanNhanDon,
+	public void exportWordTraDonChuyenKhongDungThamQuyen(
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "coQuanNhanDon", required = true) String coQuanNhanDon,
 			@RequestParam(value = "coQuanChuyenDon", required = true) String coQuanChuyenDon,
 			@RequestParam(value = "hoTenNguoiCoDon", required = true) String hoTenNguoiCoDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
@@ -797,6 +799,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			HttpServletResponse response) {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanNhanDon", coQuanNhanDon);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
