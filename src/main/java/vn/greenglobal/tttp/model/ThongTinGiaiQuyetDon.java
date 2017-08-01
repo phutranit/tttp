@@ -99,7 +99,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int tongSoNguoiXuLyHanhChinh;
 	private int soNguoiDaBiXuLyHanhChinh;
 	private int soLanGiaiQuyetLai = 1;
-	private int soVuGiaiQuyetKhieuNai;
+	private int soVuGiaiQuyetKhieuNai = 0;
 	private int soNguoiDuocTraLaiQuyenLoi;
 	
 	private long tienPhaiThuNhaNuocQDGQ;
