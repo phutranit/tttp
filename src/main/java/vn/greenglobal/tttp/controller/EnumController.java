@@ -125,6 +125,26 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/months")
+	@ApiOperation(value = "Lấy danh sách các tháng trong năm", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getMonths(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+		
+		for (int m = 1; m <= 12; m ++) {
+			object.put("ten", m);
+			object.put("giaTri", m);
+			list.add(object);
+			object = new HashMap<String, Object>();
+		}
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiQuys")
 	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiQuys(
