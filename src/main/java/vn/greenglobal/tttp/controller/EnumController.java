@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -118,6 +119,26 @@ public class EnumController {
 		object.put("ten", "2020");
 		object.put("giaTri", 2020);
 		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/months")
+	@ApiOperation(value = "Lấy danh sách các tháng trong năm", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getMonths(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+		int now = Utils.localDateTimeNow().getMonthValue();
+		for (int m = 1; m <= now; m ++) {
+			object.put("ten", m);
+			object.put("giaTri", m);
+			list.add(object);
+			object = new HashMap<String, Object>();
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);

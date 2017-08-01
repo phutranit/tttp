@@ -14,6 +14,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.Don;
@@ -449,6 +450,48 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());		
+		return tongSo;
+	}
+	
+	public Long getDemDonLoaiVuViecTiepCongDanThuongXuyen(BooleanExpression predAll, boolean isDoanDongNguoi, LoaiVuViecEnum vuViec) { 
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don> donList = new ArrayList<Don>();
+		List<Don> dons = new ArrayList<Don>();
+		BooleanExpression donQuery = baseDon;
+		
+		if (isDoanDongNguoi) {
+			LoaiNguoiDungDonEnum doanDongNguoi = LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI;	
+			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(doanDongNguoi));
+		}
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.loaiVuViec.eq(vuViec));
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+		donQuery = donQuery.and(QDon.don.in(dons));
+		
+		donList.addAll((List<Don>) donRepo.findAll(donQuery));
+		tongSo = Long.valueOf(donList.size());
+		return tongSo;
+	}
+	
+	public Long getDemDonLoaiVuViecTiepCongDanDinhKyDotXuat(BooleanExpression predAll, boolean isDoanDongNguoi, LoaiVuViecEnum vuViec) { 
+		Long tongSo = 0L;
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don> donList = new ArrayList<Don>();
+		List<Don> dons = new ArrayList<Don>();
+		BooleanExpression donQuery = baseDon;
+		
+		if (isDoanDongNguoi) {
+			LoaiNguoiDungDonEnum doanDongNguoi = LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI;	
+			donQuery = donQuery.and(QDon.don.loaiNguoiDungDon.eq(doanDongNguoi));
+		}
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.loaiVuViec.eq(vuViec));
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+		donQuery = donQuery.and(QDon.don.in(dons));
+		
+		donList.addAll((List<Don>) donRepo.findAll(donQuery));
+		tongSo = Long.valueOf(donList.size());
 		return tongSo;
 	}
 }
