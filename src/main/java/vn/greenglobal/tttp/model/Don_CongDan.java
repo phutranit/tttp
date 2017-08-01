@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,7 +33,6 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private Don don;
-	@NotNull
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CongDan congDan;
@@ -347,6 +348,91 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public LocalDateTime getNgayTiepNhan() {
 		if (getDon() != null) {
 			return getDon().getNgayTiepNhan();
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNoiCapCMNDInfo() {
+		if (getNoiCapCMND() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNoiCapCMND().getId());
+			map.put("ten", getNoiCapCMND().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getQuocTichCongDan() {
+		if (getQuocTich() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("quocTichId", getQuocTich().getId());
+			map.put("ten", getQuocTich().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDanTocCongDan() {
+		if (getDanToc() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("danTocId", getDanToc().getId());
+			map.put("ten", getDanToc().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getToDanPhoCongDan() {
+		if (getToDanPho() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("toDanPhoId", getToDanPho().getId());
+			map.put("ten", getToDanPho().getTen());
+			return map;
+		}
+		return null;
+
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getQuanHuyenCongDan() {
+		if (getQuanHuyen() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getQuanHuyen().getId());
+			map.put("ten", getQuanHuyen().getTen());
+			return map;
+		}
+		return null;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhuongXaCongDan() {
+		if (getPhuongXa() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getPhuongXa().getId());
+			map.put("ten", getPhuongXa().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getTinhThanhCongDan() {
+		if (getTinhThanh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getTinhThanh().getId());
+			map.put("ten", getTinhThanh().getTen());
+			return map;
 		}
 		return null;
 	}
