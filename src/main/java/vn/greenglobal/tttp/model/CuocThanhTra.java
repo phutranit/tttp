@@ -18,7 +18,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	
 	private String noiDungThanhTra = "";
 	private String phamViThanhTra = "";
-	private String gh = "";
+	private String ghiChu = "";
 	
 	private int thoiHan = 0;
 	

@@ -39,6 +39,7 @@ import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -1249,6 +1250,38 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiDoiTuongThanhTraEnum.TO_CHUC.getText());
 		object.put("giaTri", LoaiDoiTuongThanhTraEnum.TO_CHUC.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucThanhTras")
+	@ApiOperation(value = "Lấy danh sách lĩnh vực thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLinhVucThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LinhVucThanhTraEnum.HANH_CHINH.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.HANH_CHINH.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LinhVucThanhTraEnum.DAT_DAI.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.DAT_DAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LinhVucThanhTraEnum.TAI_CHINH.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.TAI_CHINH.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

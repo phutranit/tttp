@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +20,9 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	 */
 	private static final long serialVersionUID = -4128391955224263426L;
 
+	@Size(max=255)
 	private String soQuyetDinh = "";
+	@Size(max=255)
 	private String kyThanhTra = "";
 
 	private LocalDateTime ngayRaQuyetDinh;
