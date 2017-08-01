@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -131,8 +132,8 @@ public class EnumController {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
-		
-		for (int m = 1; m <= 12; m ++) {
+		int now = Utils.localDateTimeNow().getMonthValue();
+		for (int m = 1; m <= now; m ++) {
 			object.put("ten", m);
 			object.put("giaTri", m);
 			list.add(object);
