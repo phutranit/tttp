@@ -971,7 +971,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi")
 	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết kiến nghị", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordDuThaoThongBaoThuLyKienNghi(@RequestParam(value = "loaiDon", required = true) String loaiDon,
+	public void exportWordDuThaoThongBaoThuLyKienNghi(@RequestParam(value = "loaiDonTieuDe", required = true) String loaiDonTieuDe,
+			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
