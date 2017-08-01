@@ -62,7 +62,7 @@ public class GiaiQuyetDonService {
 		}
 		
 		if (StringUtils.isNotEmpty(chucVu)) {
-			giaiQuyetDonQuery = giaiQuyetDonQuery.and(giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)));
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(giaiQuyetDon.chucVu.isNull()));
 		}
 		
 		if (donViGiaiQuyet != null && donViGiaiQuyet > 0) {
