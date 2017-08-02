@@ -47,7 +47,6 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@QueryInit("*.*.*")
 	private CongChuc congChuc;
 	@ManyToOne
-	@QueryInit("*.*.*")
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy donViGiaiQuyet;
@@ -110,6 +109,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	}
 
 	@ApiModelProperty(example = "{}", position = 2)
+	@QueryInit("*.*.*")
 	public CoQuanQuanLy getPhongBanGiaiQuyet() {
 		return phongBanGiaiQuyet;
 	}
