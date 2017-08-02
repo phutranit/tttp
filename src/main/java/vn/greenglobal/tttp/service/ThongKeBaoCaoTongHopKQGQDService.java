@@ -19,7 +19,6 @@ import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
-import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.util.Utils;

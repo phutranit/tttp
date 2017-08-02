@@ -71,7 +71,7 @@ public class ExcelUtil {
 
 	}
 
-	@SuppressWarnings({ "unused", "deprecation" })
+	@SuppressWarnings({ "deprecation" })
 	private static void setBorderMore(int flag, Workbook wb, Row row, Cell c, int begin, int end, int fontSize) {
 		final CellStyle cellStyle = wb.createCellStyle();
 		cellStyle.setWrapText(true);
@@ -1218,7 +1218,7 @@ public class ExcelUtil {
 	public static void exportTongHopBaoCaoXuLyDonThu(HttpServletResponse response, String fileName, String sheetName,
 			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title) throws IOException {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 		
 		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
 				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
@@ -1527,7 +1527,7 @@ public class ExcelUtil {
 	public static void exportTongHopBaoCaoGiaiQuyetToCao(HttpServletResponse response, String fileName, String sheetName,
 			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title) throws IOException {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 		
 		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
 				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
@@ -1835,7 +1835,7 @@ public class ExcelUtil {
 	public static void exportTongHopBaoCaoGiaiQuyetKhieuNai(HttpServletResponse response, String fileName, String sheetName,
 			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title) throws IOException {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 		
 		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
 				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
