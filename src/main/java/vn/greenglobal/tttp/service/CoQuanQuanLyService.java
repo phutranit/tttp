@@ -263,4 +263,25 @@ public class CoQuanQuanLyService {
 		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
 	}
 	
+	public Predicate predicateFindDonViVaConCuaDonViTDGDS(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
+		BooleanExpression predAll = base;
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+			
+			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3))));
+			} else if ("CCQQL_SO_BAN_NGANH".equals(type)) { 
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+			} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+			}	
+		}
+		return predAll;
+	}
 }

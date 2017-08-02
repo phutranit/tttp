@@ -676,4 +676,18 @@ public class Utils {
 		}
 		return mapType;
 	}
+	
+	public static boolean isValidNgayDungHan(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar ketThuc = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
+		Calendar end = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		
+		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
+			if (ketThuc.before(end) || DateUtils.isSameDay(ketThuc, end)) {
+				isValid = true;
+			}
+		}
+		return isValid;
+	}
 }
