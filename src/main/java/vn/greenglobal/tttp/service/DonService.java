@@ -430,9 +430,10 @@ public class DonService {
 		}
 
 		if (phongBanGiaiQuyetId != null && phongBanGiaiQuyetId.longValue() > 0) {
-			giaiQuyetDonQuery = giaiQuyetDonQuery
-					.and(QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId)
-							.or(QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.cha.id.eq(phongBanGiaiQuyetId)));
+			BooleanExpression pbgq = QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId);
+			BooleanExpression chucVuNotNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNotNull();
+			BooleanExpression chucVuNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull();
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(chucVuNull.or(pbgq.and(chucVuNotNull)));
 		}
 
 		if (StringUtils.isNotBlank(chucVu)) {
