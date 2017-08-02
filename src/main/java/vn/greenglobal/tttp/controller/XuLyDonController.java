@@ -864,7 +864,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
-			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
 			HttpServletResponse response) {
 
@@ -874,7 +873,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
