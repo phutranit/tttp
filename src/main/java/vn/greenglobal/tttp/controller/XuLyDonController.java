@@ -789,7 +789,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen")
 	@ApiOperation(value = "In phiếu trả đơn chuyển không đúng thẩm quyền", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordTraDonChuyenKhongDungThamQuyen(@RequestParam(value = "coQuanNhanDon", required = true) String coQuanNhanDon,
+	public void exportWordTraDonChuyenKhongDungThamQuyen(
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "coQuanNhanDon", required = true) String coQuanNhanDon,
 			@RequestParam(value = "coQuanChuyenDon", required = true) String coQuanChuyenDon,
 			@RequestParam(value = "hoTenNguoiCoDon", required = true) String hoTenNguoiCoDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
@@ -797,6 +799,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			HttpServletResponse response) {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanNhanDon", coQuanNhanDon);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
@@ -810,7 +813,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDeXuatThuLy")
 	@ApiOperation(value = "In phiếu đề xuất thụ lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordPhieuDeXuatThuLy(@RequestParam(value = "loaiDon", required = true) String loaiDon,
+	public void exportWordPhieuDeXuatThuLy(
+			@RequestParam(value = "loaiDonTieuDe", required = true) String loaiDonTieuDe,
+			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
@@ -834,6 +839,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý khiếu nại", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLy(
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
@@ -842,6 +848,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 			mappings.put("noiDung", noiDung);
@@ -858,6 +865,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
 			HttpServletResponse response) {
 
@@ -867,6 +875,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -946,6 +955,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết khiếu nại", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordDuThaoThongBaoThuLyKhieuNai(
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiKhieuNai", required = true) String nguoiKhieuNai,
 			@RequestParam(value = "diaChiNguoiKhieuNai", required = false) String diaChiNguoiKhieuNai,
 			@RequestParam(value = "SoCMNDHoChieu", required = false) String SoCMNDHoChieu,
@@ -957,6 +967,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiKhieuNai", nguoiKhieuNai);
 			mappings.put("diaChiNguoiKhieuNai", diaChiNguoiKhieuNai);
 			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(SoCMNDHoChieu) ? SoCMNDHoChieu : ".................");
@@ -971,7 +982,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi")
 	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết kiến nghị", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void exportWordDuThaoThongBaoThuLyKienNghi(@RequestParam(value = "loaiDon", required = true) String loaiDon,
+	public void exportWordDuThaoThongBaoThuLyKienNghi(@RequestParam(value = "loaiDonTieuDe", required = true) String loaiDonTieuDe,
+			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
