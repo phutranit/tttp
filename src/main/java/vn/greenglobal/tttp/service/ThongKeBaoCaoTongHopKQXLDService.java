@@ -16,12 +16,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
-import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
-import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDon_CongDan;
@@ -29,9 +25,7 @@ import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
-import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.XuLyDon;
-import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
@@ -356,9 +350,9 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
 		predAllXLD = predAllXLD
-				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
-				.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
-				.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
+				.and(QXuLyDon.xuLyDon.don.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
+				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNotNull())
+				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
@@ -370,9 +364,9 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
 		predAllXLD = predAllXLD
-				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_TO_CAO))
-				.and(QXuLyDon.xuLyDon.huongXuLy.isNotNull())
-				.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
+				.and(QXuLyDon.xuLyDon.don.loaiDon.eq(LoaiDonEnum.DON_TO_CAO))
+				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNotNull())
+				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
