@@ -141,6 +141,19 @@ public class CoQuanQuanLyService {
 		}
 		return predAll;
 	}
+	
+	public Predicate predicateFindByCha(Long chaId) {
+		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(chaId));
+		return predAll;
+	}
+	
+	public Predicate predicateFindByLoaiCQQLVaDVHC(Long loaiCQQLId, Long donViHanhChinhId) {
+		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.eq(loaiCQQLId));
+		if (donViHanhChinhId != null) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinhId));
+		}
+		return predAll;
+	}
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
 		if (id != null && id > 0) {
