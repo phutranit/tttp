@@ -5,7 +5,8 @@ public enum LinhVucThanhTraEnum {
 	HANH_CHINH("Hành chính"),
 	XAY_DUNG("Xây dựng"),
 	DAT_DAI("Đất đai"),
-	TAI_CHINH("Tài chính");
+	TAI_CHINH("Tài chính"),
+	CHUYEN_NGANH("Chuyên ngành");
 
 	LinhVucThanhTraEnum(String text) {
 		this.text = text;
