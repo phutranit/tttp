@@ -31,6 +31,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
@@ -1361,6 +1362,43 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiHinhThanhTraEnum.THANH_TRA_LAI.getText());
 		object.put("giaTri", LoaiHinhThanhTraEnum.THANH_TRA_LAI.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/canCuThanhTraLais")
+	@ApiOperation(value = "Lấy danh sách căn cứ thanh tra lại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getCanCuThanhTraLais(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", CanCuThanhTraLaiEnum.VI_PHAM_TRINH_TU.getText());
+		object.put("giaTri", CanCuThanhTraLaiEnum.VI_PHAM_TRINH_TU.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", CanCuThanhTraLaiEnum.KET_LUAN_KHONG_PHU_HOP.getText());
+		object.put("giaTri", CanCuThanhTraLaiEnum.KET_LUAN_KHONG_PHU_HOP.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", CanCuThanhTraLaiEnum.SAI_LAM_AP_DUNG_PHAP_LUAT.getText());
+		object.put("giaTri", CanCuThanhTraLaiEnum.SAI_LAM_AP_DUNG_PHAP_LUAT.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", CanCuThanhTraLaiEnum.CO_Y_LAM_SAI_LECH_HO_SO.getText());
+		object.put("giaTri", CanCuThanhTraLaiEnum.CO_Y_LAM_SAI_LECH_HO_SO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", CanCuThanhTraLaiEnum.VI_PHAM_NGHIEM_TRONG.getText());
+		object.put("giaTri", CanCuThanhTraLaiEnum.VI_PHAM_NGHIEM_TRONG.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

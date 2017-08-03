@@ -22,7 +22,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
-import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
@@ -49,6 +48,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soQDXuPhatHCDuocBanHanh = "";
 	@Size(max = 255)
 	private String phamViThanhTra = "";
+	@Size(max = 560)
+	private String canCuThanhTraLai = "";
 	@Lob
 	private String noiDungThanhTra = "";
 	@Lob
@@ -132,8 +133,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private HinhThucThanhTraEnum hinhThucThanhTra;
 	@Enumerated(EnumType.STRING)
 	private LoaiHinhThanhTraEnum loaiHinhThanhTra;
-	@Enumerated(EnumType.STRING)
-	private CanCuThanhTraLaiEnum canCuThanhTraLai;
 
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
@@ -200,6 +199,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setPhamViThanhTra(String phamViThanhTra) {
 		this.phamViThanhTra = phamViThanhTra;
+	}
+
+	public String getCanCuThanhTraLai() {
+		return canCuThanhTraLai;
+	}
+
+	public void setCanCuThanhTraLai(String canCuThanhTraLai) {
+		this.canCuThanhTraLai = canCuThanhTraLai;
 	}
 
 	public String getNoiDungThanhTra() {
@@ -752,14 +759,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setLoaiHinhThanhTra(LoaiHinhThanhTraEnum loaiHinhThanhTra) {
 		this.loaiHinhThanhTra = loaiHinhThanhTra;
-	}
-
-	public CanCuThanhTraLaiEnum getCanCuThanhTraLai() {
-		return canCuThanhTraLai;
-	}
-
-	public void setCanCuThanhTraLai(CanCuThanhTraLaiEnum canCuThanhTraLai) {
-		this.canCuThanhTraLai = canCuThanhTraLai;
 	}
 
 	public DoiTuongThanhTra getDoiTuongThanhTra() {
