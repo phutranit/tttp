@@ -99,22 +99,16 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			ThamSo thamSoUBND = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoThanhTra = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			ThamSo thamSoPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			Long idCapPhongBan = Long.parseLong(thamSoPhongBan.getGiaTri().toString());
 
 			if (donViId.equals(Long.parseLong(thamSoThanhTra.getGiaTri().toString()))) {
 				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService
-						.predicateFindAll("", Long.parseLong(thamSoUBND.getGiaTri().toString()), null, null));
-				List<CoQuanQuanLy> listDonViConFinal = new ArrayList<CoQuanQuanLy>();
-				for (CoQuanQuanLy coQuan : listDonViCon) {
-					if (!coQuan.getCapCoQuanQuanLy().getId()
-							.equals(Long.parseLong(thamSoPhongBan.getGiaTri().toString()))) {
-						listDonViConFinal.add(coQuan);
-					}
-				}
-				list.addAll(listDonViConFinal);
+						.predicateFindAllNotPhongBan(Long.parseLong(thamSoUBND.getGiaTri().toString()), idCapPhongBan));
+				list.addAll(listDonViCon);
 			} else {
 				list.add(repo.findOne(donViId));
 				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo
-						.findAll(coQuanQuanLyService.predicateFindAll("", donViId, null, null));
+						.findAll(coQuanQuanLyService.predicateFindAllNotPhongBan(donViId, idCapPhongBan));
 				list.addAll(listDonViCon);
 			}
 

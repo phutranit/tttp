@@ -61,6 +61,20 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindAllNotPhongBan(Long cha, Long idCapPhongBan) {
+
+		BooleanExpression predAll = base;
+
+		if (cha != null && cha > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha));
+		}
+
+		if (idCapPhongBan != null && idCapPhongBan > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindAllByName(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && !"".equals(ten)) {
