@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LinhVucDoiTuongThanhTra;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.LinhVucDoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.service.LinhVucDoiTuongThanhTraService;
 import vn.greenglobal.tttp.util.Utils;
@@ -38,6 +39,9 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 
 	@Autowired
 	private LinhVucDoiTuongThanhTraRepository repo;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	@Autowired
 	private LinhVucDoiTuongThanhTraService linhVucDoiTuongThanhTraService;
@@ -163,10 +167,10 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-//			if (linhVucDoiTuongThanhTraService.checkUsedData(repo, donRepository, id)) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-//						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-//			}
+			if (linhVucDoiTuongThanhTraService.checkUsedData(doiTuongThanhTraRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
 
 			LinhVucDoiTuongThanhTra linhVucDoiTuongThanhTra = linhVucDoiTuongThanhTraService.delete(repo, id);
 			if (linhVucDoiTuongThanhTra == null) {

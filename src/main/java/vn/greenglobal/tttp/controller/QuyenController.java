@@ -34,6 +34,11 @@ public class QuyenController {
 		quyenObj.put("giaTriQuyen", QuyenEnum.LINHVUCDOITUONGTHANHTRA_LIETKE.name() + "," + QuyenEnum.LINHVUCDOITUONGTHANHTRA_XEM.name() + "," + QuyenEnum.LINHVUCDOITUONGTHANHTRA_THEM.name() + "," + QuyenEnum.LINHVUCDOITUONGTHANHTRA_SUA.name() + "," + QuyenEnum.LINHVUCDOITUONGTHANHTRA_XOA.name());
 		quyenList.add(quyenObj);
 		
+		quyenObj.put("tenChucNang","Đối tượng thanh tra");
+		quyenObj.put("tenQuyen", QuyenEnum.DOITUONGTHANHTRA_LIETKE.getText() + "," + QuyenEnum.DOITUONGTHANHTRA_XEM.getText() + "," + QuyenEnum.DOITUONGTHANHTRA_THEM.getText() + "," + QuyenEnum.DOITUONGTHANHTRA_SUA.getText() + "," + QuyenEnum.DOITUONGTHANHTRA_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.DOITUONGTHANHTRA_LIETKE.name() + "," + QuyenEnum.DOITUONGTHANHTRA_XEM.name() + "," + QuyenEnum.DOITUONGTHANHTRA_THEM.name() + "," + QuyenEnum.DOITUONGTHANHTRA_SUA.name() + "," + QuyenEnum.DOITUONGTHANHTRA_XOA.name());
+		quyenList.add(quyenObj);
+		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Thẩm quyền giải quyết");
 		quyenObj.put("tenQuyen", QuyenEnum.THAMQUYENGIAIQUYET_LIETKE.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XEM.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_THEM.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_SUA.getText() + "," + QuyenEnum.THAMQUYENGIAIQUYET_XOA.getText());

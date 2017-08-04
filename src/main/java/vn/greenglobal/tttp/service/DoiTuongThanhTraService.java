@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.LoaiDoiTuongThanhTraEnum;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.QDoiTuongThanhTra;
 import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
@@ -63,7 +64,9 @@ public class DoiTuongThanhTraService {
 			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen()));
+		predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen())
+				.and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(body.getLinhVucDoiTuongThanhTra().getId()))
+				.and(QDoiTuongThanhTra.doiTuongThanhTra.loaiDoiTuongThanhTra.eq(LoaiDoiTuongThanhTraEnum.valueOf(body.getLoaiDoiTuongThanhTra().toString()))));
 		List<DoiTuongThanhTra> doiTuongThanhTras = (List<DoiTuongThanhTra>) repo.findAll(predAll);
 
 		return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true : false;
