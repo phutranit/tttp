@@ -161,8 +161,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String yKienCuaDonViGiaoTTXM = "";
 	//@Lob
 	private String yKienXuLyDon = "";
+	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
+	@ManyToOne
 	private State nextState;
 
 	public String getyKienGiaiQuyet() {
@@ -928,6 +931,42 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getDonViGiaoThamTraXacMinh().getTen());
 			map.put("coQuanQuanLyId", getDonViGiaoThamTraXacMinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoXuLyChiDinhInfo() {
+		if (getCanBoXuLyChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCanBoXuLyChiDinh().getHoVaTen());
+			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhongBanGiaiQuyetInfo() {
+		if (getPhongBanGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhongBanGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNextStateInfo() {
+		if (getNextState() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", getNextState().getTen());
+			map.put("type", getNextState().getType().name());
 			return map;
 		}
 		return null;
