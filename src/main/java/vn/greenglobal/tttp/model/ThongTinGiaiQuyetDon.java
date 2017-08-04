@@ -976,7 +976,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	public Map<String, Object> getNextStateInfo() {
 		if (getNextState() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("id", getNextState().getTen());
+			map.put("id", getNextState().getId());
 			map.put("type", getNextState().getType().name());
 			return map;
 		}
