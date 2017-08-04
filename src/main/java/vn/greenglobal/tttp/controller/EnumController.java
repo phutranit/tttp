@@ -36,6 +36,7 @@ import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2Enum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
@@ -1226,6 +1227,28 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiVuViecEnum.MOI_PHAT_SINH.getText());
 		object.put("giaTri", LoaiVuViecEnum.MOI_PHAT_SINH.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetLan2s")
+	@ApiOperation(value = "Lấy danh sách kết quả giải quyết lại lần 2", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getKetLuanGiaiQuyetLais(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", KetQuaGiaiQuyetLan2Enum.CONG_NHAN_QDGQ_LAN_I.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2Enum.CONG_NHAN_QDGQ_LAN_I.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", KetQuaGiaiQuyetLan2Enum.HUY_SUA_QDGQ_LAN_I.getText());
+		object.put("giaTri", KetQuaGiaiQuyetLan2Enum.HUY_SUA_QDGQ_LAN_I.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
