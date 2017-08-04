@@ -1235,8 +1235,8 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/ketLuanGiaiQuyetLan2s")
-	@ApiOperation(value = "Lấy danh sách kết luận giải quyết lại lần 2", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetLan2s")
+	@ApiOperation(value = "Lấy danh sách kết quả giải quyết lại lần 2", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getKetLuanGiaiQuyetLais(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
