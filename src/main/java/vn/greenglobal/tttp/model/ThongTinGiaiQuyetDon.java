@@ -89,7 +89,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private boolean daThuLy;
 	private boolean daThamTraXacMinhVuViec;
 	private boolean daRaQuyetDinhGiaiQuyet;
-	private boolean giaiQuyetLanLai;
 
 	private int soVuGiaoCoQuanDieuTra;
 	private int soDoiTuongGiaoCoQuanDieuTra;
@@ -512,14 +511,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDaRaQuyetDinhGiaiQuyet(boolean daRaQuyetDinhGiaiQuyet) {
 		this.daRaQuyetDinhGiaiQuyet = daRaQuyetDinhGiaiQuyet;
-	}
-
-	public boolean isGiaiQuyetLanLai() {
-		return giaiQuyetLanLai;
-	}
-
-	public void setGiaiQuyetLanLai(boolean giaiQuyetLanLai) {
-		this.giaiQuyetLanLai = giaiQuyetLanLai;
 	}
 
 	public int getSoVuGiaoCoQuanDieuTra() {
