@@ -661,7 +661,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, 
 										tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
-						"Danh sách sổ tiếp dân");
+						"Danh sách sổ tiếp dân thường xuyên");
 			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
