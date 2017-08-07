@@ -194,7 +194,7 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
-	@NotNull
+//	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
 	@NotNull

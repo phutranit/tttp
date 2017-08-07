@@ -169,19 +169,35 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongs")
 	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongs(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestHeader(value = "loaiDonThu", required = true) String loaiDonThu) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
+		
+		if (StringUtils.isNotBlank(loaiDonThu)) { 
+			LoaiDonEnum loaiDon = LoaiDonEnum.valueOf(loaiDonThu);
+			if (loaiDon.equals(LoaiDonEnum.DON_KHIEU_NAI)) { 
+				object.put("ten", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.name());
+				list.add(object);
 
-		object.put("ten", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.getText());
-		object.put("giaTri", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.name());
-		list.add(object);
+				object = new HashMap<>();
+				object.put("ten", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.name());
+				list.add(object);
+			}
+			if (loaiDon.equals(LoaiDonEnum.DON_TO_CAO)) { 
+				object.put("ten", LoaiDoiTuongEnum.CA_NHAN.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.CA_NHAN.name());
+				list.add(object);
 
-		object = new HashMap<>();
-		object.put("ten", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.getText());
-		object.put("giaTri", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.name());
-		list.add(object);
-
+				object = new HashMap<>();
+				object.put("ten", LoaiDoiTuongEnum.TO_CHUC.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.TO_CHUC.name());
+				list.add(object);
+			}
+		}
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
