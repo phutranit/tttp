@@ -640,6 +640,33 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuTuChoi")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuTuChoi(
+			@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayThongBao", ngayThongBao);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
