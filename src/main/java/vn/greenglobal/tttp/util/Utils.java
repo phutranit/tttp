@@ -677,14 +677,58 @@ public class Utils {
 		return mapType;
 	}
 	
-	public static boolean isValidNgayDungHan(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+	public static boolean isValidNgayDungHanGQD(LocalDateTime thoiHan) {
 		boolean isValid = false;
 		Calendar now = Calendar.getInstance();
-		Calendar ketThuc = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
-		Calendar end = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
-		
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
 		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
-			if (ketThuc.before(end) || DateUtils.isSameDay(ketThuc, end)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayDungHanDangXuLy(LocalDateTime thoiHan) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		if (now.before(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayTreHanDangXuLy(LocalDateTime thoiHan) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		if (now.after(ketThuc)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayDungHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
+		
+		if (now.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, now)) {
+			if (thoiHanKetThucXL.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
+				isValid = true;
+			}
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayTreHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
+		
+		if (now.after(thoiHanKetThucXL) || now.after(thoiHanXL)) {
+			if (thoiHanXL.before(thoiHanKetThucXL)) {
 				isValid = true;
 			}
 		}
