@@ -1,7 +1,13 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -14,16 +20,49 @@ import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class LinhVucDonThuService {
+	
+	@Autowired
+	private LinhVucDonThuRepository linhVucDonThuRepository;
 
 	BooleanExpression base = QLinhVucDonThu.linhVucDonThu.daXoa.eq(false);
+	
+	public List<LinhVucDonThu> getTatCaDanhSachLinhVucDonThus() {
+		BooleanExpression predAll = base.or(QLinhVucDonThu.linhVucDonThu.daXoa.eq(true));
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
+	public List<LinhVucDonThu> linhVucDonThusTheoId(List<Long> ids) { 
+		BooleanExpression predAll = base;
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.in(ids));
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
+	public List<LinhVucDonThu> getDanhSachLinhVucDonThus(String loaiDon) {
+		BooleanExpression predAll = base;
+		if (StringUtils.isNotBlank(loaiDon)) { 
+			LoaiDonEnum loaiDonEnum = LoaiDonEnum.valueOf(loaiDon);
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(loaiDonEnum));
+		}
 
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		linhVucs.addAll((List<LinhVucDonThu>)linhVucDonThuRepository.findAll(predAll));
+		return linhVucs;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa.trim())
+//					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
+					.or(QLinhVucDonThu.linhVucDonThu.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		if (!"".equals(cha) && cha != null) {
@@ -71,9 +110,15 @@ public class LinhVucDonThuService {
 		}
 
 		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen()));
-		LinhVucDonThu linhVucDonThu = repo.findOne(predAll);
+		if (body.getCha() != null) {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(body.getCha().getId()));
+		} else {
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.isNull());
+		}
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(LoaiDonEnum.valueOf(body.getLoaiDon().toString())));
+		List<LinhVucDonThu> linhVucDonThus = (List<LinhVucDonThu>) repo.findAll(predAll);
 
-		return linhVucDonThu != null ? true : false;
+		return linhVucDonThus != null && linhVucDonThus.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(LinhVucDonThuRepository repo, DonRepository donRepository, Long id) {
@@ -90,5 +135,26 @@ public class LinhVucDonThuService {
 
 		return false;
 	}
+	
+	public LinhVucDonThu save(LinhVucDonThu obj, Long congChucId) {
+		return Utils.save(linhVucDonThuRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(LinhVucDonThu obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(linhVucDonThuRepository, obj, congChucId, eass, status);		
+	}
 
+	public String getMaLinhVuc() {
+		String ma = "";
+		int count = getTatCaDanhSachLinhVucDonThus().size();
+		String str = String.valueOf(count);
+		if (str.length() == 1) {
+			ma += "00" + (count + 1);
+		} else if (str.length() == 2) {
+			ma += "0" + (count + 1);
+		} else {
+			ma += (count + 1);
+		}
+		return ma;
+	}
 }

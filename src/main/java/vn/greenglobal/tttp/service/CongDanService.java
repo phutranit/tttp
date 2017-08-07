@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -26,9 +29,13 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
 import vn.greenglobal.tttp.repository.ToDanPhoRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CongDanService {
+	
+	@Autowired
+	private CongDanRepository congDanRepository;
 
 	@Autowired
 	private DanTocRepository danTocRepo;
@@ -46,11 +53,11 @@ public class CongDanService {
 
 	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, Long phuongXa, Long toDanPho) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa)
-					.or(QCongDan.congDan.soDienThoai.containsIgnoreCase(tuKhoa))
-					.or(QCongDan.congDan.diaChi.containsIgnoreCase(tuKhoa))
-					.or(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.or(QCongDan.congDan.soDienThoai.containsIgnoreCase(tuKhoa.trim()))
+					.or(QCongDan.congDan.diaChi.containsIgnoreCase(tuKhoa.trim()))
+					.or(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		if (tinhThanh != null && tinhThanh > 0) {
@@ -72,13 +79,13 @@ public class CongDanService {
 
 	public Predicate predicateFindCongDanBySuggests(String tuKhoa, String soCMND, String diaChi) {
 		BooleanExpression predAll = base;
-		if (StringUtils.isNotBlank(tuKhoa)) {
+		if (StringUtils.isNotEmpty(tuKhoa)) {
 			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa));
 		}
-		if (StringUtils.isNotBlank(soCMND)) {
+		if (StringUtils.isNotEmpty(soCMND)) {
 			predAll = predAll.and(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(soCMND));
 		}
-		if (StringUtils.isNotBlank(diaChi)) {
+		if (StringUtils.isNotEmpty(diaChi)) {
 			predAll = predAll.and(QCongDan.congDan.diaChi.containsIgnoreCase(diaChi));
 		}
 		return predAll;
@@ -193,6 +200,14 @@ public class CongDanService {
 		}
 
 		return false;
+	}
+	
+	public CongDan save(CongDan obj, Long congChucId) {
+		return Utils.save(congDanRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CongDan obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(congDanRepository, obj, congChucId, eass, status);		
 	}
 
 }

@@ -1,37 +1,55 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
 @Entity
-@Table(name = "don_congdan")
+@Table(name = "don_congdan", indexes = {@Index(columnList = "phanLoaiCongDan, don_id, daXoa", name = "IndexPLDDX"),
+		@Index(columnList = "phanLoaiCongDan, don_id, congDan_id", name = "IndexPLDCD"),
+		@Index(columnList = "don_id, daXoa", name = "IndexDDX"), @Index(columnList = "id, daXoa", name = "IndexIDDX"),
+		@Index(columnList = "congDan_id, daXoa", name = "IndexCDDX"), @Index(columnList = "daXoa", name = "IndexDX")})
 public class Don_CongDan extends Model<Don_CongDan> {
 
 	private static final long serialVersionUID = -7123036795988588832L;
 
 	@NotNull
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private Don don;
-	@NotNull
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CongDan congDan;
 
+	@Size(max=255)
 	private String tenCoQuan = "";
+	@Size(max=255)
 	private String diaChiCoQuan = "";
+	@Size(max=255)
 	private String soDienThoai = "";
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String soCMNDHoChieu = "";
+	@Size(max=255)
 	private String diaChi = "";
+	@Size(max=255)
 	private String soDienThoaiCoQuan = "";
 
 	// Người đứng đơn, ủy quyền, khiếu tố
@@ -39,8 +57,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonCongDanEnum phanLoaiCongDan;
 
+	@Size(max=255)
 	private String soTheLuatSu = "";
-
 	private boolean gioiTinh;
 	private boolean luatSu = false;
 
@@ -48,27 +66,34 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
+	@Size(max=255)
 	private String thongTinGioiThieu = "";
+	@Size(max=255)
 	private String noiCapTheLuatSu = "";
+	@Size(max=255)
 	private String donVi = "";
+	@Size(max=255)
 	private String chucVu = "";
 	
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;
-	
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh quanHuyen;
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DonViHanhChinh phuongXa;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private ToDanPho toDanPho;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private QuocTich quocTich;
-
+	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private DanToc danToc;
 
@@ -323,6 +348,91 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	public LocalDateTime getNgayTiepNhan() {
 		if (getDon() != null) {
 			return getDon().getNgayTiepNhan();
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNoiCapCMNDInfo() {
+		if (getNoiCapCMND() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNoiCapCMND().getId());
+			map.put("ten", getNoiCapCMND().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getQuocTichCongDan() {
+		if (getQuocTich() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("quocTichId", getQuocTich().getId());
+			map.put("ten", getQuocTich().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDanTocCongDan() {
+		if (getDanToc() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("danTocId", getDanToc().getId());
+			map.put("ten", getDanToc().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getToDanPhoCongDan() {
+		if (getToDanPho() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("toDanPhoId", getToDanPho().getId());
+			map.put("ten", getToDanPho().getTen());
+			return map;
+		}
+		return null;
+
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getQuanHuyenCongDan() {
+		if (getQuanHuyen() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getQuanHuyen().getId());
+			map.put("ten", getQuanHuyen().getTen());
+			return map;
+		}
+		return null;
+	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhuongXaCongDan() {
+		if (getPhuongXa() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getPhuongXa().getId());
+			map.put("ten", getPhuongXa().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getTinhThanhCongDan() {
+		if (getTinhThanh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("donViHanhChinhId", getTinhThanh().getId());
+			map.put("ten", getTinhThanh().getTen());
+			return map;
 		}
 		return null;
 	}

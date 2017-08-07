@@ -2,6 +2,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -13,18 +18,22 @@ import vn.greenglobal.tttp.model.QCapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CapCoQuanQuanLyService {
+	
+	@Autowired
+	private CapCoQuanQuanLyRepository capCoQuanQuanLyRepository;
 
 	BooleanExpression base = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.containsIgnoreCase(tuKhoa)
-					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.containsIgnoreCase(tuKhoa))
-					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.moTa.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		if (cha != null && cha > 0) {
@@ -65,9 +74,14 @@ public class CapCoQuanQuanLyService {
 		}
 
 		predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.eq(body.getTen()));
-		CapCoQuanQuanLy capCoQuanQuanLy = repo.findOne(predAll);
+		if (body.getCha() != null) {
+			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.cha.id.eq(body.getCha().getId()));
+		} else {
+			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.cha.isNull());
+		}
+		List<CapCoQuanQuanLy> capCoQuanQuanLys = (List<CapCoQuanQuanLy>) repo.findAll(predAll);
 
-		return capCoQuanQuanLy != null ? true : false;
+		return capCoQuanQuanLys != null && capCoQuanQuanLys.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(CapCoQuanQuanLyRepository repo, CoQuanQuanLyRepository repoCoQuanQuanLy, Long id) {
@@ -97,6 +111,14 @@ public class CapCoQuanQuanLyService {
 		}
 
 		return predAll;
+	}
+	
+	public CapCoQuanQuanLy save(CapCoQuanQuanLy obj, Long congChucId) {
+		return Utils.save(capCoQuanQuanLyRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CapCoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(capCoQuanQuanLyRepository, obj, congChucId, eass, status);		
 	}
 
 }

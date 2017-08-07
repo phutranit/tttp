@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,15 +23,18 @@ public class DoanDiCung extends Model<DoanDiCung> {
 	 */
 	private static final long serialVersionUID = -7373932592993931273L;
 	
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String cmndHoChieu = "";
+	@Size(max=255)
 	private String diaChi = "";
+	@Size(max=255)
 	private String soDienThoai = "";
 	
 	@NotNull
 	@ManyToOne
 	private Don don;
-	
 
 	public String getHoVaTen() {
 		return hoVaTen;

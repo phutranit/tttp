@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,11 +25,18 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private static final long serialVersionUID = -9223009647319074416L;
 
-	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String duongDan = "";
+	@Size(max=255)
 	private String tenFile = "";
+	@Size(max=255)
 	private String soQuyetDinh = "";
+	
+	@Size(max=255)
+	private String typeRequired = "";
+	private boolean required;
 	
 	private LocalDateTime ngayQuyetDinh;
 	
@@ -48,6 +54,22 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	@NotNull
 	@ManyToOne
 	private Don don;
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	public String getTypeRequired() {
+		return typeRequired;
+	}
+
+	public void setTypeRequired(String typeRequired) {
+		this.typeRequired = typeRequired;
+	}
 
 	public String getTen() {
 		return ten;
@@ -142,7 +164,16 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	public Long getTaiLieuVanThuId() {
 		return getId();
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDonId() {
+		if (getDon() != null) { 
+			return getDon().getId();
+		}
+		return 0L;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
@@ -151,6 +182,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiTao().getHoVaTen());
 			map.put("congChucId", getNguoiTao().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+							? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;
@@ -164,6 +197,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			map.put("donViId", getNguoiTao().getCoQuanQuanLy() != null && getNguoiTao().getCoQuanQuanLy().getDonVi() != null
+					? getNguoiTao().getCoQuanQuanLy().getDonVi().getId() : 0);
 			return map;
 		}
 		return null;

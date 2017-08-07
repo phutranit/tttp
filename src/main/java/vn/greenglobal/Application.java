@@ -48,7 +48,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
+import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
 @SpringBootApplication
@@ -72,6 +74,7 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
+//		System.setProperty("user.timezone", "GMT+7");
 		SpringApplication.run(Application.class, args);
 	}
 
@@ -87,10 +90,10 @@ public class Application extends SpringBootServletInitializer {
 			System.out.println(":::::" + beanNames.length + " beans");
 		};
 	}
-
-	@Value("${cors.allowedOrigins}")
-	private String[] myAllowedOriginList;
 	
+//	@Value("${cors.allowedOrigins}")
+//	private String[] myAllowedOriginList;
+//	
 //	@Bean
 //	public WebMvcConfigurer corsConfigurer() {
 //		return new WebMvcConfigurerAdapter() {
@@ -120,17 +123,18 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring()
-						.antMatchers("/auth/login", "/auth/logout", "/v2/api-docs", "/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
-								"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel", 
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
-								"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
-								"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
-								"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai",
-								"/swagger-resources", "/swagger-ui.html", "/swagger-resources/configuration/ui",
-								"/xuLyDons/inPhieuChuyenDonToCao", "/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh",
-								"/swagger-resources/configuration/security", "/webjars/**")
-						.antMatchers(HttpMethod.OPTIONS, "/**");
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs",
+						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao", "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai",
+						"/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
+						"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
+						"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
+						"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai", "/swagger-resources",
+						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
+						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen", "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi",
+						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
+						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
 			@Override
@@ -193,7 +197,10 @@ public class Application extends SpringBootServletInitializer {
 	static final long EXPIRATIONTIME = 864_000_000; // 10 days
 	static final String TOKEN_PREFIX = "Bearer";
 	static final String HEADER_STRING = "Authorization";
-
+	
+	@Value("${airbrake.active}")
+	public boolean airBrakeActive;
+	
 	@Value("${salt}")
 	private String salt;
 
@@ -257,12 +264,26 @@ public class Application extends SpringBootServletInitializer {
 	public String[] getACTIONS() {
 		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
 	}
-
+	
 	@Autowired
 	private DonCongDanRepository donCongDanRepository;
-
+	
+	@Autowired
+	private ChucVuRepository chucVuRepository;
+	
+	@Autowired
+	private ChucVuService chucVuService;
+	
 	public DonCongDanRepository getDonCongDanRepository() {
 		return donCongDanRepository;
+	}
+	
+	public ChucVuRepository getChucVuRepository() {
+		return chucVuRepository;
+	}
+
+	public ChucVuService getChucVuService() {
+		return chucVuService;
 	}
 
 }

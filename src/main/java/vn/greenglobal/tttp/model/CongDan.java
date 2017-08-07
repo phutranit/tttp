@@ -1,28 +1,22 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 
 @Entity
 @Table(name = "congdan")
@@ -32,15 +26,20 @@ public class CongDan extends Model<CongDan> {
 	private static final long serialVersionUID = 2302822305956477280L;
 
 	@NotBlank
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String soDienThoai = "";
+	@Size(max=255)
 	private String soCMNDHoChieu = "";
+	@Size(max=255)
 	private String diaChi = "";
 
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
 
 	private boolean gioiTinh;
+	
 	@ManyToOne
 	private DonViHanhChinh tinhThanh;
 	@ManyToOne
@@ -60,21 +59,21 @@ public class CongDan extends Model<CongDan> {
 	@ManyToOne
 	private CoQuanQuanLy noiCapCMND;
 
-	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	@OrderBy("ngayTao ASC")
-	@ApiModelProperty(hidden = true)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
-
-	public List<Don_CongDan> getDonCongDans() {
-
-		return donCongDans;
-	}
-
-	public void setDonCongDans(List<Don_CongDan> donCongDans) {
-		this.donCongDans = donCongDans;
-	}
+//	@OneToMany(mappedBy = "congDan", fetch = FetchType.EAGER)
+//	@Fetch(value = FetchMode.SELECT)
+//	@OrderBy("ngayTao ASC")
+//	@ApiModelProperty(hidden = true)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//	private List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>(); // TCD
+//
+//	public List<Don_CongDan> getDonCongDans() {
+//
+//		return donCongDans;
+//	}
+//
+//	public void setDonCongDans(List<Don_CongDan> donCongDans) {
+//		this.donCongDans = donCongDans;
+//	}
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getHoVaTen() {
@@ -338,11 +337,10 @@ public class CongDan extends Model<CongDan> {
 	@ApiModelProperty(hidden = true)
 	public int getSoDonThu() {
 		int soDonThu = 0;
-		List<Don_CongDan> _donCongDans = new ArrayList<Don_CongDan>();
-		_donCongDans.addAll(donCongDans);
+		List<Don_CongDan> _donCongDans = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+				.findAll(QDon_CongDan.don_CongDan.congDan.id.eq(getId()).and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		if (_donCongDans.size() > 0) {
-			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList())
-					.size();
+			soDonThu = _donCongDans.stream().filter(dcd -> dcd.getDon().isDaXoa() == false).collect(Collectors.toList()).size();
 		}
 		return soDonThu;
 	}

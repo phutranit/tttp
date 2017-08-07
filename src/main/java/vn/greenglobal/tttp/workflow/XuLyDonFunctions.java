@@ -27,10 +27,9 @@ public class XuLyDonFunctions {
 	private static DonService donService = new DonService();
 	private static XuLyDonService xuLyDonService = new XuLyDonService();
 
-	public XuLyDon dinhChiDon(XuLyDon xuLyDon, String note, Long congChucId) {
+	public XuLyDon dinhChiDon(XuLyDon xuLyDon, Long congChucId) {
 		XuLyDon xuLyDonHienTai = new XuLyDon();
 
-		xuLyDonHienTai.setGhiChu(note);
 		xuLyDonHienTai.setyKienXuLy(xuLyDon.getyKienXuLy());
 		xuLyDonHienTai.setNgayQuyetDinhDinhChi(xuLyDon.getNgayQuyetDinhDinhChi());
 		xuLyDonHienTai.setSoQuyetDinhDinhChi(xuLyDon.getSoQuyetDinhDinhChi());
@@ -151,7 +150,6 @@ public class XuLyDonFunctions {
 			xuLyDonTiepTheo.setDonChuyen(true);
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 		}
-		xuLyDonHienTai.setGhiChu(note);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 
 		return xuLyDonTiepTheo;
@@ -185,7 +183,6 @@ public class XuLyDonFunctions {
 			xuLyDonTiepTheo.setDonChuyen(true);
 			xuLyDonTiepTheo.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
 		}
-		xuLyDonHienTai.setGhiChu(note);
 		Utils.save(xuLyDonRepo, xuLyDonHienTai, congChucId);
 
 		return xuLyDonTiepTheo;

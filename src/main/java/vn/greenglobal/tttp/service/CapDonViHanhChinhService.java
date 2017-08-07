@@ -2,6 +2,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -13,17 +18,22 @@ import vn.greenglobal.tttp.model.QCapDonViHanhChinh;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
 import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CapDonViHanhChinhService {
+	
+	@Autowired
+	private CapDonViHanhChinhRepository capDonViHanhChinhRepository;
 
 	BooleanExpression base = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
-		if (ten != null && !"".equals(ten)) {
-			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten)
-					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten)));
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
+			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten.trim())
+					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten.trim()))
+					.or(QCapDonViHanhChinh.capDonViHanhChinh.moTa.containsIgnoreCase(ten.trim())));
 		}
 		return predAll;
 	}
@@ -73,6 +83,14 @@ public class CapDonViHanhChinhService {
 		}
 
 		return false;
+	}
+	
+	public CapDonViHanhChinh save(CapDonViHanhChinh obj, Long congChucId) {
+		return Utils.save(capDonViHanhChinhRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CapDonViHanhChinh obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(capDonViHanhChinhRepository, obj, congChucId, eass, status);		
 	}
 
 }

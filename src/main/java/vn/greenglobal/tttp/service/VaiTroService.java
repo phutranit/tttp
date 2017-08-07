@@ -2,27 +2,37 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.model.QVaiTro;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class VaiTroService {
+	
+	@Autowired
+	private VaiTroRepository vaiTroRepository;
 
 	BooleanExpression base = QVaiTro.vaiTro.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QVaiTro.vaiTro.ten.containsIgnoreCase(tuKhoa));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QVaiTro.vaiTro.ten.containsIgnoreCase(tuKhoa.trim()));
 		}
 
 		return predAll;
@@ -58,9 +68,10 @@ public class VaiTroService {
 		}
 
 		predAll = predAll.and(QVaiTro.vaiTro.ten.eq(body.getTen()));
-		VaiTro vaiTro = repo.findOne(predAll);
+		predAll = predAll.and(QVaiTro.vaiTro.loaiVaiTro.eq(VaiTroEnum.valueOf(body.getLoaiVaiTro().toString())));
+		List<VaiTro> vaiTros = (List<VaiTro>) repo.findAll(predAll);
 
-		return vaiTro != null ? true : false;
+		return vaiTros != null && vaiTros.size() > 0 ? true : false;
 	}
 
 	public boolean checkUsedData(NguoiDungRepository nguoiDungRepository, Long id) {
@@ -74,6 +85,14 @@ public class VaiTroService {
 		}
 
 		return false;
+	}
+	
+	public VaiTro save(VaiTro obj, Long congChucId) {
+		return Utils.save(vaiTroRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(VaiTro obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(vaiTroRepository, obj, congChucId, eass, status);		
 	}
 
 }

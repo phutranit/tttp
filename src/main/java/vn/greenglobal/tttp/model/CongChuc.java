@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -26,7 +27,9 @@ public class CongChuc extends Model<CongChuc> {
 	private static final long serialVersionUID = -1368951945883561494L;
 
 	@NotBlank
+	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
 	private String dienThoai = "";
 
 	private boolean gioiTinh;
@@ -127,7 +130,14 @@ public class CongChuc extends Model<CongChuc> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCoQuanQuanLy().getId());
 			map.put("ten", getCoQuanQuanLy().getTen());
-			map.put("chaId", getCoQuanQuanLy().getCha() == null ? getCoQuanQuanLy().getCha() : getCoQuanQuanLy().getCha().getId());
+			if (getCoQuanQuanLy().getCha() != null) {
+				Map<String, Object> mapDonViCha = new HashMap<>();
+				mapDonViCha.put("coQuanQuanLyId", getCoQuanQuanLy().getCha().getId() == null ? 0 : getCoQuanQuanLy().getCha().getId());
+				mapDonViCha.put("ten", getCoQuanQuanLy().getCha().getTen() == null ? "" : getCoQuanQuanLy().getCha().getTen());
+				map.put("cha", mapDonViCha);
+			} else {
+				map.put("cha", null);
+			}
 			
 			return map;
 		}

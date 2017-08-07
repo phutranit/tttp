@@ -2,6 +2,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -13,18 +18,22 @@ import vn.greenglobal.tttp.model.QQuocTich;
 import vn.greenglobal.tttp.model.QuocTich;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.QuocTichRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class QuocTichService {
+	
+	@Autowired
+	private QuocTichRepository quocTichRepository;
 
 	BooleanExpression base = QQuocTich.quocTich.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QQuocTich.quocTich.ma.containsIgnoreCase(tuKhoa)
-					.or(QQuocTich.quocTich.ten.containsIgnoreCase(tuKhoa))
-					.or(QQuocTich.quocTich.moTa.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QQuocTich.quocTich.ma.containsIgnoreCase(tuKhoa.trim())
+					.or(QQuocTich.quocTich.ten.containsIgnoreCase(tuKhoa.trim()))
+					.or(QQuocTich.quocTich.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 		return predAll;
 	}
@@ -73,6 +82,14 @@ public class QuocTichService {
 		}
 
 		return false;
+	}
+	
+	public QuocTich save(QuocTich obj, Long congChucId) {
+		return Utils.save(quocTichRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(QuocTich obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(quocTichRepository, obj, congChucId, eass, status);		
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,10 +28,15 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	 */
 	private static final long serialVersionUID = 6767282651849050987L;
 
+	@Size(max=255)
 	private String ma = "";
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
+	
+	private int soThuTu = 0;
 
 	private boolean linhVucKhac;
 
@@ -66,6 +72,14 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	public int getSoThuTu() {
+		return soThuTu;
+	}
+
+	public void setSoThuTu(int soThuTu) {
+		this.soThuTu = soThuTu;
 	}
 
 	@ApiModelProperty(position = 4)

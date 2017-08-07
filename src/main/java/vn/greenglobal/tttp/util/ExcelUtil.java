@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -416,8 +417,7 @@ public class ExcelUtil {
 		}
 	}
 	
-	
-	public static void exportDanhSachXuLyDon(HttpServletResponse response, String fileName, String sheetName,
+	public static void exportDanhSachXuLyDon(HttpServletResponse response, Long donViXuLy, String fileName, String sheetName,
 			List<Don> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -440,7 +440,7 @@ public class ExcelUtil {
 			c.setCellValue(title.toUpperCase());
 			c.setCellStyle(setBorderAndFont(wb, 0, true, 14, "BLUE", "CENTER"));
 			row.setHeight((short) 800);
-			sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));
+			sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 9));
 
 			// set column width
 			sheet1.setColumnWidth(0, 6 * 256);
@@ -452,6 +452,7 @@ public class ExcelUtil {
 			sheet1.setColumnWidth(6, 15 * 256);
 			sheet1.setColumnWidth(7, 10 * 256);
 			sheet1.setColumnWidth(8, 15 * 256);
+			sheet1.setColumnWidth(9, 15 * 256);
 			// Generate rows header of grid
 			idx++;
 			row = sheet1.createRow(idx);
@@ -488,8 +489,12 @@ public class ExcelUtil {
 			c.setCellValue("Cơ quan đã giải quyết");
 			c.setCellStyle(cellCenter);
 			c = row.createCell(8);
+			c.setCellValue("Tình trạng xử lý/Kết quả xử lý");
+			c.setCellStyle(cellCenter);
+			c = row.createCell(9);
 			c.setCellValue("Cán bộ xử lý");
 			c.setCellStyle(cellCenter);
+			
 			int i = 1;
 			for (Don don : list) {
 				row = sheet1.createRow(idx);
@@ -498,7 +503,7 @@ public class ExcelUtil {
 				c.setCellValue(i);
 				c.setCellStyle(cellCenter);
 				c = row.createCell(1);
-				c.setCellValue(StringUtils.isNotBlank(don.getMa()) ? don.getMa() : "");
+				c.setCellValue(StringUtils.isNotEmpty(don.getMa()) ? don.getMa() : "");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(2);
 				c.setCellValue(don.getNgayTiepNhan().format(formatter));
@@ -510,19 +515,48 @@ public class ExcelUtil {
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
+				
+				String nguonDonText = "";
+				for (Map<String, Object> map : don.getNguonDonInfo()) {
+					Long _donViXuLyId = 0L;
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						nguonDonText = map.get("nguonDonText").toString() + " / " +map.get("donViChuyenText").toString();
+						break;
+					}
+				}
 				c = row.createCell(4);
-				c.setCellValue(don.getNguonDonText());
+				c.setCellValue(nguonDonText);
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(5);
-				c.setCellValue(don.getNoiDung() + "/" +don.getThoiHanXuLyDon());
+				c.setCellValue(don.getNoiDung() + " / " +don.getThoiHanXuLyDon());
 				c.setCellStyle(cellLeft);
 				c = row.createCell(6);
-				c.setCellValue(don.getLoaiDon().getText() + "/" +don.getSoNguoi());
+				c.setCellValue(don.getLoaiDon().getText() + " / " +don.getSoNguoi() +" người");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(7);
-				c.setCellValue("");
+				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
+				
+				String trangThaiDonText = "";
+				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
+					Long _donViXuLyId = 0L;
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						trangThaiDonText = map.get("trangThaiDonText").toString();
+						break;
+					}
+				}
 				c = row.createCell(8);
+				c.setCellValue(trangThaiDonText + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
+				c.setCellStyle(cellCenter);
+				
+				c = row.createCell(9);
 				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
 				c.setCellStyle(cellCenter);
 				i++;

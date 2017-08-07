@@ -2,6 +2,11 @@ package vn.greenglobal.tttp.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -13,18 +18,23 @@ import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QDanToc;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DanTocRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class DanTocService {
+	
+	@Autowired
+	private DanTocRepository danTocRepository;
 
 	BooleanExpression base = QDanToc.danToc.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(
-					QDanToc.danToc.ten.containsIgnoreCase(tuKhoa).or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa))
-							.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa)));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QDanToc.danToc.ten.containsIgnoreCase(tuKhoa.trim())
+					.or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa.trim()))
+					.or(QDanToc.danToc.ma.containsIgnoreCase(tuKhoa.trim()))
+					.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa.trim())));
 		}
 
 		return predAll;
@@ -74,6 +84,14 @@ public class DanTocService {
 		}
 
 		return false;
+	}
+	
+	public DanToc save(DanToc obj, Long congChucId) {
+		return Utils.save(danTocRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(DanToc obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(danTocRepository, obj, congChucId, eass, status);		
 	}
 
 }

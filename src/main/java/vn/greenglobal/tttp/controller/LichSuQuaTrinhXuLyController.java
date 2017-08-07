@@ -1,8 +1,16 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.pac4j.core.profile.CommonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.ResourceAssembler;
@@ -37,13 +45,13 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 
 	@Autowired
 	private LichSuQuaTrinhXuLyRepository repo;
-	
+
 	@Autowired
 	private DonRepository donRepo;
-	
+
 	@Autowired
 	private DonService donService;
-	
+
 	public LichSuQuaTrinhXuLyController(BaseRepository<LichSuQuaTrinhXuLy, Long> repo) {
 		super(repo);
 	}
@@ -52,15 +60,26 @@ public class LichSuQuaTrinhXuLyController extends TttpController<LichSuQuaTrinhX
 	@RequestMapping(method = RequestMethod.GET, value = "/lichSuQuaTrinhXuLys")
 	@ApiOperation(value = "Lấy danh sách Lịch sử quá trình xử lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable,
-			@RequestParam(value = "donId", required = true) Long donId,
+			Pageable pageable, @RequestParam(value = "donId", required = true) Long donId,
 			PersistentEntityResourceAssembler eass) {
-		Don don = donRepo.findOne(donService.predicateFindOne(donId));
-		if (don == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
+		try {
+			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+			Don don = donRepo.findOne(donService.predicateFindOne(donId));
+			
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			List<LichSuQuaTrinhXuLy> list = new ArrayList<LichSuQuaTrinhXuLy>();
+			list.addAll((List<LichSuQuaTrinhXuLy>)repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId)));
+			if (list.size() > 0) {
+				pageable = new PageRequest(0, list.size(), new Sort(new Order(Direction.ASC, "thuTuThucHien")));
+			}
+			Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId, donViId), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		Page<LichSuQuaTrinhXuLy> page = repo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(donId), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
 	}
 }

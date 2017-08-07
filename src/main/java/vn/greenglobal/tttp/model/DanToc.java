@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -22,10 +23,14 @@ public class DanToc extends Model<DanToc> {
 	 */
 	private static final long serialVersionUID = -7550664635055554646L;
 
+	@Size(max=255)
 	private String ma = "";
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String tenKhac = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ApiModelProperty(position = 2)

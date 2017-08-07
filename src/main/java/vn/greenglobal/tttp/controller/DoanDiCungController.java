@@ -54,84 +54,105 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thêm mới nhiều đoàn đi cùng thành công", response = Medial_DoanDiCung_Post_Patch.class),
 			@ApiResponse(code = 201, message = "Thêm mới nhiều đoàn đi cùng thành công", response = Medial_DoanDiCung_Post_Patch.class) })
-	public ResponseEntity<Object> createMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public ResponseEntity<Object> createMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DoanDiCung_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DoanDiCung_Post_Patch result = new Medial_DoanDiCung_Post_Patch();
+		try {
+			Medial_DoanDiCung_Post_Patch result = new Medial_DoanDiCung_Post_Patch();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDoanDiCungs().size() > 0) {
-						for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
-							DoanDiCung ddc = Utils.save(repo, doanDiCung, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getDoanDiCungs().add(ddc);
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDoanDiCungs().size() > 0) {
+							for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
+								DoanDiCung ddc = doanDiCungService.save(doanDiCung, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDoanDiCungs().add(ddc);
+							}
 						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-				}
-			});
+				});
+			}
+
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.PATCH, value = "/doanDiCungs/multi")
 	@ApiOperation(value = "Cập nhật nhiều đoàn đi cùng", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Cập nhật nhiều đoàn đi cùng thành công", response = Medial_DoanDiCung_Post_Patch.class) })
-	public @ResponseBody ResponseEntity<Object> updateMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật nhiều đoàn đi cùng thành công", response = Medial_DoanDiCung_Post_Patch.class) })
+	public @ResponseBody ResponseEntity<Object> updateMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DoanDiCung_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
-		Medial_DoanDiCung_Post_Patch result = new Medial_DoanDiCung_Post_Patch();
-		List<DoanDiCung> listUpdate = new ArrayList<DoanDiCung>();
+		try {
+			Medial_DoanDiCung_Post_Patch result = new Medial_DoanDiCung_Post_Patch();
+			List<DoanDiCung> listUpdate = new ArrayList<DoanDiCung>();
 
-		if (params != null) {
-			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus arg0) {
-					if (params.getDoanDiCungs().size() > 0) {
-						for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
-							if (!doanDiCungService.isExists(repo, doanDiCung.getId())) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			if (params != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (params.getDoanDiCungs().size() > 0) {
+							for (DoanDiCung doanDiCung : params.getDoanDiCungs()) {
+								if (!doanDiCungService.isExists(repo, doanDiCung.getId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+								}
+								listUpdate.add(doanDiCung);
 							}
-							listUpdate.add(doanDiCung);
+							for (DoanDiCung doanDiCung : listUpdate) {
+								DoanDiCung ddc = doanDiCungService.save(doanDiCung, Long.valueOf(
+										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+								result.getDoanDiCungs().add(ddc);
+							}
 						}
-						for (DoanDiCung doanDiCung : listUpdate) {
-							DoanDiCung ddc = Utils.save(repo, doanDiCung, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-							result.getDoanDiCungs().add(ddc);
-						}
+						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
 					}
-					return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-				}
-			});
-		}
+				});
+			}
 
-		return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/doanDiCungs/multi")
 	@ApiOperation(value = "Xoá nhiều đoàn đi cùng", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá nhiều đoàn đi cùng thành công") })
-	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public ResponseEntity<Object> deleteMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_DoanDiCung_Delete params) {
-		
-		List<DoanDiCung> listDelete = new ArrayList<DoanDiCung>();
-		if (params != null && params.getDoanDiCungs().size() > 0) {
-			for (Medial_DoanDiCung doanDiCung : params.getDoanDiCungs()) {
-				DoanDiCung ddc = doanDiCungService.delete(repo, doanDiCung.getId());
-				if (ddc == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+
+		try {
+			List<DoanDiCung> listDelete = new ArrayList<DoanDiCung>();
+			if (params != null && params.getDoanDiCungs().size() > 0) {
+				for (Medial_DoanDiCung doanDiCung : params.getDoanDiCungs()) {
+					DoanDiCung ddc = doanDiCungService.delete(repo, doanDiCung.getId());
+					if (ddc == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(ddc);
 				}
-				listDelete.add(ddc);
+				for (DoanDiCung doanDiCung : listDelete) {
+					doanDiCungService.save(doanDiCung, Long
+							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
 			}
-			for (DoanDiCung doanDiCung : listDelete) {
-				Utils.save(repo, doanDiCung, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -22,8 +23,18 @@ public class ChucVu extends Model<ChucVu> {
 	 */
 	private static final long serialVersionUID = -3975638610686661750L;
 
+	public ChucVu() {
+		
+	}
+	
+	public ChucVu(String ten) {
+		this.ten = ten;
+	}
+	
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ApiModelProperty(position = 1, required = true)

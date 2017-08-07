@@ -1,22 +1,34 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
+import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2Enum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
+import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 
 @Entity
 @Table(name = "thongtingiaiquyetdon")
@@ -27,25 +39,48 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	 */
 	private static final long serialVersionUID = 445465484063016490L;
 
+	@Size(max=255)
 	private String soQuyetDinhThanhLapDTXM = "";
-	private String soQuyetDinhGiaHan = "";
+	@Size(max=255)
+	private String soQuyetDinhGiaHanGiaiQuyet = "";
+	@Size(max=255)
+	private String soQuyetDinhGiaHanTTXM = "";
+	@Size(max=255)
 	private String diaDiemDoiThoai = "";
-	private String lyDoGiaHan = "";
+	@Size(max=255)
+	private String lyDoGiaHanGiaiQuyet = "";
+	@Size(max=255)
+	private String lyDoGiaHanTTXM = "";
+	//@Lob
 	private String noiDung = "";
+	//@Lob
+	private String noiDungKetLuanGiaiQuyetLai = "";
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
+	
 	private LocalDateTime ngayBatDauGiaiQuyet;
-	private LocalDateTime ngayketThucGiaiQuyet;
+	private LocalDateTime ngayKetThucGiaiQuyet;
 	private LocalDateTime ngayHetHanGiaiQuyet;
+	private LocalDateTime ngayHetHanSauKhiGiaHanGiaiQuyet;
+	
 	private LocalDateTime ngayBatDauTTXM;
-	private LocalDateTime ngayketThucTTXM;
+	private LocalDateTime ngayKetThucTTXM;
 	private LocalDateTime ngayHetHanTTXM;
 	private LocalDateTime ngayHetHanSauKhiGiaHanTTXM;
+	private LocalDateTime ngayTraBaoCaoTTXM;
+	
+	private LocalDateTime ngayBatDauKTDX;
+	private LocalDateTime ngayKetThucKTDX;
+	private LocalDateTime ngayHetHanKTDX;
+	private LocalDateTime ngayHetHanSauKhiGiaHanKTDX;
+	
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
+	private LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet;
 
 	private boolean lapToDoanXacMinh;
 	private boolean giaHanGiaiQuyet;
+	private boolean giaHanTTXM;
 	private boolean doiThoai;
 	private boolean giaoCoQuanDieuTra;
 	private boolean khoiTo;
@@ -61,6 +96,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private int soDoiTuongBiKhoiTo;
 	private int tongSoNguoiXuLyHanhChinh;
 	private int soNguoiDaBiXuLyHanhChinh;
+	private int soLanGiaiQuyetLai;
+	private int soVuGiaiQuyetKhieuNai;
+	private int soNguoiDuocTraLaiQuyenLoi;
+	
+	private long tienPhaiThuNhaNuocQDGQ;
+	private long datPhaiThuNhaNuocQDGQ;
+	private long tienPhaiTraCongDanQDGQ;
+	private long datPhaiTraCongDanQDGQ;
 
 	private long tienPhaiThuNhaNuoc;
 	private long datPhaiThuNhaNuoc;
@@ -83,17 +126,97 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy coQuanTheoDoi;
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
+	@ManyToOne
+	private CoQuanQuanLy donViGiaoThamTraXacMinh;
 	
 	@OneToOne
 	@JoinColumn(name = "don_id")
 	private Don don;
+	
+	@OneToMany(mappedBy = "thongTinGiaiQuyetDon", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<GiaiQuyetDon> giaiQuyetDons = new ArrayList<GiaiQuyetDon>(); // XLD
 
 	@Enumerated(EnumType.STRING)
 	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai;
 	@Enumerated(EnumType.STRING)
+	private KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNaiGiaoTTXM;
+	@Enumerated(EnumType.STRING)
 	private HinhThucTheoDoiEnum hinhThucTheoDoi;
 	@Enumerated(EnumType.STRING)
 	private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
+	@Enumerated(EnumType.STRING)
+	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
+	@Enumerated(EnumType.STRING)
+	private KetQuaGiaiQuyetLan2Enum ketQuaGiaiQuyetLan2;
+	
+	/**
+	 * Bat dau tao fields Luu thong tin tam thoi.
+	 */
+	//@Lob
+	private String yKienGiaiQuyet = "";
+	//@Lob
+	private String yKienCuaDonViGiaoTTXM = "";
+	//@Lob
+	private String yKienXuLyDon = "";
+	@ManyToOne
+	private CongChuc canBoXuLyChiDinh;
+	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyet;
+	@ManyToOne
+	private State nextState;
+
+	public String getyKienGiaiQuyet() {
+		return yKienGiaiQuyet;
+	}
+
+	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
+		this.yKienGiaiQuyet = yKienGiaiQuyet;
+	}
+
+	public CongChuc getCanBoXuLyChiDinh() {
+		return canBoXuLyChiDinh;
+	}
+
+	public String getyKienCuaDonViGiaoTTXM() {
+		return yKienCuaDonViGiaoTTXM;
+	}
+
+	public String getyKienXuLyDon() {
+		return yKienXuLyDon;
+	}
+
+	public void setyKienXuLyDon(String yKienXuLyDon) {
+		this.yKienXuLyDon = yKienXuLyDon;
+	}
+
+	public void setyKienCuaDonViGiaoTTXM(String yKienCuaDonViGiaoTTXM) {
+		this.yKienCuaDonViGiaoTTXM = yKienCuaDonViGiaoTTXM;
+	}
+
+	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
+		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
+	}
+
+	public CoQuanQuanLy getPhongBanGiaiQuyet() {
+		return phongBanGiaiQuyet;
+	}
+
+	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
+		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	public State getNextState() {
+		return nextState;
+	}
+
+	public void setNextState(State nextState) {
+		this.nextState = nextState;
+	}
+	/**
+	 * Ket thuc tao fields Luu thong tin tam thoi.
+	 */
 
 	public String getSoQuyetDinhThanhLapDTXM() {
 		return soQuyetDinhThanhLapDTXM;
@@ -103,12 +226,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.soQuyetDinhThanhLapDTXM = soQuyetDinhThanhLapDTXM;
 	}
 
-	public String getSoQuyetDinhGiaHan() {
-		return soQuyetDinhGiaHan;
+	public String getSoQuyetDinhGiaHanGiaiQuyet() {
+		return soQuyetDinhGiaHanGiaiQuyet;
 	}
 
-	public void setSoQuyetDinhGiaHan(String soQuyetDinhGiaHan) {
-		this.soQuyetDinhGiaHan = soQuyetDinhGiaHan;
+	public void setSoQuyetDinhGiaHanGiaiQuyet(String soQuyetDinhGiaHanGiaiQuyet) {
+		this.soQuyetDinhGiaHanGiaiQuyet = soQuyetDinhGiaHanGiaiQuyet;
 	}
 
 	public String getDiaDiemDoiThoai() {
@@ -119,12 +242,20 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.diaDiemDoiThoai = diaDiemDoiThoai;
 	}
 
-	public String getLyDoGiaHan() {
-		return lyDoGiaHan;
+	public String getLyDoGiaHanGiaiQuyet() {
+		return lyDoGiaHanGiaiQuyet;
 	}
 
-	public void setLyDoGiaHan(String lyDoGiaHan) {
-		this.lyDoGiaHan = lyDoGiaHan;
+	public void setLyDoGiaHanGiaiQuyet(String lyDoGiaHanGiaiQuyet) {
+		this.lyDoGiaHanGiaiQuyet = lyDoGiaHanGiaiQuyet;
+	}
+
+	public String getLyDoGiaHanTTXM() {
+		return lyDoGiaHanTTXM;
+	}
+
+	public void setLyDoGiaHanTTXM(String lyDoGiaHanTTXM) {
+		this.lyDoGiaHanTTXM = lyDoGiaHanTTXM;
 	}
 
 	public String getNoiDung() {
@@ -133,6 +264,22 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
+	}
+
+	public String getNoiDungKetLuanGiaiQuyetLai() {
+		return noiDungKetLuanGiaiQuyetLai;
+	}
+
+	public void setNoiDungKetLuanGiaiQuyetLai(String noiDungKetLuanGiaiQuyetLai) {
+		this.noiDungKetLuanGiaiQuyetLai = noiDungKetLuanGiaiQuyetLai;
+	}
+
+	public String getSoQuyetDinhGiaHanTTXM() {
+		return soQuyetDinhGiaHanTTXM;
+	}
+
+	public void setSoQuyetDinhGiaHanTTXM(String soQuyetDinhGiaHanTTXM) {
+		this.soQuyetDinhGiaHanTTXM = soQuyetDinhGiaHanTTXM;
 	}
 
 	public LocalDateTime getThoiGianDoiThoai() {
@@ -158,12 +305,20 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayBatDauGiaiQuyet = ngayBatDauGiaiQuyet;
 	}
 
-	public LocalDateTime getNgayketThucGiaiQuyet() {
-		return ngayketThucGiaiQuyet;
+	public LocalDateTime getNgayKetThucGiaiQuyet() {
+		return ngayKetThucGiaiQuyet;
 	}
 
-	public void setNgayketThucGiaiQuyet(LocalDateTime ngayketThucGiaiQuyet) {
-		this.ngayketThucGiaiQuyet = ngayketThucGiaiQuyet;
+	public void setNgayKetThucGiaiQuyet(LocalDateTime ngayKetThucGiaiQuyet) {
+		this.ngayKetThucGiaiQuyet = ngayKetThucGiaiQuyet;
+	}
+	
+	public List<GiaiQuyetDon> getGiaiQuyetDons() {
+		return giaiQuyetDons;
+	}
+
+	public void setGiaiQuyetDons(List<GiaiQuyetDon> giaiQuyetDons) {
+		this.giaiQuyetDons = giaiQuyetDons;
 	}
 
 	public LocalDateTime getNgayHetHanGiaiQuyet() {
@@ -174,6 +329,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayHetHanGiaiQuyet = ngayHetHanGiaiQuyet;
 	}
 
+	public LocalDateTime getNgayHetHanSauKhiGiaHanGiaiQuyet() {
+		return ngayHetHanSauKhiGiaHanGiaiQuyet;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanGiaiQuyet(LocalDateTime ngayHetHanSauKhiGiaHanGiaiQuyet) {
+		this.ngayHetHanSauKhiGiaHanGiaiQuyet = ngayHetHanSauKhiGiaHanGiaiQuyet;
+	}
+
 	public LocalDateTime getNgayBatDauTTXM() {
 		return ngayBatDauTTXM;
 	}
@@ -182,12 +345,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayBatDauTTXM = ngayBatDauTTXM;
 	}
 
-	public LocalDateTime getNgayketThucTTXM() {
-		return ngayketThucTTXM;
+	public LocalDateTime getNgayKetThucTTXM() {
+		return ngayKetThucTTXM;
 	}
 
-	public void setNgayketThucTTXM(LocalDateTime ngayketThucTTXM) {
-		this.ngayketThucTTXM = ngayketThucTTXM;
+	public void setNgayKetThucTTXM(LocalDateTime ngayKetThucTTXM) {
+		this.ngayKetThucTTXM = ngayKetThucTTXM;
 	}
 
 	public LocalDateTime getNgayHetHanTTXM() {
@@ -206,8 +369,56 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ngayHetHanSauKhiGiaHanTTXM = ngayHetHanSauKhiGiaHanTTXM;
 	}
 
+	public LocalDateTime getNgayTraBaoCaoTTXM() {
+		return ngayTraBaoCaoTTXM;
+	}
+
+	public void setNgayTraBaoCaoTTXM(LocalDateTime ngayTraBaoCaoTTXM) {
+		this.ngayTraBaoCaoTTXM = ngayTraBaoCaoTTXM;
+	}
+
+	public LocalDateTime getNgayBatDauKTDX() {
+		return ngayBatDauKTDX;
+	}
+
+	public void setNgayBatDauKTDX(LocalDateTime ngayBatDauKTDX) {
+		this.ngayBatDauKTDX = ngayBatDauKTDX;
+	}
+
+	public LocalDateTime getNgayKetThucKTDX() {
+		return ngayKetThucKTDX;
+	}
+
+	public void setNgayKetThucKTDX(LocalDateTime ngayKetThucKTDX) {
+		this.ngayKetThucKTDX = ngayKetThucKTDX;
+	}
+
+	public LocalDateTime getNgayHetHanKTDX() {
+		return ngayHetHanKTDX;
+	}
+
+	public void setNgayHetHanKTDX(LocalDateTime ngayHetHanKTDX) {
+		this.ngayHetHanKTDX = ngayHetHanKTDX;
+	}
+
+	public LocalDateTime getNgayHetHanSauKhiGiaHanKTDX() {
+		return ngayHetHanSauKhiGiaHanKTDX;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanKTDX(LocalDateTime ngayHetHanSauKhiGiaHanKTDX) {
+		this.ngayHetHanSauKhiGiaHanKTDX = ngayHetHanSauKhiGiaHanKTDX;
+	}
+
 	public LocalDateTime getNgayRaQuyetDinhGiaHanTTXM() {
 		return ngayRaQuyetDinhGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
+		return ngayRaQuyetDinhGiaHanGiaiQuyet;
+	}
+
+	public void setNgayRaQuyetDinhGiaHanGiaiQuyet(LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet) {
+		this.ngayRaQuyetDinhGiaHanGiaiQuyet = ngayRaQuyetDinhGiaHanGiaiQuyet;
 	}
 
 	public void setNgayRaQuyetDinhGiaHanTTXM(LocalDateTime ngayRaQuyetDinhGiaHanTTXM) {
@@ -228,6 +439,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setGiaHanGiaiQuyet(boolean giaHanGiaiQuyet) {
 		this.giaHanGiaiQuyet = giaHanGiaiQuyet;
+	}
+
+	public boolean isGiaHanTTXM() {
+		return giaHanTTXM;
+	}
+
+	public void setGiaHanTTXM(boolean giaHanTTXM) {
+		this.giaHanTTXM = giaHanTTXM;
 	}
 
 	public boolean isDoiThoai() {
@@ -342,6 +561,62 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.soNguoiDaBiXuLyHanhChinh = soNguoiDaBiXuLyHanhChinh;
 	}
 
+	public int getSoLanGiaiQuyetLai() {
+		return soLanGiaiQuyetLai;
+	}
+
+	public void setSoLanGiaiQuyetLai(int soLanGiaiQuyetLai) {
+		this.soLanGiaiQuyetLai = soLanGiaiQuyetLai;
+	}
+
+	public int getSoVuGiaiQuyetKhieuNai() {
+		return soVuGiaiQuyetKhieuNai;
+	}
+
+	public void setSoVuGiaiQuyetKhieuNai(int soVuGiaiQuyetKhieuNai) {
+		this.soVuGiaiQuyetKhieuNai = soVuGiaiQuyetKhieuNai;
+	}
+
+	public int getSoNguoiDuocTraLaiQuyenLoi() {
+		return soNguoiDuocTraLaiQuyenLoi;
+	}
+
+	public long getTienPhaiThuNhaNuocQDGQ() {
+		return tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setTienPhaiThuNhaNuocQDGQ(long tienPhaiThuNhaNuocQDGQ) {
+		this.tienPhaiThuNhaNuocQDGQ = tienPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getDatPhaiThuNhaNuocQDGQ() {
+		return datPhaiThuNhaNuocQDGQ;
+	}
+
+	public void setDatPhaiThuNhaNuocQDGQ(long datPhaiThuNhaNuocQDGQ) {
+		this.datPhaiThuNhaNuocQDGQ = datPhaiThuNhaNuocQDGQ;
+	}
+
+	public long getTienPhaiTraCongDanQDGQ() {
+		return tienPhaiTraCongDanQDGQ;
+	}
+
+	public void setTienPhaiTraCongDanQDGQ(long tienPhaiTraCongDanQDGQ) {
+		this.tienPhaiTraCongDanQDGQ = tienPhaiTraCongDanQDGQ;
+	}
+
+	public long getDatPhaiTraCongDanQDGQ() {
+		return datPhaiTraCongDanQDGQ;
+	}
+
+	public void setDatPhaiTraCongDanQDGQ(long datPhaiTraCongDanQDGQ) {
+		this.datPhaiTraCongDanQDGQ = datPhaiTraCongDanQDGQ;
+	}
+
+	public void setSoNguoiDuocTraLaiQuyenLoi(int soNguoiDuocTraLaiQuyenLoi) {
+		this.soNguoiDuocTraLaiQuyenLoi = soNguoiDuocTraLaiQuyenLoi;
+	}
+
 	public long getTienPhaiThuNhaNuoc() {
 		return tienPhaiThuNhaNuoc;
 	}
@@ -451,10 +726,24 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.coQuanTheoDoi = coQuanTheoDoi;
 	}
 
+	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
 		return donViThamTraXacMinh;
 	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
+	}
 	
+	@ApiModelProperty(example = "{}", position = 2)
+	public CoQuanQuanLy getDonViGiaoThamTraXacMinh() {
+		return donViGiaoThamTraXacMinh;
+	}
+
+	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
+		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
+	}
+
 	@ApiModelProperty(example = "{}", position = 2)
 	public Don getDon() {
 		return don;
@@ -464,16 +753,20 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.don = don;
 	}
 
-	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
-		this.donViThamTraXacMinh = donViThamTraXacMinh;
-	}
-
 	public KetLuanNoiDungKhieuNaiEnum getKetLuanNoiDungKhieuNai() {
 		return ketLuanNoiDungKhieuNai;
 	}
 
 	public void setKetLuanNoiDungKhieuNai(KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNai) {
 		this.ketLuanNoiDungKhieuNai = ketLuanNoiDungKhieuNai;
+	}
+
+	public KetLuanNoiDungKhieuNaiEnum getKetLuanNoiDungKhieuNaiGiaoTTXM() {
+		return ketLuanNoiDungKhieuNaiGiaoTTXM;
+	}
+
+	public void setKetLuanNoiDungKhieuNaiGiaoTTXM(KetLuanNoiDungKhieuNaiEnum ketLuanNoiDungKhieuNaiGiaoTTXM) {
+		this.ketLuanNoiDungKhieuNaiGiaoTTXM = ketLuanNoiDungKhieuNaiGiaoTTXM;
 	}
 
 	public HinhThucTheoDoiEnum getHinhThucTheoDoi() {
@@ -492,6 +785,23 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ketQuaThucHienTheoDoi = ketQuaThucHienTheoDoi;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
+		return ketQuaXLDGiaiQuyet;
+	}
+
+	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
+		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
+	}
+
+	public KetQuaGiaiQuyetLan2Enum getKetQuaGiaiQuyetLan2() {
+		return ketQuaGiaiQuyetLan2;
+	}
+
+	public void setKetQuaGiaiQuyetLan2(KetQuaGiaiQuyetLan2Enum ketQuaGiaiQuyetLan2) {
+		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getThongTinGiaiQuyetDonId() {
@@ -600,6 +910,54 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getDonViThamTraXacMinh().getTen());
 			map.put("coQuanQuanLyId", getDonViThamTraXacMinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getDonViGiaoThamTraXacMinhInfo() {
+		if (getDonViGiaoThamTraXacMinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getDonViGiaoThamTraXacMinh().getTen());
+			map.put("coQuanQuanLyId", getDonViGiaoThamTraXacMinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCanBoXuLyChiDinhInfo() {
+		if (getCanBoXuLyChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCanBoXuLyChiDinh().getHoVaTen());
+			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhongBanGiaiQuyetInfo() {
+		if (getPhongBanGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhongBanGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNextStateInfo() {
+		if (getNextState() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", getNextState().getId());
+			map.put("type", getNextState().getType().name());
 			return map;
 		}
 		return null;

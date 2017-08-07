@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,9 +21,12 @@ public class ThamSo extends Model<ThamSo> {
 	private static final long serialVersionUID = -1973333094118013160L;
 
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
 	@NotBlank
+	@Size(max=255)
 	private String giaTri = "";
+	@Size(max=255)
 	private String moTa = "";
 
 	@ApiModelProperty(position = 1, required = true)

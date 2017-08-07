@@ -3,6 +3,10 @@ package vn.greenglobal.tttp.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
@@ -15,18 +19,22 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class CongChucService {
 
+	@Autowired
+	private CongChucRepository congChucRepository;
+	
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
 	public Predicate predicateFindAll(String tuKhoa, String vaiTro, Long coQuanQuanLyId, Long congChucId,
 			CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;
-
-		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa));
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.or(QCongChuc.congChuc.nguoiDung.email.containsIgnoreCase(tuKhoa.trim())));
 		}
 
         if (congChucId.equals(1L)) {
@@ -74,7 +82,29 @@ public class CongChucService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCongChuc.congChuc.id.eq(id));
 	}
-
+	
+	public Predicate predicateFindByTenLD(String ten) {
+		BooleanExpression predAll = base;
+		if (ten != null && StringUtils.isNotBlank(ten.trim())) { 
+			return predAll = predAll.and(QCongChuc.congChuc.hoVaTen.containsIgnoreCase(ten.trim()))
+					.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.LANH_DAO)
+							.or(QCongChuc.congChuc.nguoiDung.vaiTros.any().loaiVaiTro.eq(VaiTroEnum.LANH_DAO)));
+			
+		}
+		return null;
+	}
+	
+	public Predicate predicateFindByIdLD(Long id) {
+		BooleanExpression predAll = base;
+		if (id != null && id > 0) { 
+			return predAll = predAll.and(QCongChuc.congChuc.id.eq(id))
+					.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.LANH_DAO)
+							.or(QCongChuc.congChuc.nguoiDung.vaiTros.any().loaiVaiTro.eq(VaiTroEnum.LANH_DAO)));
+			
+		}
+		return null;
+	}
+	
 	public Predicate predicateFindByNguoiDungId(long id) {
 		return base.and(QCongChuc.congChuc.nguoiDung.id.eq(id));
 	}
@@ -134,5 +164,25 @@ public class CongChucService {
 		}
 		
 		return predAll;
+	}
+	
+	public Predicate predicateFindDSNguoiDaiDienByCoQuanDonViId(Long coQuanQuanLyId, boolean isTruongPhong) {
+		BooleanExpression predAll = base;
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCongChuc.congChuc.coQuanQuanLy.id.eq(coQuanQuanLyId)
+					.or(QCongChuc.congChuc.coQuanQuanLy.donVi.id.eq(coQuanQuanLyId)));
+			if (isTruongPhong) {
+				predAll = predAll.and(QCongChuc.congChuc.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.TRUONG_PHONG));
+			}
+		}
+		return predAll;
+	}
+	
+	public CongChuc save(CongChuc obj, Long congChucId) {
+		return Utils.save(congChucRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CongChuc obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(congChucRepository, obj, congChucId, eass, status);		
 	}
 }

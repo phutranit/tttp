@@ -56,13 +56,17 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_LIETKE) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		Page<CapDonViHanhChinh> page = repo.findAll(capDonViHanhChinhService.predicateFindAll(ten), pageable);
-		return assembler.toResource(page, (ResourceAssembler) eass);
+			Page<CapDonViHanhChinh> page = repo.findAll(capDonViHanhChinhService.predicateFindAll(ten), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/capDonViHanhChinhs")
@@ -73,19 +77,23 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 	public ResponseEntity<Object> create(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody CapDonViHanhChinh capDonViHanhChinh, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_THEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		return Utils.doSave(repo, capDonViHanhChinh,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.CREATED);
+			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs/{id}")
@@ -95,16 +103,20 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPCOQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		CapDonViHanhChinh capDonViHanhChinh = repo.findOne(capDonViHanhChinhService.predicateFindOne(id));
-		if (capDonViHanhChinh == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			CapDonViHanhChinh capDonViHanhChinh = repo.findOne(capDonViHanhChinhService.predicateFindOne(id));
+			if (capDonViHanhChinh == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
-		return new ResponseEntity<>(eass.toFullResource(capDonViHanhChinh), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/capDonViHanhChinhs/{id}")
@@ -115,25 +127,29 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
 			@RequestBody CapDonViHanhChinh capDonViHanhChinh, PersistentEntityResourceAssembler eass) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_SUA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		capDonViHanhChinh.setId(id);
-		if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-					ApiErrorEnum.TEN_EXISTS.getText());
-		}
+			capDonViHanhChinh.setId(id);
+			if (capDonViHanhChinhService.checkExistsData(repo, capDonViHanhChinh)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+			}
 
-		if (!capDonViHanhChinhService.isExists(repo, id)) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			if (!capDonViHanhChinhService.isExists(repo, id)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		return Utils.doSave(repo, capDonViHanhChinh,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
-				HttpStatus.OK);
+			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/capDonViHanhChinhs/{id}")
@@ -142,24 +158,28 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@PathVariable("id") Long id) {
 
-		if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_XOA) == null) {
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText());
-		}
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAPDONVIHANHCHINH_XOA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 
-		if (capDonViHanhChinhService.checkUsedData(repoDonViHanhChinh, id)) {
-			return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-					ApiErrorEnum.DATA_USED.getText());
-		}
+			if (capDonViHanhChinhService.checkUsedData(repoDonViHanhChinh, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
 
-		CapDonViHanhChinh capDonViHanhChinh = capDonViHanhChinhService.delete(repo, id);
-		if (capDonViHanhChinh == null) {
-			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-					ApiErrorEnum.DATA_NOT_FOUND.getText());
-		}
+			CapDonViHanhChinh capDonViHanhChinh = capDonViHanhChinhService.delete(repo, id);
+			if (capDonViHanhChinh == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
 
-		Utils.save(repo, capDonViHanhChinh,
-				Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			capDonViHanhChinhService.save(capDonViHanhChinh,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 }

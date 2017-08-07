@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,8 +21,12 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 	private static final long serialVersionUID = -6076575850788999749L;
 
 	@NotBlank
+	@Size(max=255)
 	private String ten = "";
+	@Size(max=255)
 	private String moTa = "";
+	
+	private int soThuTu = 0;
 
 	@ApiModelProperty(position = 1, required = true)
 	public String getTen() {
@@ -39,6 +44,14 @@ public class ThamQuyenGiaiQuyet extends Model<ThamQuyenGiaiQuyet> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	public int getSoThuTu() {
+		return soThuTu;
+	}
+
+	public void setSoThuTu(int soThuTu) {
+		this.soThuTu = soThuTu;
 	}
 
 	@Transient

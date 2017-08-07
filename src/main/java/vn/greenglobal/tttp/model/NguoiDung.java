@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -30,6 +31,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,13 +48,17 @@ public class NguoiDung extends Model<NguoiDung> {
 	private static final long serialVersionUID = 6979954418350232111L;
 
 	@NotBlank
+	@Size(max=255)
 	private String email = "";
 	@NotBlank
+	@Size(max=255)
 	private String matKhau = "";
+	@Size(max=255)
 	private String salkey = "";
 
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private VaiTro vaiTroMacDinh;
 
 	private boolean active;
