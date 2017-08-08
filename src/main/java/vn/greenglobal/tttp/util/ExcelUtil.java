@@ -243,7 +243,7 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getDon().getNoiDung());
 				c.setCellStyle(cellLeft);
 				c = row.createCell(4);
-				c.setCellValue(tcd.getDon().getLoaiDon().getText() + "/" + tcd.getDon().getSoNguoi());
+				c.setCellValue(tcd.getDon().getLoaiDon().getText() + " / " + tcd.getDon().getSoNguoi() +" người");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(5);
 				c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null
@@ -378,7 +378,7 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getDon().getNoiDung());
 				c.setCellStyle(cellLeft);
 				c = row.createCell(5);
-				c.setCellValue(tcd.getDon().getLoaiDon().getText() + "/" + tcd.getDon().getSoNguoi());
+				c.setCellValue(tcd.getDon().getLoaiDon().getText() + " / " + tcd.getDon().getSoNguoi() +" người");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(6);
 				c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null
