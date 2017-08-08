@@ -169,19 +169,35 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDoiTuongs")
 	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongs(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDonThu", required = true) String loaiDonThu) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
+		
+		if (StringUtils.isNotBlank(loaiDonThu)) { 
+			LoaiDonEnum loaiDon = LoaiDonEnum.valueOf(loaiDonThu);
+			if (loaiDon.equals(LoaiDonEnum.DON_KHIEU_NAI)) { 
+				object.put("ten", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.name());
+				list.add(object);
 
-		object.put("ten", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.getText());
-		object.put("giaTri", LoaiDoiTuongEnum.HANH_VI_HANH_CHINH.name());
-		list.add(object);
+				object = new HashMap<>();
+				object.put("ten", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.name());
+				list.add(object);
+			}
+			if (loaiDon.equals(LoaiDonEnum.DON_TO_CAO)) { 
+				object.put("ten", LoaiDoiTuongEnum.CA_NHAN.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.CA_NHAN.name());
+				list.add(object);
 
-		object = new HashMap<>();
-		object.put("ten", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.getText());
-		object.put("giaTri", LoaiDoiTuongEnum.QUYET_DINH_HANH_CHINH.name());
-		list.add(object);
-
+				object = new HashMap<>();
+				object.put("ten", LoaiDoiTuongEnum.TO_CHUC.getText());
+				object.put("giaTri", LoaiDoiTuongEnum.TO_CHUC.name());
+				list.add(object);
+			}
+		}
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
@@ -1079,13 +1095,18 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.getText());
-		object.put("giaTri", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.name());
-		list.add(object);
-
-		object = new HashMap<>();
 		object.put("ten", KetQuaThucHienTheoDoiEnum.CHUA_THUC_HIEN.getText());
 		object.put("giaTri", KetQuaThucHienTheoDoiEnum.CHUA_THUC_HIEN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaThucHienTheoDoiEnum.DANG_THUC_HIEN.getText());
+		object.put("giaTri", KetQuaThucHienTheoDoiEnum.DANG_THUC_HIEN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.getText());
+		object.put("giaTri", KetQuaThucHienTheoDoiEnum.DA_THUC_HIEN.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -1101,8 +1122,8 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", TinhTrangTaiLieuEnum.BAN_GOC.getText());
-		object.put("giaTri", TinhTrangTaiLieuEnum.BAN_GOC.name());
+		object.put("ten", TinhTrangTaiLieuEnum.BAN_CHINH.getText());
+		object.put("giaTri", TinhTrangTaiLieuEnum.BAN_CHINH.name());
 		list.add(object);
 
 		object = new HashMap<>();
@@ -1111,8 +1132,13 @@ public class EnumController {
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", TinhTrangTaiLieuEnum.BAN_SAO_CONG_CHUNG.getText());
-		object.put("giaTri", TinhTrangTaiLieuEnum.BAN_SAO_CONG_CHUNG.name());
+		object.put("ten", TinhTrangTaiLieuEnum.BAN_PHOTO.getText());
+		object.put("giaTri", TinhTrangTaiLieuEnum.BAN_PHOTO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TinhTrangTaiLieuEnum.VAM_BAN_KHAC.getText());
+		object.put("giaTri", TinhTrangTaiLieuEnum.VAM_BAN_KHAC.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
