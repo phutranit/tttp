@@ -6,7 +6,8 @@ public enum BuocGiaiQuyetEnum {
 	GIA_HAN("Gia hạn"),
 	THU_LY_DON("Thụ lý đơn"),
 	THAM_TRAC_XAC_MINH("Thẩm tra xác minh vụ việc"),
-	RA_QUYET_DINH("Ra quyết định giải quyết");
+	RA_QUYET_DINH("Ra quyết định giải quyết"),
+	LUAT_SU("Luật sư");
 
 	BuocGiaiQuyetEnum(String text) {
 		this.text = text;
