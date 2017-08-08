@@ -28,8 +28,6 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
-import vn.greenglobal.tttp.repository.TaiLieuBangChungRepository;
-import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.service.LoaiTaiLieuService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -43,12 +41,6 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 
 	@Autowired
 	private LoaiTaiLieuService loaiTaiLieuService;
-
-	@Autowired
-	private TaiLieuBangChungRepository taiLieuBangChungRepository;
-
-	@Autowired
-	private TaiLieuVanThuRepository taiLieuVanThuRepository;
 
 	public LoaiTaiLieuController(BaseRepository<LoaiTaiLieu, Long> repo) {
 		super(repo);
@@ -168,10 +160,10 @@ public class LoaiTaiLieuController extends TttpController<LoaiTaiLieu> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-			}
+//			if (loaiTaiLieuService.checkUsedData(taiLieuBangChungRepository, taiLieuVanThuRepository, id)) {
+//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+//						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+//			}
 
 			LoaiTaiLieu loaiTaiLieu = loaiTaiLieuService.delete(repo, id);
 			if (loaiTaiLieu == null) {
