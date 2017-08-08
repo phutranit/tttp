@@ -2,9 +2,10 @@ package vn.greenglobal.tttp.enums;
 
 public enum TinhTrangTaiLieuEnum {
 
-	BAN_GOC("Bản gốc"),
+	BAN_CHINH("Bản chính"),
 	BAN_SAO("Bản sao"),
-	BAN_SAO_CONG_CHUNG("Bản sao công chứng");
+	BAN_PHOTO("Bản photo"),
+	VAM_BAN_KHAC("Văn bản khác");
 
 	TinhTrangTaiLieuEnum(String text) {
 		this.text = text;

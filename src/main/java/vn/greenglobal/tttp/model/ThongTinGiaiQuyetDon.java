@@ -51,6 +51,10 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String lyDoGiaHanGiaiQuyet = "";
 	@Size(max=255)
 	private String lyDoGiaHanTTXM = "";
+	@Size(max=255)
+	private String ketQuaGiaiQuyetKhac = "";
+	@Size(max=255)
+	private String ketQuaThucHienKhac = "";
 	//@Lob
 	private String noiDung = "";
 	//@Lob
@@ -256,6 +260,22 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setLyDoGiaHanTTXM(String lyDoGiaHanTTXM) {
 		this.lyDoGiaHanTTXM = lyDoGiaHanTTXM;
+	}
+
+	public String getKetQuaGiaiQuyetKhac() {
+		return ketQuaGiaiQuyetKhac;
+	}
+
+	public void setKetQuaGiaiQuyetKhac(String ketQuaGiaiQuyetKhac) {
+		this.ketQuaGiaiQuyetKhac = ketQuaGiaiQuyetKhac;
+	}
+
+	public String getKetQuaThucHienKhac() {
+		return ketQuaThucHienKhac;
+	}
+
+	public void setKetQuaThucHienKhac(String ketQuaThucHienKhac) {
+		this.ketQuaThucHienKhac = ketQuaThucHienKhac;
 	}
 
 	public String getNoiDung() {
