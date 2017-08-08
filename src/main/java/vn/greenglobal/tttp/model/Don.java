@@ -952,6 +952,86 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaHanGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaoCoQuanDieuTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonQuyetDinhGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonBaoCaoKQTTXM() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
 		if (getDonGoc() != null) {
@@ -959,7 +1039,11 @@ public class Don extends Model<Don> {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
@@ -968,7 +1052,11 @@ public class Don extends Model<Don> {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
