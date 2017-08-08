@@ -641,6 +641,60 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanToCao")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanToCao(
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanKhieuNai")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanKhieuNai(
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuTuChoi")
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuTuChoi(

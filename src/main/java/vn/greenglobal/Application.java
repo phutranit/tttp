@@ -134,7 +134,8 @@ public class Application extends SpringBootServletInitializer {
 						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
 						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen", "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi",
 						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
-						"/soTiepCongDans/inPhieuTuChoi",
+						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
+						"/soTiepCongDans/inPhieuHuongDanToCao",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
