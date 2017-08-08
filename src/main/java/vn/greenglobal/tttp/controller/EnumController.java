@@ -170,7 +170,7 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách Loại Đối Tượng", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getLoaiDoiTuongs(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestHeader(value = "loaiDonThu", required = true) String loaiDonThu) {
+			@RequestParam(value = "loaiDonThu", required = true) String loaiDonThu) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
