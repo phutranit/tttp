@@ -1467,6 +1467,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
 			don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		} else { 
+			don.setCanBoXuLyChiDinh(null);
 		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
