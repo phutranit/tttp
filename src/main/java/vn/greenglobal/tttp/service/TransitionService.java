@@ -65,6 +65,16 @@ public class TransitionService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindFromCurrentAndNext(FlowStateEnum current, FlowStateEnum next, Process process) {
+		BooleanExpression predAll = base;		
+		predAll = predAll
+				.and(QTransition.transition.process.eq(process))
+				.and(QTransition.transition.currentState.type.eq(current))
+				.and(QTransition.transition.nextState.type.eq(next));
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindLast(Long donViId, String processType, ProcessRepository processRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
