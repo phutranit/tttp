@@ -1100,7 +1100,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		thongTinGiaiQuyetDon.setNgayKetThucKTDX(Utils.localDateTimeNow());
 		
 		SoTiepCongDan stcd = giaiQuyetDonHienTai.getSoTiepCongDan();
-		stcd.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT);
+		stcd.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT);
 		//stcd.setKetQuaGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		stcd.setNoiDungBaoCaoKetQuaKiemTra(giaiQuyetDon.getyKienGiaiQuyet());
 		stcd.setNgayGuiKetQua(Utils.localDateTimeNow());
