@@ -344,6 +344,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
+					giaiQuyetDon.setDonChuyen(true);
 					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 				}
@@ -475,6 +476,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
+							giaiQuyetDon.setDonChuyen(true);
 							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							
 							//lich su kiem tra de xuat
