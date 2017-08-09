@@ -197,8 +197,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 				}
 				
-				System.out.println("Namdaica: " + transition.getId());
-				
 				thongTinGiaiQuyetDon.setyKienGiaiQuyet("");
 				thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(null);
 				thongTinGiaiQuyetDon.setPhongBanGiaiQuyet(null);

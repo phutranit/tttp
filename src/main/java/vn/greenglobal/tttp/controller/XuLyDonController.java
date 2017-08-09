@@ -489,7 +489,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 										ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 							}
 
-							System.out.println("transitionGQD: " + transitionGQD.getId() + "--- isQuyTrinhBat2DauKetThuc: " + isQuyTrinhBat2DauKetThuc);
 							if (!isQuyTrinhBat2DauKetThuc) {
 								if (xuLyDon.getPhongBanGiaiQuyet() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
@@ -503,7 +502,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								cc.setId(3L);
 								xuLyDon.setCanBoXuLyChiDinh(cc);
 								xuLyDonHienTai = chuyenVienDeXuatThuLyChoCanBoGiaiQuyet(xuLyDon, xuLyDonHienTai, congChucId, listTransitionHaveBegin.size() == 1 ? transitionGQD.getProcess().getVaiTro().getLoaiVaiTro() : null);
-//								xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, listTransitionHaveBegin.size() == 1 ? transitionGQD.getProcess().getVaiTro().getLoaiVaiTro() : null);
 							} else {
 								if (xuLyDon.getCanBoXuLyChiDinh() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.name(),
@@ -514,7 +512,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonHienTai = chuyenVienDeXuatThuLy(xuLyDon, xuLyDonHienTai, congChucId, listTransitionHaveBegin.size() == 1 ? transitionGQD.getProcess().getVaiTro().getLoaiVaiTro() : null);
 							}
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
-//							return null;
 						} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 							XuLyDon xuLyDonTiepTheo = new XuLyDon();
 							xuLyDonTiepTheo = chuyenVienChuyenDon(xuLyDon, xuLyDonHienTai, congChucId);
@@ -1629,7 +1626,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		if (listTransitionEnd.size() > 0) {
 			for (Transition tran : listTransitionEnd) {
-				if (tran.getCurrentState().getType().equals(FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO)) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.BAT_DAU)) {
 					giaiQuyetDon.setNextForm(tran.getForm());
 				}
 			}
