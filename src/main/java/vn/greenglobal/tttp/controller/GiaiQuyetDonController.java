@@ -196,6 +196,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				if (transition == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 				}
+				
+				thongTinGiaiQuyetDon.setyKienGiaiQuyet("");
+				thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(null);
+				thongTinGiaiQuyetDon.setPhongBanGiaiQuyet(null);
+				thongTinGiaiQuyetDon.setNextState(null);
+				thongTinGiaiQuyetDon = thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
+				
 				if (ProcessTypeEnum.GIAI_QUYET_DON.equals(don.getProcessType())) {
 					GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
 					if (giaiQuyetDonHienTai != null) {
@@ -206,12 +213,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						// Thong tin xu ly don
 						String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
 						Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-						
-						thongTinGiaiQuyetDon.setyKienGiaiQuyet("");
-						thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(null);
-						thongTinGiaiQuyetDon.setPhongBanGiaiQuyet(null);
-						thongTinGiaiQuyetDon.setNextState(null);
-						thongTinGiaiQuyetDon = thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 						
 						if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType)) {
 							if (giaiQuyetDon.getCanBoXuLyChiDinh() == null) {
