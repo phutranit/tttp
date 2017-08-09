@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -14,11 +12,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.LoaiTaiLieu;
 import vn.greenglobal.tttp.model.QLoaiTaiLieu;
-import vn.greenglobal.tttp.model.QTaiLieuBangChung;
-import vn.greenglobal.tttp.model.TaiLieuBangChung;
 import vn.greenglobal.tttp.repository.LoaiTaiLieuRepository;
-import vn.greenglobal.tttp.repository.TaiLieuBangChungRepository;
-import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.util.Utils;
 
 @Component
@@ -73,18 +67,18 @@ public class LoaiTaiLieuService {
 		return loaiTaiLieu != null ? true : false;
 	}
 
-	public boolean checkUsedData(TaiLieuBangChungRepository taiLieuBangChungRepository,
-			TaiLieuVanThuRepository taiLieuVanThuRepository, Long id) {
-		List<TaiLieuBangChung> taiLieuBangChungList = (List<TaiLieuBangChung>) taiLieuBangChungRepository
-				.findAll(QTaiLieuBangChung.taiLieuBangChung.daXoa.eq(false)
-						.and(QTaiLieuBangChung.taiLieuBangChung.loaiTaiLieu.id.eq(id)));
-
-		if (taiLieuBangChungList != null && taiLieuBangChungList.size() > 0) {
-			return true;
-		}
-
-		return false;
-	}
+//	public boolean checkUsedData(TaiLieuBangChungRepository taiLieuBangChungRepository,
+//			TaiLieuVanThuRepository taiLieuVanThuRepository, Long id) {
+//		List<TaiLieuBangChung> taiLieuBangChungList = (List<TaiLieuBangChung>) taiLieuBangChungRepository
+//				.findAll(QTaiLieuBangChung.taiLieuBangChung.daXoa.eq(false)
+//						.and(QTaiLieuBangChung.taiLieuBangChung.loaiTaiLieu.id.eq(id)));
+//
+//		if (taiLieuBangChungList != null && taiLieuBangChungList.size() > 0) {
+//			return true;
+//		}
+//
+//		return false;
+//	}
 	
 	public LoaiTaiLieu save(LoaiTaiLieu obj, Long congChucId) {
 		return Utils.save(loaiTaiLieuRepository, obj, congChucId);
