@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 
 @Entity
@@ -37,7 +38,9 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	@Enumerated(EnumType.STRING)
 	private TinhTrangTaiLieuEnum tinhTrangTaiLieu;
-
+	@Enumerated(EnumType.STRING)
+	private BuocGiaiQuyetEnum buocGiaiQuyet;
+	
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 
@@ -75,6 +78,14 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	public void setTinhTrangTaiLieu(TinhTrangTaiLieuEnum tinhTrangTaiLieu) {
 		this.tinhTrangTaiLieu = tinhTrangTaiLieu;
+	}
+	
+	public BuocGiaiQuyetEnum getBuocGiaiQuyet() {
+		return buocGiaiQuyet;
+	}
+
+	public void setBuocGiaiQuyet(BuocGiaiQuyetEnum buocGiaiQuyet) {
+		this.buocGiaiQuyet = buocGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
