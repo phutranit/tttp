@@ -891,13 +891,13 @@ public class Don extends Model<Don> {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
 		if (getDonGoc() != null) {
 			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa() || BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
 		} else { 
 			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa() || BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
