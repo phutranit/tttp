@@ -1674,6 +1674,7 @@ public class Don extends Model<Don> {
 				for (GiaiQuyetDon gqd : giaiQuyetDons) {
 					Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
 					if (!listIdDonVi.contains(idDonViGiaiQuyet)) {
+						System.out.println("###");
 						listIdDonVi.add(idDonViGiaiQuyet);
 						map = new HashMap<>();
 						map.put("idDonVi", idDonViGiaiQuyet);
