@@ -101,7 +101,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao;
 	
 	@Enumerated(EnumType.STRING)
-	private HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao;
+	private HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao;
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -328,12 +328,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@ApiModelProperty(hidden = true)
-	public HuongGiaiQuyetTCDEnum getTrinhTrangXuLyTCDLanhDao() {
-		return trinhTrangXuLyTCDLanhDao;
+	public HuongGiaiQuyetTCDEnum getTinhTrangXuLyTCDLanhDao() {
+		return tinhTrangXuLyTCDLanhDao;
 	}
 
-	public void setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao) {
-		this.trinhTrangXuLyTCDLanhDao = trinhTrangXuLyTCDLanhDao;
+	public void setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao) {
+		this.tinhTrangXuLyTCDLanhDao = tinhTrangXuLyTCDLanhDao;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -478,9 +478,9 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
 		String str = "";
-		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
+		if (getHuongGiaiQuyetTCDLanhDao() != null && getTinhTrangXuLyTCDLanhDao() != null) {
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
-			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
+			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTinhTrangXuLyTCDLanhDao();
 			str = huongGiaiQuyetTCDLanhDao.getText();
 			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {		
 				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 

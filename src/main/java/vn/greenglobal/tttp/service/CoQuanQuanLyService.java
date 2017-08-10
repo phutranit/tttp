@@ -333,5 +333,4 @@ public class CoQuanQuanLyService {
 	public ResponseEntity<Object> doSave(CoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
 	}
-	
 }

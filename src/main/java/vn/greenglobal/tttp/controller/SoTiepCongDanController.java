@@ -259,16 +259,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						flagChuyenDonViKiemTra = true;
-						soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
+						soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 					}
 				}
 				if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
 					don.setDaXuLy(true);
 					don.setDaGiaiQuyet(true);
 				} else {
-					if (soTiepCongDan.getTrinhTrangXuLyTCDLanhDao() == null) {
-						soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
+					if (soTiepCongDan.getTinhTrangXuLyTCDLanhDao() == null) {
+						soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
 					}
 					don.setDaXuLy(true);
 				}
@@ -344,6 +344,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
+					giaiQuyetDon.setDonChuyen(true);
 					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 				}
@@ -418,10 +419,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null || HuongGiaiQuyetTCDEnum.KHOI_TAO.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
-				if (soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao() != null) { 
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao());
+				if (soTiepCongDanOld.getTinhTrangXuLyTCDLanhDao() != null) { 
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(soTiepCongDanOld.getTinhTrangXuLyTCDLanhDao());
 				} else { 
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
 				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					if (soTiepCongDan.getDonViChuTri() == null) {
@@ -433,8 +434,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
-						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
-							soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
+						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTinhTrangXuLyTCDLanhDao())) {
+							soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 							State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
@@ -475,6 +476,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
+							giaiQuyetDon.setDonChuyen(true);
 							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							
 							//lich su kiem tra de xuat
@@ -494,7 +496,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 					don.setDaGiaiQuyet(true);
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
@@ -569,7 +571,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, 
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, 
 			@RequestParam(value = "linhVucId", required = false) Long linhVucId, 
 			@RequestParam(value = "linhVucChiTietChaId", required = false) Long linhVucChiTietChaId, 
 			@RequestParam(value = "linhVucChiTietConId", required = false) Long linhVucChiTietConId,
@@ -580,7 +583,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, loaiDon, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
