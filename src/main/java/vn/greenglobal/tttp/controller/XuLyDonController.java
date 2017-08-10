@@ -498,9 +498,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.name(),
 											ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText());
 								}
-								CongChuc cc = new CongChuc();
-								cc.setId(3L);
-								xuLyDon.setCanBoXuLyChiDinh(cc);
 								xuLyDonHienTai = chuyenVienDeXuatThuLyChoCanBoGiaiQuyet(xuLyDon, xuLyDonHienTai, congChucId, listTransitionHaveBegin.size() == 1 ? transitionGQD.getProcess().getVaiTro().getLoaiVaiTro() : null);
 							} else {
 								if (xuLyDon.getCanBoXuLyChiDinh() == null) {
