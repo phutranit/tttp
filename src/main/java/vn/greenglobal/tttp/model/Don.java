@@ -1073,7 +1073,7 @@ public class Don extends Model<Don> {
 		ProcessTypeEnum processType = getProcessType();
 		if (getDonGoc() != null) {
 			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
-				if (processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) { 
+				if (processType != null && processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) { 
 					if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 							|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 							)) {
@@ -1091,14 +1091,14 @@ public class Don extends Model<Don> {
 			}
 		} else { 
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) { 
+				if (processType != null && processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) { 
 					if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 							|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 							)) {
 						list.add(tlvt);
 					}
 				}
-				if (processType.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) { 
+				if (processType != null && processType.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) { 
 					if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 							|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 							|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())

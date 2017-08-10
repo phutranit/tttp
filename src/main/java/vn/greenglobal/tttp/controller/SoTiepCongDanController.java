@@ -488,7 +488,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 							lichSuQTXLD.setDonViXuLy(soTiepCongDan.getDonViChuTri());
 							lichSuQTXLD.setThuTuThucHien(1);
-							
+							System.out.println("lichSuQTXLD " +lichSuQTXLD.getNoiDung());
 							lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 							giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 						}
