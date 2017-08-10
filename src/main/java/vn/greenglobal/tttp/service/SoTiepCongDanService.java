@@ -98,7 +98,7 @@ public class SoTiepCongDanService {
 		}
 		
 		if (tinhTrangXuLy != null && StringUtils.isNotBlank(tinhTrangXuLy.trim())) {
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.trinhTrangXuLyTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy.trim())));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.tinhTrangXuLyTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy.trim())));
 		}
 		
 		if (ketQuaTiepDan != null && StringUtils.isNotBlank(ketQuaTiepDan.trim())) {

@@ -620,7 +620,7 @@ public class DonService {
 		return don;
 	}
 
-	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId) {
+	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, String loaiDon, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId) {
 		BooleanExpression predAll = base
 				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
 				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)))
@@ -638,6 +638,10 @@ public class DonService {
 				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.before(dtDenNgay));
 			}
+		}
+		
+		if (loaiDon != null && !"".equals(loaiDon)) {
+			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(loaiDon)));
 		}
 		
 		if ((linhVucId != null && linhVucId > 0) && ((linhVucChiTietChaId == null && linhVucChiTietChaId == null) )) { 
