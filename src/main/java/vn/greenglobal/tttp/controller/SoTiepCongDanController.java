@@ -488,7 +488,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 							lichSuQTXLD.setDonViXuLy(soTiepCongDan.getDonViChuTri());
 							lichSuQTXLD.setThuTuThucHien(1);
-							
 							lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 							giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 						}
@@ -751,7 +750,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
 								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
-						"Danh sách sổ tiếp dân định kỳ");
+						"Danh sách sổ tiếp công dân đột xuất của lãnh đạo");
 			}
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
