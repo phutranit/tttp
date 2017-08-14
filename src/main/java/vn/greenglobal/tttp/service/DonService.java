@@ -246,7 +246,6 @@ public class DonService {
 			// Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
-			System.out.println("TTXM");
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum
 						.valueOf(StringUtils.upperCase(trangThaiDon));
