@@ -93,10 +93,11 @@ public class DonService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
-		predAll = predAll
-				.and(QDon.don.old.eq(false))
+		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()
-				.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
+						.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
+								.or(QDon.don.processType.isNull().and(QDon.don.thanhLapDon.isTrue()))
+								.and(QDon.don.xuLyDons.isEmpty())));
 		
 		// Query don
 		if (maDon != null && StringUtils.isNotBlank(maDon.trim())) {
@@ -243,6 +244,7 @@ public class DonService {
 			// Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+			System.out.println("TTXM");
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum
 						.valueOf(StringUtils.upperCase(trangThaiDon));

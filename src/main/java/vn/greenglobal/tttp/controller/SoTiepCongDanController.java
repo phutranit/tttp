@@ -328,7 +328,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //					thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 					if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
 						thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
-					} else { 
+					} else {
+						System.out.println("@@@ ###");
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 						Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
@@ -458,7 +459,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							
 							if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
 								thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
-							} else { 
+							} else {
+								System.out.println("@@@@@@@@@@@@");
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 								Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
