@@ -45,6 +45,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -52,12 +53,14 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
+import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
@@ -65,6 +68,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
@@ -74,6 +78,7 @@ import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
@@ -89,6 +94,12 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
+	
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+	
+	@Autowired
+	private DonCongDanService donCongDanService;
 	
 	@Autowired
 	private DonRepository repo;
@@ -955,6 +966,20 @@ public class DonController extends TttpController<Don> {
 			thongTinDon.setHuongGiaiQuyetDaThucHien("");
 		}
 		return thongTinDon;
+	}
+	
+	private void resetDataNguoiUyQuyen(Don don, Long congChucId) {
+		if (!don.isCoUyQuyen()) {
+			Predicate pre = QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.don.id.eq(don.getId()))
+					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN));
+			List<Don_CongDan> dcds = (List<Don_CongDan>) donCongDanRepository.findAll(pre);
+			if (dcds != null && dcds.size() > 0) {{
+				for (Don_CongDan dcd : dcds) {
+					dcd.setDaXoa(true);
+					donCongDanService.save(dcd, congChucId);
+				}
+			}
+		}
 	}
 	
 }
