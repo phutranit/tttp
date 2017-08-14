@@ -63,6 +63,10 @@ public class ProcessService {
 		return base.and(QProcess.process.id.eq(id));
 	}
 	
+	public Predicate predicateFindAllByDonVi(Long donViId) {
+		return base.and(QProcess.process.coQuanQuanLy.id.eq(donViId));
+	}
+	
 	public boolean isExists(ProcessRepository repo, Long id) {
 		if (id != null && id > 0) {
 			Predicate predicate = base.and(QProcess.process.id.eq(id));
