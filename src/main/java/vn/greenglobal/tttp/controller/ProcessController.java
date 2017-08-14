@@ -371,181 +371,365 @@ public class ProcessController extends TttpController<Process> {
 			@RequestParam(value = "coQuyTrinhDayDu", required = true) boolean coQuyTrinhDayDu, @RequestParam(value = "donViId", required = true) Long donViId,
 			PersistentEntityResourceAssembler eass) {
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
-					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-
-			if (coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId)) == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_VI_NOT_EXISTS.name(),
-						ApiErrorEnum.DON_VI_NOT_EXISTS.getText(), ApiErrorEnum.DON_VI_NOT_EXISTS.getText());
-			}
 			
-			List<Process> list = new ArrayList<Process>();
-			list = (List<Process>) processRepo.findAll(processService.predicateFindOneByDonVi(donViId));
-			if (list != null && list.size() > 0) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TRA_EXISTS.name(),
-						ApiErrorEnum.MA_TRA_EXISTS.getText(), ApiErrorEnum.MA_TRA_EXISTS.getText());
-			}
+//			for (int i = 1; i <= 26; i++) {
+//				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+//				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+//				if (count == 15 && count2 == 26) {
+//					System.out.println("ID: " + i + " --- OK");
+//				} else {
+//					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
+//				}
+//			}
+//			
+//			for (int i = 27; i <= 82; i++) {
+//				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+//				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+//				if (count == 16 && count2 == 16) {
+//					System.out.println("ID: " + i + " --- OK");
+//				} else {
+//					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
+//				}
+//			}
 			
-			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			Process process = null;
-			Transition transition = null;
-			
-			if (coQuyTrinhDayDu) {
-				// Xu Ly Don
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 5L, 8L, 4L, false);
-					transitionService.save(transition, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) transition = addDataTrasition(process, 8L, 8L, 4L, false);
-					transitionService.save(transition, congChucId);
+			for (int i = 1; i <= 82; i++) {
+				donViId = Long.valueOf(i + "");
+				if (i <= 26) {
+					coQuyTrinhDayDu = true;
+				} else {
+					coQuyTrinhDayDu = false;
+				}
+				if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
+						|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
+					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+							ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+				}
+	
+				if (coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId)) == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_VI_NOT_EXISTS.name(),
+							ApiErrorEnum.DON_VI_NOT_EXISTS.getText(), ApiErrorEnum.DON_VI_NOT_EXISTS.getText());
 				}
 				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 1L, 2L, 1L, false);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 1L, 17L, 1L, false);
-					transitionService.save(transition, congChucId);
+				List<Process> list = new ArrayList<Process>();
+				list = (List<Process>) processRepo.findAll(processService.predicateFindOneByDonVi(donViId));
+				if (list != null && list.size() > 0) {
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TRA_EXISTS.name(),
+							ApiErrorEnum.MA_TRA_EXISTS.getText(), ApiErrorEnum.MA_TRA_EXISTS.getText());
 				}
 				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", true, 1L, donViId, 4L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 1L, 2L, 1L, false);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 1L, 17L, 1L, false);
-					transitionService.save(transition, congChucId);
-				}
+				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				Process process = null;
+				Transition transition = null;
 				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 2L, 3L, 2L, false);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 2L, 9L, 2L, false);
-					transitionService.save(transition, congChucId);
-				}
-				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Trưởng Phòng", false, null, donViId, 2L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {	
-					transition = addDataTrasition(process, 3L, 5L, 3L, false);
-					transitionService.save(transition, congChucId);
-				}
-				
-				// Giai Quyet Don
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, true);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 1L, 5L, 11L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 12L, 8L, 18L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 11L, 12L, 18L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 1L, 18L, 12L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 1L, 8L, 12L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				// Kiem Tra De Xuat
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Lãnh Đạo", false, null, donViId, 1L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 2L, 9L, 20L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 2L, 3L, 20L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 1L, 2L, 19L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên Viên", false, null, donViId, 3L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 5L, 16L, 1L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 9L, 16L, 22L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Trưởng Phòng", false, null, donViId, 2L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {	
-					transition = addDataTrasition(process, 3L, 5L, 21L, true);
-					transitionService.save(transition, congChucId);
-				}
-			} else {
-				// Xu Ly Don
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 5L, 8L, 4L, false);
-					transitionService.save(transition, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) transition = addDataTrasition(process, 8L, 8L, 4L, false);
-					transitionService.save(transition, congChucId);
-				}
-				
-				// Giai Quyet Don
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, true);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 1L, 5L, 11L, true);
-					transitionService.save(transition, congChucId);
-				}
-				
-				// Kiem Tra De Xuat
-				process = new Process();
-				transition = new Transition();
-				process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Lãnh Đạo", false, null, donViId, 1L, false);
-				process = processService.save(process, congChucId);
-				if (process != null && process.getId() != null && process.getId() > 0) {
-					transition = addDataTrasition(process, 2L, 9L, 20L, true);
-					transitionService.save(transition, congChucId);
-					transition = addDataTrasition(process, 2L, 3L, 20L, true);
-					transitionService.save(transition, congChucId);
+				if (coQuyTrinhDayDu) {
+					// Xu Ly Don
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 5L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+						if (process != null && process.getId() != null && process.getId() > 0) transition = addDataTrasition(process, 8L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 2L, 1L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 17L, 1L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", true, 1L, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 2L, 1L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 17L, 1L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {	
+						transition = addDataTrasition(process, 3L, 5L, 3L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 2L, 3L, 2L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 2L, 9L, 2L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Giai Quyet Don
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 12L, 8L, 18L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 11L, 12L, 18L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 18L, 12L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, true);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 5L, 11L, true);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Tham Tra Xac Minh
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 9L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 5L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 2L, 14L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 3L, 5L, 16L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 2L, 3L, 15L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 2L, 9L, 15L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Kiem Tra De Xuat
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 5L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 9L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 2L, 19L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {	
+						transition = addDataTrasition(process, 3L, 5L, 21L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 2L, 9L, 20L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 2L, 3L, 20L, false);
+						transitionService.save(transition, congChucId);
+					}
+				} else {
+					// Xu Ly Don
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Giai Quyet Don
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Tham Tra Xac Minh
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Thẩm tra xác minh của Chuyen Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Thẩm tra xác minh của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Thẩm tra xác minh của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Thẩm tra xác minh của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					// Kiem Tra De Xuat
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên Viên", false, null, donViId, 3L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Trưởng Phòng", false, null, donViId, 2L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+					}
+					
+					process = new Process();
+					transition = new Transition();
+					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Lãnh Đạo", false, null, donViId, 1L, false);
+					process = processService.save(process, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {
+						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transitionService.save(transition, congChucId);
+					}
 				}
 			}
 			
@@ -555,7 +739,6 @@ public class ProcessController extends TttpController<Process> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
 	
 	private Process addDataProcess(ProcessTypeEnum processType, String tenQuyTrinh, boolean isOwner, Long chaId, Long donViId, Long vaiTroId, boolean daXoa) {
 		Process process = new Process();
