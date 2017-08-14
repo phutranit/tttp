@@ -69,7 +69,9 @@ public class DonService {
 	public Predicate predicateFindByCongDan(Long id) {
 		BooleanExpression predAll = base.and(QDon.don.daXoa.eq(false));
 		if (id > 0) {
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.id.eq(id));
+			predAll = predAll
+					.and(QDon.don.donCongDans.any().daXoa.eq(false))
+					.and(QDon.don.donCongDans.any().congDan.id.eq(id));
 		}
 
 		return predAll;
