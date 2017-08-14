@@ -63,7 +63,7 @@ public class ProcessService {
 		return base.and(QProcess.process.id.eq(id));
 	}
 	
-	public Predicate predicateFindOneByDonVi(Long donViId) {
+	public Predicate predicateFindAllByDonVi(Long donViId) {
 		return base.and(QProcess.process.coQuanQuanLy.id.eq(donViId));
 	}
 	

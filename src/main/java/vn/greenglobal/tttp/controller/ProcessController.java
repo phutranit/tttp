@@ -375,7 +375,7 @@ public class ProcessController extends TttpController<Process> {
 //			for (int i = 1; i <= 26; i++) {
 //				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
 //				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				if (count == 15 && count2 == 26) {
+//				if (count == 14 && count2 == 24) {
 //					System.out.println("ID: " + i + " --- OK");
 //				} else {
 //					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
@@ -392,13 +392,13 @@ public class ProcessController extends TttpController<Process> {
 //				}
 //			}
 			
-			for (int i = 1; i <= 82; i++) {
-				donViId = Long.valueOf(i + "");
-				if (i <= 26) {
-					coQuyTrinhDayDu = true;
-				} else {
-					coQuyTrinhDayDu = false;
-				}
+//			for (int i = 1; i <= 82; i++) {
+//				donViId = Long.valueOf(i + "");
+//				if (i <= 26) {
+//					coQuyTrinhDayDu = true;
+//				} else {
+//					coQuyTrinhDayDu = false;
+//				}
 				if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
 						|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -411,7 +411,7 @@ public class ProcessController extends TttpController<Process> {
 				}
 				
 				List<Process> list = new ArrayList<Process>();
-				list = (List<Process>) processRepo.findAll(processService.predicateFindOneByDonVi(donViId));
+				list = (List<Process>) processRepo.findAll(processService.predicateFindAllByDonVi(donViId));
 				if (list != null && list.size() > 0) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TRA_EXISTS.name(),
 							ApiErrorEnum.MA_TRA_EXISTS.getText(), ApiErrorEnum.MA_TRA_EXISTS.getText());
@@ -445,16 +445,16 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 					}
 					
-					process = new Process();
-					transition = new Transition();
-					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", true, 1L, donViId, 4L, false);
-					process = processService.save(process, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 2L, 1L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 17L, 1L, false);
-						transitionService.save(transition, congChucId);
-					}
+//					process = new Process();
+//					transition = new Transition();
+//					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", true, 1L, donViId, 4L, false);
+//					process = processService.save(process, congChucId);
+//					if (process != null && process.getId() != null && process.getId() > 0) {
+//						transition = addDataTrasition(process, 1L, 2L, 1L, false);
+//						transitionService.save(transition, congChucId);
+//						transition = addDataTrasition(process, 1L, 17L, 1L, false);
+//						transitionService.save(transition, congChucId);
+//					}
 					
 					process = new Process();
 					transition = new Transition();
@@ -731,7 +731,7 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 					}
 				}
-			}
+//			}
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			
@@ -743,7 +743,7 @@ public class ProcessController extends TttpController<Process> {
 	private Process addDataProcess(ProcessTypeEnum processType, String tenQuyTrinh, boolean isOwner, Long chaId, Long donViId, Long vaiTroId, boolean daXoa) {
 		Process process = new Process();
 		process.setProcessType(processType);
-		process.setTenQuyTrinh("Xử lý đơn của Chuyên Viên");
+		process.setTenQuyTrinh(tenQuyTrinh);
 		process.setOwner(isOwner);
 		if (chaId != null && chaId > 0) {
 			Process processCha = new Process();
