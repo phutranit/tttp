@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QInvalidToken;
+import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 
@@ -36,7 +37,8 @@ public class ProfileUtils {
 	public NguoiDung getUserInfo(String authHeader) {
 		CommonProfile profile = getCommonProfile(authHeader);
 		if (profile != null) {
-			NguoiDung user = nguoiDungRepository.findByEmail(String.valueOf(profile.getAttribute("email")));
+			NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false)
+					.and(QNguoiDung.nguoiDung.email.eq(String.valueOf(profile.getAttribute("email")))));
 			return user;
 		}
 		return null;
