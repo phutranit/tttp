@@ -364,6 +364,8 @@ public class DonController extends TttpController<Don> {
 				List<State> listState = new ArrayList<State>();
 				Process process = null;
 				for (Process processFromList : listProcess) {
+					System.out.println("Nam1: " + currentStateId2);
+					System.out.println("Nam2: " + processFromList.getId());
 					Predicate predicate = serviceState.predicateFindAll(currentStateId2, processFromList, repoTransition);
 					listState = ((List<State>) repoState.findAll(predicate));
 					if (listState.size() > 0) {
