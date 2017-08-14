@@ -763,11 +763,12 @@ public class ProcessController extends TttpController<Process> {
 	private Transition addDataTrasition(Process process, Long currentStateId, Long nextStateId, Long formId, boolean daXoa) {
 		Transition transition = new Transition();
 		transition.setProcess(process);
-		State state = new State();
-		state.setId(currentStateId);
-		transition.setCurrentState(state);
-		state.setId(nextStateId);
-		transition.setNextState(state);
+		State curentState = new State();
+		curentState.setId(currentStateId);
+		transition.setCurrentState(curentState);
+		State nextState = new State();
+		nextState.setId(nextStateId);
+		transition.setNextState(nextState);
 		Form form = new Form();
 		form.setId(formId);
 		transition.setForm(form);
