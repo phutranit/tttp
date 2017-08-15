@@ -305,7 +305,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ResponseEntity<Object> output = soTiepCongDanService.doSave(soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
 				if (flagChuyenDonViKiemTra) {								
-					System.out.println("flagChuyenDonViKiemTra " +flagChuyenDonViKiemTra);
 					State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
