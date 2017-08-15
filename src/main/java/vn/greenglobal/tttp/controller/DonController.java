@@ -45,7 +45,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -60,7 +59,6 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
-import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
@@ -821,7 +819,7 @@ public class DonController extends TttpController<Don> {
 					lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 					lichSuThayDoiService.save(lichSu, congChucId);
 				}
-				
+				resetDataNguoiUyQuyen(don, congChucId);
 				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
@@ -970,10 +968,8 @@ public class DonController extends TttpController<Don> {
 	
 	private void resetDataNguoiUyQuyen(Don don, Long congChucId) {
 		if (!don.isCoUyQuyen()) {
-			Predicate pre = QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.don.id.eq(don.getId()))
-					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN));
-			List<Don_CongDan> dcds = (List<Don_CongDan>) donCongDanRepository.findAll(pre);
-			if (dcds != null && dcds.size() > 0) {{
+			List<Don_CongDan> dcds = (List<Don_CongDan>) donCongDanRepository.findAll(donCongDanService.predicateFindAllByNguoiUyQuyen(don));
+			if (dcds != null && dcds.size() > 0) {
 				for (Don_CongDan dcd : dcds) {
 					dcd.setDaXoa(true);
 					donCongDanService.save(dcd, congChucId);
