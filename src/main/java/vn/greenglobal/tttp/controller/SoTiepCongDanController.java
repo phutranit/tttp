@@ -440,6 +440,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
 							don.setThanhLapDon(true);
+							don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
 							don.setLanhDaoDuyet(true);
 							don.setDangGiaoKTDX(true);
@@ -745,12 +746,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, 
 										tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
 						"Danh sách sổ tiếp dân thường xuyên");
-			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
+			} else if (LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
 								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
 						"Danh sách sổ tiếp công dân đột xuất của lãnh đạo");
+			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan)) {
+				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
+						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
+								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
+								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
+						"Danh sách sổ tiếp công dân định kỳ của lãnh đạo");
 			}
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
