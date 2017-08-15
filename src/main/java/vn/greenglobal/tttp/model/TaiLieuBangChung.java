@@ -47,6 +47,10 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	@NotNull
 	@ManyToOne
 	private Don don;
+	
+	@Size(max=255)
+	private String typeRequired = "";
+	private boolean required;
 
 	public String getTen() {
 		return ten;
@@ -104,6 +108,22 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 
 	public void setDon(Don don) {
 		this.don = don;
+	}
+
+	public String getTypeRequired() {
+		return typeRequired;
+	}
+
+	public void setTypeRequired(String typeRequired) {
+		this.typeRequired = typeRequired;
+	}
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
 	}
 
 	@Transient
