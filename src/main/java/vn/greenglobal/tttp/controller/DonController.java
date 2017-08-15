@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -65,6 +66,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
@@ -74,6 +76,7 @@ import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
@@ -89,6 +92,12 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
+	
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+	
+	@Autowired
+	private DonCongDanService donCongDanService;
 	
 	@Autowired
 	private DonRepository repo;
@@ -648,8 +657,11 @@ public class DonController extends TttpController<Don> {
 				}
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
+					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
@@ -780,6 +792,7 @@ public class DonController extends TttpController<Don> {
 					}
 				} else { 
 					if (don.isThanhLapDon()) {
+						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
@@ -810,7 +823,7 @@ public class DonController extends TttpController<Don> {
 					lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 					lichSuThayDoiService.save(lichSu, congChucId);
 				}
-				
+				resetDataNguoiUyQuyen(don, congChucId);
 				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
@@ -955,6 +968,18 @@ public class DonController extends TttpController<Don> {
 			thongTinDon.setHuongGiaiQuyetDaThucHien("");
 		}
 		return thongTinDon;
+	}
+	
+	private void resetDataNguoiUyQuyen(Don don, Long congChucId) {
+		if (!don.isCoUyQuyen()) {
+			List<Don_CongDan> dcds = (List<Don_CongDan>) donCongDanRepository.findAll(donCongDanService.predicateFindAllByNguoiUyQuyen(don));
+			if (dcds != null && dcds.size() > 0) {
+				for (Don_CongDan dcd : dcds) {
+					dcd.setDaXoa(true);
+					donCongDanService.save(dcd, congChucId);
+				}
+			}
+		}
 	}
 	
 }

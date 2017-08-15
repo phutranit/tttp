@@ -69,7 +69,9 @@ public class DonService {
 	public Predicate predicateFindByCongDan(Long id) {
 		BooleanExpression predAll = base.and(QDon.don.daXoa.eq(false));
 		if (id > 0) {
-			predAll = predAll.and(QDon.don.donCongDans.any().congDan.id.eq(id));
+			predAll = predAll
+					.and(QDon.don.donCongDans.any().daXoa.eq(false))
+					.and(QDon.don.donCongDans.any().congDan.id.eq(id));
 		}
 
 		return predAll;
@@ -93,10 +95,11 @@ public class DonService {
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {
 
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
-		predAll = predAll
-				.and(QDon.don.old.eq(false))
+		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()
-				.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT).and(QDon.don.xuLyDons.isEmpty())));
+						.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
+								.or(QDon.don.processType.isNull().and(QDon.don.thanhLapDon.isTrue()))
+								.and(QDon.don.xuLyDons.isEmpty())));
 		
 		// Query don
 		if (maDon != null && StringUtils.isNotBlank(maDon.trim())) {

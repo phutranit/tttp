@@ -626,6 +626,9 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapDinhChi.put("soQuyetDinhDinhChi", getSoQuyetDinhDinhChi() != null ? getSoQuyetDinhDinhChi() : "");
 				mapDinhChi.put("ngayQuyetDinhDinhChi", getNgayQuyetDinhDinhChi() != null ? getNgayQuyetDinhDinhChi() : "");
 				mapDinhChi.put("noiDung", getDon().getLyDoDinhChi()!= null ? getDon().getLyDoDinhChi() : "");
+			} else {
+				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");
 			}
 			
 			map.put("dinhChi", mapDinhChi);

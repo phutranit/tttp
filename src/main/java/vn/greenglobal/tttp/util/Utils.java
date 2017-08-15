@@ -654,6 +654,7 @@ public class Utils {
 		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0;
 		
+		
 		if (ngayBatDauTmp != null) {
 			ngayBatDau = ngayBatDauTmp;
 			if (ngayHetHanTmp != null && ngayHetHanSauKhiGianHanTmp != null) {

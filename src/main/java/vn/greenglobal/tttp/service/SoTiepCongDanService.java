@@ -17,15 +17,19 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
+import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.util.Utils;
 
 @Component
@@ -34,6 +38,15 @@ public class SoTiepCongDanService {
 	@Autowired
 	private SoTiepCongDanRepository soTiepCongDanRepository;
 
+	@Autowired
+	private ThamSoRepository repoThamSo;
+	
+	@Autowired
+	private CoQuanQuanLyRepository repoCoQuanQuanLy;
+	
+	@Autowired
+	private ThamSoService thamSoService;
+	
 	BooleanExpression base = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
 	
@@ -62,10 +75,23 @@ public class SoTiepCongDanService {
 		if (phanLoaiDon != null && StringUtils.isNotBlank(phanLoaiDon.trim())) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon.trim()));
 		}
-
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		
+		ThamSo thamSoCCQQLUBNDTinhTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+		CoQuanQuanLy coQuanQuanLy = repoCoQuanQuanLy.findOne(donViId);
+		if (coQuanQuanLy.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString())
+				|| coQuanQuanLy.getDonVi().getCapCoQuanQuanLy().getId() == Long
+						.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString())) {
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.donVi.id.eq(donViId))
+					);
+		} else { 
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId))	
+					);
+		}
+		
+		
 
 		if (huongXuLy != null && StringUtils.isNotBlank(huongXuLy.trim())) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy.trim()));
