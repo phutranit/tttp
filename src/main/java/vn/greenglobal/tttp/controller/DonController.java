@@ -648,8 +648,11 @@ public class DonController extends TttpController<Don> {
 				}
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
+					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
@@ -780,6 +783,7 @@ public class DonController extends TttpController<Don> {
 					}
 				} else { 
 					if (don.isThanhLapDon()) {
+						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
