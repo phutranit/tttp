@@ -296,7 +296,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						listTransitionHaveBegin.add(transitionTTXM);
 					}
 				}
-				if (transitionTTXM == null) {
+				if (listTransitionHaveBegin.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
 							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 				}	
