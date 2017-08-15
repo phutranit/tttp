@@ -1087,7 +1087,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		State canBoNhanKetQuaState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM));		
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
-		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
+		don.setCanBoXuLyChiDinh(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
 		don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonHienTai);
