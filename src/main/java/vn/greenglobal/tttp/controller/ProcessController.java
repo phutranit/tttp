@@ -392,13 +392,13 @@ public class ProcessController extends TttpController<Process> {
 //				}
 //			}
 			
-//			for (int i = 1; i <= 82; i++) {
-//				donViId = Long.valueOf(i + "");
-//				if (i <= 26) {
-//					coQuyTrinhDayDu = true;
-//				} else {
-//					coQuyTrinhDayDu = false;
-//				}
+			for (int i = 1; i <= 82; i++) {
+				donViId = Long.valueOf(i + "");
+				if (i <= 26) {
+					coQuyTrinhDayDu = true;
+				} else {
+					coQuyTrinhDayDu = false;
+				}
 				if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
 						|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -430,7 +430,7 @@ public class ProcessController extends TttpController<Process> {
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 5L, 8L, 4L, false);
 						transitionService.save(transition, congChucId);
-						if (process != null && process.getId() != null && process.getId() > 0) transition = addDataTrasition(process, 8L, 8L, 4L, false);
+						transition = addDataTrasition(process, 9L, 8L, 4L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -731,7 +731,7 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 					}
 				}
-//			}
+			}
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			
