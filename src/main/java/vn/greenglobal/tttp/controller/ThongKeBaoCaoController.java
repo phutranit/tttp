@@ -873,6 +873,54 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 		}
 	}
 	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh")
+	@ApiOperation(value = "Tổng hợp kết quả thanh tra theo hành chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTongHopKetQuaThanhTraTheoHanhChinh(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "loaiKy", required = false) String loaiKy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
+			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Long donViXuLy = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			
+			Map<String, Object> mapDonVi = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapMaSo = new HashMap<>();
+			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
+			List<Map<String, Object>> maSos = new ArrayList<>();
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+			
+			if (listDonVis != null) {
+				for (CoQuanQuanLy dv : listDonVis) {
+					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+					if (coQuan != null) {
+						list.add(coQuan);
+					}					
+				}
+			} else {
+				coQuanQuanLyRepo.findOne(donViXuLy);
+				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
+			}
+			donVis.addAll(list);
+			
+			return Utils.responseInternalServerErrors();
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaBaoCaoXuLyDon")
 	@ApiOperation(value = "Tổng hợp kết quả báo cáo xử lý đơn thư", position = 3, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<Object> getTongHopKetQuaBaoCaoXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -1099,6 +1147,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel")
 	@ApiOperation(value = "Xuất file excel tổng hợp báo cáo xử lý đơn thư", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
