@@ -6,7 +6,7 @@ public enum ApiErrorEnum {
 	SOQUYETDINH_REQUIRED("Số quyết định không được để trống."),
 	NGAYQUYETDINH_REQUIRED("Ngày quyết định không được để trống."),
 	PHONG_BAN_GIAI_QUYET_REQUIRED("Trường phongBanGiaiQuyet không được để trống."),
-	CAN_BO_GIAI_QUYET_REQUIRED("Trường canBoGiaiQuyet không được để trống."),
+	CAN_BO_GIAI_QUYET_REQUIRED("Cán bộ giải quyết không được để trống."),
 	DATA_REQUIRED("Bạn không được bỏ trống trường này."),
 	HOVATEN_REQUIRED("Trường Họ và tên không được để trống."),
 	NGAYSINH_REQUIRED("Trường ngày sinh không được để trống."),
@@ -48,7 +48,9 @@ public enum ApiErrorEnum {
 	CANBOXULYCHIDINH_REQUIRED("Trường canBoXuLyChiDinh không được để trống."),
 	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống."),
 	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống."),
-	INTERNAL_SERVER_ERROR("Lỗi hệ thống.");
+	INTERNAL_SERVER_ERROR("Lỗi hệ thống."),
+	DON_VI_NOT_EXISTS("Đơn vị này không tồn tại"),
+	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

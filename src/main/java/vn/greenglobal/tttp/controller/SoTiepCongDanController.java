@@ -157,7 +157,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	@Autowired
 	private ThamSoService thamSoService;
-	
+
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -185,7 +185,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<SoTiepCongDan> page = repo.findAll(soTiepCongDanService.predicateFindAllTCD(tuKhoa, phanLoaiDon, huongXuLy,
 					tuNgay, denNgay, loaiTiepCongDan, donViId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), pageable);
 
@@ -259,16 +259,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						flagChuyenDonViKiemTra = true;
-						soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
+						soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 					}
 				}
 				if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
 					don.setDaXuLy(true);
 					don.setDaGiaiQuyet(true);
 				} else {
-					if (soTiepCongDan.getTrinhTrangXuLyTCDLanhDao() == null) {
-						soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
+					if (soTiepCongDan.getTinhTrangXuLyTCDLanhDao() == null) {
+						soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
 					}
 					don.setDaXuLy(true);
 				}
@@ -296,7 +296,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						listTransitionHaveBegin.add(transitionTTXM);
 					}
 				}
-				if (transitionTTXM == null) {
+				if (listTransitionHaveBegin.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
 							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 				}	
@@ -328,7 +328,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //					thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);
 					if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
 						thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
-					} else { 
+					} else {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 						Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
@@ -338,12 +338,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro() : null);
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
+					giaiQuyetDon.setDonChuyen(true);
 					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 				}
@@ -400,7 +401,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			soTiepCongDan.setId(id);
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-
+			
 			for (CoQuanToChucTiepDan coQuanToChucTiepDan : soTiepCongDan.getCoQuanToChucTiepDans()) {
 				Utils.save(repoCoQuanToChucTiepDan, coQuanToChucTiepDan, congChucId);
 			}
@@ -418,10 +419,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				if (soTiepCongDan.getHuongGiaiQuyetTCDLanhDao() == null || HuongGiaiQuyetTCDEnum.KHOI_TAO.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.name(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HUONGGIAIQUYET_REQUIRED.getText());
 				}
-				if (soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao() != null) { 
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(soTiepCongDanOld.getTrinhTrangXuLyTCDLanhDao());
+				if (soTiepCongDanOld.getTinhTrangXuLyTCDLanhDao() != null) { 
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(soTiepCongDanOld.getTinhTrangXuLyTCDLanhDao());
 				} else { 
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.DANG_XU_LY);
 				}
 				if (HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.equals(soTiepCongDan.getHuongGiaiQuyetTCDLanhDao())) {
 					if (soTiepCongDan.getDonViChuTri() == null) {
@@ -433,12 +434,13 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						
 					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
-						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTrinhTrangXuLyTCDLanhDao())) {
-							soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
+						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTinhTrangXuLyTCDLanhDao())) {
+							soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 							State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
 							don.setThanhLapDon(true);
+							don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
 							don.setLanhDaoDuyet(true);
 							don.setDangGiaoKTDX(true);
@@ -457,7 +459,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							
 							if (soTiepCongDan.getNgayBaoCaoKetQua() != null) { 
 								thongTinGiaiQuyetDon.setNgayHetHanKTDX(soTiepCongDan.getNgayBaoCaoKetQua());
-							} else { 
+							} else {
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 								Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
 								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
@@ -475,6 +477,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
+							giaiQuyetDon.setDonChuyen(true);
 							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							
 							//lich su kiem tra de xuat
@@ -486,7 +489,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							lichSuQTXLD.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 							lichSuQTXLD.setDonViXuLy(soTiepCongDan.getDonViChuTri());
 							lichSuQTXLD.setThuTuThucHien(1);
-							
 							lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 							giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 						}
@@ -494,7 +496,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				if (soTiepCongDan.isHoanThanhTCDLanhDao()) {
 					don.setDaGiaiQuyet(true);
-					soTiepCongDan.setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
+					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
@@ -569,7 +571,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, 
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, 
 			@RequestParam(value = "linhVucId", required = false) Long linhVucId, 
 			@RequestParam(value = "linhVucChiTietChaId", required = false) Long linhVucChiTietChaId, 
 			@RequestParam(value = "linhVucChiTietConId", required = false) Long linhVucChiTietConId,
@@ -580,7 +583,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, loaiDon, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -640,6 +643,87 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanToCao")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanToCao(
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanKhieuNai")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanKhieuNai(
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuTuChoi")
+	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuTuChoi(
+			@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			mappings.put("ngayThongBao", ngayThongBao);
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/excel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -661,13 +745,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						"DanhSachSoTiepCongDan", "sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService
 								.predicateFindAllTCD("", null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, 
 										tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
-						"Danh sách sổ tiếp dân");
-			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan) || LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
+						"Danh sách sổ tiếp dân thường xuyên");
+			} else if (LoaiTiepDanEnum.DOT_XUAT.name().equals(loaiTiepCongDan)) {
 				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
 						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
 								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
 								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
-						"Danh sách sổ tiếp dân định kỳ");
+						"Danh sách sổ tiếp công dân đột xuất của lãnh đạo");
+			} else if (LoaiTiepDanEnum.DINH_KY.name().equals(loaiTiepCongDan)) {
+				ExcelUtil.exportDanhSachTiepDanLanhDao(response, "DanhSachSoTiepCongDan",
+						"sheetName", (List<SoTiepCongDan>) repo.findAll(soTiepCongDanService.predicateFindAllTCD("",
+								null, null, tuNgay, denNgay, loaiTiepCongDan, coQuanQuanLyId, lanhDaoId, tenLanhDao, tenNguoiDungDon, tinhTrangXuLy, 
+								ketQuaTiepDan, congChucService, repoCongChuc, repoDonCongDan), order),
+						"Danh sách sổ tiếp công dân định kỳ của lãnh đạo");
 			}
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);

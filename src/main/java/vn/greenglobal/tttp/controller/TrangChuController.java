@@ -107,12 +107,10 @@ public class TrangChuController extends TttpController<Don> {
 			int month = Utils.localDateTimeNow().getMonthValue();
 			Long donViXuLyXLD = Long
 					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-					.toString();
 
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
 			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonMoiNhat(donViXuLyXLD,
-					vaiTroNguoiDungHienTai, month, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
+					month, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -139,12 +137,9 @@ public class TrangChuController extends TttpController<Don> {
 			
 			Long donViXuLyXLD = Long
 					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-					.toString();
-
+			
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
-			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHanGQ(donViXuLyXLD,
-					vaiTroNguoiDungHienTai, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHanGQ(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -265,7 +260,9 @@ public class TrangChuController extends TttpController<Don> {
 						.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds, "CCQQL_UBND_QUAN_HUYEN")));
 			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())
 					|| (donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId()
-							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))) {
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))
+					|| donVi.getCha() != null && donVi.getCha().getCapCoQuanQuanLy().getId()
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()))) {
 				// Danh sach don vi thuoc So Ban Nganh
 				List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 				capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLChiCuc.getGiaTri().toString()));

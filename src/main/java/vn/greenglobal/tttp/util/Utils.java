@@ -346,6 +346,15 @@ public class Utils {
 //		cal.set(year, month - 1, date);
 //		return cal;
 //	}
+	
+	public static String getMocThoiGianLocalDateTimeStr(LocalDateTime thoiHan) {
+		String str = "";
+		if (thoiHan == null) { 
+			return str;
+		}
+		str = thoiHan.getDayOfMonth() +"/" + thoiHan.getMonthValue() + "/" +thoiHan.getYear();
+		return str;
+	}
 
 	public static Calendar getMocThoiGianLocalDateTime(LocalDateTime thoiHan, int gioMoc, int phutMoc) {
 		Calendar c = Calendar.getInstance();
@@ -653,6 +662,7 @@ public class Utils {
 		LocalDateTime ngayBatDau = null;
 		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0;
+		
 		
 		if (ngayBatDauTmp != null) {
 			ngayBatDau = ngayBatDauTmp;

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.DanToc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
@@ -72,6 +74,11 @@ public class DonCongDanService {
 					.or(QDon_CongDan.don_CongDan.congDan.soCMNDHoChieu.eq(tuKhoa));
 		}
 		return predAll;
+	}
+	
+	public Predicate predicateFindAllByNguoiUyQuyen(Don don) {
+		return QDon_CongDan.don_CongDan.daXoa.eq(false).and(QDon_CongDan.don_CongDan.don.id.eq(don.getId()))
+				.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN));
 	}
 
 	public Predicate predicateFindByTCD(String tuKhoa) {

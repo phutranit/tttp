@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 
 @Entity
@@ -35,20 +36,21 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	@Size(max=255)
 	private String tenFile = "";
 
-	private int soTrang = 0;
-
 	@Enumerated(EnumType.STRING)
 	private TinhTrangTaiLieuEnum tinhTrangTaiLieu;
-
-	@ManyToOne
-	private LoaiTaiLieu loaiTaiLieu;
-
+	@Enumerated(EnumType.STRING)
+	private BuocGiaiQuyetEnum buocGiaiQuyet;
+	
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 
 	@NotNull
 	@ManyToOne
 	private Don don;
+	
+	@Size(max=255)
+	private String typeRequired = "";
+	private boolean required;
 
 	public String getTen() {
 		return ten;
@@ -74,14 +76,6 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.tenFile = tenFile;
 	}
 
-	public int getSoTrang() {
-		return soTrang;
-	}
-
-	public void setSoTrang(int soTrang) {
-		this.soTrang = soTrang;
-	}
-
 	public TinhTrangTaiLieuEnum getTinhTrangTaiLieu() {
 		return tinhTrangTaiLieu;
 	}
@@ -89,14 +83,13 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	public void setTinhTrangTaiLieu(TinhTrangTaiLieuEnum tinhTrangTaiLieu) {
 		this.tinhTrangTaiLieu = tinhTrangTaiLieu;
 	}
-
-	@ApiModelProperty(example = "{}")
-	public LoaiTaiLieu getLoaiTaiLieu() {
-		return loaiTaiLieu;
+	
+	public BuocGiaiQuyetEnum getBuocGiaiQuyet() {
+		return buocGiaiQuyet;
 	}
 
-	public void setLoaiTaiLieu(LoaiTaiLieu loaiTaiLieu) {
-		this.loaiTaiLieu = loaiTaiLieu;
+	public void setBuocGiaiQuyet(BuocGiaiQuyetEnum buocGiaiQuyet) {
+		this.buocGiaiQuyet = buocGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -117,16 +110,26 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 		this.don = don;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getTaiLieuBangChungId() {
-		return getId();
+	public String getTypeRequired() {
+		return typeRequired;
+	}
+
+	public void setTypeRequired(String typeRequired) {
+		this.typeRequired = typeRequired;
+	}
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
 	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public LoaiTaiLieu getLoaiTaiLieuTLBC() {
-		return getLoaiTaiLieu();
+	public Long getTaiLieuBangChungId() {
+		return getId();
 	}
 	
 	@Transient

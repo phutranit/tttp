@@ -194,7 +194,7 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
-	@NotNull
+//	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
 	@NotNull
@@ -884,20 +884,41 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
-
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
 		if (getDonGoc() != null) {
 			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.TAI_LIEU_KEM_THEO.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
 		} else { 
 			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.TAI_LIEU_KEM_THEO.equals(tlbc.getBuocGiaiQuyet())) {
+					list.add(tlbc);
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getListTaiLieuBangChungLuatSu() {
+		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
+		if (getDonGoc() != null) {
+			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
+					list.add(tlbc);
+				}
+			}
+		} else { 
+			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
@@ -913,6 +934,8 @@ public class Don extends Model<Don> {
 		if (getDonGoc() != null) {
 			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 					list.add(tlvt);
@@ -920,10 +943,92 @@ public class Don extends Model<Don> {
 			}
 		} 
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 					|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 					|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaHanGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaoCoQuanDieuTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonQuyetDinhGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonBaoCaoKQTTXM() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
 			}
 		}
 		return list;
@@ -936,9 +1041,47 @@ public class Don extends Model<Don> {
 		if (getDonGoc() != null) {
 			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+//						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+//						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonView() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
@@ -947,7 +1090,83 @@ public class Don extends Model<Don> {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXM() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXMView() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGoc() != null) {
+			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
@@ -1082,6 +1301,7 @@ public class Don extends Model<Don> {
 	}
 
 	@JsonIgnore
+	@QueryInit("*.*.*")
 	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
 		return donViXuLyGiaiQuyet;
 	}
@@ -1521,7 +1741,7 @@ public class Don extends Model<Don> {
 	}
 	
 	@Transient
-	@ApiModelProperty(hidden = true)
+	@ApiModelProperty(hidden = true)                                                                                                                                                                                        
 	public Map<String, Object> getCanBoDangXuLyInfo() {
 		if (getCanBoXuLyChiDinh() != null) {
 			Map<String, Object> map = new HashMap<>();
