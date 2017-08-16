@@ -692,8 +692,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTTXM.setDonViGiaiQuyet(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
 		giaiQuyetDonTTXM.setThuTuThucHien(1);
-		giaiQuyetDonTTXM.setDonChuyen(true);
 		giaiQuyetDonTTXM.setLaTTXM(true);
+		//giaiQuyetDonTTXM.setDonChuyen(true);
 		giaiQuyetDonService.save(giaiQuyetDonTTXM, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		
@@ -738,7 +738,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.LANH_DAO);
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
-		giaiQuyetDonTiepTheo.setDonChuyen(true);
+		if (isLaTTXM) { 
+			giaiQuyetDonTiepTheo.setDonChuyen(false);
+		} else { 
+			giaiQuyetDonTiepTheo.setDonChuyen(true);
+		}
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
@@ -802,7 +806,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			//giaiQuyetDonTruongPhong.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 			giaiQuyetDonTruongPhong.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 			giaiQuyetDonTruongPhong.setLaTTXM(isLaTTXM);
-			giaiQuyetDonTruongPhong.setDonChuyen(true);
+			if (isLaTTXM) { 
+				giaiQuyetDonTruongPhong.setDonChuyen(false);
+			} else { 
+				giaiQuyetDonTruongPhong.setDonChuyen(true);
+			}
 			giaiQuyetDonTruongPhong.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 			giaiQuyetDonTruongPhong.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
 			giaiQuyetDonTruongPhong.setCongChuc(congChuc);
@@ -845,7 +853,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 //		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
-		giaiQuyetDonTiepTheo.setDonChuyen(true);
+		if (isLaTTXM) { 
+			giaiQuyetDonTiepTheo.setDonChuyen(false);
+		} else { 
+			giaiQuyetDonTiepTheo.setDonChuyen(true);
+		}
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		
 		if (!isLaTTXM) {
@@ -898,7 +910,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
-		giaiQuyetDonTiepTheo.setDonChuyen(true);
+		if (isLaTTXM) { 
+			giaiQuyetDonTiepTheo.setDonChuyen(false);
+		} else { 
+			giaiQuyetDonTiepTheo.setDonChuyen(true);
+		}
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
 		
@@ -961,7 +977,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
-		giaiQuyetDonTiepTheo.setDonChuyen(true);
+		if (isLaTTXM) { 
+			giaiQuyetDonTiepTheo.setDonChuyen(false);
+		} else { 
+			giaiQuyetDonTiepTheo.setDonChuyen(true);
+		}
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
 		if (!isLaTTXM) {
