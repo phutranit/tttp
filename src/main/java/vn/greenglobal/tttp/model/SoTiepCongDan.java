@@ -480,26 +480,28 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		if (getHuongGiaiQuyetTCDLanhDao() != null && getTinhTrangXuLyTCDLanhDao() != null) {
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTinhTrangXuLyTCDLanhDao();
-			str = huongGiaiQuyetTCDLanhDao.getText();
-			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {		
-				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
-					str += " - "+tinhTrangXuLyTCDLanhDao.getText();
+			//str = huongGiaiQuyetTCDLanhDao.getText();
+			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
+				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) {
+					str += tinhTrangXuLyTCDLanhDao.getText();
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
-					str += " - Giao kiểm tra đề xuất";
-					if (getDonViChuTri() != null) { 
-						str += "/" +getDonViChuTri().getTen();
+					str += "Giao kiểm tra đề xuất";
+					if (getDonViChuTri() != null) {
+						str += "/" + getDonViChuTri().getTen();
 					}
 				} else {
-					str += " - " +tinhTrangXuLyTCDLanhDao.getText();
+					str += tinhTrangXuLyTCDLanhDao.getText();
 				}
+			} else if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY)) {
+				str += tinhTrangXuLyTCDLanhDao.getText();
 			} else {
-				str += " - " +tinhTrangXuLyTCDLanhDao.getText();
+				str = "Chờ tiếp";
 			}
 		} else { 
 			if (getHuongGiaiQuyetTCDLanhDao() != null) {
 				HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 				str = huongGiaiQuyetTCDLanhDao.getText();
-				str += " - Đang xử lý";
+				str += "Đang xử lý";
 			}
 		}
 		return str;
@@ -510,7 +512,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public String getHuongGiaiQuyetTCDLanhDaoStr() {
 		if (getHuongGiaiQuyetTCDLanhDao() != null) { 
 			if (getHuongGiaiQuyetTCDLanhDao().equals(HuongGiaiQuyetTCDEnum.KHOI_TAO)) {
-				return "Chờ tiếp";
+				return "";
 			}
 		}
 		return getHuongGiaiQuyetTCDLanhDao() != null ? getHuongGiaiQuyetTCDLanhDao().getText() : "";
