@@ -247,7 +247,6 @@ public class DonService {
 			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
 			if (nguonDonEnum != null) { 
 				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON)) {
-					System.out.println("chuyen don");
 					searchXLD = NguonTiepNhanDonEnum.CHUYEN_DON.name();
 					xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donChuyen.isTrue());
 				}
