@@ -334,7 +334,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
 						thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
 					}
-					thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
+					//thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
@@ -467,7 +467,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 								soTiepCongDan.setNgayBaoCaoKetQua(ngayHetHanKTDX);
 							}
 							
-							thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
+							//thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
 							thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 							GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 							giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
