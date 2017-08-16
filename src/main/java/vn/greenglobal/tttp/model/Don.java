@@ -1741,7 +1741,7 @@ public class Don extends Model<Don> {
 	}
 	
 	@Transient
-	@ApiModelProperty(hidden = true)
+	@ApiModelProperty(hidden = true)                                                                                                                                                                                        
 	public Map<String, Object> getCanBoDangXuLyInfo() {
 		if (getCanBoXuLyChiDinh() != null) {
 			Map<String, Object> map = new HashMap<>();
