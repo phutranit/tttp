@@ -23,13 +23,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
-import vn.greenglobal.tttp.model.Don;
-import vn.greenglobal.tttp.model.QXuLyDon;
-import vn.greenglobal.tttp.model.XuLyDon;
-import vn.greenglobal.tttp.repository.DonRepository;
-import vn.greenglobal.tttp.repository.XuLyDonRepository;
-import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
@@ -49,8 +42,17 @@ import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
+import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.util.ProfileUtils;
+import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @Api(value = "phanLoaiDanhMucs", description = "Danh Sách Các Combobox Enum")
@@ -64,6 +66,122 @@ public class EnumController {
 	
 	@Autowired
 	XuLyDonRepository xuLyDonRepo;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/years")
+	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getYears(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+
+		object.put("ten", "2017");
+		object.put("giaTri", 2017);
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", "2018");
+		object.put("giaTri", 2018);
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", "2019");
+		object.put("giaTri", 2019);
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", "2020");
+		object.put("giaTri", 2020);
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/months")
+	@ApiOperation(value = "Lấy danh sách các tháng trong năm", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getMonths(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+		int now = Utils.localDateTimeNow().getMonthValue();
+		for (int m = 1; m <= now; m ++) {
+			object.put("ten", m);
+			object.put("giaTri", m);
+			list.add(object);
+			object = new HashMap<String, Object>();
+		}
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiQuys")
+	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiQuys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", "I");
+		object.put("giaTri", 1);
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", "II");
+		object.put("giaTri", 2);
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", "III");
+		object.put("giaTri", 3);
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", "IV");
+		object.put("giaTri", 4);
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/loaiKy")
+	@ApiOperation(value = "Lấy danh sách Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiKys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.THEO_QUY.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.THEO_QUY.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.THEO_THANG.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.THEO_THANG.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/processTypes")
 	@ApiOperation(value = "Lấy danh sách loại quy trình", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
