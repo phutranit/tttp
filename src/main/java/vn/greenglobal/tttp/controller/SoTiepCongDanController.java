@@ -338,7 +338,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro() : null);
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
