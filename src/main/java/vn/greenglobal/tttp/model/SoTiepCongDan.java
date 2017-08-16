@@ -481,20 +481,21 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTinhTrangXuLyTCDLanhDao();
 			//str = huongGiaiQuyetTCDLanhDao.getText();
-			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {		
-				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
+			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
+				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) {
 					str += tinhTrangXuLyTCDLanhDao.getText();
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
 					str += "Giao kiểm tra đề xuất";
-					if (getDonViChuTri() != null) { 
-						str += "/" +getDonViChuTri().getTen();
+					if (getDonViChuTri() != null) {
+						str += "/" + getDonViChuTri().getTen();
 					}
 				} else {
 					str += tinhTrangXuLyTCDLanhDao.getText();
 				}
+			} else if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY)) {
+				str += tinhTrangXuLyTCDLanhDao.getText();
 			} else {
 				str = "Chờ tiếp";
-				//str += " - " +tinhTrangXuLyTCDLanhDao.getText();
 			}
 		} else { 
 			if (getHuongGiaiQuyetTCDLanhDao() != null) {
