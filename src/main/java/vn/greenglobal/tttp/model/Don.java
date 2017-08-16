@@ -143,6 +143,8 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
+	private CongChuc canBoTTXMChiDinh;
+	@ManyToOne
 	private XuLyDon xuLyDonCuoiCung;
 	@ManyToOne
 	private GiaiQuyetDon giaiQuyetDonCuoiCung;
@@ -254,6 +256,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
 		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoTTXMChiDinh() {
+		return canBoTTXMChiDinh;
+	}
+
+	public void setCanBoTTXMChiDinh(CongChuc canBoTTXMChiDinh) {
+		this.canBoTTXMChiDinh = canBoTTXMChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -1740,17 +1751,50 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+//	@Transient
+//	@ApiModelProperty(hidden = true)                                                                                                                                                                                        
+//	public Map<String, Object> getCanBoDangXuLyInfo() {
+//		if (getCanBoXuLyChiDinh() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
+//			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+//			map.put("congChucId", getCanBoXuLyChiDinh().getId());
+//			return map;
+//		}
+//		return null;	
+//	}
+	
 	@Transient
-	@ApiModelProperty(hidden = true)                                                                                                                                                                                        
-	public Map<String, Object> getCanBoDangXuLyInfo() {
-		if (getCanBoXuLyChiDinh() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
-			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
-			map.put("congChucId", getCanBoXuLyChiDinh().getId());
-			return map;
+	@ApiModelProperty(hidden = true)
+	public List<Map<String, Object>> getCanBoDangXuLyInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = null;
+
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			if (getCanBoXuLyChiDinh() != null) {
+				map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
 		}
-		return null;	
+		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			if (getCanBoTTXMChiDinh() != null) {
+				map.put("hoVaTen", getCanBoTTXMChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoTTXMChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
+		}
+		return list;
 	}
 	
 	@ApiModelProperty(hidden = true)
