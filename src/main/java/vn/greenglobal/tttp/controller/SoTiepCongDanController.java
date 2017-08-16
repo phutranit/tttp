@@ -296,7 +296,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						listTransitionHaveBegin.add(transitionTTXM);
 					}
 				}
-				if (transitionTTXM == null) {
+				if (listTransitionHaveBegin.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
 							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 				}	
@@ -338,7 +338,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? transitionTTXM.getProcess().getVaiTro().getLoaiVaiTro() : null);
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
