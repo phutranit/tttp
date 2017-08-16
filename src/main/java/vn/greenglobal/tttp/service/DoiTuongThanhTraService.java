@@ -26,10 +26,14 @@ public class DoiTuongThanhTraService {
 
 	BooleanExpression base = QDoiTuongThanhTra.doiTuongThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String tuKhoa) {
+	public Predicate predicateFindAll(String tuKhoa, Long linhVucId) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tuKhoa.trim()));
+		}
+		
+		if (linhVucId != null && linhVucId > 0) {
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(linhVucId));
 		}
 
 		return predAll;

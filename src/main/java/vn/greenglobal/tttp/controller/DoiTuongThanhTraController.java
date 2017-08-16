@@ -51,6 +51,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 	@ApiOperation(value = "Lấy danh sách Đối Tượng Thanh Tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -60,7 +61,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa), pageable);
+			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa, linhVucId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
