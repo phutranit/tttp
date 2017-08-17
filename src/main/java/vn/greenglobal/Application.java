@@ -37,7 +37,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy; 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
@@ -49,6 +49,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
@@ -271,6 +272,9 @@ public class Application extends SpringBootServletInitializer {
 	}
 	
 	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepository;
+	
+	@Autowired
 	private DonCongDanRepository donCongDanRepository;
 	
 	@Autowired
@@ -279,6 +283,10 @@ public class Application extends SpringBootServletInitializer {
 	@Autowired
 	private ChucVuService chucVuService;
 	
+	public CuocThanhTraRepository getCuocThanhTraRepository() {
+		return cuocThanhTraRepository;
+	}
+
 	public DonCongDanRepository getDonCongDanRepository() {
 		return donCongDanRepository;
 	}

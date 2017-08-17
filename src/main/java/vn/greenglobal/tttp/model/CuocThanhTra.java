@@ -50,13 +50,13 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String phamViThanhTra = "";
 	@Size(max = 560)
 	private String canCuThanhTraLai = "";
-	@Lob
+//	@Lob
 	private String noiDungThanhTra = "";
-	@Lob
+//	@Lob
 	private String ghiChu = "";
-	@Lob
+//	@Lob
 	private String tomTatKetLuanThanhTra = "";
-	@Lob
+//	@Lob
 	private String tenNguoi = "";
 
 	private int thoiHanThanhTra = 0;

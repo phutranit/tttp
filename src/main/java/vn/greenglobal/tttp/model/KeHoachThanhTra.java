@@ -1,6 +1,11 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -9,6 +14,7 @@ import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 
 @Entity
 @Table(name = "kehoachthanhtra")
@@ -23,12 +29,12 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@Size(max=255)
 	private String soQuyetDinh = "";
 	@Lob
-	private String nhiemVu = "";
+	private String ghiChu = "";
 	
 	private int kyThanhTra = 0;
 
 	private LocalDateTime ngayRaQuyetDinh;
-
+	
 	public String getSoQuyetDinh() {
 		return soQuyetDinh;
 	}
@@ -37,12 +43,12 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.soQuyetDinh = soQuyetDinh;
 	}
 
-	public String getNhiemVu() {
-		return nhiemVu;
+	public String getGhiChu() {
+		return ghiChu;
 	}
 
-	public void setNhiemVu(String nhiemVu) {
-		this.nhiemVu = nhiemVu;
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
 	}
 
 	public int getKyThanhTra() {
@@ -65,6 +71,32 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@ApiModelProperty( hidden = true )
 	public Long getKeHoachThanhTraId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public List<Map<String, Object>> getCuocThanhTras() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		cuocThanhTras = (List<CuocThanhTra>) Application.app.getCuocThanhTraRepository().findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false));
+		if (cuocThanhTras != null && cuocThanhTras.size() > 0) {
+			for (CuocThanhTra ctt : cuocThanhTras) {
+				map = new HashMap<>();
+				map.put("id", ctt.getId());
+				map.put("doiTuongThanhTraId", ctt.getDoiTuongThanhTra() == null ? 0 : ctt.getDoiTuongThanhTra().getId());
+				map.put("tenDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getTen());
+				map.put("loaiDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTra().getText());
+				map.put("ghiChu", ctt.getGhiChu());
+				map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
+				map.put("phamViThanhTra", ctt.getPhamViThanhTra());
+				map.put("thoiHanThanhTra", ctt.getThoiHanThanhTra());
+				map.put("linhVucThanhTra", ctt.getLinhVucThanhTra());
+				map.put("linhVucThanhTraText", ctt.getLinhVucThanhTra().getText());
+				list.add(map);
+			}
+		}
+		return list;
 	}
 
 }

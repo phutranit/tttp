@@ -1,8 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +27,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch;
+import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_Post_Patch;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.KeHoachThanhTraRepository;
+import vn.greenglobal.tttp.service.CuocThanhTraService;
+import vn.greenglobal.tttp.service.DoiTuongThanhTraService;
 import vn.greenglobal.tttp.service.KeHoachThanhTraService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -41,9 +47,18 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 
 	@Autowired
 	private KeHoachThanhTraRepository repo;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	@Autowired
 	private KeHoachThanhTraService keHoachThanhTraService;
+	
+	@Autowired
+	private DoiTuongThanhTraService doiTuongThanhTraService;
+	
+	@Autowired
+	private CuocThanhTraService cuocThanhTraService;
 
 	public KeHoachThanhTraController(BaseRepository<KeHoachThanhTra, Long> repo) {
 		super(repo);
@@ -67,41 +82,84 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 		}
 	}
 
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	@RequestMapping(method = RequestMethod.POST, value = "/keHoachThanhTras")
-//	@ApiOperation(value = "Thêm mới nhiều Tài liệu văn thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 200, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_TaiLieuVanThu_Post_Patch.class),
-//			@ApiResponse(code = 201, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_TaiLieuVanThu_Post_Patch.class) })
-//	public ResponseEntity<Object> createMulti(
-//			@RequestHeader(value = "Authorization", required = true) String authorization,
-//			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
-//
-//		try {
-//			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-//			List<TaiLieuVanThu> listCreate = new ArrayList<TaiLieuVanThu>();
-//
-//			if (params != null) {
-//				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-//					@Override
-//					public Object doInTransaction(TransactionStatus arg0) {
-//						if (params.getTaiLieuVanThus().size() > 0) {
-//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-//								TaiLieuVanThu tlvt = keHoachThanhTraService.save(taiLieuVanThu, Long.valueOf(
-//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//								result.getTaiLieuVanThus().add(tlvt);
-//							}
-//						}
-//						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-//					}
-//				});
-//			}
-//
-//			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.CREATED);
-//		} catch (Exception e) {
-//			return Utils.responseInternalServerErrors(e);
-//		}
-//	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.POST, value = "/keHoachThanhTras")
+	@ApiOperation(value = "Thêm mới nhiều Tài liệu văn thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_KeHoachThanhTra_Post_Patch.class),
+			@ApiResponse(code = 201, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_KeHoachThanhTra_Post_Patch.class) })
+	public ResponseEntity<Object> createMulti(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_KeHoachThanhTra_Post_Patch params, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (params != null && params.getKeHoachThanhTra() != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getSoQuyetDinh())) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+						}
+						if (params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+						}
+						if (!Utils.isValidStringLength(params.getKeHoachThanhTra().getSoQuyetDinh(), 255)) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+									ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+						}
+						if (params.getCuocThanhTras() == null || params.getCuocThanhTras().size() == 0) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CUOCTHANHTRA_REQUIRED.name(),
+									ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText(), ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText());
+						}
+						if (params.getCuocThanhTras() != null && params.getCuocThanhTras().size() > 0) {
+							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
+								if (ctt.getDoiTuongThanhTraId() == null || ctt.getDoiTuongThanhTraId() == 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								}
+								if (!doiTuongThanhTraService.isExists(doiTuongThanhTraRepository, ctt.getDoiTuongThanhTraId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.name(),
+											ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText());
+								}
+								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getPhamViThanhTra(), 255)
+										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+								}
+							}
+						}
+						
+						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						KeHoachThanhTra khtt = keHoachThanhTraService.save(params.getKeHoachThanhTra(), congChucId);
+						if (khtt != null && khtt.getId() != null && khtt.getId() > 0) {
+							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
+								CuocThanhTra cttSave = new CuocThanhTra();
+								cttSave.setId(ctt.getId());
+								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
+								cttSave.setPhamViThanhTra(ctt.getPhamViThanhTra());
+								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
+								cttSave.setGhiChu(ctt.getGhiChu());
+								cttSave.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
+								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
+								dttt.setId(ctt.getDoiTuongThanhTraId());
+								cttSave.setDoiTuongThanhTra(dttt);
+								cttSave.setKeHoachThanhTra(khtt);
+								cuocThanhTraService.save(cttSave, congChucId);
+							}
+						}
+						
+						return new ResponseEntity<>(eass.toFullResource(khtt), HttpStatus.CREATED);
+					}
+				});
+			}
+
+			return new ResponseEntity<>(eass.toFullResource(new KeHoachThanhTra()), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/keHoachThanhTras/{id}")
 	@ApiOperation(value = "Lấy Kế Hoạch Thanh Tra theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -686,4 +686,8 @@ public class Utils {
 		}
 		return mapType;
 	}
+	
+	public static boolean isValidStringLength(String str, int length) {
+		return str != null && !"".equals(str) && str.length() <= length ? true : false;
+	}
 }
