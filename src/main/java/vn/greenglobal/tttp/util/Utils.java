@@ -778,44 +778,6 @@ public class Utils {
 		return soNgayXuLy;
 	}
 	
-	public static LocalDateTime getLayNgayKetThucXuLyThanhTra(LocalDateTime ngayBatDauTmp, Long soNgayThanhTra,
-			LocalDateTime gioHanhChinhHienTai) {
-		LocalDateTime ngayHetHan = null;
-		LocalDateTime ngayBatDau = null;
-		if (ngayBatDauTmp != null && gioHanhChinhHienTai != null && soNgayThanhTra != null) {
-			ngayBatDau = ngayBatDauTmp;
-			ngayHetHan = ngayBatDauTmp;
-			Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
-			Calendar now = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, gioHanhChinhHienTai.getHour(),
-					gioHanhChinhHienTai.getMinute());
-
-			if (soNgayThanhTra > 0) {
-				ngayHetHan = ngayHetHan.plusDays(soNgayThanhTra);
-			}
-
-			if (DateUtils.isSameDay(start, now)) {
-				if (now.get(Calendar.AM_PM) == 0) {
-					Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, startMorning,
-							minuteStartMorning);
-					long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
-					if (now.getTimeInMillis() > gioBuoiSang) {
-						System.out.println("bs");
-						ngayHetHan = ngayHetHan.plusDays(-1);
-					}
-				} else {
-					Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, endAfternoon,
-							minuteEndAfternoon);
-					long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
-					if (now.getTimeInMillis() >= gioBuoiChieu) {
-						System.out.println("bc");
-						ngayHetHan = ngayHetHan.plusDays(-1);
-					}
-				}
-			}
-		}
-		return ngayHetHan;
-	}
-	
 	public static Map<String, Object> convertThoiHanThanhTra(LocalDateTime ngayBatDauTmp, Long soNgayThanhTra) {
 		Map<String, Object> mapType = new HashMap<>();
 		LocalDateTime gioHanhChinhHienTai = localDateTimeNow();
