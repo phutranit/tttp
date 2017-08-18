@@ -1,7 +1,9 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,25 +82,21 @@ public class EnumController {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
-
-		object.put("ten", "2017");
-		object.put("giaTri", 2017);
+		int current = Utils.localDateTimeNow().getYear();
+		int year = 2015;
+		int length = current - year;
+		
+		object.put("ten", year);
+		object.put("giaTri", year);
 		list.add(object);
 		
-		object = new HashMap<String, Object>();
-		object.put("ten", "2018");
-		object.put("giaTri", 2018);
-		list.add(object);
-
-		object = new HashMap<String, Object>();
-		object.put("ten", "2019");
-		object.put("giaTri", 2019);
-		list.add(object);
-		
-		object = new HashMap<String, Object>();
-		object.put("ten", "2020");
-		object.put("giaTri", 2020);
-		list.add(object);
+		for (int i = 1; i <= length; i++) {
+			object = new HashMap<String, Object>();
+			year += 1;
+			object.put("ten", year);
+			object.put("giaTri", year);
+			list.add(object);
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
