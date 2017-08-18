@@ -44,6 +44,7 @@ import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
@@ -52,6 +53,7 @@ import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.service.ThongKeBaoCaoTongHopKQGQDService;
 import vn.greenglobal.tttp.service.ThongKeBaoCaoTongHopKQTCDService;
 import vn.greenglobal.tttp.service.ThongKeBaoCaoTongHopKQXLDService;
+import vn.greenglobal.tttp.service.ThongKeTongHopThanhTraService;
 import vn.greenglobal.tttp.util.ExcelUtil;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -76,6 +78,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	private LinhVucDonThuService linhVucDonThuService;
 	
 	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepo;
+	
+	@Autowired
 	private ThamSoService thamSoService;
 	
 	@Autowired
@@ -86,6 +91,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 
 	@Autowired
 	private ThongKeBaoCaoTongHopKQGQDService thongKeBaoCaoTongHopKQGQDService;
+	
+	@Autowired
+	private ThongKeTongHopThanhTraService thongKeTongHopThanhTraService;
 	
 	public ThongKeBaoCaoController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -874,52 +882,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh")
-	@ApiOperation(value = "Tổng hợp kết quả thanh tra theo hành chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<Object> getTongHopKetQuaThanhTraTheoHanhChinh(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable,
-			@RequestParam(value = "loaiKy", required = false) String loaiKy,
-			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "quy", required = false) Integer quy,
-			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "month", required = false) Integer month,
-			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
-			PersistentEntityResourceAssembler eass) {
-		try {
-			
-			if (Utils.tokenValidate(profileUtil, authorization) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-			}
-			
-			Long donViXuLy = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			
-			Map<String, Object> mapDonVi = new HashMap<>();
-			Map<String, Object> map = new HashMap<>();
-			Map<String, Object> mapMaSo = new HashMap<>();
-			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
-			List<Map<String, Object>> maSos = new ArrayList<>();
-			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
-			
-			if (listDonVis != null) {
-				for (CoQuanQuanLy dv : listDonVis) {
-					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-					if (coQuan != null) {
-						list.add(coQuan);
-					}					
-				}
-			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
-				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
-			}
-			donVis.addAll(list);
-			
-			return Utils.responseInternalServerErrors();
-		} catch (Exception e) {
-			return Utils.responseInternalServerErrors(e);
-		}
-	}
+
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaBaoCaoXuLyDon")
 	@ApiOperation(value = "Tổng hợp kết quả báo cáo xử lý đơn thư", position = 3, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
