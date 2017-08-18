@@ -128,8 +128,14 @@ public class SoTiepCongDanService {
 		}
 		
 		if (ketQuaTiepDan != null && StringUtils.isNotBlank(ketQuaTiepDan.trim())) {
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
-					.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim()))));
+			HuongGiaiQuyetTCDEnum kq = HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim());
+			if (kq.equals(HuongGiaiQuyetTCDEnum.CHO_TIEP)) { 
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
+						.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.KHOI_TAO)));
+			} else { 
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
+						.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim()))));
+			}
 		}
 
 		List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();

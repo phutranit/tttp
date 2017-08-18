@@ -1074,9 +1074,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState)) {
 			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_PHONG_BAN.getText());
 			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-			if (xuLyDon.getCanBoXuLyChiDinh() != null) {
-				xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-			}
+			xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId(), donViId);			
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 		} else {
@@ -1402,6 +1400,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setNgayHenGapLanhDao(Utils.localDateTimeNow());
 		xuLyDonHienTai.setDiaDiem(xuLyDon.getDiaDiem());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
+		xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDon.getDon().getId()));
 		don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
