@@ -30,7 +30,7 @@ public class KeHoachThanhTraService {
 		BooleanExpression predAll = base;
 		
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
-			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.soQuyetDinh.containsIgnoreCase(soQuyetDinh.trim()));
+			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinh.trim()));
 		}
 		
 		if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
@@ -78,7 +78,7 @@ public class KeHoachThanhTraService {
 			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.soQuyetDinh.eq(body.getSoQuyetDinh()));
+		predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.eq(body.getQuyetDinhPheDuyetKTTT()));
 		List<KeHoachThanhTra> doiTuongThanhTras = (List<KeHoachThanhTra>) repo.findAll(predAll);
 
 		return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true : false;

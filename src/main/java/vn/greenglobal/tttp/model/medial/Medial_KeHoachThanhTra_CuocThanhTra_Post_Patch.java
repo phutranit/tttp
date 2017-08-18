@@ -12,11 +12,13 @@ public class Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch
 	private static final long serialVersionUID = 4470756964123189859L;
 
 	private String noiDungThanhTra = "";
-	private String phamViThanhTra = "";
+	private String kyThanhTra = "";
 	private String ghiChu = "";
+	private String donViPhoiHop = "";
 	private int thoiHanThanhTra = 0;
 	private LinhVucThanhTraEnum linhVucThanhTra;
 	private Long doiTuongThanhTraId;
+	private Long donViChuTriId;
 
 	public String getNoiDungThanhTra() {
 		return noiDungThanhTra;
@@ -26,12 +28,12 @@ public class Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch
 		this.noiDungThanhTra = noiDungThanhTra;
 	}
 
-	public String getPhamViThanhTra() {
-		return phamViThanhTra;
+	public String getKyThanhTra() {
+		return kyThanhTra;
 	}
 
-	public void setPhamViThanhTra(String phamViThanhTra) {
-		this.phamViThanhTra = phamViThanhTra;
+	public void setKyThanhTra(String kyThanhTra) {
+		this.kyThanhTra = kyThanhTra;
 	}
 
 	public String getGhiChu() {
@@ -40,6 +42,14 @@ public class Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch
 
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
+	}
+
+	public String getDonViPhoiHop() {
+		return donViPhoiHop;
+	}
+
+	public void setDonViPhoiHop(String donViPhoiHop) {
+		this.donViPhoiHop = donViPhoiHop;
 	}
 
 	public int getThoiHanThanhTra() {
@@ -64,6 +74,14 @@ public class Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch
 
 	public void setDoiTuongThanhTraId(Long doiTuongThanhTraId) {
 		this.doiTuongThanhTraId = doiTuongThanhTraId;
+	}
+
+	public Long getDonViChuTriId() {
+		return donViChuTriId;
+	}
+
+	public void setDonViChuTriId(Long donViChuTriId) {
+		this.donViChuTriId = donViChuTriId;
 	}
 
 }

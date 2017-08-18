@@ -7,14 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
+import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
 
 @Entity
 @Table(name = "kehoachthanhtra")
@@ -27,20 +36,47 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private static final long serialVersionUID = -4128391955224263426L;
 
 	@Size(max=255)
-	private String soQuyetDinh = "";
+	private String namThanhTra = "";
+	@Size(max=255)
+	private String nguoiKy = "";
+	@NotBlank
+	@Size(max=255)
+	private String quyetDinhPheDuyetKTTT = "";
 	@Lob
 	private String ghiChu = "";
-	
-	private int kyThanhTra = 0;
 
+	@NotNull
 	private LocalDateTime ngayRaQuyetDinh;
 	
-	public String getSoQuyetDinh() {
-		return soQuyetDinh;
+	@Enumerated(EnumType.STRING)
+	private HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra;
+	
+	@Fetch(FetchMode.SELECT)
+	@ManyToOne
+	private CoQuanQuanLy donVi;
+
+	public String getNamThanhTra() {
+		return namThanhTra;
 	}
 
-	public void setSoQuyetDinh(String soQuyetDinh) {
-		this.soQuyetDinh = soQuyetDinh;
+	public void setNamThanhTra(String namThanhTra) {
+		this.namThanhTra = namThanhTra;
+	}
+
+	public String getNguoiKy() {
+		return nguoiKy;
+	}
+
+	public void setNguoiKy(String nguoiKy) {
+		this.nguoiKy = nguoiKy;
+	}
+
+	public String getQuyetDinhPheDuyetKTTT() {
+		return quyetDinhPheDuyetKTTT;
+	}
+
+	public void setQuyetDinhPheDuyetKTTT(String quyetDinhPheDuyetKTTT) {
+		this.quyetDinhPheDuyetKTTT = quyetDinhPheDuyetKTTT;
 	}
 
 	public String getGhiChu() {
@@ -51,20 +87,28 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
-	public int getKyThanhTra() {
-		return kyThanhTra;
-	}
-
-	public void setKyThanhTra(int kyThanhTra) {
-		this.kyThanhTra = kyThanhTra;
-	}
-
 	public LocalDateTime getNgayRaQuyetDinh() {
 		return ngayRaQuyetDinh;
 	}
 
 	public void setNgayRaQuyetDinh(LocalDateTime ngayRaQuyetDinh) {
 		this.ngayRaQuyetDinh = ngayRaQuyetDinh;
+	}
+
+	public HinhThucKeHoachThanhTraEnum getHinhThucKeHoachThanhTra() {
+		return hinhThucKeHoachThanhTra;
+	}
+
+	public void setHinhThucKeHoachThanhTra(HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra) {
+		this.hinhThucKeHoachThanhTra = hinhThucKeHoachThanhTra;
+	}
+
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
 	}
 
 	@Transient
@@ -89,7 +133,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 				map.put("loaiDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTra().getText());
 				map.put("ghiChu", ctt.getGhiChu());
 				map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
-				map.put("phamViThanhTra", ctt.getPhamViThanhTra());
+				map.put("phamViThanhTra", ctt.getKyThanhTra());
 				map.put("thoiHanThanhTra", ctt.getThoiHanThanhTra());
 				map.put("linhVucThanhTra", ctt.getLinhVucThanhTra());
 				map.put("linhVucThanhTraText", ctt.getLinhVucThanhTra().getText());

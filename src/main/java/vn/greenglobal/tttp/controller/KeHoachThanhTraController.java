@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,12 +26,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_Post_Patch;
-import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.KeHoachThanhTraRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
@@ -97,18 +96,19 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
-						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getSoQuyetDinh())) {
-							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-						}
-						if (params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null) {
-							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-						}
-						if (!Utils.isValidStringLength(params.getKeHoachThanhTra().getSoQuyetDinh(), 255)) {
-							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
-									ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
-						}
+//						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT())) {
+//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+//									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+//						}
+//						if (params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null) {
+//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+//									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+//						}
+//						if (!Utils.isValidStringLength(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT(), 255)
+//								|| !Utils.isValidStringLength(params.getKeHoachThanhTra().getNamThanhTra(), 255)) {
+//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+//									ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+//						}
 						if (params.getCuocThanhTras() == null || params.getCuocThanhTras().size() == 0) {
 							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CUOCTHANHTRA_REQUIRED.name(),
 									ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText(), ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText());
@@ -123,7 +123,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.name(),
 											ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText());
 								}
-								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getPhamViThanhTra(), 255)
+								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
 										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
 											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
@@ -138,13 +138,19 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 								CuocThanhTra cttSave = new CuocThanhTra();
 								cttSave.setId(ctt.getId());
 								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
-								cttSave.setPhamViThanhTra(ctt.getPhamViThanhTra());
+								cttSave.setKyThanhTra(ctt.getKyThanhTra());
 								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
 								cttSave.setGhiChu(ctt.getGhiChu());
 								cttSave.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
 								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 								dttt.setId(ctt.getDoiTuongThanhTraId());
 								cttSave.setDoiTuongThanhTra(dttt);
+								if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
+									CoQuanQuanLy dvct = new CoQuanQuanLy();
+									dvct.setId(ctt.getDonViChuTriId());
+									cttSave.setDonViChuTri(dvct);
+								}
+								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 								cttSave.setKeHoachThanhTra(khtt);
 								cuocThanhTraService.save(cttSave, congChucId);
 							}
