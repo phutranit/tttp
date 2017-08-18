@@ -742,6 +742,33 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs/timKiem")
+	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetTimKiemCuaLanhDaoTCDs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_TIEP.getText());
+		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_TIEP.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetCuaLanhDaoTCDs(
@@ -757,11 +784,6 @@ public class EnumController {
 		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.getText());
 		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET.name());
 		list.add(object);
-
-//		object = new HashMap<>();
-//		object.put("ten", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.getText());
-//		object.put("giaTri", HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.name());
-//		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
