@@ -198,9 +198,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			
 			//Order order = new Order("abc");
-			
 			//Sort sort = new Sort(order);
-			
 			//pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
 			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
@@ -215,16 +213,32 @@ public class DonController extends TttpController<Don> {
 					phongBanXuLyXLD = 0L;
 				}
 				
-				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
-						.then(Expressions.numberTemplate(Integer.class, "0"))					
-						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
-				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				NumberExpression<Integer> canBoXuLyChiDinh = null;
+				OrderSpecifier<LocalDateTime> sortOrderDon = null;
+				OrderSpecifier<Integer> sortOrderDonByCanBo = null;
+				List<Don> listDon = new ArrayList<Don>();
 				
-				List<Don> listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-						hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
-						phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-						vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
-						canBoXuLyChiDinh.asc(), sortOrderDon);
+				if (StringUtils.isNotBlank(trangThaiDon)) {
+					if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
+						canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+								.then(Expressions.numberTemplate(Integer.class, "0"))					
+								.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+						sortOrderDonByCanBo = canBoXuLyChiDinh.asc();
+						sortOrderDon = QDon.don.ngayTiepNhan.desc();
+						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+								sortOrderDonByCanBo, sortOrderDon);
+					} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
+						sortOrderDon = QDon.don.ngayTiepNhan.desc();
+						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+								sortOrderDon);
+					}
+				}
 				
 				int start = pageable.getOffset();
 				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
