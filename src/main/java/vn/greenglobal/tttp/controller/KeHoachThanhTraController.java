@@ -83,10 +83,10 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/keHoachThanhTras")
-	@ApiOperation(value = "Thêm mới nhiều Tài liệu văn thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Thêm mới Kế Hoạch Thanh Tra", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_KeHoachThanhTra_Post_Patch.class),
-			@ApiResponse(code = 201, message = "Thêm mới nhiều Tài liệu văn thư thành công", response = Medial_KeHoachThanhTra_Post_Patch.class) })
+			@ApiResponse(code = 200, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = Medial_KeHoachThanhTra_Post_Patch.class),
+			@ApiResponse(code = 201, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = Medial_KeHoachThanhTra_Post_Patch.class) })
 	public ResponseEntity<Object> createMulti(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_KeHoachThanhTra_Post_Patch params, PersistentEntityResourceAssembler eass) {

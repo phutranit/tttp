@@ -48,6 +48,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@NotNull
 	private LocalDateTime ngayRaQuyetDinh;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra;
 	
@@ -119,6 +120,44 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getDonViInfo() {
+		if (getDonVi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getDonVi().getId());
+			map.put("ten", getDonVi().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiTaoInfo() {
+		if (getNguoiTao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiTao().getCoQuanQuanLy() != null ? getNguoiTao().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiTao().getHoVaTen());
+			map.put("congChucId", getNguoiTao().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getNguoiSuaInfo() {
+		if (getNguoiSua() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getNguoiSua().getHoVaTen());
+			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
 	public List<Map<String, Object>> getCuocThanhTras() {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
@@ -128,15 +167,33 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 			for (CuocThanhTra ctt : cuocThanhTras) {
 				map = new HashMap<>();
 				map.put("id", ctt.getId());
-				map.put("doiTuongThanhTraId", ctt.getDoiTuongThanhTra() == null ? 0 : ctt.getDoiTuongThanhTra().getId());
-				map.put("tenDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getTen());
+				if (ctt.getDoiTuongThanhTra() != null) {
+					Map<String, Object> mapDoiTuongThanhTra = new HashMap<>();
+					mapDoiTuongThanhTra.put("doiTuongThanhTraId", ctt.getDoiTuongThanhTra().getId());
+					mapDoiTuongThanhTra.put("ten", ctt.getDoiTuongThanhTra().getTen());
+					map.put("doiTuongThanhTraInfo", mapDoiTuongThanhTra);
+				} else {
+					map.put("doiTuongThanhTraInfo", null);
+				}
+				if (ctt.getDonViChuTri() != null) {
+					Map<String, Object> mapDonViChuTri = new HashMap<>();
+					mapDonViChuTri.put("donViChuTriId", ctt.getDonViChuTri().getId());
+					mapDonViChuTri.put("ten", ctt.getDonViChuTri().getTen());
+					map.put("doiTuongThanhTraInfo", mapDonViChuTri);
+				} else {
+					map.put("doiTuongThanhTraInfo", null);
+				}
 				map.put("loaiDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTra().getText());
 				map.put("ghiChu", ctt.getGhiChu());
 				map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
-				map.put("phamViThanhTra", ctt.getKyThanhTra());
-				map.put("thoiHanThanhTra", ctt.getThoiHanThanhTra());
-				map.put("linhVucThanhTra", ctt.getLinhVucThanhTra());
-				map.put("linhVucThanhTraText", ctt.getLinhVucThanhTra().getText());
+				if (ctt.getLinhVucThanhTra() != null) {
+					Map<String, Object> mapLinhVucThanhTra = new HashMap<>();
+					mapLinhVucThanhTra.put("type", ctt.getLinhVucThanhTra());
+					mapLinhVucThanhTra.put("text", ctt.getLinhVucThanhTra().getText());
+					map.put("linhVucThanhTraInfo", mapLinhVucThanhTra);
+				} else {
+					map.put("linhVucThanhTraInfo", null);
+				}
 				list.add(map);
 			}
 		}
