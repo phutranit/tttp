@@ -1,9 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -83,18 +81,10 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		int year = 2015;
-		int length = current - year;
-		
-		object.put("ten", year);
-		object.put("giaTri", year);
-		list.add(object);
-		
-		for (int i = 1; i <= length; i++) {
+		for (int i = 2010; i <= current; i++) {
 			object = new HashMap<String, Object>();
-			year += 1;
-			object.put("ten", year);
-			object.put("giaTri", year);
+			object.put("ten", i);
+			object.put("giaTri", i);
 			list.add(object);
 		}
 		
