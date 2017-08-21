@@ -80,25 +80,13 @@ public class EnumController {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
-
-		object.put("ten", "2017");
-		object.put("giaTri", 2017);
-		list.add(object);
-		
-		object = new HashMap<String, Object>();
-		object.put("ten", "2018");
-		object.put("giaTri", 2018);
-		list.add(object);
-
-		object = new HashMap<String, Object>();
-		object.put("ten", "2019");
-		object.put("giaTri", 2019);
-		list.add(object);
-		
-		object = new HashMap<String, Object>();
-		object.put("ten", "2020");
-		object.put("giaTri", 2020);
-		list.add(object);
+		int current = Utils.localDateTimeNow().getYear();
+		for (int i = 2010; i <= current; i++) {
+			object = new HashMap<String, Object>();
+			object.put("ten", i);
+			object.put("giaTri", i);
+			list.add(object);
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
