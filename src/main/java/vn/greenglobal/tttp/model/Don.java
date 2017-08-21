@@ -1124,9 +1124,9 @@ public class Don extends Model<Don> {
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
 						)) {
 					list.add(tlvt);
 				}
@@ -1138,9 +1138,9 @@ public class Don extends Model<Don> {
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
 						)) {
 					list.add(tlvt);
 				}
