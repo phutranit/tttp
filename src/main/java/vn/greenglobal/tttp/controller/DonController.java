@@ -513,9 +513,8 @@ public class DonController extends TttpController<Don> {
 										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 							}
 						}
-					}					
-					
-					
+					}
+
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(donMoi);

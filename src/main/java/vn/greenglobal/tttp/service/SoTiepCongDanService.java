@@ -83,15 +83,15 @@ public class SoTiepCongDanService {
 						.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString())) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.donVi.id.eq(donViId))
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.donVi.eq(coQuanQuanLy.getDonVi()))
 					);
-		} else { 
+		} else {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
+					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.donVi.eq(coQuanQuanLy.getDonVi()))
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
 					.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId))	
 					);
 		}
-		
-		
 
 		if (huongXuLy != null && StringUtils.isNotBlank(huongXuLy.trim())) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy.trim()));
