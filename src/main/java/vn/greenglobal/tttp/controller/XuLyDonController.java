@@ -67,6 +67,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
@@ -109,6 +110,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@Autowired
 	private GiaiQuyetDonService giaiQuyetDonService;
 
+	@Autowired
+	private GiaiQuyetDonRepository giaiQuyetDonRepo;
+	
 	@Autowired
 	private XuLyDonRepository xuLyDonRepo;
 
@@ -638,6 +642,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						lichSuQTXLD.setThuTuThucHien(thuTu);
 						
 						donService.save(don, congChucId);
+						if (don.getThongTinGiaiQuyetDon() != null) { 
+							Long thongTinGiaiQuyetDonId = don.getThongTinGiaiQuyetDon().getId();
+							GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(giaiQuyetDonRepo, thongTinGiaiQuyetDonId, false);
+							GiaiQuyetDon giaiQuyetDonHienTaiTTXM = giaiQuyetDonService.predFindCurrent(giaiQuyetDonRepo, thongTinGiaiQuyetDonId, true);
+							giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+							if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+							giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
+							if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
+						}
 						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}

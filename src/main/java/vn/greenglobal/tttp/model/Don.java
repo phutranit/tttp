@@ -1913,6 +1913,10 @@ public class Don extends Model<Don> {
 			map.put("ketQuaStr", "");
 			map.put("ketQuaType", "");
 			map.put("donViTTXM", "");
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+			}
 			list.add(map);
 		}
 		return list;
