@@ -1151,7 +1151,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(null);
 		don.setCurrentState(null);
-		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		//don.setKetQuaXLDGiaiQuyet(null);
