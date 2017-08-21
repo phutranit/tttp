@@ -132,6 +132,13 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+						
+						if (donViId != null && donViId > 0) {
+							CoQuanQuanLy donVi = new CoQuanQuanLy();
+							donVi.setId(donViId);
+							params.getKeHoachThanhTra().setDonVi(donVi);
+						}
 						KeHoachThanhTra khtt = keHoachThanhTraService.save(params.getKeHoachThanhTra(), congChucId);
 						if (khtt != null && khtt.getId() != null && khtt.getId() > 0) {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
