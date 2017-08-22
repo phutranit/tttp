@@ -39,11 +39,8 @@ import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
-import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
-import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
-import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -51,9 +48,7 @@ import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
-import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
-import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -70,25 +65,10 @@ public class DonService {
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
 	
 	@Autowired
-	private SoTiepCongDanRepository soTiepCongDanRepo;
-	
-	@Autowired
 	private DonRepository donRepo;
 
 	@Autowired
 	private DonCongDanRepository donCongDanRepo;
-	
-	@Autowired
-	private XuLyDonRepository xuLyDonRepo;
-	
-	@Autowired
-	private ThamSoRepository repoThamSo;
-	
-	@Autowired
-	private CoQuanQuanLyRepository repoCoQuanQuanLy;
-	
-	@Autowired
-	private ThamSoService thamSoService;
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
@@ -678,61 +658,12 @@ public class DonService {
 
 	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, String loaiDon, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId, 
 			Long donViId) {
-//		BooleanExpression predAll = base
-//				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
-//				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)))
-//				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false));
-
-		BooleanExpression predAll = base;
-		BooleanExpression tcdQuery = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
-		BooleanExpression xuLyDonQuery = QXuLyDon.xuLyDon.daXoa.eq(false)
-				.and(QXuLyDon.xuLyDon.old.eq(false));
-
-		tcdQuery = tcdQuery
-				.and(QSoTiepCongDan.soTiepCongDan.don.yeuCauGapTrucTiepLanhDao.eq(true)
-						.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.eq(false)))
-				.or(QSoTiepCongDan.soTiepCongDan.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)
+		BooleanExpression predAll = base
+				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
+				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)
 						.and(QDon.don.thanhLapDon.eq(true)))
-				.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapTiepDanGapLanhDao.eq(false));
-		xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.don.thanhLapDon.eq(true))
-				.and(QXuLyDon.xuLyDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO))
-				.and(QXuLyDon.xuLyDon.don.trangThaiXLDGiaiQuyet.eq(TrangThaiDonEnum.DA_XU_LY));
-		
-		if (donViId != null && donViId > 0) {
-			ThamSo thamSoCCQQLUBNDTinhTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
-			CoQuanQuanLy coQuanQuanLy = repoCoQuanQuanLy.findOne(donViId);
-			
-			if (coQuanQuanLy.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString())
-					|| coQuanQuanLy.getDonVi().getCapCoQuanQuanLy().getId() == Long
-							.valueOf(thamSoCCQQLUBNDTinhTP.getGiaTri().toString())) {
-				tcdQuery = tcdQuery.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
-						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.donVi.id.eq(donViId)));
-				xuLyDonQuery = xuLyDonQuery.and(
-						QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId)
-						.or(QXuLyDon.xuLyDon.donViXuLy.donVi.id.eq(donViId)));
-			} else {
-				tcdQuery = tcdQuery.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
-						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
-						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
-				xuLyDonQuery = xuLyDonQuery
-						.and(QXuLyDon.xuLyDon.donViXuLy.eq(coQuanQuanLy.getDonVi())
-//								.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(donViId))
-//								.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(donViId))
-								);
-			}
-			List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
-			soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepo.findAll(tcdQuery));
-			List<Don> dons1 = new ArrayList<Don>();
-			dons1.addAll(soTiepCongDans.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
-
-			List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
-			xuLyDons.addAll((List<XuLyDon>) xuLyDonRepo.findAll(xuLyDonQuery));
-			List<Don> dons2 = new ArrayList<Don>();
-			dons2.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
-			System.out.println();
-			
-			predAll = predAll.and(QDon.don.in(dons1).or(QDon.don.in(dons2)));
-		}
+				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false))
+				.and(QDon.don.old.eq(false));
 		
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
@@ -748,7 +679,12 @@ public class DonService {
 				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.before(dtDenNgay));
 			}
 		}
-
+		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QDon.don.donViTiepDan.id.eq(donViId)
+					.or(QDon.don.donViXuLyGiaiQuyet.id.eq(donViId)));
+		}
+		
 		if (loaiDon != null && !"".equals(loaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(loaiDon)));
 		}

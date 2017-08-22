@@ -47,6 +47,7 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -241,6 +242,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			boolean flagChuyenDonViKiemTra = false;
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+			CoQuanQuanLy donVi = repoCoQuanQuanLy.findOne(donViId);
+			don.setDonViTiepDan(donVi);
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
 				soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
