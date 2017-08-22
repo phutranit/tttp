@@ -63,7 +63,7 @@ public class DonService {
 
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
-
+	
 	@Autowired
 	private DonRepository donRepo;
 
@@ -659,11 +659,15 @@ public class DonService {
 		return don;
 	}
 
-	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, String loaiDon, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId) {
+	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, String loaiDon, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId, 
+			Long donViId) {
 		BooleanExpression predAll = base
 				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
-				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO).and(QDon.don.thanhLapDon.eq(true)))
-				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false));
+				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)
+						.and(QDon.don.thanhLapDon.eq(true)))
+				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false))
+				.and(QDon.don.old.eq(false));
+		
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -679,14 +683,18 @@ public class DonService {
 			}
 		}
 		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QDon.don.donViTiepDan.id.eq(donViId));
+		}
+		
 		if (loaiDon != null && !"".equals(loaiDon)) {
 			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(loaiDon)));
 		}
-		
-		if ((linhVucId != null && linhVucId > 0) && ((linhVucChiTietChaId == null && linhVucChiTietChaId == null) )) { 
+
+		if ((linhVucId != null && linhVucId > 0) && ((linhVucChiTietChaId == null && linhVucChiTietChaId == null))) {
 			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId));
 		}
-
+		
 		if ((linhVucChiTietChaId != null && linhVucChiTietChaId > 0) && (linhVucId != null && linhVucId > 0) && 
 				(linhVucChiTietConId == null)) { 
 			predAll = predAll
@@ -701,7 +709,6 @@ public class DonService {
 					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId))
 					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
 		}
-		
 		return predAll;
 	}
 
