@@ -684,8 +684,7 @@ public class DonService {
 		}
 		
 		if (donViId != null && donViId > 0) {
-			predAll = predAll.and(QDon.don.donViTiepDan.id.eq(donViId)
-					.or(QDon.don.donViXuLyGiaiQuyet.id.eq(donViId)));
+			predAll = predAll.and(QDon.don.donViTiepDan.id.eq(donViId));
 		}
 		
 		if (loaiDon != null && !"".equals(loaiDon)) {
