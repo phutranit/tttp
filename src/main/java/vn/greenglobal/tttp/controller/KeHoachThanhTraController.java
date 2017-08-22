@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
@@ -74,7 +75,15 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay), pageable);
+			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -92,6 +101,11 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			@RequestBody Medial_KeHoachThanhTra_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
 		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
 			if (params != null && params.getKeHoachThanhTra() != null) {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override

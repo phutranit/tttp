@@ -26,8 +26,12 @@ public class KeHoachThanhTraService {
 
 	BooleanExpression base = QKeHoachThanhTra.keHoachThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay) {
+	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay, Long donViId) {
 		BooleanExpression predAll = base;
+		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.donVi.id.eq(donViId));
+		}
 		
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
 			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinh.trim()));
