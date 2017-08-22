@@ -72,15 +72,18 @@ public class DonService {
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
-	
-	public Predicate predicateFindByCongDan(Long id) {
-		BooleanExpression predAll = base.and(QDon.don.daXoa.eq(false));
-		if (id > 0) {
-			predAll = predAll
-					.and(QDon.don.donCongDans.any().daXoa.eq(false))
-					.and(QDon.don.donCongDans.any().congDan.id.eq(id));
-		}
 
+	public Predicate predicateFindByCongDan(Long id) {
+		BooleanExpression predAll = base;
+		BooleanExpression preAllDCD = baseDonCongDan;
+		List<Don> dons = new ArrayList<Don>();
+		if (id > 0) {
+			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
+			preAllDCD = preAllDCD.and(QDon_CongDan.don_CongDan.congDan.id.eq(id));
+			donCongDans.addAll((List<Don_CongDan>) donCongDanRepo.findAll(preAllDCD));
+			dons.addAll(donCongDans.stream().map(dcd -> dcd.getDon()).distinct().collect(Collectors.toList()));
+		}
+		predAll = predAll.and(QDon.don.in(dons));
 		return predAll;
 	}
 	
