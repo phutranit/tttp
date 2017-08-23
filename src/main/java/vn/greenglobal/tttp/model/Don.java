@@ -1323,6 +1323,7 @@ public class Don extends Model<Don> {
 	}
 
 	@JsonIgnore
+	@QueryInit("*.*.*")
 	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
 		return donViXuLyGiaiQuyet;
 	}

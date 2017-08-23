@@ -260,7 +260,9 @@ public class TrangChuController extends TttpController<Don> {
 						.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds, "CCQQL_UBND_QUAN_HUYEN")));
 			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())
 					|| (donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId()
-							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))) {
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))
+					|| donVi.getCha() != null && donVi.getCha().getCapCoQuanQuanLy().getId()
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()))) {
 				// Danh sach don vi thuoc So Ban Nganh
 				List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 				capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLChiCuc.getGiaTri().toString()));
