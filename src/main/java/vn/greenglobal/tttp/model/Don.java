@@ -137,6 +137,8 @@ public class Don extends Model<Don> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViTiepDan;
+	@ManyToOne
 	private Don donGoc;
 	@ManyToOne
 	private CoQuanQuanLy donViXuLyDonChuyen;
@@ -436,6 +438,15 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(position = 27, example = "{}")
 	public CoQuanQuanLy getCoQuanDangGiaiQuyet() {
 		return coQuanDangGiaiQuyet;
+	}
+	
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getDonViTiepDan() {
+		return donViTiepDan;
+	}
+
+	public void setDonViTiepDan(CoQuanQuanLy donViTiepDan) {
+		this.donViTiepDan = donViTiepDan;
 	}
 
 	public void setCoQuanDangGiaiQuyet(CoQuanQuanLy coQuanDangGiaiQuyet) {

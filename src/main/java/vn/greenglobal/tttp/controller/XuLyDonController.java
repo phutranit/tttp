@@ -1799,6 +1799,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTepDinhKems(new ArrayList<TepDinhKem>());
 		donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 		donMoi.setDonViXuLyGiaiQuyet(donVi.getDonVi());
+		donMoi.setDonViTiepDan(donVi.getDonVi());
 		donMoi.setKetQuaXLDGiaiQuyet(null);
 		donMoi.setDonViXuLyDonChuyen(donVi.getDonVi());
 		donMoi.setCanBoXuLyChiDinh(null);
