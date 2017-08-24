@@ -325,7 +325,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long congDanId() {
+	public Long getCongDanId() {
 		if (getCongDan() != null) { 
 			return getCongDan().getId();
 		}
