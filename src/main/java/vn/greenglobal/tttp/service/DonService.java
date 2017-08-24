@@ -90,7 +90,7 @@ public class DonService {
 	public Predicate predFindOld(Long id, Long donViId) {
 		BooleanExpression predAll = base;
 		if (id > 0) {
-			predAll = predAll.and(QDon.don.donGoc.id.eq(id));
+			predAll = predAll.and(QDon.don.donGocId.eq(id));
 			predAll = predAll.and(QDon.don.donChuyen.eq(true));
 			predAll = predAll.and(QDon.don.donViXuLyDonChuyen.id.eq(donViId));
 		}

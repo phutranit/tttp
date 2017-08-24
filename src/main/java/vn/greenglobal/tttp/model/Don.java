@@ -111,47 +111,44 @@ public class Don extends Model<Don> {
 	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
-	@OneToOne
-	private Don donLanTruoc;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLy;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyPhanHeXLD;
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThu;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThuChiTiet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViThamTraXacMinh;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViTiepDan;
-	@ManyToOne
-	private Don donGoc;
-	@ManyToOne
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private Don donGoc;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyDonChuyen;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyChiDinh;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoTTXMChiDinh;
-	@ManyToOne
-	private XuLyDon xuLyDonCuoiCung;
-	@ManyToOne
-	private GiaiQuyetDon giaiQuyetDonCuoiCung;
-	@ManyToOne
-	private GiaiQuyetDon giaiQuyetTTXMCuoiCung;
+	
+	private Long donGocId;
+	private Long xuLyDonCuoiCungId;
+	private Long giaiQuyetDonCuoiCungId;
+	private Long giaiQuyetTTXMCuoiCungId;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -453,23 +450,24 @@ public class Don extends Model<Don> {
 		this.coQuanDangGiaiQuyet = coQuanDangGiaiQuyet;
 	}
 
-	@ApiModelProperty(example = "{}")
-	public Don getDonLanTruoc() {
-		return donLanTruoc;
+//	@ApiModelProperty(example = "{}")
+//	public Don getDonGoc() {
+//		return donGoc;
+//	}
+//
+//	public void setDonGoc(Don donGoc) {
+//		this.donGoc = donGoc;
+//	}
+	
+	@ApiModelProperty(hidden = true)
+	public Long getDonGocId() {
+		return donGocId;
 	}
 
-	public void setDonLanTruoc(Don donLanTruoc) {
-		this.donLanTruoc = donLanTruoc;
+	public void setDonGocId(Long donGocId) {
+		this.donGocId = donGocId;
 	}
-
-	@ApiModelProperty(example = "{}")
-	public Don getDonGoc() {
-		return donGoc;
-	}
-
-	public void setDonGoc(Don donGoc) {
-		this.donGoc = donGoc;
-	}
+	
 
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonViXuLyDonChuyen() {
@@ -650,30 +648,30 @@ public class Don extends Model<Don> {
 	}
 	
 	@JsonIgnore
-	public XuLyDon getXuLyDonCuoiCung() {
-		return xuLyDonCuoiCung;
+	public Long getXuLyDonCuoiCungId() {
+		return xuLyDonCuoiCungId;
 	}
 
-	public void setXuLyDonCuoiCung(XuLyDon xuLyDonCuoiCung) {
-		this.xuLyDonCuoiCung = xuLyDonCuoiCung;
+	public void setXuLyDonCuoiCungId(Long xuLyDonCuoiCungId) {
+		this.xuLyDonCuoiCungId = xuLyDonCuoiCungId;
 	}
 
 	@JsonIgnore
-	public GiaiQuyetDon getGiaiQuyetDonCuoiCung() {
-		return giaiQuyetDonCuoiCung;
+	public Long getGiaiQuyetDonCuoiCungId() {
+		return giaiQuyetDonCuoiCungId;
 	}
 
-	public void setGiaiQuyetDonCuoiCung(GiaiQuyetDon giaiQuyetDonCuoiCung) {
-		this.giaiQuyetDonCuoiCung = giaiQuyetDonCuoiCung;
+	public void setGiaiQuyetDonCuoiCungId(Long giaiQuyetDonCuoiCungId) {
+		this.giaiQuyetDonCuoiCungId = giaiQuyetDonCuoiCungId;
 	}
 	
 	@JsonIgnore
-	public GiaiQuyetDon getGiaiQuyetTTXMCuoiCung() {
-		return giaiQuyetTTXMCuoiCung;
+	public Long getGiaiQuyetTTXMCuoiCungId() {
+		return giaiQuyetTTXMCuoiCungId;
 	}
 
-	public void setGiaiQuyetTTXMCuoiCung(GiaiQuyetDon giaiQuyetTTXMCuoiCung) {
-		this.giaiQuyetTTXMCuoiCung = giaiQuyetTTXMCuoiCung;
+	public void setGiaiQuyetTTXMCuoiCungId(Long giaiQuyetTTXMCuoiCungId) {
+		this.giaiQuyetTTXMCuoiCungId = giaiQuyetTTXMCuoiCungId;
 	}
 
 	@Transient
@@ -772,14 +770,15 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getListNguoiDungDon() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		if (getDonGoc() != null) { 
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 //			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
 //				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 //					list.add(dcd);
 //				}
 //			}
 			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
-					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+					.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
 							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
 							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		} else {
@@ -801,8 +800,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<DoanDiCung> getListDoanDiCung() {
 		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
-		if (getDonGoc() != null) { 
-			for (DoanDiCung dcd : getDonGoc().getDoanDiCungs()) {
+		if (getDonGocId() != null && getDonGocId() > 0) { 
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (DoanDiCung dcd : donGoc.getDoanDiCungs()) {
 				if (!dcd.isDaXoa()) {
 					list.add(dcd);
 				}
@@ -821,14 +821,15 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getNguoiDuocUyQuyen() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		if (getDonGoc() != null) { 
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 //			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
 //				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 //					return dcd;
 //				}
 //			}
 			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
-					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+					.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
 							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN))
 							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		} else { 
@@ -850,8 +851,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepUyQuyen() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -871,8 +873,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepChungChiHanhNghe() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -891,8 +894,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepVanBanDaGiaiQuyet() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -911,8 +915,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
-		if (getDonGoc() != null) {
-			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuBangChung tlbc : donGoc.getTaiLieuBangChungs()) {
 				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.TAI_LIEU_KEM_THEO.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
@@ -932,8 +937,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChungLuatSu() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
-		if (getDonGoc() != null) {
-			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuBangChung tlbc : donGoc.getTaiLieuBangChungs()) {
 				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
@@ -953,8 +959,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
 						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
@@ -980,8 +987,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaHanGQ() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
@@ -1000,8 +1008,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaoCoQuanDieuTra() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
@@ -1020,8 +1029,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonQuyetDinhGQ() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
@@ -1040,8 +1050,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonBaoCaoKQTTXM() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
@@ -1060,8 +1071,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
 //						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
@@ -1094,8 +1106,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonView() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
@@ -1128,8 +1141,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXM() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
@@ -1164,8 +1178,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXMView() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
@@ -1217,14 +1232,14 @@ public class Don extends Model<Don> {
 		return getId();
 	}
 	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getDonGocId() {
-		if (getDonGoc() != null) { 
-			return getDonGoc().getId();
-		}
-		return 0L;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Long getDonGocId() {
+//		if (getDonGoc() != null) { 
+//			return getDonGoc().getId();
+//		}
+//		return 0L;
+//	}
 	
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
@@ -1404,8 +1419,14 @@ public class Don extends Model<Don> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
-		return getThamQuyenGiaiQuyet();
+	public Map<String, Object> getThamQuyenGiaiQuyetInfo() {
+		if (getThamQuyenGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("thamQuyenGiaiQuyetId", getThamQuyenGiaiQuyet().getId());
+			map.put("ten", getThamQuyenGiaiQuyet().getTen());
+			return map;
+		}
+		return null;
 	}
 
 	@JsonIgnore
