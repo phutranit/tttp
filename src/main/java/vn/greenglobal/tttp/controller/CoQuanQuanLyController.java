@@ -96,14 +96,16 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 			List<CoQuanQuanLy> list = new ArrayList<>();
 
-			ThamSo thamSoUBND = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
-			ThamSo thamSoThanhTra = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
-			ThamSo thamSoPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
-			Long idCapPhongBan = Long.parseLong(thamSoPhongBan.getGiaTri().toString());
+			ThamSo thamSoCQQLUBND = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoCQQLThanhTra = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			Long idCapPhongBan = Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString());
 
-			if (donViId.equals(Long.parseLong(thamSoThanhTra.getGiaTri().toString()))) {
+			if (donViId.equals(Long.valueOf(thamSoCQQLUBND.getGiaTri().toString()))
+					|| donViId.equals(Long.valueOf(thamSoCQQLThanhTra.getGiaTri().toString()))) {
+				list.add(repo.findOne((Long.valueOf(thamSoCQQLUBND.getGiaTri().toString()))));
 				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService
-						.predicateFindAllNotPhongBan(Long.parseLong(thamSoUBND.getGiaTri().toString()), idCapPhongBan));
+						.predicateFindAllNotPhongBan(Long.valueOf(thamSoCQQLUBND.getGiaTri().toString()), idCapPhongBan));
 				list.addAll(listDonViCon);
 			} else {
 				list.add(repo.findOne(donViId));
