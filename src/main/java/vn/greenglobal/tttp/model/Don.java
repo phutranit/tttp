@@ -145,7 +145,7 @@ public class Don extends Model<Don> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoTTXMChiDinh;
 	
-	private Long donGoc_id;
+	private Long donGocId;
 	private Long xuLyDonCuoiCungId;
 	private Long giaiQuyetDonCuoiCungId;
 	private Long giaiQuyetTTXMCuoiCungId;
@@ -461,12 +461,13 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	public Long getDonGocId() {
-		return donGoc_id;
+		return donGocId;
 	}
 
-	public void setDonGocId(Long donGoc_id) {
-		this.donGoc_id = donGoc_id;
+	public void setDonGocId(Long donGocId) {
+		this.donGocId = donGocId;
 	}
+	
 
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonViXuLyDonChuyen() {
