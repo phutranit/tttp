@@ -51,6 +51,7 @@ import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
@@ -279,12 +280,19 @@ public class Application extends SpringBootServletInitializer {
 	
 	@Autowired
 	private ChucVuRepository chucVuRepository;
+
+	@Autowired
+	private DonRepository donRepository;
 	
 	@Autowired
 	private ChucVuService chucVuService;
 	
 	public CuocThanhTraRepository getCuocThanhTraRepository() {
 		return cuocThanhTraRepository;
+	}
+	
+	public DonRepository getDonRepository() {
+		return donRepository;
 	}
 
 	public DonCongDanRepository getDonCongDanRepository() {
