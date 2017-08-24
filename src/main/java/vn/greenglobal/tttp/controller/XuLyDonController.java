@@ -67,6 +67,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
@@ -109,6 +110,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@Autowired
 	private GiaiQuyetDonService giaiQuyetDonService;
 
+	@Autowired
+	private GiaiQuyetDonRepository giaiQuyetDonRepo;
+	
 	@Autowired
 	private XuLyDonRepository xuLyDonRepo;
 
@@ -206,9 +210,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				
 				if (don != null) {
-					if (don.getGiaiQuyetDonCuoiCung() == null) {
-						if (don.getXuLyDonCuoiCung() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
-							return new ResponseEntity<>(eass.toFullResource(don.getXuLyDonCuoiCung()), HttpStatus.OK);
+					if (don.getGiaiQuyetDonCuoiCungId() == null) {
+						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
+								&& don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+							XuLyDon xld = xuLyDonRepo.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
+							return new ResponseEntity<>(eass.toFullResource(xld), HttpStatus.OK);
 						} else {
 							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 							if (xuLyDon != null) {
@@ -638,6 +644,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						lichSuQTXLD.setThuTuThucHien(thuTu);
 						
 						donService.save(don, congChucId);
+						if (don.getThongTinGiaiQuyetDon() != null) { 
+							Long thongTinGiaiQuyetDonId = don.getThongTinGiaiQuyetDon().getId();
+							GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(giaiQuyetDonRepo, thongTinGiaiQuyetDonId, false);
+							GiaiQuyetDon giaiQuyetDonHienTaiTTXM = giaiQuyetDonService.predFindCurrent(giaiQuyetDonRepo, thongTinGiaiQuyetDonId, true);
+							giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+							if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonHienTaiTTXM.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+							giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
+							if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
+						}
 						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
@@ -1152,7 +1167,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		xuLyDonTiepTheo = xuLyDonService.save(xuLyDonTiepTheo, congChucId);
 		if (FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
-			don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
+			don.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
 		}
 		donService.save(don, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
@@ -1313,11 +1328,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo = xuLyDonService.save(xuLyDonTiepTheo, congChucId);
 		// set don
 		Don don = donRepo.findOne(donId);
-		don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
+//		don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-		don.setXuLyDonCuoiCung(xuLyDonTiepTheo);
+		don.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
 		don.setCurrentState(xuLyDonHienTai.getNextState());
 		
 		//tao lich su qua trinh xu ly don
@@ -1582,7 +1597,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //		giaiQuyetDon.setThuTuThucHien(1);
 		
 		giaiQuyetDon = chuyenCanBoGiaiQuyet(xuLyDon, xuLyDonHienTai, giaiQuyetDon, giaiQuyetDonTruongPhong, donViGiaiQuyet, thongTinGiaiQuyetDon, congChucId);
-		don.setGiaiQuyetDonCuoiCung(giaiQuyetDon);
+		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDon.getId());
 		donService.save(don, congChucId);
 		
 		//tao lich su qua trinh xu ly don
@@ -1769,7 +1784,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Don donMoi = new Don();
 		BeanUtils.copyProperties(donOld, donMoi);
 		donMoi.setId(null);
-		donMoi.setDonGoc(donOld);
+		donMoi.setDonGocId(donOld.getId());
 		donMoi.setDonChuyen(true);
 		donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		donMoi.setNgayBatDauXLD(Utils.localDateTimeNow());
@@ -1786,10 +1801,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTepDinhKems(new ArrayList<TepDinhKem>());
 		donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 		donMoi.setDonViXuLyGiaiQuyet(donVi.getDonVi());
+		donMoi.setDonViTiepDan(donVi.getDonVi());
 		donMoi.setKetQuaXLDGiaiQuyet(null);
 		donMoi.setDonViXuLyDonChuyen(donVi.getDonVi());
 		donMoi.setCanBoXuLyChiDinh(null);
-		donMoi.setXuLyDonCuoiCung(null);
+		donMoi.setXuLyDonCuoiCungId(null);
 		xuLyDonTiepTheo.setDon(donMoi);
 		
 		//tao lich su qua trinh xu ly don
@@ -1937,7 +1953,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		
-		Don donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGoc().getId()));
+		Don donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGocId()));
 		//donGoc.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
 		donGoc.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		//donGoc.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
@@ -1975,7 +1991,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
 		donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
-		donGoc.setXuLyDonCuoiCung(xuLyDonTiepTheo);
+		donGoc.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();

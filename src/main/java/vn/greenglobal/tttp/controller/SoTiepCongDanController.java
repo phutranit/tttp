@@ -1,4 +1,4 @@
-package vn.greenglobal.tttp.controller;
+ package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -47,6 +47,7 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -241,6 +242,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			boolean flagChuyenDonViKiemTra = false;
 			Don don = repoDon.findOne(soTiepCongDan.getDon().getId());
+			CoQuanQuanLy donVi = repoCoQuanQuanLy.findOne(donViId);
+			don.setDonViTiepDan(donVi);
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
 				soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
@@ -583,7 +586,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, loaiDon, linhVucId, linhVucChiTietChaId, linhVucChiTietConId), pageable);
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, loaiDon, linhVucId, linhVucChiTietChaId, linhVucChiTietConId, donViId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

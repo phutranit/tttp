@@ -492,10 +492,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				}
 				
 				if (don != null) {
-					if (don.getGiaiQuyetDonCuoiCung() != null && don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
-						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetDonCuoiCung()), HttpStatus.OK);
-					} else if (don.getGiaiQuyetTTXMCuoiCung() != null && donViId.equals(don.getDonViThamTraXacMinh().getId())) {
-						return new ResponseEntity<>(eass.toFullResource(don.getGiaiQuyetTTXMCuoiCung()), HttpStatus.OK);
+					System.out.println("don " +id);
+					if (don.getGiaiQuyetDonCuoiCungId() != null && don.getGiaiQuyetDonCuoiCungId() > 0
+							&& don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+						GiaiQuyetDon gqd = repo.findOne(don.getGiaiQuyetDonCuoiCungId());
+						return new ResponseEntity<>(eass.toFullResource(gqd), HttpStatus.OK);
+					} else if (don.getGiaiQuyetTTXMCuoiCungId() != null && don.getGiaiQuyetTTXMCuoiCungId() > 0
+							&& don.getDonViThamTraXacMinh() != null && donViId.equals(don.getDonViThamTraXacMinh().getId())) {
+						GiaiQuyetDon gqd = repo.findOne(don.getGiaiQuyetTTXMCuoiCungId());
+						return new ResponseEntity<>(eass.toFullResource(gqd), HttpStatus.OK);
 				 	} else {
 						GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 						if (giaiQuyetDon != null) {
@@ -549,8 +554,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
 		Don don = donRepo.findOne(donId);
 		don.setCurrentState(giaiQuyetDon.getNextState());
-		don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
-		don.setXuLyDonCuoiCung(null);
+		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+		don.setXuLyDonCuoiCungId(null);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -602,7 +607,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCurrentState(giaiQuyetDon.getNextState());
 		don.setTrangThaiDon(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setHoanThanhDon(true);
-		don.setGiaiQuyetDonCuoiCung(giaiQuyetDonHienTai);
+		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
 		donService.save(don, congChucId);
@@ -879,9 +884,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCurrentState(giaiQuyetDon.getNextState());
 		if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
 			if (isLaTTXM) {
-				don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonTiepTheo);
+				don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
 			} else {
-				don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
+				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
 			}
 		}		
 		donService.save(don, congChucId);
@@ -952,9 +957,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 		don.setCurrentState(giaiQuyetDon.getNextState());
 		if (isLaTTXM) {
-			don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonTiepTheo);
+			don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
 		} else {
-			don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
+			don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
 		}		
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1110,8 +1115,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCanBoXuLyChiDinh(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
-		don.setGiaiQuyetDonCuoiCung(giaiQuyetDonTiepTheo);
-		don.setGiaiQuyetTTXMCuoiCung(giaiQuyetDonHienTai);
+		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+		don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setCurrentState(canBoNhanKetQuaState);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1151,7 +1156,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(null);
 		don.setCurrentState(null);
-		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		//don.setKetQuaXLDGiaiQuyet(null);

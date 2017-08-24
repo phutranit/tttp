@@ -470,6 +470,7 @@ public class DonController extends TttpController<Don> {
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
 				
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -513,9 +514,8 @@ public class DonController extends TttpController<Don> {
 										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 							}
 						}
-					}					
-					
-					
+					}
+
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(donMoi);
@@ -653,13 +653,14 @@ public class DonController extends TttpController<Don> {
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
 				don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-				don.setXuLyDonCuoiCung(donOld.getXuLyDonCuoiCung());
-				don.setGiaiQuyetDonCuoiCung(donOld.getGiaiQuyetDonCuoiCung());
+				don.setXuLyDonCuoiCungId(donOld.getXuLyDonCuoiCungId());
+				don.setGiaiQuyetDonCuoiCungId(donOld.getGiaiQuyetDonCuoiCungId());
 				don.setTrangThaiXLDGiaiQuyet(donOld.getTrangThaiXLDGiaiQuyet());
 				don.setTrangThaiTTXM(donOld.getTrangThaiTTXM());
 				don.setDonViXuLyGiaiQuyet(donOld.getDonViXuLyGiaiQuyet());
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
+				don.setDonViTiepDan(donOld.getDonViTiepDan());
 				
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
