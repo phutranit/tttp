@@ -50,6 +50,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
@@ -134,6 +135,9 @@ public class Application extends SpringBootServletInitializer {
 						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
 						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen", "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi",
 						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
+						"/thongKeBaoCaos/tongHopKetQuaTiepCongDan/xuatExcel", "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonKhieuNai/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
 						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
 						"/soTiepCongDans/inPhieuHuongDanToCao",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
@@ -276,6 +280,17 @@ public class Application extends SpringBootServletInitializer {
 	@Autowired
 	private ChucVuService chucVuService;
 	
+	@Autowired
+	private DonRepository donRepository;
+	
+	public DonRepository getDonRepository() {
+		return donRepository;
+	}
+
+	public void setDonRepository(DonRepository donRepository) {
+		this.donRepository = donRepository;
+	}
+
 	public DonCongDanRepository getDonCongDanRepository() {
 		return donCongDanRepository;
 	}

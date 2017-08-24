@@ -43,6 +43,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private Don don;
 	@NotNull
 	@ManyToOne
@@ -560,16 +561,33 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return map;
 	}
 	
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public List<CoQuanQuanLy> getDanhSachDonViPhoiHops() {
+//		List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+//		for (CoQuanQuanLy donViPhoiHop : getDonViPhoiHops()) {
+//			if (!donViPhoiHop.isDaXoa()) {
+//				list.add(donViPhoiHop);
+//			}
+//		}
+//		return list;
+//	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public List<CoQuanQuanLy> getDanhSachDonViPhoiHops() {
-		List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+	public List<Map<String, Object>> getDanhSachDonViPhoiHops() {
+		List<Map<String, Object>> maps = new ArrayList<>();
 		for (CoQuanQuanLy donViPhoiHop : getDonViPhoiHops()) {
 			if (!donViPhoiHop.isDaXoa()) {
-				list.add(donViPhoiHop);
+				Map<String, Object> map = new HashMap<>();
+				map.put("coQuanQuanLyId", donViPhoiHop.getId());
+				map.put("ten", donViPhoiHop.getTen());
+				map.put("ma", donViPhoiHop.getMa());
+				map.put("moTa", donViPhoiHop.getMoTa());
+				maps.add(map);
 			}
 		}
-		return list;
+		return maps;
 	}
 	
 	@Transient
