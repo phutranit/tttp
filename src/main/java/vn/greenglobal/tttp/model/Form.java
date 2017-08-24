@@ -20,7 +20,7 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 @Entity
 @Table(name = "wf_form")
 @ApiModel
-public class 	 extends Model<Form> {
+public class Form extends Model<Form> {
 
 	private static final long serialVersionUID = -3975638610686661750L;
 
