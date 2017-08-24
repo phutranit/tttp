@@ -110,19 +110,6 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
-//						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT())) {
-//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-//									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-//						}
-//						if (params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null) {
-//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-//									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-//						}
-//						if (!Utils.isValidStringLength(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT(), 255)
-//								|| !Utils.isValidStringLength(params.getKeHoachThanhTra().getNamThanhTra(), 255)) {
-//							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
-//									ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
-//						}
 						if (params.getCuocThanhTras() == null || params.getCuocThanhTras().size() == 0) {
 							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CUOCTHANHTRA_REQUIRED.name(),
 									ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText(), ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText());
