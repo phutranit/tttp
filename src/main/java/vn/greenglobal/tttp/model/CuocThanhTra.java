@@ -27,6 +27,7 @@ import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
+import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 
 @Entity
 @Table(name = "cuocthanhtra")
@@ -60,9 +61,10 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String tenNguoi = "";
 	@Lob
 	private String donViPhoiHop = "";
+	@Lob
+	private String doiTuongThanhTraLienQuan = "";
 
 	private int thoiHanThanhTra = 0;
-	private int luotThanhTra = 0;
 	private int soVuDieuTra = 0;
 	private int soDoiTuongDieuTra = 0;
 	private int soVuThamNhung = 0;
@@ -78,7 +80,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private int soNguoiXuLyTrachNhiemDungDau = 0;
 	private int soViPham = 0;
 
-	private boolean giaoCoQuanDieuTra;
+	private boolean chuyenCoQuanDieuTra;
 	private boolean viPham;
 	private boolean phatHienThamNhung;
 	private boolean theoDoiThucHien;
@@ -135,6 +137,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private HinhThucThanhTraEnum hinhThucThanhTra;
 	@Enumerated(EnumType.STRING)
 	private LoaiHinhThanhTraEnum loaiHinhThanhTra;
+	@Enumerated(EnumType.STRING)
+	private TienDoThanhTraEnum tienDoThanhTra;
 
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
@@ -247,20 +251,20 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.donViPhoiHop = donViPhoiHop;
 	}
 
+	public String getDoiTuongThanhTraLienQuan() {
+		return doiTuongThanhTraLienQuan;
+	}
+
+	public void setDoiTuongThanhTraLienQuan(String doiTuongThanhTraLienQuan) {
+		this.doiTuongThanhTraLienQuan = doiTuongThanhTraLienQuan;
+	}
+
 	public int getThoiHanThanhTra() {
 		return thoiHanThanhTra;
 	}
 
 	public void setThoiHanThanhTra(int thoiHanThanhTra) {
 		this.thoiHanThanhTra = thoiHanThanhTra;
-	}
-
-	public int getLuotThanhTra() {
-		return luotThanhTra;
-	}
-
-	public void setLuotThanhTra(int luotThanhTra) {
-		this.luotThanhTra = luotThanhTra;
 	}
 
 	public int getSoVuDieuTra() {
@@ -375,12 +379,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soViPham = soViPham;
 	}
 
-	public boolean isGiaoCoQuanDieuTra() {
-		return giaoCoQuanDieuTra;
+	public boolean isChuyenCoQuanDieuTra() {
+		return chuyenCoQuanDieuTra;
 	}
 
-	public void setGiaoCoQuanDieuTra(boolean giaoCoQuanDieuTra) {
-		this.giaoCoQuanDieuTra = giaoCoQuanDieuTra;
+	public void setChuyenCoQuanDieuTra(boolean chuyenCoQuanDieuTra) {
+		this.chuyenCoQuanDieuTra = chuyenCoQuanDieuTra;
 	}
 
 	public boolean isViPham() {
@@ -765,6 +769,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setLoaiHinhThanhTra(LoaiHinhThanhTraEnum loaiHinhThanhTra) {
 		this.loaiHinhThanhTra = loaiHinhThanhTra;
+	}
+
+	public TienDoThanhTraEnum getTienDoThanhTra() {
+		return tienDoThanhTra;
+	}
+
+	public void setTienDoThanhTra(TienDoThanhTraEnum tienDoThanhTra) {
+		this.tienDoThanhTra = tienDoThanhTra;
 	}
 
 	public DoiTuongThanhTra getDoiTuongThanhTra() {
