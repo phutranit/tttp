@@ -25,6 +25,7 @@ public enum ApiErrorEnum {
 	DATA_EXISTS("Dữ liệu này đã tồn tại trong hệ thống."),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống."),
 	DOITUONGTHANHTRA_NOT_FOUND("Đối tượng thanh tra này không tồn tại trong hệ thống."),
+	CUOCTHANHTRA_NOT_FOUND("Cuộc thanh tra này không tồn tại trong hệ thống."),
 	ROLE_FORBIDDEN("Tài khoản hiện tại Không có quyền thực hiện chức năng này."),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator."),
 	DATA_USED("Dữ liệu này đang được sử dụng."),
