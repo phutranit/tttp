@@ -216,9 +216,8 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
-						KeHoachThanhTra keHoachThanhTra = params.getKeHoachThanhTra();
-						keHoachThanhTra.setId(id);
-						if (keHoachThanhTraService.checkExistsData(repo, keHoachThanhTra)) {
+						params.getKeHoachThanhTra().setId(id);
+						if (keHoachThanhTraService.checkExistsData(repo, params.getKeHoachThanhTra())) {
 							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 									ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 						}
@@ -234,6 +233,11 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						if (params.getCuocThanhTras() != null && params.getCuocThanhTras().size() > 0) {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
+								if (ctt != null && ctt.getId() > 0 && !cuocThanhTraService.isExists(cuocThanhTraRepository, ctt.getId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+											ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText());
+								}
+								
 								if (ctt.getDoiTuongThanhTraId() == null || ctt.getDoiTuongThanhTraId() == 0) {
 									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
 											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
@@ -251,33 +255,55 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+						KeHoachThanhTra keHoachThanhTraOld = repo.findOne(keHoachThanhTraService.predicateFindOne(params.getKeHoachThanhTra().getId()));
+						keHoachThanhTraOld.setGhiChu(params.getKeHoachThanhTra().getGhiChu());
+						keHoachThanhTraOld.setHinhThucKeHoachThanhTra(params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra());
+						keHoachThanhTraOld.setNamThanhTra(params.getKeHoachThanhTra().getNamThanhTra());
+						keHoachThanhTraOld.setNgayRaQuyetDinh(params.getKeHoachThanhTra().getNgayRaQuyetDinh());
+						keHoachThanhTraOld.setNguoiKy(params.getKeHoachThanhTra().getNguoiKy());
+						keHoachThanhTraOld.setQuyetDinhPheDuyetKTTT(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT());
 						
-						if (donViId != null && donViId > 0) {
-							CoQuanQuanLy donVi = new CoQuanQuanLy();
-							donVi.setId(donViId);
-							params.getKeHoachThanhTra().setDonVi(donVi);
-						}
-						KeHoachThanhTra khtt = keHoachThanhTraService.save(keHoachThanhTra, congChucId);
+						KeHoachThanhTra khtt = keHoachThanhTraService.save(keHoachThanhTraOld, congChucId);
 						if (khtt != null && khtt.getId() != null && khtt.getId() > 0) {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
 								CuocThanhTra cttSave = new CuocThanhTra();
-								cttSave.setId(ctt.getId());
-								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
-								cttSave.setKyThanhTra(ctt.getKyThanhTra());
-								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
-								cttSave.setGhiChu(ctt.getGhiChu());
-								cttSave.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
-								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
-								dttt.setId(ctt.getDoiTuongThanhTraId());
-								cttSave.setDoiTuongThanhTra(dttt);
-								if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
-									CoQuanQuanLy dvct = new CoQuanQuanLy();
-									dvct.setId(ctt.getDonViChuTriId());
-									cttSave.setDonViChuTri(dvct);
+								if (ctt.getId() != null && ctt.getId() > 0) {
+									CuocThanhTra cuocThanhTraOld = cuocThanhTraRepository.findOne(cuocThanhTraService.predicateFindOne(ctt.getId()));
+									if (cuocThanhTraOld != null) {
+										cuocThanhTraOld.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
+										cuocThanhTraOld.setKyThanhTra(ctt.getKyThanhTra());
+										cuocThanhTraOld.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
+										cuocThanhTraOld.setGhiChu(ctt.getGhiChu());
+										cuocThanhTraOld.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
+										DoiTuongThanhTra dttt = new DoiTuongThanhTra();
+										dttt.setId(ctt.getDoiTuongThanhTraId());
+										cuocThanhTraOld.setDoiTuongThanhTra(dttt);
+										if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
+											CoQuanQuanLy dvct = new CoQuanQuanLy();
+											dvct.setId(ctt.getDonViChuTriId());
+											cuocThanhTraOld.setDonViChuTri(dvct);
+										}
+										cuocThanhTraOld.setDonViPhoiHop(ctt.getDonViPhoiHop());
+										cuocThanhTraOld.setKeHoachThanhTra(khtt);
+										cttSave = cuocThanhTraOld;
+									}
+								} else {
+									cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
+									cttSave.setKyThanhTra(ctt.getKyThanhTra());
+									cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
+									cttSave.setGhiChu(ctt.getGhiChu());
+									cttSave.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
+									DoiTuongThanhTra dttt = new DoiTuongThanhTra();
+									dttt.setId(ctt.getDoiTuongThanhTraId());
+									cttSave.setDoiTuongThanhTra(dttt);
+									if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
+										CoQuanQuanLy dvct = new CoQuanQuanLy();
+										dvct.setId(ctt.getDonViChuTriId());
+										cttSave.setDonViChuTri(dvct);
+									}
+									cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
+									cttSave.setKeHoachThanhTra(khtt);
 								}
-								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
-								cttSave.setKeHoachThanhTra(khtt);
 								cuocThanhTraService.save(cttSave, congChucId);
 							}
 						}
