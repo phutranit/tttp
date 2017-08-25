@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.service.DoiTuongThanhTraService;
 import vn.greenglobal.tttp.util.Utils;
@@ -38,6 +39,9 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 
 	@Autowired
 	private DoiTuongThanhTraRepository repo;
+	
+	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepository;
 
 	@Autowired
 	private DoiTuongThanhTraService doiTuongThanhTraService;
@@ -164,10 +168,10 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-//			if (doiTuongThanhTraService.checkUsedData(repo, donRepository, id)) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-//						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-//			}
+			if (doiTuongThanhTraService.checkUsedData(cuocThanhTraRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
 
 			DoiTuongThanhTra doiTuongThanhTra = doiTuongThanhTraService.delete(repo, id);
 			if (doiTuongThanhTra == null) {
