@@ -34,7 +34,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.docx4j.model.properties.run.Italics;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;
 
