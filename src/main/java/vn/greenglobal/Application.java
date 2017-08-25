@@ -141,6 +141,10 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
 						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
 						"/soTiepCongDans/inPhieuHuongDanToCao",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -156,7 +160,6 @@ public class Application extends SpringBootServletInitializer {
 						// .and().httpBasic()
 						.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
 						.and().csrf().disable();
-
 			}
 		};
 	}
