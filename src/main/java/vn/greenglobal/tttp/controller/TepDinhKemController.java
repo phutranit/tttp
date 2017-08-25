@@ -35,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "TepDinhKems", description = "Tệp đính kèm")
+@Api(value = "tepDinhKems", description = "Tệp đính kèm")
 public class TepDinhKemController extends TttpController<TepDinhKem> {
 
 	@Autowired

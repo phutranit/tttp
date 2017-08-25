@@ -37,7 +37,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy; 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
@@ -49,6 +49,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
@@ -140,6 +141,10 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
 						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
 						"/soTiepCongDans/inPhieuHuongDanToCao",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -155,7 +160,6 @@ public class Application extends SpringBootServletInitializer {
 						// .and().httpBasic()
 						.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
 						.and().csrf().disable();
-
 			}
 		};
 	}
@@ -272,23 +276,26 @@ public class Application extends SpringBootServletInitializer {
 	}
 	
 	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepository;
+	
+	@Autowired
 	private DonCongDanRepository donCongDanRepository;
 	
 	@Autowired
 	private ChucVuRepository chucVuRepository;
+
+	@Autowired
+	private DonRepository donRepository;
 	
 	@Autowired
 	private ChucVuService chucVuService;
 	
-	@Autowired
-	private DonRepository donRepository;
+	public CuocThanhTraRepository getCuocThanhTraRepository() {
+		return cuocThanhTraRepository;
+	}
 	
 	public DonRepository getDonRepository() {
 		return donRepository;
-	}
-
-	public void setDonRepository(DonRepository donRepository) {
-		this.donRepository = donRepository;
 	}
 
 	public DonCongDanRepository getDonCongDanRepository() {

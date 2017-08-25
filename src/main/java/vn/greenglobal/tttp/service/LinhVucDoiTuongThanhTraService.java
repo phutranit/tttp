@@ -12,8 +12,11 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.LinhVucDoiTuongThanhTra;
+import vn.greenglobal.tttp.model.QDoiTuongThanhTra;
 import vn.greenglobal.tttp.model.QLinhVucDoiTuongThanhTra;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.LinhVucDoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -70,18 +73,17 @@ public class LinhVucDoiTuongThanhTraService {
 		return linhVucDoiTuongThanhTras != null && linhVucDoiTuongThanhTras.size() > 0 ? true : false;
 	}
 
-//	public boolean checkUsedData(DonRepository donRepository, Long id) {
-//		List<Don> donList = (List<Don>) donRepository.findAll(QDon.don.daXoa.eq(false)
-//				.and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
-//				.or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
-//
-//		if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) || (donList != null && donList.size() > 0)
-//				|| (donList != null && donList.size() > 0)) {
-//			return true;
-//		}
-//
-//		return false;
-//	}
+	public boolean checkUsedData(DoiTuongThanhTraRepository doiTuongThanhTraRepository, Long id) {
+		List<DoiTuongThanhTra> doiTuongThanhTralist = (List<DoiTuongThanhTra>) doiTuongThanhTraRepository
+				.findAll(QDoiTuongThanhTra.doiTuongThanhTra.daXoa.eq(false)
+						.and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(id)));
+
+		if (doiTuongThanhTralist != null && doiTuongThanhTralist.size() > 0) {
+			return true;
+		}
+
+		return false;
+	}
 	
 	public LinhVucDoiTuongThanhTra save(LinhVucDoiTuongThanhTra obj, Long congChucId) {
 		return Utils.save(linhVucDoiTuongThanhTraRepository, obj, congChucId);
