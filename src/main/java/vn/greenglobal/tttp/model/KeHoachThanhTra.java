@@ -53,6 +53,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra;
 	
 	@Fetch(FetchMode.SELECT)
+	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 
@@ -104,6 +105,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.hinhThucKeHoachThanhTra = hinhThucKeHoachThanhTra;
 	}
 
+	@ApiModelProperty( hidden = true )
 	public CoQuanQuanLy getDonVi() {
 		return donVi;
 	}

@@ -6,7 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -16,8 +20,8 @@ public class CuocThanhTraService {
 	@Autowired
 	private CuocThanhTraRepository cuocThanhTraRepository;
 
-//	BooleanExpression base = QDoiTuongThanhTra.doiTuongThanhTra.daXoa.eq(false);
-//	
+	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
+		
 //	public Predicate predicateFindAll(String tuKhoa, Long linhVucId) {
 //		BooleanExpression predAll = base;
 //		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
@@ -30,19 +34,19 @@ public class CuocThanhTraService {
 //
 //		return predAll;
 //	}
-//
-//	public Predicate predicateFindOne(Long id) {
-//		return base.and(QDoiTuongThanhTra.doiTuongThanhTra.id.eq(id));
-//	}
-//
-//	public boolean isExists(DoiTuongThanhTraRepository repo, Long id) {
-//		if (id != null && id > 0) {
-//			Predicate predicate = base.and(QDoiTuongThanhTra.doiTuongThanhTra.id.eq(id));
-//			return repo.exists(predicate);
-//		}
-//		return false;
-//	}
-//
+
+	public Predicate predicateFindOne(Long id) {
+		return base.and(QCuocThanhTra.cuocThanhTra.id.eq(id));
+	}
+
+	public boolean isExists(CuocThanhTraRepository repo, Long id) {
+		if (id != null && id > 0) {
+			Predicate predicate = base.and(QCuocThanhTra.cuocThanhTra.id.eq(id));
+			return repo.exists(predicate);
+		}
+		return false;
+	}
+
 //	public DoiTuongThanhTra delete(DoiTuongThanhTraRepository repo, Long id) {
 //		DoiTuongThanhTra doiTuongThanhTra = repo.findOne(predicateFindOne(id));
 //
