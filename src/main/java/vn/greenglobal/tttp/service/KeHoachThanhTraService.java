@@ -13,8 +13,11 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
+import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.model.QKeHoachThanhTra;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.KeHoachThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -88,18 +91,17 @@ public class KeHoachThanhTraService {
 		return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true : false;
 	}
 
-//	public boolean checkUsedData(DonRepository donRepository, Long id) {
-//		List<Don> donList = (List<Don>) donRepository.findAll(QDon.don.daXoa.eq(false)
-//				.and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
-//				.or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
-//
-//		if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) || (donList != null && donList.size() > 0)
-//				|| (donList != null && donList.size() > 0)) {
-//			return true;
-//		}
-//
-//		return false;
-//	}
+	public boolean checkUsedData(CuocThanhTraRepository cuocThanhTraRepository, Long id) {
+		List<CuocThanhTra> cuocThanhTraList = (List<CuocThanhTra>) cuocThanhTraRepository
+				.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(id)));
+
+		if (cuocThanhTraList != null && cuocThanhTraList.size() > 0) {
+			return true;
+		}
+
+		return false;
+	}
 	
 	public KeHoachThanhTra save(KeHoachThanhTra obj, Long congChucId) {
 		return Utils.save(keHoachThanhTraRepository, obj, congChucId);

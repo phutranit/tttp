@@ -33,6 +33,7 @@ import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_Post_Patch;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.KeHoachThanhTraRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
@@ -50,6 +51,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 	
 	@Autowired
 	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
+	
+	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepository;
 
 	@Autowired
 	private KeHoachThanhTraService keHoachThanhTraService;
@@ -94,9 +98,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 	@RequestMapping(method = RequestMethod.POST, value = "/keHoachThanhTras")
 	@ApiOperation(value = "Thêm mới Kế Hoạch Thanh Tra", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = Medial_KeHoachThanhTra_Post_Patch.class),
-			@ApiResponse(code = 201, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = Medial_KeHoachThanhTra_Post_Patch.class) })
-	public ResponseEntity<Object> createMulti(
+			@ApiResponse(code = 200, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = KeHoachThanhTra.class),
+			@ApiResponse(code = 201, message = "Thêm mới Kế Hoạch Thanh Tra thành công", response = KeHoachThanhTra.class) })
+	public ResponseEntity<Object> create(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestBody Medial_KeHoachThanhTra_Post_Patch params, PersistentEntityResourceAssembler eass) {
 
@@ -194,89 +198,124 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 		}
 	}
 
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	@RequestMapping(method = RequestMethod.PATCH, value = "/keHoachThanhTras")
-//	@ApiOperation(value = "Cập nhật nhiều Tài liệu văn thư", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 200, message = "Cập nhật nhiều Tài liệu văn thư thành công", response = Medial_TaiLieuVanThu_Post_Patch.class) })
-//	public @ResponseBody ResponseEntity<Object> updateMulti(
-//			@RequestHeader(value = "Authorization", required = true) String authorization,
-//			@RequestBody Medial_TaiLieuVanThu_Post_Patch params, PersistentEntityResourceAssembler eass) {
-//
-//		try {
-//			Medial_TaiLieuVanThu_Post_Patch result = new Medial_TaiLieuVanThu_Post_Patch();
-//			List<TaiLieuVanThu> listUpdate = new ArrayList<TaiLieuVanThu>();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.PATCH, value = "/keHoachThanhTras")
+	@ApiOperation(value = "Cập nhật Kế Hoạch Thanh Tra", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Kế Hoạch Thanh Tra thành công", response = KeHoachThanhTra.class) })
+	public @ResponseBody ResponseEntity<Object> update(
+			@RequestHeader(value = "Authorization", required = true) String authorization, @PathVariable("id") long id,
+			@RequestBody Medial_KeHoachThanhTra_Post_Patch params, PersistentEntityResourceAssembler eass) {
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (params != null && params.getKeHoachThanhTra() != null) {
+				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
+					@Override
+					public Object doInTransaction(TransactionStatus arg0) {
+						KeHoachThanhTra keHoachThanhTra = params.getKeHoachThanhTra();
+						keHoachThanhTra.setId(id);
+						if (keHoachThanhTraService.checkExistsData(repo, keHoachThanhTra)) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
+									ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
+						}
 
-//			if (params != null) {
-//				return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
-//					@Override
-//					public Object doInTransaction(TransactionStatus arg0) {
-//						if (params.getTaiLieuVanThus().size() > 0) {
-//
-//							for (TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-//								TaiLieuVanThu tlvt = keHoachThanhTraService.save(taiLieuVanThu, Long.valueOf(
-//										profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//								result.getTaiLieuVanThus().add(tlvt);
-//							}
-//						}
-//						return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-//					}
-//				});
-//			}
-//
-//			return new ResponseEntity<>(eass.toFullResource(result), HttpStatus.OK);
-//		} catch (Exception e) {
-//			return Utils.responseInternalServerErrors(e);
-//		}
-//	}
+						if (!keHoachThanhTraService.isExists(repo, id)) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+									ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+						}
+						
+						if (params.getCuocThanhTras() == null || params.getCuocThanhTras().size() == 0) {
+							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.CUOCTHANHTRA_REQUIRED.name(),
+									ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText(), ApiErrorEnum.CUOCTHANHTRA_REQUIRED.getText());
+						}
+						if (params.getCuocThanhTras() != null && params.getCuocThanhTras().size() > 0) {
+							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
+								if (ctt.getDoiTuongThanhTraId() == null || ctt.getDoiTuongThanhTraId() == 0) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+											ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+								}
+								if (!doiTuongThanhTraService.isExists(doiTuongThanhTraRepository, ctt.getDoiTuongThanhTraId())) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.name(),
+											ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText());
+								}
+								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
+										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
+									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+								}
+							}
+						}
+						
+						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+						
+						if (donViId != null && donViId > 0) {
+							CoQuanQuanLy donVi = new CoQuanQuanLy();
+							donVi.setId(donViId);
+							params.getKeHoachThanhTra().setDonVi(donVi);
+						}
+						KeHoachThanhTra khtt = keHoachThanhTraService.save(keHoachThanhTra, congChucId);
+						if (khtt != null && khtt.getId() != null && khtt.getId() > 0) {
+							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
+								CuocThanhTra cttSave = new CuocThanhTra();
+								cttSave.setId(ctt.getId());
+								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
+								cttSave.setKyThanhTra(ctt.getKyThanhTra());
+								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
+								cttSave.setGhiChu(ctt.getGhiChu());
+								cttSave.setLinhVucThanhTra(ctt.getLinhVucThanhTra());
+								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
+								dttt.setId(ctt.getDoiTuongThanhTraId());
+								cttSave.setDoiTuongThanhTra(dttt);
+								if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
+									CoQuanQuanLy dvct = new CoQuanQuanLy();
+									dvct.setId(ctt.getDonViChuTriId());
+									cttSave.setDonViChuTri(dvct);
+								}
+								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
+								cttSave.setKeHoachThanhTra(khtt);
+								cuocThanhTraService.save(cttSave, congChucId);
+							}
+						}
+						
+						return new ResponseEntity<>(eass.toFullResource(khtt), HttpStatus.CREATED);
+					}
+				});
+			}
 
-//	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/{id}")
-//	@ApiOperation(value = "Xoá Tài liệu văn thư", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Tài liệu văn thư thành công") })
-//	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
-//			@PathVariable("id") Long id) {
-//
-//		try {
-//			TaiLieuVanThu taiLieuVanThu = keHoachThanhTraService.delete(repo, id);
-//			if (taiLieuVanThu == null) {
-//				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-//						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-//			}
-//
-//			keHoachThanhTraService.save(taiLieuVanThu,
-//					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		} catch (Exception e) {
-//			return Utils.responseInternalServerErrors(e);
-//		}
-//	}
-//
-//	@RequestMapping(method = RequestMethod.DELETE, value = "/taiLieuVanThus/multi")
-//	@ApiOperation(value = "Xoá nhiều Tài liệu văn thư", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá nhiều Tài liệu văn thư thành công") })
-//	public ResponseEntity<Object> deleteMulti(@RequestHeader(value = "Authorization", required = true) String authorization,
-//			@RequestBody Medial_TaiLieuVanThu_Delete params) {
-//
-//		try {
-//			List<TaiLieuVanThu> listDelete = new ArrayList<TaiLieuVanThu>();
-//			if (params != null && params.getTaiLieuVanThus().size() > 0) {
-//				for (Medial_TaiLieuVanThu taiLieuVanThu : params.getTaiLieuVanThus()) {
-//					TaiLieuVanThu tlvt = keHoachThanhTraService.delete(repo, taiLieuVanThu.getId());
-//					if (tlvt == null) {
-//						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-//								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
-//					}
-//					listDelete.add(tlvt);
-//				}
-//				for (TaiLieuVanThu tlvt : listDelete) {
-//					keHoachThanhTraService.save(tlvt, Long
-//							.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-//				}
-//			}
-//
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		} catch (Exception e) {
-//			return Utils.responseInternalServerErrors(e);
-//		}
-//	}
+			return new ResponseEntity<>(eass.toFullResource(new KeHoachThanhTra()), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/keHoachThanhTras/{id}")
+	@ApiOperation(value = "Xoá Kế Hoạch Thanh Tra", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Kế Hoạch Thanh Tra thành công") })
+	public ResponseEntity<Object> delete(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
+
+		try {
+			KeHoachThanhTra keHoachThanhTra = keHoachThanhTraService.delete(repo, id);
+			if (keHoachThanhTra == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			if (keHoachThanhTraService.checkUsedData(cuocThanhTraRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
+
+			keHoachThanhTraService.save(keHoachThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 }
