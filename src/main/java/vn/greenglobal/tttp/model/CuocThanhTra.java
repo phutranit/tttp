@@ -47,17 +47,19 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@Size(max = 255)
 	private String soQDXuPhatHCDuocBanHanh = "";
 	@Size(max = 255)
-	private String phamViThanhTra = "";
+	private String kyThanhTra = "";
 	@Size(max = 560)
 	private String canCuThanhTraLai = "";
-	@Lob
+//	@Lob
 	private String noiDungThanhTra = "";
-	@Lob
+//	@Lob
 	private String ghiChu = "";
-	@Lob
+//	@Lob
 	private String tomTatKetLuanThanhTra = "";
-	@Lob
+//	@Lob
 	private String tenNguoi = "";
+	@Lob
+	private String donViPhoiHop = "";
 
 	private int thoiHanThanhTra = 0;
 	private int luotThanhTra = 0;
@@ -146,13 +148,9 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@Fetch(FetchMode.SELECT)
 	@ManyToOne
 	private CoQuanQuanLy donViTheoDoi;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "cuocthanhtra_has_donviphoihop", joinColumns = {
-			@JoinColumn(name = "cuocThanhTra_id") }, inverseJoinColumns = { @JoinColumn(name = "coQuanQuanLy_id") })
-	@Fetch(value = FetchMode.SELECT)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<CoQuanQuanLy> donViPhoiHops = new ArrayList<CoQuanQuanLy>();
+	@Fetch(FetchMode.SELECT)
+	@ManyToOne
+	private CoQuanQuanLy donViChuTri;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "cuocthanhtra_has_thanhviendoan", joinColumns = {
@@ -193,12 +191,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soQDXuPhatHCDuocBanHanh = soQDXuPhatHCDuocBanHanh;
 	}
 
-	public String getPhamViThanhTra() {
-		return phamViThanhTra;
+	public String getKyThanhTra() {
+		return kyThanhTra;
 	}
 
-	public void setPhamViThanhTra(String phamViThanhTra) {
-		this.phamViThanhTra = phamViThanhTra;
+	public void setKyThanhTra(String kyThanhTra) {
+		this.kyThanhTra = kyThanhTra;
 	}
 
 	public String getCanCuThanhTraLai() {
@@ -239,6 +237,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setTenNguoi(String tenNguoi) {
 		this.tenNguoi = tenNguoi;
+	}
+
+	public String getDonViPhoiHop() {
+		return donViPhoiHop;
+	}
+
+	public void setDonViPhoiHop(String donViPhoiHop) {
+		this.donViPhoiHop = donViPhoiHop;
 	}
 
 	public int getThoiHanThanhTra() {
@@ -793,12 +799,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.donViTheoDoi = donViTheoDoi;
 	}
 
-	public List<CoQuanQuanLy> getDonViPhoiHops() {
-		return donViPhoiHops;
+	public CoQuanQuanLy getDonViChuTri() {
+		return donViChuTri;
 	}
 
-	public void setDonViPhoiHops(List<CoQuanQuanLy> donViPhoiHops) {
-		this.donViPhoiHops = donViPhoiHops;
+	public void setDonViChuTri(CoQuanQuanLy donViChuTri) {
+		this.donViChuTri = donViChuTri;
 	}
 
 	public List<ThanhVienDoan> getThanhVienDoans() {
