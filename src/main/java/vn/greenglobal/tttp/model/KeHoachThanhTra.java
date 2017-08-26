@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -36,15 +35,15 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private static final long serialVersionUID = -4128391955224263426L;
 
 	@Size(max=255)
-	private String namThanhTra = "";
-	@Size(max=255)
 	private String nguoiKy = "";
 	@NotBlank
 	@Size(max=255)
 	private String quyetDinhPheDuyetKTTT = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";
 
+	private int namThanhTra = 0;
+	
 	@NotNull
 	private LocalDateTime ngayRaQuyetDinh;
 	
@@ -53,16 +52,9 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra;
 	
 	@Fetch(FetchMode.SELECT)
+	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
-
-	public String getNamThanhTra() {
-		return namThanhTra;
-	}
-
-	public void setNamThanhTra(String namThanhTra) {
-		this.namThanhTra = namThanhTra;
-	}
 
 	public String getNguoiKy() {
 		return nguoiKy;
@@ -88,6 +80,14 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
+	public int getNamThanhTra() {
+		return namThanhTra;
+	}
+
+	public void setNamThanhTra(int namThanhTra) {
+		this.namThanhTra = namThanhTra;
+	}
+
 	public LocalDateTime getNgayRaQuyetDinh() {
 		return ngayRaQuyetDinh;
 	}
@@ -104,6 +104,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.hinhThucKeHoachThanhTra = hinhThucKeHoachThanhTra;
 	}
 
+	@ApiModelProperty( hidden = true )
 	public CoQuanQuanLy getDonVi() {
 		return donVi;
 	}

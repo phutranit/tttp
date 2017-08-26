@@ -58,6 +58,7 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
+import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.util.Utils;
@@ -1527,6 +1528,38 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/tienDoThanhTras")
+	@ApiOperation(value = "Lấy danh sách tiến độ thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTienDoThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", TienDoThanhTraEnum.DANG_TIEN_HANH.getText());
+		object.put("giaTri", TienDoThanhTraEnum.DANG_TIEN_HANH.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP.getText());
+		object.put("giaTri", TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN.getText());
+		object.put("giaTri", TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.getText());
+		object.put("giaTri", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/canCuThanhTraLais")
 	@ApiOperation(value = "Lấy danh sách căn cứ thanh tra lại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getCanCuThanhTraLais(
@@ -1601,6 +1634,26 @@ public class EnumController {
 		object.put("ten", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.getText());
 		object.put("giaTri", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.name());
 		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/namThanhTras")
+	@ApiOperation(value = "Lấy danh sách các năm thanh tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getNamThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+		int current = Utils.localDateTimeNow().getYear();
+		for (int i = 2010; i <= current; i++) {
+			object = new HashMap<String, Object>();
+			object.put("ten", i);
+			object.put("giaTri", i);
+			list.add(object);
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
