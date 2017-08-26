@@ -75,7 +75,8 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, Pageable pageable,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -87,7 +88,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			}
 			
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, donViId), pageable);
+			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, namThanhTra, donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -162,6 +163,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									dvct.setId(ctt.getDonViChuTriId());
 									cttSave.setDonViChuTri(dvct);
 								}
+								CoQuanQuanLy donVi = new CoQuanQuanLy();
+								donVi.setId(donViId);
+								cttSave.setDonVi(donVi);
 								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 								cttSave.setKeHoachThanhTra(khtt);
 								cuocThanhTraService.save(cttSave, congChucId);
@@ -217,10 +221,6 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
 						params.getKeHoachThanhTra().setId(id);
-						if (keHoachThanhTraService.checkExistsData(repo, params.getKeHoachThanhTra())) {
-							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-									ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-						}
 
 						if (!keHoachThanhTraService.isExists(repo, id)) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -255,6 +255,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 						KeHoachThanhTra keHoachThanhTraOld = repo.findOne(keHoachThanhTraService.predicateFindOne(params.getKeHoachThanhTra().getId()));
 						keHoachThanhTraOld.setGhiChu(params.getKeHoachThanhTra().getGhiChu());
 						keHoachThanhTraOld.setHinhThucKeHoachThanhTra(params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra());
@@ -301,6 +302,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										dvct.setId(ctt.getDonViChuTriId());
 										cttSave.setDonViChuTri(dvct);
 									}
+									CoQuanQuanLy donVi = new CoQuanQuanLy();
+									donVi.setId(donViId);
+									cttSave.setDonVi(donVi);
 									cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 									cttSave.setKeHoachThanhTra(khtt);
 								}
