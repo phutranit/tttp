@@ -83,7 +83,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		for (int i = 2010; i <= current; i++) {
+		for (int i = current; i >= 2010; i--) {
 			object = new HashMap<String, Object>();
 			object.put("ten", i);
 			object.put("giaTri", i);
@@ -1648,7 +1648,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		for (int i = 2010; i <= current; i++) {
+		for (int i = current; i >= 2010; i--) {
 			object = new HashMap<String, Object>();
 			object.put("ten", i);
 			object.put("giaTri", i);

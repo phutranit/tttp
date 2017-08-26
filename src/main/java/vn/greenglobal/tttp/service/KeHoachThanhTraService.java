@@ -98,7 +98,8 @@ public class KeHoachThanhTraService {
 	public boolean checkUsedData(CuocThanhTraRepository cuocThanhTraRepository, Long id) {
 		List<CuocThanhTra> cuocThanhTraList = (List<CuocThanhTra>) cuocThanhTraRepository
 				.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(id)));
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(id))
+				.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.isNotNull()));
 
 		if (cuocThanhTraList != null && cuocThanhTraList.size() > 0) {
 			return true;

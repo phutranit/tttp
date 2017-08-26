@@ -6,7 +6,8 @@ public enum ProcessTypeEnum {
 	XU_LY_DON("Xử lý đơn"),
 	KIEM_TRA_DE_XUAT("Kiểm tra đề xuất"),
 	GIAI_QUYET_DON("Giải quyết đơn"),
-	THAM_TRA_XAC_MINH("Thẩm tra xác minh");
+	THAM_TRA_XAC_MINH("Thẩm tra xác minh"),
+	THANH_TRA("Thanh tra");
 	
 	ProcessTypeEnum(String text) {
 		this.text = text;
