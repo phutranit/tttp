@@ -661,7 +661,8 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
-				
+				don.setThanhLapDon(donOld.isThanhLapDon());
+
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				}
@@ -805,7 +806,7 @@ public class DonController extends TttpController<Don> {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 						don.setCurrentState(beginState);
 					}
-				} else { 
+				} else {
 					if (don.isThanhLapDon()) {
 						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
@@ -814,6 +815,10 @@ public class DonController extends TttpController<Don> {
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
+						don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
+						don.setHuongXuLyXLD(donOld.getHuongXuLyXLD());
+						don.setKetQuaXLDGiaiQuyet(donOld.getKetQuaXLDGiaiQuyet());
+						
 						if (donOld.getThoiHanXuLyXLD() == null) {
 							don.setNgayBatDauXLD(Utils.localDateTimeNow());
 							if (don.getThoiHanXuLyXLD() == null) {
