@@ -163,6 +163,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									dvct.setId(ctt.getDonViChuTriId());
 									cttSave.setDonViChuTri(dvct);
 								}
+								CoQuanQuanLy donVi = new CoQuanQuanLy();
+								donVi.setId(donViId);
+								cttSave.setDonVi(donVi);
 								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 								cttSave.setKeHoachThanhTra(khtt);
 								cuocThanhTraService.save(cttSave, congChucId);
@@ -252,6 +255,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 						KeHoachThanhTra keHoachThanhTraOld = repo.findOne(keHoachThanhTraService.predicateFindOne(params.getKeHoachThanhTra().getId()));
 						keHoachThanhTraOld.setGhiChu(params.getKeHoachThanhTra().getGhiChu());
 						keHoachThanhTraOld.setHinhThucKeHoachThanhTra(params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra());
@@ -298,6 +302,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										dvct.setId(ctt.getDonViChuTriId());
 										cttSave.setDonViChuTri(dvct);
 									}
+									CoQuanQuanLy donVi = new CoQuanQuanLy();
+									donVi.setId(donViId);
+									cttSave.setDonVi(donVi);
 									cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 									cttSave.setKeHoachThanhTra(khtt);
 								}
