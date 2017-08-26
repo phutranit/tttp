@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
@@ -23,8 +24,6 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
-import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
-import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
@@ -40,128 +39,163 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private static final long serialVersionUID = -5826384114395527137L;
 
 	@Size(max = 255)
-	private String ten = "";
+	private String ten = "";//
+	@Size(max = 255) // Thanh lap doan
+	private String soQuyetDinhThanhLapDoan = "";//
+	@Size(max = 255) // Vi pham
+	private String soQDXuPhatHCDuocBanHanh = "";//
+	@Size(max = 255) // Pham vi thanh tra
+	private String kyThanhTra = "";//
 	@Size(max = 255)
-	private String soQuyetDinh = "";
+	private String donViBanHanh = "";//
 	@Size(max = 255)
-	private String soQuyetDinhThanhLapDoan = "";
+	private String soKetLuanThanhTra = "";//
 	@Size(max = 255)
-	private String soQDXuPhatHCDuocBanHanh = "";
+	private String soQuyetDinhGiaHan = "";//
 	@Size(max = 255)
-	private String kyThanhTra = "";
-	@Size(max = 560)
-	private String canCuThanhTraLai = "";
-//	@Lob
-	private String noiDungThanhTra = "";
-//	@Lob
-	private String ghiChu = "";
-//	@Lob
-	private String tomTatKetLuanThanhTra = "";
-//	@Lob
-	private String tenNguoi = "";
-	@Lob
-	private String donViPhoiHop = "";
-	@Lob
-	private String doiTuongThanhTraLienQuan = "";
+	private String soQuyetDinhVeViecThanhTra = "";//
+	@Size(max = 255)
+	private String ghiChu = "";//
+	//@Lob
+	private String noiDungThanhTra = "";//
+	//@Lob
+	private String canCuThanhTraDotXuat = "";//
+	//@Lob
+	private String canCuThanhTraLai = "";//
+	//@Lob
+	private String tomTatKetLuanThanhTra = "";//
+	//@Lob // Tham nhung
+	private String tenNguoi = "";//
+	//@Lob
+	private String donViPhoiHop = "";//
+	//@Lob
+	private String doiTuongThanhTraLienQuan = "";//
+	//@Lob
+	private String doiTuongViPham = "";//
+	//@Lob
+	private String thongBaoKetThuc = "";//
+	//@Lob
+	private String lyDonGiaHan = "";//
 
-	private int thoiHanThanhTra = 0;
-	private int soVuDieuTra = 0;
-	private int soDoiTuongDieuTra = 0;
-	private int soVuThamNhung = 0;
-	private int soDoiTuongThamNhung = 0;
-	private int toChucXuLyHanhChinhViPham = 0;
-	private int caNhanXuLyHanhChinhViPham = 0;
-	private int toChucXuLyHanhChinhThamNhung = 0;
-	private int caNhanXuLyHanhChinhThamNhung = 0;
-	private int toChucDaXuLyHanhChinh = 0;
-	private int caNhanDaXuLyHanhChinh = 0;
-	private int soVuKhoiTo = 0;
-	private int soDoiTuongKhoiTo = 0;
-	private int soNguoiXuLyTrachNhiemDungDau = 0;
-	private int soViPham = 0;
+	private int thoiHanThanhTra = 0;//
+	private int soVuDieuTra = 0;//
+	private int soDoiTuongDieuTra = 0;//
 
-	private boolean chuyenCoQuanDieuTra;
-	private boolean viPham;
-	private boolean phatHienThamNhung;
-	private boolean theoDoiThucHien;
-	private boolean kiemTraDonDoc;
-	private boolean thanhLapDoan;
+	// Vi pham
+	private int toChucXuLyHanhChinhViPham = 0;//
+	private int caNhanXuLyHanhChinhViPham = 0;//
+	private int soViPham = 0;//
 
-	private long tienThuViPham;
-	private long datThuViPham;
-	private long tienTraKienNghiThuHoi;
-	private long datTraKienNghiThuHoi;
-	private long tienTraKienNghiKhac;
-	private long datTraKienNghiKhac;
-	private long tienThuTrongQuaTrinhThanhTra;
-	private long datThuTrongQuaTrinhThanhTra;
-	private long tienThamNhung;
-	private long taiSanKhacThamNhung;
-	private long datThamNhung;
-	private long tienKienNghiThuHoi;
-	private long taiSanKhacKienNghiThuHoi;
-	private long datKienNghiThuHoi;
-	private long tienDaThu;
-	private long taiSanKhacDaThu;
-	private long datDaThu;
-	private long tienPhaiThuTheoKetLuan;
-	private long datPhaiThuTheoKetLuan;
-	private long tienDaThuTheoKetLuan;
-	private long datDaThuTheoKetLuan;
-	private long datLanChiem;
-	private long giaoDatCapDatSaiDoiTuong;
-	private long capBanDatTraiThamQuyetn;
-	private long capGCNQSDDatSai;
-	private long choThueKhongDungQD;
-	private long datKhongDungMDSaiQD;
-	private long boHoangHoa;
-	private long viPhamKhac;
-	private long soTienViPham;
-	private long soTienXuPhatViPham;
-	private long soTienKienNghiThuHoi;
-	private long soTienTichThuXuLyTaiSanViPham;
-	private long soTienTieuHuyXuLyTaiSanViPham;
+	// Tham nhung
+	private int toChucXuLyHanhChinhThamNhung = 0;//
+	private int caNhanXuLyHanhChinhThamNhung = 0;//
+	private int soVuThamNhung = 0;//
+	private int soDoiTuongThamNhung = 0;//
+	private int soNguoiXuLyTrachNhiemDungDau = 0;//
 
-	private LocalDateTime ngayQuyetDinh;
-	private LocalDateTime ngayRaQuyetDinhThanhLapDoan;
-	private LocalDateTime ngayCongBoQuyetDinhThanhTra;
-	private LocalDateTime thoiGianKiemTraDonDoc;
+	// Theo doi thuc hien
+	// private int toChucDaXuLyHanhChinh = 0;
+	// private int caNhanDaXuLyHanhChinh = 0;
+	// private int soVuKhoiTo = 0;
+	// private int soDoiTuongKhoiTo = 0;
+
+	private boolean chuyenCoQuanDieuTra;//
+	private boolean viPham;//
+	private boolean phatHienThamNhung;//
+	private boolean thanhLapDoan;//
+	// private boolean theoDoiThucHien;
+	// private boolean kiemTraDonDoc;
+
+	// Vi pham
+	private long tienThuViPham;//
+	private long datThuViPham;//
+	private long tienTraKienNghiThuHoi;//
+	private long datTraKienNghiThuHoi;//
+	private long tienTraKienNghiKhac;//
+	private long datTraKienNghiKhac;//
+	private long tienThuTrongQuaTrinhThanhTra;//
+	private long datThuTrongQuaTrinhThanhTra;//
+	private long datLanChiem;//
+	private long giaoDatCapDatSaiDoiTuong;//
+	private long capBanDatTraiThamQuyen;//
+	private long capGCNQSDDatSai;//
+	private long choThueKhongDungQD;//
+	private long datKhongDungMDSaiQD;//
+	private long boHoangHoa;//
+	private long viPhamKhac;//
+	private long soTienViPham;//
+	private long soTienXuPhatViPham;//
+	private long soTienKienNghiThuHoi;//
+	private long soTienTichThuXuLyTaiSanViPham;//
+	private long soTienTieuHuyXuLyTaiSanViPham;//
+
+	// Tham nhung
+	private long tienThamNhung;//
+	private long taiSanKhacThamNhung;//
+	private long datThamNhung;//
+	private long tienKienNghiThuHoi;//
+	private long taiSanKhacKienNghiThuHoi;//
+	private long datKienNghiThuHoi;//
+	private long tienDaThu;//
+	private long taiSanKhacDaThu;//
+	private long datDaThu;//
+
+	// Ket luan
+	// private long tienPhaiThuTheoKetLuan;
+	// private long datPhaiThuTheoKetLuan;
+	// private long tienDaThuTheoKetLuan;
+	// private long datDaThuTheoKetLuan;
+
+	private LocalDateTime ngayRaQuyetDinh;//
+	private LocalDateTime ngayRaQuyetDinhThanhLapDoan;//
+	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
+	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
+	private LocalDateTime ngayHetHanGiaHanThanhTra;//
+	private LocalDateTime ngayRaQuyetDinhGiaHan;//
+
+	// Kiem tra don doc
+	// private LocalDateTime thoiGianKiemTraDonDoc;
 
 	@Enumerated(EnumType.STRING)
-	private LinhVucThanhTraEnum linhVucThanhTra;
+	private LinhVucThanhTraEnum linhVucThanhTra;//
 	@Enumerated(EnumType.STRING)
-	private HinhThucTheoDoiEnum hinhThucTheoDoi;
+	private HinhThucThanhTraEnum hinhThucThanhTra;//
 	@Enumerated(EnumType.STRING)
-	private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
+	private LoaiHinhThanhTraEnum loaiHinhThanhTra;//
 	@Enumerated(EnumType.STRING)
-	private HinhThucThanhTraEnum hinhThucThanhTra;
-	@Enumerated(EnumType.STRING)
-	private LoaiHinhThanhTraEnum loaiHinhThanhTra;
-	@Enumerated(EnumType.STRING)
-	private TienDoThanhTraEnum tienDoThanhTra;
+	private TienDoThanhTraEnum tienDoThanhTra;//
 
-	@Fetch(FetchMode.SELECT)
+	// Theo doi thuc hien
+	// @Enumerated(EnumType.STRING)
+	// private HinhThucTheoDoiEnum hinhThucTheoDoi;
+	// @Enumerated(EnumType.STRING)
+	// private KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi;
+
+	@NotNull
 	@ManyToOne
-	private DoiTuongThanhTra doiTuongThanhTra;
-	@Fetch(FetchMode.SELECT)
+	private DoiTuongThanhTra doiTuongThanhTra;//
 	@ManyToOne
-	private KeHoachThanhTra keHoachThanhTra;
-	@Fetch(FetchMode.SELECT)
+	private KeHoachThanhTra keHoachThanhTra;//
 	@ManyToOne
-	private CoQuanQuanLy coQuanDieuTra;
-	@Fetch(FetchMode.SELECT)
+	private CoQuanQuanLy coQuanDieuTra;//
+	@NotNull
 	@ManyToOne
-	private CoQuanQuanLy donViTheoDoi;
-	@Fetch(FetchMode.SELECT)
+	private CoQuanQuanLy donViChuTri;//
+	@NotNull
 	@ManyToOne
-	private CoQuanQuanLy donViChuTri;
+	private CoQuanQuanLy donVi;//
+
+	// Theo doi thuc hien
+	// @Fetch(FetchMode.SELECT)
+	// @ManyToOne
+	// private CoQuanQuanLy donViTheoDoi;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "cuocthanhtra_has_thanhviendoan", joinColumns = {
 			@JoinColumn(name = "cuocThanhTra_id") }, inverseJoinColumns = { @JoinColumn(name = "thanhVienDoan_id") })
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<ThanhVienDoan> thanhVienDoans = new ArrayList<ThanhVienDoan>();
+	private List<ThanhVienDoan> thanhVienDoans = new ArrayList<ThanhVienDoan>();//
 
 	public String getTen() {
 		return ten;
@@ -169,14 +203,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setTen(String ten) {
 		this.ten = ten;
-	}
-
-	public String getSoQuyetDinh() {
-		return soQuyetDinh;
-	}
-
-	public void setSoQuyetDinh(String soQuyetDinh) {
-		this.soQuyetDinh = soQuyetDinh;
 	}
 
 	public String getSoQuyetDinhThanhLapDoan() {
@@ -211,12 +237,36 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.canCuThanhTraLai = canCuThanhTraLai;
 	}
 
-	public String getNoiDungThanhTra() {
-		return noiDungThanhTra;
+	public String getDonViBanHanh() {
+		return donViBanHanh;
 	}
 
-	public void setNoiDungThanhTra(String noiDungThanhTra) {
-		this.noiDungThanhTra = noiDungThanhTra;
+	public void setDonViBanHanh(String donViBanHanh) {
+		this.donViBanHanh = donViBanHanh;
+	}
+
+	public String getSoKetLuanThanhTra() {
+		return soKetLuanThanhTra;
+	}
+
+	public void setSoKetLuanThanhTra(String soKetLuanThanhTra) {
+		this.soKetLuanThanhTra = soKetLuanThanhTra;
+	}
+
+	public String getSoQuyetDinhGiaHan() {
+		return soQuyetDinhGiaHan;
+	}
+
+	public void setSoQuyetDinhGiaHan(String soQuyetDinhGiaHan) {
+		this.soQuyetDinhGiaHan = soQuyetDinhGiaHan;
+	}
+
+	public String getSoQuyetDinhVeViecThanhTra() {
+		return soQuyetDinhVeViecThanhTra;
+	}
+
+	public void setSoQuyetDinhVeViecThanhTra(String soQuyetDinhVeViecThanhTra) {
+		this.soQuyetDinhVeViecThanhTra = soQuyetDinhVeViecThanhTra;
 	}
 
 	public String getGhiChu() {
@@ -225,6 +275,22 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
+	}
+
+	public String getNoiDungThanhTra() {
+		return noiDungThanhTra;
+	}
+
+	public void setNoiDungThanhTra(String noiDungThanhTra) {
+		this.noiDungThanhTra = noiDungThanhTra;
+	}
+
+	public String getCanCuThanhTraDotXuat() {
+		return canCuThanhTraDotXuat;
+	}
+
+	public void setCanCuThanhTraDotXuat(String canCuThanhTraDotXuat) {
+		this.canCuThanhTraDotXuat = canCuThanhTraDotXuat;
 	}
 
 	public String getTomTatKetLuanThanhTra() {
@@ -257,6 +323,30 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setDoiTuongThanhTraLienQuan(String doiTuongThanhTraLienQuan) {
 		this.doiTuongThanhTraLienQuan = doiTuongThanhTraLienQuan;
+	}
+
+	public String getDoiTuongViPham() {
+		return doiTuongViPham;
+	}
+
+	public void setDoiTuongViPham(String doiTuongViPham) {
+		this.doiTuongViPham = doiTuongViPham;
+	}
+
+	public String getThongBaoKetThuc() {
+		return thongBaoKetThuc;
+	}
+
+	public void setThongBaoKetThuc(String thongBaoKetThuc) {
+		this.thongBaoKetThuc = thongBaoKetThuc;
+	}
+
+	public String getLyDonGiaHan() {
+		return lyDonGiaHan;
+	}
+
+	public void setLyDonGiaHan(String lyDonGiaHan) {
+		this.lyDonGiaHan = lyDonGiaHan;
 	}
 
 	public int getThoiHanThanhTra() {
@@ -331,38 +421,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.caNhanXuLyHanhChinhThamNhung = caNhanXuLyHanhChinhThamNhung;
 	}
 
-	public int getToChucDaXuLyHanhChinh() {
-		return toChucDaXuLyHanhChinh;
-	}
-
-	public void setToChucDaXuLyHanhChinh(int toChucDaXuLyHanhChinh) {
-		this.toChucDaXuLyHanhChinh = toChucDaXuLyHanhChinh;
-	}
-
-	public int getCaNhanDaXuLyHanhChinh() {
-		return caNhanDaXuLyHanhChinh;
-	}
-
-	public void setCaNhanDaXuLyHanhChinh(int caNhanDaXuLyHanhChinh) {
-		this.caNhanDaXuLyHanhChinh = caNhanDaXuLyHanhChinh;
-	}
-
-	public int getSoVuKhoiTo() {
-		return soVuKhoiTo;
-	}
-
-	public void setSoVuKhoiTo(int soVuKhoiTo) {
-		this.soVuKhoiTo = soVuKhoiTo;
-	}
-
-	public int getSoDoiTuongKhoiTo() {
-		return soDoiTuongKhoiTo;
-	}
-
-	public void setSoDoiTuongKhoiTo(int soDoiTuongKhoiTo) {
-		this.soDoiTuongKhoiTo = soDoiTuongKhoiTo;
-	}
-
 	public int getSoNguoiXuLyTrachNhiemDungDau() {
 		return soNguoiXuLyTrachNhiemDungDau;
 	}
@@ -401,22 +459,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setPhatHienThamNhung(boolean phatHienThamNhung) {
 		this.phatHienThamNhung = phatHienThamNhung;
-	}
-
-	public boolean isTheoDoiThucHien() {
-		return theoDoiThucHien;
-	}
-
-	public void setTheoDoiThucHien(boolean theoDoiThucHien) {
-		this.theoDoiThucHien = theoDoiThucHien;
-	}
-
-	public boolean isKiemTraDonDoc() {
-		return kiemTraDonDoc;
-	}
-
-	public void setKiemTraDonDoc(boolean kiemTraDonDoc) {
-		this.kiemTraDonDoc = kiemTraDonDoc;
 	}
 
 	public boolean isThanhLapDoan() {
@@ -563,38 +605,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.datDaThu = datDaThu;
 	}
 
-	public long getTienPhaiThuTheoKetLuan() {
-		return tienPhaiThuTheoKetLuan;
-	}
-
-	public void setTienPhaiThuTheoKetLuan(long tienPhaiThuTheoKetLuan) {
-		this.tienPhaiThuTheoKetLuan = tienPhaiThuTheoKetLuan;
-	}
-
-	public long getDatPhaiThuTheoKetLuan() {
-		return datPhaiThuTheoKetLuan;
-	}
-
-	public void setDatPhaiThuTheoKetLuan(long datPhaiThuTheoKetLuan) {
-		this.datPhaiThuTheoKetLuan = datPhaiThuTheoKetLuan;
-	}
-
-	public long getTienDaThuTheoKetLuan() {
-		return tienDaThuTheoKetLuan;
-	}
-
-	public void setTienDaThuTheoKetLuan(long tienDaThuTheoKetLuan) {
-		this.tienDaThuTheoKetLuan = tienDaThuTheoKetLuan;
-	}
-
-	public long getDatDaThuTheoKetLuan() {
-		return datDaThuTheoKetLuan;
-	}
-
-	public void setDatDaThuTheoKetLuan(long datDaThuTheoKetLuan) {
-		this.datDaThuTheoKetLuan = datDaThuTheoKetLuan;
-	}
-
 	public long getDatLanChiem() {
 		return datLanChiem;
 	}
@@ -611,12 +621,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.giaoDatCapDatSaiDoiTuong = giaoDatCapDatSaiDoiTuong;
 	}
 
-	public long getCapBanDatTraiThamQuyetn() {
-		return capBanDatTraiThamQuyetn;
+	public long getCapBanDatTraiThamQuyen() {
+		return capBanDatTraiThamQuyen;
 	}
 
-	public void setCapBanDatTraiThamQuyetn(long capBanDatTraiThamQuyetn) {
-		this.capBanDatTraiThamQuyetn = capBanDatTraiThamQuyetn;
+	public void setCapBanDatTraiThamQuyen(long capBanDatTraiThamQuyen) {
+		this.capBanDatTraiThamQuyen = capBanDatTraiThamQuyen;
 	}
 
 	public long getCapGCNQSDDatSai() {
@@ -699,12 +709,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soTienTieuHuyXuLyTaiSanViPham = soTienTieuHuyXuLyTaiSanViPham;
 	}
 
-	public LocalDateTime getNgayQuyetDinh() {
-		return ngayQuyetDinh;
+	public LocalDateTime getNgayRaQuyetDinh() {
+		return ngayRaQuyetDinh;
 	}
 
-	public void setNgayQuyetDinh(LocalDateTime ngayQuyetDinh) {
-		this.ngayQuyetDinh = ngayQuyetDinh;
+	public void setNgayRaQuyetDinh(LocalDateTime ngayRaQuyetDinh) {
+		this.ngayRaQuyetDinh = ngayRaQuyetDinh;
 	}
 
 	public LocalDateTime getNgayRaQuyetDinhThanhLapDoan() {
@@ -723,12 +733,28 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.ngayCongBoQuyetDinhThanhTra = ngayCongBoQuyetDinhThanhTra;
 	}
 
-	public LocalDateTime getThoiGianKiemTraDonDoc() {
-		return thoiGianKiemTraDonDoc;
+	public LocalDateTime getNgayBanHanhKetLuanThanhTra() {
+		return ngayBanHanhKetLuanThanhTra;
 	}
 
-	public void setThoiGianKiemTraDonDoc(LocalDateTime thoiGianKiemTraDonDoc) {
-		this.thoiGianKiemTraDonDoc = thoiGianKiemTraDonDoc;
+	public void setNgayBanHanhKetLuanThanhTra(LocalDateTime ngayBanHanhKetLuanThanhTra) {
+		this.ngayBanHanhKetLuanThanhTra = ngayBanHanhKetLuanThanhTra;
+	}
+
+	public LocalDateTime getNgayHetHanGiaHanThanhTra() {
+		return ngayHetHanGiaHanThanhTra;
+	}
+
+	public void setNgayHetHanGiaHanThanhTra(LocalDateTime ngayHetHanGiaHanThanhTra) {
+		this.ngayHetHanGiaHanThanhTra = ngayHetHanGiaHanThanhTra;
+	}
+
+	public LocalDateTime getNgayRaQuyetDinhGiaHan() {
+		return ngayRaQuyetDinhGiaHan;
+	}
+
+	public void setNgayRaQuyetDinhGiaHan(LocalDateTime ngayRaQuyetDinhGiaHan) {
+		this.ngayRaQuyetDinhGiaHan = ngayRaQuyetDinhGiaHan;
 	}
 
 	public LinhVucThanhTraEnum getLinhVucThanhTra() {
@@ -737,22 +763,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setLinhVucThanhTra(LinhVucThanhTraEnum linhVucThanhTra) {
 		this.linhVucThanhTra = linhVucThanhTra;
-	}
-
-	public HinhThucTheoDoiEnum getHinhThucTheoDoi() {
-		return hinhThucTheoDoi;
-	}
-
-	public void setHinhThucTheoDoi(HinhThucTheoDoiEnum hinhThucTheoDoi) {
-		this.hinhThucTheoDoi = hinhThucTheoDoi;
-	}
-
-	public KetQuaThucHienTheoDoiEnum getKetQuaThucHienTheoDoi() {
-		return ketQuaThucHienTheoDoi;
-	}
-
-	public void setKetQuaThucHienTheoDoi(KetQuaThucHienTheoDoiEnum ketQuaThucHienTheoDoi) {
-		this.ketQuaThucHienTheoDoi = ketQuaThucHienTheoDoi;
 	}
 
 	public HinhThucThanhTraEnum getHinhThucThanhTra() {
@@ -803,20 +813,20 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.coQuanDieuTra = coQuanDieuTra;
 	}
 
-	public CoQuanQuanLy getDonViTheoDoi() {
-		return donViTheoDoi;
-	}
-
-	public void setDonViTheoDoi(CoQuanQuanLy donViTheoDoi) {
-		this.donViTheoDoi = donViTheoDoi;
-	}
-
 	public CoQuanQuanLy getDonViChuTri() {
 		return donViChuTri;
 	}
 
 	public void setDonViChuTri(CoQuanQuanLy donViChuTri) {
 		this.donViChuTri = donViChuTri;
+	}
+
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
 	}
 
 	public List<ThanhVienDoan> getThanhVienDoans() {
