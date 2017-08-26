@@ -68,6 +68,7 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public LinhVucDoiTuongThanhTra getLinhVucDoiTuongThanhTra() {
 		return linhVucDoiTuongThanhTra;
 	}
