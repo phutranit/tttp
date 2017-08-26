@@ -1647,12 +1647,12 @@ public class EnumController {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
-		int now = Utils.localDateTimeNow().getMonthValue();
-		for (int m = 1; m <= now; m ++) {
-			object.put("ten", m);
-			object.put("giaTri", m);
-			list.add(object);
+		int current = Utils.localDateTimeNow().getYear();
+		for (int i = 2010; i <= current; i++) {
 			object = new HashMap<String, Object>();
+			object.put("ten", i);
+			object.put("giaTri", i);
+			list.add(object);
 		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
