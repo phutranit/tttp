@@ -34,6 +34,16 @@ public class CuocThanhTraService {
 //
 //		return predAll;
 //	}
+	
+	public Predicate predicateFindAllByKeHoachThanhTra(Long keHoachThanhTraId) {
+		BooleanExpression predAll = base;
+
+		if (keHoachThanhTraId != null && keHoachThanhTraId > 0) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(keHoachThanhTraId));
+		}
+
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCuocThanhTra.cuocThanhTra.id.eq(id));
@@ -47,16 +57,16 @@ public class CuocThanhTraService {
 		return false;
 	}
 
-//	public DoiTuongThanhTra delete(DoiTuongThanhTraRepository repo, Long id) {
-//		DoiTuongThanhTra doiTuongThanhTra = repo.findOne(predicateFindOne(id));
-//
-//		if (doiTuongThanhTra != null) {
-//			doiTuongThanhTra.setDaXoa(true);
-//		}
-//
-//		return doiTuongThanhTra;
-//	}
-//
+	public CuocThanhTra delete(CuocThanhTraRepository repo, Long id) {
+		CuocThanhTra cuocThanhTra = repo.findOne(predicateFindOne(id));
+
+		if (cuocThanhTra != null) {
+			cuocThanhTra.setDaXoa(true);
+		}
+
+		return cuocThanhTra;
+	}
+
 //	public boolean checkExistsData(DoiTuongThanhTraRepository repo, DoiTuongThanhTra body) {
 //		BooleanExpression predAll = base;
 //

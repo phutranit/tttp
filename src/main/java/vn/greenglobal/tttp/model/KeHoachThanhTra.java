@@ -41,7 +41,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private String quyetDinhPheDuyetKTTT = "";
 	//@Lob
 	private String ghiChu = "";
-
+	@NotNull
 	private int namThanhTra = 0;
 	
 	@NotNull
