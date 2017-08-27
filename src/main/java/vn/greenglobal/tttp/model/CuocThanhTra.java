@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -26,9 +27,12 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 
 @Entity
@@ -81,6 +85,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String lyDonGiaHan = "";//
 
 	private int thoiHanThanhTra = 0;//
+	
+	// Chuyen co quan dieu tra
 	private int soVuDieuTra = 0;//
 	private int soDoiTuongDieuTra = 0;//
 
@@ -179,7 +185,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private DoiTuongThanhTra doiTuongThanhTra;//
 	@ManyToOne
 	private KeHoachThanhTra keHoachThanhTra;//
-	@ManyToOne
+	@ManyToOne// Chuyen co quan dieu tra
 	private CoQuanQuanLy coQuanDieuTra;//
 	@NotNull
 	@ManyToOne
@@ -193,12 +199,17 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	// @ManyToOne
 	// private CoQuanQuanLy donViTheoDoi;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)// Thanh lap doan
 	@JoinTable(name = "cuocthanhtra_has_thanhviendoan", joinColumns = {
 			@JoinColumn(name = "cuocThanhTra_id") }, inverseJoinColumns = { @JoinColumn(name = "thanhVienDoan_id") })
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<ThanhVienDoan> thanhVienDoans = new ArrayList<ThanhVienDoan>();//
+	
+	@OneToMany(mappedBy = "cuocThanhTra", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); //
 
 	public String getTen() {
 		return ten;
@@ -850,6 +861,15 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.thanhVienDoans = thanhVienDoans;
 	}
 
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getCuocThanhTraId() {
@@ -995,6 +1015,45 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			return map;
 		}
 		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuKetLuanThanhTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.KET_LUAN_THANH_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaHan() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ((ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+					|| ProcessTypeEnum.KE_HOACH_THANH_TRA.equals(tlvt.getLoaiQuyTrinh()))) {
+				list.add(tlvt);
+			}
+		}
+		return list;
 	}
 
 }

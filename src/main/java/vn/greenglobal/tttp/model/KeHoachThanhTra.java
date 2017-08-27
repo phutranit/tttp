@@ -9,12 +9,16 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -23,6 +27,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
 @Table(name = "kehoachthanhtra")
@@ -55,6 +60,11 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
+	
+	@OneToMany(mappedBy = "keHoachThanhTra", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); //
 
 	public String getNguoiKy() {
 		return nguoiKy;
@@ -111,6 +121,15 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 
 	public void setDonVi(CoQuanQuanLy donVi) {
 		this.donVi = donVi;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
 	}
 
 	@Transient
@@ -191,6 +210,18 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 				map.put("linhVucThanhTraInfo", ctt.getLinhVucThanhTraInfo());
 				map.put("tienDoThanhTraInfo", ctt.getTienDoThanhTraInfo());
 				list.add(map);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.KE_HOACH_THANH_TRA.equals(tlvt.getLoaiQuyTrinh())) {
+				list.add(tlvt);
 			}
 		}
 		return list;

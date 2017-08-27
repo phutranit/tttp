@@ -173,6 +173,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 	
 	private CuocThanhTra checkDataCuocThanhTra(CuocThanhTra cuocThanhTra) {
+//		if () {
+		
 		return cuocThanhTra;
 	}
 }
