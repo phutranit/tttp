@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
 import vn.greenglobal.tttp.util.Utils;
@@ -173,8 +176,56 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 	
 	private CuocThanhTra checkDataCuocThanhTra(CuocThanhTra cuocThanhTra) {
-//		if () {
-		
+		if (!cuocThanhTra.isThanhLapDoan()) {
+			cuocThanhTra.setSoQuyetDinhThanhLapDoan("");
+			cuocThanhTra.setNgayRaQuyetDinhThanhLapDoan(null);
+			cuocThanhTra.setThanhVienDoans(new ArrayList<ThanhVienDoan>());
+		} else if (!cuocThanhTra.isChuyenCoQuanDieuTra()) {
+			cuocThanhTra.setSoVuDieuTra(0);
+			cuocThanhTra.setSoDoiTuongDieuTra(9);
+			cuocThanhTra.setCoQuanDieuTra(null);
+		} else if (!cuocThanhTra.isViPham()) {
+			cuocThanhTra.setSoQDXuPhatHCDuocBanHanh("");
+			cuocThanhTra.setToChucXuLyHanhChinhViPham(0);
+			cuocThanhTra.setCaNhanXuLyHanhChinhViPham(0);
+			cuocThanhTra.setTienThuViPham(0);
+			cuocThanhTra.setDatThuViPham(0);
+			cuocThanhTra.setTienTraKienNghiThuHoi(0);
+			cuocThanhTra.setDatTraKienNghiThuHoi(0);
+			cuocThanhTra.setTienTraKienNghiKhac(0);
+			cuocThanhTra.setDatTraKienNghiKhac(0);
+			cuocThanhTra.setTienThuTrongQuaTrinhThanhTra(0);
+			cuocThanhTra.setDatThuTrongQuaTrinhThanhTra(0);
+			cuocThanhTra.setDatLanChiem(0);
+			cuocThanhTra.setGiaoDatCapDatSaiDoiTuong(0);
+			cuocThanhTra.setCapBanDatTraiThamQuyen(0);
+			cuocThanhTra.setCapGCNQSDDatSai(0);
+			cuocThanhTra.setChoThueKhongDungQD(0);
+			cuocThanhTra.setDatKhongDungMDSaiQD(0);
+			cuocThanhTra.setBoHoangHoa(0);
+			cuocThanhTra.setViPhamKhac(0);
+			cuocThanhTra.setSoTienViPham(0);
+			cuocThanhTra.setSoTienXuPhatViPham(0);
+			cuocThanhTra.setSoTienKienNghiThuHoi(0);
+			cuocThanhTra.setSoTienTichThuXuLyTaiSanViPham(0);
+			cuocThanhTra.setSoTienTieuHuyXuLyTaiSanViPham(0);
+		} else if (!cuocThanhTra.isPhatHienThamNhung()) {
+			cuocThanhTra.setTenNguoi("");
+			cuocThanhTra.setToChucXuLyHanhChinhThamNhung(0);
+			cuocThanhTra.setCaNhanXuLyHanhChinhThamNhung(0);
+			cuocThanhTra.setSoVuThamNhung(0);
+			cuocThanhTra.setSoDoiTuongThamNhung(0);
+			cuocThanhTra.setSoNguoiXuLyTrachNhiemDungDau(0);
+			cuocThanhTra.setTienThamNhung(0);
+			cuocThanhTra.setTaiSanKhacThamNhung(0);
+			cuocThanhTra.setDatThamNhung(0);
+			cuocThanhTra.setTienKienNghiThuHoi(0);
+			cuocThanhTra.setTaiSanKhacKienNghiThuHoi(0);
+			cuocThanhTra.setDatKienNghiThuHoi(0);
+			cuocThanhTra.setTienDaThu(0);
+			cuocThanhTra.setTaiSanKhacDaThu(0);
+			cuocThanhTra.setDatDaThu(0);
+		}
 		return cuocThanhTra;
 	}
 }

@@ -156,12 +156,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	// private long datDaThuTheoKetLuan;
 
 	private LocalDateTime ngayRaQuyetDinh;//
-	private LocalDateTime ngayRaQuyetDinhThanhLapDoan;//
 	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
 	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
 	private LocalDateTime ngayHetHanGiaHanThanhTra;//
 	private LocalDateTime ngayRaQuyetDinhGiaHan;//
 
+	// Thanh lap doan
+	private LocalDateTime ngayRaQuyetDinhThanhLapDoan;//
+	
 	// Kiem tra don doc
 	// private LocalDateTime thoiGianKiemTraDonDoc;
 
