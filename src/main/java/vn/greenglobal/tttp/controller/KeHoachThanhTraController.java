@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_CuocThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_CuocThanhTra_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_Post_Patch;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
@@ -398,20 +401,28 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/keHoachThanhTras/cuocThanhTras/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/keHoachThanhTras/{id}/cuocThanhTras")
 	@ApiOperation(value = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra thành công") })
 	public ResponseEntity<Object> deleteCuocThanhTraTrongKeHoachThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") Long id) {
+			@PathVariable("id") Long id, @RequestBody Medial_CuocThanhTra_Delete params) {
 
 		try {
-			CuocThanhTra cuocThanhTra = cuocThanhTraService.delete(cuocThanhTraRepository, id);
-			if (cuocThanhTra == null) {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			List<CuocThanhTra> listDelete = new ArrayList<CuocThanhTra>();
+			if (params != null && params.getCuocThanhTras().size() > 0) {
+				for (Medial_CuocThanhTra cuocThanhTra : params.getCuocThanhTras()) {
+					CuocThanhTra ctt = cuocThanhTraService.delete(cuocThanhTraRepository, cuocThanhTra.getId());
+					if (ctt == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(ctt);
+				}
+				for (CuocThanhTra ctt : listDelete) {
+					cuocThanhTraService.save(ctt, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
 			}
 
-			cuocThanhTraService.save(cuocThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
