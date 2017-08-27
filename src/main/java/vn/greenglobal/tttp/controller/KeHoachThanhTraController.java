@@ -398,4 +398,24 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/keHoachThanhTras/cuocThanhTras/{id}")
+	@ApiOperation(value = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra thành công") })
+	public ResponseEntity<Object> deleteCuocThanhTraTrongKeHoachThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id) {
+
+		try {
+			CuocThanhTra cuocThanhTra = cuocThanhTraService.delete(cuocThanhTraRepository, id);
+			if (cuocThanhTra == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+
+			cuocThanhTraService.save(cuocThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 }

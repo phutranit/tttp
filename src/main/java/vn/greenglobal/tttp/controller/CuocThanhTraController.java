@@ -161,7 +161,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
-			if (cuocThanhTra.getKeHoachThanhTra() != null) {
+			if (cuocThanhTra.getKeHoachThanhTra() == null) {
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				cuocThanhTraService.save(cuocThanhTra, congChucId);
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
