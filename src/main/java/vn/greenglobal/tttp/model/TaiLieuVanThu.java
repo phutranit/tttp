@@ -40,7 +40,6 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	
 	private LocalDateTime ngayQuyetDinh;
 	
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTepDinhKemEnum loaiTepDinhKem;
 	@NotNull
@@ -55,7 +54,6 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private KeHoachThanhTra keHoachThanhTra;
 	@ManyToOne
 	private CuocThanhTra cuocThanhTra;
-	@NotNull
 	@ManyToOne
 	private Don don;
 
