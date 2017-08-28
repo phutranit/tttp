@@ -9,13 +9,16 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -24,6 +27,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
+import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
 @Table(name = "kehoachthanhtra")
@@ -36,15 +40,15 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	private static final long serialVersionUID = -4128391955224263426L;
 
 	@Size(max=255)
-	private String namThanhTra = "";
-	@Size(max=255)
 	private String nguoiKy = "";
 	@NotBlank
 	@Size(max=255)
 	private String quyetDinhPheDuyetKTTT = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";
-
+	@NotNull
+	private int namThanhTra = 0;
+	
 	@NotNull
 	private LocalDateTime ngayRaQuyetDinh;
 	
@@ -56,14 +60,11 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;
-
-	public String getNamThanhTra() {
-		return namThanhTra;
-	}
-
-	public void setNamThanhTra(String namThanhTra) {
-		this.namThanhTra = namThanhTra;
-	}
+	
+	@OneToMany(mappedBy = "keHoachThanhTra", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); //
 
 	public String getNguoiKy() {
 		return nguoiKy;
@@ -89,6 +90,14 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
+	public int getNamThanhTra() {
+		return namThanhTra;
+	}
+
+	public void setNamThanhTra(int namThanhTra) {
+		this.namThanhTra = namThanhTra;
+	}
+
 	public LocalDateTime getNgayRaQuyetDinh() {
 		return ngayRaQuyetDinh;
 	}
@@ -105,7 +114,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		this.hinhThucKeHoachThanhTra = hinhThucKeHoachThanhTra;
 	}
 
-	@ApiModelProperty( hidden = true )
+	@ApiModelProperty( hidden = true, example = "{}")
 	public CoQuanQuanLy getDonVi() {
 		return donVi;
 	}
@@ -113,23 +122,20 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	public void setDonVi(CoQuanQuanLy donVi) {
 		this.donVi = donVi;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getTaiLieuVanThus() {
+		return taiLieuVanThus;
+	}
+
+	public void setTaiLieuVanThus(List<TaiLieuVanThu> taiLieuVanThus) {
+		this.taiLieuVanThus = taiLieuVanThus;
+	}
 
 	@Transient
 	@ApiModelProperty( hidden = true )
 	public Long getKeHoachThanhTraId() {
 		return getId();
-	}
-	
-	@Transient
-	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getDonViInfo() {
-		if (getDonVi() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getDonVi().getId());
-			map.put("ten", getDonVi().getTen());
-			return map;
-		}
-		return null;
 	}
 	
 	@Transient
@@ -160,6 +166,31 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getDonViInfo() {
+		if (getDonVi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("coQuanQuanLyId", getDonVi().getId());
+			map.put("ten", getDonVi().getTen());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getHinhThucKeHoachThanhTraInfo() {
+		if (getHinhThucKeHoachThanhTra() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getHinhThucKeHoachThanhTra().name());
+			map.put("text", getHinhThucKeHoachThanhTra().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
 	public List<Map<String, Object>> getCuocThanhTras() {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
@@ -169,34 +200,28 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 			for (CuocThanhTra ctt : cuocThanhTras) {
 				map = new HashMap<>();
 				map.put("id", ctt.getId());
+				map.put("doiTuongThanhTraInfo", ctt.getDoiTuongThanhTraInfo());
+				map.put("donViChuTriInfo", ctt.getDonViChuTriInfo());
 				if (ctt.getDoiTuongThanhTra() != null) {
-					Map<String, Object> mapDoiTuongThanhTra = new HashMap<>();
-					mapDoiTuongThanhTra.put("doiTuongThanhTraId", ctt.getDoiTuongThanhTra().getId());
-					mapDoiTuongThanhTra.put("ten", ctt.getDoiTuongThanhTra().getTen());
-					map.put("doiTuongThanhTraInfo", mapDoiTuongThanhTra);
-				} else {
-					map.put("doiTuongThanhTraInfo", null);
+					map.put("loaiDoiTuongThanhTraInfo", ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTraInfo());
 				}
-				if (ctt.getDonViChuTri() != null) {
-					Map<String, Object> mapDonViChuTri = new HashMap<>();
-					mapDonViChuTri.put("donViChuTriId", ctt.getDonViChuTri().getId());
-					mapDonViChuTri.put("ten", ctt.getDonViChuTri().getTen());
-					map.put("doiTuongThanhTraInfo", mapDonViChuTri);
-				} else {
-					map.put("doiTuongThanhTraInfo", null);
-				}
-				map.put("loaiDoiTuongThanhTra", ctt.getDoiTuongThanhTra() == null ? "" : ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTra().getText());
 				map.put("ghiChu", ctt.getGhiChu());
 				map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
-				if (ctt.getLinhVucThanhTra() != null) {
-					Map<String, Object> mapLinhVucThanhTra = new HashMap<>();
-					mapLinhVucThanhTra.put("type", ctt.getLinhVucThanhTra());
-					mapLinhVucThanhTra.put("text", ctt.getLinhVucThanhTra().getText());
-					map.put("linhVucThanhTraInfo", mapLinhVucThanhTra);
-				} else {
-					map.put("linhVucThanhTraInfo", null);
-				}
+				map.put("linhVucThanhTraInfo", ctt.getLinhVucThanhTraInfo());
+				map.put("tienDoThanhTraInfo", ctt.getTienDoThanhTraInfo());
 				list.add(map);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.KE_HOACH_THANH_TRA.equals(tlvt.getLoaiQuyTrinh())) {
+				list.add(tlvt);
 			}
 		}
 		return list;

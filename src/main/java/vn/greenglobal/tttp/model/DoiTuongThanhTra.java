@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,7 +33,7 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 	private String ten = "";
 	@Size(max = 255)
 	private String diaChi = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";
 
 	@NotNull
@@ -69,6 +68,7 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public LinhVucDoiTuongThanhTra getLinhVucDoiTuongThanhTra() {
 		return linhVucDoiTuongThanhTra;
 	}

@@ -51,6 +51,7 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.DoanDiCung;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.Form;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
@@ -212,16 +213,19 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (don != null) {
 					if (don.getGiaiQuyetDonCuoiCungId() == null) {
 						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
-								&& don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
-							XuLyDon xld = xuLyDonRepo.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
+								&& don.getDonViXuLyGiaiQuyet() != null
+								&& donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+							XuLyDon xld = xuLyDonRepo
+									.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
 							return new ResponseEntity<>(eass.toFullResource(xld), HttpStatus.OK);
 						} else {
-							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
+									phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 							if (xuLyDon != null) {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
-						}						
-					}					
+						}
+					}				
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
@@ -1964,6 +1968,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donGoc.setKetQuaXLDGiaiQuyet(null);
 		
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
+		XuLyDon xuLyDonCuoiCungHienTai = repo.findOne(donGoc.getXuLyDonCuoiCungId());
 		xuLyDonTiepTheo.setDon(donGoc);
 		xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonHienTai.getCoQuanChuyenDon());
 		xuLyDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
@@ -1971,6 +1976,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setCongChuc(xuLyDonHienTai.getCanBoChuyenDon());
 		//xuLyDonTiepTheo.setChucVu(VaiTroEnum.VAN_THU);
 		
+		xuLyDonTiepTheo.setNextForm(xuLyDonCuoiCungHienTai.getNextForm());
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		//xuLyDonTiepTheo.setDonChuyen(true);
 		xuLyDonTiepTheo.setDonTra(true);

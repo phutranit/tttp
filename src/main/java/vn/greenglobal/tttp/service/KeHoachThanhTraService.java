@@ -29,11 +29,15 @@ public class KeHoachThanhTraService {
 
 	BooleanExpression base = QKeHoachThanhTra.keHoachThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay, Long donViId) {
+	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay, Integer namThanhTra, Long donViId) {
 		BooleanExpression predAll = base;
 		
 		if (donViId != null && donViId > 0) {
 			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.donVi.id.eq(donViId));
+		}
+		
+		if (namThanhTra != null && namThanhTra > 0) {
+			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
 		}
 		
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
@@ -85,7 +89,7 @@ public class KeHoachThanhTraService {
 			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.eq(body.getQuyetDinhPheDuyetKTTT()));
+		predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.namThanhTra.eq(body.getNamThanhTra()));
 		List<KeHoachThanhTra> doiTuongThanhTras = (List<KeHoachThanhTra>) repo.findAll(predAll);
 
 		return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true : false;
@@ -94,7 +98,8 @@ public class KeHoachThanhTraService {
 	public boolean checkUsedData(CuocThanhTraRepository cuocThanhTraRepository, Long id) {
 		List<CuocThanhTra> cuocThanhTraList = (List<CuocThanhTra>) cuocThanhTraRepository
 				.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(id)));
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(id))
+				.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.isNotNull()));
 
 		if (cuocThanhTraList != null && cuocThanhTraList.size() > 0) {
 			return true;

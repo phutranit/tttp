@@ -26,11 +26,17 @@ import io.swagger.annotations.ApiOperation;
 
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.VaiTroThanhVienDoanEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QXuLyDon;
+import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
+import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
@@ -58,6 +64,7 @@ import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
+import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.util.Utils;
@@ -67,13 +74,25 @@ import vn.greenglobal.tttp.util.Utils;
 public class EnumController {
 	
 	@Autowired
-	ProfileUtils profileUtil;
+	private ProfileUtils profileUtil;
 	
 	@Autowired
 	private DonRepository donRepo;
 	
 	@Autowired
-	XuLyDonRepository xuLyDonRepo;
+	private XuLyDonRepository xuLyDonRepo;
+	
+	@Autowired
+	private CoQuanQuanLyRepository coQuanQuanLyRepository;
+	
+	@Autowired
+	private CoQuanQuanLyService coQuanQuanLyService;
+	
+	@Autowired
+	private ThamSoRepository thamSoRepository;
+	
+	@Autowired
+	private ThamSoService thamSoService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/years")
 	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,7 +101,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		for (int i = 2010; i <= current; i++) {
+		for (int i = current; i >= 2010; i--) {
 			object = new HashMap<String, Object>();
 			object.put("ten", i);
 			object.put("giaTri", i);
@@ -1527,6 +1546,38 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/tienDoThanhTras")
+	@ApiOperation(value = "Lấy danh sách tiến độ thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTienDoThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", TienDoThanhTraEnum.DANG_TIEN_HANH.getText());
+		object.put("giaTri", TienDoThanhTraEnum.DANG_TIEN_HANH.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP.getText());
+		object.put("giaTri", TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN.getText());
+		object.put("giaTri", TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.getText());
+		object.put("giaTri", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/canCuThanhTraLais")
 	@ApiOperation(value = "Lấy danh sách căn cứ thanh tra lại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getCanCuThanhTraLais(
@@ -1601,6 +1652,83 @@ public class EnumController {
 		object.put("ten", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.getText());
 		object.put("giaTri", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.name());
 		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/namThanhTras")
+	@ApiOperation(value = "Lấy danh sách các năm thanh tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getNamThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<String, Object>();
+		int current = Utils.localDateTimeNow().getYear();
+		for (int i = current; i >= 2010; i--) {
+			object = new HashMap<String, Object>();
+			object.put("ten", i);
+			object.put("giaTri", i);
+			list.add(object);
+		}
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/donViBanHanhs")
+	@ApiOperation(value = "Lấy danh sách đơn vị ban hành.", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDonViBanHanhs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		
+		if (donViId != null && donViId > 0) {
+			ThamSo thamSoCQQLUBNDThanhPho = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoCQQLThanhTraThanhPho = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			CoQuanQuanLy coQuanQuanLy = null;
+			if (donViId.equals(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri()))) {
+				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri())));
+				if (coQuanQuanLy != null) {
+					object.put("ten", coQuanQuanLy.getTen());
+					object.put("giaTri", "UY_BAN_NHAN_DAN");
+					list.add(object);
+
+					object = new HashMap<>();
+					object.put("ten", coQuanQuanLy.getTen());
+					object.put("giaTri", "THANH_TRA");
+					list.add(object);
+				}
+			} else if (donViId.equals(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri()))) {
+				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri())));
+				if (coQuanQuanLy != null) {
+					object.put("ten", coQuanQuanLy.getTen());
+					object.put("giaTri", "UY_BAN_NHAN_DAN");
+					list.add(object);
+	
+					object = new HashMap<>();
+					object.put("ten", coQuanQuanLy.getTen());
+					object.put("giaTri", "THANH_TRA");
+					list.add(object);
+				}
+			} else {
+				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId));
+				if (coQuanQuanLy != null) {
+					object.put("ten", "Ủy ban nhân dân " + coQuanQuanLy.getTen());
+					object.put("giaTri", "UY_BAN_NHAN_DAN");
+					list.add(object);
+	
+					object = new HashMap<>();
+					object.put("ten", "Thanh tra " + coQuanQuanLy.getTen());
+					object.put("giaTri", "THANH_TRA");
+					list.add(object);
+				}
+			}
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);

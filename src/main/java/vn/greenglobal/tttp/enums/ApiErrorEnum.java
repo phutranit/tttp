@@ -29,6 +29,7 @@ public enum ApiErrorEnum {
 	ROLE_FORBIDDEN("Tài khoản hiện tại Không có quyền thực hiện chức năng này."),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator."),
 	DATA_USED("Dữ liệu này đang được sử dụng."),
+	DATA_KEHOACHTHANHTRA_USED("Kế hoạch thanh tra này đã có cuộc thanh tra đang tiến hành."),
 	EMAIL_INVALID("Trường email không đúng định dạng."),
 	DATA_INVALID("Dữ liệu không hợp lệ."),
 	LOGIN_USER_PASSWORD_INCORRECT("Địa chỉ thư điện tử hoặc Mật khẩu không chính xác."),
@@ -54,7 +55,8 @@ public enum ApiErrorEnum {
 	DON_VI_NOT_EXISTS("Đơn vị này không tồn tại."),
 	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo."),
 	CUOCTHANHTRA_REQUIRED("Bạn phải chọn ít nhất một cuộc thanh tra."),
-	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép.");
+	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
+	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này.");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

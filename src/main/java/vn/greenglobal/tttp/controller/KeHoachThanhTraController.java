@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +29,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_CuocThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_CuocThanhTra_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch;
 import vn.greenglobal.tttp.model.medial.Medial_KeHoachThanhTra_Post_Patch;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
@@ -75,7 +81,8 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-			@RequestParam(value = "denNgay", required = false) String denNgay, Pageable pageable,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -87,8 +94,38 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			}
 			
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, donViId), pageable);
+			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, namThanhTra, donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/keHoachThanhTras/checkExistsData")
+	@ApiOperation(value = "Lấy Kế Hoạch Thanh Tra theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Lấy Kế Hoạch Thanh Tra thành công", response = KeHoachThanhTra.class) })
+	public ResponseEntity<Object> checkExistsData(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "id", required = false) Long id,
+			@RequestParam(value = "namThanhTra", required = true) Integer namThanhTra,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			KeHoachThanhTra khtt = new KeHoachThanhTra();
+			khtt.setId(id);
+			khtt.setNamThanhTra(namThanhTra);
+			if (keHoachThanhTraService.checkExistsData(repo, khtt)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.KEHOACHTHANHTRA_EXISTS.name(),
+						ApiErrorEnum.KEHOACHTHANHTRA_EXISTS.getText(), ApiErrorEnum.KEHOACHTHANHTRA_EXISTS.getText());
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -128,11 +165,11 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.name(),
 											ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText());
 								}
-								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
-										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
-											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
-								}
+//								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
+//										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
+//									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+//											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+//								}
 							}
 						}
 						
@@ -149,6 +186,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
 								CuocThanhTra cttSave = new CuocThanhTra();
 								cttSave.setId(ctt.getId());
+								cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
 								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 								cttSave.setKyThanhTra(ctt.getKyThanhTra());
 								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
@@ -162,6 +200,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									dvct.setId(ctt.getDonViChuTriId());
 									cttSave.setDonViChuTri(dvct);
 								}
+								CoQuanQuanLy donVi = new CoQuanQuanLy();
+								donVi.setId(donViId);
+								cttSave.setDonVi(donVi);
 								cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 								cttSave.setKeHoachThanhTra(khtt);
 								cuocThanhTraService.save(cttSave, congChucId);
@@ -217,10 +258,6 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 					@Override
 					public Object doInTransaction(TransactionStatus arg0) {
 						params.getKeHoachThanhTra().setId(id);
-						if (keHoachThanhTraService.checkExistsData(repo, params.getKeHoachThanhTra())) {
-							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
-									ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
-						}
 
 						if (!keHoachThanhTraService.isExists(repo, id)) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -246,15 +283,16 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.name(),
 											ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.DOITUONGTHANHTRA_NOT_FOUND.getText());
 								}
-								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
-										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
-									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
-											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
-								}
+//								if (!Utils.isValidStringLength(ctt.getNoiDungThanhTra(), 255) || !Utils.isValidStringLength(ctt.getKyThanhTra(), 255)
+//										|| !Utils.isValidStringLength(ctt.getGhiChu(), 255)) {
+//									return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_INVALID_SIZE.name(),
+//											ApiErrorEnum.DATA_INVALID_SIZE.getText(), ApiErrorEnum.DATA_INVALID_SIZE.getText());
+//								}
 							}
 						}
 						
 						Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 						KeHoachThanhTra keHoachThanhTraOld = repo.findOne(keHoachThanhTraService.predicateFindOne(params.getKeHoachThanhTra().getId()));
 						keHoachThanhTraOld.setGhiChu(params.getKeHoachThanhTra().getGhiChu());
 						keHoachThanhTraOld.setHinhThucKeHoachThanhTra(params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra());
@@ -288,6 +326,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										cttSave = cuocThanhTraOld;
 									}
 								} else {
+									cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
 									cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 									cttSave.setKyThanhTra(ctt.getKyThanhTra());
 									cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
@@ -301,6 +340,9 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										dvct.setId(ctt.getDonViChuTriId());
 										cttSave.setDonViChuTri(dvct);
 									}
+									CoQuanQuanLy donVi = new CoQuanQuanLy();
+									donVi.setId(donViId);
+									cttSave.setDonVi(donVi);
 									cttSave.setDonViPhoiHop(ctt.getDonViPhoiHop());
 									cttSave.setKeHoachThanhTra(khtt);
 								}
@@ -333,11 +375,54 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			}
 			
 			if (keHoachThanhTraService.checkUsedData(cuocThanhTraRepository, id)) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_KEHOACHTHANHTRA_USED.name(),
+						ApiErrorEnum.DATA_KEHOACHTHANHTRA_USED.getText(), ApiErrorEnum.DATA_KEHOACHTHANHTRA_USED.getText());
+			}
+			
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+					
+			if (keHoachThanhTra != null && keHoachThanhTra.getId() != null && keHoachThanhTra.getId() > 0) {
+				List<CuocThanhTra> cuocThanhTras = (List<CuocThanhTra>) cuocThanhTraRepository
+						.findAll(cuocThanhTraService.predicateFindAllByKeHoachThanhTra(keHoachThanhTra.getId()));
+				if (cuocThanhTras != null && cuocThanhTras.size() > 0) {
+					for (CuocThanhTra ctt : cuocThanhTras) {
+						CuocThanhTra cuocThanhTra = cuocThanhTraService.delete(cuocThanhTraRepository, ctt.getId());
+						if (cuocThanhTra != null) {
+							cuocThanhTraService.save(cuocThanhTra, congChucId);
+						}
+					}
+				}
 			}
 
-			keHoachThanhTraService.save(keHoachThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			keHoachThanhTraService.save(keHoachThanhTra, congChucId);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/keHoachThanhTras/{id}/cuocThanhTras")
+	@ApiOperation(value = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cuộc Thanh Tra trong Kế Hoạch Thanh Tra thành công") })
+	public ResponseEntity<Object> deleteCuocThanhTraTrongKeHoachThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") Long id, @RequestBody Medial_CuocThanhTra_Delete params) {
+
+		try {
+			List<CuocThanhTra> listDelete = new ArrayList<CuocThanhTra>();
+			if (params != null && params.getCuocThanhTras().size() > 0) {
+				for (Medial_CuocThanhTra cuocThanhTra : params.getCuocThanhTras()) {
+					CuocThanhTra ctt = cuocThanhTraService.delete(cuocThanhTraRepository, cuocThanhTra.getId());
+					if (ctt == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+								ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+					}
+					listDelete.add(ctt);
+				}
+				for (CuocThanhTra ctt : listDelete) {
+					cuocThanhTraService.save(ctt, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+				}
+			}
+
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

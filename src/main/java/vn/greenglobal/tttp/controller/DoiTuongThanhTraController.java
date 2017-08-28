@@ -60,7 +60,9 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DOITUONGTHANHTRA_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DOITUONGTHANHTRA_XEM) == null) {
+					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DOITUONGTHANHTRA_XEM) == null
+					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_THEM) == null
+					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -81,7 +83,8 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 			@RequestBody DoiTuongThanhTra doiTuongThanhTra, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DOITUONGTHANHTRA_THEM) == null) {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DOITUONGTHANHTRA_THEM) == null
+					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_THEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
