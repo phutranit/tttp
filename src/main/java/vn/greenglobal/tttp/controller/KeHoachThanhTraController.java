@@ -252,7 +252,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.PATCH, value = "/keHoachThanhTras")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/keHoachThanhTras/{id}")
 	@ApiOperation(value = "Cập nhật Kế Hoạch Thanh Tra", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Kế Hoạch Thanh Tra thành công", response = KeHoachThanhTra.class) })

@@ -86,66 +86,34 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTraTrungs")
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra Trùng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListThanhTraTrung(
-			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
-			PersistentEntityResourceAssembler eass) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "tenDoiTuong", required = false) String tenDoiTuong,
+			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
 		try {
 			
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_LIETKE) == null
-//					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_XEM) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 			
 			List<Long> cuocThanhTraIds = new ArrayList<Long>();
 			int current = Utils.localDateTimeNow().getYear();
 			
-			for (int i = current; i >= 2010; i--) {
-				List<CuocThanhTra> listCuocThanhTraCoKeHoachThanhTraTheoNam = (List<CuocThanhTra>) repo
-						.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
-								.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
-								.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
-								.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(i)));
-				if (listCuocThanhTraCoKeHoachThanhTraTheoNam != null && listCuocThanhTraCoKeHoachThanhTraTheoNam.size() > 0) {
-					for (int j = 0; j < listCuocThanhTraCoKeHoachThanhTraTheoNam.size() - 1; j++) {
-						for (int k = j + 1; k < listCuocThanhTraCoKeHoachThanhTraTheoNam.size(); k++) {
-							if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
-									listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
-								if (cuocThanhTraIds.size() > 0) {
-									boolean flagJ = false;
-									boolean flagK = false;
-									for (Long l : cuocThanhTraIds) {
-										if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId().equals(l)) {
-											flagJ = true;
-										}
-										if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId().equals(l)) {
-											flagK = true;
-										}
-									}
-									if (!flagJ) {
-										cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
-									}
-									if (!flagK) {
-										cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
-									}
-								} else {
-									cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
-									cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
-								}
-							}
-						}
-					}
+			if (namThanhTra != null && namThanhTra > 0) {
+				cuocThanhTraIds.addAll(getCuocThanhTraIds(namThanhTra));
+			} else {
+				for (int i = current; i >= 2010; i--) {
+					cuocThanhTraIds.addAll(getCuocThanhTraIds(i));
 				}
 			}
 			
-			for (Long l : cuocThanhTraIds) {
-				System.out.println("namdiaca: " + l);
-			}
+			System.out.println("cuocThanhTraIds: " + cuocThanhTraIds.size());
 			
-//			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(tenDoiTuongThanhTra,
-//					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId), pageable);
-//			return assembler.toResource(page, (ResourceAssembler) eass);
-			return null;
+			Page<CuocThanhTra> page = repo.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false).and(QCuocThanhTra.cuocThanhTra.id.in(cuocThanhTraIds)), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -303,5 +271,45 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setDatDaThu(0);
 		}
 		return cuocThanhTra;
+	}
+	
+	private List<Long> getCuocThanhTraIds(int namThanhTra) {
+		List<Long> cuocThanhTraIds = new ArrayList<Long>();
+		List<CuocThanhTra> listCuocThanhTraCoKeHoachThanhTraTheoNam = (List<CuocThanhTra>) repo
+				.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
+						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
+						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
+						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra)));
+		if (listCuocThanhTraCoKeHoachThanhTraTheoNam != null && listCuocThanhTraCoKeHoachThanhTraTheoNam.size() > 0) {
+			for (int j = 0; j < listCuocThanhTraCoKeHoachThanhTraTheoNam.size() - 1; j++) {
+				for (int k = j + 1; k < listCuocThanhTraCoKeHoachThanhTraTheoNam.size(); k++) {
+					if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
+							listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
+						if (cuocThanhTraIds.size() > 0) {
+							boolean flagJ = false;
+							boolean flagK = false;
+							for (Long l : cuocThanhTraIds) {
+								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId().equals(l)) {
+									flagJ = true;
+								}
+								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId().equals(l)) {
+									flagK = true;
+								}
+							}
+							if (!flagJ) {
+								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
+							}
+							if (!flagK) {
+								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+							}
+						} else {
+							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
+							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+						}
+					}
+				}
+			}
+		}
+		return cuocThanhTraIds;
 	}
 }
