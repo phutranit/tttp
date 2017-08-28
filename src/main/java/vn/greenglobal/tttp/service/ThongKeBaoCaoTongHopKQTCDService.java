@@ -75,7 +75,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(1, 6));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(6, 12));
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(7, 12));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
@@ -432,12 +432,13 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		List<Don> dons = new ArrayList<Don>();
-		
+
 		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.thanhLapDon.isTrue())
-				.and(QSoTiepCongDan.soTiepCongDan.don.coThongTinCoQuanDaGiaiQuyet.isTrue())
-				.and(QSoTiepCongDan.soTiepCongDan.don.coQuanDaGiaiQuyet.isNotNull())
-				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.isNotNull())
-				.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.isNotNull());
+				.and(QSoTiepCongDan.soTiepCongDan.don.coThongTinCoQuanDaGiaiQuyet.isTrue()
+						.and(QSoTiepCongDan.soTiepCongDan.don.coQuanDaGiaiQuyet.isNotNull())
+						.and(QSoTiepCongDan.soTiepCongDan.don.ngayKetThucXLD.isNotNull()))
+				.or(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.isNotNull()
+						.and(QSoTiepCongDan.soTiepCongDan.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.isNotNull()));
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
