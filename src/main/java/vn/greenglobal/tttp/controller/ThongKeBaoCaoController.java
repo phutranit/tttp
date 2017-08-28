@@ -156,7 +156,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(57L);
 			
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(58L);
+			idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(53L);
 			
 			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
 			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais));
@@ -732,7 +732,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(57L);
 			
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(58L);
+			idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(53L);
 			
 			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
 			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais));
