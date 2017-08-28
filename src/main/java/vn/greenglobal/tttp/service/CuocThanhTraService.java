@@ -47,11 +47,11 @@ public class CuocThanhTraService {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.loaiHinhThanhTra.eq(LoaiHinhThanhTraEnum.valueOf(loaiHinhThanhTra.trim())));
 		}
 		
-		if (loaiHinhThanhTra != null && StringUtils.isNotBlank(linhVucThanhTra.trim())) {
+		if (linhVucThanhTra != null && StringUtils.isNotBlank(linhVucThanhTra.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(LinhVucThanhTraEnum.valueOf(linhVucThanhTra.trim())));
 		}
 		
-		if (loaiHinhThanhTra != null && StringUtils.isNotBlank(tienDoThanhTra.trim())) {
+		if (tienDoThanhTra != null && StringUtils.isNotBlank(tienDoThanhTra.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(TienDoThanhTraEnum.valueOf(tienDoThanhTra.trim())));
 		}
 		

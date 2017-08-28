@@ -85,6 +85,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String lyDonGiaHan = "";//
 
 	private int thoiHanThanhTra = 0;//
+	private int thoiHanGiaHanThanhTra = 0;//
 	
 	// Chuyen co quan dieu tra
 	private int soVuDieuTra = 0;//
@@ -158,6 +159,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private LocalDateTime ngayRaQuyetDinh;//
 	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
 	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
+	private LocalDateTime ngayHetHanThanhTra;//
 	private LocalDateTime ngayHetHanGiaHanThanhTra;//
 	private LocalDateTime ngayRaQuyetDinhGiaHan;//
 
@@ -371,6 +373,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setThoiHanThanhTra(int thoiHanThanhTra) {
 		this.thoiHanThanhTra = thoiHanThanhTra;
+	}
+
+	public int getThoiHanGiaHanThanhTra() {
+		return thoiHanGiaHanThanhTra;
+	}
+
+	public void setThoiHanGiaHanThanhTra(int thoiHanGiaHanThanhTra) {
+		this.thoiHanGiaHanThanhTra = thoiHanGiaHanThanhTra;
 	}
 
 	public int getSoVuDieuTra() {
@@ -757,6 +767,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.ngayBanHanhKetLuanThanhTra = ngayBanHanhKetLuanThanhTra;
 	}
 
+	public LocalDateTime getNgayHetHanThanhTra() {
+		return ngayHetHanThanhTra;
+	}
+
+	public void setNgayHetHanThanhTra(LocalDateTime ngayHetHanThanhTra) {
+		this.ngayHetHanThanhTra = ngayHetHanThanhTra;
+	}
+
 	public LocalDateTime getNgayHetHanGiaHanThanhTra() {
 		return ngayHetHanGiaHanThanhTra;
 	}
@@ -805,7 +823,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.tienDoThanhTra = tienDoThanhTra;
 	}
 
-	@Transient
 	@ApiModelProperty(example = "{}")
 	public DoiTuongThanhTra getDoiTuongThanhTra() {
 		return doiTuongThanhTra;
@@ -815,7 +832,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.doiTuongThanhTra = doiTuongThanhTra;
 	}
 
-	@Transient
 	@ApiModelProperty(example = "{}")
 	public KeHoachThanhTra getKeHoachThanhTra() {
 		return keHoachThanhTra;
@@ -825,7 +841,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.keHoachThanhTra = keHoachThanhTra;
 	}
 
-	@Transient
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanDieuTra() {
 		return coQuanDieuTra;
@@ -835,7 +850,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.coQuanDieuTra = coQuanDieuTra;
 	}
 
-	@Transient
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonViChuTri() {
 		return donViChuTri;
@@ -845,7 +859,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.donViChuTri = donViChuTri;
 	}
 
-	@Transient
 	@ApiModelProperty(example = "{}", hidden = true)
 	public CoQuanQuanLy getDonVi() {
 		return donVi;

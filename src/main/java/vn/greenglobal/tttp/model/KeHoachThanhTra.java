@@ -195,21 +195,25 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		cuocThanhTras = (List<CuocThanhTra>) Application.app.getCuocThanhTraRepository().findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false));
-		if (cuocThanhTras != null && cuocThanhTras.size() > 0) {
-			for (CuocThanhTra ctt : cuocThanhTras) {
-				map = new HashMap<>();
-				map.put("id", ctt.getId());
-				map.put("doiTuongThanhTraInfo", ctt.getDoiTuongThanhTraInfo());
-				map.put("donViChuTriInfo", ctt.getDonViChuTriInfo());
-				if (ctt.getDoiTuongThanhTra() != null) {
-					map.put("loaiDoiTuongThanhTraInfo", ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTraInfo());
+		if (this.getId() != null && this.getId() > 0) {
+			cuocThanhTras = (List<CuocThanhTra>) Application.app.getCuocThanhTraRepository()
+					.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
+							.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(getId())));
+			if (cuocThanhTras != null && cuocThanhTras.size() > 0) {
+				for (CuocThanhTra ctt : cuocThanhTras) {
+					map = new HashMap<>();
+					map.put("id", ctt.getId());
+					map.put("doiTuongThanhTraInfo", ctt.getDoiTuongThanhTraInfo());
+					map.put("donViChuTriInfo", ctt.getDonViChuTriInfo());
+					if (ctt.getDoiTuongThanhTra() != null) {
+						map.put("loaiDoiTuongThanhTraInfo", ctt.getDoiTuongThanhTra().getLoaiDoiTuongThanhTraInfo());
+					}
+					map.put("ghiChu", ctt.getGhiChu());
+					map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
+					map.put("linhVucThanhTraInfo", ctt.getLinhVucThanhTraInfo());
+					map.put("tienDoThanhTraInfo", ctt.getTienDoThanhTraInfo());
+					list.add(map);
 				}
-				map.put("ghiChu", ctt.getGhiChu());
-				map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
-				map.put("linhVucThanhTraInfo", ctt.getLinhVucThanhTraInfo());
-				map.put("tienDoThanhTraInfo", ctt.getTienDoThanhTraInfo());
-				list.add(map);
 			}
 		}
 		return list;

@@ -1691,39 +1691,42 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+		Long capCoQuanQuanLyCuaDonViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyCuaDonViId").toString());
 		
 		if (donViId != null && donViId > 0) {
 			ThamSo thamSoCQQLUBNDThanhPho = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoCQQLThanhTraThanhPho = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCCQQLSoBanNganh = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			CoQuanQuanLy coQuanQuanLy = null;
-			if (donViId.equals(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri()))) {
-				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri())));
-				if (coQuanQuanLy != null) {
-					object.put("ten", coQuanQuanLy.getTen());
+			if (donViId.equals(Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri()))
+					|| donViId.equals(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri()))) {
+				CoQuanQuanLy coQuanQuanLyThanhTraThanhPho = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri())));
+				if (coQuanQuanLyThanhTraThanhPho != null) {
+					object.put("ten", "UBND Thành phố");
 					object.put("giaTri", "UY_BAN_NHAN_DAN");
 					list.add(object);
 
 					object = new HashMap<>();
-					object.put("ten", coQuanQuanLy.getTen());
+					object.put("ten", coQuanQuanLyThanhTraThanhPho.getTen());
 					object.put("giaTri", "THANH_TRA");
 					list.add(object);
 				}
-			} else if (donViId.equals(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri()))) {
-				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri())));
+			} else if (capCoQuanQuanLyCuaDonViId.equals(Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri()))) { 
+				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId));
 				if (coQuanQuanLy != null) {
-					object.put("ten", coQuanQuanLy.getTen());
+					object.put("ten", "UBND Thành phố");
 					object.put("giaTri", "UY_BAN_NHAN_DAN");
 					list.add(object);
 	
 					object = new HashMap<>();
-					object.put("ten", coQuanQuanLy.getTen());
+					object.put("ten", "Thanh tra " + coQuanQuanLy.getTen());
 					object.put("giaTri", "THANH_TRA");
 					list.add(object);
 				}
 			} else {
 				coQuanQuanLy = coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId));
 				if (coQuanQuanLy != null) {
-					object.put("ten", "Ủy ban nhân dân " + coQuanQuanLy.getTen());
+					object.put("ten", "UBND " + coQuanQuanLy.getTen());
 					object.put("giaTri", "UY_BAN_NHAN_DAN");
 					list.add(object);
 	

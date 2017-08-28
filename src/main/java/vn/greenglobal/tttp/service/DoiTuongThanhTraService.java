@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ public class DoiTuongThanhTraService {
 
 	BooleanExpression base = QDoiTuongThanhTra.doiTuongThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String tuKhoa, Long linhVucId) {
+	public Predicate predicateFindAll(String tuKhoa, Long linhVucId, List<DoiTuongThanhTra> doiTuongIds) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tuKhoa.trim()));
@@ -37,6 +38,14 @@ public class DoiTuongThanhTraService {
 		
 		if (linhVucId != null && linhVucId > 0) {
 			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(linhVucId));
+		}
+		
+		if (doiTuongIds != null && doiTuongIds.size() > 0) {
+			List<Long> ids = new ArrayList<Long>();
+			for (DoiTuongThanhTra dttt : doiTuongIds) {
+				ids.add(dttt.getId());
+			}
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.notIn(ids));
 		}
 
 		return predAll;
