@@ -82,7 +82,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().eq(month));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NGAY)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -256,7 +256,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) > 0 ? Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) : 1;
 			}
 			return tongSoVuViec;
-		}).distinct().mapToLong(Long::longValue).sum());
+		}).mapToLong(Long::longValue).sum());
 		return tongSo;
 	}
 	
