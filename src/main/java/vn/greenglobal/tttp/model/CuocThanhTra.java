@@ -85,6 +85,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String lyDonGiaHan = "";//
 
 	private int thoiHanThanhTra = 0;//
+	private int thoiHanGiaHanThanhTra = 0;//
 	
 	// Chuyen co quan dieu tra
 	private int soVuDieuTra = 0;//
@@ -158,6 +159,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private LocalDateTime ngayRaQuyetDinh;//
 	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
 	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
+	private LocalDateTime ngayHetHanThanhTra;//
 	private LocalDateTime ngayHetHanGiaHanThanhTra;//
 	private LocalDateTime ngayRaQuyetDinhGiaHan;//
 
@@ -371,6 +373,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setThoiHanThanhTra(int thoiHanThanhTra) {
 		this.thoiHanThanhTra = thoiHanThanhTra;
+	}
+
+	public int getThoiHanGiaHanThanhTra() {
+		return thoiHanGiaHanThanhTra;
+	}
+
+	public void setThoiHanGiaHanThanhTra(int thoiHanGiaHanThanhTra) {
+		this.thoiHanGiaHanThanhTra = thoiHanGiaHanThanhTra;
 	}
 
 	public int getSoVuDieuTra() {
@@ -755,6 +765,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setNgayBanHanhKetLuanThanhTra(LocalDateTime ngayBanHanhKetLuanThanhTra) {
 		this.ngayBanHanhKetLuanThanhTra = ngayBanHanhKetLuanThanhTra;
+	}
+
+	public LocalDateTime getNgayHetHanThanhTra() {
+		return ngayHetHanThanhTra;
+	}
+
+	public void setNgayHetHanThanhTra(LocalDateTime ngayHetHanThanhTra) {
+		this.ngayHetHanThanhTra = ngayHetHanThanhTra;
 	}
 
 	public LocalDateTime getNgayHetHanGiaHanThanhTra() {
