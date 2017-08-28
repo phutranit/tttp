@@ -70,6 +70,12 @@ public class CuocThanhTraService {
 
 		return predAll;
 	}
+	
+//	public Predicate predicateFindThanhTraTrung() {
+//		BooleanExpression predAll = base;
+//		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
+//		return predAll;
+//	}
 
 	public Predicate predicateFindAllByKeHoachThanhTra(Long keHoachThanhTraId) {
 		BooleanExpression predAll = base;

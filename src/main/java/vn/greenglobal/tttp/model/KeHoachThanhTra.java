@@ -212,6 +212,9 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 					map.put("noiDungThanhTra", ctt.getNoiDungThanhTra());
 					map.put("linhVucThanhTraInfo", ctt.getLinhVucThanhTraInfo());
 					map.put("tienDoThanhTraInfo", ctt.getTienDoThanhTraInfo());
+					map.put("kyThanhTra", ctt.getKyThanhTra());
+					map.put("thoiHanThanhTra", ctt.getThoiHanThanhTra());
+					map.put("donViPhoiHop", ctt.getDonViPhoiHop());
 					list.add(map);
 				}
 			}
