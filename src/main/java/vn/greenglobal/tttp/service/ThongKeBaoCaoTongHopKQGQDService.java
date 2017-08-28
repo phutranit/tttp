@@ -71,7 +71,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 						predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().eq(month));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -139,7 +139,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 						predAll = predAll.and(QDon.don.ngayTiepNhan.month().eq(month));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -207,7 +207,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 						predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 

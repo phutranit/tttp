@@ -377,7 +377,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				
 				//2 - Don nhan trong ky bao cao
@@ -570,7 +570,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);	
 				
 				//2 - Don nhan trong ky bao cao
@@ -1388,7 +1388,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("0", cq.getTen());
 				mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				mapMaSo.put("2", thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay));
 				mapMaSo.put("3", donTonKyTruocChuyenSang);
@@ -1492,7 +1492,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("0", cq.getTen());
 				mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				mapMaSo.put("2", thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay));
 				mapMaSo.put("3", donTonKyTruocChuyenSang);

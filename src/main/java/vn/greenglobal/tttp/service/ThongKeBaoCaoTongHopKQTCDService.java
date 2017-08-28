@@ -82,7 +82,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().eq(month));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THUY_CHON)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
