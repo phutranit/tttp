@@ -71,11 +71,22 @@ public class CuocThanhTraService {
 		return predAll;
 	}
 	
-//	public Predicate predicateFindThanhTraTrung() {
-//		BooleanExpression predAll = base;
-//		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
-//		return predAll;
-//	}
+	public Predicate predicateFindThanhTraTrung(int namThanhTra, String tenDoiTuongThanhTra, String soQuyetDinh) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
+		
+		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tenDoiTuongThanhTra));
+		}
+		
+		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinh));
+		}
+		
+		return predAll;
+	}
 
 	public Predicate predicateFindAllByKeHoachThanhTra(Long keHoachThanhTraId) {
 		BooleanExpression predAll = base;
