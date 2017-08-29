@@ -87,7 +87,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra Trùng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListThanhTraTrung(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "tenDoiTuong", required = false) String tenDoiTuong,
+			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
@@ -103,10 +103,10 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			int current = Utils.localDateTimeNow().getYear();
 			
 			if (namThanhTra != null && namThanhTra > 0) {
-				cuocThanhTraIds.addAll(getCuocThanhTraIds(namThanhTra));
+				cuocThanhTraIds.addAll(getCuocThanhTraIds(namThanhTra, tenDoiTuongThanhTra, soQuyetDinh));
 			} else {
 				for (int i = current; i >= 2010; i--) {
-					cuocThanhTraIds.addAll(getCuocThanhTraIds(i));
+					cuocThanhTraIds.addAll(getCuocThanhTraIds(i, tenDoiTuongThanhTra, soQuyetDinh));
 				}
 			}
 			
@@ -273,13 +273,10 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		return cuocThanhTra;
 	}
 	
-	private List<Long> getCuocThanhTraIds(int namThanhTra) {
+	private List<Long> getCuocThanhTraIds(int namThanhTra, String tenDoiTuongThanhTra, String soQuyetDinh) {
 		List<Long> cuocThanhTraIds = new ArrayList<Long>();
 		List<CuocThanhTra> listCuocThanhTraCoKeHoachThanhTraTheoNam = (List<CuocThanhTra>) repo
-				.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false)
-						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
-						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
-						.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra)));
+				.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra, tenDoiTuongThanhTra, soQuyetDinh));
 		if (listCuocThanhTraCoKeHoachThanhTraTheoNam != null && listCuocThanhTraCoKeHoachThanhTraTheoNam.size() > 0) {
 			for (int j = 0; j < listCuocThanhTraCoKeHoachThanhTraTheoNam.size() - 1; j++) {
 				for (int k = j + 1; k < listCuocThanhTraCoKeHoachThanhTraTheoNam.size(); k++) {
