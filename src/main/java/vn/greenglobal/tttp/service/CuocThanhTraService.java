@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,11 +72,10 @@ public class CuocThanhTraService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindThanhTraTrung(int namThanhTra, String tenDoiTuongThanhTra, String soQuyetDinh) {
+	public Predicate predicateFindThanhTraTrungResult(List<Long> cuocThanhTraIds, String tenDoiTuongThanhTra, String soQuyetDinh) {
 		BooleanExpression predAll = base;
-		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.daXoa.eq(false))
+				.and(QCuocThanhTra.cuocThanhTra.id.in(cuocThanhTraIds));
 		
 		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tenDoiTuongThanhTra));
@@ -84,7 +84,15 @@ public class CuocThanhTraService {
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinh));
 		}
-		
+	
+		return predAll;
+	}
+			
+	public Predicate predicateFindThanhTraTrung(int namThanhTra) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
 		return predAll;
 	}
 
