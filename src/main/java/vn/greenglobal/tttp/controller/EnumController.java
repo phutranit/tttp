@@ -1487,9 +1487,9 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
-		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
-		list.add(object);
+//		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
+//		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
+//		list.add(object);
 
 		object = new HashMap<>();
 		object.put("ten", HinhThucThanhTraEnum.THUONG_XUYEN.getText());
