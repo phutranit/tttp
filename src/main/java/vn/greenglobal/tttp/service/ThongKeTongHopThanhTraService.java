@@ -1,24 +1,97 @@
 package vn.greenglobal.tttp.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
+import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
+import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.util.Utils;
 
 @Component
 public class ThongKeTongHopThanhTraService {
 
+	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepo;
+	
 	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
+	
+	public Predicate predicateFindAllCuocThanhTra(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) {
+		
+		BooleanExpression predAllCuocThanhTra = base;
+		
+		if (year != null && year > 0) { 
+			predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.year().eq(year));
+		}
+		
+		if (loaiKy != null && StringUtils.isNotBlank(loaiKy)) {
+			
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+			if (loaiKyEnum  != null) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+					if (quy != null && quy > 0) { 
+						if (quy == 1) { 
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 3));
+						}
+						if (quy == 2) { 
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(4, 6));
+						}
+						if (quy == 3) { 
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(7, 9));
+						}
+						if (quy == 4) { 
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(10, 12));
+						}
+					}
+				}
+				
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 6));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(7, 12));
+				}
+				
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+					if (month != null && month > 0) {
+						predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().eq(month));
+					}
+				}
+				
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NGAY)) {
+					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+						predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.between(dtTuNgay, dtDenNgay));
+					} else {
+						if (StringUtils.isNotBlank(tuNgay)) {
+							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.after(dtTuNgay));
+						}
+						if (StringUtils.isNotBlank(denNgay)) {
+							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(dtDenNgay));
+						}
+					}
+				}
+			}
+		}
+		
+		return predAllCuocThanhTra;
+	}
 	
 	// 1
 	public Long getCuocThanhTraTheoLinhVuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum,CuocThanhTraRepository cuocThanhTraRepo) {
@@ -75,7 +148,6 @@ public class ThongKeTongHopThanhTraService {
 		return tongSoDon;
 	}
 	
-	// Not finish
 	// 8
 	public Long getSoDonViDuocThanhTra(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo,Long doiTuongId) {
 		
@@ -227,9 +299,6 @@ public class ThongKeTongHopThanhTraService {
 		
 		return tongGiaTri[0];
 	}
-
-	
-	
 	
 }
     

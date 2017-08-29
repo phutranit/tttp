@@ -31,13 +31,16 @@ import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.QXuLyDon;
@@ -1532,52 +1535,79 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	}
 	
 	
-//	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh")
-//	@ApiOperation(value = "Tổng hợp kết quả thanh tra theo hành chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public @ResponseBody ResponseEntity<Object> getTongHopKetQuaThanhTraTheoHanhChinh(@RequestHeader(value = "Authorization", required = true) String authorization,
-//			Pageable pageable,
-//			@RequestParam(value = "loaiKy", required = false) String loaiKy,
-//			@RequestParam(value = "tuNgay", required = false) String tuNgay,
-//			@RequestParam(value = "denNgay", required = false) String denNgay,
-//			@RequestParam(value = "quy", required = false) Integer quy,
-//			@RequestParam(value = "year", required = false) Integer year,
-//			@RequestParam(value = "month", required = false) Integer month,
-//			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
-//			PersistentEntityResourceAssembler eass) {
-//		try {
-//			
-//			if (Utils.tokenValidate(profileUtil, authorization) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
-//			
-//			Long donViXuLy = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-//			
-//			Map<String, Object> mapDonVi = new HashMap<>();
-//			Map<String, Object> map = new HashMap<>();
-//			Map<String, Object> mapMaSo = new HashMap<>();
-//			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
-//			List<Map<String, Object>> maSos = new ArrayList<>();
-//			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
-//			
-//			if (listDonVis != null) {
-//				for (CoQuanQuanLy dv : listDonVis) {
-//					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-//					if (coQuan != null) {
-//						list.add(coQuan);
-//					}					
-//				}
-//			} else {
-//				coQuanQuanLyRepo.findOne(donViXuLy);
-//				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
-//			}
-//			donVis.addAll(list);
-//			
-//			return Utils.responseInternalServerErrors();
-//		} catch (Exception e) {
-//			return Utils.responseInternalServerErrors(e);
-//		}
-//	}
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh")
+	@ApiOperation(value = "Tổng hợp kết quả thanh tra theo hành chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTongHopKetQuaThanhTraTheoHanhChinh(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable,
+			@RequestParam(value = "loaiKy", required = false) String loaiKy,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "quy", required = false) Integer quy,
+			@RequestParam(value = "year", required = false) Integer year,
+			@RequestParam(value = "month", required = false) Integer month,
+			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Long donViXuLy = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			
+			Map<String, Object> mapDonVi = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapMaSo = new HashMap<>();
+			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
+			List<Map<String, Object>> maSos = new ArrayList<>();
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+			
+			if (listDonVis != null) {
+				for (CoQuanQuanLy dv : listDonVis) {
+					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+					if (coQuan != null) {
+						list.add(coQuan);
+					}					
+				}
+			} else {
+				coQuanQuanLyRepo.findOne(donViXuLy);
+				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
+			}
+			
+			donVis.addAll(list);
+			
+			if (year == null) { 
+				year = Utils.localDateTimeNow().getYear();
+			}
+			
+			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
+			
+			for (CoQuanQuanLy cq : donVis) {
+				
+				mapDonVi.put("ten", cq.getTen());
+				mapDonVi.put("coQuanQuanLyId", cq.getId());
+				
+				mapMaSo = new HashMap<String, Object>();
+				mapMaSo.put("donVi", mapDonVi);
+				
+				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra;
+				
+				predAllCuocThanhTraCoQuan = predAllCuocThanhTraCoQuan.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())).
+						and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(LinhVucThanhTraEnum.HANH_CHINH));
+				
+				System.out.println((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan));
+				
+				// Dem so cuoc thanh tra theo hanh chinh
+				//Long tongSoCuocThanhTra = thongKeTongHopThanhTraService.getCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, donViXuLyXLD, linhVucThanhTraEnum, cuocThanhTraRepo, hinhThucThanhTraEnum)
+			}
+			
+			map.put("maSos", maSos);
+			return new ResponseEntity<>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh/xuatExcel")
 	@ApiOperation(value = "Xuất file excel tổng hợp kết quả thanh tra theo hành chính", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -1705,7 +1735,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoDonToCaoLinhVucVeDang = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucVeDangDonToCao);
 				Long tongSoDonToCaoLinhVucKhac= thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDSTCDDonVi, linhVucKhacDonToCao);
 				Long tongSoDonLinhVucToCao = tongSoDonToCaoLinhVucHanhChinh + tongSoDonToCaoLinhVucTuPhap + tongSoDonToCaoLinhVucThamNhung + tongSoDonToCaoLinhVucVeDang+ tongSoDonToCaoLinhVucKhac;
-				
 				
 				mapMaSo.put("14", tongSoDonLinhVucToCao);
 				mapMaSo.put("15", tongSoDonToCaoLinhVucHanhChinh);
