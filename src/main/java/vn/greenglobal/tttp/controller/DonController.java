@@ -661,8 +661,10 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
-				don.setThanhLapDon(donOld.isThanhLapDon());
-
+				if (donOld.isThanhLapDon()) { 
+					don.setThanhLapDon(donOld.isThanhLapDon());
+				}
+				
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				}

@@ -802,7 +802,11 @@ public class Utils {
 	
 
 	public static boolean isValidStringLength(String str, int length) {
-		return str != null && !"".equals(str) && str.length() <= length ? true : false;
+		if (str != null && !"".equals(str)) {
+			return str.length() <= length ? true : false;
+		} else {
+			return true;
+		}
 	}
 	
 }
