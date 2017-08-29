@@ -1455,8 +1455,8 @@ public class EnumController {
 		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG.getText());
-		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG.name());
+		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.name());
 		list.add(object);
 		
 		object = new HashMap<>();
