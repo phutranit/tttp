@@ -61,7 +61,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soQuyetDinhGiaHan = "";//
 	@Size(max = 255)
 	private String soQuyetDinhVeViecThanhTra = "";//
-	@Size(max = 255)
+	//@Lob
 	private String ghiChu = "";//
 	//@Lob
 	private String noiDungThanhTra = "";//
