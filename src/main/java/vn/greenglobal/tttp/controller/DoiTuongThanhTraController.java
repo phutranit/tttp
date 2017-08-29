@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,6 +58,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
+			@RequestParam(value = "doiTuongIds", required = false) List<DoiTuongThanhTra> doiTuongIds,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -67,7 +70,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa, linhVucId), pageable);
+			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa, linhVucId, doiTuongIds), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

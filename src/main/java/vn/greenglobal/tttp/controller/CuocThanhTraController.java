@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
@@ -48,12 +50,11 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras")
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getList(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
@@ -64,16 +65,54 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			
+
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			
+
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(tenDoiTuongThanhTra,
-					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId), pageable);
+					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId),
+					pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTraTrungs")
+	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra Trùng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListThanhTraTrung(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
+			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+
+		try {
+			
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			List<Long> cuocThanhTraIds = new ArrayList<Long>();
+			int current = Utils.localDateTimeNow().getYear();
+			
+			if (namThanhTra != null && namThanhTra > 0) {
+				cuocThanhTraIds.addAll(getCuocThanhTraIds(namThanhTra, tenDoiTuongThanhTra, soQuyetDinh));
+			} else {
+				for (int i = current; i >= 2010; i--) {
+					cuocThanhTraIds.addAll(getCuocThanhTraIds(i, tenDoiTuongThanhTra, soQuyetDinh));
+				}
+			}
+			
+			System.out.println("cuocThanhTraIds: " + cuocThanhTraIds.size());
+			
+			Page<CuocThanhTra> page = repo.findAll(QCuocThanhTra.cuocThanhTra.daXoa.eq(false).and(QCuocThanhTra.cuocThanhTra.id.in(cuocThanhTraIds)), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -97,7 +136,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			CoQuanQuanLy donVi = new CoQuanQuanLy();
 			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 			cuocThanhTra.setDonVi(donVi);
-			return cuocThanhTraService.doSave(cuocThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.CREATED);
+			return cuocThanhTraService.doSave(cuocThanhTra,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -125,7 +166,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/cuocThanhTras/{id}")
 	@ApiOperation(value = "Cập nhật Cuộc Thanh Tra", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
@@ -141,13 +182,18 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 
 			cuocThanhTra.setId(id);
+			CoQuanQuanLy donVi = new CoQuanQuanLy();
+			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
+			cuocThanhTra.setDonVi(donVi);
 			checkDataCuocThanhTra(cuocThanhTra);
-			return cuocThanhTraService.doSave(cuocThanhTra, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
+			return cuocThanhTraService.doSave(cuocThanhTra,
+					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
+					eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/cuocThanhTras/{id}")
 	@ApiOperation(value = "Xoá Cuộc Thanh Tra", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Cuộc Thanh Tra thành công") })
@@ -160,21 +206,22 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			
+
 			if (cuocThanhTra.getKeHoachThanhTra() == null) {
-				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				Long congChucId = Long
+						.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				cuocThanhTraService.save(cuocThanhTra, congChucId);
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} else {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
 						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
 			}
-			
+
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	private CuocThanhTra checkDataCuocThanhTra(CuocThanhTra cuocThanhTra) {
 		if (!cuocThanhTra.isThanhLapDoan()) {
 			cuocThanhTra.setSoQuyetDinhThanhLapDoan("");
@@ -227,5 +274,42 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setDatDaThu(0);
 		}
 		return cuocThanhTra;
+	}
+	
+	private List<Long> getCuocThanhTraIds(int namThanhTra, String tenDoiTuongThanhTra, String soQuyetDinh) {
+		List<Long> cuocThanhTraIds = new ArrayList<Long>();
+		List<CuocThanhTra> listCuocThanhTraCoKeHoachThanhTraTheoNam = (List<CuocThanhTra>) repo
+				.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra, tenDoiTuongThanhTra, soQuyetDinh));
+		if (listCuocThanhTraCoKeHoachThanhTraTheoNam != null && listCuocThanhTraCoKeHoachThanhTraTheoNam.size() > 0) {
+			for (int j = 0; j < listCuocThanhTraCoKeHoachThanhTraTheoNam.size() - 1; j++) {
+				for (int k = j + 1; k < listCuocThanhTraCoKeHoachThanhTraTheoNam.size(); k++) {
+					if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
+							listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
+						if (cuocThanhTraIds.size() > 0) {
+							boolean flagJ = false;
+							boolean flagK = false;
+							for (Long l : cuocThanhTraIds) {
+								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId().equals(l)) {
+									flagJ = true;
+								}
+								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId().equals(l)) {
+									flagK = true;
+								}
+							}
+							if (!flagJ) {
+								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
+							}
+							if (!flagK) {
+								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+							}
+						} else {
+							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
+							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+						}
+					}
+				}
+			}
+		}
+		return cuocThanhTraIds;
 	}
 }
