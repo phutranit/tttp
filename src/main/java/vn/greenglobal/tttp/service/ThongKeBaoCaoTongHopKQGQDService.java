@@ -37,8 +37,8 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 
 	public Predicate predicateFindAllGQD(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) { 
 		BooleanExpression predAll = baseDon;
-		if (year != null && year > 0) { 
-			predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.year().eq(year));
+		if (year != null && year > 0) {
+			predAll = predAll.and(QDon.don.ngayTiepNhan.year().eq(year));
 		}
 		
 		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
@@ -47,28 +47,28 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
 					if (quy != null && quy > 0) { 
 						if (quy == 1) { 
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(1, 3));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(1, 3));
 						}
 						if (quy == 2) { 
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(4, 6));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(4, 6));
 						}
 						if (quy == 3) { 
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(7, 9));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(7, 9));
 						}
 						if (quy == 4) { 
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(10, 12));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(10, 12));
 						}
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
-					predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(1, 6));
+					predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(1, 6));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().between(6, 12));
+					predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(7, 12));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.month().eq(month));
+						predAll = predAll.and(QDon.don.ngayTiepNhan.month().eq(month));
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
@@ -76,15 +76,15 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 
-						predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.between(dtTuNgay, dtDenNgay));
+						predAll = predAll.and(QDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
 							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.after(dtTuNgay));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.after(dtTuNgay));
 						}
 						if (StringUtils.isNotBlank(denNgay)) {
 							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-							predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.before(dtDenNgay));
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtDenNgay));
 						}
 					}
 				}
@@ -132,7 +132,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(1, 6));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(6, 12));
+					predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(7, 12));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
