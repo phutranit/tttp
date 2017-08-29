@@ -943,6 +943,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			map.put("nguoiKy", getKeHoachThanhTra().getNguoiKy());
 			map.put("ghiChu", getKeHoachThanhTra().getGhiChu());
 			map.put("hinhThucKeHoachThanhTraInfo", getKeHoachThanhTra().getHinhThucKeHoachThanhTraInfo());
+			map.put("donViInfo", getKeHoachThanhTra().getDonViInfo());
 			return map;
 		}
 		return null;
