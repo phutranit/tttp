@@ -5,7 +5,7 @@ public enum ThongKeBaoCaoLoaiKyEnum {
 	SAU_THANG_DAU_NAM("6 tháng đầu năm"),
 	SAU_THANG_CUOI_NAM("6 tháng cuối năm"),
 	THEO_THANG("Theo tháng"),
-	THEO_NGAY("Theo ngày");
+	TUY_CHON("Tùy chọn");
 	
 	ThongKeBaoCaoLoaiKyEnum(String text) {
 		this.text = text;
