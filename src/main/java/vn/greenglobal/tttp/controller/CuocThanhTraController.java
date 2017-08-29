@@ -182,6 +182,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 
 			cuocThanhTra.setId(id);
+			CoQuanQuanLy donVi = new CoQuanQuanLy();
+			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
+			cuocThanhTra.setDonVi(donVi);
 			checkDataCuocThanhTra(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
