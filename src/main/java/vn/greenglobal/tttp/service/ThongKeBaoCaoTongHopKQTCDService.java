@@ -82,7 +82,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().eq(month));
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NGAY)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -180,6 +180,29 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		return tongSo;
 	}
 	
+	public Long getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		BooleanExpression donCongDanQuery = baseDonCongDan;
+		List<Don> dons1 = new ArrayList<Don>();
+		List<Don> dons2 = new ArrayList<Don>();
+		BooleanExpression donQuery = baseDon;
+		dons1.addAll((List<Don>) donRepo.findAll(donQuery));
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.in(dons1));
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
+		
+		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		dons2.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));
+
+		PhanLoaiDonCongDanEnum nguoiDungDon = PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON;
+		donCongDanQuery = donCongDanQuery.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(nguoiDungDon));
+		donCongDanQuery = donCongDanQuery.and(QDon_CongDan.don_CongDan.don.in(dons2));
+		
+		donCongDans.addAll((List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery));
+		tongSo = Long.valueOf(donCongDans.size());
+		return tongSo;
+	}
+	
 	public Long getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(BooleanExpression predAll, boolean isCaNhanVaToChuc, 
 			boolean isDoanDongNguoi) { 
 		Long tongSo = 0L;
@@ -256,7 +279,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 				tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) > 0 ? Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) : 1;
 			}
 			return tongSoVuViec;
-		}).distinct().mapToLong(Long::longValue).sum());
+		}).mapToLong(Long::longValue).sum());
 		return tongSo;
 	}
 	
