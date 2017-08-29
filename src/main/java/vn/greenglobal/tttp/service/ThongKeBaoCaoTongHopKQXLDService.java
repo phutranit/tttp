@@ -735,11 +735,9 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		Long tongSo = 0L;
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
-		predAllXLD = predAllXLD
-				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH))
-				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNotNull())
-				.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
-				.and(QXuLyDon.xuLyDon.don.hoanThanhDon.isTrue());
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH))
+				.or(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNotNull().and(QXuLyDon.xuLyDon.don.huongXuLyXLD
+						.eq(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI).and(QXuLyDon.xuLyDon.don.hoanThanhDon.isTrue())));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
