@@ -54,17 +54,6 @@ public class ThoiHanXuLyThanhTraServiceTest {
 	}
 	
 	@Test
-	public void testTestCo1NgayKetThucXuLy1() {
-		ngayBatDau = LocalDateTime.of(2017, 9, 2, 10, 03);
-		soNgayKetThuc = 1L;
-		Long result = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayKetThuc);
-		ngayKetThuc = ngayBatDau.plusDays(result - 1);		
-		LocalDateTime test = LocalDateTime.of(2017, 4, 21, 10, 03); 
-		boolean actual = ngayKetThuc.isEqual(test);
-		assertEquals(true, actual);
-	}
-	
-	@Test
 	public void testSoNgayXuLyTruongHopNgayBatDauNull() {
 		ngayBatDau = null;
 		Long result = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, 10L);
