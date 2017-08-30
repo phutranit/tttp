@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.KeHoachThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
@@ -29,11 +30,11 @@ public class KeHoachThanhTraService {
 
 	BooleanExpression base = QKeHoachThanhTra.keHoachThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay, Integer namThanhTra, Long donViId) {
+	public Predicate predicateFindAll(String soQuyetDinh, String tuNgay, String denNgay, Integer namThanhTra, List<CoQuanQuanLy> donViIds) {
 		BooleanExpression predAll = base;
 		
-		if (donViId != null && donViId > 0) {
-			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.donVi.id.eq(donViId));
+		if (donViIds != null && donViIds.size() > 0) {
+			predAll = predAll.and(QKeHoachThanhTra.keHoachThanhTra.donVi.in(donViIds));
 		}
 		
 		if (namThanhTra != null && namThanhTra > 0) {
