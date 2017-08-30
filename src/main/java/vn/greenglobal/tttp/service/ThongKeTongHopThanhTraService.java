@@ -17,7 +17,6 @@ import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
-import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -71,7 +70,7 @@ public class ThongKeTongHopThanhTraService {
 					}
 				}
 				
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NGAY)) {
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -94,36 +93,28 @@ public class ThongKeTongHopThanhTraService {
 	}
 	
 	// 1
-	public Long getCuocThanhTraTheoLinhVuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum,CuocThanhTraRepository cuocThanhTraRepo) {
+	public Predicate predicateFindCuocThanhTraTheoLinhVuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum,CuocThanhTraRepository cuocThanhTraRepo) {
 		
-		Long tongSoDon = 0L;
-		
-		predAll = base.
+		predAll = predAll.
 				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
 				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum));
 		
-		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
-		
-		return tongSoDon; 
+		return predAll; 
 	}
 	
 	// 4,5
-	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo,HinhThucThanhTraEnum hinhThucThanhTraEnum) {
-
+	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll, HinhThucThanhTraEnum hinhThucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
+		
 		Long tongSoDon = 0L;
 		
 		if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.THEO_KE_HOACH.name())) {
 			
-			predAll = base.
-					and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-					and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
+			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()).
 					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.THEO_KE_HOACH));
 		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.DOT_XUAT.name())) {
 			
-			predAll = base.
-					and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-					and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
+			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull()).
 					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.DOT_XUAT));
 		}
@@ -134,14 +125,11 @@ public class ThongKeTongHopThanhTraService {
 	}
 	 
 	// 6,7
-	public Long getCuocThanhTraTheoTienDo(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo,TienDoThanhTraEnum tienDoThanhTraEnum) {
+	public Long getCuocThanhTraTheoTienDo(BooleanExpression predAll, TienDoThanhTraEnum tienDoThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		Long tongSoDon = 0L;
 			
-		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
-				and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(tienDoThanhTraEnum));
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(tienDoThanhTraEnum));
 		
 		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
 		
@@ -149,45 +137,49 @@ public class ThongKeTongHopThanhTraService {
 	}
 	
 	// 8
-	public Long getSoDonViDuocThanhTra(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo,Long doiTuongId) {
+	public Long getSoDonViDuocThanhTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		final Long[] tongGiaTri = new Long[0];
-		
-		predAll = base.				
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum));
-	
+		final Long tongGiaTris = 0L;
+		System.out.println("getSoDonViDuocThanhTra" + tongGiaTris);
 		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
 		
 		if (cuocThanhTras.size() > 0) {
 			
-			cuocThanhTras.forEach(elem->{
+			tongSo = Long.valueOf(dons.stream().map(d -> {
+				   Long tongSoVuViec = 1L;
+				   if (d.getThongTinGiaiQuyetDon() != null) {
+				    ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+				    tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) > 0 ? Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) : 1;
+				   }
+				   return tongSoVuViec;
+				  }).mapToLong(Long::longValue).sum());
+			
+			cuocThanhTras.parallelStream().forEach(elem->{
 				
 				if (elem.getDoiTuongThanhTra() != null) {
-					tongGiaTri[0] = tongGiaTri[0] + 1;
+					
+					//tongGiaTri[0] = tongGiaTri[0] + 1;
 				}
 				
 				if (elem.getDoiTuongThanhTraLienQuan() != null) {
 					
 					String[] array = elem.getDoiTuongThanhTraLienQuan().split(";");
-					tongGiaTri[0] = tongGiaTri[0] + array.length;
+//					tongGiaTri[0] = tongGiaTri[0] + array.length;
 				}
 			});
 		}
 		
-		return tongGiaTri[0];
+		return tongGiaTris[0];
 	}
 	
 	
 	// 9
-	public Long getSoDonViCoViPham(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo) {
+	public Long getSoDonViCoViPham(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		Long tongSoDon = 0L;
 		
 		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
 				and(QCuocThanhTra.cuocThanhTra.viPham.eq(true));
 		
 		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());

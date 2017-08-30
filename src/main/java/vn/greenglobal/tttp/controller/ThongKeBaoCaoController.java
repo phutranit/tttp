@@ -30,12 +30,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
+import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.Don;
@@ -1567,11 +1569,12 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 			
 			if (listDonVis != null) {
+				
 				for (CoQuanQuanLy dv : listDonVis) {
 					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
 					if (coQuan != null) {
 						list.add(coQuan);
-					}					
+					}
 				}
 			} else {
 				coQuanQuanLyRepo.findOne(donViXuLy);
@@ -1580,7 +1583,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			
 			donVis.addAll(list);
 			
-			if (year == null) { 
+			if (year == null) {
 				year = Utils.localDateTimeNow().getYear();
 			}
 			
@@ -1596,13 +1599,37 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra;
 				
-				predAllCuocThanhTraCoQuan = predAllCuocThanhTraCoQuan.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())).
-						and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(LinhVucThanhTraEnum.HANH_CHINH));
+				// Get cuoc thanh tra theo linh vuc hanh chinh
+				predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);
 				
-				System.out.println((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan));
+				// Dem so cuoc thanh tra 
+				Long tongSoCuocThanhTra = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
 				
-				// Dem so cuoc thanh tra theo hanh chinh
-				//Long tongSoCuocThanhTra = thongKeTongHopThanhTraService.getCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, donViXuLyXLD, linhVucThanhTraEnum, cuocThanhTraRepo, hinhThucThanhTraEnum)
+				// Dem so cuoc theo thanh tra hinh thuc
+				// Theo ke hoach
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				// Dot xuat
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				
+				// Dem so cuoc thanh tra theo tien do
+				// Ket thuc thanh tra truc tiep 
+				Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo);
+					// Da ban hanh ket luan
+				Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
+				
+				// Dem so don vi duoc thanh tra 
+				Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				// Dem so don vi co vi pham
+				Long tongSoDonViCoViPham = thongKeTongHopThanhTraService.getSoDonViCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				
+				System.out.println(tongSoCuocThanhTra + ", " + tongSoCuocThanhTraTheoKeHoach + ", " + tongSoCuocThanhTraDotXuat); 
+				
+				//ghi chu - 31
+				mapMaSo.put("ghiChu", "");
+				
+				maSos.add(mapMaSo);
+				mapMaSo = new HashMap<String, Object>();
+				mapDonVi = new HashMap<String, Object>();
 			}
 			
 			map.put("maSos", maSos);
