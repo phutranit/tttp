@@ -83,7 +83,8 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
-			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra, Pageable pageable,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
+			@RequestParam(value = "donViIds", required = false) List<CoQuanQuanLy> donViIds, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -94,8 +95,13 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, namThanhTra, donViId), pageable);
+			if (donViIds == null || donViIds.size() <= 0) {
+				CoQuanQuanLy cq = new CoQuanQuanLy();
+				cq.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
+				donViIds.add(cq);
+			}
+			
+			Page<KeHoachThanhTra> page = repo.findAll(keHoachThanhTraService.predicateFindAll(soQuyetDinh, tuNgay, denNgay, namThanhTra, donViIds), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
