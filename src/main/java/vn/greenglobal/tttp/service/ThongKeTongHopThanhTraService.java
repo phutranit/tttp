@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -128,9 +129,8 @@ public class ThongKeTongHopThanhTraService {
 	public Long getCuocThanhTraTheoTienDo(BooleanExpression predAll, TienDoThanhTraEnum tienDoThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		Long tongSoDon = 0L;
-			
+
 		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(tienDoThanhTraEnum));
-		
 		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
 		
 		return tongSoDon;
@@ -140,156 +140,135 @@ public class ThongKeTongHopThanhTraService {
 	public Long getSoDonViDuocThanhTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		final Long tongGiaTris = 0L;
-		System.out.println("getSoDonViDuocThanhTra" + tongGiaTris);
+		Long tongGiaTri = 0L;
+		
 		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
-		
-		if (cuocThanhTras.size() > 0) {
 			
-			tongSo = Long.valueOf(dons.stream().map(d -> {
-				   Long tongSoVuViec = 1L;
-				   if (d.getThongTinGiaiQuyetDon() != null) {
-				    ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-				    tongSoVuViec = Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) > 0 ? Long.valueOf(ttgqd.getSoVuGiaiQuyetKhieuNai()) : 1;
-				   }
-				   return tongSoVuViec;
-				  }).mapToLong(Long::longValue).sum());
-			
-			cuocThanhTras.parallelStream().forEach(elem->{
-				
-				if (elem.getDoiTuongThanhTra() != null) {
-					
-					//tongGiaTri[0] = tongGiaTri[0] + 1;
-				}
-				
-				if (elem.getDoiTuongThanhTraLienQuan() != null) {
-					
-					String[] array = elem.getDoiTuongThanhTraLienQuan().split(";");
-//					tongGiaTri[0] = tongGiaTri[0] + array.length;
-				}
-			});
-		}
+		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
+
+			Long tongDonVi = 1L;
+
+			if (!elem.getDoiTuongThanhTraLienQuan().isEmpty()) {
+
+				String[] array = elem.getDoiTuongThanhTraLienQuan().split(";");
+				tongDonVi += array.length;
+			}
+
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
 		
-		return tongGiaTris[0];
+		return tongGiaTri;
 	}
 	
 	
 	// 9
-	public Long getSoDonViCoViPham(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
+	public Predicate predicateFindCuocThanhTraCoViPham(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.viPham.isTrue());
+		
+		return predAll;
+	}
+	
+	// 11 - 15
+	public Long getTienDatTheoViPham(BooleanExpression predAll, String type, String typeValue, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
+
+			Long tongDonVi = 1L;
+			
+			if (StringUtils.equals(type, "TONG_VI_PHAM")) {
+
+				if (StringUtils.equals(typeValue, "DAT")) {
+					tongDonVi += elem.getDatThuViPham();
+				} else if (StringUtils.equals(typeValue, "TIEN")) {
+					tongDonVi += elem.getTienThuViPham();
+				}
+				
+			} else if (StringUtils.equals(type, "KIEN_NGHI_THU_HOI")) {
+
+				if (StringUtils.equals(typeValue, "DAT")) {
+					tongDonVi += elem.getDatKienNghiThuHoi();
+				} else if (StringUtils.equals(typeValue, "TIEN")) {
+					tongDonVi += elem.getTienKienNghiThuHoi();
+				}
+				
+			} else if (StringUtils.equals(type, "KIEN_NGHI_KHAC")) {
+
+				if (StringUtils.equals(typeValue, "DAT")) {
+					tongDonVi += elem.getDatTraKienNghiKhac();
+				} else if (StringUtils.equals(typeValue, "TIEN")) {
+					tongDonVi += elem.getTienTraKienNghiKhac();
+				}
+			}
+
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+	
+		return tongGiaTri;
+	}
+	
+	public Long getKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
 		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
 		
-		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.viPham.eq(true));
-		
-		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {
+
+			Long tongDonVi = 1L;
+			
+			if (StringUtils.equals(type, "TO_CHUC")) {
+
+				tongDonVi += elem.getToChucXuLyHanhChinhViPham();	
+			} else if (StringUtils.equals(type, "CA_NHAN")) {
+				
+				tongDonVi += elem.getCaNhanXuLyHanhChinhViPham();
+			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
 		
 		return tongSoDon;
 	}
 	
-	public Long getTienDatTheoViPham(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo ,String type,String typeValue) {
+	public Predicate predicateFindCuocThanhTraChuyenCoQuanDieuTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
-		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		final Long[] tongGiaTri = new Long[0];
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.chuyenCoQuanDieuTra.isTrue());
 		
-		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum));
-		
-		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
-		
-		if (cuocThanhTras.size() > 0) {
-
-			cuocThanhTras.forEach(elem->{
-				
-				if (StringUtils.equals(type, "TONG_VI_PHAM")) {
-
-					if (StringUtils.equals(typeValue, "DAT")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getDatThuViPham();
-					} else if (StringUtils.equals(typeValue, "TIEN")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getTienThuViPham();
-					}
-					
-				} else if (StringUtils.equals(type, "KIEN_NGHI_THU_HOI")) {
-
-					if (StringUtils.equals(typeValue, "DAT")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getDatKienNghiThuHoi();
-					} else if (StringUtils.equals(typeValue, "TIEN")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getTienKienNghiThuHoi();
-					}
-					
-				} else if (StringUtils.equals(type, "KIEN_NGHI_KHAC")) {
-
-					if (StringUtils.equals(typeValue, "DAT")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getDatTraKienNghiKhac();
-					} else if (StringUtils.equals(typeValue, "TIEN")) {
-						tongGiaTri[0] = tongGiaTri[0] + elem.getTienTraKienNghiKhac();
-					}
-				}
-			});	
-		}
-	
-		return tongGiaTri[0];
+		return predAll;
 	}
 	
-	public Long getBlockNoiDungViPham(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo ,String type) {
+	public Long getKienNghiXuLyCCQDT(BooleanExpression predAll, String type,CuocThanhTraRepository cuocThanhTraRepo ) {
 		
 		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		final Long[] tongSoDon = new Long[0];
-		
-		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
-				and(QCuocThanhTra.cuocThanhTra.viPham.isTrue());
-		
-		
-	
-		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
-		
-		if (cuocThanhTras.size() > 0) {
-
-			cuocThanhTras.forEach(elem->{
-				
-				if (StringUtils.equals(type, "TO_CHUC")) {
-					
-					tongSoDon[0] = tongSoDon[0] + elem.getToChucXuLyHanhChinhViPham();
-				} else if (StringUtils.equals(type, "CA_NHAN")) {
-					
-					tongSoDon[0] = tongSoDon[0] + elem.getCaNhanXuLyHanhChinhViPham();
-				}
-			});
-		}
-		
-		return tongSoDon[0];
-	}
-	
-	public Long getBlockGiaoCoQuanDieuTra(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum ,CuocThanhTraRepository cuocThanhTraRepo ,String type) {
-		
-		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
-		final Long[] tongGiaTri = new Long[0];
-		
-		predAll = base.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum)).
-				and(QCuocThanhTra.cuocThanhTra.chuyenCoQuanDieuTra.isTrue());
+		Long tongGiaTri = 0L;
 		
 		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
 		
-		if (cuocThanhTras.size() > 0) {
+		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
 
-			cuocThanhTras.forEach(elem->{
+			Long tongDonVi = 1L;
+			
+			if (StringUtils.equals(type, "VU")) {
+
+				tongDonVi += elem.getSoVuDieuTra();	
+			} else if (StringUtils.equals(type, "DOI_TUONG")) {
 				
-				if (StringUtils.equals(type, "VU")) {
-					
-					tongGiaTri[0] = tongGiaTri[0] + elem.getSoVuDieuTra();
-				} else if (StringUtils.equals(type, "DOI_TUONG")) {
-					
-					tongGiaTri[0] = tongGiaTri[0] + elem.getSoDoiTuongDieuTra();
-				}
-			});
-		}
+				tongDonVi += elem.getSoDoiTuongDieuTra();
+			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
 		
-		return tongGiaTri[0];
+		return tongGiaTri;
 	}
 	
 }
