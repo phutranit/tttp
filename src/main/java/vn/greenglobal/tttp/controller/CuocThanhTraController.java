@@ -32,7 +32,9 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.ThanhVienDoanRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
+import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -45,6 +47,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 
 	@Autowired
 	private CuocThanhTraService cuocThanhTraService;
+	
+	@Autowired
+	private ThanhVienDoanService thanhVienDoanService;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -110,8 +115,6 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				}
 			}
 			
-			System.out.println("cuocThanhTraIds: " + cuocThanhTraIds.size());
-			
 			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult(cuocThanhTraIds, tenDoiTuongThanhTra, soQuyetDinh), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -133,12 +136,14 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			CoQuanQuanLy donVi = new CoQuanQuanLy();
 			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 			cuocThanhTra.setDonVi(donVi);
-			return cuocThanhTraService.doSave(cuocThanhTra,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.CREATED);
+			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
+				thanhVienDoanService.save(tvd, congChucId);
+			}
+			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -181,14 +186,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			cuocThanhTra.setId(id);
 			CoQuanQuanLy donVi = new CoQuanQuanLy();
 			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 			cuocThanhTra.setDonVi(donVi);
+			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
+				thanhVienDoanService.save(tvd, congChucId);
+			}
 			checkDataCuocThanhTra(cuocThanhTra);
-			return cuocThanhTraService.doSave(cuocThanhTra,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.OK);
+			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
