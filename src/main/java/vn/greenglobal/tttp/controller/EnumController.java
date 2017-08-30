@@ -1487,9 +1487,9 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
-		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
-		list.add(object);
+//		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
+//		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
+//		list.add(object);
 
 		object = new HashMap<>();
 		object.put("ten", HinhThucThanhTraEnum.THUONG_XUYEN.getText());
@@ -1672,11 +1672,16 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/namThanhTras")
 	@ApiOperation(value = "Lấy danh sách các năm thanh tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getNamThanhTras(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "isTimKiem", required = false, defaultValue = "false") Boolean isTimKiem) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		for (int i = current; i >= 2010; i--) {
+		int end = current - 7;
+		if (isTimKiem) {
+			end = 2010;
+		}
+		for (int i = current + 3; i >= end; i--) {
 			object = new HashMap<String, Object>();
 			object.put("ten", i);
 			object.put("giaTri", i);
