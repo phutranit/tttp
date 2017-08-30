@@ -1455,8 +1455,8 @@ public class EnumController {
 		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG.getText());
-		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG.name());
+		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.name());
 		list.add(object);
 		
 		object = new HashMap<>();
@@ -1467,6 +1467,11 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LinhVucThanhTraEnum.TAI_CHINH.getText());
 		object.put("giaTri", LinhVucThanhTraEnum.TAI_CHINH.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LinhVucThanhTraEnum.CHUYEN_NGANH.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.CHUYEN_NGANH.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
