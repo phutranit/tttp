@@ -55,7 +55,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
-			@RequestParam(value = "soQuyetDinhKeHoach", required = false) String soQuyetDinhKeHoach,
+			@RequestParam(value = "quyetDinhPheDuyetKTTT", required = false) String quyetDinhPheDuyetKTTT,
 			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
@@ -74,7 +74,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, soQuyetDinhKeHoach, tenDoiTuongThanhTra,
+			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKTTT, tenDoiTuongThanhTra,
 					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {

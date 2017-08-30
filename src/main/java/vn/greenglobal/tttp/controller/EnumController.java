@@ -1677,7 +1677,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int current = Utils.localDateTimeNow().getYear();
-		int end = current - 3;
+		int end = current - 7;
 		if (isTimKiem) {
 			end = 2010;
 		}
