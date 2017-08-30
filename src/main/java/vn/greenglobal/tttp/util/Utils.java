@@ -696,25 +696,25 @@ public class Utils {
      * @return soNgayXuLy so ngay con lai de xu ly
      */
 	public static Long getLaySoNgayXuLyThanhTra(LocalDateTime ngayBatDau, Long soNgayThanhTra) {
-		long soNgayXuLy = 0;
+		Long soNgayXuLy = 0L;
 
 		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0)) {
 			Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 			Calendar end = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
-			for (int i = 1; i <= soNgayThanhTra; i++) {
+			System.out.println("begin " +start.getTime() + " sn " +soNgayThanhTra);	
+			for (int i = 1; i < soNgayThanhTra; i++) {
 				end.add(Calendar.DATE, 1);
 			}
-			start.add(Calendar.DATE, 1);
-			if (start.before(end) || DateUtils.isSameDay(start, end)) {
-				while (start.before(end) || DateUtils.isSameDay(start, end)) {
-					// check ngay nghi
-					if (isInvalidNgayNghi(start.getTime())) {
-						end.add(Calendar.DATE, 1);
-					}
-					start.add(Calendar.DATE, 1);
-					soNgayXuLy += 1;
+			
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				if (isInvalidNgayNghi(start.getTime())) { 
+					end.add(Calendar.DATE, 1);
 				}
+				soNgayXuLy += 1;
+				start.add(Calendar.DATE, 1);
 			}
+			System.out.println("soNgayXuLy " +soNgayXuLy);
+			System.out.println("end " +end.getTime());
 		}
 		return soNgayXuLy;
 	}

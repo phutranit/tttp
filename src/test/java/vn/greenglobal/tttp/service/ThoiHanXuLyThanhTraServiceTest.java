@@ -33,11 +33,33 @@ public class ThoiHanXuLyThanhTraServiceTest {
 	
 	@Test
 	public void testTestNgayKetThucXuLy() {
+		ngayBatDau = LocalDateTime.of(2017, 9, 3, 10, 03);
+		soNgayKetThuc = 2L;
+		Long result = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayKetThuc);
+		ngayKetThuc = ngayBatDau.plusDays(result - 1);		
+		LocalDateTime test = LocalDateTime.of(2017, 9, 5, 10, 03); 
+		boolean actual = ngayKetThuc.isEqual(test);
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testTestCoNhieuNgayKetThucXuLy() {
+		ngayBatDau = LocalDateTime.of(2017, 9, 3, 10, 03);
+		soNgayKetThuc = 12L;
+		Long result = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayKetThuc);
+		ngayKetThuc = ngayBatDau.plusDays(result - 1);		
+		LocalDateTime test = LocalDateTime.of(2017, 9, 19, 10, 03); 
+		boolean actual = ngayKetThuc.isEqual(test);
+		assertEquals(true, actual);
+	}
+	
+	@Test
+	public void testTestCo1NgayKetThucXuLy1() {
 		ngayBatDau = LocalDateTime.of(2017, 9, 2, 10, 03);
 		soNgayKetThuc = 1L;
 		Long result = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayKetThuc);
-		ngayKetThuc = ngayBatDau.plusDays(result);		
-		LocalDateTime test = LocalDateTime.of(2017, 9, 4, 10, 03); 
+		ngayKetThuc = ngayBatDau.plusDays(result - 1);		
+		LocalDateTime test = LocalDateTime.of(2017, 4, 21, 10, 03); 
 		boolean actual = ngayKetThuc.isEqual(test);
 		assertEquals(true, actual);
 	}
