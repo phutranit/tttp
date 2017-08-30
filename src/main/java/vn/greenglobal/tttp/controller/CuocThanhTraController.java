@@ -32,7 +32,9 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.ThanhVienDoanRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
+import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -45,6 +47,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 
 	@Autowired
 	private CuocThanhTraService cuocThanhTraService;
+	
+	@Autowired
+	private ThanhVienDoanService thanhVienDoanService;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -54,6 +59,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras")
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
+			@RequestParam(value = "quyetDinhPheDuyetKTTT", required = false) String quyetDinhPheDuyetKTTT,
 			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
@@ -72,9 +79,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(tenDoiTuongThanhTra,
-					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId),
-					pageable);
+			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKTTT, tenDoiTuongThanhTra,
+					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -109,8 +115,6 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				}
 			}
 			
-			System.out.println("cuocThanhTraIds: " + cuocThanhTraIds.size());
-			
 			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult(cuocThanhTraIds, tenDoiTuongThanhTra, soQuyetDinh), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -132,12 +136,14 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			CoQuanQuanLy donVi = new CoQuanQuanLy();
 			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 			cuocThanhTra.setDonVi(donVi);
-			return cuocThanhTraService.doSave(cuocThanhTra,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.CREATED);
+			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
+				thanhVienDoanService.save(tvd, congChucId);
+			}
+			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -180,14 +186,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			cuocThanhTra.setId(id);
 			CoQuanQuanLy donVi = new CoQuanQuanLy();
 			donVi.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 			cuocThanhTra.setDonVi(donVi);
+			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
+				thanhVienDoanService.save(tvd, congChucId);
+			}
 			checkDataCuocThanhTra(cuocThanhTra);
-			return cuocThanhTraService.doSave(cuocThanhTra,
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.OK);
+			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

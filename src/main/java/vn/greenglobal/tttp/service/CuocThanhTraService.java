@@ -29,11 +29,19 @@ public class CuocThanhTraService {
 
 	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
 
-	public Predicate predicateFindAll(String tenDoiTuongThanhTra, String soQuyetDinh, String loaiHinhThanhTra,
+	public Predicate predicateFindAll(Integer namThanhTra, String soQuyetDinhKeHoach, String tenDoiTuongThanhTra, String soQuyetDinh, String loaiHinhThanhTra,
 			String linhVucThanhTra, String tienDoThanhTra, String tuNgay, String denNgay, Long donViId) {
 		BooleanExpression predAll = base;
 		if (donViId != null && donViId > 0) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
+		}
+		
+		if (namThanhTra != null && namThanhTra > 0) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
+		}
+		
+		if (soQuyetDinhKeHoach != null && StringUtils.isNotBlank(soQuyetDinhKeHoach.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinhKeHoach));
 		}
 		
 		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
