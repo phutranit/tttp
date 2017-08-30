@@ -693,26 +693,18 @@ public class Utils {
 	 * Lay so ngay cua thoi han xu ly thanh tra
      * @param ngayBatDau thoi han tu ngay bat dau
      * @param soNgayThanhTra so ngay thanh tra 
-     * @param gioHanhChinhHienTai gio hanh chinh lam viec hien tai
      * @return soNgayXuLy so ngay con lai de xu ly
      */
-	public static Long getLaySoNgayXuLyThanhTra(LocalDateTime ngayBatDau, Long soNgayThanhTra,
-			LocalDateTime gioHanhChinhHienTai) {
+	public static Long getLaySoNgayXuLyThanhTra(LocalDateTime ngayBatDau, Long soNgayThanhTra) {
 		long soNgayXuLy = 0;
-		boolean checkNgayNghi = false;
 
-		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0) && gioHanhChinhHienTai != null) {
-			Calendar now = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, gioHanhChinhHienTai.getHour(),
-					gioHanhChinhHienTai.getMinute());
-			Calendar cal = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, gioHanhChinhHienTai.getHour(),
-					gioHanhChinhHienTai.getMinute());
+		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0)) {
 			Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 			Calendar end = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
-
 			for (int i = 1; i <= soNgayThanhTra; i++) {
 				end.add(Calendar.DATE, 1);
 			}
-
+			start.add(Calendar.DATE, 1);
 			if (start.before(end) || DateUtils.isSameDay(start, end)) {
 				while (start.before(end) || DateUtils.isSameDay(start, end)) {
 					// check ngay nghi
@@ -720,67 +712,15 @@ public class Utils {
 						end.add(Calendar.DATE, 1);
 					}
 					start.add(Calendar.DATE, 1);
+					soNgayXuLy += 1;
 				}
-				// check ngay hop le
-				if (cal.before(end) || DateUtils.isSameDay(cal, end)) {
-					// lay so ngay de xu ly
-					while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
-						// check ngay nghi
-						if (DateUtils.isSameDay(cal, now)) {
-							// check thuoc gio hanh chinh
-							if (cal.get(Calendar.AM_PM) == 0) {
-								// AM
-								// check thoi gian gio hanh chinh
-								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, startMorning,
-										minuteStartMorning);
-								if (!DateUtils.isSameDay(cal, mocDauBuoiSang)) {
-									return soNgayXuLy = 0;
-								}
-								long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
-								if (cal.getTimeInMillis() <= gioBuoiSang) {
-									soNgayXuLy = 1;
-								} else {
-									if (DateUtils.isSameDay(end, now)) {
-										soNgayXuLy = -3;
-									}
-								}
-							} else {
-								// PM
-								Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinhHienTai,
-										endAfternoon, minuteEndAfternoon);
-								if (!DateUtils.isSameDay(cal, mocDauBuoiChieu)) {
-									return soNgayXuLy = 0;
-								}
-								long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
-								if (cal.getTimeInMillis() < gioBuoiChieu) {
-									checkNgayNghi = true;
-								}
-							}
-						} else {
-							soNgayXuLy += 1;
-							if (DateUtils.isSameDay(cal, end)) {
-								break;
-							}
-						}
-						cal.add(Calendar.DATE, 1);
-					}
-				} else {
-					soNgayXuLy = -1;
-				}
-				if (soNgayXuLy == 0 && checkNgayNghi) {
-					soNgayXuLy = -2;
-				}
-			} else {
-				soNgayXuLy = -1;
 			}
 		}
-
 		return soNgayXuLy;
 	}
 	
 	public static Map<String, Object> convertThoiHanThanhTra(LocalDateTime ngayBatDauTmp, Long soNgayThanhTra) {
 		Map<String, Object> mapType = new HashMap<>();
-		LocalDateTime gioHanhChinhHienTai = localDateTimeNow();
 		LocalDateTime ngayBatDau = null;
 		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0;
@@ -789,7 +729,7 @@ public class Utils {
 			ngayBatDau = ngayBatDauTmp;
 			ngayHetHan = ngayBatDauTmp;
 			if (soNgayThanhTra != null && soNgayThanhTra > 0) {
-				soNgayXuLy = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayThanhTra, gioHanhChinhHienTai);
+				soNgayXuLy = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayThanhTra);
 				ngayHetHan = ngayHetHan.plusDays(soNgayXuLy);
 			}
 			if (soNgayXuLy >= 0) {
