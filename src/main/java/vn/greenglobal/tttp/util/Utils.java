@@ -701,7 +701,6 @@ public class Utils {
 		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0)) {
 			Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 			Calendar end = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
-			System.out.println("begin " +start.getTime() + " sn " +soNgayThanhTra);	
 			for (int i = 1; i < soNgayThanhTra; i++) {
 				end.add(Calendar.DATE, 1);
 			}
@@ -713,8 +712,6 @@ public class Utils {
 				soNgayXuLy += 1;
 				start.add(Calendar.DATE, 1);
 			}
-			System.out.println("soNgayXuLy " +soNgayXuLy);
-			System.out.println("end " +end.getTime());
 		}
 		return soNgayXuLy;
 	}
