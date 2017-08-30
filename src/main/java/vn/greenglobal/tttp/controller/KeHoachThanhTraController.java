@@ -96,6 +96,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 			}
 			
 			if (donViIds == null || donViIds.size() <= 0) {
+				donViIds = new ArrayList<CoQuanQuanLy>();
 				CoQuanQuanLy cq = new CoQuanQuanLy();
 				cq.setId(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString()));
 				donViIds.add(cq);
