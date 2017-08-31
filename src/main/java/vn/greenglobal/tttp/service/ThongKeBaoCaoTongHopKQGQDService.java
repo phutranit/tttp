@@ -172,9 +172,10 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 			if (loaiKyEnum != null) { 
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
-					
+					if (quy == null) {
+						quy = Utils.getQuyHienTai();
+					}
 					if (quy != null && quy > 0) { 						
-											
 						if (quy == 1) { 
 							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
 							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
