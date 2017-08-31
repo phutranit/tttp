@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -317,5 +318,29 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 		}
 		return cuocThanhTraIds;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/thoiHanThanhTra")
+	@ApiOperation(value = "Lấy số Ngày của thời hạn thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getThoiHanThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayCongBoQD", required = true) String ngayCongBoQD,
+			@RequestParam(value = "thoiHanThanhTra", required = true) Long thoiHanThanhTra,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			LocalDateTime thoiHan = Utils.fixTuNgay(ngayCongBoQD);
+			Long soNgayThanhTra = Utils.getLaySoNgayXuLyThanhTra(thoiHan, thoiHanThanhTra);
+			if (thoiHanThanhTra == null) { 
+				thoiHan = thoiHan.plusDays(soNgayThanhTra);
+			} else { 
+				thoiHan = thoiHan.plusDays(soNgayThanhTra - 1);
+			}
+			if (thoiHan == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return new ResponseEntity<>(thoiHan, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 }
