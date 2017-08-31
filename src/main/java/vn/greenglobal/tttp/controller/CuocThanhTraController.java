@@ -322,13 +322,13 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/thoiHanThanhTra")
 	@ApiOperation(value = "Lấy số Ngày của thời hạn thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	//@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy số Ngày của thời hạn thanh tra", response = CuocThanhTra.class) })
 	public Object getThoiHanThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "ngayCongBoQD", required = true) String ngayCongBoQD,
 			@RequestParam(value = "thoiHanThanhTra", required = true) Long thoiHanThanhTra,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			LocalDateTime thoiHan = Utils.localDateTimeNow();
+			LocalDateTime thoiHan = Utils.fixTuNgay(ngayCongBoQD);
 			Long soNgayThanhTra = Utils.getLaySoNgayXuLyThanhTra(thoiHan, thoiHanThanhTra);
 			if (thoiHanThanhTra == null) { 
 				thoiHan = thoiHan.plusDays(soNgayThanhTra);
