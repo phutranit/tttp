@@ -32,7 +32,6 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
-import vn.greenglobal.tttp.repository.ThanhVienDoanRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
 import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
