@@ -266,6 +266,28 @@ public class EnumController {
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/trangChu/loaiDonThus")
+	@ApiOperation(value = "Lấy danh sách Loại Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTrangChuLoaiDonThus(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiDonEnum.DON_KHIEU_NAI.getText());
+		object.put("giaTri", LoaiDonEnum.DON_KHIEU_NAI.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LoaiDonEnum.DON_TO_CAO.getText());
+		object.put("giaTri", LoaiDonEnum.DON_TO_CAO.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/loaiDonThus")
 	@ApiOperation(value = "Lấy danh sách Loại Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
