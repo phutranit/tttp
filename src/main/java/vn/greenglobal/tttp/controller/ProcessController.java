@@ -589,7 +589,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transition = addDataTrasition(process, 1L, 8L, 23L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -598,7 +598,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transition = addDataTrasition(process, 1L, 8L, 23L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -607,7 +607,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Trưởng Phòng", false, null, donViId, 2L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transition = addDataTrasition(process, 1L, 8L, 23L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -616,7 +616,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 4L, false);
+						transition = addDataTrasition(process, 1L, 8L, 23L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -626,9 +626,11 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 12L, false);
+						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 12L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -637,9 +639,11 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 12L, false);
+						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 12L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -648,9 +652,11 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 12L, false);
+						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 12L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -659,9 +665,11 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Lãnh Đạo", false, null, donViId, 1L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 12L, false);
+						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 12L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -671,7 +679,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Chuyen Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transition = addDataTrasition(process, 1L, 15L, 25L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -680,7 +688,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.THAM_TRA_XAC_MINH, "Thẩm tra xác minh của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 15L, 17L, false);
+						transition = addDataTrasition(process, 1L, 15L, 25L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
