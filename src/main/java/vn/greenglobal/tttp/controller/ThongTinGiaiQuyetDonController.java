@@ -89,7 +89,13 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 					thongTinGiaiQuyetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
 				}
 			}
-			don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+			
+			if (don.getKetQuaXLDGiaiQuyet() != null && don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO)) { 
+				System.out.println("@@");
+				don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO);
+			} else { 
+				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+			}
 			
 			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			
