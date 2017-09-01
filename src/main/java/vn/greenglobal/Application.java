@@ -95,7 +95,7 @@ public class Application extends SpringBootServletInitializer {
 	
 //	@Value("${cors.allowedOrigins}")
 //	private String[] myAllowedOriginList;
-//	
+	
 //	@Bean
 //	public WebMvcConfigurer corsConfigurer() {
 //		return new WebMvcConfigurerAdapter() {
