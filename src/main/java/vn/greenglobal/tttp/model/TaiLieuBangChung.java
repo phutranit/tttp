@@ -28,7 +28,6 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7863478663069074533L;
-	@NotBlank
 	@Size(max=255)
 	private String ten = "";
 	@Size(max=255)
