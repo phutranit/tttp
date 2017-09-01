@@ -500,6 +500,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							&& don.getDonViThamTraXacMinh() != null && donViId.equals(don.getDonViThamTraXacMinh().getId())) {
 						GiaiQuyetDon gqd = repo.findOne(don.getGiaiQuyetTTXMCuoiCungId());
 						return new ResponseEntity<>(eass.toFullResource(gqd), HttpStatus.OK);
+				 	} else if (don.getGiaiQuyetKTDXCuoiCungId() != null && don.getGiaiQuyetKTDXCuoiCungId() > 0 &&
+				 			don.getDonViKiemTraDeXuat() != null && donViId.equals(don.getDonViKiemTraDeXuat().getId())) { 
+				 		GiaiQuyetDon gqd = repo.findOne(don.getGiaiQuyetKTDXCuoiCungId());
+				 		return new ResponseEntity<>(eass.toFullResource(gqd), HttpStatus.OK);
 				 	} else {
 						GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindThongTinXuLy(repo, don.getId(), donViId, phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 						if (giaiQuyetDon != null) {
@@ -895,14 +899,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 		don.setCurrentState(giaiQuyetDon.getNextState());
 		if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
-			if (isLaTTXM) {
-				don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
-			}
-//			else {
-//				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
-//			}
-			if (!isKTDX) { 
-				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+			if (isKTDX) {
+				don.setGiaiQuyetKTDXCuoiCungId(giaiQuyetDonTiepTheo.getId());
+			} else {
+				if (isLaTTXM) {
+					don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
+				} else {
+					don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+				}
 			}
 		}
 		
@@ -980,14 +984,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		}
 		don.setCurrentState(giaiQuyetDon.getNextState());
-		if (isLaTTXM) {
-			don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
-		} 
-//		else {
-//			don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
-//		}
-		if (!isKTDX) { 
-			don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+		if (isKTDX) { 
+			don.setGiaiQuyetKTDXCuoiCungId(giaiQuyetDonTiepTheo.getId());
+		} else {
+			if (isLaTTXM) {
+				don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonTiepTheo.getId());
+			} else {
+				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
+			}
 		}
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
