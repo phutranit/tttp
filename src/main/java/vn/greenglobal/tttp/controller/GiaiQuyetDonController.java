@@ -492,7 +492,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				}
 				
 				if (don != null) {
-					System.out.println("don " +id);
 					if (don.getGiaiQuyetDonCuoiCungId() != null && don.getGiaiQuyetDonCuoiCungId() > 0
 							&& don.getDonViXuLyGiaiQuyet() != null && donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
 						GiaiQuyetDon gqd = repo.findOne(don.getGiaiQuyetDonCuoiCungId());
