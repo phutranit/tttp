@@ -91,7 +91,6 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			}
 			
 			if (don.getKetQuaXLDGiaiQuyet() != null && don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO)) { 
-				System.out.println("@@");
 				don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO);
 			} else { 
 				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());

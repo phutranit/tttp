@@ -1765,18 +1765,18 @@ public class Don extends Model<Don> {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = null;
 
-//		if (getDonViXuLyGiaiQuyet() != null) {
-//			map = new HashMap<>();
-//			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
-//			if (getCanBoXuLyChiDinh() != null) {
-//				map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
-//				map.put("congChucId", getCanBoXuLyChiDinh().getId());
-//			} else {
-//				map.put("hoVaTen", "");
-//				map.put("congChucId", "");
-//			}
-//			list.add(map);
-//		}
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			if (getCanBoXuLyChiDinh() != null) {
+				map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
+		}
 		if (getDonViThamTraXacMinh() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViThamTraXacMinh().getId());
@@ -1862,56 +1862,56 @@ public class Don extends Model<Don> {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 
-//		if (getDonViXuLyGiaiQuyet() != null) {
-//			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
-//			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().getText() : "");
-//			map.put("trangThaiDonType", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().name() : "");
-//			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
-//			map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
-//
-//			if (getKetQuaXLDGiaiQuyet() != null
-//					&& (KetQuaTrangThaiDonEnum.CHUYEN_DON.equals(getKetQuaXLDGiaiQuyet()))) { 
-//				String ketQuaStr = "";
-//				String trangThaiDonStr = "";
-//				if (xuLyDons.size() > 0) {
-//					List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-//					xlds.addAll(xuLyDons);
-//					xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-//							xld.isDonChuyen()).collect(Collectors.toList());
-//					if (xlds.size() > 0) {
-//						XuLyDon xld = xlds.get(xlds.size() - 1);
-//						if (xld != null) { 
-//							if (getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-//								ketQuaStr = getKetQuaXLDGiaiQuyet().getText();
-//								trangThaiDonStr =  getTrangThaiXLDGiaiQuyet().getText();
-//								if (xld.getCoQuanTiepNhan() != null) {
-//									String tenCQTN = xld.getCoQuanTiepNhan().getDonVi().getTen();
-//									ketQuaStr += " " + tenCQTN;
-//								}
-//							} else {
-//								ketQuaStr = "";
-//								if (xld.isDonTra()) {
-//									ketQuaStr = "Đơn chuyển được trả lại";
-//								}
-//							}
-//						}
-//					}
-//				}
-//				map.put("ketQuaStr", ketQuaStr);
-//				map.put("ketQuaType", "");
-//				map.put("trangThaiDonText", trangThaiDonStr);
-//				map.put("trangThaiDonType", "");
-//			}
-//			if (getKetQuaXLDGiaiQuyet() != null
-//					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
-//							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
-//					&& getDonViThamTraXacMinh() != null) {
-//				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
-//			} else {
-//				map.put("donViTTXM", "");
-//			}
-//			list.add(map);
-//		}
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			map.put("trangThaiDonText", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().getText() : "");
+			map.put("trangThaiDonType", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().name() : "");
+			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+			map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+
+			if (getKetQuaXLDGiaiQuyet() != null
+					&& (KetQuaTrangThaiDonEnum.CHUYEN_DON.equals(getKetQuaXLDGiaiQuyet()))) { 
+				String ketQuaStr = "";
+				String trangThaiDonStr = "";
+				if (xuLyDons.size() > 0) {
+					List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+					xlds.addAll(xuLyDons);
+					xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+							xld.isDonChuyen()).collect(Collectors.toList());
+					if (xlds.size() > 0) {
+						XuLyDon xld = xlds.get(xlds.size() - 1);
+						if (xld != null) { 
+							if (getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)) { 
+								ketQuaStr = getKetQuaXLDGiaiQuyet().getText();
+								trangThaiDonStr =  getTrangThaiXLDGiaiQuyet().getText();
+								if (xld.getCoQuanTiepNhan() != null) {
+									String tenCQTN = xld.getCoQuanTiepNhan().getDonVi().getTen();
+									ketQuaStr += " " + tenCQTN;
+								}
+							} else {
+								ketQuaStr = "";
+								if (xld.isDonTra()) {
+									ketQuaStr = "Đơn chuyển được trả lại";
+								}
+							}
+						}
+					}
+				}
+				map.put("ketQuaStr", ketQuaStr);
+				map.put("ketQuaType", "");
+				map.put("trangThaiDonText", trangThaiDonStr);
+				map.put("trangThaiDonType", "");
+			}
+			if (getKetQuaXLDGiaiQuyet() != null
+					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
+							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
+					&& getDonViThamTraXacMinh() != null) {
+				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
+			} else {
+				map.put("donViTTXM", "");
+			}
+			list.add(map);
+		}
 		if (getDonViThamTraXacMinh() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViThamTraXacMinh().getId());
@@ -1927,7 +1927,6 @@ public class Don extends Model<Don> {
 			list.add(map);
 		}
 		if (getDonViKiemTraDeXuat() != null) {
-			System.out.println("ktdx");
 			map = new HashMap<>();
 			map.put("donViId", getDonViKiemTraDeXuat().getId());
 			map.put("trangThaiDonText", getTrangThaiKTDX() != null ? getTrangThaiKTDX().getText() : "");
