@@ -12,8 +12,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
@@ -28,7 +26,6 @@ public class TaiLieuBangChung extends Model<TaiLieuBangChung> {
 	 * 
 	 */
 	private static final long serialVersionUID = -7863478663069074533L;
-	@NotBlank
 	@Size(max=255)
 	private String ten = "";
 	@Size(max=255)
