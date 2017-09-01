@@ -131,24 +131,27 @@ public class Don extends Model<Don> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne(fetch = FetchType.LAZY)
+	private CoQuanQuanLy donViKiemTraDeXuat;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViTiepDan;
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	private Don donGoc;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyDonChuyen;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoTTXMChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CongChuc canBoKTDXChiDinh;
 	
 	private Long donGocId;
 	private Long xuLyDonCuoiCungId;
 	private Long giaiQuyetDonCuoiCungId;
 	private Long giaiQuyetTTXMCuoiCungId;
+	private Long giaiQuyetKTDXCuoiCungId;
 	
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -219,6 +222,9 @@ public class Don extends Model<Don> {
 	private TrangThaiDonEnum trangThaiTTXM;
 	
 	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiKTDX;
+	
+	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	
 	@NotNull
@@ -264,6 +270,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoTTXMChiDinh(CongChuc canBoTTXMChiDinh) {
 		this.canBoTTXMChiDinh = canBoTTXMChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoKTDXChiDinh() {
+		return canBoKTDXChiDinh;
+	}
+
+	public void setCanBoKTDXChiDinh(CongChuc canBoKTDXChiDinh) {
+		this.canBoKTDXChiDinh = canBoKTDXChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -449,15 +464,6 @@ public class Don extends Model<Don> {
 	public void setCoQuanDangGiaiQuyet(CoQuanQuanLy coQuanDangGiaiQuyet) {
 		this.coQuanDangGiaiQuyet = coQuanDangGiaiQuyet;
 	}
-
-//	@ApiModelProperty(example = "{}")
-//	public Don getDonGoc() {
-//		return donGoc;
-//	}
-//
-//	public void setDonGoc(Don donGoc) {
-//		this.donGoc = donGoc;
-//	}
 	
 	@ApiModelProperty(hidden = true)
 	public Long getDonGocId() {
@@ -607,6 +613,14 @@ public class Don extends Model<Don> {
 		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
+	public CoQuanQuanLy getDonViKiemTraDeXuat() {
+		return donViKiemTraDeXuat;
+	}
+
+	public void setDonViKiemTraDeXuat(CoQuanQuanLy donViKiemTraDeXuat) {
+		this.donViKiemTraDeXuat = donViKiemTraDeXuat;
+	}
+
 	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
@@ -673,6 +687,15 @@ public class Don extends Model<Don> {
 	public void setGiaiQuyetTTXMCuoiCungId(Long giaiQuyetTTXMCuoiCungId) {
 		this.giaiQuyetTTXMCuoiCungId = giaiQuyetTTXMCuoiCungId;
 	}
+	
+	@JsonIgnore
+	public Long getGiaiQuyetKTDXCuoiCungId() {
+		return giaiQuyetKTDXCuoiCungId;
+	}
+
+	public void setGiaiQuyetKTDXCuoiCungId(Long giaiQuyetKTDXCuoiCungId) {
+		this.giaiQuyetKTDXCuoiCungId = giaiQuyetKTDXCuoiCungId;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -727,17 +750,6 @@ public class Don extends Model<Don> {
 	public void setDoanDiCungs(List<DoanDiCung> doanDiCungs) {
 		this.doanDiCungs = doanDiCungs;
 	}
-
-//	@ApiModelProperty(hidden = true)
-//	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
-//		for (Don_CongDan obj : donCongDans) {
-//			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
-//				donCongDan = obj;
-//				break;
-//			}
-//		}
-//		return donCongDan;
-//	}
 
 	@ApiModelProperty(hidden = true)
 	public State getCurrentState() {
@@ -1232,15 +1244,6 @@ public class Don extends Model<Don> {
 		return getId();
 	}
 	
-//	@Transient
-//	@ApiModelProperty(hidden = true)
-//	public Long getDonGocId() {
-//		if (getDonGoc() != null) { 
-//			return getDonGoc().getId();
-//		}
-//		return 0L;
-//	}
-	
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getTaiLieuBangChungs() {
 		return taiLieuBangChungs;
@@ -1320,6 +1323,15 @@ public class Don extends Model<Don> {
 		this.trangThaiTTXM = trangThaiTTXM;
 	}
 	
+	@JsonIgnore
+	public TrangThaiDonEnum getTrangThaiKTDX() {
+		return trangThaiKTDX;
+	}
+
+	public void setTrangThaiKTDX(TrangThaiDonEnum trangThaiKTDX) {
+		this.trangThaiKTDX = trangThaiKTDX;
+	}
+
 	@JsonIgnore
 	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
 		return ketQuaXLDGiaiQuyet;
@@ -1450,32 +1462,6 @@ public class Don extends Model<Don> {
 		}
 		return str;
 	}
-
-//	@Transient
-//	@ApiModelProperty(hidden = true)
-//	public String getTrangThaiDonText() {
-//		trangThaiDonText = "Đang xử lý";
-//		if (xuLyDons.size() > 0) {
-//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-//			// hxl
-//			xlds.addAll(xuLyDons);
-//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-//					xld.isDonChuyen()).collect(Collectors.toList());
-//			if (xlds.size() > 0) {
-//				XuLyDon xld = xlds.get(xlds.size() - 1);
-//				// ttd ht
-//				if (xld != null) {
-//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-//						trangThaiDonText = "Hoàn thành";
-//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-//							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return trangThaiDonText;
-//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -1783,19 +1769,6 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-//	@Transient
-//	@ApiModelProperty(hidden = true)                                                                                                                                                                                        
-//	public Map<String, Object> getCanBoDangXuLyInfo() {
-//		if (getCanBoXuLyChiDinh() != null) {
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
-//			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
-//			map.put("congChucId", getCanBoXuLyChiDinh().getId());
-//			return map;
-//		}
-//		return null;	
-//	}
-	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<Map<String, Object>> getCanBoDangXuLyInfo() {
@@ -1820,6 +1793,18 @@ public class Don extends Model<Don> {
 			if (getCanBoTTXMChiDinh() != null) {
 				map.put("hoVaTen", getCanBoTTXMChiDinh().getHoVaTen());
 				map.put("congChucId", getCanBoTTXMChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
+		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			if (getCanBoKTDXChiDinh() != null) {
+				map.put("hoVaTen", getCanBoKTDXChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoKTDXChiDinh().getId());
 			} else {
 				map.put("hoVaTen", "");
 				map.put("congChucId", "");
@@ -1951,6 +1936,21 @@ public class Don extends Model<Don> {
 			}
 			list.add(map);
 		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			map.put("trangThaiDonText", getTrangThaiKTDX() != null ? getTrangThaiKTDX().getText() : "");
+			map.put("trangThaiDonType", getTrangThaiKTDX() != null ? getTrangThaiKTDX().name() : "");
+			map.put("ketQuaStr", "");
+			map.put("ketQuaType", "");
+			map.put("donViTTXM", "");
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+			}
+			list.add(map);
+		}
+		
 		return list;
 	}
 
