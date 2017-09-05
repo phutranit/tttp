@@ -25,6 +25,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
@@ -33,6 +36,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -153,10 +157,10 @@ public class Don extends Model<Don> {
 	private Long giaiQuyetTTXMCuoiCungId;
 	private Long giaiQuyetKTDXCuoiCungId;
 	
-	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
+//	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+//	@Fetch(value = FetchMode.SELECT)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -652,14 +656,14 @@ public class Don extends Model<Don> {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(hidden = true)
-	public List<SoTiepCongDan> getTiepCongDans() {
-		return tiepCongDans;
-	}
-
-	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
-		this.tiepCongDans = tiepCongDans;
-	}
+//	@ApiModelProperty(hidden = true)
+//	public List<SoTiepCongDan> getTiepCongDans() {
+//		return tiepCongDans;
+//	}
+//
+//	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
+//		this.tiepCongDans = tiepCongDans;
+//	}
 	
 	@JsonIgnore
 	public Long getXuLyDonCuoiCungId() {
@@ -1986,6 +1990,18 @@ public class Don extends Model<Don> {
 			map.put("ten", getLoaiVuViec().getText());
 			map.put("type", getLoaiVuViec().name());
 			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LocalDateTime getNgayTiepDan() {
+		List<SoTiepCongDan> stcds = (List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository()
+				.findAll(QSoTiepCongDan.soTiepCongDan.daXoa.eq(false).and(QSoTiepCongDan.soTiepCongDan.don.id.eq(this.getId())
+					.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))), new Sort(new Order(Direction.DESC, "id")));
+		if (stcds != null && stcds.size() > 0) {
+			return stcds.get(0).getNgayTiepDan(); 
 		}
 		return null;
 	}

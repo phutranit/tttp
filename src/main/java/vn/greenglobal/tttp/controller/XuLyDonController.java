@@ -56,7 +56,6 @@ import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
-import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.TaiLieuBangChung;
 import vn.greenglobal.tttp.model.TaiLieuVanThu;
@@ -1823,7 +1822,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTaiLieuBangChungs(new ArrayList<TaiLieuBangChung>());
 		donMoi.setDoanDiCungs(new ArrayList<DoanDiCung>());
 		donMoi.setXuLyDons(new ArrayList<XuLyDon>());
-		donMoi.setTiepCongDans(new ArrayList<SoTiepCongDan>());
+//		donMoi.setTiepCongDans(new ArrayList<SoTiepCongDan>());
 		donMoi.setTaiLieuVanThus(new ArrayList<TaiLieuVanThu>());
 		donMoi.setTepDinhKems(new ArrayList<TepDinhKem>());
 		donMoi.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
