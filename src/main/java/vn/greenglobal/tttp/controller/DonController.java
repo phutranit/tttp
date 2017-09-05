@@ -508,7 +508,7 @@ public class DonController extends TttpController<Don> {
 								if (transition != null) {
 									break;
 								} 						
-							}					
+							}
 							if (transition == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
 										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
