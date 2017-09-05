@@ -472,7 +472,8 @@ public class DonService {
 			BooleanExpression pbgq = QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId);
 			BooleanExpression chucVuNotNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNotNull();
 			BooleanExpression chucVuNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull();
-			giaiQuyetDonQuery = giaiQuyetDonQuery.and(chucVuNull.or(pbgq.and(chucVuNotNull)));
+			BooleanExpression dvgq = QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViGiaiQuyetId);
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and((dvgq.and(chucVuNull)).or(pbgq.and(chucVuNotNull)));
 		}
 
 		if (StringUtils.isNotBlank(chucVu)) {
