@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
@@ -276,6 +277,9 @@ public class Application extends SpringBootServletInitializer {
 	}
 	
 	@Autowired
+	private SoTiepCongDanRepository soTiepCongDanRepository;
+	
+	@Autowired
 	private CuocThanhTraRepository cuocThanhTraRepository;
 	
 	@Autowired
@@ -290,6 +294,11 @@ public class Application extends SpringBootServletInitializer {
 	@Autowired
 	private ChucVuService chucVuService;
 	
+	
+	public SoTiepCongDanRepository getSoTiepCongDanRepository() {
+		return soTiepCongDanRepository;
+	}
+
 	public CuocThanhTraRepository getCuocThanhTraRepository() {
 		return cuocThanhTraRepository;
 	}
