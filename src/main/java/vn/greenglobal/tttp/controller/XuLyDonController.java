@@ -158,6 +158,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@Autowired
 	private ThamSoService thamSoService;
 	
+	@Autowired
+	private TransitionRepository repoTransition;
+	
 	public XuLyDonController(BaseRepository<XuLyDon, Long> repo) {
 		super(repo);
 	}
@@ -218,8 +221,28 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
 							return new ResponseEntity<>(eass.toFullResource(xld), HttpStatus.OK);
 						} else {
+							State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
+							Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+							List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
+							List<State> listState = new ArrayList<State>();
+							List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+							for (Process processFromList : listProcess) {
+								Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
+								listState = ((List<State>) repoState.findAll(predicate));						
+								if (listState.size() > 0) {
+									State state = listState.get(0);
+									if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+										listProcessHaveBeginState.add(processFromList);
+										break;
+									}
+								}
+							}
 							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
-									phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+									phongBanXuLyXLD, congChucId, "");
+							if (listProcessHaveBeginState.size() > 0) {
+								xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
+										phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+							}
 							if (xuLyDon != null) {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
