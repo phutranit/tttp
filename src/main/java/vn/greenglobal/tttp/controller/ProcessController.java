@@ -385,7 +385,7 @@ public class ProcessController extends TttpController<Process> {
 //			for (int i = 27; i <= 82; i++) {
 //				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
 //				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				if (count == 16 && count2 == 16) {
+//				if (count == 16 && count2 == 24) {
 //					System.out.println("ID: " + i + " --- OK");
 //				} else {
 //					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
@@ -399,6 +399,8 @@ public class ProcessController extends TttpController<Process> {
 				} else {
 					coQuyTrinhDayDu = false;
 				}
+				if (i == 17) coQuyTrinhDayDu = false;
+				if (i == 21) coQuyTrinhDayDu = false;
 				if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
 						|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
