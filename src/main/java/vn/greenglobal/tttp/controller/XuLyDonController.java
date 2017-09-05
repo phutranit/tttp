@@ -214,16 +214,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				
 				if (don != null) {
 					if (don.getGiaiQuyetDonCuoiCungId() == null) {
-						System.out.println("1");
 						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
 								&& don.getDonViXuLyGiaiQuyet() != null
 								&& donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
-							System.out.println("2");
 							XuLyDon xld = xuLyDonRepo
 									.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
 							return new ResponseEntity<>(eass.toFullResource(xld), HttpStatus.OK);
 						} else {
-							System.out.println("3");
 							State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 							Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 							List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
@@ -243,13 +240,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
 									phongBanXuLyXLD, congChucId, "");
 							if (listProcessHaveBeginState.size() > 0) {
-								System.out.println("listProcessHaveBeginState.size() > 0");
 								xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
 										phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 							}
-							System.out.println("3a: ");
 							if (xuLyDon != null) {
-								System.out.println("4");
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
 						}
