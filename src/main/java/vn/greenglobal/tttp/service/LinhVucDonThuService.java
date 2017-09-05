@@ -83,8 +83,15 @@ public class LinhVucDonThuService {
 		return linhVucs;
 	}
 	
-	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon) {
+	public Predicate predicateFindAll() {
 		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon, List<LinhVucDonThu> listLinhVucs) {
+		BooleanExpression predAll = base;
+		List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
+		
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa.trim())
 //					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
@@ -102,7 +109,17 @@ public class LinhVucDonThuService {
 		if (loaiDon != null && !"".equals(loaiDon)) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.loaiDon.eq(LoaiDonEnum.valueOf(loaiDon)));
 		}
-
+		
+		if (listLinhVucs != null) {
+			for (LinhVucDonThu linhVuc : listLinhVucs) {
+				LinhVucDonThu lv = linhVucDonThuRepository.findOne(linhVuc.getId());
+				linhVucs.add(lv);
+			}
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.in(linhVucs)
+					.or(QLinhVucDonThu.linhVucDonThu.cha.in(linhVucs)
+							.or(QLinhVucDonThu.linhVucDonThu.cha.cha.in(linhVucs))
+							));
+		}
 		return predAll;
 	}
 
