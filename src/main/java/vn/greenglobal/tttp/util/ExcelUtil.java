@@ -492,15 +492,18 @@ public class ExcelUtil {
 			c = row.createCell(3);
 			c.setCellValue("Người đứng đơn");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(4);
-			c.setCellValue("Nguồn đơn");
-			c.setCellStyle(cellCenter);
-			c = row.createCell(5);
 			c.setCellValue("Tóm tắc nội dung/Hạn xử lý");
 			c.setCellStyle(cellCenter);
-			c = row.createCell(6);
+			c = row.createCell(5);
 			c.setCellValue("Phân loại đơn/Số người");
 			c.setCellStyle(cellCenter);
+			
+			c = row.createCell(6);
+			c.setCellValue("Nguồn đơn");
+			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(7);
 			c.setCellValue("Cơ quan đã giải quyết");
 			c.setCellStyle(cellCenter);
@@ -514,7 +517,7 @@ public class ExcelUtil {
 			int i = 1;
 			for (Don don : list) {
 				row = sheet1.createRow(idx);
-				row.setHeight((short) 500);
+				row.setHeight((short) 900);
 				c = row.createCell(0);
 				c.setCellValue(i);
 				c.setCellStyle(cellCenter);
@@ -531,25 +534,6 @@ public class ExcelUtil {
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
-				
-				String nguonDonText = "";
-				for (Map<String, Object> map : don.getNguonDonInfo()) {
-					Long _donViXuLyId = 0L;
-					if (map.get("idDonVi") != null && map.get("idDonVi").toString() != "") { 
-						_donViXuLyId = Long.valueOf(map.get("idDonVi").toString());
-					}
-					if (_donViXuLyId == donViXuLy) { 
-						String donViChuyenText  = "";
-						if (map.get("donViChuyenText") != null) { 
-							donViChuyenText += map.get("donViChuyenText").toString();
-						}
-						nguonDonText = map.get("nguonDonText").toString() +(donViChuyenText != "" ? (" / " + donViChuyenText) : "");
-						break;
-					}
-				}
-				c = row.createCell(4);
-				c.setCellValue(nguonDonText);
-				c.setCellStyle(cellCenter);
 				
 				ProcessTypeEnum process = don.getProcessType();
 				String thoiHanXuLyDon = don.getThoiHanXuLyDon();
@@ -650,17 +634,38 @@ public class ExcelUtil {
 					thoiHanXuLyDon = str;
 				}
 				
-				c = row.createCell(5);
+				c = row.createCell(4);
 				c.setCellValue(don.getNoiDung() +thoiHanXuLyDon);
 				c.setCellStyle(cellLeft);
-				c = row.createCell(6);
+				c = row.createCell(5);
 				c.setCellValue(don.getLoaiDon().getText() + " / " +don.getSoNguoi() +" người");
 				c.setCellStyle(cellCenter);
+				
+				String nguonDonText = "";
+				for (Map<String, Object> map : don.getNguonDonInfo()) {
+					Long _donViXuLyId = 0L;
+					if (map.get("idDonVi") != null && map.get("idDonVi").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("idDonVi").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						String donViChuyenText  = "";
+						if (map.get("donViChuyenText") != null) { 
+							donViChuyenText += map.get("donViChuyenText").toString();
+						}
+						nguonDonText = map.get("nguonDonText").toString() +(donViChuyenText != "" ? (" / " + donViChuyenText) : "");
+						break;
+					}
+				}
+				c = row.createCell(6);
+				c.setCellValue(nguonDonText);
+				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(7);
 				c.setCellValue(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellCenter);
 				
 				String trangThaiDonText = "";
+				String ketQuaText = "";
 				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
 					Long _donViXuLyId = 0L;
 					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
@@ -668,15 +673,27 @@ public class ExcelUtil {
 					}
 					if (_donViXuLyId == donViXuLy) { 
 						trangThaiDonText = map.get("trangThaiDonText").toString();
+						ketQuaText = map.get("ketQuaStr").toString();
 						break;
 					}
 				}
 				c = row.createCell(8);
-				c.setCellValue(trangThaiDonText + " / " +(don.getQuyTrinhXuLyText() != "" ? don.getQuyTrinhXuLyText() : "Chưa có kết quả"));
+				c.setCellValue(trangThaiDonText + " / " +(ketQuaText != "" ? ketQuaText : "Chưa có kết quả"));
 				c.setCellStyle(cellCenter);
 				
+				String canBoDangXuLyText = "";
+				for(Map<String, Object>  map : don.getCanBoDangXuLyInfo()) {
+					Long _donViXuLyId = 0L;
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
+					}
+					if (_donViXuLyId == donViXuLy) { 
+						canBoDangXuLyText = map.get("hoVaTen").toString();
+						break;
+					}
+				}
 				c = row.createCell(9);
-				c.setCellValue(don.getCanBoXuLy().getHoVaTen());
+				c.setCellValue(canBoDangXuLyText);
 				c.setCellStyle(cellCenter);
 				i++;
 				idx++;
