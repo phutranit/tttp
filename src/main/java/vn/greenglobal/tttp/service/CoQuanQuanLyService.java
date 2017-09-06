@@ -52,8 +52,6 @@ public class CoQuanQuanLyService {
 			List<CoQuanQuanLy> listCoQuanQuanLys, List<CapCoQuanQuanLy> listCapCoQuanQuanLys) {
 
 		BooleanExpression predAll = base;
-		List<CoQuanQuanLy> coQuanQuanLys = new ArrayList<CoQuanQuanLy>();
-		List<CapCoQuanQuanLy> capCoQuanQuanLys = new ArrayList<CapCoQuanQuanLy>();
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
 					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
@@ -72,26 +70,14 @@ public class CoQuanQuanLyService {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
 		}
 		
-		if (listCapCoQuanQuanLys != null) {
-			for (CapCoQuanQuanLy ccq : listCapCoQuanQuanLys) {
-				CapCoQuanQuanLy capCoQuan = capCoQuanQuanLyRepository.findOne(ccq.getId());
-				if (capCoQuan != null) {
-					capCoQuanQuanLys.add(capCoQuan);
-				}
-			}
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(capCoQuanQuanLys));
+		if (listCapCoQuanQuanLys != null && listCapCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(listCapCoQuanQuanLys));
 		}
 		
-		if (listCoQuanQuanLys != null) {
-			for (CoQuanQuanLy cq : listCoQuanQuanLys) {
-				CoQuanQuanLy coQuan = coQuanQuanLyRepository.findOne(cq.getId());
-				if (coQuan != null) { 
-					coQuanQuanLys.add(coQuan);
-				}
-			} 
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(coQuanQuanLys)
-					.or(QCoQuanQuanLy.coQuanQuanLy.cha.in(coQuanQuanLys)
-							.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.in(coQuanQuanLys))
+		if (listCoQuanQuanLys != null && listCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(listCoQuanQuanLys)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.in(listCoQuanQuanLys)
+							.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.in(listCoQuanQuanLys))
 					));
 		}
 		return predAll;
