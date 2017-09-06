@@ -184,8 +184,8 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capDonViHanhChinhTimKiems")
-	@ApiOperation(value = "Lấy danh sách Cấp Đơn Vị Hành Chính", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/capDonViHanhChinhs/capDonViHanhChinhTimKiems")
+	@ApiOperation(value = "Lấy danh sách tất cả Cấp Đơn Vị Hành Chính", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListCapDonViHanhChinhs(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {

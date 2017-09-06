@@ -228,8 +228,8 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/capCoQuanQuanLyTimKiems")
-	@ApiOperation(value = "Lấy danh sách Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/capCoQuanQuanLyTimKiems")
+	@ApiOperation(value = "Lấy danh sách tất cả Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListCapCoQuanQuanLys(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
