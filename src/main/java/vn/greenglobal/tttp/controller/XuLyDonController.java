@@ -246,8 +246,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
 						}
-					}				
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					} Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
@@ -1511,7 +1510,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCurrentState(beginState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
-		donService.save(don, congChucId);
 		
 		//Quy trinh Giai Quyet Don
 		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonRepo.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(xuLyDonHienTai.getDon().getId()));
@@ -1540,6 +1538,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDon.setThuTuThucHien(1);
 		
+		List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(xuLyDonHienTai.getDonViXuLy().getId(), 
+				ProcessTypeEnum.GIAI_QUYET_DON.toString(), repoProcess));
+
+		if (listTransitionEnd.size() > 0) {
+			for (Transition tran : listTransitionEnd) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.BAT_DAU)) {
+					giaiQuyetDon.setNextForm(tran.getForm());
+				}
+			}
+		}
+		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		lichSuQTXLD.setDon(don);
@@ -1553,6 +1562,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		
 		giaiQuyetDonService.save(giaiQuyetDon, congChucId);
+		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDon.getId());
+		donService.save(don, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 		
 		return xuLyDonHienTai;
