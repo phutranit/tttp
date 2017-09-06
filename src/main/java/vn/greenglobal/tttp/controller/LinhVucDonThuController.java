@@ -53,7 +53,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/danhMucLinhVucDonThu")
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/linhVucDonThuTimKiems")
 	@ApiOperation(value = "Lấy danh sách tất cả Lĩnh Vực Đơn Thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getAllList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, PersistentEntityResourceAssembler eass) {

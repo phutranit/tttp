@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
@@ -21,6 +23,7 @@ import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -34,12 +37,23 @@ public class CoQuanQuanLyService {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
-
+	
+	@Autowired
+	private CapCoQuanQuanLyRepository capCoQuanQuanLyRepository;
+	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
-
-	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh, 
+			List<CoQuanQuanLy> listCoQuanQuanLys, List<CapCoQuanQuanLy> listCapCoQuanQuanLys) {
 
 		BooleanExpression predAll = base;
+		List<CoQuanQuanLy> coQuanQuanLys = new ArrayList<CoQuanQuanLy>();
+		List<CapCoQuanQuanLy> capCoQuanQuanLys = new ArrayList<CapCoQuanQuanLy>();
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
 					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
@@ -57,7 +71,29 @@ public class CoQuanQuanLyService {
 		if (donViHanhChinh != null && donViHanhChinh > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
 		}
-
+		
+		if (listCapCoQuanQuanLys != null) {
+			for (CapCoQuanQuanLy ccq : listCapCoQuanQuanLys) {
+				CapCoQuanQuanLy capCoQuan = capCoQuanQuanLyRepository.findOne(ccq.getId());
+				if (capCoQuan != null) {
+					capCoQuanQuanLys.add(capCoQuan);
+				}
+			}
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(capCoQuanQuanLys));
+		}
+		
+		if (listCoQuanQuanLys != null) {
+			for (CoQuanQuanLy cq : listCoQuanQuanLys) {
+				CoQuanQuanLy coQuan = coQuanQuanLyRepository.findOne(cq.getId());
+				if (coQuan != null) { 
+					coQuanQuanLys.add(coQuan);
+				}
+			} 
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(coQuanQuanLys)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.in(coQuanQuanLys)
+							.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.in(coQuanQuanLys))
+					));
+		}
 		return predAll;
 	}
 	

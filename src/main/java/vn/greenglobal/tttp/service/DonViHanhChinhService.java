@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
@@ -20,6 +22,7 @@ import vn.greenglobal.tttp.model.QCongDan;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
 import vn.greenglobal.tttp.model.QToDanPho;
 import vn.greenglobal.tttp.model.ToDanPho;
+import vn.greenglobal.tttp.repository.CapDonViHanhChinhRepository;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongDanRepository;
 import vn.greenglobal.tttp.repository.DonViHanhChinhRepository;
@@ -31,11 +34,22 @@ public class DonViHanhChinhService {
 	
 	@Autowired
 	private DonViHanhChinhRepository donViHanhChinhRepository;
-
+	
+	@Autowired
+	private CapDonViHanhChinhRepository capDonViHanhChinhRepository;
+	
 	BooleanExpression base = QDonViHanhChinh.donViHanhChinh.daXoa.eq(false);
-
-	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
+	
+	public Predicate predicateFindAll() { 
 		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh, List<DonViHanhChinh> listDonVis, List<CapDonViHanhChinh> listCapDonVis) {
+		BooleanExpression predAll = base;
+		List<DonViHanhChinh> donVis = new ArrayList<DonViHanhChinh>();
+		List<CapDonViHanhChinh> capDonVis = new ArrayList<CapDonViHanhChinh>();
+		
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten.trim())
 					.or(QDonViHanhChinh.donViHanhChinh.moTa.containsIgnoreCase(ten.trim()))
@@ -50,6 +64,28 @@ public class DonViHanhChinhService {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
 		}
 
+		if (listCapDonVis != null) {
+			for (CapDonViHanhChinh cdv : listCapDonVis) {
+				CapDonViHanhChinh capDonVi = capDonViHanhChinhRepository.findOne(cdv.getId());
+				if (capDonVi != null) { 
+					capDonVis.add(capDonVi);
+				}
+			}
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.in(capDonVis));
+		}
+		
+		if (listDonVis != null) {
+			for (DonViHanhChinh dv : listDonVis) {
+				DonViHanhChinh donVi = donViHanhChinhRepository.findOne(dv.getId());
+				if (donVi != null) { 
+					donVis.add(donVi);
+				}
+			}
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.in(donVis)
+					.or(QDonViHanhChinh.donViHanhChinh.cha.in(donVis)
+							.or(QDonViHanhChinh.donViHanhChinh.cha.cha.in(donVis)) 
+					));
+		}
 		return predAll;
 	}
 

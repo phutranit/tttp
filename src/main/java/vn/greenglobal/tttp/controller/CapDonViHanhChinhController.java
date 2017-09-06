@@ -182,4 +182,23 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capDonViHanhChinhTimKiems")
+	@ApiOperation(value = "Lấy danh sách Cấp Đơn Vị Hành Chính", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListCapDonViHanhChinhs(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Page<CapDonViHanhChinh> page = repo.findAll(capDonViHanhChinhService.predicateFindAll(), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 }
