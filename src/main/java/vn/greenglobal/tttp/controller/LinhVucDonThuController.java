@@ -137,6 +137,8 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			}
 			String ma = linhVucDonThuService.getMaLinhVuc();	
 			linhVucDonThu.setMa(ma);
+			linhVucDonThu.setTenSearch(Utils.unAccent(linhVucDonThu.getTen().trim()));
+			linhVucDonThu.setMoTaSearch(Utils.unAccent(linhVucDonThu.getMoTa().trim()));
 			return linhVucDonThuService.doSave(linhVucDonThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -197,6 +199,8 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			
 			LinhVucDonThu linhVucDonThuOld = repo.findOne(id);
 			linhVucDonThu.setMa(linhVucDonThuOld.getMa());
+			linhVucDonThu.setTenSearch(Utils.unAccent(linhVucDonThu.getTen().trim()));
+			linhVucDonThu.setMoTaSearch(Utils.unAccent(linhVucDonThu.getMoTa().trim()));
 			return linhVucDonThuService.doSave(linhVucDonThu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

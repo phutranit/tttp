@@ -91,9 +91,9 @@ public class LinhVucDonThuService {
 	public Predicate predicateFindAll(String tuKhoa, String cha, String loaiDon, List<LinhVucDonThu> listLinhVucs) {
 		BooleanExpression predAll = base;		
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.containsIgnoreCase(tuKhoa.trim())
-//					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
-					.or(QLinhVucDonThu.linhVucDonThu.moTa.containsIgnoreCase(tuKhoa.trim())));
+			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QLinhVucDonThu.linhVucDonThu.ma.containsIgnoreCase(tuKhoa.trim()))
+					.or(QLinhVucDonThu.linhVucDonThu.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		if (!"".equals(cha) && cha != null) {
@@ -146,7 +146,7 @@ public class LinhVucDonThuService {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.id.ne(body.getId()));
 		}
 
-		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen()));
+		predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.ten.eq(body.getTen())); 
 		if (body.getCha() != null) {
 			predAll = predAll.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(body.getCha().getId()));
 		} else {
