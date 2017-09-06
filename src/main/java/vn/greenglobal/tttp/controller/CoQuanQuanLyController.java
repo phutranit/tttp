@@ -35,6 +35,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -57,7 +58,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 	@Autowired
 	private CoQuanQuanLyService coQuanQuanLyService;
-
+	
 	@Autowired
 	private CongChucRepository congChucRepository;
 
@@ -129,6 +130,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			@RequestParam(value = "cha", required = false) Long cha,
 			@RequestParam(value = "capCoQuanQuanLy", required = false) Long capCoQuanQuanLy,
 			@RequestParam(value = "donViHanhChinh", required = false) Long donViHanhChinh,
+			@RequestParam(value = "listCoQuanQuanLys", required = false) List<CoQuanQuanLy> listCoQuanQuanLys,
+			@RequestParam(value = "listCapCoQuanQuanLys", required = false) List<CapCoQuanQuanLy> listCapCoQuanQuanLys,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
@@ -139,7 +142,26 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			}
 
 			Page<CoQuanQuanLy> page = repo
-					.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh), pageable);
+					.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, listCoQuanQuanLys, listCapCoQuanQuanLys), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/coQuanQuanLyTimKiems")
+	@ApiOperation(value = "Lấy danh sách tất cả Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListCoQuanQuanLys(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+		
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.COQUANQUANLY_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -224,7 +246,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@ApiOperation(value = "Lấy danh sách đơn vị trực thuộc", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDonViTrucThuocs(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "cha", required = false) Long cha, Pageable pageable,
+			@RequestParam(value = "cha", required = false) Long cha,
+			Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -235,7 +258,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 
-			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", cha, null, null), pageable);
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", cha, null, null, null, null), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -518,7 +541,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 
-			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", null, capCoQuanQuanLy, null),
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll("", null, capCoQuanQuanLy, null, null, null),
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
