@@ -212,8 +212,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				
 				if (don != null) {
-					System.out.println("Nam0");
-					System.out.println("Nam0123456789: " + don.getGiaiQuyetDonCuoiCungId());
 					if (don.getGiaiQuyetDonCuoiCungId() == null) {
 						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
 								&& don.getDonViXuLyGiaiQuyet() != null
@@ -248,17 +246,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
 						}
-					}		
-					System.out.println("Nam1");
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					} Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				System.out.println("Nam2");
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				
 			}
-			System.out.println("Nam3");
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
