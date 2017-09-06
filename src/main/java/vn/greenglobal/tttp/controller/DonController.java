@@ -905,8 +905,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
 			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT, 
 			@RequestParam(value = "page", required = false) Integer page, 
-			@RequestParam(value = "size", required = false) Integer size,
-			PersistentEntityResourceAssembler eass) throws IOException {
+			@RequestParam(value = "size", required = false) Integer size) throws IOException {
 		
 		try {
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
