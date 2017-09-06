@@ -936,11 +936,11 @@ public class DonController extends TttpController<Don> {
 				}
 			}
 
-			Pageable pageable = new PageRequest(page != null ? page.intValue() : 0, size != null ? size.intValue() : 10);
-			int start = pageable.getOffset();
-			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
-			Page<Don> pageDon = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());			
-			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", pageDon.getContent(), "Danh sách xử lý đơn");
+//			Pageable pageable = new PageRequest(page != null ? page.intValue() : 0, size != null ? size.intValue() : 10);
+//			int start = pageable.getOffset();
+//			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+//			Page<Don> pageDon = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());			
+			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", listDon, "Danh sách xử lý đơn");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
