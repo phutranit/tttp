@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
@@ -29,6 +30,9 @@ public class CongChuc extends Model<CongChuc> {
 	@NotBlank
 	@Size(max=255)
 	private String hoVaTen = "";
+	@NotBlank
+	@Size(max=255)
+	private String hoVaTenSearch = "";
 	@Size(max=255)
 	private String dienThoai = "";
 
@@ -52,6 +56,15 @@ public class CongChuc extends Model<CongChuc> {
 
 	public void setHoVaTen(String hoVaTen) {
 		this.hoVaTen = hoVaTen;
+	}
+
+	@JsonIgnore
+	public String getHoVaTenSearch() {
+		return hoVaTenSearch;
+	}
+
+	public void setHoVaTenSearch(String hoVaTenSearch) {
+		this.hoVaTenSearch = hoVaTenSearch;
 	}
 
 	@ApiModelProperty(position = 5)

@@ -32,8 +32,8 @@ public class QuocTichService {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QQuocTich.quocTich.ma.containsIgnoreCase(tuKhoa.trim())
-					.or(QQuocTich.quocTich.ten.containsIgnoreCase(tuKhoa.trim()))
-					.or(QQuocTich.quocTich.moTa.containsIgnoreCase(tuKhoa.trim())));
+					.or(QQuocTich.quocTich.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
+					.or(QQuocTich.quocTich.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 		return predAll;
 	}

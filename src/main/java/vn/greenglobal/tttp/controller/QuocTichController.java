@@ -62,7 +62,7 @@ public class QuocTichController extends TttpController<QuocTich> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -103,6 +103,9 @@ public class QuocTichController extends TttpController<QuocTich> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
+			
+			quocTich.setTenSearch(Utils.unAccent(quocTich.getTen().trim()));
+			quocTich.setMoTaSearch(Utils.unAccent(quocTich.getMoTa().trim()));
 			return quocTichService.doSave(quocTich,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -159,6 +162,8 @@ public class QuocTichController extends TttpController<QuocTich> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			quocTich.setTenSearch(Utils.unAccent(quocTich.getTen().trim()));
+			quocTich.setMoTaSearch(Utils.unAccent(quocTich.getMoTa().trim()));
 			return quocTichService.doSave(quocTich,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

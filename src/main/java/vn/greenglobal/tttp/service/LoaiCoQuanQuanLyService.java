@@ -31,8 +31,8 @@ public class LoaiCoQuanQuanLyService {
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
-			predAll = predAll.and(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.ten.containsIgnoreCase(ten.trim())
-					.or(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.moTa.containsIgnoreCase(ten.trim())));
+			predAll = predAll.and(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.tenSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))
+					.or(QLoaiCoQuanQuanLy.loaiCoQuanQuanLy.moTaSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))));
 		}
 		return predAll;
 	}

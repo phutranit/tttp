@@ -62,7 +62,7 @@ public class DanTocController extends TttpController<DanToc> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<DanToc> page = repo.findAll(danTocService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -107,6 +107,10 @@ public class DanTocController extends TttpController<DanToc> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
+			
+			danToc.setTenSearch(Utils.unAccent(danToc.getTen().trim()));
+			danToc.setTenKhacSearch(Utils.unAccent(danToc.getTenKhac().trim()));
+			danToc.setMoTaSearch(Utils.unAccent(danToc.getMoTa().trim()));
 			return danTocService.doSave(danToc,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -161,6 +165,10 @@ public class DanTocController extends TttpController<DanToc> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
+			
+			danToc.setTenSearch(Utils.unAccent(danToc.getTen().trim()));
+			danToc.setTenKhacSearch(Utils.unAccent(danToc.getTenKhac().trim()));
+			danToc.setMoTaSearch(Utils.unAccent(danToc.getMoTa().trim()));
 			return danTocService.doSave(danToc,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
