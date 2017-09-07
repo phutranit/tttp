@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,8 +30,13 @@ public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	@NotBlank
 	@Size(max=255)
+	private String tenSearch = "";
+	//@Lob
 	private String moTa = "";
+	//@Lob
+	private String moTaSearch = "";
 
 	@ApiModelProperty(position = 1)
 	public String getMa() {
@@ -49,6 +56,15 @@ public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 		this.ten = ten;
 	}
 
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
+	}
+
 	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
@@ -56,6 +72,15 @@ public class CapDonViHanhChinh extends Model<CapDonViHanhChinh> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	@JsonIgnore
+	public String getMoTaSearch() {
+		return moTaSearch;
+	}
+
+	public void setMoTaSearch(String moTaSearch) {
+		this.moTaSearch = moTaSearch;
 	}
 
 	@Transient
