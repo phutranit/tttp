@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -105,11 +106,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
-	@Size(max=255)
+//	@Lob
 	private String yKienXuLy = "";
-	@Size(max=255)
+//	@Lob
 	private String yKienXuLyKetQuaGiaiQuyet = "";
-	@Size(max=255)
+//	@Lob
 	private String ghiChuXuLy = "";
 	@Transient
 	private boolean chuyenDonViKiemTra;
