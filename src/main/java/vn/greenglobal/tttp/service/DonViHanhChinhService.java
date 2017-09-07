@@ -43,8 +43,8 @@ public class DonViHanhChinhService {
 	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh, List<DonViHanhChinh> listDonVis, List<CapDonViHanhChinh> listCapDonVis) {
 		BooleanExpression predAll = base;		
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
-			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten.trim())
-					.or(QDonViHanhChinh.donViHanhChinh.moTa.containsIgnoreCase(ten.trim()))
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.tenSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))
+					.or(QDonViHanhChinh.donViHanhChinh.moTaSearch.containsIgnoreCase(Utils.unAccent(ten.trim())))
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten.trim())));
 		}
 
