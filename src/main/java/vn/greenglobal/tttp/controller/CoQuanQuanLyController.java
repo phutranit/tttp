@@ -140,7 +140,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<CoQuanQuanLy> page = repo
 					.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, listCoQuanQuanLys, listCapCoQuanQuanLys), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
@@ -709,6 +709,8 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				}
 			}
 
+			coQuanQuanLy.setTenSearch(Utils.unAccent(coQuanQuanLy.getTen().trim()));
+			coQuanQuanLy.setMoTaSearch(Utils.unAccent(coQuanQuanLy.getMoTa().trim()));
 			return coQuanQuanLyService.doSave(coQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -778,6 +780,9 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					coQuanQuanLy.setDonVi(coQuanQuanLy);
 				}
 			}
+			
+			coQuanQuanLy.setTenSearch(Utils.unAccent(coQuanQuanLy.getTen().trim()));
+			coQuanQuanLy.setMoTaSearch(Utils.unAccent(coQuanQuanLy.getMoTa().trim()));
 			return coQuanQuanLyService.doSave(coQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
