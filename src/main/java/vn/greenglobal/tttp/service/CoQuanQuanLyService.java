@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +22,6 @@ import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.XuLyDon;
-import vn.greenglobal.tttp.repository.CapCoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -37,9 +35,6 @@ public class CoQuanQuanLyService {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
-	
-	@Autowired
-	private CapCoQuanQuanLyRepository capCoQuanQuanLyRepository;
 	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 	
