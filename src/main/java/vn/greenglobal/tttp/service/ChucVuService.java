@@ -33,8 +33,8 @@ public class ChucVuService {
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
-			predAll = predAll.and(QChucVu.chucVu.ten.containsIgnoreCase(ten.trim())
-					.or(QChucVu.chucVu.moTa.containsIgnoreCase(ten.trim())));
+			predAll = predAll.and(QChucVu.chucVu.tenSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))
+					.or(QChucVu.chucVu.moTaSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))));
 		}
 		return predAll;
 	}
