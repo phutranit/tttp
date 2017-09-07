@@ -281,6 +281,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				don.setTongSoLuotTCD(soLuotTiep + 1);
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					don.setYeuCauGapTrucTiepLanhDao(true);
+					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
+				} else {
+					don.setYeuCauGapTrucTiepLanhDao(false);
+					don.setNgayLapDonGapLanhDaoTmp(null);
 				}
 			}
 			
@@ -312,8 +316,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
 					don.setThanhLapDon(true);
-					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
-					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
+//					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
+//					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
+					don.setDonViKiemTraDeXuat(soTiepCongDan.getDonViChuTri());
+					don.setTrangThaiKTDX(TrangThaiDonEnum.DANG_GIAI_QUYET);
 					don.setNgayTiepNhan(Utils.localDateTimeNow());
 					don.setLanhDaoDuyet(true);
 					don.setDangGiaoKTDX(true);
@@ -443,10 +449,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
 							don.setThanhLapDon(true);
-							don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
+//							don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
 							don.setLanhDaoDuyet(true);
 							don.setDangGiaoKTDX(true);
+							don.setTrangThaiKTDX(TrangThaiDonEnum.DANG_GIAI_QUYET);
 							
 							ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = repoThongTinGiaiQuyetDon.findOne(thongTinGiaiQuyetDonService.predicateFindByDon(don.getId()));
 							if (thongTinGiaiQuyetDon == null) {
@@ -481,8 +488,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
 							giaiQuyetDon.setDonChuyen(true);
-							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
-							
+//							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
+							don.setDonViKiemTraDeXuat(soTiepCongDan.getDonViChuTri());
+
 							//lich su kiem tra de xuat
 							LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 							lichSuQTXLD.setDon(don);

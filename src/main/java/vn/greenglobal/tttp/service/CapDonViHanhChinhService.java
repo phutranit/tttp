@@ -27,7 +27,12 @@ public class CapDonViHanhChinhService {
 	private CapDonViHanhChinhRepository capDonViHanhChinhRepository;
 
 	BooleanExpression base = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
-
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {

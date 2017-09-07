@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -33,8 +35,13 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	@NotBlank
 	@Size(max=255)
+	private String tenSearch = "";
+	//@Lob
 	private String moTa = "";
+	//@Lob
+	private String moTaSearch = "";
 	
 	private int soThuTu = 0;
 
@@ -65,6 +72,15 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 		this.ten = ten;
 	}
 
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
+	}
+
 	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
@@ -72,6 +88,15 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	@JsonIgnore
+	public String getMoTaSearch() {
+		return moTaSearch;
+	}
+
+	public void setMoTaSearch(String moTaSearch) {
+		this.moTaSearch = moTaSearch;
 	}
 
 	public int getSoThuTu() {
@@ -141,6 +166,18 @@ public class LinhVucDonThu extends Model<LinhVucDonThu> {
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getLoaiDonInfo() {
+		if (getLoaiDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getLoaiDon());
+			map.put("text", getLoaiDon().getText());
 			return map;
 		}
 		return null;

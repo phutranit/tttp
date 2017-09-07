@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -736,7 +738,6 @@ public class Utils {
 		}
 		return mapType;
 	}
-	
 
 	public static boolean isValidStringLength(String str, int length) {
 		if (str != null && !"".equals(str)) {
@@ -759,5 +760,15 @@ public class Utils {
 			quy = 4;
 		}
 		return quy;
+	}
+
+	public static String unAccent(String s) {
+		if (s != null && !"".equals(s)) {
+			String temp = Normalizer.normalize(s.toLowerCase(), Normalizer.Form.NFD);
+			Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+			String result = pattern.matcher(temp).replaceAll("").replaceAll("đ", "d").replaceAll("[^a-zA-Z0-9 -]", "");
+			return result.replace("  ", " ");
+		}
+		return "";
 	}
 }
