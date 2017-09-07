@@ -34,8 +34,8 @@ public class ThamQuyenGiaiQuyetService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.containsIgnoreCase(tuKhoa.trim())
-					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTa.containsIgnoreCase(tuKhoa.trim())));
+			predAll = predAll.and(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		return predAll;

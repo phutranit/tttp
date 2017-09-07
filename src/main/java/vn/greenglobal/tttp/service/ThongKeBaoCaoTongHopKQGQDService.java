@@ -120,7 +120,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 						if (quy == 2) { 
 							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(4, 6));
 						}
-						if (quy == 3) { 
+						if (quy == 3) {
 							predAll = predAll.and(QDon.don.ngayTiepNhan.month().between(7, 9));
 						}
 						if (quy == 4) { 
@@ -167,14 +167,11 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 	
 	public Long getTongSoDonTonKyTruoc(BooleanExpression predAll, String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) { 
 		Long tongSo = 0L;
-		
 		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
 			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 			if (loaiKyEnum != null) { 
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
-					
 					if (quy != null && quy > 0) { 						
-											
 						if (quy == 1) { 
 							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
 							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
@@ -183,11 +180,11 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 4, 1, 0, 0);
 							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
 						}
-						if (quy == 3) { 
+						if (quy == 3) {
 							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 7, 1, 0, 0);
 							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
 						}
-						if (quy == 4) { 
+						if (quy == 4) {
 							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 10, 1, 0, 0);
 							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
 						}
