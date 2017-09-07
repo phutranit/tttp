@@ -194,6 +194,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 				mapDonVi.put("tenDonVi", cq.getTen());
 				mapTheoDoiGS.put("donVi", mapDonVi);
 				if (StringUtils.isNotBlank(quyTrinh)) {
+					System.out.println("quy trinh");
 					processType = ProcessTypeEnum.valueOf(quyTrinh);
 					predDSDons = predDSDons.and(QDon.don.processType.eq(processType));
 					if (processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) { 
@@ -234,6 +235,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						mapTheoDoiGS.put("tongSo", theoDoiGiamSatService.getTongSoDon(predAll, repo));
 						
 					}
+					
 					if (processType.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) { 
 						//kiem tra de xuat
 						BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViKTDX(predDSDons, cq.getId(), giaiQuyetDonRepo, repo);
@@ -249,8 +251,26 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						
 						mapTheoDoiGS.put("tongSo", theoDoiGiamSatService.getTongSoDon(predAll, repo));
 					}
+					
+					if (processType.equals(ProcessTypeEnum.XU_LY_DON)) {
+						System.out.println("xu ly don " +cq.getDonVi().getTen() +" " +cq.getDonVi().getId());
+						predDSDons = predDSDons.and(QDon.don.processType.eq(processType));
+						BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSDons, cq.getDonVi().getId(), xuLyRepo, repo);
+						//Dang xu ly
+						mapDangXuLy.put("dungHan", theoDoiGiamSatService.getTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, trangThaiDangXL));
+						mapDangXuLy.put("treHan", theoDoiGiamSatService.getTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, trangThaiDangXL));
+						mapTheoDoiGS.put("dangXuLy", mapDangXuLy);
+						
+						//Da xu ly
+						mapDaXuLy.put("dungHan", theoDoiGiamSatService.getTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, trangThaiDaXL));
+						mapDaXuLy.put("treHan", theoDoiGiamSatService.getTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, trangThaiDaXL));
+						mapTheoDoiGS.put("daXuLy", mapDaXuLy);
+						
+						mapTheoDoiGS.put("tongSo", theoDoiGiamSatService.getTongSoDon(predAll, repo));
+					}
 				} else { 
 					//xu ly don
+					System.out.println("xu ly don md");
 					predDSDons = predDSDons.and(QDon.don.processType.eq(processType));
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSDons, cq.getId(), xuLyRepo, repo);
 					//Dang xu ly
