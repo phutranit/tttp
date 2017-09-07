@@ -1499,43 +1499,43 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getQuyTrinhXuLyText() {
-		String out = "";
-		if (xuLyDons.size() > 0) {
-			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-			// hxl
-			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-					xld.isDonChuyen()).collect(Collectors.toList());
-			if (xlds.size() > 0) {
-				XuLyDon xld = xlds.get(xlds.size() - 1);
-				// ttd ht
-				if (xld != null) { 
-					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-						out = xld.getHuongXuLy().getText();
-						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-							if (xld.getCoQuanTiepNhan() != null) { 
-								out += " " +xld.getCoQuanTiepNhan().getDonVi().getTen();
-							}
-						}
-					} else {
-						out = "";
-						if (xld.isDonTra()) {
-							out = "Đơn chuyển được trả lại";
-						}
-//						else if (!xld.isDonTra() && xld.isDonChuyen()) {
-//							if (xld.getCoQuanChuyenDon() != null) { 
-//								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public String getQuyTrinhXuLyText() {
+//		String out = "";
+//		if (xuLyDons.size() > 0) {
+//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+//			// hxl
+//			xlds.addAll(xuLyDons);
+//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+//					xld.isDonChuyen()).collect(Collectors.toList());
+//			if (xlds.size() > 0) {
+//				XuLyDon xld = xlds.get(xlds.size() - 1);
+//				// ttd ht
+//				if (xld != null) { 
+//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
+//						out = xld.getHuongXuLy().getText();
+//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+//							if (xld.getCoQuanTiepNhan() != null) { 
+//								out += " " +xld.getCoQuanTiepNhan().getDonVi().getTen();
 //							}
 //						}
-					}
-				}
-			}
-		}
-		return out;
-	}
+//					} else {
+//						out = "";
+//						if (xld.isDonTra()) {
+//							out = "Đơn chuyển được trả lại";
+//						}
+////						else if (!xld.isDonTra() && xld.isDonChuyen()) {
+////							if (xld.getCoQuanChuyenDon() != null) { 
+////								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+////							}
+////						}
+//					}
+//				}
+//			}
+//		}
+//		return out;
+//	}
 
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
