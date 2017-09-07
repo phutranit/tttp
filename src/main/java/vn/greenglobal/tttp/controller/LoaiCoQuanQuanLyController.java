@@ -89,6 +89,8 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			loaiCoQuanQuanLy.setTenSearch(Utils.unAccent(loaiCoQuanQuanLy.getTen().trim()));
+			loaiCoQuanQuanLy.setMoTaSearch(Utils.unAccent(loaiCoQuanQuanLy.getMoTa().trim()));
 			return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -145,6 +147,8 @@ public class LoaiCoQuanQuanLyController extends TttpController<LoaiCoQuanQuanLy>
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			loaiCoQuanQuanLy.setTenSearch(Utils.unAccent(loaiCoQuanQuanLy.getTen().trim()));
+			loaiCoQuanQuanLy.setMoTaSearch(Utils.unAccent(loaiCoQuanQuanLy.getMoTa().trim()));
 			return loaiCoQuanQuanLyService.doSave(loaiCoQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
