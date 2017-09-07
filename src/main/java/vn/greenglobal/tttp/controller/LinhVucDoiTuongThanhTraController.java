@@ -27,6 +27,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LinhVucDoiTuongThanhTra;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.repository.LinhVucDoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.service.LinhVucDoiTuongThanhTraService;
 import vn.greenglobal.tttp.util.Utils;
@@ -38,6 +39,9 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 
 	@Autowired
 	private LinhVucDoiTuongThanhTraRepository repo;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	@Autowired
 	private LinhVucDoiTuongThanhTraService linhVucDoiTuongThanhTraService;
@@ -55,7 +59,9 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDOITUONGTHANHTRA_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDOITUONGTHANHTRA_XEM) == null) {
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDOITUONGTHANHTRA_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THANHTRA_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -86,6 +92,8 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
+			linhVucDoiTuongThanhTra.setTenSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getTen().trim()));
+			linhVucDoiTuongThanhTra.setMoTaSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getMoTa().trim()));
 			return linhVucDoiTuongThanhTraService.doSave(linhVucDoiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -143,6 +151,8 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			linhVucDoiTuongThanhTra.setTenSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getTen().trim()));
+			linhVucDoiTuongThanhTra.setMoTaSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getMoTa().trim()));
 			return linhVucDoiTuongThanhTraService.doSave(linhVucDoiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
@@ -163,10 +173,10 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-//			if (linhVucDoiTuongThanhTraService.checkUsedData(repo, donRepository, id)) {
-//				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
-//						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
-//			}
+			if (linhVucDoiTuongThanhTraService.checkUsedData(doiTuongThanhTraRepository, id)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_USED.name(),
+						ApiErrorEnum.DATA_USED.getText(), ApiErrorEnum.DATA_USED.getText());
+			}
 
 			LinhVucDoiTuongThanhTra linhVucDoiTuongThanhTra = linhVucDoiTuongThanhTraService.delete(repo, id);
 			if (linhVucDoiTuongThanhTra == null) {

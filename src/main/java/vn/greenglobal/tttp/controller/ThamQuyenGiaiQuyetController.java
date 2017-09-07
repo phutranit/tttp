@@ -93,6 +93,9 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
+			
+			thamQuyenGiaiQuyet.setTenSearch(Utils.unAccent(thamQuyenGiaiQuyet.getTen().trim()));
+			thamQuyenGiaiQuyet.setMoTaSearch(Utils.unAccent(thamQuyenGiaiQuyet.getMoTa().trim()));
 			return thamQuyenGiaiQuyetService.doSave(thamQuyenGiaiQuyet,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -151,6 +154,8 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			thamQuyenGiaiQuyet.setTenSearch(Utils.unAccent(thamQuyenGiaiQuyet.getTen().trim()));
+			thamQuyenGiaiQuyet.setMoTaSearch(Utils.unAccent(thamQuyenGiaiQuyet.getMoTa().trim()));
 			return thamQuyenGiaiQuyetService.doSave(thamQuyenGiaiQuyet,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);
