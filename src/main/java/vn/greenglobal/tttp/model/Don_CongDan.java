@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
@@ -46,6 +48,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private String soDienThoai = "";
 	@Size(max=255)
 	private String hoVaTen = "";
+	@Size(max=255)
+	private String hoVaTenSearch = "";
 	@Size(max=255)
 	private String soCMNDHoChieu = "";
 	@Size(max=255)
@@ -204,6 +208,15 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	public void setHoVaTen(String hoVaTen) {
 		this.hoVaTen = hoVaTen;
+	}
+
+	@JsonIgnore
+	public String getHoVaTenSearch() {
+		return hoVaTenSearch;
+	}
+
+	public void setHoVaTenSearch(String hoVaTenSearch) {
+		this.hoVaTenSearch = hoVaTenSearch;
 	}
 
 	public String getSoCMNDHoChieu() {
