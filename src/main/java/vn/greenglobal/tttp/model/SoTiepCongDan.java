@@ -108,6 +108,8 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@Size(max=255)
 	private String yKienXuLy = "";
 	@Size(max=255)
+	private String yKienXuLyKetQuaGiaiQuyet = "";
+	@Size(max=255)
 	private String ghiChuXuLy = "";
 	@Transient
 	private boolean chuyenDonViKiemTra;
@@ -383,6 +385,14 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public void setyKienXuLy(String yKienXuLy) {
 		this.yKienXuLy = yKienXuLy;
 	}
+	
+	public String getyKienXuLyKetQuaGiaiQuyet() {
+		return yKienXuLyKetQuaGiaiQuyet;
+	}
+
+	public void setyKienXuLyKetQuaGiaiQuyet(String yKienXuLyKetQuaGiaiQuyet) {
+		this.yKienXuLyKetQuaGiaiQuyet = yKienXuLyKetQuaGiaiQuyet;
+	}
 
 	public String getGhiChuXuLy() {
 		return ghiChuXuLy;
@@ -556,6 +566,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		}
 		map.put("donViPhoiHops", list);
 		map.put("yKienXuLy", getNoiDungBaoCaoKetQuaKiemTra());
+		map.put("yKienXuLyKetQuaGiaiQuyet", getyKienXuLyKetQuaGiaiQuyet());
 		map.put("ngayBaoCaoKQ", getNgayBaoCaoKetQua() != null ? getNgayBaoCaoKetQua() : "");
 		map.put("ngayGuiKQ", getNgayGuiKetQua() != null ? getNgayGuiKetQua() : "");
 		return map;
