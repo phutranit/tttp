@@ -508,7 +508,7 @@ public class DonController extends TttpController<Don> {
 								if (transition != null) {
 									break;
 								} 						
-							}					
+							}
 							if (transition == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
 										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
@@ -661,6 +661,9 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
+				if (donOld.isThanhLapDon()) { 
+					don.setThanhLapDon(donOld.isThanhLapDon());
+				}
 				
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
@@ -805,7 +808,7 @@ public class DonController extends TttpController<Don> {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 						don.setCurrentState(beginState);
 					}
-				} else { 
+				} else {
 					if (don.isThanhLapDon()) {
 						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
@@ -814,6 +817,10 @@ public class DonController extends TttpController<Don> {
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
+						don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
+						don.setHuongXuLyXLD(donOld.getHuongXuLyXLD());
+						don.setKetQuaXLDGiaiQuyet(donOld.getKetQuaXLDGiaiQuyet());
+						
 						if (donOld.getThoiHanXuLyXLD() == null) {
 							don.setNgayBatDauXLD(Utils.localDateTimeNow());
 							if (don.getThoiHanXuLyXLD() == null) {
@@ -876,11 +883,14 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/xuatExcel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExcel(HttpServletResponse response,
+			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
 			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
+			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
+			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
@@ -892,16 +902,44 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "vaiTro", required = true) String vaiTro,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
-			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT) throws IOException {
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT, 
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "size", required = false) Integer size) throws IOException {
 		
 		try {
-			OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
-			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", 
-					(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
-							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, 
-							congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), order),
-					"Danh sách xử lý đơn");
+			NumberExpression<Integer> canBoXuLyChiDinh = null;
+			OrderSpecifier<LocalDateTime> sortOrderDon = null;
+			OrderSpecifier<Integer> sortOrderDonByCanBo = null;
+			List<Don> listDon = new ArrayList<Don>();
+			
+			if (StringUtils.isNotBlank(trangThaiDon)) {
+				if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
+					canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+							.then(Expressions.numberTemplate(Integer.class, "0"))					
+							.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+					sortOrderDonByCanBo = canBoXuLyChiDinh.asc();
+					sortOrderDon = QDon.don.ngayTiepNhan.desc();
+					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+							sortOrderDonByCanBo, sortOrderDon);
+				} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
+					sortOrderDon = QDon.don.ngayTiepNhan.desc();
+					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+							sortOrderDon);
+				}
+			}
+
+//			Pageable pageable = new PageRequest(page != null ? page.intValue() : 0, size != null ? size.intValue() : 10);
+//			int start = pageable.getOffset();
+//			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+//			Page<Don> pageDon = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());			
+			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", listDon, "Danh sách xử lý đơn");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}

@@ -15,6 +15,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 
@@ -28,8 +31,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private static final long serialVersionUID = -7123036795988588832L;
 
 	@NotNull
-//	@Fetch(FetchMode.SELECT)
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private Don don;
 //	@Fetch(FetchMode.SELECT)
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -325,7 +328,7 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long congDanId() {
+	public Long getCongDanId() {
 		if (getCongDan() != null) { 
 			return getCongDan().getId();
 		}

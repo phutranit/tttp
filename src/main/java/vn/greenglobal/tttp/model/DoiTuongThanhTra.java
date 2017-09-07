@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -28,19 +27,19 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1362735902443705601L;
-	
+
 	@NotBlank
-	@Size(max=255)
+	@Size(max = 255)
 	private String ten = "";
-	@Size(max=255)
+	@Size(max = 255)
 	private String diaChi = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";
-	
+
 	@NotNull
 	@ManyToOne
 	private LinhVucDoiTuongThanhTra linhVucDoiTuongThanhTra;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongThanhTraEnum loaiDoiTuongThanhTra;
@@ -69,6 +68,7 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		this.ghiChu = ghiChu;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public LinhVucDoiTuongThanhTra getLinhVucDoiTuongThanhTra() {
 		return linhVucDoiTuongThanhTra;
 	}
@@ -84,13 +84,13 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 	public void setLoaiDoiTuongThanhTra(LoaiDoiTuongThanhTraEnum loaiDoiTuongThanhTra) {
 		this.loaiDoiTuongThanhTra = loaiDoiTuongThanhTra;
 	}
-	
+
 	@Transient
-	@ApiModelProperty( hidden = true )
+	@ApiModelProperty(hidden = true)
 	public Long getDoiTuongThanhTraId() {
 		return getId();
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getLinhVucDoiTuongThanhTraInfo() {
@@ -102,7 +102,7 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getLoaiDoiTuongThanhTraInfo() {

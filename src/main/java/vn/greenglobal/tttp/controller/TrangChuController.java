@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -348,11 +349,12 @@ public class TrangChuController extends TttpController<Don> {
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapDonThongKe = new HashMap<>();
 			List<Map<String, Object>> list = new ArrayList<>();
-
+			
 			List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-			// List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L,
-			// 39L, 50L, 52L);
-			linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus(loaiDon));
+			List<Long> ids = Arrays.asList(53L, 57L, 58L, 59L, 6L, 56L, 15L, 16L,
+			 39L, 62L, 63L);
+			 
+			linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThuVaIds(loaiDon, ids));
 			int year = Utils.localDateTimeNow().getYear();
 			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonViTheoLinhVuc(
 					donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);

@@ -2,7 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum KetQuaTrangThaiDonEnum {
 
-	DINH_CHI("Đình chỉ"),
+	DINH_CHI("Rút đơn/Đình chỉ"),
 	DE_XUAT_THU_LY("Thụ lý"),
 	KHONG_DU_DIEU_KIEN_THU_LY("Không thụ lý"),
 	CHUYEN_DON("Chuyển đơn"),

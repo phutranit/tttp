@@ -24,9 +24,12 @@ public enum ApiErrorEnum {
 	CONGDAN_EXISTS("Công dân đã tồn tại trong hệ thống."),
 	DATA_EXISTS("Dữ liệu này đã tồn tại trong hệ thống."),
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống."),
+	DOITUONGTHANHTRA_NOT_FOUND("Đối tượng thanh tra này không tồn tại trong hệ thống."),
+	CUOCTHANHTRA_NOT_FOUND("Cuộc thanh tra này không tồn tại trong hệ thống."),
 	ROLE_FORBIDDEN("Tài khoản hiện tại Không có quyền thực hiện chức năng này."),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator."),
 	DATA_USED("Dữ liệu này đang được sử dụng."),
+	DATA_KEHOACHTHANHTRA_USED("Kế hoạch thanh tra này đã có cuộc thanh tra đang tiến hành."),
 	EMAIL_INVALID("Trường email không đúng định dạng."),
 	DATA_INVALID("Dữ liệu không hợp lệ."),
 	LOGIN_USER_PASSWORD_INCORRECT("Địa chỉ thư điện tử hoặc Mật khẩu không chính xác."),
@@ -49,8 +52,11 @@ public enum ApiErrorEnum {
 	DONVITHAMTRAXACMINH_REQUIRED("Trường donViThamTraXacMinh không được để trống."),
 	DONVICHUTRI_REQUIRED("Trường donViChuTri không được để trống."),
 	INTERNAL_SERVER_ERROR("Lỗi hệ thống."),
-	DON_VI_NOT_EXISTS("Đơn vị này không tồn tại"),
-	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo");
+	DON_VI_NOT_EXISTS("Đơn vị này không tồn tại."),
+	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo."),
+	CUOCTHANHTRA_REQUIRED("Bạn phải chọn ít nhất một cuộc thanh tra."),
+	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
+	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này.");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

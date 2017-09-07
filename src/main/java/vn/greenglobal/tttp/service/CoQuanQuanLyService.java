@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
@@ -34,10 +35,16 @@ public class CoQuanQuanLyService {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
-
+	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
-
-	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh, 
+			List<CoQuanQuanLy> listCoQuanQuanLys, List<CapCoQuanQuanLy> listCapCoQuanQuanLys) {
 
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
@@ -57,7 +64,17 @@ public class CoQuanQuanLyService {
 		if (donViHanhChinh != null && donViHanhChinh > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
 		}
-
+		
+		if (listCapCoQuanQuanLys != null && listCapCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(listCapCoQuanQuanLys));
+		}
+		
+		if (listCoQuanQuanLys != null && listCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(listCoQuanQuanLys)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.in(listCoQuanQuanLys)
+							.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.in(listCoQuanQuanLys))
+					));
+		}
 		return predAll;
 	}
 	
