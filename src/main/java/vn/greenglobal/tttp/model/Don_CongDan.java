@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,11 +31,11 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	private static final long serialVersionUID = -7123036795988588832L;
 
 	@NotNull
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private Don don;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongDan congDan;
 
 	@Size(max=255)
@@ -75,26 +76,26 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Size(max=255)
 	private String chucVu = "";
 	
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy noiCapCMND;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private DonViHanhChinh tinhThanh;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private DonViHanhChinh quanHuyen;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private DonViHanhChinh phuongXa;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ToDanPho toDanPho;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private QuocTich quocTich;
-	@Fetch(FetchMode.SELECT)
-	@ManyToOne
+//	@Fetch(FetchMode.SELECT)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private DanToc danToc;
 
 	@ApiModelProperty(position = 3, required = true, example = "{}")
@@ -327,8 +328,11 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public CongDan getThongTinCongDan() {
-		return getCongDan();
+	public Long getCongDanId() {
+		if (getCongDan() != null) { 
+			return getCongDan().getId();
+		}
+		return null;
 	}
 
 	@Transient

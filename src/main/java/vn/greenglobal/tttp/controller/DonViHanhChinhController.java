@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -62,7 +65,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 
 	@Autowired
 	private CongDanRepository congDanRepository;
-
+	
 	public DonViHanhChinhController(BaseRepository<DonViHanhChinh, Long> repo) {
 		super(repo);
 	}
@@ -73,7 +76,10 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "ten", required = false) String ten,
 			@RequestParam(value = "capDonViHanhChinh", required = false) Long capDonViHanhChinh,
-			@RequestParam(value = "cha", required = false) Long cha, PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "cha", required = false) Long cha, 
+			@RequestParam(value = "listDonVis", required = false) List<DonViHanhChinh> listDonVis,
+			@RequestParam(value = "listCapDonVis", required = false) List<CapDonViHanhChinh> listCapDonVis, 
+			PersistentEntityResourceAssembler eass) {
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_LIETKE) == null
@@ -82,7 +88,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh),
+			Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh, listDonVis, listCapDonVis),
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -90,6 +96,26 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/danhSachDonViTimKiems")
+	@ApiOperation(value = "Lấy danh sách tất cả Đơn Vị Hành Chính", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVIHANHCHINH_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/donViHanhChinhs/capTinhThanhPho")
 	@ApiOperation(value = "Lấy danh sách Đơn Vị Hành Chính Cấp Tỉnh Thành Phố", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)

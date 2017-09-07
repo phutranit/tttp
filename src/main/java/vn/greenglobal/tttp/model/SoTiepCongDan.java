@@ -43,6 +43,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	@NotNull
 	@ManyToOne
+	@QueryInit("*.*.*")
 	private Don don;
 	@NotNull
 	@ManyToOne
@@ -100,7 +101,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	private HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao;
 	
 	@Enumerated(EnumType.STRING)
-	private HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao;
+	private HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao;
 
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
@@ -327,12 +328,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	}
 
 	@ApiModelProperty(hidden = true)
-	public HuongGiaiQuyetTCDEnum getTrinhTrangXuLyTCDLanhDao() {
-		return trinhTrangXuLyTCDLanhDao;
+	public HuongGiaiQuyetTCDEnum getTinhTrangXuLyTCDLanhDao() {
+		return tinhTrangXuLyTCDLanhDao;
 	}
 
-	public void setTrinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum trinhTrangXuLyTCDLanhDao) {
-		this.trinhTrangXuLyTCDLanhDao = trinhTrangXuLyTCDLanhDao;
+	public void setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao) {
+		this.tinhTrangXuLyTCDLanhDao = tinhTrangXuLyTCDLanhDao;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -477,29 +478,31 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public String getTinhTrangXuLyLanhDaoStr() {
 		String str = "";
-		if (getHuongGiaiQuyetTCDLanhDao() != null && getTrinhTrangXuLyTCDLanhDao() != null) {
+		if (getHuongGiaiQuyetTCDLanhDao() != null && getTinhTrangXuLyTCDLanhDao() != null) {
 			HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
-			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTrinhTrangXuLyTCDLanhDao();
-			str = huongGiaiQuyetTCDLanhDao.getText();
-			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {		
-				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) { 
-					str += " - "+tinhTrangXuLyTCDLanhDao.getText();
+			HuongGiaiQuyetTCDEnum tinhTrangXuLyTCDLanhDao = getTinhTrangXuLyTCDLanhDao();
+			//str = huongGiaiQuyetTCDLanhDao.getText();
+			if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.CHO_GIAI_QUYET)) {
+				if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT)) {
+					str += tinhTrangXuLyTCDLanhDao.getText();
 				} else if (tinhTrangXuLyTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT)) {
-					str += " - Giao kiểm tra đề xuất";
-					if (getDonViChuTri() != null) { 
-						str += "/" +getDonViChuTri().getTen();
+					str += "Giao kiểm tra đề xuất";
+					if (getDonViChuTri() != null) {
+						str += "/" + getDonViChuTri().getTen();
 					}
 				} else {
-					str += " - " +tinhTrangXuLyTCDLanhDao.getText();
+					str += tinhTrangXuLyTCDLanhDao.getText();
 				}
+			} else if (huongGiaiQuyetTCDLanhDao.equals(HuongGiaiQuyetTCDEnum.GIAI_QUYET_NGAY)) {
+				str += tinhTrangXuLyTCDLanhDao.getText();
 			} else {
-				str += " - " +tinhTrangXuLyTCDLanhDao.getText();
+				str = "Chờ tiếp";
 			}
 		} else { 
 			if (getHuongGiaiQuyetTCDLanhDao() != null) {
 				HuongGiaiQuyetTCDEnum huongGiaiQuyetTCDLanhDao = getHuongGiaiQuyetTCDLanhDao();
 				str = huongGiaiQuyetTCDLanhDao.getText();
-				str += " - Đang xử lý";
+				str += "Đang xử lý";
 			}
 		}
 		return str;
@@ -510,7 +513,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public String getHuongGiaiQuyetTCDLanhDaoStr() {
 		if (getHuongGiaiQuyetTCDLanhDao() != null) { 
 			if (getHuongGiaiQuyetTCDLanhDao().equals(HuongGiaiQuyetTCDEnum.KHOI_TAO)) {
-				return "Chờ tiếp";
+				return "";
 			}
 		}
 		return getHuongGiaiQuyetTCDLanhDao() != null ? getHuongGiaiQuyetTCDLanhDao().getText() : "";
@@ -558,16 +561,33 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		return map;
 	}
 	
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public List<CoQuanQuanLy> getDanhSachDonViPhoiHops() {
+//		List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+//		for (CoQuanQuanLy donViPhoiHop : getDonViPhoiHops()) {
+//			if (!donViPhoiHop.isDaXoa()) {
+//				list.add(donViPhoiHop);
+//			}
+//		}
+//		return list;
+//	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public List<CoQuanQuanLy> getDanhSachDonViPhoiHops() {
-		List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+	public List<Map<String, Object>> getDanhSachDonViPhoiHops() {
+		List<Map<String, Object>> maps = new ArrayList<>();
 		for (CoQuanQuanLy donViPhoiHop : getDonViPhoiHops()) {
 			if (!donViPhoiHop.isDaXoa()) {
-				list.add(donViPhoiHop);
+				Map<String, Object> map = new HashMap<>();
+				map.put("coQuanQuanLyId", donViPhoiHop.getId());
+				map.put("ten", donViPhoiHop.getTen());
+				map.put("ma", donViPhoiHop.getMa());
+				map.put("moTa", donViPhoiHop.getMoTa());
+				maps.add(map);
 			}
 		}
-		return list;
+		return maps;
 	}
 	
 	@Transient

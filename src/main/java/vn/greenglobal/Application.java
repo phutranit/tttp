@@ -49,7 +49,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
+import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
@@ -134,6 +137,15 @@ public class Application extends SpringBootServletInitializer {
 						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
 						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen", "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi",
 						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
+						"/thongKeBaoCaos/tongHopKetQuaTiepCongDan/xuatExcel", "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonKhieuNai/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
+						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
+						"/soTiepCongDans/inPhieuHuongDanToCao",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -149,7 +161,6 @@ public class Application extends SpringBootServletInitializer {
 						// .and().httpBasic()
 						.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
 						.and().csrf().disable();
-
 			}
 		};
 	}
@@ -266,14 +277,36 @@ public class Application extends SpringBootServletInitializer {
 	}
 	
 	@Autowired
+	private SoTiepCongDanRepository soTiepCongDanRepository;
+	
+	@Autowired
+	private CuocThanhTraRepository cuocThanhTraRepository;
+	
+	@Autowired
 	private DonCongDanRepository donCongDanRepository;
 	
 	@Autowired
 	private ChucVuRepository chucVuRepository;
+
+	@Autowired
+	private DonRepository donRepository;
 	
 	@Autowired
 	private ChucVuService chucVuService;
 	
+	
+	public SoTiepCongDanRepository getSoTiepCongDanRepository() {
+		return soTiepCongDanRepository;
+	}
+
+	public CuocThanhTraRepository getCuocThanhTraRepository() {
+		return cuocThanhTraRepository;
+	}
+	
+	public DonRepository getDonRepository() {
+		return donRepository;
+	}
+
 	public DonCongDanRepository getDonCongDanRepository() {
 		return donCongDanRepository;
 	}

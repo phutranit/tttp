@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,12 +108,10 @@ public class TrangChuController extends TttpController<Don> {
 			int month = Utils.localDateTimeNow().getMonthValue();
 			Long donViXuLyXLD = Long
 					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-					.toString();
 
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
 			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonMoiNhat(donViXuLyXLD,
-					vaiTroNguoiDungHienTai, month, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
+					month, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -139,12 +138,9 @@ public class TrangChuController extends TttpController<Don> {
 			
 			Long donViXuLyXLD = Long
 					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
-					.toString();
-
+			
 			pageable = new PageRequest(0, 3, new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
-			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHanGQ(donViXuLyXLD,
-					vaiTroNguoiDungHienTai, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
+			Page<Don> pageData = repo.findAll(thongKeService.predicateFindDSDonTreHanGQ(donViXuLyXLD, xuLyRepo, repo, giaiQuyetDonRepo), pageable);
 			return assembler.toResource(pageData, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -265,7 +261,9 @@ public class TrangChuController extends TttpController<Don> {
 						.predicateFindDonViVaConCuaDonVi(donViXuLyXLD, capCoQuanQuanLyIds, "CCQQL_UBND_QUAN_HUYEN")));
 			} else if (capCoQuanQuanLyId == Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())
 					|| (donVi.getCapCoQuanQuanLy() != null && donVi.getCapCoQuanQuanLy().getId()
-							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))) {
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString())))
+					|| donVi.getCha() != null && donVi.getCha().getCapCoQuanQuanLy().getId()
+							.equals(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()))) {
 				// Danh sach don vi thuoc So Ban Nganh
 				List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 				capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLChiCuc.getGiaTri().toString()));
@@ -351,11 +349,12 @@ public class TrangChuController extends TttpController<Don> {
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapDonThongKe = new HashMap<>();
 			List<Map<String, Object>> list = new ArrayList<>();
-
+			
 			List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-			// List<Long> ids = Arrays.asList(1L, 11L, 15L, 17L, 19L, 23L, 24L, 26L,
-			// 39L, 50L, 52L);
-			linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThus(loaiDon));
+			List<Long> ids = Arrays.asList(53L, 57L, 58L, 59L, 6L, 56L, 15L, 16L,
+			 39L, 62L, 63L);
+			 
+			linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThuVaIds(loaiDon, ids));
 			int year = Utils.localDateTimeNow().getYear();
 			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonViTheoLinhVuc(
 					donViXuLyXLD, year, linhVucs, xuLyRepo, repo, giaiQuyetDonRepo);

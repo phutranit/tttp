@@ -33,7 +33,7 @@ public class SoTiepCongDanService {
 	
 	@Autowired
 	private SoTiepCongDanRepository soTiepCongDanRepository;
-
+	
 	BooleanExpression base = QSoTiepCongDan.soTiepCongDan.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
 	
@@ -63,9 +63,7 @@ public class SoTiepCongDanService {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.loaiDon.stringValue().containsIgnoreCase(phanLoaiDon.trim()));
 		}
 
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId)
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(donViId))
-				.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(donViId)));
+		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(donViId));
 
 		if (huongXuLy != null && StringUtils.isNotBlank(huongXuLy.trim())) {
 			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.stringValue().containsIgnoreCase(huongXuLy.trim()));
@@ -98,12 +96,18 @@ public class SoTiepCongDanService {
 		}
 		
 		if (tinhTrangXuLy != null && StringUtils.isNotBlank(tinhTrangXuLy.trim())) {
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.trinhTrangXuLyTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy.trim())));
+			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.tinhTrangXuLyTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(tinhTrangXuLy.trim())));
 		}
 		
 		if (ketQuaTiepDan != null && StringUtils.isNotBlank(ketQuaTiepDan.trim())) {
-			predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
-					.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim()))));
+			HuongGiaiQuyetTCDEnum kq = HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim());
+			if (kq.equals(HuongGiaiQuyetTCDEnum.CHO_TIEP)) { 
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
+						.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.KHOI_TAO)));
+			} else { 
+				predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.isNotNull()
+						.and(QSoTiepCongDan.soTiepCongDan.huongGiaiQuyetTCDLanhDao.eq(HuongGiaiQuyetTCDEnum.valueOf(ketQuaTiepDan.trim()))));
+			}
 		}
 
 		List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();

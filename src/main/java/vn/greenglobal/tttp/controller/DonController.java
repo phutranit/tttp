@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -65,6 +66,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
@@ -74,6 +76,7 @@ import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
@@ -89,6 +92,12 @@ import vn.greenglobal.tttp.util.Utils;
 @RepositoryRestController
 @Api(value = "dons", description = "Danh Sách Đơn")
 public class DonController extends TttpController<Don> {
+	
+	@Autowired
+	private DonCongDanRepository donCongDanRepository;
+	
+	@Autowired
+	private DonCongDanService donCongDanService;
 	
 	@Autowired
 	private DonRepository repo;
@@ -189,9 +198,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			
 			//Order order = new Order("abc");
-			
 			//Sort sort = new Sort(order);
-			
 			//pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
 			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
@@ -206,16 +213,32 @@ public class DonController extends TttpController<Don> {
 					phongBanXuLyXLD = 0L;
 				}
 				
-				NumberExpression<Integer> canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
-						.then(Expressions.numberTemplate(Integer.class, "0"))					
-						.otherwise(Expressions.numberTemplate(Integer.class, "1"));
-				OrderSpecifier<Long> sortOrderDon = QDon.don.id.desc();
+				NumberExpression<Integer> canBoXuLyChiDinh = null;
+				OrderSpecifier<LocalDateTime> sortOrderDon = null;
+				OrderSpecifier<Integer> sortOrderDonByCanBo = null;
+				List<Don> listDon = new ArrayList<Don>();
 				
-				List<Don> listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
-						hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
-						phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-						vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
-						canBoXuLyChiDinh.asc(), sortOrderDon);
+				if (StringUtils.isNotBlank(trangThaiDon)) {
+					if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
+						canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+								.then(Expressions.numberTemplate(Integer.class, "0"))					
+								.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+						sortOrderDonByCanBo = canBoXuLyChiDinh.asc();
+						sortOrderDon = QDon.don.ngayTiepNhan.desc();
+						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+								sortOrderDonByCanBo, sortOrderDon);
+					} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
+						sortOrderDon = QDon.don.ngayTiepNhan.desc();
+						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+								sortOrderDon);
+					}
+				}
 				
 				int start = pageable.getOffset();
 				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
@@ -447,6 +470,7 @@ public class DonController extends TttpController<Don> {
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
 				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
 				
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -484,15 +508,14 @@ public class DonController extends TttpController<Don> {
 								if (transition != null) {
 									break;
 								} 						
-							}					
+							}
 							if (transition == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
 										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
 							}
 						}
-					}					
-					
-					
+					}
+
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(donMoi);
@@ -630,13 +653,17 @@ public class DonController extends TttpController<Don> {
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
 				don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-				don.setXuLyDonCuoiCung(donOld.getXuLyDonCuoiCung());
-				don.setGiaiQuyetDonCuoiCung(donOld.getGiaiQuyetDonCuoiCung());
+				don.setXuLyDonCuoiCungId(donOld.getXuLyDonCuoiCungId());
+				don.setGiaiQuyetDonCuoiCungId(donOld.getGiaiQuyetDonCuoiCungId());
 				don.setTrangThaiXLDGiaiQuyet(donOld.getTrangThaiXLDGiaiQuyet());
 				don.setTrangThaiTTXM(donOld.getTrangThaiTTXM());
 				don.setDonViXuLyGiaiQuyet(donOld.getDonViXuLyGiaiQuyet());
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
+				don.setDonViTiepDan(donOld.getDonViTiepDan());
+				if (donOld.isThanhLapDon()) { 
+					don.setThanhLapDon(donOld.isThanhLapDon());
+				}
 				
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
@@ -648,8 +675,11 @@ public class DonController extends TttpController<Don> {
 				}
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
+					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
+					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
 					if (donOld.getNgayTiepNhan() == null) {
 						if (don.getNgayTiepNhan() == null) {
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
@@ -778,14 +808,19 @@ public class DonController extends TttpController<Don> {
 						State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 						don.setCurrentState(beginState);
 					}
-				} else { 
+				} else {
 					if (don.isThanhLapDon()) {
+						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
+						don.setNgayKetThucXLD(donOld.getNgayKetThucXLD());
+						don.setHuongXuLyXLD(donOld.getHuongXuLyXLD());
+						don.setKetQuaXLDGiaiQuyet(donOld.getKetQuaXLDGiaiQuyet());
+						
 						if (donOld.getThoiHanXuLyXLD() == null) {
 							don.setNgayBatDauXLD(Utils.localDateTimeNow());
 							if (don.getThoiHanXuLyXLD() == null) {
@@ -810,7 +845,7 @@ public class DonController extends TttpController<Don> {
 					lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 					lichSuThayDoiService.save(lichSu, congChucId);
 				}
-				
+				resetDataNguoiUyQuyen(don, congChucId);
 				return donService.doSave(don,
 						Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 						HttpStatus.CREATED);
@@ -848,11 +883,14 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/xuatExcel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExcel(HttpServletResponse response,
+			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tiepNhanTuNgay", required = false) String tiepNhanTuNgay,
 			@RequestParam(value = "tiepNhanDenNgay", required = false) String tiepNhanDenNgay,
+			@RequestParam(value = "hanGiaiQuyetTuNgay", required = false) String hanGiaiQuyetTuNgay,
+			@RequestParam(value = "hanGiaiQuyetDenNgay", required = false) String hanGiaiQuyetDenNgay,
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "thanhLapDon", required = true) boolean thanhLapDon,
 			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
@@ -864,16 +902,44 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "vaiTro", required = true) String vaiTro,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
-			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT) throws IOException {
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT, 
+			@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "size", required = false) Integer size) throws IOException {
 		
 		try {
-			OrderSpecifier<LocalDateTime> order = QDon.don.ngayTiepNhan.desc();
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
-			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", 
-					(List<Don>) repo.findAll(donService.predicateFindAll("", tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay, "", "", tinhTrangXuLy, 
-							thanhLapDon, trangThaiDon, phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, vaiTro, 
-							congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), order),
-					"Danh sách xử lý đơn");
+			NumberExpression<Integer> canBoXuLyChiDinh = null;
+			OrderSpecifier<LocalDateTime> sortOrderDon = null;
+			OrderSpecifier<Integer> sortOrderDonByCanBo = null;
+			List<Don> listDon = new ArrayList<Don>();
+			
+			if (StringUtils.isNotBlank(trangThaiDon)) {
+				if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
+					canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
+							.then(Expressions.numberTemplate(Integer.class, "0"))					
+							.otherwise(Expressions.numberTemplate(Integer.class, "1"));
+					sortOrderDonByCanBo = canBoXuLyChiDinh.asc();
+					sortOrderDon = QDon.don.ngayTiepNhan.desc();
+					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+							sortOrderDonByCanBo, sortOrderDon);
+				} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
+					sortOrderDon = QDon.don.ngayTiepNhan.desc();
+					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
+							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
+							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo), 
+							sortOrderDon);
+				}
+			}
+
+//			Pageable pageable = new PageRequest(page != null ? page.intValue() : 0, size != null ? size.intValue() : 10);
+//			int start = pageable.getOffset();
+//			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+//			Page<Don> pageDon = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());			
+			ExcelUtil.exportDanhSachXuLyDon(response, donViXuLyXLD, "DanhSachXuLyDon", "sheetName", listDon, "Danh sách xử lý đơn");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -955,6 +1021,18 @@ public class DonController extends TttpController<Don> {
 			thongTinDon.setHuongGiaiQuyetDaThucHien("");
 		}
 		return thongTinDon;
+	}
+	
+	private void resetDataNguoiUyQuyen(Don don, Long congChucId) {
+		if (!don.isCoUyQuyen()) {
+			List<Don_CongDan> dcds = (List<Don_CongDan>) donCongDanRepository.findAll(donCongDanService.predicateFindAllByNguoiUyQuyen(don));
+			if (dcds != null && dcds.size() > 0) {
+				for (Don_CongDan dcd : dcds) {
+					dcd.setDaXoa(true);
+					donCongDanService.save(dcd, congChucId);
+				}
+			}
+		}
 	}
 	
 }

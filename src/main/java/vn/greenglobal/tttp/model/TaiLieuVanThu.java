@@ -40,7 +40,6 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	
 	private LocalDateTime ngayQuyetDinh;
 	
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTepDinhKemEnum loaiTepDinhKem;
 	@NotNull
@@ -51,7 +50,10 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 
 	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
-	@NotNull
+	@ManyToOne
+	private KeHoachThanhTra keHoachThanhTra;
+	@ManyToOne
+	private CuocThanhTra cuocThanhTra;
 	@ManyToOne
 	private Don don;
 
@@ -121,6 +123,24 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	}
 
 	@ApiModelProperty(example = "{}")
+	public KeHoachThanhTra getKeHoachThanhTra() {
+		return keHoachThanhTra;
+	}
+
+	public void setKeHoachThanhTra(KeHoachThanhTra keHoachThanhTra) {
+		this.keHoachThanhTra = keHoachThanhTra;
+	}
+
+	@ApiModelProperty(example = "{}")
+	public CuocThanhTra getCuocThanhTra() {
+		return cuocThanhTra;
+	}
+
+	public void setCuocThanhTra(CuocThanhTra cuocThanhTra) {
+		this.cuocThanhTra = cuocThanhTra;
+	}
+
+	@ApiModelProperty(example = "{}")
 	public Don getDon() {
 		return don;
 	}
@@ -170,6 +190,33 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	public Long getDonId() {
 		if (getDon() != null) { 
 			return getDon().getId();
+		}
+		return 0L;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getSoTiepCongDanId() {
+		if (getSoTiepCongDan() != null) { 
+			return getSoTiepCongDan().getId();
+		}
+		return 0L;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getKeHoachThanhTraId() {
+		if (getKeHoachThanhTra() != null) { 
+			return getKeHoachThanhTra().getId();
+		}
+		return 0L;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getCuocThanhTraId() {
+		if (getCuocThanhTra() != null) { 
+			return getCuocThanhTra().getId();
 		}
 		return 0L;
 	}

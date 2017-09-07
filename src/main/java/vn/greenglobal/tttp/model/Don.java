@@ -25,6 +25,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
@@ -33,6 +36,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
@@ -111,48 +115,52 @@ public class Don extends Model<Don> {
 	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
-	@OneToOne
-	private Don donLanTruoc;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLy;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyPhanHeXLD;
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThu;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThuChiTiet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyGiaiQuyet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViThamTraXacMinh;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CoQuanQuanLy donViKiemTraDeXuat;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy coQuanDangGiaiQuyet;
-	@ManyToOne
-	private Don donGoc;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CoQuanQuanLy donViTiepDan;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyDonChuyen;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyChiDinh;
-	@ManyToOne
-	private XuLyDon xuLyDonCuoiCung;
-	@ManyToOne
-	private GiaiQuyetDon giaiQuyetDonCuoiCung;
-	@ManyToOne
-	private GiaiQuyetDon giaiQuyetTTXMCuoiCung;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CongChuc canBoTTXMChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CongChuc canBoKTDXChiDinh;
 	
-	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
+	private Long donGocId;
+	private Long xuLyDonCuoiCungId;
+	private Long giaiQuyetDonCuoiCungId;
+	private Long giaiQuyetTTXMCuoiCungId;
+	private Long giaiQuyetKTDXCuoiCungId;
+	
+//	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
+//	@Fetch(value = FetchMode.SELECT)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//	private List<SoTiepCongDan> tiepCongDans = new ArrayList<SoTiepCongDan>(); // TCD
 
 	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -194,7 +202,7 @@ public class Don extends Model<Don> {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
-	@NotNull
+//	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
 	@NotNull
@@ -216,6 +224,9 @@ public class Don extends Model<Don> {
 	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiTTXM;
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiKTDX;
 	
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
@@ -254,6 +265,24 @@ public class Don extends Model<Don> {
 
 	public void setCanBoXuLyChiDinh(CongChuc canBoXuLyChiDinh) {
 		this.canBoXuLyChiDinh = canBoXuLyChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoTTXMChiDinh() {
+		return canBoTTXMChiDinh;
+	}
+
+	public void setCanBoTTXMChiDinh(CongChuc canBoTTXMChiDinh) {
+		this.canBoTTXMChiDinh = canBoTTXMChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoKTDXChiDinh() {
+		return canBoKTDXChiDinh;
+	}
+
+	public void setCanBoKTDXChiDinh(CongChuc canBoKTDXChiDinh) {
+		this.canBoKTDXChiDinh = canBoKTDXChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -426,28 +455,29 @@ public class Don extends Model<Don> {
 	public CoQuanQuanLy getCoQuanDangGiaiQuyet() {
 		return coQuanDangGiaiQuyet;
 	}
+	
+	@ApiModelProperty(example = "{}")
+	public CoQuanQuanLy getDonViTiepDan() {
+		return donViTiepDan;
+	}
+
+	public void setDonViTiepDan(CoQuanQuanLy donViTiepDan) {
+		this.donViTiepDan = donViTiepDan;
+	}
 
 	public void setCoQuanDangGiaiQuyet(CoQuanQuanLy coQuanDangGiaiQuyet) {
 		this.coQuanDangGiaiQuyet = coQuanDangGiaiQuyet;
 	}
-
-	@ApiModelProperty(example = "{}")
-	public Don getDonLanTruoc() {
-		return donLanTruoc;
+	
+	@ApiModelProperty(hidden = true)
+	public Long getDonGocId() {
+		return donGocId;
 	}
 
-	public void setDonLanTruoc(Don donLanTruoc) {
-		this.donLanTruoc = donLanTruoc;
+	public void setDonGocId(Long donGocId) {
+		this.donGocId = donGocId;
 	}
-
-	@ApiModelProperty(example = "{}")
-	public Don getDonGoc() {
-		return donGoc;
-	}
-
-	public void setDonGoc(Don donGoc) {
-		this.donGoc = donGoc;
-	}
+	
 
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonViXuLyDonChuyen() {
@@ -587,6 +617,14 @@ public class Don extends Model<Don> {
 		this.donViThamTraXacMinh = donViThamTraXacMinh;
 	}
 
+	public CoQuanQuanLy getDonViKiemTraDeXuat() {
+		return donViKiemTraDeXuat;
+	}
+
+	public void setDonViKiemTraDeXuat(CoQuanQuanLy donViKiemTraDeXuat) {
+		this.donViKiemTraDeXuat = donViKiemTraDeXuat;
+	}
+
 	public void setTrangThaiDon(TrangThaiDonEnum trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
 	}
@@ -618,40 +656,49 @@ public class Don extends Model<Don> {
 		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(hidden = true)
-	public List<SoTiepCongDan> getTiepCongDans() {
-		return tiepCongDans;
+//	@ApiModelProperty(hidden = true)
+//	public List<SoTiepCongDan> getTiepCongDans() {
+//		return tiepCongDans;
+//	}
+//
+//	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
+//		this.tiepCongDans = tiepCongDans;
+//	}
+	
+	@JsonIgnore
+	public Long getXuLyDonCuoiCungId() {
+		return xuLyDonCuoiCungId;
 	}
 
-	public void setTiepCongDans(List<SoTiepCongDan> tiepCongDans) {
-		this.tiepCongDans = tiepCongDans;
+	public void setXuLyDonCuoiCungId(Long xuLyDonCuoiCungId) {
+		this.xuLyDonCuoiCungId = xuLyDonCuoiCungId;
+	}
+
+	@JsonIgnore
+	public Long getGiaiQuyetDonCuoiCungId() {
+		return giaiQuyetDonCuoiCungId;
+	}
+
+	public void setGiaiQuyetDonCuoiCungId(Long giaiQuyetDonCuoiCungId) {
+		this.giaiQuyetDonCuoiCungId = giaiQuyetDonCuoiCungId;
 	}
 	
 	@JsonIgnore
-	public XuLyDon getXuLyDonCuoiCung() {
-		return xuLyDonCuoiCung;
+	public Long getGiaiQuyetTTXMCuoiCungId() {
+		return giaiQuyetTTXMCuoiCungId;
 	}
 
-	public void setXuLyDonCuoiCung(XuLyDon xuLyDonCuoiCung) {
-		this.xuLyDonCuoiCung = xuLyDonCuoiCung;
-	}
-
-	@JsonIgnore
-	public GiaiQuyetDon getGiaiQuyetDonCuoiCung() {
-		return giaiQuyetDonCuoiCung;
-	}
-
-	public void setGiaiQuyetDonCuoiCung(GiaiQuyetDon giaiQuyetDonCuoiCung) {
-		this.giaiQuyetDonCuoiCung = giaiQuyetDonCuoiCung;
+	public void setGiaiQuyetTTXMCuoiCungId(Long giaiQuyetTTXMCuoiCungId) {
+		this.giaiQuyetTTXMCuoiCungId = giaiQuyetTTXMCuoiCungId;
 	}
 	
 	@JsonIgnore
-	public GiaiQuyetDon getGiaiQuyetTTXMCuoiCung() {
-		return giaiQuyetTTXMCuoiCung;
+	public Long getGiaiQuyetKTDXCuoiCungId() {
+		return giaiQuyetKTDXCuoiCungId;
 	}
 
-	public void setGiaiQuyetTTXMCuoiCung(GiaiQuyetDon giaiQuyetTTXMCuoiCung) {
-		this.giaiQuyetTTXMCuoiCung = giaiQuyetTTXMCuoiCung;
+	public void setGiaiQuyetKTDXCuoiCungId(Long giaiQuyetKTDXCuoiCungId) {
+		this.giaiQuyetKTDXCuoiCungId = giaiQuyetKTDXCuoiCungId;
 	}
 
 	@Transient
@@ -708,17 +755,6 @@ public class Don extends Model<Don> {
 		this.doanDiCungs = doanDiCungs;
 	}
 
-//	@ApiModelProperty(hidden = true)
-//	public Don_CongDan getDonCongDan(String phanLoaiCongDan) {
-//		for (Don_CongDan obj : donCongDans) {
-//			if (obj.getPhanLoaiCongDan().equals(phanLoaiCongDan)) {
-//				donCongDan = obj;
-//				break;
-//			}
-//		}
-//		return donCongDan;
-//	}
-
 	@ApiModelProperty(hidden = true)
 	public State getCurrentState() {
 		return currentState;
@@ -750,14 +786,15 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getListNguoiDungDon() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		if (getDonGoc() != null) { 
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 //			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
 //				if (PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 //					list.add(dcd);
 //				}
 //			}
 			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
-					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+					.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
 							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
 							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		} else {
@@ -779,8 +816,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<DoanDiCung> getListDoanDiCung() {
 		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
-		if (getDonGoc() != null) { 
-			for (DoanDiCung dcd : getDonGoc().getDoanDiCungs()) {
+		if (getDonGocId() != null && getDonGocId() > 0) { 
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (DoanDiCung dcd : donGoc.getDoanDiCungs()) {
 				if (!dcd.isDaXoa()) {
 					list.add(dcd);
 				}
@@ -799,14 +837,15 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Don_CongDan getNguoiDuocUyQuyen() {
 		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
-		if (getDonGoc() != null) { 
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 //			for (Don_CongDan dcd : getDonGoc().getDonCongDans()) {
 //				if (PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(dcd.getPhanLoaiCongDan()) && !dcd.isDaXoa()) {
 //					return dcd;
 //				}
 //			}
 			list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
-					.findAll(QDon_CongDan.don_CongDan.don.eq(getDonGoc())
+					.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
 							.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN))
 							.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
 		} else { 
@@ -828,8 +867,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepUyQuyen() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.UY_QUYEN.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -849,8 +889,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepChungChiHanhNghe() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.CHUNG_CHI_HANH_NGHE.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -869,8 +910,9 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TepDinhKem> getListTepVanBanDaGiaiQuyet() {
 		List<TepDinhKem> list = new ArrayList<TepDinhKem>();
-		if (getDonGoc() != null) {
-			for (TepDinhKem tdk : getDonGoc().getTepDinhKems()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TepDinhKem tdk : donGoc.getTepDinhKems()) {
 				if (!tdk.isDaXoa() && LoaiFileDinhKemEnum.VAN_BAN_DA_GIAI_QUYET.equals(tdk.getLoaiFileDinhKem())) {
 					list.add(tdk);
 				}
@@ -884,20 +926,43 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
-
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuBangChung> getListTaiLieuBangChung() {
 		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
-		if (getDonGoc() != null) {
-			for (TaiLieuBangChung tlbc : getDonGoc().getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuBangChung tlbc : donGoc.getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.TAI_LIEU_KEM_THEO.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
 		} else { 
 			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
-				if (!tlbc.isDaXoa()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.TAI_LIEU_KEM_THEO.equals(tlbc.getBuocGiaiQuyet())) {
+					list.add(tlbc);
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuBangChung> getListTaiLieuBangChungLuatSu() {
+		List<TaiLieuBangChung> list = new ArrayList<TaiLieuBangChung>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuBangChung tlbc : donGoc.getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
+					list.add(tlbc);
+				}
+			}
+		} else { 
+			for (TaiLieuBangChung tlbc : getTaiLieuBangChungs()) {
+				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
 			}
@@ -910,9 +975,12 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 					list.add(tlvt);
@@ -920,7 +988,9 @@ public class Don extends Model<Don> {
 			}
 		} 
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh()) 
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
 					|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 					|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
 				list.add(tlvt);
@@ -931,14 +1001,138 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaHanGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonGiaoCoQuanDieuTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonQuyetDinhGQ() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonBaoCaoKQTTXM() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDon() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
-		if (getDonGoc() != null) {
-			for (TaiLieuVanThu tlvt : getDonGoc().getTaiLieuVanThus()) {
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+//						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+//						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonView() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
@@ -947,7 +1141,85 @@ public class Don extends Model<Don> {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXM() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+//						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuGiaiQuyetDonSauKhiTTXMView() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getDonGocId() != null && getDonGocId() > 0) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
+					list.add(tlvt);
+				}
+			}
+		} else { 
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
+						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
+						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())
+						|| BuocGiaiQuyetEnum.GIAO_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())
+						)) {
 					list.add(tlvt);
 				}
 			}
@@ -974,15 +1246,6 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Long getDonId() {
 		return getId();
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getDonGocId() {
-		if (getDonGoc() != null) { 
-			return getDonGoc().getId();
-		}
-		return 0L;
 	}
 	
 	@ApiModelProperty(hidden = true)
@@ -1065,6 +1328,15 @@ public class Don extends Model<Don> {
 	}
 	
 	@JsonIgnore
+	public TrangThaiDonEnum getTrangThaiKTDX() {
+		return trangThaiKTDX;
+	}
+
+	public void setTrangThaiKTDX(TrangThaiDonEnum trangThaiKTDX) {
+		this.trangThaiKTDX = trangThaiKTDX;
+	}
+
+	@JsonIgnore
 	public KetQuaTrangThaiDonEnum getKetQuaXLDGiaiQuyet() {
 		return ketQuaXLDGiaiQuyet;
 	}
@@ -1082,6 +1354,7 @@ public class Don extends Model<Don> {
 	}
 
 	@JsonIgnore
+	@QueryInit("*.*.*")
 	public CoQuanQuanLy getDonViXuLyGiaiQuyet() {
 		return donViXuLyGiaiQuyet;
 	}
@@ -1162,8 +1435,14 @@ public class Don extends Model<Don> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyetInfo() {
-		return getThamQuyenGiaiQuyet();
+	public Map<String, Object> getThamQuyenGiaiQuyetInfo() {
+		if (getThamQuyenGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("thamQuyenGiaiQuyetId", getThamQuyenGiaiQuyet().getId());
+			map.put("ten", getThamQuyenGiaiQuyet().getTen());
+			return map;
+		}
+		return null;
 	}
 
 	@JsonIgnore
@@ -1187,32 +1466,6 @@ public class Don extends Model<Don> {
 		}
 		return str;
 	}
-
-//	@Transient
-//	@ApiModelProperty(hidden = true)
-//	public String getTrangThaiDonText() {
-//		trangThaiDonText = "Đang xử lý";
-//		if (xuLyDons.size() > 0) {
-//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-//			// hxl
-//			xlds.addAll(xuLyDons);
-//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-//					xld.isDonChuyen()).collect(Collectors.toList());
-//			if (xlds.size() > 0) {
-//				XuLyDon xld = xlds.get(xlds.size() - 1);
-//				// ttd ht
-//				if (xld != null) {
-//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-//						trangThaiDonText = "Hoàn thành";
-//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-//							trangThaiDonText = TrangThaiDonEnum.DA_XU_LY.getText();
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return trangThaiDonText;
-//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -1246,43 +1499,43 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getQuyTrinhXuLyText() {
-		String out = "";
-		if (xuLyDons.size() > 0) {
-			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
-			// hxl
-			xlds.addAll(xuLyDons);
-			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
-					xld.isDonChuyen()).collect(Collectors.toList());
-			if (xlds.size() > 0) {
-				XuLyDon xld = xlds.get(xlds.size() - 1);
-				// ttd ht
-				if (xld != null) { 
-					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
-						out = xld.getHuongXuLy().getText();
-						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-							if (xld.getCoQuanTiepNhan() != null) { 
-								out += " " +xld.getCoQuanTiepNhan().getDonVi().getTen();
-							}
-						}
-					} else {
-						out = "";
-						if (xld.isDonTra()) {
-							out = "Đơn chuyển được trả lại";
-						}
-//						else if (!xld.isDonTra() && xld.isDonChuyen()) {
-//							if (xld.getCoQuanChuyenDon() != null) { 
-//								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public String getQuyTrinhXuLyText() {
+//		String out = "";
+//		if (xuLyDons.size() > 0) {
+//			List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+//			// hxl
+//			xlds.addAll(xuLyDons);
+//			xlds = xlds.stream().filter(xld -> xld.getHuongXuLy() != null || 
+//					xld.isDonChuyen()).collect(Collectors.toList());
+//			if (xlds.size() > 0) {
+//				XuLyDon xld = xlds.get(xlds.size() - 1);
+//				// ttd ht
+//				if (xld != null) { 
+//					if (xld.getHuongXuLy() != null && xld.getTrangThaiDon().equals(TrangThaiDonEnum.DA_XU_LY)) { 
+//						out = xld.getHuongXuLy().getText();
+//						if (xld.getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
+//							if (xld.getCoQuanTiepNhan() != null) { 
+//								out += " " +xld.getCoQuanTiepNhan().getDonVi().getTen();
 //							}
 //						}
-					}
-				}
-			}
-		}
-		return out;
-	}
+//					} else {
+//						out = "";
+//						if (xld.isDonTra()) {
+//							out = "Đơn chuyển được trả lại";
+//						}
+////						else if (!xld.isDonTra() && xld.isDonChuyen()) {
+////							if (xld.getCoQuanChuyenDon() != null) { 
+////								out = "Đơn tiếp nhận từ đơn vị " +xld.getCoQuanChuyenDon().getDonVi().getTen();
+////							}
+////						}
+//					}
+//				}
+//			}
+//		}
+//		return out;
+//	}
 
 	public String getNoiDungThongTinTrinhLanhDao() {
 		return noiDungThongTinTrinhLanhDao;
@@ -1522,15 +1775,47 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCanBoDangXuLyInfo() {
-		if (getCanBoXuLyChiDinh() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getCanBoXuLyChiDinh().getCoQuanQuanLy() != null ? getCanBoXuLyChiDinh().getCoQuanQuanLy().getId() : 0);
-			map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
-			map.put("congChucId", getCanBoXuLyChiDinh().getId());
-			return map;
+	public List<Map<String, Object>> getCanBoDangXuLyInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = null;
+
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			if (getCanBoXuLyChiDinh() != null) {
+				map.put("hoVaTen", getCanBoXuLyChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoXuLyChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
 		}
-		return null;	
+		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			if (getCanBoTTXMChiDinh() != null) {
+				map.put("hoVaTen", getCanBoTTXMChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoTTXMChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
+		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			if (getCanBoKTDXChiDinh() != null) {
+				map.put("hoVaTen", getCanBoKTDXChiDinh().getHoVaTen());
+				map.put("congChucId", getCanBoKTDXChiDinh().getId());
+			} else {
+				map.put("hoVaTen", "");
+				map.put("congChucId", "");
+			}
+			list.add(map);
+		}
+		return list;
 	}
 	
 	@ApiModelProperty(hidden = true)
@@ -1649,8 +1934,27 @@ public class Don extends Model<Don> {
 			map.put("ketQuaStr", "");
 			map.put("ketQuaType", "");
 			map.put("donViTTXM", "");
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+			}
 			list.add(map);
 		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			map.put("trangThaiDonText", getTrangThaiKTDX() != null ? getTrangThaiKTDX().getText() : "");
+			map.put("trangThaiDonType", getTrangThaiKTDX() != null ? getTrangThaiKTDX().name() : "");
+			map.put("ketQuaStr", "");
+			map.put("ketQuaType", "");
+			map.put("donViTTXM", "");
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+			}
+			list.add(map);
+		}
+		
 		return list;
 	}
 
@@ -1686,6 +1990,18 @@ public class Don extends Model<Don> {
 			map.put("ten", getLoaiVuViec().getText());
 			map.put("type", getLoaiVuViec().name());
 			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LocalDateTime getNgayTiepDan() {
+		List<SoTiepCongDan> stcds = (List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository()
+				.findAll(QSoTiepCongDan.soTiepCongDan.daXoa.eq(false).and(QSoTiepCongDan.soTiepCongDan.don.id.eq(this.getId())
+					.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))), new Sort(new Order(Direction.DESC, "id")));
+		if (stcds != null && stcds.size() > 0) {
+			return stcds.get(0).getNgayTiepDan(); 
 		}
 		return null;
 	}
