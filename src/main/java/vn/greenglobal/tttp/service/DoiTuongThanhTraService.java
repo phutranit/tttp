@@ -30,10 +30,17 @@ public class DoiTuongThanhTraService {
 
 	BooleanExpression base = QDoiTuongThanhTra.doiTuongThanhTra.daXoa.eq(false);
 	
-	public Predicate predicateFindAll(String tuKhoa, Long linhVucId, List<DoiTuongThanhTra> doiTuongIds) {
+	public Predicate predicateFindAll(String tuKhoa, Long linhVucId, String loaiDoiTuongThanhTra, List<DoiTuongThanhTra> doiTuongIds) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tuKhoa.trim()));
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QDoiTuongThanhTra.doiTuongThanhTra.diaChiSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
+					.or(QDoiTuongThanhTra.doiTuongThanhTra.ghiChuSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
+		}
+		
+		if (loaiDoiTuongThanhTra != null && StringUtils.isNotBlank(loaiDoiTuongThanhTra.trim())) {
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.loaiDoiTuongThanhTra
+					.eq(LoaiDoiTuongThanhTraEnum.valueOf(loaiDoiTuongThanhTra.trim())));
 		}
 		
 		if (linhVucId != null && linhVucId > 0) {
