@@ -70,7 +70,7 @@ public class DonCongDanService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = QDon_CongDan.don_CongDan.daXoa.eq(false);
 		if (tuKhoa != null && !"".equals(tuKhoa)) {
-			predAll = predAll.and(QDon_CongDan.don_CongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa))
+			predAll = predAll.and(QDon_CongDan.don_CongDan.congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
 					.or(QDon_CongDan.don_CongDan.congDan.soCMNDHoChieu.eq(tuKhoa));
 		}
 		return predAll;

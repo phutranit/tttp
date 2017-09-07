@@ -54,7 +54,7 @@ public class CongDanService {
 	public Predicate predicateFindAll(String tuKhoa, Long tinhThanh, Long quanHuyen, Long phuongXa, Long toDanPho) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+			predAll = predAll.and(QCongDan.congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
 					.or(QCongDan.congDan.soDienThoai.containsIgnoreCase(tuKhoa.trim()))
 					.or(QCongDan.congDan.diaChi.containsIgnoreCase(tuKhoa.trim()))
 					.or(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())));
@@ -80,7 +80,7 @@ public class CongDanService {
 	public Predicate predicateFindCongDanBySuggests(String tuKhoa, String soCMND, String diaChi) {
 		BooleanExpression predAll = base;
 		if (StringUtils.isNotEmpty(tuKhoa)) {
-			predAll = predAll.and(QCongDan.congDan.hoVaTen.containsIgnoreCase(tuKhoa));
+			predAll = predAll.and(QCongDan.congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())));
 		}
 		if (StringUtils.isNotEmpty(soCMND)) {
 			predAll = predAll.and(QCongDan.congDan.soCMNDHoChieu.containsIgnoreCase(soCMND));
