@@ -718,7 +718,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transition = addDataTrasition(process, 1L, 16L, 27L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -727,7 +727,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transition = addDataTrasition(process, 1L, 16L, 27L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -736,7 +736,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Trưởng Phòng", false, null, donViId, 2L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transition = addDataTrasition(process, 1L, 16L, 27L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -745,7 +745,7 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.KIEM_TRA_DE_XUAT, "Kiểm tra đề xuất của Lãnh Đạo", false, null, donViId, 1L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 16L, 22L, false);
+						transition = addDataTrasition(process, 1L, 16L, 27L, false);
 						transitionService.save(transition, congChucId);
 					}
 				}
