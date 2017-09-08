@@ -386,7 +386,7 @@ public class DonService {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(hoTen.trim())) {
+		if (StringUtils.isNotBlank(hoTen)) {
 			predAll = predAll
 					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
 							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
