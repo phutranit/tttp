@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongThanhTraEnum;
@@ -31,10 +33,17 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 	@NotBlank
 	@Size(max = 255)
 	private String ten = "";
+	@NotBlank
+	@Size(max = 255)
+	private String tenSearch = "";
 	@Size(max = 255)
 	private String diaChi = "";
+	@Size(max = 255)
+	private String diaChiSearch = "";
 	//@Lob
 	private String ghiChu = "";
+	//@Lob
+	private String ghiChuSearch = "";
 
 	@NotNull
 	@ManyToOne
@@ -52,6 +61,15 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		this.ten = ten;
 	}
 
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
+	}
+
 	public String getDiaChi() {
 		return diaChi;
 	}
@@ -60,12 +78,30 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 		this.diaChi = diaChi;
 	}
 
+	@JsonIgnore
+	public String getDiaChiSearch() {
+		return diaChiSearch;
+	}
+
+	public void setDiaChiSearch(String diaChiSearch) {
+		this.diaChiSearch = diaChiSearch;
+	}
+
 	public String getGhiChu() {
 		return ghiChu;
 	}
 
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
+	}
+
+	@JsonIgnore
+	public String getGhiChuSearch() {
+		return ghiChuSearch;
+	}
+
+	public void setGhiChuSearch(String ghiChuSearch) {
+		this.ghiChuSearch = ghiChuSearch;
 	}
 
 	@ApiModelProperty(example = "{}")

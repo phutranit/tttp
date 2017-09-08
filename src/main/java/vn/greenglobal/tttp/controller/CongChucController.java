@@ -91,16 +91,11 @@ public class CongChucController extends TttpController<CongChuc> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Long congChucId = Long
-					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			Long coQuanQuanLyLoginId = Long
-					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-			CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy
-					.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));
-
-			Page<CongChuc> page = repo.findAll(
-					congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC),
-					pageable);
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long coQuanQuanLyLoginId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			CoQuanQuanLy coQuanQuanLyLoginCC = repoCoQuanQuanLy.findOne(coQuanQuanLyService.predicateFindOne(coQuanQuanLyLoginId));
+			
+			Page<CongChuc> page = repo.findAll(congChucService.predicateFindAll(tuKhoa, vaiTro, coQuanQuanLyId, congChucId, coQuanQuanLyLoginCC), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -223,6 +218,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					congChuc.getNguoiDung().updatePassword(congChuc.getNguoiDung().getMatKhau());
 					nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(
 							profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					congChuc.setHoVaTenSearch(Utils.unAccent(congChuc.getHoVaTen().trim()));
 					return congChucService.doSave(congChuc,
 							Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
@@ -335,6 +331,7 @@ public class CongChucController extends TttpController<CongChuc> {
 					}
 					nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(
 							profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+					congChuc.setHoVaTenSearch(Utils.unAccent(congChuc.getHoVaTen().trim()));
 					return congChucService.doSave(congChuc,
 							Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),

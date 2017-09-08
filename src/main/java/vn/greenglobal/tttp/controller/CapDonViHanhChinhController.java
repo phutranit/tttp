@@ -88,6 +88,8 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			capDonViHanhChinh.setTenSearch(Utils.unAccent(capDonViHanhChinh.getTen().trim()));
+			capDonViHanhChinh.setMoTaSearch(Utils.unAccent(capDonViHanhChinh.getMoTa().trim()));
 			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.CREATED);
@@ -144,6 +146,8 @@ public class CapDonViHanhChinhController extends TttpController<CapDonViHanhChin
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			capDonViHanhChinh.setTenSearch(Utils.unAccent(capDonViHanhChinh.getTen().trim()));
+			capDonViHanhChinh.setMoTaSearch(Utils.unAccent(capDonViHanhChinh.getMoTa().trim()));
 			return capDonViHanhChinhService.doSave(capDonViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.OK);

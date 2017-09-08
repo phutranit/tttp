@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,8 +28,13 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	@NotBlank
 	@Size(max=255)
+	private String tenSearch = "";
+	//@Lob
 	private String moTa = "";
+	//@Lob
+	private String moTaSearch = "";
 
 	@ManyToOne
 	private CapCoQuanQuanLy cha;
@@ -50,6 +57,15 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 		this.ten = ten;
 	}
 
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
+	}
+
 	@ApiModelProperty(position = 3)
 	public String getMoTa() {
 		return moTa;
@@ -57,6 +73,15 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	@JsonIgnore
+	public String getMoTaSearch() {
+		return moTaSearch;
+	}
+
+	public void setMoTaSearch(String moTaSearch) {
+		this.moTaSearch = moTaSearch;
 	}
 
 	@ApiModelProperty(position = 4)

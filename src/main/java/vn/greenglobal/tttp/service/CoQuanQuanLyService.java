@@ -49,8 +49,8 @@ public class CoQuanQuanLyService {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
-					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
-					.or(QCoQuanQuanLy.coQuanQuanLy.moTa.containsIgnoreCase(tuKhoa.trim())));
+					.or(QCoQuanQuanLy.coQuanQuanLy.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
+					.or(QCoQuanQuanLy.coQuanQuanLy.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		if (cha != null && cha > 0) {
