@@ -31,10 +31,10 @@ public class DanTocService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QDanToc.danToc.ten.containsIgnoreCase(tuKhoa.trim())
-					.or(QDanToc.danToc.tenKhac.containsIgnoreCase(tuKhoa.trim()))
+			predAll = predAll.and(QDanToc.danToc.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QDanToc.danToc.tenKhacSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
 					.or(QDanToc.danToc.ma.containsIgnoreCase(tuKhoa.trim()))
-					.or(QDanToc.danToc.moTa.containsIgnoreCase(tuKhoa.trim())));
+					.or(QDanToc.danToc.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		return predAll;

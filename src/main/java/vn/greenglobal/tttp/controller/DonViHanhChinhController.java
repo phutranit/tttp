@@ -87,7 +87,7 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<DonViHanhChinh> page = repo.findAll(donViHanhChinhService.predicateFindAll(ten, cha, capDonViHanhChinh, listDonVis, listCapDonVis),
 					pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
@@ -221,6 +221,8 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(), ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			donViHanhChinh.setTenSearch(Utils.unAccent(donViHanhChinh.getTen().trim()));
+			donViHanhChinh.setMoTaSearch(Utils.unAccent(donViHanhChinh.getMoTa().trim()));
 			return donViHanhChinhService.doSave(donViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -277,6 +279,8 @@ public class DonViHanhChinhController extends TttpController<DonViHanhChinh> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			donViHanhChinh.setTenSearch(Utils.unAccent(donViHanhChinh.getTen().trim()));
+			donViHanhChinh.setMoTaSearch(Utils.unAccent(donViHanhChinh.getMoTa().trim()));
 			return donViHanhChinhService.doSave(donViHanhChinh,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
