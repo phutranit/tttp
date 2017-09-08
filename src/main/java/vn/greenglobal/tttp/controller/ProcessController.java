@@ -33,16 +33,22 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.DonViHasState;
 import vn.greenglobal.tttp.model.Form;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.QDonViHasState;
+import vn.greenglobal.tttp.model.QProcess;
+import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.medial.Medial_Process_Post_Patch;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.DonViHasStateRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
+import vn.greenglobal.tttp.service.DonViHasStateService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.util.Utils;
@@ -69,6 +75,12 @@ public class ProcessController extends TttpController<Process> {
 	
 	@Autowired
 	private CoQuanQuanLyService coQuanQuanLyService;
+	
+	@Autowired
+	private DonViHasStateRepository donViHasStateRepo;
+	
+	@Autowired
+	private DonViHasStateService donViHasStateService;
 	
 	public ProcessController(BaseRepository<Process, Long> repo) {
 		super(repo);
@@ -372,25 +384,46 @@ public class ProcessController extends TttpController<Process> {
 			PersistentEntityResourceAssembler eass) {
 		try {
 			
-//			for (int i = 1; i <= 26; i++) {
-//				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				if (count == 14 && count2 == 24) {
-//					System.out.println("ID: " + i + " --- OK");
-//				} else {
-//					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
-//				}
-//			}
-//			
-//			for (int i = 27; i <= 82; i++) {
-//				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
-//				if (count == 16 && count2 == 24) {
-//					System.out.println("ID: " + i + " --- OK");
-//				} else {
-//					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2);
-//				}
-//			}
+			for (int i = 1; i <= 26; i++) {
+				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				Long count3 = donViHasStateRepo.count(QDonViHasState.donViHasState.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				if (count == 14 && count2 == 24 && count3 == 25) {
+					System.out.println("ID: " + i + " --- OK");
+				} else {
+					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2 + " --- count3: " + count3);
+				}
+			}
+			
+			for (int i = 27; i <= 82; i++) {
+				Long count = processRepo.count(QProcess.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				Long count2 = transitionRepo.count(QTransition.transition.process.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				Long count3 = donViHasStateRepo.count(QDonViHasState.donViHasState.coQuanQuanLy.id.eq(Long.valueOf(i+"")));
+				if (count == 16 && count2 == 24 && count3 == 10) {
+					System.out.println("ID: " + i + " --- OK");
+				} else {
+					System.out.println("ID: " + i + " --- count: " + count + " --- count2: " + count2 + " --- count3: " + count3);
+				}
+			}
+			
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
+					|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			if (coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId)) == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_VI_NOT_EXISTS.name(),
+						ApiErrorEnum.DON_VI_NOT_EXISTS.getText(), ApiErrorEnum.DON_VI_NOT_EXISTS.getText());
+			}
+			
+			List<Process> list = new ArrayList<Process>();
+			list = (List<Process>) processRepo.findAll(processService.predicateFindAllByDonVi(donViId));
+			if (list != null && list.size() > 0) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TRA_EXISTS.name(),
+						ApiErrorEnum.MA_TRA_EXISTS.getText(), ApiErrorEnum.MA_TRA_EXISTS.getText());
+			}
 			
 			for (int i = 1; i <= 82; i++) {
 				donViId = Long.valueOf(i + "");
@@ -401,29 +434,92 @@ public class ProcessController extends TttpController<Process> {
 				}
 				if (i == 17) coQuyTrinhDayDu = false;
 				if (i == 21) coQuyTrinhDayDu = false;
-				if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_THEM) == null
-						|| Utils.quyenValidate(profileUtil, authorization, QuyenEnum.PROCESS_SUA) == null) {
-					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-							ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-				}
-	
-				if (coQuanQuanLyRepository.findOne(coQuanQuanLyService.predicateFindOne(donViId)) == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_VI_NOT_EXISTS.name(),
-							ApiErrorEnum.DON_VI_NOT_EXISTS.getText(), ApiErrorEnum.DON_VI_NOT_EXISTS.getText());
-				}
 				
-				List<Process> list = new ArrayList<Process>();
-				list = (List<Process>) processRepo.findAll(processService.predicateFindAllByDonVi(donViId));
-				if (list != null && list.size() > 0) {
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MA_TRA_EXISTS.name(),
-							ApiErrorEnum.MA_TRA_EXISTS.getText(), ApiErrorEnum.MA_TRA_EXISTS.getText());
-				}
-				
-				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				Process process = null;
 				Transition transition = null;
+				DonViHasState donViHasState = null;
 				
 				if (coQuyTrinhDayDu) {
+					// Don vi has State
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 2, donViId, 2L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 3, donViId, 3L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 4, donViId, 9L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 5, donViId, 5L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 6, donViId, 17L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 7, donViId, 8L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 5L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 18L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 11L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 12L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 18L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 2, donViId, 2L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 3, donViId, 3L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 4, donViId, 9L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 5, donViId, 5L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 6, donViId, 15L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 2, donViId, 2L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 3, donViId, 3L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 4, donViId, 9L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 5, donViId, 5L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 6, donViId, 16L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
 					// Xu Ly Don
 					process = new Process();
 					transition = new Transition();
@@ -585,6 +681,41 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 					}
 				} else {
+					// Don vi has State
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 2, donViId, 8L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 18L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 12L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 8L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 2, donViId, 15L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 1, donViId, 1L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.KIEM_TRA_DE_XUAT, 2, donViId, 16L);
+					donViHasStateService.save(donViHasState, congChucId);
+					
 					// Xu Ly Don
 					process = new Process();
 					transition = new Transition();
@@ -792,5 +923,18 @@ public class ProcessController extends TttpController<Process> {
 		transition.setForm(form);
 		transition.setDaXoa(daXoa);
 		return transition;
+	}
+	
+	private DonViHasState addDataState(ProcessTypeEnum processType, int soThuTu, Long donViId, Long stateId) {
+		DonViHasState donViHasState = new DonViHasState();
+		donViHasState.setProcessType(processType);
+		donViHasState.setSoThuTu(soThuTu);
+		CoQuanQuanLy cq = new CoQuanQuanLy();
+		cq.setId(donViId);
+		donViHasState.setCoQuanQuanLy(cq);
+		State state = new State();
+		state.setId(stateId);
+		donViHasState.setState(state);
+		return donViHasState;
 	}
 }
