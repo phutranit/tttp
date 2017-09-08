@@ -681,8 +681,11 @@ public class Utils {
 	
 	public static boolean isValidNgayDungHanDangXuLy(LocalDateTime thoiHan) {
 		boolean isValid = false;
-		Calendar now = Calendar.getInstance();
+		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
+		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		System.out.println("isValidNgayDungHanDangXuLy now " +now.getTime());
+		System.out.println("isValidNgayDungHanDangXuLy ketThuc " +ketThuc.getTime());
 		if (now.before(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
@@ -691,9 +694,12 @@ public class Utils {
 	
 	public static boolean isValidNgayTreHanDangXuLy(LocalDateTime thoiHan) {
 		boolean isValid = false;
-		Calendar now = Calendar.getInstance();
+		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
+		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
-		if (now.after(ketThuc)) {
+		System.out.println("isValidNgayTreHanDangXuLy now " +now.getTime());
+		System.out.println("isValidNgayTreHanDangXuLy ketThuc " +ketThuc.getTime());
+		if (now.after(ketThuc) && !DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
 		return isValid;
