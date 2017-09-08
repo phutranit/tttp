@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -124,9 +123,6 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				}
 			}
 			
-			dons.forEach(d -> {
-				System.out.println("don " +d.getId());
-			});
 			tongSo = Long.valueOf(dons.size());
 		}
 		return tongSo;
@@ -201,9 +197,6 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				}
 			}
 			
-			dons.forEach(d -> {
-				System.out.println("don ktdx " +d.getId());
-			});
 			tongSo = Long.valueOf(dons.size());
 		}
 		return tongSo;
@@ -277,10 +270,6 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 					}).collect(Collectors.toList());
 				}
 			}
-			
-			dons.forEach(d -> {
-				System.out.println("don ttxm " +d.getId());
-			});
 			tongSo = Long.valueOf(dons.size());
 		}
 		return tongSo;
@@ -354,10 +343,6 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 					}).collect(Collectors.toList());
 				}
 			}
-			
-			dons.forEach(d -> {
-				System.out.println("don gqd " +d.getId());
-			});
 			tongSo = Long.valueOf(dons.size());
 		}
 		return tongSo;
