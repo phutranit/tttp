@@ -21,6 +21,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -42,6 +44,9 @@ public class VaiTro extends Model<VaiTro> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	@NotBlank
+	@Size(max=255)
+	private String tenSearch = "";
 	//@Lob
 	@Transient
 	private String quyen = "";
@@ -61,6 +66,15 @@ public class VaiTro extends Model<VaiTro> {
 
 	public void setTen(String ten) {
 		this.ten = ten;
+	}
+
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
 	}
 
 	@ApiModelProperty(position = 2, required = true)

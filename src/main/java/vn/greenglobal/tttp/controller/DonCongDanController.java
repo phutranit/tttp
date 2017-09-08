@@ -139,7 +139,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								if (congDan == null) {
 									congDan = new CongDan();
 								}
+								donCongDan.setHoVaTenSearch(Utils.unAccent(donCongDan.getHoVaTen().trim()));
 								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setHoVaTenSearch(donCongDan.getHoVaTenSearch());
 								congDan.setDanToc(donCongDan.getDanToc());
 								congDan.setQuocTich(donCongDan.getQuocTich());
 								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
@@ -268,7 +270,9 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								if (congDan == null) {
 									congDan = new CongDan();
 								}
+								donCongDan.setHoVaTenSearch(Utils.unAccent(donCongDan.getHoVaTen().trim()));
 								congDan.setHoVaTen(donCongDan.getHoVaTen());
+								congDan.setHoVaTenSearch(donCongDan.getHoVaTenSearch());
 								congDan.setDanToc(donCongDan.getDanToc());
 								congDan.setQuocTich(donCongDan.getQuocTich());
 								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
