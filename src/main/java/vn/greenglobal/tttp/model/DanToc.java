@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,10 +30,17 @@ public class DanToc extends Model<DanToc> {
 	@NotBlank
 	@Size(max=255)
 	private String ten = "";
+	@NotBlank
+	@Size(max=255)
+	private String tenSearch = "";
 	@Size(max=255)
 	private String tenKhac = "";
 	@Size(max=255)
+	private String tenKhacSearch = "";
+	//@Lob
 	private String moTa = "";
+	//@Lob
+	private String moTaSearch = "";
 
 	@ApiModelProperty(position = 2)
 	public String getMa() {
@@ -51,6 +60,15 @@ public class DanToc extends Model<DanToc> {
 		this.ten = ten;
 	}
 
+	@JsonIgnore
+	public String getTenSearch() {
+		return tenSearch;
+	}
+
+	public void setTenSearch(String tenSearch) {
+		this.tenSearch = tenSearch;
+	}
+
 	@ApiModelProperty(position = 3)
 	public String getTenKhac() {
 		return tenKhac;
@@ -60,6 +78,15 @@ public class DanToc extends Model<DanToc> {
 		this.tenKhac = tenKhac;
 	}
 
+	@JsonIgnore
+	public String getTenKhacSearch() {
+		return tenKhacSearch;
+	}
+
+	public void setTenKhacSearch(String tenKhacSearch) {
+		this.tenKhacSearch = tenKhacSearch;
+	}
+
 	@ApiModelProperty(position = 5)
 	public String getMoTa() {
 		return moTa;
@@ -67,6 +94,15 @@ public class DanToc extends Model<DanToc> {
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
+	}
+
+	@JsonIgnore
+	public String getMoTaSearch() {
+		return moTaSearch;
+	}
+
+	public void setMoTaSearch(String moTaSearch) {
+		this.moTaSearch = moTaSearch;
 	}
 
 	@Transient

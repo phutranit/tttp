@@ -46,7 +46,6 @@ import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
@@ -442,7 +441,27 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							soTiepCongDan.getDonViPhoiHops().size() > 0) {
 						
 					}
+					
+					Transition transitionTTXM = null;
+					List<Transition> listTransitionHaveBegin = new ArrayList<Transition>();
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
+						Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
+						List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
+						if (listProcess.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
+									ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+						}			
+						for (Process processFromList : listProcess) {
+							transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
+							if (transitionTTXM != null) {
+								listTransitionHaveBegin.add(transitionTTXM);
+							}
+						}
+						if (listTransitionHaveBegin.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
+									ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+						}
+						
 						if (!HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT.equals(soTiepCongDan.getTinhTrangXuLyTCDLanhDao())) {
 							soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
 							State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -484,7 +503,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 							giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
-							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
+							giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
+//							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
 							giaiQuyetDon.setDonChuyen(true);
