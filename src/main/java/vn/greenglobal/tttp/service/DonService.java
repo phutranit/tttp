@@ -386,12 +386,12 @@ public class DonService {
 			predAll = predAll.and(QDon.don.ma.eq(StringUtils.trimToEmpty(maDon)));
 		}
 
-		if (StringUtils.isNotBlank(hoTen.trim())) {
-			predAll = predAll
-					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
-							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
-					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
-		}
+//		if (StringUtils.isNotBlank(hoTen.trim())) {
+//			predAll = predAll
+//					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
+//							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
+//					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+//		}
 		
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll
