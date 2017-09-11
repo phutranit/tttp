@@ -684,8 +684,7 @@ public class Utils {
 		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
 		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
-		System.out.println("isValidNgayDungHanDangXuLy now " +now.getTime());
-		System.out.println("isValidNgayDungHanDangXuLy ketThuc " +ketThuc.getTime());
+		
 		if (now.before(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
@@ -697,8 +696,7 @@ public class Utils {
 		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
 		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
-		System.out.println("isValidNgayTreHanDangXuLy now " +now.getTime());
-		System.out.println("isValidNgayTreHanDangXuLy ketThuc " +ketThuc.getTime());
+		
 		if (now.after(ketThuc) && !DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
@@ -707,28 +705,23 @@ public class Utils {
 	
 	public static boolean isValidNgayDungHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
 		boolean isValid = false;
-		Calendar now = Calendar.getInstance();
 		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
 		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
 		
-		if (now.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, now)) {
-			if (thoiHanKetThucXL.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
-				isValid = true;
-			}
+		if (thoiHanKetThucXL.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
+			isValid = true;
 		}
 		return isValid;
 	}
 	
 	public static boolean isValidNgayTreHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
 		boolean isValid = false;
-		Calendar now = Calendar.getInstance();
+		
 		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
 		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
 		
-		if (now.after(thoiHanKetThucXL) || now.after(thoiHanXL)) {
-			if (thoiHanXL.before(thoiHanKetThucXL)) {
-				isValid = true;
-			}
+		if (thoiHanXL.before(thoiHanKetThucXL) && !DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
+			isValid = true;
 		}
 		return isValid;
 	}
