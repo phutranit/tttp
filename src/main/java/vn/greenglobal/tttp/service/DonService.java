@@ -400,9 +400,7 @@ public class DonService {
 							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
-		
-		
-		
+
 		if (StringUtils.isNotBlank(nguonDon)) {
 			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
 			if (nguonDonEnum != null) {

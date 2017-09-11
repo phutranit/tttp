@@ -1816,6 +1816,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 		donOld.setCurrentState(beginState);
 		donOld.setCoQuanDangGiaiQuyet(donVi.getDonVi());
+		donOld.setHoanThanhDon(true);
 		
 		//tao don moi cua don vi chuyen den
 		Don donMoi = new Don();
