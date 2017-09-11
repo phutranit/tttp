@@ -684,8 +684,7 @@ public class Utils {
 		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
 		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
-		System.out.println("isValidNgayDungHanDangXuLy now " +now.getTime());
-		System.out.println("isValidNgayDungHanDangXuLy ketThuc " +ketThuc.getTime());
+		
 		if (now.before(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
@@ -698,9 +697,6 @@ public class Utils {
 		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
 		
-		System.out.println("------------------------------------ ");
-		System.out.println("isValidNgayTreHanDangXuLy now " +now.getTime());
-		System.out.println("isValidNgayTreHanDangXuLy ketThuc " +ketThuc.getTime());
 		if (now.after(ketThuc) && !DateUtils.isSameDay(ketThuc, now)) {
 			isValid = true;
 		}
@@ -712,10 +708,6 @@ public class Utils {
 		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
 		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
 		
-		System.out.println("------------------------------------ ");
-		System.out.println("isValidNgayDungHanDaXuLy thoiHanXL " +thoiHanXL.getTime());
-		System.out.println("isValidNgayDungHanDaXuLy thoiHanKetThucXL " +thoiHanKetThucXL.getTime());
-
 		if (thoiHanKetThucXL.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
 			isValid = true;
 		}
