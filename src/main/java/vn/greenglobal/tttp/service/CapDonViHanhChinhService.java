@@ -27,13 +27,18 @@ public class CapDonViHanhChinhService {
 	private CapDonViHanhChinhRepository capDonViHanhChinhRepository;
 
 	BooleanExpression base = QCapDonViHanhChinh.capDonViHanhChinh.daXoa.eq(false);
-
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String ten) {
 		BooleanExpression predAll = base;
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
-			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.ten.containsIgnoreCase(ten.trim())
+			predAll = predAll.and(QCapDonViHanhChinh.capDonViHanhChinh.tenSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))
 					.or(QCapDonViHanhChinh.capDonViHanhChinh.ma.containsIgnoreCase(ten.trim()))
-					.or(QCapDonViHanhChinh.capDonViHanhChinh.moTa.containsIgnoreCase(ten.trim())));
+					.or(QCapDonViHanhChinh.capDonViHanhChinh.moTaSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))));
 		}
 		return predAll;
 	}

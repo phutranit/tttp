@@ -203,6 +203,66 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSat/ngayThangNams")
+	@ApiOperation(value = "Lấy danh sách Ngày tháng năm của theo dõi giám sát", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getNgayThangNams(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", "Ngày");
+		object.put("giaTri", "day");
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", "Tháng");
+		object.put("giaTri", "month");
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", "Năm");
+		object.put("giaTri", "year");
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSat/phanHes")
+	@ApiOperation(value = "Lấy danh sách phân hệ của theo dõi giám sát", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getQuyTrinhs(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.XU_LY_DON.getText());
+		object.put("giaTri", ProcessTypeEnum.XU_LY_DON.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.KIEM_TRA_DE_XUAT.getText());
+		object.put("giaTri", ProcessTypeEnum.KIEM_TRA_DE_XUAT.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.GIAI_QUYET_DON.getText());
+		object.put("giaTri", ProcessTypeEnum.GIAI_QUYET_DON.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ProcessTypeEnum.THAM_TRA_XAC_MINH.getText());
+		object.put("giaTri", ProcessTypeEnum.THAM_TRA_XAC_MINH.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/processTypes")
 	@ApiOperation(value = "Lấy danh sách loại quy trình", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getProcessTypes(
@@ -259,6 +319,28 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.getText());
 		object.put("giaTri", LoaiNguoiDungDonEnum.DOAN_DONG_NGUOI.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/trangChu/loaiDonThus")
+	@ApiOperation(value = "Lấy danh sách Loại Đơn Thư", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTrangChuLoaiDonThus(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiDonEnum.DON_KHIEU_NAI.getText());
+		object.put("giaTri", LoaiDonEnum.DON_KHIEU_NAI.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LoaiDonEnum.DON_TO_CAO.getText());
+		object.put("giaTri", LoaiDonEnum.DON_TO_CAO.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

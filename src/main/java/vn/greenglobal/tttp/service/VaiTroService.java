@@ -32,7 +32,7 @@ public class VaiTroService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QVaiTro.vaiTro.ten.containsIgnoreCase(tuKhoa.trim()));
+			predAll = predAll.and(QVaiTro.vaiTro.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())));
 		}
 
 		return predAll;

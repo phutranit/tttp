@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
@@ -34,16 +35,22 @@ public class CoQuanQuanLyService {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
-
+	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
-
-	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh) {
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh, 
+			List<CoQuanQuanLy> listCoQuanQuanLys, List<CapCoQuanQuanLy> listCapCoQuanQuanLys) {
 
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
-					.or(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
-					.or(QCoQuanQuanLy.coQuanQuanLy.moTa.containsIgnoreCase(tuKhoa.trim())));
+					.or(QCoQuanQuanLy.coQuanQuanLy.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
+					.or(QCoQuanQuanLy.coQuanQuanLy.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		if (cha != null && cha > 0) {
@@ -57,7 +64,17 @@ public class CoQuanQuanLyService {
 		if (donViHanhChinh != null && donViHanhChinh > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinh));
 		}
-
+		
+		if (listCapCoQuanQuanLys != null && listCapCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(listCapCoQuanQuanLys));
+		}
+		
+		if (listCoQuanQuanLys != null && listCoQuanQuanLys.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(listCoQuanQuanLys)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.in(listCoQuanQuanLys)
+							.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.in(listCoQuanQuanLys))
+					));
+		}
 		return predAll;
 	}
 	
@@ -332,5 +349,28 @@ public class CoQuanQuanLyService {
 	
 	public ResponseEntity<Object> doSave(CoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
+	}
+	
+	public Predicate predicateFindDonViVaConCuaDonViTDGDS(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
+		BooleanExpression predAll = base;
+		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
+			
+			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))
+//						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3)))
+						);
+			} else if ("CCQQL_SO_BAN_NGANH".equals(type)) { 
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+			} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
+			}	
+		}
+		return predAll;
 	}
 }

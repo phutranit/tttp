@@ -88,6 +88,8 @@ public class VaiTroController extends TttpController<VaiTro> {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.TEN_EXISTS.name(),
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
+			
+			vaiTro.setTenSearch(Utils.unAccent(vaiTro.getTen().trim()));
 			return vaiTroService.doSave(vaiTro,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -143,6 +145,7 @@ public class VaiTroController extends TttpController<VaiTro> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			vaiTro.setTenSearch(Utils.unAccent(vaiTro.getTen().trim()));
 			return vaiTroService.doSave(vaiTro,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

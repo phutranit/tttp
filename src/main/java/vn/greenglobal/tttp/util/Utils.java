@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -666,6 +668,63 @@ public class Utils {
 		}
 		return mapType;
 	}
+
+	public static boolean isValidNgayDungHanGQD(LocalDateTime thoiHan) {
+		boolean isValid = false;
+		Calendar now = Calendar.getInstance();
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayDungHanDangXuLy(LocalDateTime thoiHan) {
+		boolean isValid = false;
+		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
+		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		
+		if (now.before(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayTreHanDangXuLy(LocalDateTime thoiHan) {
+		boolean isValid = false;
+		LocalDateTime thoiGianHienTai = Utils.localDateTimeNow();
+		Calendar now = getMocThoiGianLocalDateTime(thoiGianHienTai, thoiGianHienTai.getHour(), thoiGianHienTai.getMinute());
+		Calendar ketThuc = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		
+		if (now.after(ketThuc) && !DateUtils.isSameDay(ketThuc, now)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayDungHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
+		
+		if (thoiHanKetThucXL.before(thoiHanXL) || DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
+			isValid = true;
+		}
+		return isValid;
+	}
+	
+	public static boolean isValidNgayTreHanDaXuLy(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+		boolean isValid = false;
+		
+		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, 0, 0);
+		Calendar thoiHanKetThucXL = getMocThoiGianLocalDateTime(ngayKetThuc, 0, 0);
+		
+		if (thoiHanXL.before(thoiHanKetThucXL) && !DateUtils.isSameDay(thoiHanXL, thoiHanKetThucXL)) {
+			isValid = true;
+		}
+		return isValid;
+	}
 	
 	private static boolean isInvalidNgayNghi(Date date) {
 //		if (vietHolidays == null) {
@@ -693,94 +752,31 @@ public class Utils {
 	 * Lay so ngay cua thoi han xu ly thanh tra
      * @param ngayBatDau thoi han tu ngay bat dau
      * @param soNgayThanhTra so ngay thanh tra 
-     * @param gioHanhChinhHienTai gio hanh chinh lam viec hien tai
      * @return soNgayXuLy so ngay con lai de xu ly
      */
-	public static Long getLaySoNgayXuLyThanhTra(LocalDateTime ngayBatDau, Long soNgayThanhTra,
-			LocalDateTime gioHanhChinhHienTai) {
-		long soNgayXuLy = 0;
-		boolean checkNgayNghi = false;
+	public static Long getLaySoNgayXuLyThanhTra(LocalDateTime ngayBatDau, Long soNgayThanhTra) {
+		Long soNgayXuLy = 0L;
 
-		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0) && gioHanhChinhHienTai != null) {
-			Calendar now = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, gioHanhChinhHienTai.getHour(),
-					gioHanhChinhHienTai.getMinute());
-			Calendar cal = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, gioHanhChinhHienTai.getHour(),
-					gioHanhChinhHienTai.getMinute());
+		if (ngayBatDau != null && (soNgayThanhTra != null && soNgayThanhTra > 0)) {
 			Calendar start = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
 			Calendar end = getMocThoiGianLocalDateTime(ngayBatDau, ngayBatDau.getHour(), ngayBatDau.getMinute());
-
-			for (int i = 1; i <= soNgayThanhTra; i++) {
+			for (int i = 1; i < soNgayThanhTra; i++) {
 				end.add(Calendar.DATE, 1);
 			}
-
-			if (start.before(end) || DateUtils.isSameDay(start, end)) {
-				while (start.before(end) || DateUtils.isSameDay(start, end)) {
-					// check ngay nghi
-					if (isInvalidNgayNghi(start.getTime())) {
-						end.add(Calendar.DATE, 1);
-					}
-					start.add(Calendar.DATE, 1);
+			
+			while (start.before(end) || DateUtils.isSameDay(start, end)) {
+				if (isInvalidNgayNghi(start.getTime())) { 
+					end.add(Calendar.DATE, 1);
 				}
-				// check ngay hop le
-				if (cal.before(end) || DateUtils.isSameDay(cal, end)) {
-					// lay so ngay de xu ly
-					while (cal.before(end) || DateUtils.isSameDay(cal, end)) {
-						// check ngay nghi
-						if (DateUtils.isSameDay(cal, now)) {
-							// check thuoc gio hanh chinh
-							if (cal.get(Calendar.AM_PM) == 0) {
-								// AM
-								// check thoi gian gio hanh chinh
-								Calendar mocDauBuoiSang = getMocThoiGianLocalDateTime(gioHanhChinhHienTai, startMorning,
-										minuteStartMorning);
-								if (!DateUtils.isSameDay(cal, mocDauBuoiSang)) {
-									return soNgayXuLy = 0;
-								}
-								long gioBuoiSang = mocDauBuoiSang.getTimeInMillis();
-								if (cal.getTimeInMillis() <= gioBuoiSang) {
-									soNgayXuLy = 1;
-								} else {
-									if (DateUtils.isSameDay(end, now)) {
-										soNgayXuLy = -3;
-									}
-								}
-							} else {
-								// PM
-								Calendar mocDauBuoiChieu = getMocThoiGianLocalDateTime(gioHanhChinhHienTai,
-										endAfternoon, minuteEndAfternoon);
-								if (!DateUtils.isSameDay(cal, mocDauBuoiChieu)) {
-									return soNgayXuLy = 0;
-								}
-								long gioBuoiChieu = mocDauBuoiChieu.getTimeInMillis();
-								if (cal.getTimeInMillis() < gioBuoiChieu) {
-									checkNgayNghi = true;
-								}
-							}
-						} else {
-							soNgayXuLy += 1;
-							if (DateUtils.isSameDay(cal, end)) {
-								break;
-							}
-						}
-						cal.add(Calendar.DATE, 1);
-					}
-				} else {
-					soNgayXuLy = -1;
-				}
-				if (soNgayXuLy == 0 && checkNgayNghi) {
-					soNgayXuLy = -2;
-				}
-			} else {
-				soNgayXuLy = -1;
+				soNgayXuLy += 1;
+				start.add(Calendar.DATE, 1);
 			}
 		}
-
 		return soNgayXuLy;
 	}
 	
 	public static Map<String, Object> convertThoiHanThanhTra(LocalDateTime ngayBatDauTmp, Long soNgayThanhTra) {
 		Map<String, Object> mapType = new HashMap<>();
-		LocalDateTime gioHanhChinhHienTai = localDateTimeNow();
 		LocalDateTime ngayBatDau = null;
 		LocalDateTime ngayHetHan = null;
 		long soNgayXuLy = 0;
@@ -789,7 +785,7 @@ public class Utils {
 			ngayBatDau = ngayBatDauTmp;
 			ngayHetHan = ngayBatDauTmp;
 			if (soNgayThanhTra != null && soNgayThanhTra > 0) {
-				soNgayXuLy = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayThanhTra, gioHanhChinhHienTai);
+				soNgayXuLy = Utils.getLaySoNgayXuLyThanhTra(ngayBatDau, soNgayThanhTra);
 				ngayHetHan = ngayHetHan.plusDays(soNgayXuLy);
 			}
 			if (soNgayXuLy >= 0) {
@@ -799,7 +795,6 @@ public class Utils {
 		}
 		return mapType;
 	}
-	
 
 	public static boolean isValidStringLength(String str, int length) {
 		if (str != null && !"".equals(str)) {
@@ -809,4 +804,28 @@ public class Utils {
 		}
 	}
 	
+	public static int getQuyHienTai() {
+		int quy = 0;
+		int month = Utils.localDateTimeNow().getMonthValue();
+		if (month >= 1 && month <= 3) {
+			quy = 1;
+		} else if (month >= 4 && month <= 6) {
+			quy = 2;
+		} else if (month >= 7 && month <= 9) {
+			quy = 3;
+		} else if (month >= 10 && month <= 12) {
+			quy = 4;
+		}
+		return quy;
+	}
+
+	public static String unAccent(String s) {
+		if (s != null && !"".equals(s)) {
+			String temp = Normalizer.normalize(s.toLowerCase(), Normalizer.Form.NFD);
+			Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+			String result = pattern.matcher(temp).replaceAll("").replaceAll("đ", "d").replaceAll("[^a-zA-Z0-9 -]", "");
+			return result.replace("  ", " ");
+		}
+		return "";
+	}
 }

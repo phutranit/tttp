@@ -87,6 +87,8 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			chucVu.setTenSearch(Utils.unAccent(chucVu.getTen().trim()));
+			chucVu.setMoTaSearch(Utils.unAccent(chucVu.getMoTa().trim()));
 			return chucVuService.doSave(chucVu, 
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.CREATED);
@@ -142,6 +144,8 @@ public class ChucVuController extends TttpController<ChucVu> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			chucVu.setTenSearch(Utils.unAccent(chucVu.getTen().trim()));
+			chucVu.setMoTaSearch(Utils.unAccent(chucVu.getMoTa().trim()));
 			return chucVuService.doSave(chucVu,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.OK);

@@ -31,8 +31,8 @@ public class LinhVucDoiTuongThanhTraService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QLinhVucDoiTuongThanhTra.linhVucDoiTuongThanhTra.ten.containsIgnoreCase(tuKhoa.trim())
-					.or(QLinhVucDoiTuongThanhTra.linhVucDoiTuongThanhTra.moTa.containsIgnoreCase(tuKhoa.trim())));
+			predAll = predAll.and(QLinhVucDoiTuongThanhTra.linhVucDoiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QLinhVucDoiTuongThanhTra.linhVucDoiTuongThanhTra.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		return predAll;

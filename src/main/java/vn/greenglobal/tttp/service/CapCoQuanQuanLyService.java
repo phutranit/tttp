@@ -27,13 +27,18 @@ public class CapCoQuanQuanLyService {
 	private CapCoQuanQuanLyRepository capCoQuanQuanLyRepository;
 
 	BooleanExpression base = QCapCoQuanQuanLy.capCoQuanQuanLy.daXoa.eq(false);
-
+	
+	public Predicate predicateFindAll() {
+		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, Long cha) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCapCoQuanQuanLy.capCoQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
-					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.ten.containsIgnoreCase(tuKhoa.trim()))
-					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.moTa.containsIgnoreCase(tuKhoa.trim())));
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
+					.or(QCapCoQuanQuanLy.capCoQuanQuanLy.moTaSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		if (cha != null && cha > 0) {

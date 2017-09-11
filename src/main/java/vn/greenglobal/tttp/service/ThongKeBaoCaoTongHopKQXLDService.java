@@ -311,7 +311,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
 		dons = dons.parallelStream().filter(d -> {
-			Long count = d.getDonCongDans().stream().filter(dcd -> {
+			Don don = d;
+			if (d.isDonChuyen()) { 
+				if (d.getDonGocId() != null && d.getDonGocId() > 0) { 
+					don = donRepo.findOne(d.getDonGocId());
+				}
+			}
+			Long count = don.getDonCongDans().stream().filter(dcd -> {
 				if (!dcd.isDaXoa() && dcd.getPhanLoaiCongDan().equals(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON)) { 
 					return true;
 				}
@@ -344,7 +350,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 						if (quy == 2) { 
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(4, 6));
 						}
-						if (quy == 3) { 
+						if (quy == 3) {
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(7, 9));
 						}
 						if (quy == 4) { 
@@ -390,7 +396,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
 		dons = dons.parallelStream().filter(d -> {
-			Long count = d.getDonCongDans().stream().filter(dcd -> {
+			Don don = d;
+			if (d.isDonChuyen()) { 
+				if (d.getDonGocId() != null && d.getDonGocId() > 0) { 
+					don = donRepo.findOne(d.getDonGocId());
+				}
+			}
+			Long count = don.getDonCongDans().stream().filter(dcd -> {
 				if (!dcd.isDaXoa() && dcd.getPhanLoaiCongDan().equals(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON)) { 
 					return true;
 				}
@@ -401,7 +413,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 			}
 			return false;
 		}).collect(Collectors.toList());
-		
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
 	}
@@ -484,7 +495,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
 		dons = dons.parallelStream().filter(d -> {
-			Long count = d.getDonCongDans().stream().filter(dcd -> {
+			Don don = d;
+			if (d.isDonChuyen()) { 
+				if (d.getDonGocId() != null && d.getDonGocId() > 0) { 
+					don = donRepo.findOne(d.getDonGocId());
+				}
+			}
+			Long count = don.getDonCongDans().stream().filter(dcd -> {
 				if (!dcd.isDaXoa() && dcd.getPhanLoaiCongDan().equals(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON)) { 
 					return true;
 				}
@@ -578,7 +595,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
 		dons = dons.parallelStream().filter(d -> {
-			Long count = d.getDonCongDans().stream().filter(dcd -> {
+			Don don = d;
+			if (d.isDonChuyen()) { 
+				if (d.getDonGocId() != null && d.getDonGocId() > 0) { 
+					don = donRepo.findOne(d.getDonGocId());
+				}
+			}
+			Long count = don.getDonCongDans().stream().filter(dcd -> {
 				if (!dcd.isDaXoa() && dcd.getPhanLoaiCongDan().equals(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON)) { 
 					return true;
 				}

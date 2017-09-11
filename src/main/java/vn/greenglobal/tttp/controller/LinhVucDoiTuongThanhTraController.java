@@ -92,6 +92,8 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
+			linhVucDoiTuongThanhTra.setTenSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getTen().trim()));
+			linhVucDoiTuongThanhTra.setMoTaSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getMoTa().trim()));
 			return linhVucDoiTuongThanhTraService.doSave(linhVucDoiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -149,6 +151,8 @@ public class LinhVucDoiTuongThanhTraController extends TttpController<LinhVucDoi
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			linhVucDoiTuongThanhTra.setTenSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getTen().trim()));
+			linhVucDoiTuongThanhTra.setMoTaSearch(Utils.unAccent(linhVucDoiTuongThanhTra.getMoTa().trim()));
 			return linhVucDoiTuongThanhTraService.doSave(linhVucDoiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

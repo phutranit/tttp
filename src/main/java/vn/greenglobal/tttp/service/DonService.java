@@ -123,7 +123,7 @@ public class DonService {
 			
 			donCongDanQuery = donCongDanQuery
 					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
-					.and(QDon_CongDan.don_CongDan.congDan.hoVaTen.containsIgnoreCase(hoTen.trim())
+					.and(QDon_CongDan.don_CongDan.congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
 							.or(QDon_CongDan.don_CongDan.tenCoQuan.containsIgnoreCase(hoTen.trim())));
 			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
@@ -136,7 +136,7 @@ public class DonService {
 			BooleanExpression donCongDanQuery = baseDonCongDan;
 			
 			donCongDanQuery = donCongDanQuery
-					.and(QDon_CongDan.don_CongDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.and(QDon_CongDan.don_CongDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
 							.or(QDon_CongDan.don_CongDan.tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
 							.or(QDon_CongDan.don_CongDan.soCMNDHoChieu.eq(tuKhoa.trim())))
 					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
@@ -388,21 +388,19 @@ public class DonService {
 
 		if (StringUtils.isNotBlank(hoTen)) {
 			predAll = predAll
-					.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(hoTen)
+					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
 							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
 		
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll
-					.and(QDon.don.donCongDans.any().congDan.hoVaTen.containsIgnoreCase(tuKhoa.trim())
+					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
 							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
 							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())))
 					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
 		}
-		
-		
-		
+
 		if (StringUtils.isNotBlank(nguonDon)) {
 			NguonTiepNhanDonEnum nguonDonEnum = NguonTiepNhanDonEnum.valueOf(nguonDon);
 			if (nguonDonEnum != null) {
@@ -472,7 +470,8 @@ public class DonService {
 			BooleanExpression pbgq = QGiaiQuyetDon.giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyetId);
 			BooleanExpression chucVuNotNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNotNull();
 			BooleanExpression chucVuNull = QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull();
-			giaiQuyetDonQuery = giaiQuyetDonQuery.and(chucVuNull.or(pbgq.and(chucVuNotNull)));
+			BooleanExpression dvgq = QGiaiQuyetDon.giaiQuyetDon.donViGiaiQuyet.id.eq(donViGiaiQuyetId);
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and((dvgq.and(chucVuNull)).or(pbgq.and(chucVuNotNull)));
 		}
 
 		if (StringUtils.isNotBlank(chucVu)) {

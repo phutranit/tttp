@@ -71,7 +71,7 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(tuKhoa, cha), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -131,6 +131,8 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			capCoQuanQuanLy.setTenSearch(Utils.unAccent(capCoQuanQuanLy.getTen().trim()));
+			capCoQuanQuanLy.setMoTaSearch(Utils.unAccent(capCoQuanQuanLy.getMoTa().trim()));
 			return capCoQuanQuanLyService.doSave(capCoQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.CREATED);
@@ -189,6 +191,8 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			capCoQuanQuanLy.setTenSearch(Utils.unAccent(capCoQuanQuanLy.getTen().trim()));
+			capCoQuanQuanLy.setMoTaSearch(Utils.unAccent(capCoQuanQuanLy.getMoTa().trim()));
 			return capCoQuanQuanLyService.doSave(capCoQuanQuanLy,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
 					eass, HttpStatus.OK);
@@ -222,6 +226,25 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 
 			capCoQuanQuanLyService.save(capCoQuanQuanLy, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/capCoQuanQuanLys/capCoQuanQuanLyTimKiems")
+	@ApiOperation(value = "Lấy danh sách tất cả Cấp Cơ Quan Quản Lý", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListCapCoQuanQuanLys(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

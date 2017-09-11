@@ -58,6 +58,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
+			@RequestParam(value = "loaiDoiTuongThanhTra", required = false) String loaiDoiTuongThanhTra,
 			@RequestParam(value = "doiTuongIds", required = false) List<DoiTuongThanhTra> doiTuongIds,
 			PersistentEntityResourceAssembler eass) {
 
@@ -70,7 +71,7 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa, linhVucId, doiTuongIds), pageable);
+			Page<DoiTuongThanhTra> page = repo.findAll(doiTuongThanhTraService.predicateFindAll(tuKhoa, linhVucId, loaiDoiTuongThanhTra, doiTuongIds), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -97,6 +98,9 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 			
+			doiTuongThanhTra.setTenSearch(Utils.unAccent(doiTuongThanhTra.getTen().trim()));
+			doiTuongThanhTra.setDiaChiSearch(Utils.unAccent(doiTuongThanhTra.getDiaChi().trim()));
+			doiTuongThanhTra.setGhiChuSearch(Utils.unAccent(doiTuongThanhTra.getGhiChu().trim()));
 			return doiTuongThanhTraService.doSave(doiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -154,6 +158,9 @@ public class DoiTuongThanhTraController extends TttpController<DoiTuongThanhTra>
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			doiTuongThanhTra.setTenSearch(Utils.unAccent(doiTuongThanhTra.getTen().trim()));
+			doiTuongThanhTra.setDiaChiSearch(Utils.unAccent(doiTuongThanhTra.getDiaChi().trim()));
+			doiTuongThanhTra.setGhiChuSearch(Utils.unAccent(doiTuongThanhTra.getGhiChu().trim()));
 			return doiTuongThanhTraService.doSave(doiTuongThanhTra,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

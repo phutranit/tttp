@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.CapDonViHanhChinh;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.DonViHanhChinh;
@@ -31,14 +32,19 @@ public class DonViHanhChinhService {
 	
 	@Autowired
 	private DonViHanhChinhRepository donViHanhChinhRepository;
-
+	
 	BooleanExpression base = QDonViHanhChinh.donViHanhChinh.daXoa.eq(false);
-
-	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh) {
+	
+	public Predicate predicateFindAll() { 
 		BooleanExpression predAll = base;
+		return predAll;
+	}
+	
+	public Predicate predicateFindAll(String ten, Long cha, Long capDonViHanhChinh, List<DonViHanhChinh> listDonVis, List<CapDonViHanhChinh> listCapDonVis) {
+		BooleanExpression predAll = base;		
 		if (ten != null && StringUtils.isNotBlank(ten.trim())) {
-			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.ten.containsIgnoreCase(ten.trim())
-					.or(QDonViHanhChinh.donViHanhChinh.moTa.containsIgnoreCase(ten.trim()))
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.tenSearch.containsIgnoreCase(Utils.unAccent(ten.trim()))
+					.or(QDonViHanhChinh.donViHanhChinh.moTaSearch.containsIgnoreCase(Utils.unAccent(ten.trim())))
 					.or(QDonViHanhChinh.donViHanhChinh.ma.containsIgnoreCase(ten.trim())));
 		}
 
@@ -50,6 +56,16 @@ public class DonViHanhChinhService {
 			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.id.eq(capDonViHanhChinh));
 		}
 
+		if (listCapDonVis != null && listCapDonVis.size() > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.capDonViHanhChinh.in(listCapDonVis));
+		}
+		
+		if (listDonVis != null && listDonVis.size() > 0) {
+			predAll = predAll.and(QDonViHanhChinh.donViHanhChinh.in(listDonVis)
+					.or(QDonViHanhChinh.donViHanhChinh.cha.in(listDonVis)
+							.or(QDonViHanhChinh.donViHanhChinh.cha.cha.in(listDonVis)) 
+					));
+		}
 		return predAll;
 	}
 

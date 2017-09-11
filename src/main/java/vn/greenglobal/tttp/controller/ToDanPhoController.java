@@ -64,7 +64,7 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			Page<ToDanPho> page = repo.findAll(toDanPhoService.predicateFindAll(tuKhoa, donViHanhChinh), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -108,6 +108,8 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 						ApiErrorEnum.DATA_EXISTS.getText(), ApiErrorEnum.TEN_EXISTS.getText());
 			}
 
+			toDanPho.setTenSearch(Utils.unAccent(toDanPho.getTen().trim()));
+			toDanPho.setMoTaSearch(Utils.unAccent(toDanPho.getMoTa().trim()));
 			return toDanPhoService.doSave(toDanPho,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.CREATED);
@@ -165,6 +167,8 @@ public class ToDanPhoController extends TttpController<ToDanPho> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 
+			toDanPho.setTenSearch(Utils.unAccent(toDanPho.getTen().trim()));
+			toDanPho.setMoTaSearch(Utils.unAccent(toDanPho.getMoTa().trim()));
 			return toDanPhoService.doSave(toDanPho,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

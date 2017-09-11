@@ -334,6 +334,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
+			if (quy == null) {
+				quy = Utils.getQuyHienTai();
+			}
 			
 			Map<String, Object> mapDonVi = new HashMap<>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
@@ -928,7 +931,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			if (year == null) { 
 				year = Utils.localDateTimeNow().getYear();
 			}
-			
+			if (quy == null) {
+				quy = Utils.getQuyHienTai();
+			}
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLDTruocHan = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLDTruocHan(loaiKy, quy, year, month, tuNgay, denNgay);
@@ -1060,7 +1065,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 				Long tongSoDonToCaoLinhVucHanhChinh = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDXLDDonVi, linhVucHanhChinhDonToCao);
 				Long tongSoDonToCaoLinhVucTuPhap = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDXLDDonVi, linhVucTuPhapDonToCao);
-				Long tongSoDonToCaoLinhVucThamNhung = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChiTietCha(predAllDXLDDonVi, linhVucTuPhapDonToCao, linhVucThamNhungDonToCao);
+				Long tongSoDonToCaoLinhVucThamNhung = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDXLDDonVi, linhVucThamNhungDonToCao);
 				Long tongSoDonToCaoLinhVucVeDang = thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDXLDDonVi, linhVucVeDangDonToCao);
 				Long tongSoDonToCaoLinhVucKhac= thongKeBaoCaoTongHopKQXLDService.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(predAllDXLDDonVi, linhVucKhacDonToCao);
 				Long tongSoDonLinhVucToCao = tongSoDonToCaoLinhVucHanhChinh + tongSoDonToCaoLinhVucTuPhap + tongSoDonToCaoLinhVucThamNhung + tongSoDonToCaoLinhVucVeDang+ tongSoDonToCaoLinhVucKhac;
