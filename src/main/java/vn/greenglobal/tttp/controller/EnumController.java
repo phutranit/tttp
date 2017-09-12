@@ -42,7 +42,7 @@ import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
-import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
@@ -1585,25 +1585,25 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucThanhTras")
+	@RequestMapping(method = RequestMethod.GET, value = "/chucNangThanhTras")
 	@ApiOperation(value = "Lấy danh sách hình thức thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getHinhThucThanhTras(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-//		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
-//		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
+//		object.put("ten", ChucNangThanhTraEnum.THEO_KE_HOACH.getText());
+//		object.put("giaTri", ChucNangThanhTraEnum.THEO_KE_HOACH.name());
 //		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", HinhThucThanhTraEnum.THUONG_XUYEN.getText());
-		object.put("giaTri", HinhThucThanhTraEnum.THUONG_XUYEN.name());
+		object.put("ten", ChucNangThanhTraEnum.THUONG_XUYEN.getText());
+		object.put("giaTri", ChucNangThanhTraEnum.THUONG_XUYEN.name());
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", HinhThucThanhTraEnum.DOT_XUAT.getText());
-		object.put("giaTri", HinhThucThanhTraEnum.DOT_XUAT.name());
+		object.put("ten", ChucNangThanhTraEnum.DOT_XUAT.getText());
+		object.put("giaTri", ChucNangThanhTraEnum.DOT_XUAT.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
