@@ -1392,8 +1392,8 @@ public class ExcelUtil {
 		
 		header1.add(new String[] {"Theo trình tự giải quyết", "9", "9", "23", "25"});
 		header1.add(new String[] {"Chưa được giải quyết", "10", "12", "23", "23"});
-		header1.add(new String[] {"Đã được giải quyết lần đầu", "10", "12", "24", "24"});
-		header1.add(new String[] {"Đã được giải quyết nhiều lần", "10", "12", "25", "25"});
+		header1.add(new String[] {"Đã được giải quyết lần đầu", "10", "12", "24", "25"});
+//		header1.add(new String[] {"Đã được giải quyết nhiều lần", "10", "12", "25", "25"});
 		
 		header1.add(new String[] {"Đơn khác (kiến nghị, phản ánh, đơn nặc danh)", "8", "12", "26", "26"});
 		header1.add(new String[] {"Kết quả xử lý đơn khiếu nại, tố cáo", "8", "8", "27", "31"});
