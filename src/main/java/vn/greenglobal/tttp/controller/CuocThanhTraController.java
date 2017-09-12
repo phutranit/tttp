@@ -61,8 +61,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
 			@RequestParam(value = "quyetDinhPheDuyetKTTT", required = false) String quyetDinhPheDuyetKTTT,
-			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
+			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
 			@RequestParam(value = "linhVucThanhTra", required = false) String linhVucThanhTra,
 			@RequestParam(value = "tienDoThanhTra", required = false) String tienDoThanhTra,
@@ -238,8 +238,11 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setSoVuDieuTra(0);
 			cuocThanhTra.setSoDoiTuongDieuTra(9);
 			cuocThanhTra.setCoQuanDieuTra(null);
+			cuocThanhTra.setSoQuyetDinhDieuTra("");
+			cuocThanhTra.setNguoiRaQuyetDinhDieuTra("");
 		} else if (!cuocThanhTra.isViPham()) {
 			cuocThanhTra.setSoQDXuPhatHCDuocBanHanh("");
+			cuocThanhTra.setNoiDungViPhamKhac("");
 			cuocThanhTra.setToChucXuLyHanhChinhViPham(0);
 			cuocThanhTra.setCaNhanXuLyHanhChinhViPham(0);
 			cuocThanhTra.setTienThuViPham(0);
@@ -248,8 +251,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setDatTraKienNghiThuHoi(0);
 			cuocThanhTra.setTienTraKienNghiKhac(0);
 			cuocThanhTra.setDatTraKienNghiKhac(0);
-			cuocThanhTra.setTienThuTrongQuaTrinhThanhTra(0);
-			cuocThanhTra.setDatThuTrongQuaTrinhThanhTra(0);
+			cuocThanhTra.setTienDaThuTrongQuaTrinhThanhTra(0);
+			cuocThanhTra.setDatDaThuTrongQuaTrinhThanhTra(0);
 			cuocThanhTra.setDatLanChiem(0);
 			cuocThanhTra.setGiaoDatCapDatSaiDoiTuong(0);
 			cuocThanhTra.setCapBanDatTraiThamQuyen(0);

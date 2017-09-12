@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
@@ -205,7 +205,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
 								CuocThanhTra cttSave = new CuocThanhTra();
 								cttSave.setId(ctt.getId());
-								cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
+								cttSave.setChucNangThanhTra(ChucNangThanhTraEnum.THEO_KE_HOACH);
 								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 								cttSave.setKyThanhTra(ctt.getKyThanhTra());
 								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
@@ -356,7 +356,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										cttSave = cuocThanhTraOld;
 									}
 								} else {
-									cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
+									cttSave.setChucNangThanhTra(ChucNangThanhTraEnum.THEO_KE_HOACH);
 									cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 									cttSave.setKyThanhTra(ctt.getKyThanhTra());
 									cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
