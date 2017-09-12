@@ -30,6 +30,7 @@ import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -678,6 +679,24 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		return tongSo;
 	}
 	
+	public Long getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(BooleanExpression predAllXLD,
+			LinhVucDonThu linhVuc, ThamQuyenGiaiQuyet thamQuyenGiaiQuyet) {
+		Long tongSo = 0L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		if (linhVuc == null) { 
+			return tongSo;
+		}
+		predAllXLD = predAllXLD
+				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_TO_CAO))
+				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.eq(linhVuc))
+				.and(QXuLyDon.xuLyDon.don.thamQuyenGiaiQuyet.eq(thamQuyenGiaiQuyet));
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
 	public Long getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucCha(BooleanExpression predAllXLD,
 			LinhVucDonThu linhVuc) {
 		Long tongSo = 0L;
@@ -732,6 +751,17 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
 		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.coThongTinCoQuanDaGiaiQuyet.isTrue());
+		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
+		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonXLDTheoTrinhTuGiaiQuyetChuaDuocGiaiQuyet(BooleanExpression predAllXLD) {
+		Long tongSo = 0L;
+		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
+		Set<Don> dons = new HashSet<Don>();
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.huongXuLyXLD.isNull());
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
