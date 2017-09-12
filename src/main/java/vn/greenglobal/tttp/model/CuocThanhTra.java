@@ -27,9 +27,8 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
-import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
@@ -61,6 +60,20 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soQuyetDinhGiaHan = "";//
 	@Size(max = 255)
 	private String soQuyetDinhVeViecThanhTra = "";//
+	@Size(max = 255) // Chuyen co quan dieu tra
+	private String soQuyetDinhDieuTra = "";//
+	@Size(max = 255) // Chuyen co quan dieu tra
+	private String nguoiRaQuyetDinhDieuTra = "";//
+	@Size(max = 255)
+	private String soQuyetDinhXuLy = "";//
+	@Size(max = 255) // Thong bao ket thuc thanh tra truc tiep
+	private String soThongBaoKetThucTTTT = "";//
+	@Size(max = 255) // Thong bao ket thuc thanh tra truc tiep
+	private String nguoiBanHanhThongBaoKetThucTTTT = "";//
+	//@Lob // Thong bao ket thuc thanh tra truc tiep
+	private String ghiChuThongBaoKetThucTTTT = "";//
+	//@Lob // Vi pham
+	private String noiDungViPhamKhac = "";
 	//@Lob
 	private String ghiChu = "";//
 	//@Lob
@@ -123,8 +136,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private long datTraKienNghiThuHoi;//
 	private long tienTraKienNghiKhac;//
 	private long datTraKienNghiKhac;//
-	private long tienThuTrongQuaTrinhThanhTra;//
-	private long datThuTrongQuaTrinhThanhTra;//
+	private long tienDaThuTrongQuaTrinhThanhTra;//
+	private long datDaThuTrongQuaTrinhThanhTra;//
 	private long datLanChiem;//
 	private long giaoDatCapDatSaiDoiTuong;//
 	private long capBanDatTraiThamQuyen;//
@@ -159,9 +172,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private LocalDateTime ngayRaQuyetDinh;//
 	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
 	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
+	private LocalDateTime ngayBanHanhQuyetDinhXuLy;//
 	private LocalDateTime ngayHetHanThanhTra;//
 	private LocalDateTime ngayHetHanGiaHanThanhTra;//
 	private LocalDateTime ngayRaQuyetDinhGiaHan;//
+	// Thong bao ket thuc thanh tra truc tiep
+	private LocalDateTime ngayBanHanhThongBaoKetThucTTTT;//
 
 	// Thanh lap doan
 	private LocalDateTime ngayRaQuyetDinhThanhLapDoan;//
@@ -172,7 +188,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@Enumerated(EnumType.STRING)
 	private LinhVucThanhTraEnum linhVucThanhTra;//
 	@Enumerated(EnumType.STRING)
-	private HinhThucThanhTraEnum hinhThucThanhTra;//
+	private ChucNangThanhTraEnum chucNangThanhTra;//
 	@Enumerated(EnumType.STRING)
 	private LoaiHinhThanhTraEnum loaiHinhThanhTra;//
 	@Enumerated(EnumType.STRING)
@@ -210,9 +226,16 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<ThanhVienDoan> thanhVienDoans = new ArrayList<ThanhVienDoan>();//
 	
-	@OneToMany(mappedBy = "cuocThanhTra", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)// Doi Tuong Thanh Tra
+	@JoinTable(name = "cuocthanhtra_has_doituongthanhtra", joinColumns = {
+			@JoinColumn(name = "cuocThanhTra_id") }, inverseJoinColumns = { @JoinColumn(name = "doiTuongThanhTra_id") })
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<DoiTuongThanhTra> doiTuongThanhTras = new ArrayList<DoiTuongThanhTra>();//
+	
+	@OneToMany(mappedBy = "cuocThanhTra", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)	
 	private List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>(); //
 
 	public String getTen() {
@@ -285,6 +308,62 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setSoQuyetDinhVeViecThanhTra(String soQuyetDinhVeViecThanhTra) {
 		this.soQuyetDinhVeViecThanhTra = soQuyetDinhVeViecThanhTra;
+	}
+
+	public String getSoQuyetDinhDieuTra() {
+		return soQuyetDinhDieuTra;
+	}
+
+	public void setSoQuyetDinhDieuTra(String soQuyetDinhDieuTra) {
+		this.soQuyetDinhDieuTra = soQuyetDinhDieuTra;
+	}
+
+	public String getNguoiRaQuyetDinhDieuTra() {
+		return nguoiRaQuyetDinhDieuTra;
+	}
+
+	public void setNguoiRaQuyetDinhDieuTra(String nguoiRaQuyetDinhDieuTra) {
+		this.nguoiRaQuyetDinhDieuTra = nguoiRaQuyetDinhDieuTra;
+	}
+
+	public String getSoQuyetDinhXuLy() {
+		return soQuyetDinhXuLy;
+	}
+
+	public void setSoQuyetDinhXuLy(String soQuyetDinhXuLy) {
+		this.soQuyetDinhXuLy = soQuyetDinhXuLy;
+	}
+
+	public String getSoThongBaoKetThucTTTT() {
+		return soThongBaoKetThucTTTT;
+	}
+
+	public void setSoThongBaoKetThucTTTT(String soThongBaoKetThucTTTT) {
+		this.soThongBaoKetThucTTTT = soThongBaoKetThucTTTT;
+	}
+
+	public String getNguoiBanHanhThongBaoKetThucTTTT() {
+		return nguoiBanHanhThongBaoKetThucTTTT;
+	}
+
+	public void setNguoiBanHanhThongBaoKetThucTTTT(String nguoiBanHanhThongBaoKetThucTTTT) {
+		this.nguoiBanHanhThongBaoKetThucTTTT = nguoiBanHanhThongBaoKetThucTTTT;
+	}
+
+	public String getGhiChuThongBaoKetThucTTTT() {
+		return ghiChuThongBaoKetThucTTTT;
+	}
+
+	public void setGhiChuThongBaoKetThucTTTT(String ghiChuThongBaoKetThucTTTT) {
+		this.ghiChuThongBaoKetThucTTTT = ghiChuThongBaoKetThucTTTT;
+	}
+
+	public String getNoiDungViPhamKhac() {
+		return noiDungViPhamKhac;
+	}
+
+	public void setNoiDungViPhamKhac(String noiDungViPhamKhac) {
+		this.noiDungViPhamKhac = noiDungViPhamKhac;
 	}
 
 	public String getGhiChu() {
@@ -543,20 +622,20 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.datTraKienNghiKhac = datTraKienNghiKhac;
 	}
 
-	public long getTienThuTrongQuaTrinhThanhTra() {
-		return tienThuTrongQuaTrinhThanhTra;
+	public long getTienDaThuTrongQuaTrinhThanhTra() {
+		return tienDaThuTrongQuaTrinhThanhTra;
 	}
 
-	public void setTienThuTrongQuaTrinhThanhTra(long tienThuTrongQuaTrinhThanhTra) {
-		this.tienThuTrongQuaTrinhThanhTra = tienThuTrongQuaTrinhThanhTra;
+	public void setTienDaThuTrongQuaTrinhThanhTra(long tienDaThuTrongQuaTrinhThanhTra) {
+		this.tienDaThuTrongQuaTrinhThanhTra = tienDaThuTrongQuaTrinhThanhTra;
 	}
 
-	public long getDatThuTrongQuaTrinhThanhTra() {
-		return datThuTrongQuaTrinhThanhTra;
+	public long getDatDaThuTrongQuaTrinhThanhTra() {
+		return datDaThuTrongQuaTrinhThanhTra;
 	}
 
-	public void setDatThuTrongQuaTrinhThanhTra(long datThuTrongQuaTrinhThanhTra) {
-		this.datThuTrongQuaTrinhThanhTra = datThuTrongQuaTrinhThanhTra;
+	public void setDatDaThuTrongQuaTrinhThanhTra(long datDaThuTrongQuaTrinhThanhTra) {
+		this.datDaThuTrongQuaTrinhThanhTra = datDaThuTrongQuaTrinhThanhTra;
 	}
 
 	public long getTienThamNhung() {
@@ -767,6 +846,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.ngayBanHanhKetLuanThanhTra = ngayBanHanhKetLuanThanhTra;
 	}
 
+	public LocalDateTime getNgayBanHanhQuyetDinhXuLy() {
+		return ngayBanHanhQuyetDinhXuLy;
+	}
+
+	public void setNgayBanHanhQuyetDinhXuLy(LocalDateTime ngayBanHanhQuyetDinhXuLy) {
+		this.ngayBanHanhQuyetDinhXuLy = ngayBanHanhQuyetDinhXuLy;
+	}
+
 	public LocalDateTime getNgayHetHanThanhTra() {
 		return ngayHetHanThanhTra;
 	}
@@ -791,6 +878,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.ngayRaQuyetDinhGiaHan = ngayRaQuyetDinhGiaHan;
 	}
 
+	public LocalDateTime getNgayBanHanhThongBaoKetThucTTTT() {
+		return ngayBanHanhThongBaoKetThucTTTT;
+	}
+
+	public void setNgayBanHanhThongBaoKetThucTTTT(LocalDateTime ngayBanHanhThongBaoKetThucTTTT) {
+		this.ngayBanHanhThongBaoKetThucTTTT = ngayBanHanhThongBaoKetThucTTTT;
+	}
+
 	public LinhVucThanhTraEnum getLinhVucThanhTra() {
 		return linhVucThanhTra;
 	}
@@ -799,12 +894,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.linhVucThanhTra = linhVucThanhTra;
 	}
 
-	public HinhThucThanhTraEnum getHinhThucThanhTra() {
-		return hinhThucThanhTra;
+	public ChucNangThanhTraEnum getChucNangThanhTra() {
+		return chucNangThanhTra;
 	}
 
-	public void setHinhThucThanhTra(HinhThucThanhTraEnum hinhThucThanhTra) {
-		this.hinhThucThanhTra = hinhThucThanhTra;
+	public void setChucNangThanhTra(ChucNangThanhTraEnum chucNangThanhTra) {
+		this.chucNangThanhTra = chucNangThanhTra;
 	}
 
 	public LoaiHinhThanhTraEnum getLoaiHinhThanhTra() {
@@ -876,6 +971,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.thanhVienDoans = thanhVienDoans;
 	}
 
+	public List<DoiTuongThanhTra> getDoiTuongThanhTras() {
+		return doiTuongThanhTras;
+	}
+
+	public void setDoiTuongThanhTras(List<DoiTuongThanhTra> doiTuongThanhTras) {
+		this.doiTuongThanhTras = doiTuongThanhTras;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getTaiLieuVanThus() {
 		return taiLieuVanThus;
@@ -926,6 +1029,9 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			map.put("ten", getDoiTuongThanhTra().getTen());
 			map.put("loaiDoiTuongThanhTraInfo", getDoiTuongThanhTra().getLoaiDoiTuongThanhTraInfo());
 			map.put("linhVucDoiTuongThanhTraInfo", getDoiTuongThanhTra().getLinhVucDoiTuongThanhTraInfo());
+			map.put("diaChi", getDoiTuongThanhTra().getDiaChi());
+			map.put("ghiChu", getDoiTuongThanhTra().getGhiChu());
+			map.put("soDienThoai", getDoiTuongThanhTra().getSoDienThoai());
 			return map;
 		}
 		return null;
@@ -999,11 +1105,11 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucThanhTraInfo() {
-		if (getHinhThucThanhTra() != null) {
+	public Map<String, Object> getChucNangThanhTraInfo() {
+		if (getChucNangThanhTra() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucThanhTra().name());
-			map.put("text", getHinhThucThanhTra().getText());
+			map.put("type", getChucNangThanhTra().name());
+			map.put("text", getChucNangThanhTra().getText());
 			return map;
 		}
 		return null;
@@ -1053,6 +1159,45 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
 					&& BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuChuyenCoQuanDieuTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.CHUYEN_CO_QUAN_DIEU_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuThongTinCuocThanhTra() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.THONG_TIN_CUOC_THANH_TRA.equals(tlvt.getBuocGiaiQuyet())) {
+				list.add(tlvt);
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuThongBaoKetThucTTTT() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && ProcessTypeEnum.THANH_TRA.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.THONG_BAO_KET_THUC_THANH_TRA_TRUC_TIEP.equals(tlvt.getBuocGiaiQuyet())) {
 				list.add(tlvt);
 			}
 		}

@@ -40,6 +40,8 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 	private String diaChi = "";
 	@Size(max = 255)
 	private String diaChiSearch = "";
+	@Size(max = 255)
+	private String soDienThoai = "";
 	//@Lob
 	private String ghiChu = "";
 	//@Lob
@@ -85,6 +87,14 @@ public class DoiTuongThanhTra extends Model<DoiTuongThanhTra> {
 
 	public void setDiaChiSearch(String diaChiSearch) {
 		this.diaChiSearch = diaChiSearch;
+	}
+
+	public String getSoDienThoai() {
+		return soDienThoai;
+	}
+
+	public void setSoDienThoai(String soDienThoai) {
+		this.soDienThoai = soDienThoai;
 	}
 
 	public String getGhiChu() {
