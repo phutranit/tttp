@@ -44,6 +44,7 @@ import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
 import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
+import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
@@ -128,6 +129,28 @@ public class EnumController {
 			object = new HashMap<String, Object>();
 		}
 		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/hinhThucThongKe")
+	@ApiOperation(value = "Lấy danh sách Hình thức thống kê", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getHinhThucThongKes(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", HinhThucThongKeEnum.DON_VI.getText());
+		object.put("giaTri", HinhThucThongKeEnum.DON_VI.name());
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", HinhThucThongKeEnum.CAP_DON_VI.getText());
+		object.put("giaTri", HinhThucThongKeEnum.CAP_DON_VI.name());
+		list.add(object);
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
