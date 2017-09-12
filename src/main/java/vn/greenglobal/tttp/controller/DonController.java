@@ -913,6 +913,13 @@ public class DonController extends TttpController<Don> {
 			OrderSpecifier<Integer> sortOrderDonByCanBo = null;
 			List<Don> listDon = new ArrayList<Don>();
 			
+			if (StringUtils.isNotBlank(vaiTro)) {
+				if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTro)
+						|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTro)) {
+					phongBanXuLyXLD = 0L;
+				}
+			}
+			
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
 					canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
