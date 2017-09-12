@@ -108,6 +108,7 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 		Long tongSo = 0L;
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
+		
 		tongSo = Long.valueOf(soTiepCongDans.size());
 		return tongSo;
 	}
