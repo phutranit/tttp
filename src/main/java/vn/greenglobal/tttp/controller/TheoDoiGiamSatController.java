@@ -669,9 +669,11 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			map.put("tongDonDangDaXL", tongSoDangDaXL);
 			
 			map.put("donVis", coQuans);
+			
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+
 }
