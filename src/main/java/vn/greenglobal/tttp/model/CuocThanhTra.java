@@ -48,8 +48,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String ten = "";//
 	@Size(max = 255) // Thanh lap doan
 	private String soQuyetDinhThanhLapDoan = "";//
-	@Size(max = 255) // Vi pham
-	private String soQDXuPhatHCDuocBanHanh = "";//
+	//@Size(max = 255) // Vi pham
+	//private String soQDXuPhatHCDuocBanHanh = "";//
 	@Size(max = 255) // Pham vi thanh tra
 	private String kyThanhTra = "";//
 	@Size(max = 255)
@@ -60,10 +60,10 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soQuyetDinhGiaHan = "";//
 	@Size(max = 255)
 	private String soQuyetDinhVeViecThanhTra = "";//
-	@Size(max = 255) // Chuyen co quan dieu tra
-	private String soQuyetDinhDieuTra = "";//
-	@Size(max = 255) // Chuyen co quan dieu tra
-	private String nguoiRaQuyetDinhDieuTra = "";//
+	//@Size(max = 255) // Chuyen co quan dieu tra
+	//private String soQuyetDinhDieuTra = "";//
+	//@Size(max = 255) // Chuyen co quan dieu tra
+	//private String nguoiRaQuyetDinhDieuTra = "";//
 	@Size(max = 255)
 	private String soQuyetDinhXuLy = "";//
 	@Size(max = 255) // Thong bao ket thuc thanh tra truc tiep
@@ -73,7 +73,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	//@Lob // Thong bao ket thuc thanh tra truc tiep
 	private String ghiChuThongBaoKetThucTTTT = "";//
 	//@Lob // Vi pham
-	private String noiDungViPhamKhac = "";
+	//private String noiDungViPhamKhac = "";
 	//@Lob
 	private String ghiChu = "";//
 	//@Lob
@@ -101,13 +101,13 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private int thoiHanGiaHanThanhTra = 0;//
 	
 	// Chuyen co quan dieu tra
-	private int soVuDieuTra = 0;//
-	private int soDoiTuongDieuTra = 0;//
+	//private int soVuDieuTra = 0;//
+	//private int soDoiTuongDieuTra = 0;//
 
 	// Vi pham
-	private int toChucXuLyHanhChinhViPham = 0;//
-	private int caNhanXuLyHanhChinhViPham = 0;//
-	private int soViPham = 0;//
+	//private int toChucXuLyHanhChinhViPham = 0;//
+	//private int caNhanXuLyHanhChinhViPham = 0;//
+	//private int soViPham = 0;//
 
 	// Tham nhung
 	private int toChucXuLyHanhChinhThamNhung = 0;//
@@ -130,28 +130,28 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	// private boolean kiemTraDonDoc;
 
 	// Vi pham
-	private long tienThuViPham;//
-	private long datThuViPham;//
-	private long tienTraKienNghiThuHoi;//
-	private long datTraKienNghiThuHoi;//
-	private long tienTraKienNghiKhac;//
-	private long datTraKienNghiKhac;//
-	private long tienDaThuTrongQuaTrinhThanhTra;//
-	private long datDaThuTrongQuaTrinhThanhTra;//
-	private long datLanChiem;//
-	private long giaoDatCapDatSaiDoiTuong;//
-	private long capBanDatTraiThamQuyen;//
-	private long capGCNQSDDatSai;//
-	private long choThueKhongDungQD;//
-	private long datKhongDungMDSaiQD;//
-	private long boHoangHoa;//
-	private long viPhamKhac;//
-	private long soTienViPham;//
-	private long soTienXuPhatViPham;//
-	private long soTienKienNghiThuHoi;//
-	private long soTienTichThuXuLyTaiSanViPham;//
-	private long soTienTieuHuyXuLyTaiSanViPham;//
-
+	//private long tienThuViPham;//
+	//private long datThuViPham;//
+	//private long tienTraKienNghiThuHoi;//
+	//private long datTraKienNghiThuHoi;//
+	//private long tienTraKienNghiKhac;//
+	//private long datTraKienNghiKhac;//
+	//private long tienDaThuTrongQuaTrinhThanhTra;//
+	//private long datDaThuTrongQuaTrinhThanhTra;//
+	//private long datLanChiem;//
+	//private long giaoDatCapDatSaiDoiTuong;//
+	//private long capBanDatTraiThamQuyen;//
+	//private long capGCNQSDDatSai;//
+	//private long choThueKhongDungQD;//
+	//private long datKhongDungMDSaiQD;//
+	//private long boHoangHoa;//
+	//private long viPhamKhac;//
+	//private long soTienViPham;//
+	//private long soTienXuPhatViPham;//
+	//private long soTienKienNghiThuHoi;//
+	//private long soTienTichThuXuLyTaiSanViPham;//
+	//private long soTienTieuHuyXuLyTaiSanViPham;//
+	
 	// Tham nhung
 	private long tienThamNhung;//
 	private long taiSanKhacThamNhung;//
@@ -205,8 +205,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private DoiTuongThanhTra doiTuongThanhTra;//
 	@ManyToOne
 	private KeHoachThanhTra keHoachThanhTra;//
-	@ManyToOne// Chuyen co quan dieu tra
-	private CoQuanQuanLy coQuanDieuTra;//
+	//@ManyToOne// Chuyen co quan dieu tra
+	//private CoQuanQuanLy coQuanDieuTra;//
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;//
@@ -254,13 +254,13 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soQuyetDinhThanhLapDoan = soQuyetDinhThanhLapDoan;
 	}
 
-	public String getSoQDXuPhatHCDuocBanHanh() {
+	/*public String getSoQDXuPhatHCDuocBanHanh() {
 		return soQDXuPhatHCDuocBanHanh;
 	}
 
 	public void setSoQDXuPhatHCDuocBanHanh(String soQDXuPhatHCDuocBanHanh) {
 		this.soQDXuPhatHCDuocBanHanh = soQDXuPhatHCDuocBanHanh;
-	}
+	}*/
 
 	public String getKyThanhTra() {
 		return kyThanhTra;
@@ -310,7 +310,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soQuyetDinhVeViecThanhTra = soQuyetDinhVeViecThanhTra;
 	}
 
-	public String getSoQuyetDinhDieuTra() {
+	/*public String getSoQuyetDinhDieuTra() {
 		return soQuyetDinhDieuTra;
 	}
 
@@ -324,7 +324,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setNguoiRaQuyetDinhDieuTra(String nguoiRaQuyetDinhDieuTra) {
 		this.nguoiRaQuyetDinhDieuTra = nguoiRaQuyetDinhDieuTra;
-	}
+	}*/
 
 	public String getSoQuyetDinhXuLy() {
 		return soQuyetDinhXuLy;
@@ -358,13 +358,13 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.ghiChuThongBaoKetThucTTTT = ghiChuThongBaoKetThucTTTT;
 	}
 
-	public String getNoiDungViPhamKhac() {
+	/*public String getNoiDungViPhamKhac() {
 		return noiDungViPhamKhac;
 	}
 
 	public void setNoiDungViPhamKhac(String noiDungViPhamKhac) {
 		this.noiDungViPhamKhac = noiDungViPhamKhac;
-	}
+	}*/
 
 	public String getGhiChu() {
 		return ghiChu;
@@ -462,7 +462,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.thoiHanGiaHanThanhTra = thoiHanGiaHanThanhTra;
 	}
 
-	public int getSoVuDieuTra() {
+	/*public int getSoVuDieuTra() {
 		return soVuDieuTra;
 	}
 
@@ -476,7 +476,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setSoDoiTuongDieuTra(int soDoiTuongDieuTra) {
 		this.soDoiTuongDieuTra = soDoiTuongDieuTra;
-	}
+	}*/
 
 	public int getSoVuThamNhung() {
 		return soVuThamNhung;
@@ -494,7 +494,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soDoiTuongThamNhung = soDoiTuongThamNhung;
 	}
 
-	public int getToChucXuLyHanhChinhViPham() {
+	/*public int getToChucXuLyHanhChinhViPham() {
 		return toChucXuLyHanhChinhViPham;
 	}
 
@@ -508,7 +508,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setCaNhanXuLyHanhChinhViPham(int caNhanXuLyHanhChinhViPham) {
 		this.caNhanXuLyHanhChinhViPham = caNhanXuLyHanhChinhViPham;
-	}
+	}*/
 
 	public int getToChucXuLyHanhChinhThamNhung() {
 		return toChucXuLyHanhChinhThamNhung;
@@ -534,13 +534,13 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.soNguoiXuLyTrachNhiemDungDau = soNguoiXuLyTrachNhiemDungDau;
 	}
 
-	public int getSoViPham() {
+	/*public int getSoViPham() {
 		return soViPham;
 	}
 
 	public void setSoViPham(int soViPham) {
 		this.soViPham = soViPham;
-	}
+	}*/
 
 	public boolean isChuyenCoQuanDieuTra() {
 		return chuyenCoQuanDieuTra;
@@ -574,7 +574,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.thanhLapDoan = thanhLapDoan;
 	}
 
-	public long getTienThuViPham() {
+	/*public long getTienThuViPham() {
 		return tienThuViPham;
 	}
 
@@ -636,7 +636,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setDatDaThuTrongQuaTrinhThanhTra(long datDaThuTrongQuaTrinhThanhTra) {
 		this.datDaThuTrongQuaTrinhThanhTra = datDaThuTrongQuaTrinhThanhTra;
-	}
+	}*/
 
 	public long getTienThamNhung() {
 		return tienThamNhung;
@@ -710,7 +710,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.datDaThu = datDaThu;
 	}
 
-	public long getDatLanChiem() {
+	/*public long getDatLanChiem() {
 		return datLanChiem;
 	}
 
@@ -812,7 +812,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setSoTienTieuHuyXuLyTaiSanViPham(long soTienTieuHuyXuLyTaiSanViPham) {
 		this.soTienTieuHuyXuLyTaiSanViPham = soTienTieuHuyXuLyTaiSanViPham;
-	}
+	}*/
 
 	public LocalDateTime getNgayRaQuyetDinh() {
 		return ngayRaQuyetDinh;
@@ -936,14 +936,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.keHoachThanhTra = keHoachThanhTra;
 	}
 
-	@ApiModelProperty(example = "{}")
+	/*@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanDieuTra() {
 		return coQuanDieuTra;
 	}
 
 	public void setCoQuanDieuTra(CoQuanQuanLy coQuanDieuTra) {
 		this.coQuanDieuTra = coQuanDieuTra;
-	}
+	}*/
 
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getDonViChuTri() {
@@ -1055,7 +1055,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		return null;
 	}
 	
-	@Transient
+	/*@Transient
 	@ApiModelProperty( hidden = true )
 	public Map<String, Object> getCoQuanDieuTraInfo() {
 		if (getCoQuanDieuTra() != null) {
@@ -1065,7 +1065,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			return map;
 		}
 		return null;
-	}
+	}*/
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
@@ -1165,7 +1165,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		return list;
 	}
 	
-	@Transient
+	/*@Transient
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThuChuyenCoQuanDieuTra() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
@@ -1176,7 +1176,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			}
 		}
 		return list;
-	}
+	}*/
 	
 	@Transient
 	@ApiModelProperty(hidden = true)

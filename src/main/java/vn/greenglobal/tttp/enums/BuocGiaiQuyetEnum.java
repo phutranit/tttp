@@ -15,7 +15,8 @@ public enum BuocGiaiQuyetEnum {
 	KET_LUAN_THANH_TRA("Kết luận thanh tra"),
 	CHUYEN_CO_QUAN_DIEU_TRA("Chuyển cơ quan điều tra"),
 	THONG_TIN_CUOC_THANH_TRA("Thông tin cuộc thanh tra"),
-	THONG_BAO_KET_THUC_THANH_TRA_TRUC_TIEP("Thông báo kết thúc thanh tra trực tiếp");
+	THONG_BAO_KET_THUC_THANH_TRA_TRUC_TIEP("Thông báo kết thúc thanh tra trực tiếp"),
+	KIEN_NGHI_XU_LY_KHAC("Kiến nghị xử lý khác");
 
 	BuocGiaiQuyetEnum(String text) {
 		this.text = text;

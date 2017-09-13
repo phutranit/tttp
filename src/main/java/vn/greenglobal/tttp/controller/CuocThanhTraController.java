@@ -269,13 +269,13 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setNgayRaQuyetDinhThanhLapDoan(null);
 			cuocThanhTra.setThanhVienDoans(new ArrayList<ThanhVienDoan>());
 		} else if (!cuocThanhTra.isChuyenCoQuanDieuTra()) {
-			cuocThanhTra.setSoVuDieuTra(0);
+			/*cuocThanhTra.setSoVuDieuTra(0);
 			cuocThanhTra.setSoDoiTuongDieuTra(9);
 			cuocThanhTra.setCoQuanDieuTra(null);
 			cuocThanhTra.setSoQuyetDinhDieuTra("");
-			cuocThanhTra.setNguoiRaQuyetDinhDieuTra("");
+			cuocThanhTra.setNguoiRaQuyetDinhDieuTra("");*/
 		} else if (!cuocThanhTra.isViPham()) {
-			cuocThanhTra.setSoQDXuPhatHCDuocBanHanh("");
+			/*cuocThanhTra.setSoQDXuPhatHCDuocBanHanh("");
 			cuocThanhTra.setNoiDungViPhamKhac("");
 			cuocThanhTra.setToChucXuLyHanhChinhViPham(0);
 			cuocThanhTra.setCaNhanXuLyHanhChinhViPham(0);
@@ -299,7 +299,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setSoTienXuPhatViPham(0);
 			cuocThanhTra.setSoTienKienNghiThuHoi(0);
 			cuocThanhTra.setSoTienTichThuXuLyTaiSanViPham(0);
-			cuocThanhTra.setSoTienTieuHuyXuLyTaiSanViPham(0);
+			cuocThanhTra.setSoTienTieuHuyXuLyTaiSanViPham(0);*/
 		} else if (!cuocThanhTra.isPhatHienThamNhung()) {
 			cuocThanhTra.setTenNguoi("");
 			cuocThanhTra.setToChucXuLyHanhChinhThamNhung(0);
