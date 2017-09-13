@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
@@ -143,6 +144,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
 				thanhVienDoanService.save(tvd, congChucId);
 			}
+			checkTienDoThanhTra(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -195,6 +197,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				thanhVienDoanService.save(tvd, congChucId);
 			}
 			checkDataCuocThanhTra(cuocThanhTra);
+			checkTienDoThanhTra(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -227,6 +230,37 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
+	}
+	
+	private CuocThanhTra checkTienDoThanhTra(CuocThanhTra cuocThanhTra) {
+		if (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() != null && !"".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+				&& cuocThanhTra.getNgayRaQuyetDinh() != null && !"".equals(cuocThanhTra.getNgayRaQuyetDinh())
+				&& cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() != null && !"".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra())
+				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
+						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))
+				&& (cuocThanhTra.getSoKetLuanThanhTra() == null || "".equals(cuocThanhTra.getSoKetLuanThanhTra())
+						|| cuocThanhTra.getNgayBanHanhKetLuanThanhTra() == null || "".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra()))) {
+			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.DANG_TIEN_HANH);
+		}
+		if (cuocThanhTra.getSoThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
+				&& cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT())
+				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+				&& (cuocThanhTra.getSoKetLuanThanhTra() == null || "".equals(cuocThanhTra.getSoKetLuanThanhTra())
+						|| cuocThanhTra.getNgayBanHanhKetLuanThanhTra() == null || "".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra()))) {
+			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP);
+		}
+		if (cuocThanhTra.getSoKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getSoKetLuanThanhTra())
+				&& cuocThanhTra.getNgayBanHanhKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra())
+				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
+						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))) {
+			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN);
+		}
+		return cuocThanhTra;
 	}
 
 	private CuocThanhTra checkDataCuocThanhTra(CuocThanhTra cuocThanhTra) {
