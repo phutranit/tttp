@@ -558,6 +558,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI);
 								}
 							} else {
+								don.setHoanThanhDon(true);
 								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
 							}
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
@@ -1844,6 +1845,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setDonViXuLyDonChuyen(donVi.getDonVi());
 		donMoi.setCanBoXuLyChiDinh(null);
 		donMoi.setXuLyDonCuoiCungId(null);
+		donMoi.setHoanThanhDon(false);
 		xuLyDonTiepTheo.setDon(donMoi);
 		
 		//tao lich su qua trinh xu ly don
@@ -2030,8 +2032,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
+		don.setHoanThanhDon(true);
 		donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
 		donGoc.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
+		donGoc.setHoanThanhDon(false);
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
