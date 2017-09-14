@@ -50,6 +50,7 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongViPhamRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
@@ -292,6 +293,9 @@ public class Application extends SpringBootServletInitializer {
 	private DonRepository donRepository;
 	
 	@Autowired
+	private DoiTuongViPhamRepository doiTuongViPhamRepository;
+	
+	@Autowired
 	private ChucVuService chucVuService;
 	
 	
@@ -313,6 +317,10 @@ public class Application extends SpringBootServletInitializer {
 	
 	public ChucVuRepository getChucVuRepository() {
 		return chucVuRepository;
+	}
+
+	public DoiTuongViPhamRepository getDoiTuongViPhamRepository() {
+		return doiTuongViPhamRepository;
 	}
 
 	public ChucVuService getChucVuService() {
