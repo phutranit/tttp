@@ -50,6 +50,7 @@ import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
@@ -442,12 +443,16 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			}
 			
 			BooleanExpression predAllDSDon = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQD(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllDSDonTruocKy = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQDTruocKy(loaiKy, quy, year, month, tuNgay, denNgay);
 			predAllDSDon = predAllDSDon.and(QDon.don.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
 					.and(QDon.don.thanhLapDon.eq(true))
 					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
-			
+			predAllDSDonTruocKy = predAllDSDonTruocKy.and(QDon.don.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
+					.and(QDon.don.thanhLapDon.eq(true))
+					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDSGQDDonVi = predAllDSDon;
+				BooleanExpression predAllDSGQDDonViTruocKy = predAllDSDonTruocKy;
 				predAllDSGQDDonVi = predAllDSGQDDonVi.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
 						.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
 								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
@@ -457,20 +462,36 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
 						);				
 				
+				predAllDSGQDDonViTruocKy = predAllDSGQDDonViTruocKy.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
+						.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
+								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))
+						.or(QDon.don.donViXuLyGiaiQuyet.cha.cha.id.eq(cq.getId())
+								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
+						);
+				
 				mapDonVi.put("ten", cq.getTen());
 				mapDonVi.put("coQuanQuanLyId", cq.getId());
 				
 				mapMaSo = new HashMap<String, Object>();
 				mapMaSo.put("donVi", mapDonVi);	
-				
-				//1 - Tong so don khieu nai
-				mapMaSo.put("tongSoDonKhieuNai", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
-				
+
 				Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
-						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
+//				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+//						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
+				
+				Long donThuLyKyTruocChuyenSang1 = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonViTruocKy, loaiKy, quy, year, month, tuNgay, denNgay);
+				Long soDonThuocThamQuyen5 = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiThuocThamQuyenCuaKyTruoc(predAllDSGQDDonViTruocKy, loaiKy, quy, year, month, tuNgay, denNgay);
+				Long donTonKyTruocChuyenSang = donThuLyKyTruocChuyenSang1 - soDonThuocThamQuyen5;
+				Long tongSoDonKhieuNai = donNhanTrongKyBaoCao + donTonKyTruocChuyenSang;
+				//1 - Tong so don khieu nai
+//				mapMaSo.put("tongSoDonKhieuNai", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
+				mapMaSo.put("tongSoDonKhieuNai", tongSoDonKhieuNai);
 				
 				//2 - Don nhan trong ky bao cao
 				mapMaSo.put("donNhanTrongKyBaoCao", donNhanTrongKyBaoCao);
@@ -484,23 +505,36 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				//5 - So don thuoc tham quyen
 				mapMaSo.put("soDonThuocThamQuyen", thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
 				
+				Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc8 = thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi);
+				Long khieuNaiDung9 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi);
+				Long khieuNaiSai10 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi);
+				Long khieuNaiDungMotPhan11 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi);
+				Long soVuViecGiaiQuyetBangQDHanhChinh7 = khieuNaiDung9 + khieuNaiSai10 + khieuNaiDungMotPhan11;
+				Long soVuViecThuocThamQuyen6 = soVuViecGiaiQuyetBangQDHanhChinh7 + soVuViecRutDonThongQuaGiaiThichThuyetPhuc8;
+				
 				//6 - So vu viec thuoc tham quyen
-				mapMaSo.put("soVuViecThuocThamQuyen",thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
+				//mapMaSo.put("soVuViecThuocThamQuyen", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
+				mapMaSo.put("soVuViecThuocThamQuyen", soVuViecThuocThamQuyen6);
 				
 				//7 - So vu viec giai quyet bang QD hanh chinh
-				mapMaSo.put("soVuViecGiaiQuyetBangQDHanhChinh", thongKeBaoCaoTongHopKQGQDService.getTongSoDonCoQuyetDinh(predAllDSGQDDonVi));
+				//mapMaSo.put("soVuViecGiaiQuyetBangQDHanhChinh", thongKeBaoCaoTongHopKQGQDService.getTongSoDonCoQuyetDinh(predAllDSGQDDonVi));
+				mapMaSo.put("soVuViecGiaiQuyetBangQDHanhChinh", soVuViecGiaiQuyetBangQDHanhChinh7);
 				
 				//8 - So vu viec rut don thong qua giai thich, thuyet phuc
-				mapMaSo.put("soVuViecRutDonThongQuaGiaiThichThuyetPhuc", thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi));
+				//mapMaSo.put("soVuViecRutDonThongQuaGiaiThichThuyetPhuc", thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi));
+				mapMaSo.put("soVuViecRutDonThongQuaGiaiThichThuyetPhuc", soVuViecRutDonThongQuaGiaiThichThuyetPhuc8);
 				
 				//9 - Khieu nai dung
-				mapMaSo.put("khieuNaiDung", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi));
+				//mapMaSo.put("khieuNaiDung", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi));
+				mapMaSo.put("khieuNaiDung", khieuNaiDung9);
 				
 				//10 - Khieu nai sai
-				mapMaSo.put("khieuNaiSai", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi));
+				//mapMaSo.put("khieuNaiSai", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi));
+				mapMaSo.put("khieuNaiSai", khieuNaiSai10);
 				
 				//11 - Khieu nai dung 1 phan
-				mapMaSo.put("khieuNaiDungMotPhan",thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi));
+				//mapMaSo.put("khieuNaiDungMotPhan",thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi));
+				mapMaSo.put("khieuNaiDungMotPhan", khieuNaiDungMotPhan11);
 				
 				//12 - Giai quyet lan 1
 				mapMaSo.put("giaiQuyetLan1", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetLan1(predAllDSGQDDonVi));
@@ -551,10 +585,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("soVuViecGiaiQuyetQuaThoiHan", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetKhieuNaiQuaThoiHan(predAllDSGQDDonVi));
 				
 				//28 - Tong so quyet dinh phai to chuc thuc hien trong ky bao cao
-				mapMaSo.put("tongSoQuyetDinhPhaiToChucThucHien", 0L);
+				mapMaSo.put("tongSoQuyetDinhPhaiToChucThucHien", soVuViecGiaiQuyetBangQDHanhChinh7);
 				
+				Long tongSoQuyetDinhPhaiToChucThucHienDaThucHien = thongKeBaoCaoTongHopKQGQDService.getTongSoQuyetDinhPhaiToChucThucHienDaThucHien(predAllDSGQDDonVi);
 				//29 - Tong so quyet dinh phai to chuc thuc hien trong ky bao cao da thuc hien
-				mapMaSo.put("tongSoQuyetDinhPhaiToChucThucHienDaThucHien", 0L);
+				mapMaSo.put("tongSoQuyetDinhPhaiToChucThucHienDaThucHien", tongSoQuyetDinhPhaiToChucThucHienDaThucHien);
 				
 				//30 - Tien phai thu cho nha nuoc
 				mapMaSo.put("tienPhaiThuChoNhaNuoc", thongKeBaoCaoTongHopKQGQDService.getTongSoTienDatPhaiThuTra(predAllDSGQDDonVi, "tienNhaNuocPhaiThu"));
@@ -1103,7 +1138,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			//tham quyen giai quyet 
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetHanhChinh = thamQuyenGiaiQuyetRepo.findOne(1L);
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetTuPhap = thamQuyenGiaiQuyetRepo.findOne(2L);
-			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetCQDang = thamQuyenGiaiQuyetRepo.findOne(3L);
+			//ThamQuyenGiaiQuyet thamQuyenGiaiQuyetCQDang = thamQuyenGiaiQuyetRepo.findOne(3L);
 			
 			List<LinhVucDonThu> linhVucLienQuanDenDatDais = new ArrayList<LinhVucDonThu>();
 			linhVucLienQuanDenDatDais.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais));
@@ -1363,7 +1398,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			//tham quyen giai quyet 
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetHanhChinh = thamQuyenGiaiQuyetRepo.findOne(1L);
 			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetTuPhap = thamQuyenGiaiQuyetRepo.findOne(2L);
-			ThamQuyenGiaiQuyet thamQuyenGiaiQuyetCQDang = thamQuyenGiaiQuyetRepo.findOne(3L);
+			//ThamQuyenGiaiQuyet thamQuyenGiaiQuyetCQDang = thamQuyenGiaiQuyetRepo.findOne(3L);
 			
 			List<LinhVucDonThu> linhVucLienQuanDenDatDais = new ArrayList<LinhVucDonThu>();
 			linhVucLienQuanDenDatDais.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais));
@@ -1525,24 +1560,18 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
+			if (quy == null) {
+				quy = Utils.getQuyHienTai();
+			}
 			
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
-//			ThamSo thamSoCCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
-//			ThamSo thamSoCCQQLUBNDSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo phuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));			
 			Long idCapCQQLPhongBan = Long.valueOf(phongBan.getGiaTri().toString());
 			Long idCapCQQLPhuongXa = Long.valueOf(phuongXa.getGiaTri().toString());
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapMaSo = new HashMap<>();
-//			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-//			
 			List<Map<String, Object>> maSos = new ArrayList<>();
-//			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDSoBanNganh.getGiaTri().toString()));
-//			List<CoQuanQuanLy> list = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViVaConCuaDonViTHTKBC(
-//					Long.valueOf(thamSoCCQQLUBNDThanhPho.getGiaTri().toString()), capCoQuanQuanLyIds,
-//					"CQQL_UBNDTP_DA_NANG", repoThamSo, thamSoService));
-//			donVis.addAll(list);
 			if (listDonVis != null) {
 				for (CoQuanQuanLy dv : listDonVis) {
 					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
@@ -1550,15 +1579,19 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						donVis.add(coQuan);
 					}				
 				}
-			}			
+			}		
 			
 			BooleanExpression predAllDSDon = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQD(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllDSDonTruocKy = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQDTruocKy(loaiKy, quy, year, month, tuNgay, denNgay);
 			predAllDSDon = predAllDSDon.and(QDon.don.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
 					.and(QDon.don.thanhLapDon.eq(true))
 					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
-			
+			predAllDSDonTruocKy = predAllDSDonTruocKy.and(QDon.don.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
+					.and(QDon.don.thanhLapDon.eq(true))
+					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDSGQDDonVi = predAllDSDon;
+				BooleanExpression predAllDSGQDDonViTruocKy = predAllDSDonTruocKy;
 				predAllDSGQDDonVi = predAllDSGQDDonVi.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
 						.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
 								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
@@ -1566,24 +1599,72 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						.or(QDon.don.donViXuLyGiaiQuyet.cha.cha.id.eq(cq.getId())
 								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
 										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
-						);	
-						
+						);				
+				
+				predAllDSGQDDonViTruocKy = predAllDSGQDDonViTruocKy.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
+						.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
+								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))
+						.or(QDon.don.donViXuLyGiaiQuyet.cha.cha.id.eq(cq.getId())
+								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
+						);
+				
 				mapMaSo = new HashMap<String, Object>();
 				mapMaSo.put("0", cq.getTen());
-				mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
+				
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
-				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
-						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
-				mapMaSo.put("2", thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay));
+				Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
+
+				Long donThuLyKyTruocChuyenSang1 = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonViTruocKy, loaiKy, quy, year, month, tuNgay, denNgay);
+				Long soDonThuocThamQuyen5 = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
+						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiThuocThamQuyenCuaKyTruoc(predAllDSGQDDonViTruocKy, loaiKy, quy, year, month, tuNgay, denNgay);
+				Long donTonKyTruocChuyenSang = donThuLyKyTruocChuyenSang1 - soDonThuocThamQuyen5;
+				Long tongSoDonKhieuNai = donNhanTrongKyBaoCao + donTonKyTruocChuyenSang;
+				
+				//mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
+				
+				mapMaSo.put("1", tongSoDonKhieuNai);
+				
+				//mapMaSo.put("2", thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay));
+				mapMaSo.put("2", donNhanTrongKyBaoCao);
+						
 				mapMaSo.put("3", donTonKyTruocChuyenSang);
+				
 				mapMaSo.put("4", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViec(predAllDSGQDDonVi));
 				mapMaSo.put("5", thongKeBaoCaoTongHopKQGQDService.getTongSoDonKhieuNaiThuocThamQuyen(predAllDSGQDDonVi));
-				mapMaSo.put("6", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecToCaoThuocThamQuyen(predAllDSGQDDonVi));
-				mapMaSo.put("7", thongKeBaoCaoTongHopKQGQDService.getTongSoDonCoQuyetDinh(predAllDSGQDDonVi));
-				mapMaSo.put("8", thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi));
-				mapMaSo.put("9", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi));
-				mapMaSo.put("10", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi));
-				mapMaSo.put("11", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi));
+				
+				//mapMaSo.put("6", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecToCaoThuocThamQuyen(predAllDSGQDDonVi));
+				
+				Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc8 = thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi);
+				Long khieuNaiDung9 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi);
+				Long khieuNaiSai10 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi);
+				Long khieuNaiDungMotPhan11 = thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi);
+				Long soVuViecGiaiQuyetBangQDHanhChinh7 = khieuNaiDung9 + khieuNaiSai10 + khieuNaiDungMotPhan11;
+				Long soVuViecThuocThamQuyen6 = soVuViecGiaiQuyetBangQDHanhChinh7 + soVuViecRutDonThongQuaGiaiThichThuyetPhuc8;
+				
+				mapMaSo.put("6", soVuViecThuocThamQuyen6);
+						
+				//mapMaSo.put("7", thongKeBaoCaoTongHopKQGQDService.getTongSoDonCoQuyetDinh(predAllDSGQDDonVi));
+				
+				mapMaSo.put("7", soVuViecGiaiQuyetBangQDHanhChinh7);
+				
+				//mapMaSo.put("8", thongKeBaoCaoTongHopKQGQDService.getTongSoDonDinhChi(predAllDSGQDDonVi));
+				mapMaSo.put("8", soVuViecRutDonThongQuaGiaiThichThuyetPhuc8);
+						
+				//mapMaSo.put("9", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiDung(predAllDSGQDDonVi));
+				
+				mapMaSo.put("9", khieuNaiDung9);
+				
+				//mapMaSo.put("10", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecKhieuNaiSai(predAllDSGQDDonVi));
+				
+				mapMaSo.put("10", khieuNaiSai10);
+				
+				//mapMaSo.put("11", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecDungMotPhan(predAllDSGQDDonVi));
+				
+				mapMaSo.put("11", khieuNaiDungMotPhan11);
+						
 				mapMaSo.put("12", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetLan1(predAllDSGQDDonVi));
 				mapMaSo.put("13", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetLan2CongNhan(predAllDSGQDDonVi));
 				mapMaSo.put("14", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetLan2HuySua(predAllDSGQDDonVi));
@@ -1600,8 +1681,12 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("25", thongKeBaoCaoTongHopKQGQDService.getTongSoDoiTuongDaKhoiTo(predAllDSGQDDonVi));
 				mapMaSo.put("26", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetKhieuNaiDungThoiHan(predAllDSGQDDonVi));
 				mapMaSo.put("27", thongKeBaoCaoTongHopKQGQDService.getTongSoVuViecGiaiQuyetKhieuNaiQuaThoiHan(predAllDSGQDDonVi));
-				mapMaSo.put("28", 0L);
-				mapMaSo.put("29", 0L);
+				
+				mapMaSo.put("28", soVuViecGiaiQuyetBangQDHanhChinh7);
+				
+				Long tongSoQuyetDinhPhaiToChucThucHienDaThucHien = thongKeBaoCaoTongHopKQGQDService.getTongSoQuyetDinhPhaiToChucThucHienDaThucHien(predAllDSGQDDonVi);
+				mapMaSo.put("29", tongSoQuyetDinhPhaiToChucThucHienDaThucHien);
+				
 				mapMaSo.put("30", thongKeBaoCaoTongHopKQGQDService.getTongSoTienDatPhaiThuTra(predAllDSGQDDonVi, "tienNhaNuocPhaiThu"));
 				mapMaSo.put("31", thongKeBaoCaoTongHopKQGQDService.getTongSoTienDatPhaiThuTra(predAllDSGQDDonVi, "datNhaNuocPhaiThu"));
 				mapMaSo.put("32", thongKeBaoCaoTongHopKQGQDService.getTongSoTienDatPhaiThuTra(predAllDSGQDDonVi, "tienNhaNuocDaThu"));

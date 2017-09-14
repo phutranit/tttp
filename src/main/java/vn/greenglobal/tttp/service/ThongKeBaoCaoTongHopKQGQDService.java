@@ -94,6 +94,63 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindAllGQDTruocKy(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) { 
+		BooleanExpression predAll = baseDon;
+		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+			if (loaiKyEnum != null) { 
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+					if (quy != null && quy > 0) { 						
+						if (quy == 1) { 
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 2) { 
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 4, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 3) {
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 7, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 4) {
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 10, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+					}
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+					LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+					LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 7, 1, 0, 0);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+					if (month != null && month > 0) {
+						LocalDateTime ngayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);		
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+					}
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
+					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else {
+						if (StringUtils.isNotBlank(tuNgay)) {
+							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+						}
+					}
+				}
+			}
+		}
+		
+		return predAll;
+	}
+	
 	public Long getTongSoDon(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
@@ -220,6 +277,68 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 		}		
 		
 		List<Don> dons = new ArrayList<Don>();
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.size());
+		return tongSo;
+	}
+	
+	public Long getTongSoDonKhieuNaiThuocThamQuyenCuaKyTruoc(BooleanExpression predAll, String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) { 
+		Long tongSo = 0L;
+		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+			if (loaiKyEnum != null) { 
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+					if (quy != null && quy > 0) { 						
+						if (quy == 1) { 
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 2) { 
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 4, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 3) {
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 7, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+						if (quy == 4) {
+							LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 10, 1, 0, 0);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						}
+					}
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+					LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 1, 1, 0, 0);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+					LocalDateTime ngayTiepNhan = LocalDateTime.of(year, 7, 1, 0, 0);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+					if (month != null && month > 0) {
+						LocalDateTime ngayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);		
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(ngayTiepNhan));
+					}
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
+					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else {
+						if (StringUtils.isNotBlank(tuNgay)) {
+							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+							predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+						}
+					}
+				}
+			}
+		}
+
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DINH_CHI)
+				.or(QDon.don.ketQuaXLDGiaiQuyet.eq(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET)));
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
@@ -713,6 +832,16 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 			}
 			return tongSoVuViec;
 		}).mapToLong(Long::longValue).sum());
+		return tongSo;
+	}
+	
+	public Long getTongSoQuyetDinhPhaiToChucThucHienDaThucHien(BooleanExpression predAll) { 
+		Long tongSo = 0L;
+		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.isNotNull())
+				.and(QDon.don.thongTinGiaiQuyetDon.theoDoiThucHien.isTrue());
+		dons.addAll((List<Don>) donRepo.findAll(predAll));
+		tongSo = Long.valueOf(dons.size());
 		return tongSo;
 	}
 }

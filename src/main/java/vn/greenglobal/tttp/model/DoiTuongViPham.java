@@ -77,6 +77,8 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	
 	@ManyToOne // Kien nghi chuyen co quan dieu tra
 	private CoQuanQuanLy coQuanDieuTra;
+	@ManyToOne
+	private CuocThanhTra cuocThanhTra;
 	
 	@OneToMany(mappedBy = "doiTuongViPham", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
@@ -91,7 +93,6 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.ten = ten;
 	}
 
-	@ApiModelProperty(example = "{}")
 	public String getSoQuyetDinhChuyenCoQuanDieuTra() {
 		return soQuyetDinhChuyenCoQuanDieuTra;
 	}
@@ -228,6 +229,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
 	}
 
+	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanDieuTra() {
 		return coQuanDieuTra;
 	}
@@ -236,6 +238,16 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.coQuanDieuTra = coQuanDieuTra;
 	}
 
+	@ApiModelProperty(example = "{}")
+	public CuocThanhTra getCuocThanhTra() {
+		return cuocThanhTra;
+	}
+
+	public void setCuocThanhTra(CuocThanhTra cuocThanhTra) {
+		this.cuocThanhTra = cuocThanhTra;
+	}
+
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getTaiLieuVanThus() {
 		return taiLieuVanThus;
 	}
@@ -310,6 +322,15 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 			map.put("coQuanQuanLyId", getCoQuanDieuTra().getId());
 			map.put("ten", getCoQuanDieuTra().getTen());
 			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Long getCuocThanhTraId() {
+		if (getCuocThanhTra() != null) {
+			return getCuocThanhTra().getId();
 		}
 		return null;
 	}
