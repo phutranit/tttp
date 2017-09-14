@@ -20,37 +20,41 @@ public class DoiTuongViPhamService {
 	@Autowired
 	private DoiTuongViPhamRepository doiTuongViPhamRepository;
 
+	BooleanExpression base = QDoiTuongViPham.doiTuongViPham.daXoa.eq(false);
+
 	public Predicate predicateFindOne(Long id) {
-		return QDoiTuongViPham.doiTuongViPham.daXoa.eq(false).and(QDoiTuongViPham.doiTuongViPham.id.eq(id));
+		return base.and(QDoiTuongViPham.doiTuongViPham.id.eq(id));
 	}
 
 	public boolean isExists(DoiTuongViPhamRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = QDoiTuongViPham.doiTuongViPham.daXoa.eq(false).and(QDoiTuongViPham.doiTuongViPham.id.eq(id));
+			Predicate predicate = base.and(QDoiTuongViPham.doiTuongViPham.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
 	}
 
+	public DoiTuongViPham delete(DoiTuongViPhamRepository repo, Long id) {
+		DoiTuongViPham doiTuongViPham = repo.findOne(predicateFindOne(id));
+
+		if (doiTuongViPham != null) {
+			doiTuongViPham.setDaXoa(true);
+		}
+
+		return doiTuongViPham;
+	}
+
 	public boolean checkExistsData(DoiTuongViPhamRepository repo, DoiTuongViPham body) {
-		BooleanExpression predAll = QDoiTuongViPham.doiTuongViPham.daXoa.eq(false);
+		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QDoiTuongViPham.doiTuongViPham.id.ne(body.getId()));
 		}
+
+		predAll = predAll.and(QDoiTuongViPham.doiTuongViPham.ten.eq(body.getTen()));
 		DoiTuongViPham doiTuongViPham = repo.findOne(predAll);
 
 		return doiTuongViPham != null ? true : false;
-	}
-
-	public DoiTuongViPham delete(DoiTuongViPhamRepository repo, Long id) {
-		DoiTuongViPham dtvp = repo.findOne(predicateFindOne(id));
-
-		if (dtvp != null) {
-			dtvp.setDaXoa(true);
-		}
-
-		return dtvp;
 	}
 	
 	public DoiTuongViPham save(DoiTuongViPham obj, Long congChucId) {

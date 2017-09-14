@@ -27,6 +27,7 @@ import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
@@ -1213,6 +1214,19 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 					|| ProcessTypeEnum.KE_HOACH_THANH_TRA.equals(tlvt.getLoaiQuyTrinh()))) {
 				list.add(tlvt);
 			}
+		}
+		return list;
+	}
+	
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<DoiTuongViPham> getListDoiTuongViPham() {
+		List<DoiTuongViPham> list = new ArrayList<DoiTuongViPham>();
+		if (this != null && this.getId() != null && this.getId() > 0) {
+			list = (List<DoiTuongViPham>) Application.app.getDoiTuongViPhamRepository()
+					.findAll(QDoiTuongViPham.doiTuongViPham.daXoa.eq(false)
+							.and(QDoiTuongViPham.doiTuongViPham.cuocThanhTra.id.eq(this.getId())));
 		}
 		return list;
 	}
