@@ -247,6 +247,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.cuocThanhTra = cuocThanhTra;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getTaiLieuVanThus() {
 		return taiLieuVanThus;
 	}
