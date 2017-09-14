@@ -168,7 +168,7 @@ public class ExcelUtil {
 		c.setCellValue("* Theo HCP");
 		c.setCellStyle(setBorderAndFont(wb, 0, true, 11, "", "LEFT"));
 	}
-
+	
 	public static void exportDanhSachTiepDanThuongXuyen(HttpServletResponse response, String fileName, String sheetName,
 			List<SoTiepCongDan> list, String title) throws IOException {
 		// New Workbook

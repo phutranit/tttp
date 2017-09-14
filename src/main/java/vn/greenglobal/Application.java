@@ -94,7 +94,7 @@ public class Application extends SpringBootServletInitializer {
 			System.out.println(":::::" + beanNames.length + " beans");
 		};
 	}
-	
+
 //	@Value("${cors.allowedOrigins}")
 //	private String[] myAllowedOriginList;
 //	
