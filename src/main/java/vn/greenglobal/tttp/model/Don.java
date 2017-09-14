@@ -1454,7 +1454,7 @@ public class Don extends Model<Don> {
 		if (getThoiHanXuLyXLD() != null && getNgayBatDauXLD() != null) {
 			long soNgayXuLy = Utils.getLaySoNgay(getNgayBatDauXLD(), getThoiHanXuLyXLD(), gioHanhChinhHienTai);
 			if (soNgayXuLy >= 0) {
-				str = "Còn " +soNgayXuLy + " ngày";
+				str = "Còn " + soNgayXuLy + " ngày";
 			} else if (soNgayXuLy == -1) {
 				long treHan = 0L;
 				treHan = Utils.getLayNgayTreHan(gioHanhChinhHienTai, getNgayBatDauXLD(), getThoiHanXuLyXLD());
