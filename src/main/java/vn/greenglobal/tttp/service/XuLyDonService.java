@@ -54,27 +54,36 @@ public class XuLyDonService {
 	}
 
 	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD,
-			Long canBoId, String chucVu) {
+			Long canBoId, String chucVu, boolean coQuyTrinh) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
 		}
-		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
-		}
-
+		
+		System.out.println("chucVu " +chucVu);
+		System.out.println("phongBanXuLyXLD " +phongBanXuLyXLD);
+		System.out.println("donId " +donId);
+		System.out.println("donViXuLyXLD " +donViXuLyXLD);
+		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
-		if (StringUtils.isNotEmpty(chucVu)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(QXuLyDon.xuLyDon.chucVu.isNull()));
-		}
+		if (coQuyTrinh) {
+			System.out.println("co quy trinh ");
+			if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0) && StringUtils.isNotEmpty(chucVu)) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+			}
 
-		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
-					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)
-					.or(QXuLyDon.xuLyDon.chucVu.isNull())));
+			if (StringUtils.isNotEmpty(chucVu)) {
+				xuLyDonQuery = xuLyDonQuery.and(
+						QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+			}
+
+			if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+						.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId).or(QXuLyDon.xuLyDon.chucVu.isNull())));
+			}
 		}
 
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
@@ -92,8 +101,8 @@ public class XuLyDonService {
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
 		}
-
-		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
+		
+		if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0 ) && StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 

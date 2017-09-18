@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_DinhChiDonGiaiQuyet;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
@@ -135,9 +136,51 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@Autowired
 	private XuLyDonService xuLyDonService;
-
+	
+	@Autowired
+	private CoQuanQuanLyRepository coQuanQuanLyRepo;
+	
 	public GiaiQuyetDonController(BaseRepository<GiaiQuyetDon, Long> repo) {
 		super(repo);
+	}
+	
+	private boolean kiemTraDonViCoQuyTrinhGQD(Long donViGQD) { 
+		boolean coQuyTrinh = true;
+		//State beginState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
+		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViGQD), ProcessTypeEnum.GIAI_QUYET_DON);
+		List<Process> listProcess = (List<Process>) processRepo.findAll(predicateProcess);
+		//List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+		List<Transition> listTransitionHaveBegin = new ArrayList<>();
+		for (Process processFromList : listProcess) {
+			System.out.println("processFromList " +processFromList.getId() + " name " +processFromList.getTenQuyTrinh());
+			Transition transitionGQDBatDau = transitionRepo.findOne(transitionService.predicateFindFromCurrentAndNext(FlowStateEnum.BAT_DAU, FlowStateEnum.KET_THUC, processFromList));
+			if (transitionGQDBatDau != null) {
+				System.out.println("transitionGQDBatDau " +transitionGQDBatDau.getId() +" process id " +transitionGQDBatDau.getProcess().getId() 
+						+" process name " +transitionGQDBatDau.getProcess().getTenQuyTrinh() + " form id " + transitionGQDBatDau.getForm().getId() 
+						+" form name " +transitionGQDBatDau.getForm().getTen());
+				listTransitionHaveBegin.add(transitionGQDBatDau);
+			}
+			
+//			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList, transitionRepo);
+//			listState = ((List<State>) stateRepo.findAll(predicate));
+//			if (listState.size() > 0) {
+//				State state = listState.get(0);
+//				if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+//					listProcessHaveBeginState.add(processFromList);
+//					break;
+//				}						
+//			}
+		}
+//		if (listProcessHaveBeginState.size() < 1) {
+//			coQuyTrinh = false;
+//		}
+		
+		VaiTroEnum v = listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null;
+		if (v == null) {
+			coQuyTrinh = false;
+		}
+		
+		return coQuyTrinh;
 	}
 	
 	@SuppressWarnings("unused")
@@ -262,6 +305,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 									listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null, thongTinGiaiQuyetDon);
 							return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (FlowStateEnum.CAN_BO_CHUYEN_DON_VI_TTXM.equals(nextStateType)) {
+							System.out.println("CAN_BO_CHUYEN_DON_VI_TTXM");
+							
 							if (giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh() == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DONVITHAMTRAXACMINH_REQUIRED.name(),
 										ApiErrorEnum.DONVITHAMTRAXACMINH_REQUIRED.getText(), ApiErrorEnum.DONVITHAMTRAXACMINH_REQUIRED.getText());
@@ -283,7 +328,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							if (listTransitionHaveBegin.size() == 0) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
 										ApiErrorEnum.TRANSITION_TTXM_INVALID.getText(), ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
-							}						
+							}
+							
+							boolean coQuyTrinh = false;
+							coQuyTrinh = kiemTraDonViCoQuyTrinhGQD(donViId);
+							System.out.println("coQuyTrinh ttxm " +coQuyTrinh);
+							System.out.println("donViId " +donViId);
+							System.out.println("coQuyTrinh " +coQuyTrinh);
 							giaiQuyetDonHienTai = vanThuChuyenVanThuDonViTTXM(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, 
 									listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null, thongTinGiaiQuyetDon);
 							return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
@@ -341,6 +392,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							giaiQuyetDonTiepTheo = truongPhongDonViTTXMDeXuatGiaoViecLai(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, true, donViId);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET.equals(nextStateType)) {
+							System.out.println("CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET");
 							//tim kiem vai tro nhan giai quyet
 							GiaiQuyetDon giaiQuyetDonBenGiaiQuyet = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), false);
 							Predicate predicate = processService.predicateFindAllByDonVi(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
@@ -359,10 +411,19 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							if (transitionGQD == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
 										ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
-							}	
+							}
+							
+							boolean coQuyTrinh = false;
+							coQuyTrinh = kiemTraDonViCoQuyTrinhGQD(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getId());
+							System.out.println("donViId " +donViId);
+							System.out.println("DonViGiaiQuyet " +giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getId());
+							System.out.println("coQuyTrinh ttxm " +coQuyTrinh);
+							System.out.println("transitionGQD " +transitionGQD.getProcess().getVaiTro().getLoaiVaiTro());
+							
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
-							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon);
-							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+//							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, 
+//									coQuyTrinh);
+//							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						}
 					}
 				} else if (ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(don.getProcessType())) {
@@ -1113,7 +1174,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return giaiQuyetDonTiepTheo;
 	}
 
-	private GiaiQuyetDon canBoChuyenVeDonViGiaiQuyet(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
+	private GiaiQuyetDon canBoChuyenVeDonViGiaiQuyet(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon,
+			boolean coQuyTrinh) {
 		thongTinGiaiQuyetDon.setNgayKetThucTTXM(Utils.localDateTimeNow());
 		thongTinGiaiQuyetDon.setNgayTraBaoCaoTTXM(Utils.localDateTimeNow());
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
@@ -1131,7 +1193,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
 		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh().getCoQuanQuanLy());
-		giaiQuyetDonTiepTheo.setChucVu(vaiTroGQD);
+		
+		if (coQuyTrinh) { 
+			giaiQuyetDonTiepTheo.setChucVu(vaiTroGQD);
+		} else { 
+			giaiQuyetDonTiepTheo.setChucVu(null);
+		}
+
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonBenGiaiQuyet.getThuTuThucHien() + 1);
 		
