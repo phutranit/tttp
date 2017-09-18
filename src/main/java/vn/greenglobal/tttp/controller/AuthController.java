@@ -238,6 +238,7 @@ public class AuthController {
 					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 
 					result.put("congChucId", congChuc.getId());
+					result.put("hoVaTen", congChuc.getHoVaTen());
 					result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 					result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
 					result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
