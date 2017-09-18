@@ -260,6 +260,10 @@ public class CoQuanQuanLyService {
 			} else if ("CCQQL_UBND_QUAN_HUYEN".equals(type)) {
 				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))));
+			} else if ("CCQQL_SO_BAN_NGANH".equals(type)) {
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
+						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))));
 			}
 			
 			if (coQuanQuanLyDaChonId != null && coQuanQuanLyDaChonId > 0) {
