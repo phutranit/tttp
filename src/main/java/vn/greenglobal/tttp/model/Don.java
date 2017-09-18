@@ -1010,13 +1010,13 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		} 
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1052,13 +1052,13 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.QUYET_DINH_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1073,13 +1073,13 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		} 
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && BuocGiaiQuyetEnum.BAO_CAO_KET_QUA_TTXM.equals(tlvt.getBuocGiaiQuyet())) {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1101,7 +1101,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		} 
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
@@ -1114,7 +1114,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1136,7 +1136,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
@@ -1149,7 +1149,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1172,7 +1172,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) && tlvt.getBuocGiaiQuyet() == null)
@@ -1186,7 +1186,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
@@ -1209,7 +1209,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} else { 
+		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
@@ -1223,7 +1223,7 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		}
+		
 		return list;
 	}
 	
