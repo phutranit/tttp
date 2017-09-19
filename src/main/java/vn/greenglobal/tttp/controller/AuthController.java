@@ -256,6 +256,7 @@ public class AuthController {
 				result.put("roles", user.getVaiTros());
 				result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());
 				result.put("loaiVaiTroMacDinh", user.getVaiTroMacDinh().getLoaiVaiTro());
+				result.put("tenVaiTro", user.getVaiTroMacDinh().getLoaiVaiTro().getText());
 			}
 
 			return new ResponseEntity<>(result, HttpStatus.OK);
