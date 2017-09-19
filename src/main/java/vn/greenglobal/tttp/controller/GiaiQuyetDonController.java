@@ -915,11 +915,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 		
 		donService.save(don, congChucId);
-		System.out.println("Nam1: " + giaiQuyetDonHienTai.getId() + " --- " + giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
-		System.out.println("Nam2: " + giaiQuyetDonHienTai.getId() + " --- " + giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		giaiQuyetDonService.save(giaiQuyetDonTruongPhong, congChucId);
-		System.out.println("Nam3: " + giaiQuyetDonHienTai.getId() + " --- " + giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		
 		//tao lich su qua trinh xu ly don
 		//State state = stateRepo.findOne(giaiQuyetDonHienTai.getNextState().getId());
