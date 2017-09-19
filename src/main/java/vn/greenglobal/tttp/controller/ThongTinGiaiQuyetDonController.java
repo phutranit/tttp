@@ -55,7 +55,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 	
 	@Autowired
 	private DonService donService;
-
+	
 	public ThongTinGiaiQuyetDonController(BaseRepository<ThongTinGiaiQuyetDon, Long> repo) {
 		super(repo);
 	}
@@ -113,7 +113,6 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
 				lichSuThayDoiService.save(lichSu, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}
-			
 			return thongTinGiaiQuyetDonService.doSave(thongTinGiaiQuyetDon, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
