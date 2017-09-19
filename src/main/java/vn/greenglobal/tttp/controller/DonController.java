@@ -234,9 +234,7 @@ public class DonController extends TttpController<Don> {
 				if (listProcessHaveBeginState.size() < 1) {
 					coQuyTrinh = false;
 				}
-				
-				System.out.println("coQuyTrinh " +coQuyTrinh);
-				
+								
 				if (StringUtils.isNotBlank(trangThaiDon)) {
 					if ("DANG_XU_LY".equals(trangThaiDon) || "DANG_GIAI_QUYET".equals(trangThaiDon)) {
 						canBoXuLyChiDinh = QDon.don.canBoXuLyChiDinh.id.when(canBoXuLyXLD)					
@@ -764,8 +762,6 @@ public class DonController extends TttpController<Don> {
 										ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 							} else {
 								for (State stateFromList : listState) {
-									System.out.println("stateFromList " +stateFromList.getId() + " name " +stateFromList.getTen());
-									System.out.println("process " +process.getId() + " process " +process.getTenQuyTrinh());
 									transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
 									if (transition != null) {
 										break;

@@ -88,6 +88,24 @@ public class XuLyDonService {
 		}
 		return null;
 	}
+	
+	public XuLyDon predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(XuLyDonRepository repo, Long donId, Long donViXuLyXLD) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.chucVu.isNull());
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		if (repo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
+		}
+		return null;
+	}
 
 	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
