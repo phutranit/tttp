@@ -45,7 +45,6 @@ import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
-import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
