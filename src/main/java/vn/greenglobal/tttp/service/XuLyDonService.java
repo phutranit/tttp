@@ -59,18 +59,12 @@ public class XuLyDonService {
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
 		}
-		
-		System.out.println("chucVu " +chucVu);
-		System.out.println("phongBanXuLyXLD " +phongBanXuLyXLD);
-		System.out.println("donId " +donId);
-		System.out.println("donViXuLyXLD " +donViXuLyXLD);
-		
+
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
 		if (coQuyTrinh) {
-			System.out.println("co quy trinh ");
 			if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0) && StringUtils.isNotEmpty(chucVu)) {
 				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 			}

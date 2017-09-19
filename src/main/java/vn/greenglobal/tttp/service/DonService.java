@@ -208,16 +208,10 @@ public class DonService {
 		
 		if (coQuyTrinh) { 
 			if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-				System.out.println("@@ "+chucVu);
-				System.out.println("phongBanXuLyXLD "+phongBanXuLyXLD);
 				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 			}
 			
 			if (vaitros.size() > 0) {
-				System.out.println("vaitros");
-				vaitros.forEach(vt -> {
-					System.out.println("vt " +vt.getTen());
-				});
 				List<VaiTroEnum> listVaiTro = vaitros.stream().map(d -> d.getLoaiVaiTro()).distinct()
 						.collect(Collectors.toList());
 				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.in(listVaiTro).or(QXuLyDon.xuLyDon.chucVu.isNull()));
