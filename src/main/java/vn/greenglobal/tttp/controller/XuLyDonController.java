@@ -340,11 +340,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				Long donViId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
-				System.out.println("coQuyTrinh " +coQuyTrinh);
 				
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
 						coQuyTrinh);
-				System.out.println("xuLyDonHienTai " +xuLyDonHienTai.getId());
 				
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
@@ -492,14 +490,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //							List<CoQuanQuanLy> listPhongBan = new ArrayList<CoQuanQuanLy>();
 //							listPhongBan = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(
 //									coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donVi.getId(), thamSoService, thamSoRepo));				
-							System.out.println("DE_XUAT_THU_LY");
 							Transition transitionGQD = null;					
 							
 							//Tim kiem VaiTro giai quyet don
 							Predicate predicate = processService.predicateFindAllByDonVi(donVi, ProcessTypeEnum.GIAI_QUYET_DON);
 							List<Process> listProcessGQD = (List<Process>) repoProcess.findAll(predicate);
 							if (listProcessGQD.size() < 1) {
-								System.out.println("NOT FOUND 1");
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
 										ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
 							}
@@ -521,13 +517,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							}
 							
 							if (transitionGQD == null) {
-								System.out.println("NOT FOUND 2");
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
 										ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 							}
 
 							if (!isQuyTrinhBat2DauKetThuc) {
-								System.out.println("not found");
 								if (xuLyDon.getPhongBanGiaiQuyet() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.name(),
 											ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
@@ -573,13 +567,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							Transition transitionXLD = null;
 							if (listProcessHaveBeginState.size() > 0) {
 								pro = listProcessHaveBeginState.get(0);
-								System.out.println("pro " +pro.getId() + " ten " +pro.getTenQuyTrinh());
 								if (states.size() < 1) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 											ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 								} else {
 									for (State stateFromList : states) {
-										System.out.println("stateFromList " +stateFromList.getId() + " ten " +stateFromList.getTen());
 										transitionXLD = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, pro));
 										if (transitionXLD != null) {
 											break;
@@ -665,13 +657,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							Transition transitionXLD = null;
 							if (listProcessHaveBeginState.size() > 0) {
 								pro = listProcessHaveBeginState.get(0);
-								System.out.println("pro " +pro.getId() + " ten " +pro.getTenQuyTrinh());
 								if (states.size() < 1) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 											ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 								} else {
 									for (State stateFromList : states) {
-										System.out.println("stateFromList " +stateFromList.getId() + " ten " +stateFromList.getTen());
 										transitionXLD = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, pro));
 										if (transitionXLD != null) {
 											break;
