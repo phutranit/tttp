@@ -39,7 +39,6 @@ import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QNguoiDung;
-import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
@@ -248,7 +247,6 @@ public class AuthController {
 					result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
 					result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
-					result.put("hienThiLanhDaoXuLy", hasTrinhLanhDao(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 				}
 
 				String token = generator.generate(commonProfile);
@@ -307,20 +305,6 @@ public class AuthController {
 		}
 		
 		return false;
-	}
-	
-	private boolean hasTrinhLanhDao(Long donViId, VaiTroEnum loaiVaiTro) {
-		List<Transition> transitions = (List<Transition>) transitionRepository.findAll(QTransition.transition.daXoa.eq(false)
-				.and(QTransition.transition.process.daXoa.eq(false))
-				.and(QTransition.transition.currentState.daXoa.eq(false))
-				.and(QTransition.transition.nextState.daXoa.eq(false))
-				.and(QTransition.transition.process.coQuanQuanLy.id.eq(donViId))
-				.and(QTransition.transition.process.vaiTro.loaiVaiTro.eq(loaiVaiTro))
-				.and(QTransition.transition.process.processType.eq(ProcessTypeEnum.XU_LY_DON))
-				.and(QTransition.transition.currentState.type.eq(FlowStateEnum.BAT_DAU))
-				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.TRINH_LANH_DAO)));
-		
-		return transitions != null && transitions.size() > 0 ? true : false;
 	}
 
 }
