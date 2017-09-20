@@ -347,14 +347,6 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
-		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
-	}
-	
-	public ResponseEntity<Object> doSave(CoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
-		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
-	}
-	
 	public Predicate predicateFindDonViVaConCuaDonViTDGDS(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
 		BooleanExpression predAll = base;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
@@ -402,5 +394,41 @@ public class CoQuanQuanLyService {
 			}	
 		}
 		return predAll;
+	}
+	
+	public Predicate predicateFindAllDonViNotPhongBanNotCongAn(Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId)
+				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
+
+		return predAll;
+	}
+	
+	public Predicate predicateFindChinhDonViNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(donViId)
+				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
+						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId))
+						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+								.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)))));
+
+		return predAll;
+	}
+	
+	public Predicate predicateFindPhongBanThuocDonVi(Long donViId, Long capCoQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
+				.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyId)));
+
+		return predAll;
+	}
+	
+	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
+		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
+	}
+	
+	public ResponseEntity<Object> doSave(CoQuanQuanLy obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
+		return Utils.doSave(coQuanQuanLyRepository, obj, congChucId, eass, status);		
 	}
 }
