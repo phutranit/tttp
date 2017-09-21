@@ -44,7 +44,7 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
-import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienThuLyEnum;
+import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
@@ -238,7 +238,7 @@ public class Don extends Model<Don> {
 	private PhanLoaiDonEnum phanLoaiDon;
 	
 	@Enumerated(EnumType.STRING)
-	private LyDoKhongDuDieuKienThuLyEnum lyDoKhongDuDieuKienThuLy;
+	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -1372,11 +1372,11 @@ public class Don extends Model<Don> {
 	}
 
 	@JsonIgnore
-	public LyDoKhongDuDieuKienThuLyEnum getLyDoKhongDuDieuKienThuLy() {
+	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
 		return lyDoKhongDuDieuKienThuLy;
 	}
 
-	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienThuLyEnum lyDoKhongDuDieuKienThuLy) {
+	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
 		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
 	}
 
