@@ -230,6 +230,7 @@ public class Utils {
 		long i = 1;
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
+			ngayKetThuc = ngayKetThuc.plusDays(1);
 			while (i < soNgayGiaHan) {
 				ngayKetThuc = ngayKetThuc.plusDays(1);
 				i++;
