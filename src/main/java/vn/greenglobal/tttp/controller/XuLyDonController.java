@@ -40,6 +40,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -812,7 +813,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (xuLyDon.getHuongXuLy() != null) { 
 					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
 				}
-				
+				if (xuLyDon.getPhanLoaiDon() != null) {
+					donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+					if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+						donOld.setLyDoKhongDuDieuKienThuLy(null);
+					} else {
+						donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+					}
+				}
 				if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 					xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 					donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
@@ -1361,6 +1369,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		// set thoi han xu ly cho don
 		if (xuLyDon.getThoiHanXuLy() != null) {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
+		}
+		if (xuLyDon.getPhanLoaiDon() != null) {
+			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+				don.setLyDoKhongDuDieuKienThuLy(null);
+			} else {
+				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+			}
 		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		// workflow
