@@ -17,7 +17,7 @@ import com.querydsl.core.annotations.QueryInit;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
-import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienThuLyEnum;
+import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -101,7 +101,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private PhanLoaiDonEnum phanLoaiDon;
 	
 	@Enumerated(EnumType.STRING)
-	private LyDoKhongDuDieuKienThuLyEnum lyDoKhongDuDieuKienThuLy;
+	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
 	//@Lob
 	private String ghiChu = "";
@@ -227,11 +227,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 
 	@Transient
-	public LyDoKhongDuDieuKienThuLyEnum getLyDoKhongDuDieuKienThuLy() {
+	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
 		return lyDoKhongDuDieuKienThuLy;
 	}
 
-	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienThuLyEnum lyDoKhongDuDieuKienThuLy) {
+	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
 		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
 	}
 

@@ -61,7 +61,9 @@ import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTepDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiThoiHanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
+import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
@@ -1853,6 +1855,48 @@ public class EnumController {
 			}
 		}
 		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/phanLoaiDons")
+	@ApiOperation(value = "Lấy danh sách tất cả Phần Loại Đơn", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachPhanLoaiDons(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		for (PhanLoaiDonEnum phanLoaiDon : PhanLoaiDonEnum.values()) {
+			object.put("ten", phanLoaiDon.getText());
+			object.put("giaTri", phanLoaiDon.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/lyDoKhongDuDieuKienXuLys")
+	@ApiOperation(value = "Lấy danh sách tất cả Lý Do Không Đủ Điều Kiện Xử Lý", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachLyDoKhongDuDieuKienXuLys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		for (LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienXuLy : LyDoKhongDuDieuKienXuLyEnum.values()) {
+			object.put("ten", lyDoKhongDuDieuKienXuLy.getText());
+			object.put("giaTri", lyDoKhongDuDieuKienXuLy.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
