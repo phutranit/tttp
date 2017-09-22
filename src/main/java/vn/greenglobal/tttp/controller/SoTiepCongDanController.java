@@ -246,6 +246,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			don.setDonViTiepDan(donVi);
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
+				don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y);
 				soTiepCongDan.setHuongGiaiQuyetTCDLanhDao(HuongGiaiQuyetTCDEnum.KHOI_TAO);
 			}
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
@@ -423,6 +424,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())) {
 				don.setThanhLapTiepDanGapLanhDao(true);
+				don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y);
 			}
 
 			if (LoaiTiepDanEnum.DINH_KY.equals(soTiepCongDan.getLoaiTiepDan())
