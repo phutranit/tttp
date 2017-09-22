@@ -281,7 +281,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					System.out.println("tcd don yeu cau gap lanh dao");
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
@@ -537,7 +536,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					System.out.println("tcd don yeu cau gap lanh dao");
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
