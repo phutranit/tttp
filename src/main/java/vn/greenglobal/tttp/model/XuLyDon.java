@@ -662,14 +662,14 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
 			map.put("huongXuLy", mapHuongXuLy);
-			Don don = getDon();
-			if (don != null) {
-				map.put("phanLoaiDonInfo", don.getPhanLoaiDonInfo());
-				map.put("lyDoKhongDuDieuKienThuLyInfo", don.getLyDoKhongDuDieuKienThuLyInfo());
-			}
 		}
 		if (getNextState() != null) {
 			map.put("quyTrinhXuLy", getNextState().getTenVietTat());
+		}
+		Don don = getDon();
+		if (don != null) {
+			map.put("phanLoaiDonInfo", don.getPhanLoaiDonInfo());
+			map.put("lyDoKhongDuDieuKienThuLyInfo", don.getLyDoKhongDuDieuKienThuLyInfo());
 		}
 		return map;
 	}
