@@ -682,6 +682,8 @@ public class DonController extends TttpController<Don> {
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
 				don.setPhanLoaiDon(donOld.getPhanLoaiDon());
 				don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
+				don.setTrangThaiYeuCauGapLanhDao(donOld.getTrangThaiYeuCauGapLanhDao());
+				
 				if (donOld.isThanhLapDon()) { 
 					don.setThanhLapDon(donOld.isThanhLapDon());
 				}
@@ -689,6 +691,7 @@ public class DonController extends TttpController<Don> {
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				}
+				
 				don.setProcessType(donOld.getProcessType());
 				don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDaGiaiQuyet());
 				if (don.getNoiDungThongTinTrinhLanhDao().isEmpty()) { 

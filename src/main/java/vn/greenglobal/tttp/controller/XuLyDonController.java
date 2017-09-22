@@ -47,6 +47,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.DoanDiCung;
@@ -391,9 +392,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						xuLyDonTiepTheo = chuyenVienGiaoViecLai(xuLyDon, xuLyDonHienTai, congChucId);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 
-					} else if (FlowStateEnum.YEU_CAU_GAP_LANH_DAO.equals(nextState)) {						
+					} else if (FlowStateEnum.YEU_CAU_GAP_LANH_DAO.equals(nextState)) {
 						xuLyDonHienTai.setHuongXuLy(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO);
-						xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId);						
+						xuLyDonHienTai = chuyenVienChuyenChoVanThuYeuCauGapLanhDao(xuLyDon, xuLyDonHienTai, congChucId);					
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (FlowStateEnum.CAN_BO_DE_XUAT_HUONG_XU_LY.equals(nextState)) {
 						HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
@@ -1589,7 +1590,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (don.getDonViXuLyGiaiQuyet() == null) {
 			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		}
-	
+		don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
+		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		State state = repoState.findOne(xuLyDonHienTai.getNextState().getId());

@@ -24,11 +24,13 @@ import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Don;
@@ -660,6 +662,57 @@ public class DonService {
 
 		return don;
 	}
+	
+	public Predicate predicateFindDonYeuCauGapLanhDaoDinhKy(String tuKhoa, String tuNgay, String denNgay, String phanLoai, String nguonDon, String trangThai,  
+			Long donViId) {
+		BooleanExpression predAll = base
+				.and(QDon.don.yeuCauGapTrucTiepLanhDao.eq(true).and(QDon.don.thanhLapDon.eq(false)))
+				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)
+						.and(QDon.don.thanhLapDon.eq(true)))
+				//.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false))
+				.and(QDon.don.old.eq(false));
+		
+		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+			predAll = predAll
+					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
+							.or(QDon.don.donCongDans.any().soCMNDHoChieu.eq(tuKhoa.trim())))
+					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+		}
+		
+		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+			LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+			predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.between(dtTuNgay, dtDenNgay));
+		} else {
+			if (StringUtils.isNotBlank(tuNgay)) {
+				LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.after(dtTuNgay));
+			}
+			if (StringUtils.isNotBlank(denNgay)) {
+				LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+				predAll = predAll.and(QDon.don.ngayLapDonGapLanhDaoTmp.before(dtDenNgay));
+			}
+		}
+		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QDon.don.donViTiepDan.id.eq(donViId));
+		}
+		
+		if (phanLoai != null && !"".equals(phanLoai)) {
+			predAll = predAll.and(QDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.valueOf(phanLoai)));
+		}
+
+		if (nguonDon != null && !"".equals(nguonDon)) {
+			predAll = predAll.and(QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(nguonDon)));
+		}
+		
+		if (trangThai != null && !"".equals(trangThai)) {
+			predAll = predAll.and(QDon.don.trangThaiYeuCauGapLanhDao.eq(TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThai)));
+		}
+		
+		return predAll;
+	}
 
 	public Predicate predicateFindDonYeuCauGapLanhDao(String tuNgay, String denNgay, String loaiDon, Long linhVucId, Long linhVucChiTietChaId, Long linhVucChiTietConId, 
 			Long donViId) {
@@ -668,7 +721,8 @@ public class DonService {
 				.or(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO)
 						.and(QDon.don.thanhLapDon.eq(true)))
 				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false))
-				.and(QDon.don.old.eq(false));
+				.and(QDon.don.old.eq(false))
+				.and(QDon.don.trangThaiYeuCauGapLanhDao.eq(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y));
 		
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);

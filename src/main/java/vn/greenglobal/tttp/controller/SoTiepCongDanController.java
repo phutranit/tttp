@@ -46,6 +46,7 @@ import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
@@ -279,11 +280,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+					System.out.println("tcd don yeu cau gap lanh dao");
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				} else {
 					don.setYeuCauGapTrucTiepLanhDao(false);
 					don.setNgayLapDonGapLanhDaoTmp(null);
+					don.setTrangThaiYeuCauGapLanhDao(null);
 				}
 			}
 			
@@ -531,11 +535,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+					System.out.println("tcd don yeu cau gap lanh dao");
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
 				} else {
 					don.setYeuCauGapTrucTiepLanhDao(false);
 					don.setNgayLapDonGapLanhDaoTmp(null);
+					don.setTrangThaiYeuCauGapLanhDao(null);
 				}
 			}
 
@@ -597,8 +604,37 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/danhSachYeuCauGapLanhDaoDinhKys")
+	@ApiOperation(value = "Lấy danh sách Yêu Cầu Gặp Lãnh Đạo Định Kỳ", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListYeuCauGapLanhDaoDinhKy(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "phanLoai", required = false) String phanLoai, 
+			@RequestParam(value = "nguonDon", required = false) String nguonDon, 
+			@RequestParam(value = "trangThai", required = false) String trangThai,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId), pageable);
+			page.forEach(d -> {
+				System.out.println("don " +d.getId());
+			});
+			return assemblerDon.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
-	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -623,7 +659,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
-	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization,

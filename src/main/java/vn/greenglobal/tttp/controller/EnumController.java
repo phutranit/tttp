@@ -70,6 +70,7 @@ import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -96,6 +97,55 @@ public class EnumController {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tiepCongDan/trangThaiYeuCauGapLanhDao")
+	@ApiOperation(value = "Lấy danh sách Trạng thái yêu cầu gặp lãnh đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTrangThaiYeuCauGapLanhDaos(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", TrangThaiYeuCauGapLanhDaoEnum.DONG_Y.getText());
+		object.put("giaTri", TrangThaiYeuCauGapLanhDaoEnum.DONG_Y.name());
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y.getText());
+		object.put("giaTri", TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y.name());
+		list.add(object);
+		
+		object = new HashMap<String, Object>();
+		object.put("ten", TrangThaiYeuCauGapLanhDaoEnum.KHONG_DONG_Y.getText());
+		object.put("giaTri", TrangThaiYeuCauGapLanhDaoEnum.KHONG_DONG_Y.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tiepCongDan/phanLoaiDon")
+	@ApiOperation(value = "Lấy danh sách Phân loại đơn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getPhanLoais(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.getText());
+		object.put("giaTri", PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.name());
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.getText());
+		object.put("giaTri", PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/years")
 	@ApiOperation(value = "Lấy danh sách Loại Quý thống kê báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
