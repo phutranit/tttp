@@ -1,11 +1,11 @@
 package vn.greenglobal.tttp.enums;
 
-public enum TrangThaiTCDLanhDao {
+public enum TrangThaiYeuCauGapLanhDaoEnum {
 	DONG_Y("Đồng ý"),
 	CHUA_DONG_Y("Chưa đồng ý"),
 	KHONG_DONG_Y("Không đồng ý");
 
-	TrangThaiTCDLanhDao(String text) {
+	TrangThaiYeuCauGapLanhDaoEnum(String text) {
 		this.text = text;
 	}
 

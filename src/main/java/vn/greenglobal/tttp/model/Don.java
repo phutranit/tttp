@@ -51,6 +51,7 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @Entity
@@ -248,7 +249,10 @@ public class Don extends Model<Don> {
 	private State currentState;
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
-
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao;
+	
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
 		return xuLyDons;
@@ -1379,6 +1383,15 @@ public class Don extends Model<Don> {
 	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
 		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
 	}
+	
+	@JsonIgnore
+	public TrangThaiYeuCauGapLanhDaoEnum getTrangThaiYeuCauGapLanhDao() {
+		return trangThaiYeuCauGapLanhDao;
+	}
+
+	public void setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao) {
+		this.trangThaiYeuCauGapLanhDao = trangThaiYeuCauGapLanhDao;
+	}
 
 	public LoaiVuViecEnum getLoaiVuViec() {
 		return loaiVuViec;
@@ -2060,6 +2073,18 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getLyDoKhongDuDieuKienThuLy().getText());
 			map.put("giaTri", getLyDoKhongDuDieuKienThuLy().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiYeuCauGapLanhDaoInfo() {
+		if (getTrangThaiYeuCauGapLanhDao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getTrangThaiYeuCauGapLanhDao().getText());
+			map.put("giaTri", getTrangThaiYeuCauGapLanhDao().name());
 			return map;
 		}
 		return null;
