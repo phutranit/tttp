@@ -17,6 +17,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
@@ -150,6 +151,7 @@ public class SoTiepCongDanService {
 
 		if (soTiepCongDan != null) {
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(false);
+			soTiepCongDan.getDon().setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 			soTiepCongDan.setDaXoa(true);
 		}
 

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -44,11 +45,14 @@ import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
+import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @Entity
@@ -66,6 +70,10 @@ public class Don extends Model<Don> {
 	private String yeuCauCuaCongDan = "";
 	//@Lob
 	private String huongGiaiQuyetDaThucHien = " ";
+	
+	@Lob
+	private String lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		
 	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	@Size(max=255)
@@ -232,6 +240,12 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	
+	@Enumerated(EnumType.STRING)
+	private PhanLoaiDonEnum phanLoaiDon;
+	
+	@Enumerated(EnumType.STRING)
+	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiVuViecEnum loaiVuViec;
@@ -240,7 +254,10 @@ public class Don extends Model<Don> {
 	private State currentState;
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
-
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao;
+	
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
 		return xuLyDons;
@@ -421,6 +438,18 @@ public class Don extends Model<Don> {
 			this.huongGiaiQuyetDaThucHien = " ";
 		} else {
 			this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		}
+	}
+
+	public String getLyDoThayDoiTTYeuCauGapLanhDao() {
+		return lyDoThayDoiTTYeuCauGapLanhDao;
+	}
+
+	public void setLyDoThayDoiTTYeuCauGapLanhDao(String lyDoThayDoiTTYeuCauGapLanhDao) {
+		if (lyDoThayDoiTTYeuCauGapLanhDao != null && lyDoThayDoiTTYeuCauGapLanhDao.length() == 0) {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		} else {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = lyDoThayDoiTTYeuCauGapLanhDao;
 		}
 	}
 
@@ -1354,6 +1383,33 @@ public class Don extends Model<Don> {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
+	@JsonIgnore
+	public PhanLoaiDonEnum getPhanLoaiDon() {
+		return phanLoaiDon;
+	}
+
+	public void setPhanLoaiDon(PhanLoaiDonEnum phanLoaiDon) {
+		this.phanLoaiDon = phanLoaiDon;
+	}
+
+	@JsonIgnore
+	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
+		return lyDoKhongDuDieuKienThuLy;
+	}
+
+	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
+		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
+	}
+	
+	//@JsonIgnore
+	public TrangThaiYeuCauGapLanhDaoEnum getTrangThaiYeuCauGapLanhDao() {
+		return trangThaiYeuCauGapLanhDao;
+	}
+
+	public void setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao) {
+		this.trangThaiYeuCauGapLanhDao = trangThaiYeuCauGapLanhDao;
+	}
+
 	public LoaiVuViecEnum getLoaiVuViec() {
 		return loaiVuViec;
 	}
@@ -2011,6 +2067,42 @@ public class Don extends Model<Don> {
 					.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))), new Sort(new Order(Direction.DESC, "id")));
 		if (stcds != null && stcds.size() > 0) {
 			return stcds.get(0).getNgayTiepDan(); 
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getPhanLoaiDonInfo() {
+		if (getPhanLoaiDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhanLoaiDon().getText());
+			map.put("giaTri", getPhanLoaiDon().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLyDoKhongDuDieuKienThuLyInfo() {
+		if (getLyDoKhongDuDieuKienThuLy() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLyDoKhongDuDieuKienThuLy().getText());
+			map.put("giaTri", getLyDoKhongDuDieuKienThuLy().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiYeuCauGapLanhDaoInfo() {
+		if (getTrangThaiYeuCauGapLanhDao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getTrangThaiYeuCauGapLanhDao().getText());
+			map.put("giaTri", getTrangThaiYeuCauGapLanhDao().name());
+			return map;
 		}
 		return null;
 	}

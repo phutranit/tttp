@@ -680,6 +680,11 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
+				don.setPhanLoaiDon(donOld.getPhanLoaiDon());
+				don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
+				don.setTrangThaiYeuCauGapLanhDao(donOld.getTrangThaiYeuCauGapLanhDao());
+				don.setLyDoThayDoiTTYeuCauGapLanhDao(donOld.getLyDoThayDoiTTYeuCauGapLanhDao());
+				
 				if (donOld.isThanhLapDon()) { 
 					don.setThanhLapDon(donOld.isThanhLapDon());
 				}
@@ -687,6 +692,7 @@ public class DonController extends TttpController<Don> {
 				if (don.isYeuCauGapTrucTiepLanhDao() && !donOld.isYeuCauGapTrucTiepLanhDao()) {
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				}
+				
 				don.setProcessType(donOld.getProcessType());
 				don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDaGiaiQuyet());
 				if (don.getNoiDungThongTinTrinhLanhDao().isEmpty()) { 

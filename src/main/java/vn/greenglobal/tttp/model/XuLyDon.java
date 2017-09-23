@@ -17,6 +17,8 @@ import com.querydsl.core.annotations.QueryInit;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
+import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -101,6 +103,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiTTXMEnum trangThaiTTXM;
+	@Enumerated(EnumType.STRING)
+	private PhanLoaiDonEnum phanLoaiDon;
+	
+	@Enumerated(EnumType.STRING)
+	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
 	//@Lob
 	private String ghiChu = "";
@@ -232,6 +239,24 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.trangThaiDon = trangThaiDon;
 	}
 	
+	@Transient
+	public PhanLoaiDonEnum getPhanLoaiDon() {
+		return phanLoaiDon;
+	}
+
+	public void setPhanLoaiDon(PhanLoaiDonEnum phanLoaiDon) {
+		this.phanLoaiDon = phanLoaiDon;
+	}
+
+	@Transient
+	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
+		return lyDoKhongDuDieuKienThuLy;
+	}
+
+	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
+		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
+	}
+
 	@ApiModelProperty(example = "{}", position = 7)
 	public CoQuanQuanLy getCoQuanTiepNhan() {
 		return coQuanTiepNhan;
@@ -670,6 +695,11 @@ public class XuLyDon extends Model<XuLyDon> {
 		}
 		if (getNextState() != null) {
 			map.put("quyTrinhXuLy", getNextState().getTenVietTat());
+		}
+		Don don = getDon();
+		if (don != null) {
+			map.put("phanLoaiDonInfo", don.getPhanLoaiDonInfo());
+			map.put("lyDoKhongDuDieuKienThuLyInfo", don.getLyDoKhongDuDieuKienThuLyInfo());
 		}
 		return map;
 	}
