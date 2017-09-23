@@ -673,9 +673,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId), pageable);
-			page.forEach(d -> {
-				System.out.println("don " +d.getId() +" trang thai " +d.getTrangThaiYeuCauGapLanhDao().getText());
-			});
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
