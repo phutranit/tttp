@@ -24,7 +24,6 @@ import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
@@ -700,7 +699,7 @@ public class DonService {
 		}
 		
 		if (phanLoai != null && !"".equals(phanLoai)) {
-			predAll = predAll.and(QDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.valueOf(phanLoai)));
+			predAll = predAll.and(QDon.don.loaiDon.eq(LoaiDonEnum.valueOf(phanLoai)));
 		}
 
 		if (nguonDon != null && !"".equals(nguonDon)) {
@@ -925,7 +924,17 @@ public class DonService {
 					donOld.getLoaiNguoiDungDon() != null ? donOld.getLoaiNguoiDungDon().getText() : "",
 					donNew.getLoaiNguoiDungDon() != null ? donNew.getLoaiNguoiDungDon().getText() : ""));
 		}
+		
+		if (donNew.getTrangThaiYeuCauGapLanhDao() != null && !donNew.getTrangThaiYeuCauGapLanhDao().equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
+			list.add(new PropertyChangeObject("Trạng thái yêu cầu gặp lãnh đạo",
+					donOld.getTrangThaiYeuCauGapLanhDao() != null ? donOld.getTrangThaiYeuCauGapLanhDao().getText() : "",
+					donNew.getTrangThaiYeuCauGapLanhDao() != null ? donNew.getTrangThaiYeuCauGapLanhDao().getText() : ""));
+		}
 
+		if (donNew.getLyDoThayDoiTTYeuCauGapLanhDao() != null && !donNew.getLyDoThayDoiTTYeuCauGapLanhDao().equals(donOld.getLyDoThayDoiTTYeuCauGapLanhDao())) {
+			list.add(new PropertyChangeObject("Lý do thay đổi trạng thái", donOld.getLyDoThayDoiTTYeuCauGapLanhDao(), donNew.getLyDoThayDoiTTYeuCauGapLanhDao()));
+		}
+		
 		return list;
 	}
 
