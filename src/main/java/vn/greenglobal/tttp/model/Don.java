@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -69,6 +70,10 @@ public class Don extends Model<Don> {
 	private String yeuCauCuaCongDan = "";
 	//@Lob
 	private String huongGiaiQuyetDaThucHien = " ";
+	
+	@Lob
+	private String lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		
 	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	@Size(max=255)
@@ -433,6 +438,18 @@ public class Don extends Model<Don> {
 			this.huongGiaiQuyetDaThucHien = " ";
 		} else {
 			this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		}
+	}
+
+	public String getLyDoThayDoiTTYeuCauGapLanhDao() {
+		return lyDoThayDoiTTYeuCauGapLanhDao;
+	}
+
+	public void setLyDoThayDoiTTYeuCauGapLanhDao(String lyDoThayDoiTTYeuCauGapLanhDao) {
+		if (lyDoThayDoiTTYeuCauGapLanhDao != null && lyDoThayDoiTTYeuCauGapLanhDao.length() == 0) {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		} else {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = lyDoThayDoiTTYeuCauGapLanhDao;
 		}
 	}
 
@@ -1384,7 +1401,7 @@ public class Don extends Model<Don> {
 		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
 	}
 	
-	@JsonIgnore
+	//@JsonIgnore
 	public TrangThaiYeuCauGapLanhDaoEnum getTrangThaiYeuCauGapLanhDao() {
 		return trangThaiYeuCauGapLanhDao;
 	}

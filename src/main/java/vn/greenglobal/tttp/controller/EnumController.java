@@ -110,8 +110,8 @@ public class EnumController {
 		list.add(object);
 
 		object = new HashMap<String, Object>();
-		object.put("ten", TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y.getText());
-		object.put("giaTri", TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y.name());
+		object.put("ten", TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN.getText());
+		object.put("giaTri", TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN.name());
 		list.add(object);
 		
 		object = new HashMap<String, Object>();

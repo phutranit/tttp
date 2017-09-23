@@ -722,7 +722,7 @@ public class DonService {
 						.and(QDon.don.thanhLapDon.eq(true)))
 				.and(QDon.don.thanhLapTiepDanGapLanhDao.eq(false))
 				.and(QDon.don.old.eq(false))
-				.and(QDon.don.trangThaiYeuCauGapLanhDao.eq(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y));
+				.and(QDon.don.trangThaiYeuCauGapLanhDao.eq(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN));
 		
 		if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);

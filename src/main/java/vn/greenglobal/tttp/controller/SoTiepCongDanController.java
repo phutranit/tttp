@@ -281,7 +281,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				} else {
@@ -538,7 +538,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
-					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 				} else {
 					don.setYeuCauGapTrucTiepLanhDao(false);
 					don.setNgayLapDonGapLanhDaoTmp(null);
@@ -565,7 +565,39 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-
+	
+	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/capNhatTrangThaiYeuCauGapLanhDao")
+	@ApiOperation(value = "Cập nhật Trạng Thái Yêu Cầu Gặp Lãnh Đạo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Trạng thái thành công", response = Don.class) })
+	public ResponseEntity<Object> updateTrangThaiYeuCauGapLanhDao(
+			@RequestHeader(value = "Authorization", required = true) String authorization, 
+			@PathVariable("id") long id,
+			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
+		
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			don.setId(id);
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			Don donOld = repoDon.findOne(don.getId());
+			if (don.getTrangThaiYeuCauGapLanhDao() != null) { 
+				donOld.setTrangThaiYeuCauGapLanhDao(don.getTrangThaiYeuCauGapLanhDao());
+			}
+			if (StringUtils.isNotBlank(don.getLyDoThayDoiTTYeuCauGapLanhDao())) { 
+				donOld.setLyDoThayDoiTTYeuCauGapLanhDao(don.getLyDoThayDoiTTYeuCauGapLanhDao());
+			}
+			
+			ResponseEntity<Object> output = donService.doSave(donOld, congChucId, eass, HttpStatus.CREATED);
+			return output;
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })

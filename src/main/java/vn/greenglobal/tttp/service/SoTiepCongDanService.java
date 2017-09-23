@@ -151,7 +151,7 @@ public class SoTiepCongDanService {
 
 		if (soTiepCongDan != null) {
 			soTiepCongDan.getDon().setThanhLapTiepDanGapLanhDao(false);
-			soTiepCongDan.getDon().setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHUA_DONG_Y);
+			soTiepCongDan.getDon().setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 			soTiepCongDan.setDaXoa(true);
 		}
 
