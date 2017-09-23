@@ -481,16 +481,13 @@ public class ProcessController extends TttpController<Process> {
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 5L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 18L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 19L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 11L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 20L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 12L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 18L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 8L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
@@ -590,14 +587,8 @@ public class ProcessController extends TttpController<Process> {
 					transition = new Transition();
 					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 12L, 8L, 18L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 11L, 12L, 18L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 12L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 8L, 12L, false);
+					if (process != null && process.getId() != null && process.getId() > 0) {						
+						transition = addDataTrasition(process, 5L, 8L, 12L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -607,6 +598,12 @@ public class ProcessController extends TttpController<Process> {
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 1L, 5L, 11L, true);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 20L, 11L, true);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 20L, 19L, 29L, true);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 5L, 29L, true);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -932,16 +929,13 @@ public class ProcessController extends TttpController<Process> {
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 5L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 18L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 19L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 11L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 20L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 12L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 18L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 8L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
