@@ -1773,9 +1773,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
-		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
+		State giaoViecState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO));
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
-		don.setCurrentState(beginState);
+		don.setCurrentState(giaoViecState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		donService.save(don, congChucId);
 		

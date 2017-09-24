@@ -1159,12 +1159,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		GiaiQuyetDon giaiQuyetDonBenGiaiQuyet = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), false);
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
-		disableGiaiQuyetDonCu(vaiTroGQD, donId, giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
+		//disableGiaiQuyetDonCu(vaiTroGQD, donId, giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDon.getThongTinGiaiQuyetDon());
 		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
-		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh().getCoQuanQuanLy());
+		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonBenGiaiQuyet.getPhongBanGiaiQuyet());
 		
 		if (coQuyTrinh) { 
 			giaiQuyetDonTiepTheo.setChucVu(vaiTroGQD);
