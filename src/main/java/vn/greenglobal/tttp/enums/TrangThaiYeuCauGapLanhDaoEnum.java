@@ -2,7 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum TrangThaiYeuCauGapLanhDaoEnum {
 	DONG_Y("Đồng ý"),
-	CHUA_DONG_Y("Chưa đồng ý"),
+	CHO_XIN_Y_KIEN("Chờ xin ý kiến"),
 	KHONG_DONG_Y("Không đồng ý");
 
 	TrangThaiYeuCauGapLanhDaoEnum(String text) {
