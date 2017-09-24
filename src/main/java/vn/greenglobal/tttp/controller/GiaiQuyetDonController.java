@@ -378,7 +378,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							}
 							Transition transitionGQD = null;
 							for (Process processFromList : listProcessGQD) {
-								transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM, processFromList));
+								transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM, processFromList));
 								if (transitionGQD != null) {
 									break;
 								}
@@ -395,7 +395,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, 
 									coQuyTrinh);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-						}
+						} 
 					}
 				} else if (ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(don.getProcessType())) {
 					GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrent(repo, thongTinGiaiQuyetDonId, false);
@@ -1179,13 +1179,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				ProcessTypeEnum.GIAI_QUYET_DON.toString(), processRepo));
 		if (listTransitionEnd.size() > 0) {
 			for (Transition tran : listTransitionEnd) {
-				if (tran.getCurrentState().getType().equals(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM)) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM)) {
 					giaiQuyetDonTiepTheo.setNextForm(tran.getForm());
 				}
 			}
 		}	
 		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
-		State canBoNhanKetQuaState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_NHAN_KET_QUA_TTXM));		
+		State canBoNhanKetQuaState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM));		
 		Don don = donRepo.findOne(donId);
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCanBoXuLyChiDinh(giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
