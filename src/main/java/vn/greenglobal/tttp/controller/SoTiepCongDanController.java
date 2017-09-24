@@ -578,38 +578,52 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Trạng thái thành công", response = Don.class) })
 	public ResponseEntity<Object> updateTrangThaiYeuCauGapLanhDao(
-			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@PathVariable("id") long id,
-			@RequestBody Don don, PersistentEntityResourceAssembler eass) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,  @PathVariable("id") long id,
+			@RequestParam(value = "trangThaiYeuCauGapLanhDao", required = true) String trangThaiYeuCauGapLanhDao,
+			@RequestParam(value = "lyDoThayDoiTTYeuCauGapLanhDao", required = true) String lyDoThayDoiTTYeuCauGapLanhDao,
+			PersistentEntityResourceAssembler eass) {
 		
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			don.setId(id);
+			if (!StringUtils.isNotBlank(trangThaiYeuCauGapLanhDao)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.TRANG_THAI_YCGLD_REQUIRED.getText());
+			}
+			if (!StringUtils.isNotBlank(lyDoThayDoiTTYeuCauGapLanhDao)) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_REQUIRED.name(),
+						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED.getText());
+			}
+
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-			Don donOld = repoDon.findOne(id);
-			List<PropertyChangeObject> listThayDoi = donService.getListThayDoi(don, donOld);
 			
-			if (don.getTrangThaiYeuCauGapLanhDao() != null) { 
-				donOld.setTrangThaiYeuCauGapLanhDao(don.getTrangThaiYeuCauGapLanhDao());
+			Don donOld = repoDon.findOne(donService.predicateFindOne(id));
+			List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
+			if (trangThaiYeuCauGapLanhDao != null && !trangThaiYeuCauGapLanhDao.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
+				list.add(new PropertyChangeObject("Trạng thái yêu cầu gặp lãnh đạo",
+						donOld.getTrangThaiYeuCauGapLanhDao() != null ? donOld.getTrangThaiYeuCauGapLanhDao().getText() : "",
+								trangThaiYeuCauGapLanhDao != null ? TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao).getText() : ""));
 			}
-			if (StringUtils.isNotBlank(don.getLyDoThayDoiTTYeuCauGapLanhDao())) { 
-				donOld.setLyDoThayDoiTTYeuCauGapLanhDao(don.getLyDoThayDoiTTYeuCauGapLanhDao());
+			if (lyDoThayDoiTTYeuCauGapLanhDao != null && !lyDoThayDoiTTYeuCauGapLanhDao.equals(donOld.getLyDoThayDoiTTYeuCauGapLanhDao())) {
+				list.add(new PropertyChangeObject("Lý do thay đổi trạng thái", donOld.getLyDoThayDoiTTYeuCauGapLanhDao(), lyDoThayDoiTTYeuCauGapLanhDao));
 			}
 			
-			
-			if (listThayDoi.size() > 0) {
+			Don don = repoDon.findOne(donService.predicateFindOne(id));
+			don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao));
+			don.setLyDoThayDoiTTYeuCauGapLanhDao(lyDoThayDoiTTYeuCauGapLanhDao);
+
+			if (list.size() > 0) {
 				LichSuThayDoi lichSu = new LichSuThayDoi();
 				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
 				lichSu.setIdDoiTuong(id);
-				lichSu.setNoiDung("Cập nhật thông tin đơn");
-				lichSu.setChiTietThayDoi(getChiTietThayDoi(listThayDoi));
+				lichSu.setNoiDung("Cập nhật trạng thái yêu cầu gặp lãnh đạo");
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(list));
 				lichSuThayDoiService.save(lichSu, congChucId);
 			}
 			
-			ResponseEntity<Object> output = donService.doSave(donOld, congChucId, eass, HttpStatus.CREATED);
+			ResponseEntity<Object> output = donService.doSave(don, congChucId, eass, HttpStatus.CREATED);
 			return output;
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
