@@ -56,7 +56,9 @@ public enum ApiErrorEnum {
 	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo."),
 	CUOCTHANHTRA_REQUIRED("Bạn phải chọn ít nhất một cuộc thanh tra."),
 	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
-	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này.");
+	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này."),
+	TRANG_THAI_YCGLD_REQUIRED("Trường trangThaiYeuCauGapLanhDao không được bỏ trống."),
+	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;
