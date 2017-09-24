@@ -594,16 +594,16 @@ public class ProcessController extends TttpController<Process> {
 					
 					process = new Process();
 					transition = new Transition();
-					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, true);
+					process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 5L, 11L, true);
+						transition = addDataTrasition(process, 1L, 5L, 11L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 20L, 11L, true);
+						transition = addDataTrasition(process, 1L, 20L, 11L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 20L, 19L, 29L, true);
+						transition = addDataTrasition(process, 20L, 19L, 29L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 19L, 5L, 29L, true);
+						transition = addDataTrasition(process, 19L, 5L, 29L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
