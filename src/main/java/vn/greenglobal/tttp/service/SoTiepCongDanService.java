@@ -16,6 +16,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -156,6 +157,14 @@ public class SoTiepCongDanService {
 		}
 
 		return soTiepCongDan;
+	}
+	
+	public List<SoTiepCongDan> getDSCuocTiepDanDinhKyCuaLanhDao(SoTiepCongDanRepository repo, Long donId) {
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(base.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(donId)
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)))));
+
+		return soTiepCongDans;
 	}
 	
 	public SoTiepCongDan save(SoTiepCongDan obj, Long congChucId) {
