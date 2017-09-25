@@ -357,6 +357,67 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViNhanTTXMs")
+	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDonViNhanTTXM(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
+
+			Page<CoQuanQuanLy> page = null;
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Long capCoQuanQuanLyCuaDonViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("capCoQuanQuanLyCuaDonViId").toString());
+			ThamSo thamSoCQQLUBNDThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoCQQLThanhTraThanhPho = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			ThamSo thamSoCCQQLSoBanNganh = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoCCQQLUBNDQuanHuyen = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+
+			if (donViId != null && donViId > 0 && capCoQuanQuanLyCuaDonViId != null && capCoQuanQuanLyCuaDonViId > 0) {
+				if (donViId == Long.valueOf(thamSoCQQLUBNDThanhPho.getGiaTri().toString())
+						|| donViId == Long.valueOf(thamSoCQQLThanhTraThanhPho.getGiaTri().toString())) {
+					// Danh sach don vi thuoc UBNDTP Da Nang
+					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
+							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri().toString())) {
+					// Danh sach don vi thuoc So Ban Nganh
+					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
+							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
+					// Danh sach don vi thuoc Quan Huyen
+					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
+							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
+					// Danh sach don vi thuoc Phuong Xa
+					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
+							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+				} else {
+					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
+							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+				}
+			}
+
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViChuTris/ThanhTra")
 	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDonViChuTriThanhTras(

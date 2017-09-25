@@ -576,6 +576,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								}
 								
 							} else {
+								if (xuLyDon.getHanGiaiQuyet() == null) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HANGIAIQUYET_REQUIRED.name(),
+											ApiErrorEnum.HANGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HANGIAIQUYET_REQUIRED.getText());
+								}
 								if (xuLyDon.getCanBoXuLyChiDinh() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.name(),
 											ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.CAN_BO_GIAI_QUYET_REQUIRED.getText());
@@ -853,9 +857,33 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					}
 				}
 
-				if (xuLyDon.getHuongXuLy() != null) { 
-					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());
+				if (xuLyDon.getTrangThaiTTXM() != null) {
+					xuLyDonHienTai.setTrangThaiTTXM(xuLyDon.getTrangThaiTTXM());
 				}
+				if (xuLyDon.getDonViThamTraXacMinh() != null) {
+					xuLyDonHienTai.setDonViThamTraXacMinh(xuLyDon.getDonViThamTraXacMinh());
+				}
+				if (xuLyDon.getHanGiaiQuyet() != null) {
+					xuLyDonHienTai.setHanGiaiQuyet(xuLyDon.getHanGiaiQuyet());
+				}
+				if (xuLyDon.getThoiHanBaoCaoKetQuaTTXM() != null) {
+					xuLyDonHienTai.setThoiHanBaoCaoKetQuaTTXM(xuLyDon.getThoiHanBaoCaoKetQuaTTXM());
+				}
+				
+				if (xuLyDon.getHuongXuLy() != null) { 
+					xuLyDonHienTai.setHuongXuLy(xuLyDon.getHuongXuLy());					
+					if (!xuLyDon.getHuongXuLy().equals(HuongXuLyXLDEnum.DE_XUAT_THU_LY)) {
+						xuLyDonHienTai.setTrangThaiTTXM(null);
+						xuLyDonHienTai.setDonViThamTraXacMinh(null);
+						xuLyDonHienTai.setThoiHanBaoCaoKetQuaTTXM(null);						
+					} else if (xuLyDon.getTrangThaiTTXM() != null) {
+						if (xuLyDon.getTrangThaiTTXM().equals(TrangThaiTTXMEnum.TU_TTXM)) {
+							xuLyDonHienTai.setDonViThamTraXacMinh(null);
+							xuLyDonHienTai.setThoiHanBaoCaoKetQuaTTXM(null);	
+						}
+					}
+				}				
+				
 				if (xuLyDon.getPhanLoaiDon() != null) {
 					donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
 					if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
