@@ -526,6 +526,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							}
 
 							if (!isQuyTrinhBat2DauKetThuc) {
+								if (xuLyDon.getHanGiaiQuyet() == null) {
+									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HANGIAIQUYET_REQUIRED.name(),
+											ApiErrorEnum.HANGIAIQUYET_REQUIRED.getText(), ApiErrorEnum.HANGIAIQUYET_REQUIRED.getText());
+								}
 								if (xuLyDon.getTrangThaiTTXM() == null) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANGTHAITTXM_REQUIRED.name(),
 											ApiErrorEnum.TRANGTHAITTXM_REQUIRED.getText(), ApiErrorEnum.TRANGTHAITTXM_REQUIRED.getText());
@@ -1785,6 +1789,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon = new ThongTinGiaiQuyetDon();
 			thongTinGiaiQuyetDon.setDon(don);
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
+			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(xuLyDon.getHanGiaiQuyet());
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
@@ -1873,6 +1878,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setDon(don);
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 			thongTinGiaiQuyetDon.setNgayHetHanTTXM(xuLyDon.getThoiHanBaoCaoKetQuaTTXM());
+			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(xuLyDon.getHanGiaiQuyet());
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
@@ -1949,7 +1955,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 
 		if (listTransitionEnd.size() > 0) {
 			for (Transition tran : listTransitionEnd) {
-				if (tran.getCurrentState().getType().equals(FlowStateEnum.BAT_DAU)) {
+				if (tran.getCurrentState().getType().equals(FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO)) {
 					giaiQuyetDon.setNextForm(tran.getForm());
 				}
 			}
