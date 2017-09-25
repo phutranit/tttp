@@ -79,6 +79,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
 	private LocalDateTime thoiHanBaoCaoKetQuaTTXM;
+	private LocalDateTime hanGiaiQuyet;
 	private boolean old;
 	
 	@ManyToOne
@@ -282,6 +283,14 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
+	}
+	
+	public LocalDateTime getHanGiaiQuyet() {
+		return hanGiaiQuyet;
+	}
+
+	public void setHanGiaiQuyet(LocalDateTime hanGiaiQuyet) {
+		this.hanGiaiQuyet = hanGiaiQuyet;
 	}
 
 	@ApiModelProperty(example = "{}")
