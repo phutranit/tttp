@@ -150,7 +150,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		List<Process> listProcess = (List<Process>) processRepo.findAll(predicateProcess);
 		List<Transition> listTransitionHaveBegin = new ArrayList<>();
 		for (Process processFromList : listProcess) {
-			Transition transitionGQDBatDau = transitionRepo.findOne(transitionService.predicateFindFromCurrentAndNext(FlowStateEnum.BAT_DAU, FlowStateEnum.KET_THUC, processFromList));
+			Transition transitionGQDBatDau = transitionRepo.findOne(transitionService.predicateFindFromCurrentAndNext(FlowStateEnum.BAT_DAU, FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO, processFromList));
 			if (transitionGQDBatDau != null) {
 				listTransitionHaveBegin.add(transitionGQDBatDau);
 			}
@@ -390,7 +390,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							
 							boolean coQuyTrinh = false;
 							coQuyTrinh = kiemTraDonViCoQuyTrinhGQD(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getId());
-							
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, 
 									coQuyTrinh);
