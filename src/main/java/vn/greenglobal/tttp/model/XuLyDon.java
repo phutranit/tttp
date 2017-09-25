@@ -674,7 +674,7 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
 				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
 				map.put("hanGiaiQuyet", getHanGiaiQuyet());
-				map.put("ThoiHanBaoCaoKetQuaTTXM", getThoiHanBaoCaoKetQuaTTXM());
+				map.put("thoiHanBaoCaoKetQuaTTXM", getThoiHanBaoCaoKetQuaTTXM());
 				mapTrangThaiTTXM.put("ten", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
 				mapTrangThaiTTXM.put("enum", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
 				donViTTXM.put("id", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getId() : "");

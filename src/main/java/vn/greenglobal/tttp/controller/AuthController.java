@@ -269,7 +269,6 @@ public class AuthController {
 		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));					
 		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepository.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 		List<Process> listProcess = (List<Process>) processRepository.findAll(predicateProcess);
-		
 		//Vai tro tiep theo
 		List<State> listState = new ArrayList<State>();
 		Process process = null;
@@ -288,6 +287,7 @@ public class AuthController {
 		Transition transition = null;
 		if (process != null) {
 			if (listState.size() < 1) {
+				
 				return false;
 			} else {
 				for (State stateFromList : listState) {
