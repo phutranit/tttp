@@ -701,10 +701,10 @@ public class ProcessController extends TttpController<Process> {
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 1, donViId, 1L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 18L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 2, donViId, 19L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 12L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 3, donViId, 20L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 4, donViId, 8L);
@@ -769,9 +769,11 @@ public class ProcessController extends TttpController<Process> {
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transition = addDataTrasition(process, 1L, 20L, 26L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 12L, 8L, 26L, false);
+						transition = addDataTrasition(process, 20L, 19L, 26L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -782,9 +784,11 @@ public class ProcessController extends TttpController<Process> {
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transition = addDataTrasition(process, 1L, 20L, 26L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 12L, 8L, 26L, false);
+						transition = addDataTrasition(process, 20L, 19L, 26L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -795,9 +799,11 @@ public class ProcessController extends TttpController<Process> {
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transition = addDataTrasition(process, 1L, 20L, 26L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 12L, 8L, 26L, false);
+						transition = addDataTrasition(process, 20L, 19L, 26L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -808,9 +814,11 @@ public class ProcessController extends TttpController<Process> {
 					if (process != null && process.getId() != null && process.getId() > 0) {
 						transition = addDataTrasition(process, 1L, 8L, 24L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 18L, 24L, false);
+						transition = addDataTrasition(process, 1L, 20L, 26L, false);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 12L, 8L, 26L, false);
+						transition = addDataTrasition(process, 20L, 19L, 26L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 8L, 26L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
