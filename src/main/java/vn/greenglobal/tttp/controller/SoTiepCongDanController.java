@@ -595,12 +595,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_REQUIRED.name(),
 						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED.getText());
 			}
-
-			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			
-			Don donOld = repoDon.findOne(donService.predicateFindOne(id));
+			TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDaoEnum = TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao);
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 			List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
-			if (trangThaiYeuCauGapLanhDao != null && !trangThaiYeuCauGapLanhDao.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
+			Don donOld = repoDon.findOne(donService.predicateFindOne(id));
+			if (donOld.getTrangThaiYeuCauGapLanhDao() != null && donOld.getTrangThaiYeuCauGapLanhDao().equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) {
+				if (!trangThaiYeuCauGapLanhDaoEnum.equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) { 
+					soTiepCongDans.addAll(soTiepCongDanService.getDSCuocTiepDanDinhKyCuaLanhDao(repo, donOld.getId()));
+				}
+			}
+
+			if (trangThaiYeuCauGapLanhDaoEnum != null && !trangThaiYeuCauGapLanhDaoEnum.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
 				list.add(new PropertyChangeObject("Trạng thái yêu cầu gặp lãnh đạo",
 						donOld.getTrangThaiYeuCauGapLanhDao() != null ? donOld.getTrangThaiYeuCauGapLanhDao().getText() : "",
 								trangThaiYeuCauGapLanhDao != null ? TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao).getText() : ""));
@@ -612,17 +619,36 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			Don don = repoDon.findOne(donService.predicateFindOne(id));
 			don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao));
 			don.setLyDoThayDoiTTYeuCauGapLanhDao(lyDoThayDoiTTYeuCauGapLanhDao);
-
-			if (list.size() > 0) {
-				LichSuThayDoi lichSu = new LichSuThayDoi();
-				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
-				lichSu.setIdDoiTuong(id);
-				lichSu.setNoiDung("Cập nhật trạng thái yêu cầu gặp lãnh đạo");
-				lichSu.setChiTietThayDoi(getChiTietThayDoi(list));
-				lichSuThayDoiService.save(lichSu, congChucId);
+			if (!don.getTrangThaiYeuCauGapLanhDao().equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) { 
+				don.setThanhLapTiepDanGapLanhDao(false);
 			}
 			
+//			if (list.size() > 0) {
+//				LichSuThayDoi lichSu = new LichSuThayDoi();
+//				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+//				lichSu.setIdDoiTuong(id);
+//				lichSu.setNoiDung("Cập nhật trạng thái yêu cầu gặp lãnh đạo");
+//				lichSu.setChiTietThayDoi(getChiTietThayDoi(list));
+//				lichSuThayDoiService.save(lichSu, congChucId);
+//			}
+			
 			ResponseEntity<Object> output = donService.doSave(don, congChucId, eass, HttpStatus.CREATED);
+			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
+				if (list.size() > 0) {
+					LichSuThayDoi lichSu = new LichSuThayDoi();
+					lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+					lichSu.setIdDoiTuong(id);
+					lichSu.setNoiDung("Cập nhật trạng thái yêu cầu gặp lãnh đạo");
+					lichSu.setChiTietThayDoi(getChiTietThayDoi(list));
+					lichSuThayDoiService.save(lichSu, congChucId);
+				}
+				if (soTiepCongDans.size() > 0) {
+					for (SoTiepCongDan soTiepCongDan : soTiepCongDans) {
+						soTiepCongDan.setDaXoa(true);
+						soTiepCongDanService.save(soTiepCongDan, congChucId);
+					}
+				}
+			}
 			return output;
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
