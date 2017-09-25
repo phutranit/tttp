@@ -603,6 +603,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapTruongPhongChiDinh = new HashMap<>();
 		Map<String, Object> mapChuyenVienChiDinh = new HashMap<>();
 		Map<String, Object> mapDonViXuLyXLD = new HashMap<>();
+		Map<String, Object> mapTrangThaiTTXM= new HashMap<>();
+		Map<String, Object> donViTTXM= new HashMap<>();
 		
 		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
@@ -670,7 +672,13 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapPhongBanGiaiQuyet.put("id", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getId() : "");
 				mapPhongBanGiaiQuyet.put("ten", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getTen() : "");
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
-				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");				
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+				map.put("hanGiaiQuyet", getHanGiaiQuyet());
+				map.put("ThoiHanBaoCaoKetQuaTTXM", getThoiHanBaoCaoKetQuaTTXM());
+				mapTrangThaiTTXM.put("ten", getTrangThaiTTXM().getText());
+				mapTrangThaiTTXM.put("enum", getTrangThaiTTXM().name());
+				donViTTXM.put("id", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getId() : "");
+				donViTTXM.put("ten", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getTen() : "");	
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {				
 				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
 				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");	
@@ -701,6 +709,8 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
 			map.put("huongXuLy", mapHuongXuLy);
+			map.put("mapTrangThaiTTXM", mapTrangThaiTTXM);
+			map.put("donViThamTraXacMinh", donViTTXM);
 		}
 		if (getNextState() != null) {
 			map.put("quyTrinhXuLy", getNextState().getTenVietTat());
