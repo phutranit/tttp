@@ -20,6 +20,7 @@ import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -58,6 +59,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy donViThamTraXacMinh;
+	@ManyToOne
 	private CongChuc canBoGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy coQuanTiepNhan;
@@ -75,6 +78,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
+	private LocalDateTime thoiHanBaoCaoKetQuaTTXM;
+	private LocalDateTime hanGiaiQuyet;
 	private boolean old;
 	
 	@ManyToOne
@@ -97,6 +102,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon;
 	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiTTXMEnum trangThaiTTXM;
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonEnum phanLoaiDon;
 	
@@ -200,6 +207,22 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
+	public CoQuanQuanLy getDonViThamTraXacMinh() {
+		return donViThamTraXacMinh;
+	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
+	}
+
+	public LocalDateTime getThoiHanBaoCaoKetQuaTTXM() {
+		return thoiHanBaoCaoKetQuaTTXM;
+	}
+
+	public void setThoiHanBaoCaoKetQuaTTXM(LocalDateTime thoiHanBaoCaoKetQuaTTXM) {
+		this.thoiHanBaoCaoKetQuaTTXM = thoiHanBaoCaoKetQuaTTXM;
+	}
+
 	@ApiModelProperty(position = 8)
 	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
@@ -261,6 +284,14 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
 	}
+	
+	public LocalDateTime getHanGiaiQuyet() {
+		return hanGiaiQuyet;
+	}
+
+	public void setHanGiaiQuyet(LocalDateTime hanGiaiQuyet) {
+		this.hanGiaiQuyet = hanGiaiQuyet;
+	}
 
 	@ApiModelProperty(example = "{}")
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
@@ -297,6 +328,14 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setThuTuThucHien(int thuTuThucHien) {
 		this.thuTuThucHien = thuTuThucHien;
+	}	
+	
+	public TrangThaiTTXMEnum getTrangThaiTTXM() {
+		return trangThaiTTXM;
+	}
+
+	public void setTrangThaiTTXM(TrangThaiTTXMEnum trangThaiTTXM) {
+		this.trangThaiTTXM = trangThaiTTXM;
 	}
 
 	@JsonIgnore

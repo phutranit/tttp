@@ -37,6 +37,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
@@ -52,7 +53,9 @@ import vn.greenglobal.tttp.model.CoQuanToChucTiepDan;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
+import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.Process;
+import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.SoTiepCongDan;
 import vn.greenglobal.tttp.model.State;
@@ -75,6 +78,7 @@ import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
+import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
 import vn.greenglobal.tttp.service.StateService;
@@ -159,6 +163,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@Autowired
 	private ThamSoService thamSoService;
 
+	@Autowired
+	private LichSuThayDoiService lichSuThayDoiService;
+	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
 	}
@@ -281,6 +288,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				} else {
@@ -536,9 +544,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
+					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 				} else {
 					don.setYeuCauGapTrucTiepLanhDao(false);
 					don.setNgayLapDonGapLanhDaoTmp(null);
+					don.setTrangThaiYeuCauGapLanhDao(null);
 				}
 			}
 
@@ -561,7 +571,64 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/capNhatTrangThaiYeuCauGapLanhDao")
+	@ApiOperation(value = "Cập nhật Trạng Thái Yêu Cầu Gặp Lãnh Đạo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cập nhật Trạng thái thành công", response = Don.class) })
+	public ResponseEntity<Object> updateTrangThaiYeuCauGapLanhDao(
+			@RequestHeader(value = "Authorization", required = true) String authorization,  @PathVariable("id") long id,
+			@RequestParam(value = "trangThaiYeuCauGapLanhDao", required = true) String trangThaiYeuCauGapLanhDao,
+			@RequestParam(value = "lyDoThayDoiTTYeuCauGapLanhDao", required = true) String lyDoThayDoiTTYeuCauGapLanhDao,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			if (!StringUtils.isNotBlank(trangThaiYeuCauGapLanhDao)) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.TRANG_THAI_YCGLD_REQUIRED.getText());
+			}
+			if (!StringUtils.isNotBlank(lyDoThayDoiTTYeuCauGapLanhDao)) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_REQUIRED.name(),
+						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED.getText());
+			}
 
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			Don donOld = repoDon.findOne(donService.predicateFindOne(id));
+			List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
+			if (trangThaiYeuCauGapLanhDao != null && !trangThaiYeuCauGapLanhDao.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
+				list.add(new PropertyChangeObject("Trạng thái yêu cầu gặp lãnh đạo",
+						donOld.getTrangThaiYeuCauGapLanhDao() != null ? donOld.getTrangThaiYeuCauGapLanhDao().getText() : "",
+								trangThaiYeuCauGapLanhDao != null ? TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao).getText() : ""));
+			}
+			if (lyDoThayDoiTTYeuCauGapLanhDao != null && !lyDoThayDoiTTYeuCauGapLanhDao.equals(donOld.getLyDoThayDoiTTYeuCauGapLanhDao())) {
+				list.add(new PropertyChangeObject("Lý do thay đổi trạng thái", donOld.getLyDoThayDoiTTYeuCauGapLanhDao(), lyDoThayDoiTTYeuCauGapLanhDao));
+			}
+			
+			Don don = repoDon.findOne(donService.predicateFindOne(id));
+			don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao));
+			don.setLyDoThayDoiTTYeuCauGapLanhDao(lyDoThayDoiTTYeuCauGapLanhDao);
+
+			if (list.size() > 0) {
+				LichSuThayDoi lichSu = new LichSuThayDoi();
+				lichSu.setDoiTuongThayDoi(DoiTuongThayDoiEnum.DON);
+				lichSu.setIdDoiTuong(id);
+				lichSu.setNoiDung("Cập nhật trạng thái yêu cầu gặp lãnh đạo");
+				lichSu.setChiTietThayDoi(getChiTietThayDoi(list));
+				lichSuThayDoiService.save(lichSu, congChucId);
+			}
+			
+			ResponseEntity<Object> output = donService.doSave(don, congChucId, eass, HttpStatus.CREATED);
+			return output;
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}")
 	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
@@ -600,8 +667,34 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/danhSachYeuCauGapLanhDaoDinhKys")
+	@ApiOperation(value = "Lấy danh sách Yêu Cầu Gặp Lãnh Đạo Định Kỳ", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListYeuCauGapLanhDaoDinhKy(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "phanLoai", required = false) String phanLoai, 
+			@RequestParam(value = "nguonDon", required = false) String nguonDon, 
+			@RequestParam(value = "trangThai", required = false) String trangThai,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId), pageable);
+			return assemblerDon.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/hoSoVuViecYeuCauGapLanhDaos")
-	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách Hồ Sơ Vụ Việc Yêu Cầu Gặp Lãnh Đạo", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListHoSoVuViecYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -626,7 +719,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/soTiepCongDans/{id}/huyCuocTiepDanDinhKyCuaLanhDao")
-	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Xoá Sổ Tiếp Công Dân", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = { @ApiResponse(code = 204, message = "Xoá Sổ Tiếp Công Dân thành công") })
 	public ResponseEntity<Object> cancelCuocTiepDanDinhKyCuaLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -650,7 +743,28 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/danhSachYeuCauGapLanhDao/excel")
+	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportDSYeuCauGapLanhDaoExcel(HttpServletResponse response,
+			@RequestParam(value = "donViId", required = true) Long donViId,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "phanLoai", required = false) String phanLoai, 
+			@RequestParam(value = "nguonDon", required = false) String nguonDon, 
+			@RequestParam(value = "trangThai", required = false) String trangThai) throws IOException {
+		
+		try {
+			ExcelUtil.exportDanhSachYeuCauGapLanhDao(response,
+					"DanhSachYeuCauGapLanhDao", "sheetName", (List<Don>) repoDon.findAll(donService
+							.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId)),
+					"Danh sách yêu cầu gặp lãnh đạo");
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHen")
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWord(@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
