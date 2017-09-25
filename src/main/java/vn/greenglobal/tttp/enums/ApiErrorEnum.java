@@ -16,6 +16,7 @@ public enum ApiErrorEnum {
 	QUYTRINHGIAIQUYET_REQUIRED("Trường quy trình giải quyết không được để trống."),
 	TRANGTHAITTXM_REQUIRED("Trường trangThaiTTXM không được để trống."),
 	THOIHANBAOCAOKETQUATTXM_REQUIRED("Trường thoiHanBaoCaoKetQuaTTXM không được để trống."),
+	HANGIAIQUYET_REQUIRED("Trường hanGiaiQuyet không được để trống."),
 	DON_REQUIRED("Trường đơn không được để trống."),
 	THONGTINGIAIQUYETDON_REQUIRED("Trường thongTinGiaiQuyetDon không được để trống."),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống."),
