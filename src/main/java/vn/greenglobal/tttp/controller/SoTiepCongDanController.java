@@ -294,7 +294,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} else {
 					don.setYeuCauGapTrucTiepLanhDao(false);
 					don.setNgayLapDonGapLanhDaoTmp(null);
-					don.setTrangThaiYeuCauGapLanhDao(null);
 				}
 			}
 			
