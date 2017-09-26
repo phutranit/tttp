@@ -184,6 +184,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public CongChuc getCanBoGiaoViec() {
 		return canBoGiaoViec;
 	}
