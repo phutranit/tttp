@@ -99,6 +99,16 @@ public class EnumController {
 	@Autowired
 	private ThamSoService thamSoService;
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/layNgayGioHienTai")
+	@ApiOperation(value = "Lấy danh sách Hình thức thống kê", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getNgayGioHienTai(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("ngayGioHienTai", Utils.localDateTimeNow());
+
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/tiepCongDan/trangThaiYeuCauGapLanhDao")
 	@ApiOperation(value = "Lấy danh sách Trạng thái yêu cầu gặp lãnh đạo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getTrangThaiYeuCauGapLanhDaos(
