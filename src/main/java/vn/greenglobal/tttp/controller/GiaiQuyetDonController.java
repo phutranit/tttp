@@ -845,6 +845,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
 			giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
+			giaiQuyetDonTiepTheo.setCanBoGiaoViec(congChuc);
 			if (giaiQuyetDon.getCanBoXuLyChiDinh() != null) {
 				giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			}
@@ -885,6 +886,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 			giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 			giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 2);
+			giaiQuyetDonTiepTheo.setCanBoGiaoViec(congChuc);
 			List<Transition> listTransitionEnd = new ArrayList<Transition>();
 			
 			if (!isLaTTXM) {
@@ -979,6 +981,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		//giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
+		giaiQuyetDonTiepTheo.setCanBoGiaoViec(congChuc);
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
 		if (isLaTTXM) { 

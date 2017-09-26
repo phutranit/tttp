@@ -55,6 +55,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne
+	private CongChuc canBoGiaoViec;
+	@ManyToOne
 	private SoTiepCongDan soTiepCongDan;
 	
 	@Enumerated(EnumType.STRING)
@@ -189,6 +191,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.soTiepCongDan = soTiepCongDan;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoGiaoViec() {
+		return canBoGiaoViec;
+	}
+
+	public void setCanBoGiaoViec(CongChuc canBoGiaoViec) {
+		this.canBoGiaoViec = canBoGiaoViec;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public CoQuanQuanLy getDonViGiaiQuyet() {
 		return donViGiaiQuyet;
