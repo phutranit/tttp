@@ -44,6 +44,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CongChuc canBoChuyenDon;
 	@ManyToOne
+	private CongChuc canBoGiaoViec;
+	@ManyToOne
 	private CongChuc truongPhongChiDinh;
 	@ManyToOne
 	private CongChuc chuyenVienChiDinh;
@@ -180,6 +182,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setSoQuyetDinhDinhChi(String soQuyetDinhDinhChi) {
 		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoGiaoViec() {
+		return canBoGiaoViec;
+	}
+
+	public void setCanBoGiaoViec(CongChuc canBoGiaoViec) {
+		this.canBoGiaoViec = canBoGiaoViec;
 	}
 
 	public LocalDateTime getNgayHenGapLanhDao() {

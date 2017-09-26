@@ -16,6 +16,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
+import vn.greenglobal.tttp.enums.HuongXuLyTCDEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
@@ -164,6 +165,13 @@ public class SoTiepCongDanService {
 		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(base.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(donId)
 				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)))));
 
+		return soTiepCongDans;
+	}
+	
+	public List<SoTiepCongDan> getCuocTiepDanDinhKyCuaLanhDaoTruoc(SoTiepCongDanRepository repo, Long id) {
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(base.and(QSoTiepCongDan.soTiepCongDan.id.ne(id))
+				.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))));
 		return soTiepCongDans;
 	}
 	
