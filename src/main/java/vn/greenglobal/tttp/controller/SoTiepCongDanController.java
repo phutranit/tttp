@@ -587,7 +587,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/cayDopNhatTrangThaiYeuCauGapLanhDao")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/capNhatTrangThaiYeuCauGapLanhDao")
 	@ApiOperation(value = "Cập nhật Trạng Thái Yêu Cầu Gặp Lãnh Đạo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Trạng thái thành công", response = Don.class) })
