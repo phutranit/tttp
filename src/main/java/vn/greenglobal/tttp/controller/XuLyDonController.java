@@ -1968,8 +1968,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDonTruongPhong = new GiaiQuyetDon();
 		giaiQuyetDonTruongPhong = chuyenTruongPhongGiaiQuyet(xuLyDon, xuLyDonHienTai, giaiQuyetDonTruongPhong, thongTinGiaiQuyetDon, congChuc, khongQuyTrinh);
-		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTruongPhong.getId());
-		donService.save(don, congChucId);
+		//don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTruongPhong.getId());
+		//donService.save(don, congChucId);
 		
 		//TTXM
 		GiaiQuyetDon giaiQuyetDonTTXM = new GiaiQuyetDon();
