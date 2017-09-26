@@ -62,6 +62,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.Transition;
+import vn.greenglobal.tttp.model.medial.Medial_UpdateTrangThaiYCGLD;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CoQuanToChucTiepDanRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -586,36 +587,34 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/capNhatTrangThaiYeuCauGapLanhDao")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/soTiepCongDan/{id}/cayDopNhatTrangThaiYeuCauGapLanhDao")
 	@ApiOperation(value = "Cập nhật Trạng Thái Yêu Cầu Gặp Lãnh Đạo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cập nhật Trạng thái thành công", response = Don.class) })
 	public ResponseEntity<Object> updateTrangThaiYeuCauGapLanhDao(
 			@RequestHeader(value = "Authorization", required = true) String authorization,  @PathVariable("id") long id,
-			@RequestParam(value = "trangThaiYeuCauGapLanhDao", required = true) String trangThaiYeuCauGapLanhDao,
-			@RequestParam(value = "lyDoThayDoiTTYeuCauGapLanhDao", required = true) String lyDoThayDoiTTYeuCauGapLanhDao,
-			PersistentEntityResourceAssembler eass) {
+			@RequestBody Medial_UpdateTrangThaiYCGLD params, PersistentEntityResourceAssembler eass) {
 		
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			if (!StringUtils.isNotBlank(trangThaiYeuCauGapLanhDao)) {
+			if (params.getTrangThaiYeuCauGapLanhDao() == null || !StringUtils.isNotBlank(params.getTrangThaiYeuCauGapLanhDao().getText())) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
 						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.TRANG_THAI_YCGLD_REQUIRED.getText());
 			}
-			if (!StringUtils.isNotBlank(lyDoThayDoiTTYeuCauGapLanhDao)) {
+			if (!StringUtils.isNotBlank(params.getLyDoThayDoiTTYeuCauGapLanhDao())) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_REQUIRED.name(),
 						ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED.getText());
 			}
 			
-			TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDaoEnum = TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao);
+			TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDaoEnum = params.getTrangThaiYeuCauGapLanhDao();
 			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 			List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 			Don donOld = repoDon.findOne(donService.predicateFindOne(id));
-			if (donOld.getTrangThaiYeuCauGapLanhDao() != null && donOld.getTrangThaiYeuCauGapLanhDao().equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) {
+			if (donOld.getTrangThaiYeuCauGapLanhDao() != null && TrangThaiYeuCauGapLanhDaoEnum.DONG_Y.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
 				if (!trangThaiYeuCauGapLanhDaoEnum.equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) { 
 					soTiepCongDans.addAll(soTiepCongDanService.getDSCuocTiepDanDinhKyCuaLanhDao(repo, donOld.getId()));
 				}
@@ -624,15 +623,15 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			if (trangThaiYeuCauGapLanhDaoEnum != null && !trangThaiYeuCauGapLanhDaoEnum.equals(donOld.getTrangThaiYeuCauGapLanhDao())) {
 				list.add(new PropertyChangeObject("Trạng thái yêu cầu gặp lãnh đạo",
 						donOld.getTrangThaiYeuCauGapLanhDao() != null ? donOld.getTrangThaiYeuCauGapLanhDao().getText() : "",
-								trangThaiYeuCauGapLanhDao != null ? TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao).getText() : ""));
+								params.getTrangThaiYeuCauGapLanhDao() != null ? params.getTrangThaiYeuCauGapLanhDao().getText() : ""));
 			}
-			if (lyDoThayDoiTTYeuCauGapLanhDao != null && !lyDoThayDoiTTYeuCauGapLanhDao.equals(donOld.getLyDoThayDoiTTYeuCauGapLanhDao())) {
-				list.add(new PropertyChangeObject("Lý do thay đổi trạng thái", donOld.getLyDoThayDoiTTYeuCauGapLanhDao(), lyDoThayDoiTTYeuCauGapLanhDao));
+			if (params.getLyDoThayDoiTTYeuCauGapLanhDao() != null && !params.getLyDoThayDoiTTYeuCauGapLanhDao().equals(donOld.getLyDoThayDoiTTYeuCauGapLanhDao())) {
+				list.add(new PropertyChangeObject("Lý do thay đổi trạng thái", donOld.getLyDoThayDoiTTYeuCauGapLanhDao(), params.getLyDoThayDoiTTYeuCauGapLanhDao()));
 			}
 			
 			Don don = repoDon.findOne(donService.predicateFindOne(id));
-			don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.valueOf(trangThaiYeuCauGapLanhDao));
-			don.setLyDoThayDoiTTYeuCauGapLanhDao(lyDoThayDoiTTYeuCauGapLanhDao);
+			don.setTrangThaiYeuCauGapLanhDao(params.getTrangThaiYeuCauGapLanhDao());
+			don.setLyDoThayDoiTTYeuCauGapLanhDao(params.getLyDoThayDoiTTYeuCauGapLanhDao());
 			if (!don.getTrangThaiYeuCauGapLanhDao().equals(TrangThaiYeuCauGapLanhDaoEnum.DONG_Y)) { 
 				don.setThanhLapTiepDanGapLanhDao(false);
 			}
