@@ -100,7 +100,7 @@ public class EnumController {
 	private ThamSoService thamSoService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/layNgayGioHienTai")
-	@ApiOperation(value = "Lấy danh sách Hình thức thống kê", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy ngày giờ hiện tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getNgayGioHienTai(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		Map<String, Object> map = new HashMap<>();
