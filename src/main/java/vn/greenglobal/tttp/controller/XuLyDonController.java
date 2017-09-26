@@ -385,12 +385,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} else if (FlowStateEnum.LANH_DAO_THU_HOI.equals(nextState)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
-						xuLyDonTiepTheo = lanhDaoThuHoi(xuLyDon, xuLyDonHienTai, congChucId, VaiTroEnum.LANH_DAO);
-						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						XuLyDon xuLyDonThuHoi = xuLyDonService.predFindXuLyDonThuHoi(repo, donId, donViId, congChucId);
+						if (xuLyDonThuHoi != null) {
+							xuLyDonTiepTheo = lanhDaoThuHoi(xuLyDon, xuLyDonThuHoi, congChucId, VaiTroEnum.LANH_DAO);
+							return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						}
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_INVALID.name(),
+								ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 					} else if (FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextState)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
-						xuLyDonTiepTheo = lanhDaoThuHoi(xuLyDon, xuLyDonHienTai, congChucId, VaiTroEnum.TRUONG_PHONG);
-						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						XuLyDon xuLyDonThuHoi = xuLyDonService.predFindXuLyDonThuHoi(repo, donId, donViId, congChucId);
+						if (xuLyDonThuHoi != null) {
+							xuLyDonTiepTheo = lanhDaoThuHoi(xuLyDon, xuLyDonThuHoi, congChucId, VaiTroEnum.TRUONG_PHONG);
+							return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+						}
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_INVALID.name(),
+								ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 					} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextState)) {
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = truongPhongGiaoViec(xuLyDon, xuLyDonHienTai, congChucId);
@@ -1566,13 +1576,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		CongChuc congChuc = congChucRepo.findOne(congChucId);
+		System.out.println("=================lanhDaoThuHoi _________xuLyDonHienTai: " + xuLyDonHienTai.getId());
 		xuLyDonHienTai.setCongChuc(congChuc);
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setCanBoXuLyChiDinh(null);
 		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
 		xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		//disableXuLyDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId, xuLyDonHienTai.getPhongBanXuLy().getId(), xuLyDonHienTai.getDonViXuLy().getId());
-		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId, xuLyDonHienTai.getCanBoXuLyChiDinh().getId(), xuLyDonHienTai.getPhongBanXuLy().getId(), xuLyDonHienTai.getDonViXuLy().getId());
+		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId, congChucId, 
+				xuLyDonHienTai.getPhongBanXuLy().getId(), xuLyDonHienTai.getDonViXuLy().getId());
 		
 		List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(xuLyDonHienTai.getDonViXuLy().getId(), 
 				ProcessTypeEnum.XU_LY_DON.toString(), repoProcess));
