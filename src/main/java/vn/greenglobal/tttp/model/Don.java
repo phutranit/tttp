@@ -157,6 +157,8 @@ public class Don extends Model<Don> {
 	private CongChuc canBoTTXMChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoKTDXChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;
 	private Long xuLyDonCuoiCungId;
@@ -317,6 +319,15 @@ public class Don extends Model<Don> {
 
 	public void setMa(String ma) {
 		this.ma = ma;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoCoTheThuHoi() {
+		return canBoCoTheThuHoi;
+	}
+
+	public void setCanBoCoTheThuHoi(CongChuc canBoCoTheThuHoi) {
+		this.canBoCoTheThuHoi = canBoCoTheThuHoi;
 	}
 
 	@ApiModelProperty(position = 1, required = true)
@@ -2032,21 +2043,6 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
-	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getTrangThaiThuHoiInfo() {
-		//
-//		XuLyDon xuLyDon = Application.app.getXuLyDonRepository()
-//				.findOne(QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.don.id.eq(this.getId()).and(QXuLyDon.xuLyDon.canBoGiaoViec.isNotNull())
-//					.and(QXuLyDon.xuLyDon.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY))));
-//		if (xuLyDon != null) {
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("congChucId", xuLyDon.getCanBoGiaoViec().getId());
-//			return map;
-//		}
-		return null;
-	}
 
 	@ApiModelProperty(hidden = true)
 	@Transient
@@ -2091,6 +2087,18 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getPhanLoaiDon().getText());
 			map.put("giaTri", getPhanLoaiDon().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getCanBoCoTheThuHoiInfo() {
+		if (getCanBoCoTheThuHoi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCanBoCoTheThuHoi().getHoVaTen());
+			map.put("giaTri", getCanBoCoTheThuHoi().getId());
 			return map;
 		}
 		return null;
