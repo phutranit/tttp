@@ -1381,7 +1381,6 @@ public class Don extends Model<Don> {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
-	@JsonIgnore
 	public PhanLoaiDonEnum getPhanLoaiDon() {
 		return phanLoaiDon;
 	}
@@ -1390,7 +1389,6 @@ public class Don extends Model<Don> {
 		this.phanLoaiDon = phanLoaiDon;
 	}
 
-	@JsonIgnore
 	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
 		return lyDoKhongDuDieuKienThuLy;
 	}
