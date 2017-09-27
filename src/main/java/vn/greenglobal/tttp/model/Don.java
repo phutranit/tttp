@@ -2032,6 +2032,21 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiThuHoiInfo() {
+		//
+//		XuLyDon xuLyDon = Application.app.getXuLyDonRepository()
+//				.findOne(QXuLyDon.xuLyDon.daXoa.eq(false).and(QXuLyDon.xuLyDon.don.id.eq(this.getId()).and(QXuLyDon.xuLyDon.canBoGiaoViec.isNotNull())
+//					.and(QXuLyDon.xuLyDon.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY))));
+//		if (xuLyDon != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("congChucId", xuLyDon.getCanBoGiaoViec().getId());
+//			return map;
+//		}
+		return null;
+	}
 
 	@ApiModelProperty(hidden = true)
 	@Transient
