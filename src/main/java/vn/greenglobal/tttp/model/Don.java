@@ -51,6 +51,7 @@ import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.util.Utils;
 
 @Entity
@@ -68,6 +69,9 @@ public class Don extends Model<Don> {
 	private String yeuCauCuaCongDan = "";
 	//@Lob
 	private String huongGiaiQuyetDaThucHien = " ";
+	//@Lob
+	private String lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		
 	@Size(max=255)
 	private String yKienXuLyDon = ""; // Xu ly don TCD
 	@Size(max=255)
@@ -153,6 +157,8 @@ public class Don extends Model<Don> {
 	private CongChuc canBoTTXMChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoKTDXChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;
 	private Long xuLyDonCuoiCungId;
@@ -248,7 +254,10 @@ public class Don extends Model<Don> {
 	private State currentState;
 	@Enumerated(EnumType.STRING)
 	private ProcessTypeEnum processType;
-
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao;
+	
 	@ApiModelProperty(hidden = true)
 	public List<XuLyDon> getXuLyDons() {
 		return xuLyDons;
@@ -310,6 +319,15 @@ public class Don extends Model<Don> {
 
 	public void setMa(String ma) {
 		this.ma = ma;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoCoTheThuHoi() {
+		return canBoCoTheThuHoi;
+	}
+
+	public void setCanBoCoTheThuHoi(CongChuc canBoCoTheThuHoi) {
+		this.canBoCoTheThuHoi = canBoCoTheThuHoi;
 	}
 
 	@ApiModelProperty(position = 1, required = true)
@@ -429,6 +447,18 @@ public class Don extends Model<Don> {
 			this.huongGiaiQuyetDaThucHien = " ";
 		} else {
 			this.huongGiaiQuyetDaThucHien = huongGiaiQuyetDaThucHien;
+		}
+	}
+
+	public String getLyDoThayDoiTTYeuCauGapLanhDao() {
+		return lyDoThayDoiTTYeuCauGapLanhDao;
+	}
+
+	public void setLyDoThayDoiTTYeuCauGapLanhDao(String lyDoThayDoiTTYeuCauGapLanhDao) {
+		if (lyDoThayDoiTTYeuCauGapLanhDao != null && lyDoThayDoiTTYeuCauGapLanhDao.length() == 0) {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = " ";
+		} else {
+			this.lyDoThayDoiTTYeuCauGapLanhDao = lyDoThayDoiTTYeuCauGapLanhDao;
 		}
 	}
 
@@ -1362,7 +1392,6 @@ public class Don extends Model<Don> {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
 
-	@JsonIgnore
 	public PhanLoaiDonEnum getPhanLoaiDon() {
 		return phanLoaiDon;
 	}
@@ -1371,13 +1400,21 @@ public class Don extends Model<Don> {
 		this.phanLoaiDon = phanLoaiDon;
 	}
 
-	@JsonIgnore
 	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
 		return lyDoKhongDuDieuKienThuLy;
 	}
 
 	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
 		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
+	}
+	
+	//@JsonIgnore
+	public TrangThaiYeuCauGapLanhDaoEnum getTrangThaiYeuCauGapLanhDao() {
+		return trangThaiYeuCauGapLanhDao;
+	}
+
+	public void setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum trangThaiYeuCauGapLanhDao) {
+		this.trangThaiYeuCauGapLanhDao = trangThaiYeuCauGapLanhDao;
 	}
 
 	public LoaiVuViecEnum getLoaiVuViec() {
@@ -2055,11 +2092,35 @@ public class Don extends Model<Don> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
+	public Map<String, Object> getCanBoCoTheThuHoiInfo() {
+		if (getCanBoCoTheThuHoi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCanBoCoTheThuHoi().getHoVaTen());
+			map.put("giaTri", getCanBoCoTheThuHoi().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
 	public Map<String, Object> getLyDoKhongDuDieuKienThuLyInfo() {
 		if (getLyDoKhongDuDieuKienThuLy() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getLyDoKhongDuDieuKienThuLy().getText());
 			map.put("giaTri", getLyDoKhongDuDieuKienThuLy().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiYeuCauGapLanhDaoInfo() {
+		if (getTrangThaiYeuCauGapLanhDao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getTrangThaiYeuCauGapLanhDao().getText());
+			map.put("giaTri", getTrangThaiYeuCauGapLanhDao().name());
 			return map;
 		}
 		return null;

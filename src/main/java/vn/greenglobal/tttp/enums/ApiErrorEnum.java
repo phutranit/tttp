@@ -13,6 +13,10 @@ public enum ApiErrorEnum {
 	COQUANQUANLY_REQUIRED("Trường cơ quan quản lý không được để trống."),
 	CHUCVU_REQUIRED("Trường chức vụ không được để trống."),
 	MATKHAU_REQUIRED("Trường mật khẩu không được để trống."),
+	QUYTRINHGIAIQUYET_REQUIRED("Trường quy trình giải quyết không được để trống."),
+	TRANGTHAITTXM_REQUIRED("Trường trangThaiTTXM không được để trống."),
+	THOIHANBAOCAOKETQUATTXM_REQUIRED("Trường thoiHanBaoCaoKetQuaTTXM không được để trống."),
+	HANGIAIQUYET_REQUIRED("Trường hanGiaiQuyet không được để trống."),
 	DON_REQUIRED("Trường đơn không được để trống."),
 	THONGTINGIAIQUYETDON_REQUIRED("Trường thongTinGiaiQuyetDon không được để trống."),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống."),
@@ -56,7 +60,9 @@ public enum ApiErrorEnum {
 	MA_TRA_EXISTS("Ma trận của đơn vị này đã được tạo."),
 	CUOCTHANHTRA_REQUIRED("Bạn phải chọn ít nhất một cuộc thanh tra."),
 	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
-	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này.");
+	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này."),
+	TRANG_THAI_YCGLD_REQUIRED("Trường trangThaiYeuCauGapLanhDao không được bỏ trống."),
+	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		
 	ApiErrorEnum(String text) {
 		this.text = text;

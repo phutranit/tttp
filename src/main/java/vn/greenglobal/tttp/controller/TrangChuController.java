@@ -90,11 +90,6 @@ public class TrangChuController extends TttpController<Don> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeDonMoiNhat")
 	@ApiOperation(value = "Lấy danh sách đơn mới nhất của đơn vị", position = 4, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Lấy danh sách đơn mới nhất của đơn vị thành công", response = Don.class),
-			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
-			@ApiResponse(code = 204, message = "Không có dữ liệu"),
-			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getDanhSachDonMoiNhatTheoDonVi(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
@@ -121,11 +116,6 @@ public class TrangChuController extends TttpController<Don> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKes/thongKeDonTreHan")
 	@ApiOperation(value = "Lấy danh sách đơn trễ hạn của đơn vị", position = 5, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Lấy danh sách đơn trễ hạn của đơn vị thành công", response = Don.class),
-			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
-			@ApiResponse(code = 204, message = "Không có dữ liệu"),
-			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getDanhSachDonTreHanTheoDonVi(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
@@ -324,7 +314,7 @@ public class TrangChuController extends TttpController<Don> {
 					mapDonThongKe = new HashMap<>();
 				}
 			}
-			map.put("ten", "THỐNG KÊ ĐƠN THEO PHÂN LOẠI ĐƠN " + " NĂM " + year);
+			map.put("ten", "BIỂU ĐỒ ĐƠN THEO PHÂN LOẠI " + year);
 			map.put("phanLoaiDons", list);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
@@ -351,7 +341,7 @@ public class TrangChuController extends TttpController<Don> {
 			List<Map<String, Object>> list = new ArrayList<>();
 			
 			List<LinhVucDonThu> linhVucs = new ArrayList<LinhVucDonThu>();
-			List<Long> ids = Arrays.asList(53L, 57L, 58L, 59L, 6L, 56L, 15L, 16L,
+			List<Long> ids = Arrays.asList(53L, 54L, 57L, 58L, 59L, 6L, 56L, 15L, 16L,
 			 39L, 62L, 63L);
 			 
 			linhVucs.addAll(linhVucDonThuService.getDanhSachLinhVucDonThuVaIds(loaiDon, ids));
@@ -387,7 +377,7 @@ public class TrangChuController extends TttpController<Don> {
 					mapDonThongKe = new HashMap<>();
 				}
 			}
-			map.put("ten", "THỐNG KÊ ĐƠN THEO LĨNH VỰC " + " NĂM " + year);
+			map.put("ten", "BIỂU ĐỒ ĐƠN THEO LĨNH VỰC NĂM " + year);
 			map.put("linhVucs", list);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
@@ -405,15 +395,14 @@ public class TrangChuController extends TttpController<Don> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 		
-			Long donViXuLyXLD = Long
-					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapDonThongKe = new HashMap<>();
 			List<Map<String, Object>> listThangs = new ArrayList<>();
 			Map<String, Object> mapThangs = new HashMap<>();
-
+			
 			int year = Utils.localDateTimeNow().getYear();
-			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindDanhSachDonsTheoDonVi(donViXuLyXLD,
+			BooleanExpression predAll = (BooleanExpression) thongKeService.predicateFindTongSoLuongDonCuaNamTheoDonVi(donViXuLyXLD,
 					year, xuLyRepo, repo, giaiQuyetDonRepo);
 			for (int i = 1; i <= 12; i++) {
 				mapThangs.put("thang", i);
@@ -429,22 +418,22 @@ public class TrangChuController extends TttpController<Don> {
 					listLoaiDon.add(mapDonThongKe);
 					mapDonThongKe = new HashMap<>();
 				}
+				
+				mapThangs.put("donTreHanXLD", thongKeService.getThongKeTongSoDonTreHanXLDTheoThang(predThang, repo));
+				mapThangs.put("donTreHanGQD", thongKeService.getThongKeTongSoDonTreHanGQDTheoThang(predThang, repo));
 				tongSoDon = Long.valueOf(((List<Don>) repo.findAll(predThang)).size());
-				// mapThangs.put("tongSoDon",
-				// thongKeService.getThongKeTongSoDonTheoThang(donViXuLyXLD, month,
-				// xuLyRepo, repo, giaiQuyetDonRepo));
 				mapThangs.put("tongSoDon", tongSoDon);
-				mapThangs.put("donTreHan", thongKeService.getThongKeTongSoDonTreHanTheoThang(donViXuLyXLD, month, xuLyRepo,
-						repo, giaiQuyetDonRepo));
 				mapThangs.put("phanLoaiDons", listLoaiDon);
 				listThangs.add(mapThangs);
 				mapThangs = new HashMap<>();
 			}
 			map.put("thangs", listThangs);
-			map.put("ten", "THỐNG KÊ SỐ LƯỢNG ĐƠN TRONG NĂM " + year);
+			map.put("ten", "BIỂU ĐỒ SỐ LƯỢNG ĐƠN TRONG NĂM " + year);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	
 }

@@ -20,6 +20,7 @@ import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -43,6 +44,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CongChuc canBoChuyenDon;
 	@ManyToOne
+	private CongChuc canBoGiaoViec;
+	@ManyToOne
 	private CongChuc truongPhongChiDinh;
 	@ManyToOne
 	private CongChuc chuyenVienChiDinh;
@@ -57,6 +60,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy phongBanXuLyChiDinh;
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
+	@ManyToOne
+	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
 	private CongChuc canBoGiaiQuyet;
 	@ManyToOne
@@ -75,6 +80,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	private LocalDateTime thoiHanXuLy;
 	private LocalDateTime ngayHenGapLanhDao;
 	private LocalDateTime ngayQuyetDinhDinhChi;
+	private LocalDateTime thoiHanBaoCaoKetQuaTTXM;
+	private LocalDateTime hanGiaiQuyet;
 	private boolean old;
 	
 	@ManyToOne
@@ -97,6 +104,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiDon;
 	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiTTXMEnum trangThaiTTXM;
 	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonEnum phanLoaiDon;
 	
@@ -175,6 +184,15 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.soQuyetDinhDinhChi = soQuyetDinhDinhChi;
 	}
 
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoGiaoViec() {
+		return canBoGiaoViec;
+	}
+
+	public void setCanBoGiaoViec(CongChuc canBoGiaoViec) {
+		this.canBoGiaoViec = canBoGiaoViec;
+	}
+
 	public LocalDateTime getNgayHenGapLanhDao() {
 		return ngayHenGapLanhDao;
 	}
@@ -200,6 +218,22 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
+	public CoQuanQuanLy getDonViThamTraXacMinh() {
+		return donViThamTraXacMinh;
+	}
+
+	public void setDonViThamTraXacMinh(CoQuanQuanLy donViThamTraXacMinh) {
+		this.donViThamTraXacMinh = donViThamTraXacMinh;
+	}
+
+	public LocalDateTime getThoiHanBaoCaoKetQuaTTXM() {
+		return thoiHanBaoCaoKetQuaTTXM;
+	}
+
+	public void setThoiHanBaoCaoKetQuaTTXM(LocalDateTime thoiHanBaoCaoKetQuaTTXM) {
+		this.thoiHanBaoCaoKetQuaTTXM = thoiHanBaoCaoKetQuaTTXM;
+	}
+
 	@ApiModelProperty(position = 8)
 	public VaiTroEnum getChucVuGiaoViec() {
 		return chucVuGiaoViec;
@@ -261,6 +295,14 @@ public class XuLyDon extends Model<XuLyDon> {
 	public void setCongChuc(CongChuc congChuc) {
 		this.congChuc = congChuc;
 	}
+	
+	public LocalDateTime getHanGiaiQuyet() {
+		return hanGiaiQuyet;
+	}
+
+	public void setHanGiaiQuyet(LocalDateTime hanGiaiQuyet) {
+		this.hanGiaiQuyet = hanGiaiQuyet;
+	}
 
 	@ApiModelProperty(example = "{}")
 	public ThamQuyenGiaiQuyet getThamQuyenGiaiQuyet() {
@@ -297,6 +339,14 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setThuTuThucHien(int thuTuThucHien) {
 		this.thuTuThucHien = thuTuThucHien;
+	}	
+	
+	public TrangThaiTTXMEnum getTrangThaiTTXM() {
+		return trangThaiTTXM;
+	}
+
+	public void setTrangThaiTTXM(TrangThaiTTXMEnum trangThaiTTXM) {
+		this.trangThaiTTXM = trangThaiTTXM;
 	}
 
 	@JsonIgnore
@@ -564,6 +614,8 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapTruongPhongChiDinh = new HashMap<>();
 		Map<String, Object> mapChuyenVienChiDinh = new HashMap<>();
 		Map<String, Object> mapDonViXuLyXLD = new HashMap<>();
+		Map<String, Object> mapTrangThaiTTXM= new HashMap<>();
+		Map<String, Object> donViTTXM= new HashMap<>();
 		
 		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
@@ -631,7 +683,13 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapPhongBanGiaiQuyet.put("id", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getId() : "");
 				mapPhongBanGiaiQuyet.put("ten", getPhongBanGiaiQuyet() != null ? getPhongBanGiaiQuyet().getTen() : "");
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
-				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");				
+				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");	
+				map.put("hanGiaiQuyet", getHanGiaiQuyet());
+				map.put("thoiHanBaoCaoKetQuaTTXM", getThoiHanBaoCaoKetQuaTTXM());
+				mapTrangThaiTTXM.put("ten", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
+				mapTrangThaiTTXM.put("enum", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
+				donViTTXM.put("id", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getId() : "");
+				donViTTXM.put("ten", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getTen() : "");	
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {				
 				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
 				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");	
@@ -662,6 +720,8 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("thamQuyenGiaiQuyet", mapThamQuyenGiaiQuyet);
 			map.put("coQuanTiepNhan", mapCoQuanTiepNhan);
 			map.put("huongXuLy", mapHuongXuLy);
+			map.put("mapTrangThaiTTXM", mapTrangThaiTTXM);
+			map.put("donViThamTraXacMinh", donViTTXM);
 		}
 		if (getNextState() != null) {
 			map.put("quyTrinhXuLy", getNextState().getTenVietTat());
