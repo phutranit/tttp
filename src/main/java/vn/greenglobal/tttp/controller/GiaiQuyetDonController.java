@@ -232,8 +232,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					if (giaiQuyetDonHienTai != null) {
 						FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 						FlowStateEnum nextStateType = nextState.getType();
-						giaiQuyetDonHienTai.setNextState(nextState);
-						giaiQuyetDonHienTai.setNextForm(transition.getForm());
+						if (!FlowStateEnum.LANH_DAO_THU_HOI.equals(nextStateType) && !FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextStateType)) {
+							giaiQuyetDonHienTai.setNextState(nextState);
+							giaiQuyetDonHienTai.setNextForm(transition.getForm());
+						} else {
+							giaiQuyetDonHienTai.setOld(true);
+						}
+						
 						// Thong tin xu ly don
 						String note = vaiTroNguoiDungHienTai + " " + nextState.getTenVietTat() + " ";
 						Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
@@ -998,6 +1003,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
+		giaiQuyetDonHienTai.setOld(true);
 		giaiQuyetDonHienTai.setCanBoXuLyChiDinh(null);
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
