@@ -9,6 +9,7 @@ public enum QuaTrinhXuLyEnum {
 	CHUYEN_CAN_BO_NHAP_LIEU("Chuyển cán bộ nhập liệu"),
 	CHUYEN_PHONG_GIAI_QUYET("Chuyển phòng giải quyết"),
 	GIAO_CAN_BO_GIAI_QUYET("Giao cán bộ giải quyết"),
+	THU_HOI_DON("Thu hồi đơn"),
 	CHUYEN_DON_VI_TTXM("Chuyển đơn vị TTXM"),
 	CHUYEN_DON_VI_KTDX("Chuyển đơn vị KTDX"),
 	CHUYEN_CHUYEN_VIEN_NHAP_LIEU("Chuyển chuyên viên nhập liệu"),
