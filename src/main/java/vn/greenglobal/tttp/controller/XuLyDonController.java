@@ -2526,8 +2526,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
 		don.setHoanThanhDon(true);
-		donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
-		donGoc.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
+		//donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
+		//donGoc.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
+		donGoc.setCanBoXuLyChiDinh(null);
+		donGoc.setXuLyDonCuoiCungId(null);
 		donGoc.setHoanThanhDon(false);
 		
 		//tao lich su qua trinh xu ly don
