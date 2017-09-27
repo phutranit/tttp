@@ -8,6 +8,7 @@ public enum FlowStateEnum {
 	LANH_DAO_GIAO_VIEC_CAN_BO("Lãnh đạo giao việc cán bộ"),
 	TRUONG_PHONG_DE_XUAT_GIAO_VIEC_LAI("Trường phòng đề xuất giao việc lại"),
 	TRUONG_PHONG_GIAO_VIEC_CAN_BO("Trưởng phòng giao việc cán bộ"),
+	TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_KET_QUA_TTXM("Trưởng phòng giao việc cán bộ"),
 	CAN_BO_DE_XUAT_GIAO_VIEC_LAI("Cán bộ đề xuất giao việc lại"),
 	CAN_BO_DE_XUAT_HUONG_XU_LY("Cán bộ đề xuất hướng xử lý"),
 	CAN_BO_CHUYEN_VAN_THU_GIAO_TTXM("Cán bộ chuyển văn thư giao TTXM"),
