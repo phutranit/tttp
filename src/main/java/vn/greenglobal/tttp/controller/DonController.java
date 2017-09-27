@@ -45,6 +45,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
+import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -680,8 +681,16 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
-				don.setPhanLoaiDon(donOld.getPhanLoaiDon());
-				don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
+				if (don.getPhanLoaiDon() != null) {
+					if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(don.getPhanLoaiDon())) {
+						don.setLyDoKhongDuDieuKienThuLy(null);
+					} else {
+						don.setLyDoKhongDuDieuKienThuLy(don.getLyDoKhongDuDieuKienThuLy());
+					}
+				} else {
+					don.setPhanLoaiDon(donOld.getPhanLoaiDon());
+					don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
+				}
 				don.setTrangThaiYeuCauGapLanhDao(donOld.getTrangThaiYeuCauGapLanhDao());
 				don.setLyDoThayDoiTTYeuCauGapLanhDao(donOld.getLyDoThayDoiTTYeuCauGapLanhDao());
 				
