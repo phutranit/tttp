@@ -292,10 +292,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
-				} else {
-					don.setYeuCauGapTrucTiepLanhDao(false);
-					don.setNgayLapDonGapLanhDaoTmp(null);
-				}
+				} 
+//				else {
+//					don.setYeuCauGapTrucTiepLanhDao(false);
+//					don.setNgayLapDonGapLanhDaoTmp(null);
+//				}
 			}
 			
 			Transition transitionTTXM = null;
@@ -375,7 +376,22 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				lichSuQTXL.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 				lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
 				lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
+				
+				if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+					if (!HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+						List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
+						soTiepCongDanYCGLDs.addAll(soTiepCongDanService
+								.getCuocTiepDanDinhKyCuaLanhDaoTruoc(repo, soTiepCongDan.getId()));
+						if (soTiepCongDanYCGLDs.size() == 0) {
+							don.setYeuCauGapTrucTiepLanhDao(false);
+							don.setNgayLapDonGapLanhDaoTmp(null);
+							don.setTrangThaiYeuCauGapLanhDao(null);
+						}
+					}
+				}
+				
 				donService.save(don, congChucId);
+				
 				int size = 0;
 				size = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), lichSuQTXL.getDonViXuLy().getId());
 				if (size == 0) {
@@ -398,6 +414,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					lichSuQTXLD.setThuTuThucHien(1);
 					lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 				}
+				
+				
 			}
 			return output;
 		} catch (Exception e) {
@@ -694,6 +712,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				}
 				int tongSoLuotTCD = don.getTongSoLuotTCD();
 				don.setTongSoLuotTCD(tongSoLuotTCD - 1);
+				
+				List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
+				soTiepCongDanYCGLDs.addAll(soTiepCongDanService
+						.getCuocTiepDanDinhKyCuaLanhDaoTruoc(repo, soTiepCongDan.getId()));
+				if (soTiepCongDanYCGLDs.size() == 0) {
+					don.setYeuCauGapTrucTiepLanhDao(false);
+					don.setNgayLapDonGapLanhDaoTmp(null);
+					don.setTrangThaiYeuCauGapLanhDao(null);
+				}
+				
 				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			}		
 			soTiepCongDan.setDaXoa(true);
