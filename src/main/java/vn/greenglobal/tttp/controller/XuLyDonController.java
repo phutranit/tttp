@@ -1857,10 +1857,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(xuLyDon.getHanGiaiQuyet());
 			thongTinGiaiQuyetDon.setNgayBatDauGiaiQuyet(Utils.localDateTimeNow());
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
-			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
-			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
-			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
-			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);	
+//			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
+//			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
+//			LocalDateTime ngayHetHanGiaiQuyet = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayGiaiQuyetMacDinh);
+//			thongTinGiaiQuyetDon.setNgayHetHanGiaiQuyet(ngayHetHanGiaiQuyet);	
 			thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		}
 		
