@@ -307,11 +307,7 @@ public class CoQuanQuanLyService {
 			String type, ThamSoRepository repoThamSo, ThamSoService thamSoService) {
 		ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		Long capPhongBanId = Long.parseLong(phongBan.getGiaTri().toString());
-		System.out.println("coQuanQuanLyId: " + coQuanQuanLyId);
-		for (Long cap : capCoQuanQuanLyIds) {
-			System.out.println("id: " + cap);
-		}
-		System.out.println("type: " + type);
+		
 		BooleanExpression predAll = base;
 		if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))

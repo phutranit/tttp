@@ -524,7 +524,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							List<Transition> listTransitionHaveBegin = new ArrayList<>();
 							boolean isQuyTrinhBat2DauKetThuc = false;
 							for (Process processFromList : listProcessGQD) {
-								System.out.println("processFromList: " + processFromList.getId());
 								//Transition transitionGQDBatDau = transitionRepo.findOne(transitionService.predicateFindFromCurrentAndNext(FlowStateEnum.BAT_DAU, FlowStateEnum.KET_THUC, processFromList));
 								List<Transition> transitionGQDBatDau = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
 								if (transitionGQDBatDau != null && transitionGQDBatDau.size() > 0) {
@@ -1578,7 +1577,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 		CongChuc congChuc = congChucRepo.findOne(congChucId);
-		System.out.println("=================lanhDaoThuHoi _________xuLyDonHienTai: " + xuLyDonHienTai.getId());
 		xuLyDonHienTai.setCongChuc(congChuc);
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 		xuLyDonHienTai.setCanBoXuLyChiDinh(null);
