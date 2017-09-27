@@ -704,9 +704,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			Don don = soTiepCongDan.getDon();
 			if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-				Don don = soTiepCongDan.getDon();
-				
 				if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 				}
@@ -722,10 +723,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setTrangThaiYeuCauGapLanhDao(null);
 				}
 				
-				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}		
+				donService.save(don, congChucId);
+			}
+			
+			if (!don.isThanhLapDon()) {
+				don.setDaXoa(true);
+				donService.save(don, congChucId);
+			}
+			
 			soTiepCongDan.setDaXoa(true);
-			soTiepCongDanService.save(soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			soTiepCongDanService.save(soTiepCongDan, congChucId);
 			
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
