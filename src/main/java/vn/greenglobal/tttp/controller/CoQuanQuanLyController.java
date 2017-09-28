@@ -215,7 +215,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					// Danh sach don vi thuoc UBNDTP Da Nang
 					page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
 								Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-								Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+								Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), null), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri().toString())) {
 					// Danh sach don vi thuoc So Ban Nganh
 					page = repo.findAll(coQuanQuanLyService.predicateFindChinhDonViVaConCuaDonViVaNotPhongBanNotCongAn(donViId,
@@ -286,9 +286,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
 			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
+					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -578,9 +580,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
 			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
+					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -724,9 +728,11 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
 			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
+					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
