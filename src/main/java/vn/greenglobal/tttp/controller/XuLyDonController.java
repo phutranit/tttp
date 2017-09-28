@@ -2059,9 +2059,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setDonViGiaoThamTraXacMinh(congChuc.getCoQuanQuanLy().getDonVi());
 			thongTinGiaiQuyetDon.setDonViThamTraXacMinh(xuLyDon.getDonViThamTraXacMinh());
 			thongTinGiaiQuyetDon.setyKienCuaDonViGiaoTTXM(xuLyDon.getyKienXuLy());
-			if (khongQuyTrinh) {
-				thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(congChuc);
-			}
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
 //			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 //			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
