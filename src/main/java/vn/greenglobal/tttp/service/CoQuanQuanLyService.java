@@ -419,11 +419,19 @@ public class CoQuanQuanLyService {
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.id.eq(donViHanhChinhId)))
 					.or(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.isNotNull()
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.isNotNull())
-							.and(JPAExpressions.selectFrom(qDonViHanhChinh2).where(qDonViHanhChinh2.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha)).where(qDonViHanhChinh2.cha.id.eq(donViHanhChinhId)).exists()))
+							.and(JPAExpressions.selectFrom(qDonViHanhChinh2).where(qDonViHanhChinh2.daXoa.isFalse())
+									.where(qDonViHanhChinh2.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha))
+									.where(qDonViHanhChinh2.cha.id.eq(donViHanhChinhId)).exists()))
 					.or(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.isNotNull()
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.isNotNull())
-							.and(JPAExpressions.selectFrom(qDonViHanhChinh3).where(qDonViHanhChinh3.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha)).where(qDonViHanhChinh2.cha.isNotNull()).exists()))
-							.and(JPAExpressions.selectFrom(qDonViHanhChinh4).where(qDonViHanhChinh4.eq(qDonViHanhChinh3.cha)).where(qDonViHanhChinh4.cha.id.eq(donViHanhChinhId)).exists()));
+							.and(JPAExpressions.selectFrom(qDonViHanhChinh3).where(qDonViHanhChinh3.daXoa.isFalse())
+									.where(qDonViHanhChinh3.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha))
+									.where(qDonViHanhChinh3.cha.isNotNull())
+									.where(JPAExpressions.selectFrom(qDonViHanhChinh4).where(qDonViHanhChinh4.daXoa.isFalse())
+										.where(qDonViHanhChinh4.eq(qDonViHanhChinh3.cha))
+										.where(qDonViHanhChinh4.cha.id.eq(donViHanhChinhId))
+									.exists())
+							.exists())));
 		}
 
 		return predAll;
