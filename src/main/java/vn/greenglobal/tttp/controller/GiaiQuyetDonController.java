@@ -1025,6 +1025,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setChucVu(vaiTro);
 		giaiQuyetDonTiepTheo.setLaTTXM(isLaTTXM);
+		if (isKTDX) {
+			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
+			giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonHienTai.getDonViGiaiQuyet());
+			giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViChuyenDon());
+			giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDonHienTai.getyKienGiaiQuyet());
+		}
 		if (isLaTTXM) { 
 			giaiQuyetDonTiepTheo.setDonChuyen(false);
 		} else { 
