@@ -344,10 +344,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				Long donViId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
-				
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
 						coQuyTrinh);				
-				
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();
@@ -357,7 +355,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					} else {
 						xuLyDonHienTai.setOld(true);
 					}
-					System.out.println("xuLyDonHienTai: "  +xuLyDonHienTai.getId());
 					// Thong tin xu ly don			
 
 					if (FlowStateEnum.TRINH_LANH_DAO.equals(nextState)) {
@@ -409,6 +406,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_INVALID.name(),
 								ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 					} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextState)) {
+						if (xuLyDon.getCanBoXuLyChiDinh() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.name(),
+									ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText(), ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText());
+						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = truongPhongGiaoViec(xuLyDon, xuLyDonHienTai, congChucId);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
@@ -1593,7 +1594,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//disableXuLyDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId, xuLyDonHienTai.getPhongBanXuLy().getId(), xuLyDonHienTai.getDonViXuLy().getId());
 		disableXuLyDonChuyenVienCu(VaiTroEnum.CHUYEN_VIEN, donId, congChucId, congChucId, 
 				xuLyDonThuHoi.getPhongBanXuLy().getId(), xuLyDonThuHoi.getDonViXuLy().getId());
-		
+		if (vaiTro.equals(VaiTroEnum.TRUONG_PHONG)) {
+			xuLyDonTiepTheo.setPhongBanXuLy(xuLyDonThuHoi.getPhongBanXuLy());
+		}
 		xuLyDonTiepTheo.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		xuLyDonTiepTheo.setDon(xuLyDonThuHoi.getDon());
 		xuLyDonTiepTheo.setCongChuc(congChuc);
@@ -2056,9 +2059,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			thongTinGiaiQuyetDon.setDonViGiaoThamTraXacMinh(congChuc.getCoQuanQuanLy().getDonVi());
 			thongTinGiaiQuyetDon.setDonViThamTraXacMinh(xuLyDon.getDonViThamTraXacMinh());
 			thongTinGiaiQuyetDon.setyKienCuaDonViGiaoTTXM(xuLyDon.getyKienXuLy());
-			if (khongQuyTrinh) {
-				thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(congChuc);
-			}
 			thongTinGiaiQuyetDon.setyKienXuLyDon(xuLyDon.getyKienXuLy());
 //			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 //			Long soNgayGiaiQuyetMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
