@@ -1988,11 +1988,21 @@ public class Don extends Model<Don> {
 				map.put("trangThaiDonText", trangThaiDonStr);
 				map.put("trangThaiDonType", "");
 			}
+			
+			if (getKetQuaXLDGiaiQuyet() != null
+					&& (KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.equals(getKetQuaXLDGiaiQuyet()))) { 
+				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet().getText());
+				map.put("ketQuaType", getKetQuaXLDGiaiQuyet().name());
+			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null
 					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
 							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
 					&& getDonViThamTraXacMinh() != null) {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
+				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) { 
+					map.put("ketQuaStr", getDonViThamTraXacMinh().getTen());
+				}
 			} else {
 				map.put("donViTTXM", "");
 			}
@@ -2006,7 +2016,7 @@ public class Don extends Model<Don> {
 			map.put("ketQuaStr", "");
 			map.put("ketQuaType", "");
 			map.put("donViTTXM", "");
-			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
 				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
 			}
