@@ -31,6 +31,7 @@ import org.springframework.data.domain.Sort.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.types.OrderSpecifier;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
@@ -2140,6 +2141,26 @@ public class Don extends Model<Don> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getTrangThaiYeuCauGapLanhDao().getText());
 			map.put("giaTri", getTrangThaiYeuCauGapLanhDao().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getSoTiepCongDanYCGLD() {
+		Map<String, Object> map = new HashMap<>();
+		List<SoTiepCongDan> stcds = new ArrayList<SoTiepCongDan>();
+		OrderSpecifier<Long> sortOrderSTCD = QSoTiepCongDan.soTiepCongDan.id.desc();
+		
+		stcds.addAll((List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository().findAll(QSoTiepCongDan.soTiepCongDan.daXoa.isFalse()
+				.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(getId()))
+				.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO)), sortOrderSTCD));
+		
+		if (stcds != null && stcds.size() > 0) {
+			SoTiepCongDan tcd = stcds.get(0);
+			map.put("id", tcd.getId());
+			map.put("hoanThanhTCDLanhDao", tcd.isHoanThanhTCDLanhDao());
 			return map;
 		}
 		return null;
