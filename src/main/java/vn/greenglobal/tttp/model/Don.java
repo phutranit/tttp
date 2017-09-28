@@ -1954,7 +1954,22 @@ public class Don extends Model<Don> {
 			map.put("trangThaiDonType", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().name() : "");
 			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 			map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
-
+			
+			if (getKetQuaXLDGiaiQuyet() == null) { 
+				if (xuLyDons.size() > 0) {
+					List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+					xlds.addAll(xuLyDons);
+					xlds = xlds.stream().filter(xld -> xld.isDonTra()).collect(Collectors.toList());
+					if (xlds.size() > 0) {
+						XuLyDon xld = xlds.get(xlds.size() - 1);
+						if (xld != null) { 
+							map.put("ketQuaStr", KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
+							map.put("ketQuaType", KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
+						}
+					}
+				}
+			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null
 					&& (KetQuaTrangThaiDonEnum.CHUYEN_DON.equals(getKetQuaXLDGiaiQuyet()))) { 
 				String ketQuaStr = "";
@@ -1988,11 +2003,15 @@ public class Don extends Model<Don> {
 				map.put("trangThaiDonText", trangThaiDonStr);
 				map.put("trangThaiDonType", "");
 			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null
 					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
 							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
 					&& getDonViThamTraXacMinh() != null) {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
+				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) { 
+					map.put("ketQuaStr", getDonViThamTraXacMinh().getTen());
+				}
 			} else {
 				map.put("donViTTXM", "");
 			}
@@ -2006,7 +2025,7 @@ public class Don extends Model<Don> {
 			map.put("ketQuaStr", "");
 			map.put("ketQuaType", "");
 			map.put("donViTTXM", "");
-			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
 				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
 			}
