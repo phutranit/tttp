@@ -87,6 +87,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 				if (KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet()) 
 						&& thongTinGiaiQuyetDon.getNgayKetThucGiaiQuyet() == null) {
 					thongTinGiaiQuyetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
+					don.setCanBoCoTheThuHoi(null);
 				}
 			}
 			

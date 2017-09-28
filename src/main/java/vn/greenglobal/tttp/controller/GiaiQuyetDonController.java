@@ -717,6 +717,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		Don don = donRepo.findOne(donId);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setCurrentState(giaiQuyetDon.getNextState());
+		don.setCanBoCoTheThuHoi(null);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
