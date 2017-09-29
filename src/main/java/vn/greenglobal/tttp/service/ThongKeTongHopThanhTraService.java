@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
@@ -104,20 +104,20 @@ public class ThongKeTongHopThanhTraService {
 	}
 	
 	// 4,5
-	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll, HinhThucThanhTraEnum hinhThucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
+	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll, ChucNangThanhTraEnum hinhThucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		Long tongSoDon = 0L;
 		
-		if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.THEO_KE_HOACH.name())) {
+		if (StringUtils.equals(hinhThucThanhTraEnum.name(), ChucNangThanhTraEnum.THEO_KE_HOACH.name())) {
 			
 			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()).
-					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.THEO_KE_HOACH));
-		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.DOT_XUAT.name())) {
+					and(QCuocThanhTra.cuocThanhTra.chucNangThanhTra.eq(ChucNangThanhTraEnum.THEO_KE_HOACH));
+		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), ChucNangThanhTraEnum.DOT_XUAT.name())) {
 			
 			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull()).
-					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.DOT_XUAT));
+					and(QCuocThanhTra.cuocThanhTra.chucNangThanhTra.eq(ChucNangThanhTraEnum.DOT_XUAT));
 		}
 		
 		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
@@ -185,9 +185,9 @@ public class ThongKeTongHopThanhTraService {
 			if (StringUtils.equals(type, "TONG_VI_PHAM")) {
 
 				if (StringUtils.equals(typeValue, "DAT")) {
-					tongDonVi += elem.getDatThuViPham();
+					//tongDonVi += elem.getDatThuViPham();
 				} else if (StringUtils.equals(typeValue, "TIEN")) {
-					tongDonVi += elem.getTienThuViPham();
+					//tongDonVi += elem.getTienThuViPham();
 				}
 				
 			} else if (StringUtils.equals(type, "KIEN_NGHI_THU_HOI")) {
@@ -201,9 +201,9 @@ public class ThongKeTongHopThanhTraService {
 			} else if (StringUtils.equals(type, "KIEN_NGHI_KHAC")) {
 
 				if (StringUtils.equals(typeValue, "DAT")) {
-					tongDonVi += elem.getDatTraKienNghiKhac();
+					//tongDonVi += elem.getDatTraKienNghiKhac();
 				} else if (StringUtils.equals(typeValue, "TIEN")) {
-					tongDonVi += elem.getTienTraKienNghiKhac();
+					//tongDonVi += elem.getTienTraKienNghiKhac();
 				}
 			}
 
@@ -227,10 +227,10 @@ public class ThongKeTongHopThanhTraService {
 			
 			if (StringUtils.equals(type, "TO_CHUC")) {
 
-				tongDonVi += elem.getToChucXuLyHanhChinhViPham();	
+				//tongDonVi += elem.getToChucXuLyHanhChinhViPham();	
 			} else if (StringUtils.equals(type, "CA_NHAN")) {
 				
-				tongDonVi += elem.getCaNhanXuLyHanhChinhViPham();
+				//tongDonVi += elem.getCaNhanXuLyHanhChinhViPham();
 			}
 			return tongDonVi;
 
@@ -259,10 +259,10 @@ public class ThongKeTongHopThanhTraService {
 			
 			if (StringUtils.equals(type, "VU")) {
 
-				tongDonVi += elem.getSoVuDieuTra();	
+				//tongDonVi += elem.getSoVuDieuTra();	
 			} else if (StringUtils.equals(type, "DOI_TUONG")) {
 				
-				tongDonVi += elem.getSoDoiTuongDieuTra();
+				//tongDonVi += elem.getSoDoiTuongDieuTra();
 			}
 			return tongDonVi;
 
