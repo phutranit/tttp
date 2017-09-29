@@ -292,10 +292,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
-				} else {
-					don.setYeuCauGapTrucTiepLanhDao(false);
-					don.setNgayLapDonGapLanhDaoTmp(null);
-				}
+				} 
+//				else {
+//					don.setYeuCauGapTrucTiepLanhDao(false);
+//					don.setNgayLapDonGapLanhDaoTmp(null);
+//				}
 			}
 			
 			Transition transitionTTXM = null;
@@ -375,7 +376,22 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				lichSuQTXL.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 				lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
 				lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
+				
+				if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+					if (!HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+						List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
+						soTiepCongDanYCGLDs.addAll(soTiepCongDanService
+								.getCuocTiepDanDinhKyCuaLanhDaoTruoc(repo, soTiepCongDan.getDon().getId()));
+						if (soTiepCongDanYCGLDs.size() == 0) {
+							don.setYeuCauGapTrucTiepLanhDao(false);
+							don.setNgayLapDonGapLanhDaoTmp(null);
+							don.setTrangThaiYeuCauGapLanhDao(null);
+						}
+					}
+				}
+				
 				donService.save(don, congChucId);
+				
 				int size = 0;
 				size = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), lichSuQTXL.getDonViXuLy().getId());
 				if (size == 0) {
@@ -543,9 +559,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					don.setYeuCauGapTrucTiepLanhDao(true);
-					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
-					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
+					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy())) { 
+						don.setYeuCauGapTrucTiepLanhDao(true);
+						don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
+						don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
+					}
 				} 
 //				else {
 //					don.setYeuCauGapTrucTiepLanhDao(false);
@@ -566,10 +584,10 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //				lichSuQTXL.setThuTuThucHien(thuTu);
 				
 				if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+					List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
+					soTiepCongDanYCGLDs.addAll(soTiepCongDanService
+							.getCuocTiepDanDinhKyCuaLanhDaoTruoc(repo, soTiepCongDan.getDon().getId()));
 					if (!HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-						List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
-						soTiepCongDanYCGLDs.addAll(soTiepCongDanService
-								.getCuocTiepDanDinhKyCuaLanhDaoTruoc(repo, soTiepCongDan.getId()));
 						if (soTiepCongDanYCGLDs.size() == 0) {
 							don.setYeuCauGapTrucTiepLanhDao(false);
 							don.setNgayLapDonGapLanhDaoTmp(null);
@@ -686,18 +704,36 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			
+			Don don = soTiepCongDan.getDon();
 			if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
-				Don don = soTiepCongDan.getDon();
-				
 				if (soTiepCongDan.getSoThuTuLuotTiep() < don.getTongSoLuotTCD()) {
 					return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.DATA_INVALID.name(), ApiErrorEnum.DATA_INVALID.getText(), ApiErrorEnum.DATA_INVALID.getText());
 				}
 				int tongSoLuotTCD = don.getTongSoLuotTCD();
 				don.setTongSoLuotTCD(tongSoLuotTCD - 1);
-				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
-			}		
+				
+				List<SoTiepCongDan> soTiepCongDanYCGLDs = new ArrayList<SoTiepCongDan>();
+				soTiepCongDanYCGLDs.addAll(soTiepCongDanService
+						.getCuocTiepDanDinhKyCuaLanhDaoTruocNotId(repo, soTiepCongDan.getDon().getId(),  soTiepCongDan.getId()));
+				if (soTiepCongDanYCGLDs.size() == 0) {
+					don.setYeuCauGapTrucTiepLanhDao(false);
+					don.setNgayLapDonGapLanhDaoTmp(null);
+					don.setTrangThaiYeuCauGapLanhDao(null);
+				}
+				
+				donService.save(don, congChucId);
+			}
+			
+			if (!don.isThanhLapDon()) {
+				don.setDaXoa(true);
+				donService.save(don, congChucId);
+			}
+			
 			soTiepCongDan.setDaXoa(true);
-			soTiepCongDanService.save(soTiepCongDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			soTiepCongDanService.save(soTiepCongDan, congChucId);
+			
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
