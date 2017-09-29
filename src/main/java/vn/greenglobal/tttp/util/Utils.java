@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -107,7 +108,7 @@ public class Utils {
 			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
 		
 		System.out.println("Application.app.airBrakeActive: " + Application.app.airBrakeActive);
-		if (Application.app.airBrakeActive) {
+		if (Application.app.airBrakeActive && !(e instanceof SocketTimeoutException)) {
 			try {
 			    e.printStackTrace(printWriter);
 			    Backtrace backtrace = new Backtrace(e);

@@ -1794,6 +1794,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		}
 		don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
+		if (don.getPhanLoaiDon() == null) {
+			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+			don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+		}
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
