@@ -1368,6 +1368,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		
+		giaiQuyetDonBenGiaiQuyet.setOld(true);
+		giaiQuyetDonService.save(giaiQuyetDonBenGiaiQuyet, congChucId);
+		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		lichSuQTXLD.setDon(don);
