@@ -29,6 +29,7 @@ import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2Enum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 
 @Entity
 @Table(name = "thongtingiaiquyetdon")
@@ -154,6 +155,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private KetQuaGiaiQuyetLan2Enum ketQuaGiaiQuyetLan2;
+	@Enumerated(EnumType.STRING)
+	private TrangThaiTTXMEnum huongThuLyGiaiQuyet;
 	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
@@ -822,6 +825,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
 	}
 
+	public TrangThaiTTXMEnum getHuongThuLyGiaiQuyet() {
+		return huongThuLyGiaiQuyet;
+	}
+
+	public void setHuongThuLyGiaiQuyet(TrangThaiTTXMEnum huongThuLyGiaiQuyet) {
+		this.huongThuLyGiaiQuyet = huongThuLyGiaiQuyet;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getThongTinGiaiQuyetDonId() {
@@ -978,6 +989,18 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", getNextState().getId());
 			map.put("type", getNextState().getType().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getHuongThuLyGiaiQuyetInfo() {
+		if (getHuongThuLyGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getHuongThuLyGiaiQuyet().name());
+			map.put("text", getHuongThuLyGiaiQuyet().getText());
 			return map;
 		}
 		return null;
