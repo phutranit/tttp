@@ -44,6 +44,7 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
@@ -2154,9 +2155,10 @@ public class Don extends Model<Don> {
 		List<SoTiepCongDan> stcds = new ArrayList<SoTiepCongDan>();
 		OrderSpecifier<Long> sortOrderSTCD = QSoTiepCongDan.soTiepCongDan.id.desc();
 		
-		stcds.addAll((List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository().findAll(QSoTiepCongDan.soTiepCongDan.daXoa.isFalse()
+		stcds.addAll((List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository()
+				.findAll(QSoTiepCongDan.soTiepCongDan.daXoa.isFalse()
 				.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(getId()))
-				.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO)), sortOrderSTCD));
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)), sortOrderSTCD));
 		
 		if (stcds != null && stcds.size() > 0) {
 			SoTiepCongDan tcd = stcds.get(0);
