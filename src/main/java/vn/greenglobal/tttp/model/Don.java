@@ -2010,8 +2010,9 @@ public class Don extends Model<Don> {
 							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
 					&& getDonViThamTraXacMinh() != null) {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
-				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) { 
-					map.put("ketQuaStr", getDonViThamTraXacMinh().getTen());
+				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+					String str = KetQuaTrangThaiDonEnum.DANG_TTXM.getText();
+					map.put("ketQuaStr", str + "\n" +getDonViThamTraXacMinh().getTen());
 				}
 			} else {
 				map.put("donViTTXM", "");

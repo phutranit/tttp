@@ -1069,6 +1069,25 @@ public class DonController extends TttpController<Don> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanTTXM")
+	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn thẩm tra xác minh", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	public Object getNgayMacDinhCuaThoiHanTTXM(@RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH"));
+			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 20L;
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			if (thoiHan == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return new ResponseEntity<>(thoiHan, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/{id}/lichSus")
 	@ApiOperation(value = "Lấy lịch sử thay đổi của Đơn theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
