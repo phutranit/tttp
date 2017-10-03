@@ -40,6 +40,11 @@ public class CoQuanQuanLyService {
 	
 	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
 	
+	public Predicate predicateFindByCapCoQuanQuanLy(List<CapCoQuanQuanLy> capCoQuanQuanLys) {
+		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.in(capCoQuanQuanLys));
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll() {
 		BooleanExpression predAll = base;
 		return predAll;
