@@ -176,7 +176,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<LinhVucDonThu> linhVucVeCheDoCCVCs = new ArrayList<LinhVucDonThu>();
 			linhVucVeCheDoCCVCs.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs));
 			
-			/*----- # -----*/
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais = new ArrayList<Long>();
 			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(54L);
 			
@@ -571,8 +570,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.capCoQuanQuanLy.eq(cdv));
 					
 					BooleanExpression predAllDSTCDThuongXuyen = predAllDSTCDDonVi;
-					predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
-					
+					predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));	
 					predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.don.yeuCauGapTrucTiepLanhDao.isFalse());
 					
 					BooleanExpression predAllDSTCDLanhDao = predAllDSTCDDonVi;
@@ -580,7 +578,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 							.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
 					
 					mapCapDonVi.put("ten", cdv.getTen());
-					mapCapDonVi.put("Id", cdv.getId());
+					mapCapDonVi.put("capCoQuanQuanLyId", cdv.getId());
 					
 					mapMaSo = new HashMap<String, Object>();
 					mapMaSo.put("capDonVi", mapCapDonVi);
@@ -1451,6 +1449,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "month", required = false) Integer month,
 			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
+			@RequestParam(value = "listCapDonVis", required = false) List<CapCoQuanQuanLy> listCapDonVis,
+			@RequestParam(value = "hinhThucThongKe", required = true) String hinhThucThongKe,
 			@RequestParam(value = "donViId", required = false) Long donViId
 			) throws IOException {
 		
@@ -1460,24 +1460,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
-						
-			if (listDonVis != null) {
-				for (CoQuanQuanLy dv : listDonVis) {
-					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-					if (coQuan != null) {
-						list.add(coQuan);
-					}					
-				}
-			} else { 
-				if (donViId != null && donViId > 0)  {
-					coQuanQuanLyRepo.findOne(donViId);
-					list.add(coQuanQuanLyRepo.findOne(donViId));
-				}
-			}
-			donVis.addAll(list);
-			
+
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
-			
 
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais = new ArrayList<Long>();
 			idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais.add(55L);
@@ -1533,22 +1517,64 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<LinhVucDonThu> linhVucVeNhaCuaTaiSans = new ArrayList<LinhVucDonThu>();
 			linhVucVeNhaCuaTaiSans.addAll(linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
 			
-			for (CoQuanQuanLy cq : donVis) {
+			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			
+			if (listDonVis != null) {
+				for (CoQuanQuanLy dv : listDonVis) {
+					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+					if (coQuan != null) {
+						list.add(coQuan);
+					}					
+				}
+			} else { 
+				if (donViId != null && donViId > 0)  {
+					coQuanQuanLyRepo.findOne(donViId);
+					list.add(coQuanQuanLyRepo.findOne(donViId));
+				}
+			}
+			donVis.addAll(list);
+			
+			List<Object> objects = new ArrayList<>();
+			if (hinhThucTK.equals(HinhThucThongKeEnum.DON_VI)) { 
+				objects.addAll(donVis);
+			} else { 
+				if (listCapDonVis != null) {
+					if (listCapDonVis.size() > 0) { 
+						for (CapCoQuanQuanLy cdv : listCapDonVis) {
+							CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
+							if (capDonVi != null) {
+								objects.add(capDonVi);
+							}					
+						}
+					}
+				} else {
+					objects.addAll((List<CapCoQuanQuanLy>) capCoQuanQuanLyRepo.findAll(capCoQuanQuanLyService.predicateFindAll()));
+				}
+			}
+			
+			for (Object object : objects) {
 				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
-				predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId())
-						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
-						.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
+				mapMaSo.put("tenDonVi", "");
+				if (object instanceof CoQuanQuanLy) {
+					CoQuanQuanLy cq = (CoQuanQuanLy) object;
+					predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId())
+							.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
+							.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
+					mapMaSo.put("tenDonVi", cq.getTen());
+				} else if (object instanceof CapCoQuanQuanLy) {
+					CapCoQuanQuanLy cdv = (CapCoQuanQuanLy) object;
+					predAllDSTCDDonVi = predAllDSTCDDonVi.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.capCoQuanQuanLy.eq(cdv));
+					mapMaSo.put("tenDonVi", cdv.getTen());
+				}
 				
 				BooleanExpression predAllDSTCDThuongXuyen = predAllDSTCDDonVi;
 				predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+				predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen.and(QSoTiepCongDan.soTiepCongDan.don.yeuCauGapTrucTiepLanhDao.isFalse());
 				
 				BooleanExpression predAllDSTCDLanhDao = predAllDSTCDDonVi;
 				predAllDSTCDLanhDao = predAllDSTCDLanhDao.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
 						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
 						
-				mapMaSo = new HashMap<String, Object>();
-				mapMaSo.put("tenDonVi", cq.getTen());
-				
 				// tiep cong dan thuong xuyen
 				//luoc - 1
 				mapMaSo.put("tiepCongDanThuongXuyenLuot", thongKeBaoCaoTongHopKQTCDService.getTongSoLuocTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen));
