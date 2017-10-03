@@ -2942,16 +2942,13 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			@RequestParam(value = "quy", required = false) Integer quy,
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "month", required = false) Integer month,
-			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis
+			@RequestParam(value = "listDonVis", required = false) List<CoQuanQuanLy> listDonVis,
+			@RequestParam(value = "listCapDonVis", required = false) List<CapCoQuanQuanLy> listCapDonVis,
+			@RequestParam(value = "hinhThucThongKe", required = true) String hinhThucThongKe,
+			@RequestParam(value = "donViId", required = false) Long donViId
 			) throws IOException {
 		
-		try {		
-			
-			if (year == null || year == 0) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}
-			
-			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
+		try {
 			ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo phuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));			
 			Long idCapCQQLPhongBan = Long.valueOf(phongBan.getGiaTri().toString());
@@ -2959,12 +2956,54 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-			if (listDonVis != null) {
-				for (CoQuanQuanLy dv : listDonVis) {
-					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-					if (coQuan != null) {
-						donVis.add(coQuan);
-					}				
+			
+			if (year == null || year == 0) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
+			}
+			if (quy == null) {
+				quy = Utils.getQuyHienTai();
+			}
+			
+			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			
+			List<Object> objects = new ArrayList<>();
+			if (hinhThucTK.equals(HinhThucThongKeEnum.DON_VI)) {
+				List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
+				if (listDonVis != null) {
+					for (CoQuanQuanLy dv : listDonVis) {
+						CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+						if (coQuan != null) {
+							list.add(coQuan);
+						}					
+					}
+				} else { 
+					if (donViId != null && donViId > 0)  {
+						coQuanQuanLyRepo.findOne(donViId);
+						list.add(coQuanQuanLyRepo.findOne(donViId));
+					} else {
+						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+						list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
+					}
+				}
+				objects.addAll(list);
+			} else { 
+				if (listCapDonVis != null) {
+					if (listCapDonVis.size() > 0) { 
+						for (CapCoQuanQuanLy cdv : listCapDonVis) {
+							CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
+							if (capDonVi != null) {
+								objects.add(capDonVi);
+							}					
+						}
+					}
+				} else {
+					objects.addAll((List<CapCoQuanQuanLy>) capCoQuanQuanLyRepo.findAll(capCoQuanQuanLyService.predicateFindAll()));
 				}
 			}
 			
@@ -2973,19 +3012,26 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					.and(QDon.don.thanhLapDon.eq(true))
 					.and(QDon.don.huongXuLyXLD.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY));
 			
-			for (CoQuanQuanLy cq : donVis) {
+			for (Object object : objects) {
 				BooleanExpression predAllDSGQDDonVi = predAllDSDon;
-				predAllDSGQDDonVi = predAllDSGQDDonVi.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
-						.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
-								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
-										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))
-						.or(QDon.don.donViXuLyGiaiQuyet.cha.cha.id.eq(cq.getId())
-								.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
-										.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
-						);		
-						
-				mapMaSo = new HashMap<String, Object>();
-				mapMaSo.put("0", cq.getTen());
+				mapMaSo.put("0", "");
+				if (object instanceof CoQuanQuanLy) {
+					CoQuanQuanLy cq = (CoQuanQuanLy) object;
+					mapMaSo.put("0", cq.getTen());
+					predAllDSGQDDonVi = predAllDSGQDDonVi.and(QDon.don.donViXuLyGiaiQuyet.id.eq(cq.getId())
+							.or(QDon.don.donViXuLyGiaiQuyet.cha.id.eq(cq.getId())
+									.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+											.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))
+							.or(QDon.don.donViXuLyGiaiQuyet.cha.cha.id.eq(cq.getId())
+									.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhongBan)
+											.or(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(idCapCQQLPhuongXa))))						
+							);	
+				} else if (object instanceof CapCoQuanQuanLy) {
+					CapCoQuanQuanLy cdv = (CapCoQuanQuanLy) object;
+					mapMaSo.put("0", cdv.getTen());
+					predAllDSGQDDonVi = predAllDSGQDDonVi.and(QDon.don.donViXuLyGiaiQuyet.capCoQuanQuanLy.id.eq(cdv.getId()));
+				}
+				
 				mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
 				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
