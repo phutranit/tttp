@@ -152,13 +152,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 			
 			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
-			
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
 			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
+			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais = new ArrayList<Long>();
@@ -810,19 +817,25 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			Map<String, Object> mapTongCong = new HashMap<>();
-			
-			if (year == null || year == 0) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
-			}
-			
+
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 			
 			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
+			if (year == null || year == 0) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
+			}
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
 			
 			BooleanExpression predAllDSDon = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSDonTruocKy = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQDTruocKy(loaiKy, quy, year, month, tuNgay, denNgay);
@@ -923,7 +936,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 
 					Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
-					ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+//					ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 //					Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 //							0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
@@ -1197,7 +1210,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 	
 					Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
-					ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+	//				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 	//				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 	//						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
@@ -1407,19 +1420,24 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapTongCong = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			
-			if (year == null || year == 0) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
-			}
-			
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
 			
 			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
-			
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
+			if (year == null || year == 0) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
+			}
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
 			BooleanExpression predAllDSDon = (BooleanExpression) thongKeBaoCaoTongHopKQGQDService.predicateFindAllGQD(loaiKy, quy, year, month, tuNgay, denNgay);
 			predAllDSDon = predAllDSDon.and(QDon.don.loaiDon.eq(LoaiDonEnum.DON_TO_CAO))
 					.and(QDon.don.thanhLapDon.eq(true))
@@ -1505,7 +1523,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					
 					Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
-					ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+					//ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 					Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 							0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);	
 					
@@ -1732,7 +1750,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					
 					Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 					
-					ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+					//ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 					Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 							0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);	
 					
@@ -1894,12 +1912,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
 			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
+			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais = new ArrayList<Long>();
@@ -2207,13 +2233,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			
 			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 
-			if (year == null) { 
-				year = Utils.localDateTimeNow().getYear();
+			if (year == null || year == 0) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
 			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
+			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLDKyTruoc = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLDKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
@@ -2763,12 +2796,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 
-			if (year == null) { 
-				year = Utils.localDateTimeNow().getYear();
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
+			if (year == null || year == 0) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
 			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
+			}
+			
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLD = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLD(loaiKy, quy, year, month, tuNgay, denNgay);
 			BooleanExpression predAllDSXLDKyTruoc = (BooleanExpression) thongKeBaoCaoTongHopKQXLDService.predicateFindAllXLDKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
@@ -3029,14 +3070,21 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
 			
+			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
 			}
 			
-			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
@@ -3120,7 +3168,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					mapMaSo.put("0", cdv.getTen());
 				}
 				
-				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+				//ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 				Long donNhanTrongKyBaoCao = thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 
 				Long donThuLyKyTruocChuyenSang1 = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
@@ -3234,15 +3282,22 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> map = new HashMap<>();
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-			
+
+			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+
 			if (year == null || year == 0) {
 				year = Calendar.getInstance().get(Calendar.YEAR);
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (month == null) {
+				month = Utils.localDateTimeNow().getMonthValue();
+			}
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
 			}
 			
-			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
@@ -3311,7 +3366,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				}
 				
 				mapMaSo.put("1", thongKeBaoCaoTongHopKQGQDService.getTongSoDon(predAllDSGQDDonVi));
-				ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+				//ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
 				Long donTonKyTruocChuyenSang = loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON) && StringUtils.isBlank(tuNgay) ? 
 						0 : thongKeBaoCaoTongHopKQGQDService.getTongSoDonTonKyTruoc(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay);
 				mapMaSo.put("2", thongKeBaoCaoTongHopKQGQDService.getTongSoDonTrongKyBaoCao(predAllDSGQDDonVi, loaiKy, quy, year, month, tuNgay, denNgay));
@@ -3385,7 +3440,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 			
 			if (listDonVis != null) {
-				
 				for (CoQuanQuanLy dv : listDonVis) {
 					CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
 					if (coQuan != null) {
