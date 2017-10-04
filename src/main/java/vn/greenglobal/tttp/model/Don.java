@@ -110,6 +110,9 @@ public class Don extends Model<Don> {
 	private boolean old = false;
 	private boolean hoanThanhDon = false;
 	private boolean dangGiaoKTDX = false;
+	private boolean tuXuLyXLDGQD = false;
+	private boolean tuXuLyTTXM = false;
+	private boolean tuXuLyKTDX = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -1708,6 +1711,30 @@ public class Don extends Model<Don> {
 		this.dangGiaoKTDX = dangGiaoKTDX;
 	}
 
+	public boolean isTuXuLyXLDGQD() {
+		return tuXuLyXLDGQD;
+	}
+
+	public void setTuXuLyXLDGQD(boolean tuXuLyXLDGQD) {
+		this.tuXuLyXLDGQD = tuXuLyXLDGQD;
+	}
+
+	public boolean isTuXuLyTTXM() {
+		return tuXuLyTTXM;
+	}
+
+	public void setTuXuLyTTXM(boolean tuXuLyTTXM) {
+		this.tuXuLyTTXM = tuXuLyTTXM;
+	}
+
+	public boolean isTuXuLyKTDX() {
+		return tuXuLyKTDX;
+	}
+
+	public void setTuXuLyKTDX(boolean tuXuLyKTDX) {
+		this.tuXuLyKTDX = tuXuLyKTDX;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
@@ -2171,5 +2198,29 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getQuyenTuXuLyInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			list.add(map);
+		}
+		if (getDonViThamTraXacMinh() != null) {
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			map.put("quyenTuXuLy", isTuXuLyTTXM());
+			list.add(map);
+		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			list.add(map);
+		}
+		return list;
 	}
 }
