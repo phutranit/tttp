@@ -42,7 +42,6 @@ import vn.greenglobal.tttp.model.QDon_CongDan;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
-import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -51,7 +50,6 @@ import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
-import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
