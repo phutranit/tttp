@@ -1122,53 +1122,53 @@ public class DonController extends TttpController<Don> {
 	@ApiOperation(value = "Lấy Tổng Số Đơn Đang Xử Lý", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getTongSoDonDangXL(@RequestHeader(value = "Authorization", required = true) String authorization) {
 		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
 			Map<String, Object> map = new HashMap<>();
 			Long tongSoDon = 0L;
-			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
-			if (nguoiDung != null) {
-				boolean coQuyTrinh = true;
-				Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-				Long phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
-				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-				Long canBoXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-				CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
-				if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai) 
-						|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
-					phongBanXuLyXLD = 0L;
-				}
-				List<Don> listDon = new ArrayList<Don>();
-				
-				State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-				Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViXuLyXLD), ProcessTypeEnum.XU_LY_DON);
-				List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
-				List<State> listState = new ArrayList<State>();
-				List<Process> listProcessHaveBeginState = new ArrayList<Process>();
-				for (Process processFromList : listProcess) {
-					Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
-					listState = ((List<State>) repoState.findAll(predicate));
-					if (listState.size() > 0) {
-						State state = listState.get(0);
-						if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
-							listProcessHaveBeginState.add(processFromList);
-							break;
-						}						
-					}
-				}
-				if (listProcessHaveBeginState.size() < 1) {
-					coQuyTrinh = false;
-				}
-
-				listDon.addAll((List<Don>) repo.findAll(donService.predicateFindAll(null, null, null, null, null, null,
-						null, null, null, true, "DANG_XU_LY",
-						null, canBoXuLyXLD, phongBanXuLyXLD, null, donViXuLyXLD, 
-						vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), null, null, null, xuLyRepo, repo, giaiQuyetDonRepo,
-						coQuyTrinh)));
-				tongSoDon = Long.valueOf(listDon.size());
-				map.put("tongSoDon", tongSoDon);
-				return new ResponseEntity<>(map, HttpStatus.OK);
+			boolean coQuyTrinh = true;
+			Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Long phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
+			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+			Long canBoXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
+			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai) 
+					|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
+				phongBanXuLyXLD = 0L;
 			}
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			List<Don> listDon = new ArrayList<Don>();
+			
+			State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+			Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViXuLyXLD), ProcessTypeEnum.XU_LY_DON);
+			List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
+			List<State> listState = new ArrayList<State>();
+			List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+			for (Process processFromList : listProcess) {
+				Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
+				listState = ((List<State>) repoState.findAll(predicate));
+				if (listState.size() > 0) {
+					State state = listState.get(0);
+					if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+						listProcessHaveBeginState.add(processFromList);
+						break;
+					}						
+				}
+			}
+			if (listProcessHaveBeginState.size() < 1) {
+				coQuyTrinh = false;
+			}
+
+			listDon.addAll((List<Don>) repo.findAll(donService.predicateFindAll(null, null, null, null, null, null,
+					null, null, null, true, "DANG_XU_LY",
+					null, canBoXuLyXLD, phongBanXuLyXLD, null, donViXuLyXLD, 
+					vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), null, null, null, xuLyRepo, repo, giaiQuyetDonRepo,
+					coQuyTrinh)));
+			tongSoDon = Long.valueOf(listDon.size());
+			map.put("tongSoDon", tongSoDon);
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -1178,26 +1178,26 @@ public class DonController extends TttpController<Don> {
 	@ApiOperation(value = "Lấy Tổng Số Đơn Đang Giải Quyết", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getTongSoDonDangGQ(@RequestHeader(value = "Authorization", required = true) String authorization) {
 		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
 			Map<String, Object> map = new HashMap<>();
 			Long tongSoDon = 0L;
-			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_LIETKE);
-			if (nguoiDung != null) {
-				String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
-				Long donViGiaiQuyetId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-				CongChuc congChuc = congChucRepo.findOne(congChucId);
-				List<Don> listDon = new ArrayList<Don>();
-				listDon.addAll((List<Don>) repo.findAll(
-						donService.predicateFindAllGQD(null, null, null, null, null, null,
-								true, null, "DANG_GIAI_QUYET", congChuc.getCoQuanQuanLy().getId(), donViGiaiQuyetId,
-								congChuc.getId(), vaiTro, null, null, null, giaiQuyetDonRepo, xuLyRepo)));
-				
-				tongSoDon = Long.valueOf(listDon.size());
-				map.put("tongSoDon", tongSoDon);
-				return new ResponseEntity<>(map, HttpStatus.OK);
-			}
-			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			String vaiTro = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
+			Long donViGiaiQuyetId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			CongChuc congChuc = congChucRepo.findOne(congChucId);
+			List<Don> listDon = new ArrayList<Don>();
+			listDon.addAll((List<Don>) repo.findAll(
+					donService.predicateFindAllGQD(null, null, null, null, null, null,
+							true, null, "DANG_GIAI_QUYET", congChuc.getCoQuanQuanLy().getId(), donViGiaiQuyetId,
+							congChuc.getId(), vaiTro, null, null, null, giaiQuyetDonRepo, xuLyRepo)));
+			
+			tongSoDon = Long.valueOf(listDon.size());
+			map.put("tongSoDon", tongSoDon);
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
