@@ -50,6 +50,7 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
@@ -849,5 +850,12 @@ public class Utils {
 			return result.replace("  ", " ");
 		}
 		return "";
+	}
+	
+	public static Don changeQuyenTuXuLy(Don don, boolean quyenTuXLDGQD, boolean quyenTTXM, boolean quyenKTDX) {
+		don.setTuXuLyXLDGQD(quyenTuXLDGQD);
+		don.setTuXuLyTTXM(quyenTTXM);
+		don.setTuXuLyKTDX(quyenKTDX);
+		return don;
 	}
 }
