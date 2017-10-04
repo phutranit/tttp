@@ -534,6 +534,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 			don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DINH_CHI);
 			don.setHoanThanhDon(true);
+			Utils.changeQuyenTuXuLy(don, false, false, false);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
@@ -634,6 +635,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setXuLyDonCuoiCungId(null);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setCanBoCoTheThuHoi(congChuc);
+		Utils.changeQuyenTuXuLy(don, true, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
@@ -687,6 +689,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		
 		thongTinGiaiQyuetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
@@ -770,6 +773,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DANG_GIAI_QUYET);
 		don.setCurrentState(beginState);
 		don.setDonViThamTraXacMinh(don.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		
 		GiaiQuyetDon giaiQuyetDonTTXM = new GiaiQuyetDon();
@@ -990,7 +994,12 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				}
 			}
 		}
-		
+		if (isLaTTXM) {
+			Utils.changeQuyenTuXuLy(don, false, true, false);
+		}
+		if (isKTDX) {
+			Utils.changeQuyenTuXuLy(don, false, false, true);
+		}
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonTruongPhong, congChucId);
@@ -1065,6 +1074,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
 			}
 		}
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
@@ -1109,6 +1119,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCanBoXuLyChiDinh(null);
 		don.setCanBoCoTheThuHoi(null);
 		don.setCurrentState(giaiQuyetDon.getNextState());		
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
@@ -1194,6 +1205,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTiepTheo.getId());
 			}
 		}
+		
+		if (isLaTTXM) {
+			Utils.changeQuyenTuXuLy(don, false, true, false);
+		}
+		if (isLaTTXM) {
+			Utils.changeQuyenTuXuLy(don, false, false, true);
+		}
+		
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		
@@ -1364,6 +1383,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCanBoCoTheThuHoi(null);
 		don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setCurrentState(canBoNhanKetQuaState);
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
@@ -1411,6 +1431,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setTrangThaiKTDX(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setDangGiaoKTDX(false);
 		don.setCanBoCoTheThuHoi(null);
+		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		
 		//tao lich su qua trinh xu ly don
