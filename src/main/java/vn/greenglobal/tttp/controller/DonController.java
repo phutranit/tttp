@@ -1080,7 +1080,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 20L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
