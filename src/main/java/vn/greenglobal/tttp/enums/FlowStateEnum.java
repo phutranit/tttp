@@ -13,6 +13,7 @@ public enum FlowStateEnum {
 	TRUONG_PHONG_GIAO_VIEC_CAN_BO("Trưởng phòng giao việc cán bộ"),
 	TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_KET_QUA_TTXM("Trưởng phòng giao việc cán bộ"),
 	TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_DU_THAO("Trưởng phòng giao việc cán bộ"),
+	TRUONG_PHONG_GIAO_VIEC_CAN_BO_LAP_DU_THAO("Trưởng phòng giao việc cán bộ"),
 	TRUONG_PHONG_NHAN_KET_QUA_TTXM("Trưởng phòng nhận kết quả TTXM"),
 	TRUONG_PHONG_NHAN_YEU_CAU_LAP_DU_THAO("Trưởng phòng nhận yêu cầu lập dự thảo"),
 	TRUONG_PHONG_THU_HOI("Lãnh đạo thu hồi"),
