@@ -50,9 +50,11 @@ import vn.greenglobal.core.model.common.BaseRepositoryImpl;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongViPhamRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
@@ -93,7 +95,7 @@ public class Application extends SpringBootServletInitializer {
 			System.out.println(":::::" + beanNames.length + " beans");
 		};
 	}
-	
+
 //	@Value("${cors.allowedOrigins}")
 //	private String[] myAllowedOriginList;
 //	
@@ -147,6 +149,7 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
 						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonViCon/xuatExcel",
+						"/soTiepCongDans/danhSachYeuCauGapLanhDao/excel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
@@ -293,6 +296,12 @@ public class Application extends SpringBootServletInitializer {
 	private DonRepository donRepository;
 	
 	@Autowired
+	private XuLyDonRepository xuLyDonRepository;
+	
+	@Autowired
+	private DoiTuongViPhamRepository doiTuongViPhamRepository;
+	
+	@Autowired
 	private ChucVuService chucVuService;
 	
 	
@@ -302,6 +311,10 @@ public class Application extends SpringBootServletInitializer {
 
 	public CuocThanhTraRepository getCuocThanhTraRepository() {
 		return cuocThanhTraRepository;
+	}
+	
+	public XuLyDonRepository getXuLyDonRepository() {
+		return xuLyDonRepository;
 	}
 	
 	public DonRepository getDonRepository() {
@@ -314,6 +327,10 @@ public class Application extends SpringBootServletInitializer {
 	
 	public ChucVuRepository getChucVuRepository() {
 		return chucVuRepository;
+	}
+
+	public DoiTuongViPhamRepository getDoiTuongViPhamRepository() {
+		return doiTuongViPhamRepository;
 	}
 
 	public ChucVuService getChucVuService() {

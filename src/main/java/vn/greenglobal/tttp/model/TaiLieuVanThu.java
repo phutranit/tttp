@@ -56,6 +56,8 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	private CuocThanhTra cuocThanhTra;
 	@ManyToOne
 	private Don don;
+	@ManyToOne
+	private DoiTuongViPham doiTuongViPham;
 
 	public boolean isRequired() {
 		return required;
@@ -149,6 +151,15 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 		this.don = don;
 	}
 	
+	@ApiModelProperty(example = "{}")
+	public DoiTuongViPham getDoiTuongViPham() {
+		return doiTuongViPham;
+	}
+
+	public void setDoiTuongViPham(DoiTuongViPham doiTuongViPham) {
+		this.doiTuongViPham = doiTuongViPham;
+	}
+
 	public LoaiTepDinhKemEnum getLoaiTepDinhKem() {
 		return loaiTepDinhKem;
 	}
@@ -217,6 +228,15 @@ public class TaiLieuVanThu extends Model<TaiLieuVanThu> {
 	public Long getCuocThanhTraId() {
 		if (getCuocThanhTra() != null) { 
 			return getCuocThanhTra().getId();
+		}
+		return 0L;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Long getDoiTuongViPhamId() {
+		if (getDoiTuongViPham() != null) { 
+			return getDoiTuongViPham().getId();
 		}
 		return 0L;
 	}

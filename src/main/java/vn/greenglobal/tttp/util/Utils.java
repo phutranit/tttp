@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -107,7 +108,7 @@ public class Utils {
 			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
 		
 		System.out.println("Application.app.airBrakeActive: " + Application.app.airBrakeActive);
-		if (Application.app.airBrakeActive) {
+		if (Application.app.airBrakeActive && !(e instanceof SocketTimeoutException)) {
 			try {
 			    e.printStackTrace(printWriter);
 			    Backtrace backtrace = new Backtrace(e);
@@ -230,6 +231,7 @@ public class Utils {
 		long i = 1;
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
+			ngayKetThuc = ngayKetThuc.plusDays(1);
 			while (i < soNgayGiaHan) {
 				ngayKetThuc = ngayKetThuc.plusDays(1);
 				i++;
@@ -447,7 +449,8 @@ public class Utils {
 					gio = 4;
 				}
 			}
-			str = ((String.valueOf(gio).length() == 1 ? "0" + gio : gio)) + ":" + (String.valueOf(phut).length() == 1 ? "0" + phut : phut);
+
+			str = ((String.valueOf(gio).length() == 1 ? "0" + gio : gio)) + " giờ " + (String.valueOf(phut).length() == 1 ? "0" + phut : phut)  + " phút";
 		}
 		return str;
 	}
@@ -588,10 +591,11 @@ public class Utils {
 		return soNgayXuLy;
 	}
 	
-	public static boolean isValidNgayTreHan(LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
+	public static boolean isValidNgayTreHan(LocalDateTime thoiHan) {
 		boolean isValid = false;
-		Calendar ngayHienTai = Calendar.getInstance();
-		Calendar end = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
+		LocalDateTime now = Utils.localDateTimeNow();
+		Calendar ngayHienTai = getMocThoiGianLocalDateTime(now, now.getHour(), now.getMinute());
+		Calendar end = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
 		
 		if (ngayHienTai.after(end) && !DateUtils.isSameDay(ngayHienTai, end)) {
 			isValid = true;
@@ -599,16 +603,13 @@ public class Utils {
 		return isValid;
 	}
 	
-	public static boolean isValidNgayTreHanTinhTheoNgayKetThuc(Long id, LocalDateTime ngayBatDau, LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
+	public static boolean isValidNgayTreHanTinhTheoNgayKetThuc(LocalDateTime thoiHan, LocalDateTime ngayKetThuc) {
 		boolean isValid = false;
-		Calendar now = Calendar.getInstance();
+		Calendar thoiHanXL = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
 		Calendar ketThuc = getMocThoiGianLocalDateTime(ngayKetThuc, ngayKetThuc.getHour(), ngayKetThuc.getMinute());
-		Calendar end = getMocThoiGianLocalDateTime(thoiHan, thoiHan.getHour(), thoiHan.getMinute());
 		
-		if (now.after(ketThuc) || DateUtils.isSameDay(ketThuc, now)) {
-			if (ketThuc.after(end) && !DateUtils.isSameDay(ketThuc, end)) {
-				isValid = true;
-			}
+		if (ketThuc.after(thoiHanXL) && !DateUtils.isSameDay(ketThuc, thoiHanXL)) {
+			isValid = true;
 		}
 		return isValid;
 	}

@@ -611,7 +611,7 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 		}
 		return map;
 	}
-	
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getSoTiepCongDanId() {

@@ -54,29 +54,90 @@ public class XuLyDonService {
 	}
 
 	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD,
-			Long canBoId, String chucVu) {
+			Long canBoId, String chucVu, boolean coQuyTrinh) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
-		}
-		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
-		if (StringUtils.isNotEmpty(chucVu)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+		if (coQuyTrinh) {
+			if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0) && StringUtils.isNotEmpty(chucVu)) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+			}
+
+			if (StringUtils.isNotEmpty(chucVu)) {
+				xuLyDonQuery = xuLyDonQuery.and(
+						QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+			}
+
+			if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+						.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId).or(QXuLyDon.xuLyDon.chucVu.isNull())));
+			}
 		}
 
-		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
-					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoId)
-					.or(QXuLyDon.xuLyDon.chucVu.isNull())));
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		if (repo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
+		}
+		return null;
+	}
+	
+	public XuLyDon predFindXuLyDonThuHoi(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long canBoId) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.trangThaiDon.eq(TrangThaiDonEnum.DANG_XU_LY))
+				.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoId));		
+
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		if (repo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
+		}
+		return null;
+	}
+	
+	public XuLyDon predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(XuLyDonRepository repo, Long donId, Long donViXuLyXLD) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.chucVu.isNull());
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
+		if (repo.exists(xuLyDonQuery)) {
+			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
+			Long xldId = results.get(0).getId();
+			return repo.findOne(xldId);
+		}
+		return null;
+	}
+	
+	public XuLyDon predFindXuLyDonCuoiCungHienTaiCuaTruongPhong(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, VaiTroEnum vaiTro) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
+				.and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro));
+		
+		if (donViXuLyXLD != null && donViXuLyXLD > 0) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
+		}
+		
+		if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0)) {
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+		}
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		if (repo.exists(xuLyDonQuery)) {
 			List<XuLyDon> results = (List<XuLyDon>) repo.findAll(xuLyDonQuery, sortOrder);
@@ -92,8 +153,8 @@ public class XuLyDonService {
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
 		}
-
-		if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
+		
+		if ((phongBanXuLyXLD != null && phongBanXuLyXLD > 0 ) && StringUtils.isNotBlank(chucVu)) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
 		}
 
@@ -130,6 +191,13 @@ public class XuLyDonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 		return xuLyDonQuery;
+	}
+	
+	public Predicate predFindChucVuIsNull(Long donId, Long phongBanId, Long donViId) {
+		BooleanExpression predicate = base.and(xuLyDon.don.id.eq(donId));
+		predicate = predicate.and(xuLyDon.chucVu.isNull()).and(xuLyDon.phongBanXuLy.id.eq(phongBanId))
+				.and(xuLyDon.donViXuLy.id.eq(donViId));
+		return predicate;
 	}
 
 	public Predicate predFindOld(Long donId, Long phongBanId, Long donViId, VaiTroEnum vaiTro) {
