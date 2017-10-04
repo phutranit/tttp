@@ -1553,7 +1553,7 @@ public class ExcelUtil {
 		header1.add(new String[] {"Đơn một người đứng tên", "11", "12", "5", "5"});
 		header1.add(new String[] {"Đơn đủ điều kiện xử lý", "9", "12", "6", "6"});
 		
-		header1.add(new String[] {"Phân loại đơn khiếu nại, tố cáo (số đơn)", "8", "8", "7", "25"});
+		header1.add(new String[] {"Phân loại đơn khiếu nại, tố cáo (số đơn)", "8", "8", "7", "24"});
 		header1.add(new String[] {"Theo nội dung", "9", "9", "7", "19"});
 		
 		header1.add(new String[] {"Khiếu nại", "10", "10", "7", "13"});
@@ -1579,20 +1579,22 @@ public class ExcelUtil {
 		header1.add(new String[] {"Của cơ quan tư pháp các cấp", "10", "12", "21", "21"});
 		header1.add(new String[] {"Của cơ quan Đảng", "10", "12", "22", "22"});
 		
-		header1.add(new String[] {"Theo trình tự giải quyết", "9", "9", "23", "25"});
+		header1.add(new String[] {"Theo trình tự giải quyết", "9", "9", "23", "24"});
 		header1.add(new String[] {"Chưa được giải quyết", "10", "12", "23", "23"});
-		header1.add(new String[] {"Đã được giải quyết lần đầu", "10", "12", "24", "25"});
+		header1.add(new String[] {"Đã được giải quyết", "10", "12", "24", "24"});
+		
+//		header1.add(new String[] {"Đã được giải quyết lần đầu", "10", "12", "24", "25"});
 //		header1.add(new String[] {"Đã được giải quyết nhiều lần", "10", "12", "25", "25"});
 		
-		header1.add(new String[] {"Đơn khác (kiến nghị, phản ánh, đơn nặc danh)", "8", "12", "26", "26"});
-		header1.add(new String[] {"Kết quả xử lý đơn khiếu nại, tố cáo", "8", "8", "27", "31"});
-		header1.add(new String[] {"Số văn bản hướng dẫn", "9", "12", "27", "27"});
-		header1.add(new String[] {"Số đơn chuyển cơ quan có thẩm quyền", "9", "12", "28", "28"});
-		header1.add(new String[] {"Số công văn đôn đốc việc giải quyết", "9", "12", "29", "29"});
-		header1.add(new String[] {"Đơn thuộc thẩm quyền", "9", "10", "30", "31"});
-		header1.add(new String[] {"Khiếu nại", "11", "12", "30", "30"});
-		header1.add(new String[] {"Tố cáo", "11", "12", "31", "31"});
-		header1.add(new String[] {"Ghi chú", "8", "12", "32", "32"});
+		header1.add(new String[] {"Đơn khác (kiến nghị, phản ánh, đơn nặc danh)", "8", "12", "25", "25"});
+		header1.add(new String[] {"Kết quả xử lý đơn khiếu nại, tố cáo", "8", "8", "26", "30"});
+		header1.add(new String[] {"Số văn bản hướng dẫn", "9", "12", "26", "26"});
+		header1.add(new String[] {"Số đơn chuyển cơ quan có thẩm quyền", "9", "12", "27", "27"});
+		header1.add(new String[] {"Số công văn đôn đốc việc giải quyết", "9", "12", "28", "28"});
+		header1.add(new String[] {"Đơn thuộc thẩm quyền", "9", "10", "29", "30"});
+		header1.add(new String[] {"Khiếu nại", "11", "12", "29", "29"});
+		header1.add(new String[] {"Tố cáo", "11", "12", "30", "30"});
+		header1.add(new String[] {"Ghi chú", "8", "12", "31", "31"});
 		
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -1625,13 +1627,13 @@ public class ExcelUtil {
 			c  = row.createCell(0);
 			c.setCellValue("TỔNG HỢP KẾT QUẢ XỬ LÝ ĐƠN THƯ KHIẾU NẠI, TỐ CÁO");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 31));
 			
 			row = sheet1.createRow(++idx); //idx 5
 			c  = row.createCell(0);
 			c.setCellValue(soLieuStr);
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 31));
 			
 			idx+=2; //idx = 7
 			for (int j = 8; j <= 12; j++) {
@@ -1675,7 +1677,7 @@ public class ExcelUtil {
 			
 			row = sheet1.createRow(++idx); //idx = 13
 			row.setHeight((short)900);
-			for (int i = 0; i <= 32; i++) {
+			for (int i = 0; i <= 31; i++) {
 				c  = row.createCell(i);
 				if(i==0) { c.setCellValue("MS"); }
 				else if(i==1) { c.setCellValue("1=2+3+4+5"); }
@@ -1749,19 +1751,19 @@ public class ExcelUtil {
 			c = row.createCell(25);
 			c.setCellValue("....., ngày     tháng     năm");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 31));
 			
 			row = sheet1.createRow(++idx);
 			c = row.createCell(25);
 			c.setCellValue("THỦ TRƯỞNG ĐƠN VỊ");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 31));
 			
 			row = sheet1.createRow(++idx);
 			c = row.createCell(25);
 			c.setCellValue("(ký tên, đóng dấu)");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 25, 31));
 			
 			row = sheet1.createRow(++idx);
 			c  = row.createCell(1);
@@ -1820,7 +1822,7 @@ public class ExcelUtil {
 			sheet1.setColumnWidth(29, width);
 			sheet1.setColumnWidth(30, width);
 			sheet1.setColumnWidth(31, width);
-			sheet1.setColumnWidth(32, width);
+			//sheet1.setColumnWidth(32, width);
 			//END
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
