@@ -244,6 +244,27 @@ public class Utils {
 		return ngayKetThuc != null ? ngayKetThuc : null;
 	}
 
+	public static LocalDateTime convertNumberToLocalDateTimeTinhTheoNgayLamViec(LocalDateTime ngayBatDau, Long soNgayGiaHan) {
+		long i = 1;
+		LocalDateTime ngayKetThuc = ngayBatDau;
+		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
+			ngayKetThuc = ngayKetThuc.plusDays(1);
+			while (i < soNgayGiaHan) {
+				ngayKetThuc = ngayKetThuc.plusDays(1);
+				if (ngayKetThuc.getDayOfWeek().getValue() == SATURDAY
+						|| ngayKetThuc.getDayOfWeek().getValue() == SUNDAY) {
+					continue;
+				}
+				i++;
+			}
+			ngayKetThuc = LocalDateTime.of(
+					LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
+					LocalTime.MAX);
+		}
+
+		return ngayKetThuc != null ? ngayKetThuc : null;
+	}
+	
 	public static Long convertLocalDateTimeToNumber(LocalDateTime tuNgay, LocalDateTime denNgay) {
 		long soNgayXuLy = 0;
 		if (tuNgay != null && denNgay != null) {
