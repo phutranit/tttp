@@ -3820,30 +3820,22 @@ public class ExcelUtil {
 	}
 	
 	public static void exportTheoDoiGiamSatTheoDonVi(HttpServletResponse response, String fileName, String sheetName,
-			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title, ProcessTypeEnum processTypeEnum) throws IOException {
-		
-		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
-				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
-				StringUtils.isNotBlank(denNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(denNgay)) : "");
-		
-		String tHead1 = new String();
-		String tHead2 = new String();
-		
+			List<Map<String, Object>> maSos, String title, ProcessTypeEnum processTypeEnum) throws IOException {
 		List<String[]> header1 = new LinkedList<>();
 		
 		// Colname, fromRow, toRow, fromCol, toCol		
-		header1.add(new String[] {"STT", "4", "5", "0", "0"});
-		header1.add(new String[] {"Tên đơn vị", "4", "5", "1", "1"});
+		header1.add(new String[] {"ST", "3", "4", "0", "0"});
+		header1.add(new String[] {"Tên đơn vị", "3", "4", "1", "1"});
 		
-		header1.add(new String[] {tHead1, "4", "4", "2", "3"});
-		header1.add(new String[] {"Đúng hạn", "5", "5", "2", "2"});
-		header1.add(new String[] {"Trễ hạn", "5", "5", "3", "3"});
+		header1.add(new String[] {"Đang xử lý", "3", "3", "2", "3"});
+		header1.add(new String[] {"Đúng hạn", "4", "4", "2", "2"});		
+		header1.add(new String[] {"Trễ hạn", "4", "4", "3", "3"});
 		
-		header1.add(new String[] {tHead2, "4", "4", "4", "5"});
-		header1.add(new String[] {"Đúng hạn", "5", "5", "4", "4"});
-		header1.add(new String[] {"Trễ hạn", "5", "5", "5", "5"});
+		header1.add(new String[] {"Đã xử lý", "3", "3", "4", "5"});
+		header1.add(new String[] {"Đúng hạn", "4", "4", "4", "4"});		
+		header1.add(new String[] {"Trễ hạn", "4", "4", "5", "5"});
 		
-		header1.add(new String[] {"Tổng số", "4", "5", "6", "6"});
+		header1.add(new String[] {"Tổng số", "3", "4", "6", "6"});
 		
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
@@ -3856,47 +3848,27 @@ public class ExcelUtil {
 			Sheet sheet1 = wb.createSheet(sheetName);
 			sheet1.getPrintSetup().setLandscape(true);
 			sheet1.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
-			sheet1.createFreezePane(0, 14);
+			sheet1.createFreezePane(0, 5);
 			
 			// Row and column indexes
 			int idx = 0;
 			Row row;
 			Cell c;
 			
-			//Ten don vi
 			row = sheet1.createRow(++idx); //idx 1
-			c  = row.createCell(0);
-			c.setCellValue("BỘ, NGÀNH (UBND TỈNH, THÀNH PHỐ)...");
-			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 12));
-			
-			idx+=3;
-			row = sheet1.createRow(idx); //idx 6
 			row.setHeight((short)600);
 			c  = row.createCell(0);
 			c.setCellValue(title);
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 25));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 6));
 
-			row = sheet1.createRow(++idx); //idx 5
-			row.setHeight((short)300);
-			c  = row.createCell(0);
-			c.setCellValue(soLieuStr);
-			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", true));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 25));
-			
-			idx+=2; //idx = 7
-			for (int j = 8; j <= 12; j++) {
+			idx+=2;
+			for (int j = 2; j <= 8; j++) {
 				row = sheet1.createRow(j);
-				if(j==12){
-					row.setHeight((short)1200);
-				} else {
-					row.setHeight((short)400);
-				}
-				idx++;
+				row.setHeight((short)400);
 			}
-			//idx = 12
 			
+			idx +=1;
 			String name;
 			Integer row1, row2, col1, col2;
 			
@@ -3926,20 +3898,7 @@ public class ExcelUtil {
 			}
 			
 			row = sheet1.createRow(++idx); //idx = 13
-			row.setHeight((short)900);
-			for (int i = 0; i <= 41; i++) {
-				c  = row.createCell(i);
-				if(i==0) { c.setCellValue("MS"); }
-				else if(i==1) { c.setCellValue("1=(2+3)=(4+5)"); }
-				else if(i==10) { c.setCellValue("10=12+14"); }
-				else if(i==11) { c.setCellValue("11=13+15"); }
-				else {
-					c.setCellValue(i);
-				}
-				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER",false));
-			}
-			
-			idx+=1; //idx = 14
+		
 			int recordSize = 0;
 			int colSize = 0;
 			String formula = "SUM()";
@@ -3949,12 +3908,11 @@ public class ExcelUtil {
 				recordSize = maSos.size();
 				colSize = maSos.get(0).size();
 				
-				Calendar calendar = Calendar.getInstance();
 				Map<String, Object> mapMaSo = null;
 				Object obj;
 				for (int i = 0; i <= recordSize; i++) {
 					row = sheet1.createRow(i+idx);
-					row.setHeight((short)400);
+					row.setHeight((short)600);
 					// Add data here
 					if(i < recordSize){
 						mapMaSo = maSos.get(i);
@@ -3967,10 +3925,6 @@ public class ExcelUtil {
 								if(j==0){
 									c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
 								}
-							} else if (obj instanceof Date) {
-								calendar.setTime((Date)(obj));
-								c.setCellValue(calendar);
-								c.setCellStyle(styles.get("cell_day"));
 							} else {
 								c.setCellValue(String.valueOf(obj));
 								c.setCellStyle(styles.get("cell"));
@@ -3981,9 +3935,10 @@ public class ExcelUtil {
 							c  = row.createCell(k);
 							//Add TONG row
 							if(k==0){
-								c.setCellValue("Tổng");
+								c.setCellValue("TỔNG ĐƠN");
 								c.setCellStyle(styles.get("cell"));
-							} else if(k==colSize-1){
+								c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER",false));
+							} else if(k==1){
 								c.setCellStyle(styles.get("cell"));
 							} else {
 								colName = CellReference.convertNumToColString(k);
@@ -3994,97 +3949,21 @@ public class ExcelUtil {
 						}
 					}
 				}
+				int rowSize = row.getRowNum();
+				sheet1.addMergedRegion(new CellRangeAddress(rowSize, rowSize, 0, 1));
 			}
-			idx = idx + recordSize + 3;
-			
-			row = sheet1.createRow(idx);
-			c = row.createCell(36);
-			c.setCellValue("....., ngày     tháng     năm");
-			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 36, 41));
-			
-			row = sheet1.createRow(++idx);
-			c = row.createCell(36);
-			c.setCellValue("THỦ TRƯỞNG ĐƠN VỊ");
-			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 36, 41));
-			
-			row = sheet1.createRow(++idx);
-			c = row.createCell(36);
-			c.setCellValue("(ký tên, đóng dấu)");
-			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 36, 41));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("Lưu ý:");
-			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("- Cột (1)= (2) + (3) = (4) + (5)");
-			c.setCellStyle(styles.get("cell_sub"));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("- Cột (11)=(12)+(13)+(14)+(15)+(16)+(17)+(18)+(19)");
-			c.setCellStyle(styles.get("cell_sub"));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("- Biểu này không bao gồm kết quả thanh tra chuyên ngành và kết quả thanh tra trách nhiệm thực hiện thực hiện pháp luật về thanh tra, giải quyết khiếu nại, tố cáo và PCTN");
-			c.setCellStyle(styles.get("cell_sub"));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("- Cột 29, 30, 31 là Tổng kết quả thu hồi trong quá trình thanh tra hoặc ngay sau khi có kết luận thanh tra và kết quả kiểm tra, đôn đốc xử lý sau thanh tra");
-			c.setCellStyle(styles.get("cell_sub"));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
-			
-			row = sheet1.createRow(++idx);
-			c  = row.createCell(1);
-			c.setCellValue("- Cột \"Đơn vị\" để các bộ, ngành, địa phương thống kê kết quả thực hiện của các đơn vị trực thuộc");
-			c.setCellStyle(styles.get("cell_sub"));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
 			
 			int width = (int) (10 * 256);
 			// set column width
-			sheet1.setColumnWidth(0, 35 * 256);
-			sheet1.setColumnWidth(1, width);
+			sheet1.setColumnWidth(0, width);
+			sheet1.setColumnWidth(1, 30 * 256);
 			sheet1.setColumnWidth(2, width);
 			sheet1.setColumnWidth(3, width);
 			sheet1.setColumnWidth(4, width);
 			sheet1.setColumnWidth(5, width);
 			sheet1.setColumnWidth(6, width);
 			sheet1.setColumnWidth(7, width);
-			sheet1.setColumnWidth(8, width);
-			sheet1.setColumnWidth(9, width);
-			sheet1.setColumnWidth(10, width);
-			sheet1.setColumnWidth(11, width);
-			sheet1.setColumnWidth(12, width);
-			sheet1.setColumnWidth(13, width);
-			sheet1.setColumnWidth(14, width);
-			sheet1.setColumnWidth(15, width);
-			sheet1.setColumnWidth(16, width);
-			sheet1.setColumnWidth(17, width);
-			sheet1.setColumnWidth(18, width);
-			sheet1.setColumnWidth(19, width);
-			sheet1.setColumnWidth(20, width);
-			sheet1.setColumnWidth(21, width);
-			sheet1.setColumnWidth(22, width);
-			sheet1.setColumnWidth(23, width);
-			sheet1.setColumnWidth(24, width);
-			sheet1.setColumnWidth(25, width);
-			sheet1.setColumnWidth(26, width);
-			sheet1.setColumnWidth(27, width);
-			sheet1.setColumnWidth(28, width);
-			sheet1.setColumnWidth(29, width);
-			sheet1.setColumnWidth(30, width);
-			sheet1.setColumnWidth(31, width);
-			sheet1.setColumnWidth(32, width);
+			
 			//END
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
