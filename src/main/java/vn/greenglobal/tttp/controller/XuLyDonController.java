@@ -2357,7 +2357,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
-		
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());
