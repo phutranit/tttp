@@ -851,7 +851,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		thongTinGiaiQyuetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQyuetDon, congChucId);
 		
-		giaiQuyetDonHienTai.setCongChuc(don.getCanBoXuLyChiDinh() != null ? giaiQuyetDonHienTai.getCongChuc() : congChucRepo.findOne(congChucId));
+		giaiQuyetDonHienTai.setCongChuc(giaiQuyetDonHienTai.getCanBoXuLyChiDinh() != null ? giaiQuyetDonHienTai.getCanBoXuLyChiDinh() : congChucRepo.findOne(congChucId));
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
