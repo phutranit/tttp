@@ -2213,16 +2213,19 @@ public class Don extends Model<Don> {
 		Map<String, Object> map = new HashMap<>();
 
 		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
 			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
 			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
 			list.add(map);
 		}
 		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
 			map.put("donViId", getDonViThamTraXacMinh().getId());
 			map.put("quyenTuXuLy", isTuXuLyTTXM());
 			list.add(map);
 		}
 		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
 			map.put("donViId", getDonViKiemTraDeXuat().getId());
 			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
 			list.add(map);
