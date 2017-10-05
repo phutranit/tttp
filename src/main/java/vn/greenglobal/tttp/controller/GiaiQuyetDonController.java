@@ -238,7 +238,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 									: giaiQuyetDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 						}
 						
-						if ("ttxmGuiGiaiQuyet".equals(giaiQuyetDon.getActionType())) {
+						if ("TTXM_GUI_DON_VI_GIAI_QUYET".equals(giaiQuyetDon.getActionType())) {
 							State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET));
 							Process process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
 							if (process == null && isOwner) {
@@ -275,7 +275,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, 
 									donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, coQuyTrinh);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-						} else if ("ttxmGuiDuThao".equals(giaiQuyetDon.getActionType())) {
+						} else if ("TTXM_GUI_DU_THAO".equals(giaiQuyetDon.getActionType())) {
 						
 					    }
 					}
