@@ -1104,13 +1104,8 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
-		list.add(object);
-		
-		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
 		list.add(object);
 		
 		object = new HashMap<>();
@@ -1186,13 +1181,18 @@ public class EnumController {
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.name());
 		list.add(object);
 		
 		object = new HashMap<>();
