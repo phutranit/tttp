@@ -164,6 +164,98 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		return coQuyTrinh;
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/giaiQuyetDons/tuXuLy")
+	@ApiOperation(value = "Thêm mới Lịch sử  giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Thêm mới Lịch sử  giải quyết đơn thành công", response = GiaiQuyetDon.class),
+			@ApiResponse(code = 201, message = "Thêm mới Lịch sử  giải quyết đơn thành công", response = GiaiQuyetDon.class) })
+	public ResponseEntity<Object> tuXuLy(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody GiaiQuyetDon giaiQuyetDon, PersistentEntityResourceAssembler eass) {
+		try {
+			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.GIAIQUYETDON_SUA);
+			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId") 
+					&& commonProfile.containsAttribute("coQuanQuanLyId")) {
+				if (giaiQuyetDon.getThongTinGiaiQuyetDon() == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.name(), 
+							ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.getText(), ApiErrorEnum.THONGTINGIAIQUYETDON_REQUIRED.getText());
+				}
+				Long thongTinGiaiQuyetDonId = giaiQuyetDon.getThongTinGiaiQuyetDon().getId();
+				ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonRepo.findOne(thongTinGiaiQuyetDonService.predicateFindOne(thongTinGiaiQuyetDonId));
+				
+				Don don = thongTinGiaiQuyetDon.getDon();
+				
+				if (don == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(), ApiErrorEnum.DON_REQUIRED.getText(), ApiErrorEnum.DON_REQUIRED.getText());
+				}
+				
+				if (don.getProcessType() == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(), 
+							ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
+				}
+				
+				if (giaiQuyetDon.getActionType() == null || giaiQuyetDon.getActionType().isEmpty()) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.ACTIONTYPE_REQUIRED.name(), 
+							ApiErrorEnum.ACTIONTYPE_REQUIRED.getText(), ApiErrorEnum.ACTIONTYPE_REQUIRED.getText());
+				}
+				
+				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+
+				//CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
+				
+				if ("gqdTuTTXM".equals(giaiQuyetDon.getActionType())) {
+					
+				} else if ("gqdNhanBaoCaoTTXM".equals(giaiQuyetDon.getActionType())) {
+					
+				} else if ("gqdNhanDuThao".equals(giaiQuyetDon.getActionType())) {
+					
+				} else if ("ttxmGuiGiaiQuyet".equals(giaiQuyetDon.getActionType())) {
+					GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrentDangGiaiQuyet(repo, thongTinGiaiQuyetDonId, true);
+					
+					if (giaiQuyetDonHienTai != null) {
+						String note = "";
+						GiaiQuyetDon giaiQuyetDonBenGiaiQuyet = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), false);
+						Predicate predicate = processService.predicateFindAllByDonVi(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
+						List<Process> listProcessGQD = (List<Process>) processRepo.findAll(predicate);
+						if (listProcessGQD.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
+									ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+						}
+						Transition transitionGQD = null;
+						for (Process processFromList : listProcessGQD) {
+							transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM, processFromList));
+							if (transitionGQD != null) {
+								break;
+							}
+						}
+						if (transitionGQD == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
+									ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+						}
+						
+						boolean coQuyTrinh = false;
+						coQuyTrinh = kiemTraDonViCoQuyTrinhGQD(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getId());
+						GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
+						giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, 
+								donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, coQuyTrinh);
+						return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
+					}
+				} else if ("ttxmGuiDuThao".equals(giaiQuyetDon.getActionType())) {
+					
+				} else if ("ktdx".equals(giaiQuyetDon.getActionType())) {
+					
+				}
+				
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), 
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.POST, value = "/giaiQuyetDons")
 	@ApiOperation(value = "Thêm mới Lịch sử  giải quyết đơn", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -1336,7 +1428,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		thongTinGiaiQuyetDon.setNgayTraBaoCaoTTXM(Utils.localDateTimeNow());
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
-		giaiQuyetDonHienTai.setCongChuc(congChuc);
+		giaiQuyetDonHienTai.setCongChuc(giaiQuyetDonHienTai.getCanBoXuLyChiDinh() != null ? giaiQuyetDonHienTai.getCanBoXuLyChiDinh() : congChuc);
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
 		
