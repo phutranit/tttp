@@ -201,7 +201,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				Long congChucId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 
-				//CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
+				CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
+				CoQuanQuanLy donVi = congChuc.getCoQuanQuanLy().getDonVi();
+				
+				thongTinGiaiQuyetDon.setyKienGiaiQuyet("");
+				thongTinGiaiQuyetDon.setCanBoXuLyChiDinh(null);
+				thongTinGiaiQuyetDon.setPhongBanGiaiQuyet(null);
+				thongTinGiaiQuyetDon.setNextState(null);
+				thongTinGiaiQuyetDon = thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 				
 				if ("gqdTuTTXM".equals(giaiQuyetDon.getActionType())) {
 					
@@ -213,6 +220,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 					GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrentDangGiaiQuyet(repo, thongTinGiaiQuyetDonId, true);
 					
 					if (giaiQuyetDonHienTai != null) {
+						boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
+								: giaiQuyetDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
+						
+						State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET));
+						Process process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
+						Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
+						
+						giaiQuyetDonHienTai.setNextState(nextState);						
+						giaiQuyetDonHienTai.setNextForm(transition.getForm());
 						String note = "";
 						GiaiQuyetDon giaiQuyetDonBenGiaiQuyet = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), false);
 						Predicate predicate = processService.predicateFindAllByDonVi(giaiQuyetDonBenGiaiQuyet.getDonViGiaiQuyet().getDonVi(), ProcessTypeEnum.GIAI_QUYET_DON);
@@ -223,8 +239,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						}
 						Transition transitionGQD = null;
 						for (Process processFromList : listProcessGQD) {
-							transitionGQD = transitionRepo.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM, processFromList));
-							if (transitionGQD != null) {
+							List<Transition> listTransitionGQD = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindFromCurrent(FlowStateEnum.TRUONG_PHONG_NHAN_KET_QUA_TTXM, processFromList));
+							if (listTransitionGQD.size() > 0) {
+								transitionGQD = listTransitionGQD.get(0);
 								break;
 							}
 						}
