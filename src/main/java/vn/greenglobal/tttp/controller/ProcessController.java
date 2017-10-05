@@ -496,10 +496,19 @@ public class ProcessController extends TttpController<Process> {
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 23L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 24L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 24L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 8L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 7, donViId, 25L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 8, donViId, 26L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 9, donViId, 27L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 10, donViId, 8L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
@@ -525,6 +534,12 @@ public class ProcessController extends TttpController<Process> {
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
 					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 8, donViId, 23L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 9, donViId, 28L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 10, donViId, 29L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
@@ -628,6 +643,10 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 24L, 8L, 18L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 27L, 8L, 41L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 24L, 25L, 38L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -643,9 +662,19 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 19L, 24L, 31L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 19L, 31L, false);
+						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 23L, 24L, 31L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 24L, 23L, 32L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 25L, 26L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 26L, 27L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 11L, 27L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 27L, 23L, 32L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -659,6 +688,8 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 15L, 17L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 30L, 29L, 40L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -671,6 +702,14 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 23L, 5L, 16L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 23L, 33L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 15L, 28L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 28L, 30L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 23L, 30L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 29L, 23L, 33L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1018,10 +1057,19 @@ public class ProcessController extends TttpController<Process> {
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 23L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 5, donViId, 24L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 24L);
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 6, donViId, 8L);
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 7, donViId, 25L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 8, donViId, 26L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 9, donViId, 27L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 10, donViId, 8L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
@@ -1047,6 +1095,12 @@ public class ProcessController extends TttpController<Process> {
 					donViHasStateService.save(donViHasState, congChucId);
 					donViHasState = new DonViHasState();
 					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 8, donViId, 23L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 9, donViId, 28L);
+					donViHasStateService.save(donViHasState, congChucId);
+					donViHasState = new DonViHasState();
+					donViHasState = addDataState(ProcessTypeEnum.THAM_TRA_XAC_MINH, 10, donViId, 29L);
 					donViHasStateService.save(donViHasState, congChucId);
 					
 					donViHasState = new DonViHasState();
@@ -1150,6 +1204,10 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 24L, 8L, 18L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 27L, 8L, 41L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 24L, 25L, 38L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -1165,9 +1223,19 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 19L, 24L, 31L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 19L, 31L, false);
+						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 23L, 24L, 31L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 24L, 23L, 32L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 25L, 26L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 26L, 27L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 11L, 27L, 37L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 27L, 23L, 32L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1181,6 +1249,8 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 15L, 17L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 30L, 29L, 40L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -1193,6 +1263,14 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 23L, 5L, 16L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 23L, 33L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 15L, 28L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 28L, 30L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 23L, 30L, 39L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 29L, 23L, 33L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
