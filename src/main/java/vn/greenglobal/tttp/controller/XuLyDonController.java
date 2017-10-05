@@ -1664,6 +1664,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		XuLyDon xuLyDonTruongPhong = new XuLyDon();
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 		CongChuc congChuc = congChucRepo.findOne(congChucId);
+		Don don = donRepo.findOne(donId);
 		
 		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
@@ -1683,7 +1684,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonTiepTheo.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 			disableXuLyDonCu(VaiTroEnum.TRUONG_PHONG, donId, congChucId, xuLyDonTiepTheo.getPhongBanXuLy().getId(), donViId);			
 			xuLyDonTiepTheo.setChucVu(VaiTroEnum.TRUONG_PHONG);
+			Utils.changeQuyenTuXuLy(don, false, false, false);
 		} else {
+			Utils.changeQuyenTuXuLy(don, true, false, false);
 			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.GIAO_CAN_BO_XU_LY.getText());
 			List<Transition> listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLast(donViId, ProcessTypeEnum.XU_LY_DON.toString(), repoProcess));
 			if (listTransitionEnd.size() > 0) {
@@ -1749,7 +1752,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo.setDonViXuLy(coQuanQuanLyRepo.findOne(donViId));
 		
 		// set don
-		Don don = donRepo.findOne(donId);
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		don.setLanhDaoDuyet(true);
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
@@ -1775,7 +1777,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(nextState)) {
 			don.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
 		}
-		Utils.changeQuyenTuXuLy(don, true, false, false);
+		
 		donService.save(don, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
