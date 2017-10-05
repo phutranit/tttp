@@ -95,8 +95,9 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 				don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO);
 			}
 			
-			if (KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
-					|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
+			if (KetQuaTrangThaiDonEnum.DOI_THOAI.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
+					|| KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
+					|| KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
 					|| KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
 					|| KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())) {
 				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
