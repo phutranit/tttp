@@ -618,7 +618,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> donViTTXM = null;
 		
 		map.put("xuLyDonId", getId());
-		map.put("quyTrinhXuLy", null);
+		map.put("quyTrinhXuLy", "");
 		map.put("huongXuLy", null);
 		map.put("thamQuyenGiaiQuyet", null);
 		map.put("phongBanGiaiQuyet", null);
