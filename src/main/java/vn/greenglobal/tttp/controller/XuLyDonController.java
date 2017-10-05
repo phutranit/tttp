@@ -298,6 +298,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
 								ApiErrorEnum.HUONGXULY_REQUIRED.getText(), ApiErrorEnum.HUONGXULY_REQUIRED.getText());
 					}
+					boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
+							: xuLyDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
+					State nextState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.KET_THUC));
+					Process process = repoProcess.findOne(processService.predicateFindAll(xuLyDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
+					Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
+					
+					
+					xuLyDonHienTai.setNextState(nextState);
+					xuLyDonHienTai.setNextForm(transition.getForm());
+					
 					xuLyDonHienTai.setHuongXuLy(huongXuLyXLD);
 					xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
 					if (HuongXuLyXLDEnum.YEU_CAU_GAP_LANH_DAO.equals(huongXuLyXLD)) {
@@ -2341,7 +2351,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
-		
 		don.setHuongXuLyXLD(huongXuLyXLD);
 		don.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		don.setPhongBanGiaiQuyet(xuLyDon.getPhongBanGiaiQuyet());

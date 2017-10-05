@@ -29,6 +29,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	//@Lob
 	private String yKienGiaiQuyet;
+	private String actionType = "";
 
 	private int thuTuThucHien;
 
@@ -80,6 +81,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setyKienGiaiQuyet(String yKienGiaiQuyet) {
 		this.yKienGiaiQuyet = yKienGiaiQuyet;
+	}
+	
+	@Transient
+	public String getActionType() {
+		return actionType;
+	}
+
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 
 	@JsonIgnore
