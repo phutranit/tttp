@@ -5000,34 +5000,32 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			
 			for (CoQuanQuanLy cq : donVis) {
 					
-				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra;
+				BooleanExpression predAllCuocThanhTraLai = predAllCuocThanhTra;
 				
-				// Get cuoc thanh tra theo linh vuc hanh chinh
-				predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);
+				// Get cuoc thanh tra lai
+				predAllCuocThanhTraLai = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraLai(predAllCuocThanhTraLai, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra lai
-				Long tongSoCuocThanhTra = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
-				
-				// Dem so cuoc 
+				Long tongSoCuocThanhTraLai = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraLai)).size());
 				
 			 	// Dem so cuoc theo thanh lai
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
-				Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraLai, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo);
 				// Da ban hanh ket luan
-				Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraLai, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
 				
 				// Dem so don vi duoc thanh tra 
-				Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraLai, cuocThanhTraRepo);
 				
 				
 				// Lay danh sach cuoc thanh tra co vi pham
-				BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraLai, cuocThanhTraRepo);
 				
 				// Dem so don vi co vi pham
 				Long tongSoDonViCoViPham = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size());
@@ -5047,7 +5045,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongKNXLHanhChinhCaNhan = thongKeTongHopThanhTraService.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo);
 				
 				// Lay danh sach cuoc thanh tra co vi pham
-				BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraLai, cuocThanhTraRepo);
 				
 				// Chuyen co quan dieu tra 
 				Long tongKNXLVu = thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo);
@@ -5074,7 +5072,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				tienDo.put("daBanHanhKetLuan", tongSoCuocThanhTraDaBanHanhKetLuan);
 				
 				Map<String, Object> soCuocThanhTra = new HashMap<>();
-				soCuocThanhTra.put("tongSo", tongSoCuocThanhTra);
+				soCuocThanhTra.put("tongSo", tongSoCuocThanhTraLai);
 				soCuocThanhTra.put("dangThucHien", dangThucHien);
 				soCuocThanhTra.put("hinhThuc", hinhThuc);
 				soCuocThanhTra.put("tienDo", tienDo);

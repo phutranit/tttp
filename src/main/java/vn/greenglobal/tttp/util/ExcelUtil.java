@@ -3872,31 +3872,17 @@ public class ExcelUtil {
 		header1.add(new String[] {"Vụ", "12", "13", "21", "21"});
 		header1.add(new String[] {"Đối tượng", "12", "13", "22", "22"});
 		
-		header1.add(new String[] {"Đã thu", "10", "10", "20", "21"});
-		header1.add(new String[] {"Tiền (Trđ)", "11", "13", "20", "20"});
-		header1.add(new String[] {"Đất (m2)", "11", "13", "21", "21"});
+		header1.add(new String[] {"Kết quả thực hiện","10","10","23","28"});
+		header1.add(new String[] {"Tiền đã thu (Trđ)","12","13","23","23"});
+		header1.add(new String[] {"Đất đã thu (m2)","12","13","24","24"});
+		header1.add(new String[] {"Đã xử lý hành chính","12","12","25","26"});
+		header1.add(new String[] {"Tổ chức","13","13","25","25"});
+		header1.add(new String[] {"Cá nhân","13","13","26","26"});
+		header1.add(new String[] {"Đã khởi tố","12","12","27","28"});
+		header1.add(new String[] {"Vụ","13","13","27","27"});
+		header1.add(new String[] {"Đối tượng","13","13","28","28"});
 		
-		header1.add(new String[] {"Kiểm tra, đôn đốc việc thực hiện kết luận thanh tra, quyết định xử lý về thanh tra", "10", "10", "22", "30"});
-		header1.add(new String[] {"Tổng số KLTT và QĐ xử lý đã kiểm tra, đôn đốc", "11", "13", "22", "22"});
-		header1.add(new String[] {"Kết quả kiểm tra, đôn đốc", "11", "11", "23", "30"});
-		
-		header1.add(new String[] {"Tiền (Trđ)", "12", "12", "23", "24"});
-		header1.add(new String[] {"Phải thu", "13", "13", "23", "23"});
-		header1.add(new String[] {"Đã thu", "13", "13", "24", "24"});
-		
-		header1.add(new String[] {"Đất (m2)", "12", "12", "25", "26"});
-		header1.add(new String[] {"Phải thu", "13", "13", "25", "25"});
-		header1.add(new String[] {"Đã thu", "13", "13", "26", "26"});
-		
-		header1.add(new String[] {"Đã xử lý hành chính", "12", "12", "27", "28"});
-		header1.add(new String[] {"Tổ chức", "13", "13", "27", "27"});
-		header1.add(new String[] {"Cá nhân", "13", "13", "28", "28"});
-		
-		header1.add(new String[] {"Đã khởi tố", "12", "12", "29", "30"});
-		header1.add(new String[] {"Vụ", "13", "13", "29", "29"});
-		header1.add(new String[] {"Đối tượng", "13", "13", "30", "30"});
-		
-		header1.add(new String[] {"Ghi chú", "10", "13", "31", "31"});
+		header1.add(new String[] {"Ghi chú", "10", "12", "29", "29"});
 		
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
