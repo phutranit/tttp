@@ -19,6 +19,7 @@ public enum ApiErrorEnum {
 	HANGIAIQUYET_REQUIRED("Trường hanGiaiQuyet không được để trống."),
 	DON_REQUIRED("Trường đơn không được để trống."),
 	THONGTINGIAIQUYETDON_REQUIRED("Trường thongTinGiaiQuyetDon không được để trống."),
+	ACTIONTYPE_REQUIRED("Trường actionType không được để trống."),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống."),
 	EMAIL_REQUIRED("Trường email không được để trống."),
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống."),

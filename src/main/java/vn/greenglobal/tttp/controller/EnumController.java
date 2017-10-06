@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +100,42 @@ public class EnumController {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/timKiemTheoLoaiKy")
+	@ApiOperation(value = "Lấy tìm kiếm theo Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTimKiemTheoLoaiKys(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiKy", required = true) String loaiKy) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+		int year = Utils.localDateTimeNow().getYear();
+		int month = Utils.localDateTimeNow().getMonthValue();
+		
+		if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+			object.put("year", year);
+			object.put("quy", Utils.getQuyHienTai());
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+			object.put("year", year);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+			object.put("year", year);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+			object.put("year", year);
+			object.put("month", month);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
+			LocalDateTime tuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+			Calendar c = Utils.getMocThoiGianLocalDateTime(tuNgay, 0, 0);
+			LocalDateTime denNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+			object.put("tuNgay", tuNgay);
+			object.put("denNgay", denNgay);
+		}
+		list.add(object);
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/layNgayGioHienTai")
 	@ApiOperation(value = "Lấy ngày giờ hiện tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -1066,13 +1104,8 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
-		list.add(object);
-		
-		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
 		list.add(object);
 		
 		object = new HashMap<>();
@@ -1148,13 +1181,18 @@ public class EnumController {
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.name());
 		list.add(object);
 		
 		object = new HashMap<>();
