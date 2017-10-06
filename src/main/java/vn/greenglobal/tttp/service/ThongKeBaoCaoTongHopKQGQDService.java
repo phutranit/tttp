@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,10 +73,14 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAll = predAll.and(QDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-
 						predAll = predAll.and(QDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
@@ -134,9 +139,11 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-
 						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
@@ -197,10 +204,14 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAll = predAll.and(QDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-
 						predAll = predAll.and(QDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
@@ -262,9 +273,11 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-
 						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
@@ -322,9 +335,11 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-
 						predAll = predAll.and(QDon.don.ngayTiepNhan.before(dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {

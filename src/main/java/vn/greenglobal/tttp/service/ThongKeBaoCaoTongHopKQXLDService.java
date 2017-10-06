@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,7 +89,12 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
@@ -132,8 +138,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year));
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 9));
 						}
-					} else { 
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year - 1));
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
@@ -146,17 +150,15 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						if (month == 1) { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year - 1));
-						} else { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().ne(month));
-						}
-					} else { 
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year - 1));
+						LocalDateTime ngayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(ngayTiepNhan));
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
 					} else {
@@ -212,7 +214,12 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAllTCD = predAllTCD.and(QSoTiepCongDan.soTiepCongDan.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 						predAllTCD = predAllTCD.and(QSoTiepCongDan.soTiepCongDan.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay));
@@ -284,7 +291,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						int year = Utils.localDateTimeNow().getYear();
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
@@ -369,7 +382,13 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						int year = Utils.localDateTimeNow().getYear();
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
@@ -448,18 +467,21 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month));
+						LocalDateTime ngayKetThuc = LocalDateTime.of(year, month, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(ngayKetThuc));
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
 							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.after(dtTuNgay));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
 						}
 						if (StringUtils.isNotBlank(denNgay)) {
 							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
@@ -511,40 +533,49 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 			if (loaiKyEnum != null) { 
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
 					if (quy != null && quy > 0) { 
-						if (quy == 1) { 
+						if (quy == 1) {
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year - 1));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(10, 12));
+						}
+						if (quy == 2) {
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year));
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 3));
 						}
-						if (quy == 2) { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(4, 6));
+						if (quy == 3) {
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 6));
 						}
-						if (quy == 3) { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(7, 9));
-						}
-						if (quy == 4) { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(10, 12));
+						if (quy == 4) {
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 9));
 						}
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
-					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 6));
+					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year - 1));
+					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(7, 12));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(7, 12));
+					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year));
+					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 6));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month));
+						LocalDateTime ngayKetThuc = LocalDateTime.of(year, month, 1, 0, 0);		
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(ngayKetThuc));
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay));
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
 							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.after(dtTuNgay));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay));
 						}
 						if (StringUtils.isNotBlank(denNgay)) {
 							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);

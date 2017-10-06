@@ -110,6 +110,9 @@ public class Don extends Model<Don> {
 	private boolean old = false;
 	private boolean hoanThanhDon = false;
 	private boolean dangGiaoKTDX = false;
+	private boolean tuXuLyXLDGQD = false;
+	private boolean tuXuLyTTXM = false;
+	private boolean tuXuLyKTDX = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -1708,6 +1711,30 @@ public class Don extends Model<Don> {
 		this.dangGiaoKTDX = dangGiaoKTDX;
 	}
 
+	public boolean isTuXuLyXLDGQD() {
+		return tuXuLyXLDGQD;
+	}
+
+	public void setTuXuLyXLDGQD(boolean tuXuLyXLDGQD) {
+		this.tuXuLyXLDGQD = tuXuLyXLDGQD;
+	}
+
+	public boolean isTuXuLyTTXM() {
+		return tuXuLyTTXM;
+	}
+
+	public void setTuXuLyTTXM(boolean tuXuLyTTXM) {
+		this.tuXuLyTTXM = tuXuLyTTXM;
+	}
+
+	public boolean isTuXuLyKTDX() {
+		return tuXuLyKTDX;
+	}
+
+	public void setTuXuLyKTDX(boolean tuXuLyKTDX) {
+		this.tuXuLyKTDX = tuXuLyKTDX;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
@@ -2028,6 +2055,16 @@ public class Don extends Model<Don> {
 			map.put("ketQuaStr", "");
 			map.put("ketQuaType", "");
 			map.put("donViTTXM", "");
+			if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_TTXM.getText());
+				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_TTXM);
+			}
+			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.getText());
+				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM);
+				map.put("trangThaiDonText", TrangThaiDonEnum.DANG_GIAI_QUYET.getText());
+				map.put("trangThaiDonType", TrangThaiDonEnum.DANG_GIAI_QUYET);
+			}
 			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
 				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
@@ -2167,5 +2204,32 @@ public class Don extends Model<Don> {
 			return map;
 		}
 		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getQuyenTuXuLyInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			list.add(map);
+		}
+		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			map.put("quyenTuXuLy", isTuXuLyTTXM());
+			list.add(map);
+		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			list.add(map);
+		}
+		return list;
 	}
 }

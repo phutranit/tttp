@@ -12,8 +12,11 @@ public enum KetQuaTrangThaiDonEnum {
 	TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN("Trả lại đơn chuyển không đúng thẩm quyền"),
 	DANG_TTXM("Đang TTXM"),
 	DA_CO_KET_QUA_TTXM("Đã có kết quả TTXM"),
-	CHO_DOI_THOAI("Chờ đối thoại"),
-	DA_CO_KET_QUA_DOI_THOAI("Đã có kết quả đối thoại"),
+//	CHO_DOI_THOAI("Chờ đối thoại"),
+//	DA_CO_KET_QUA_DOI_THOAI("Đã có kết quả đối thoại"),
+	DOI_THOAI("Đối thoại"),
+	DANG_LAP_DU_THAO("Đang lập dự thảo"),
+	DA_LAP_DU_THAO("Đã lập dự thảo"),
 	CHO_RA_QUYET_DINH_GIAI_QUYET("Chờ ra quyết định giải quyết"),
 	DA_CO_QUYET_DINH_GIAI_QUYET("Đã có quyết định giải quyết"),
 	LUU_HO_SO("Lưu hồ sơ");
