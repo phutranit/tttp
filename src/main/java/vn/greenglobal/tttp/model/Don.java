@@ -2059,7 +2059,11 @@ public class Don extends Model<Don> {
 				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_TTXM.getText());
 				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_TTXM);
 			}
-			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+			if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
+				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO);
+			}
+			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
 				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.getText());
 				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM);
 				map.put("trangThaiDonText", TrangThaiDonEnum.DANG_GIAI_QUYET.getText());

@@ -14,7 +14,8 @@ public enum QuaTrinhXuLyEnum {
 	CHUYEN_DON_VI_TTXM("Chuyển đơn vị TTXM"),
 	CHUYEN_DON_VI_KTDX("Chuyển đơn vị KTDX"),
 	CHUYEN_CHUYEN_VIEN_NHAP_LIEU("Chuyển chuyên viên nhập liệu"),
-	GUI_BAO_CAO_TTXM_CHO_DON_VI_GIAO("Gửi báo cáo TTXm cho đơn vị giao"),
+	GUI_BAO_CAO_TTXM_CHO_DON_VI_GIAO("Gửi báo cáo TTXM cho đơn vị giao"),
+	GUI_YEU_CAU_LAP_THU_THAO_CHO_DON_VI_TTXM("Gửi yêu cầu lập dự thảo cho đơn vị TTXM"),
 	CHUYEN_GIAI_QUYET("Chuyển giải quyết"),
 	CHUYEN_KET_QUA_VE_DON_VI_GIAI_QUYET("Chuyển kết quả về đơn vị giải quyết"),
 	LUU_HO_SO("Lưu hồ sơ");
