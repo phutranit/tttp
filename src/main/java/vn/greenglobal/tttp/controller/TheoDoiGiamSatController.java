@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +27,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TheoDoiGiamSatEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.model.NguoiDung;
+import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
+import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
@@ -578,7 +596,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 					}
 				} else { 
 					//xu ly don
-					predDSXLDons = predDSXLDons.and(QDon.don.thanhLapDon.isTrue());
+					predDSXLDons = predDSXLDons.and(QDon.don.thanhLapDon.isTrue().and(QDon.don.ngayBatDauXLD.isNotNull()));
 					
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSXLDons, cq.getId(), xuLyRepo, repo);
 					//Dang xu ly
@@ -1069,6 +1087,203 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 					maSos, "Danh sách tình hình xử lý đơn tại địa bàn", null);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi")
+	@ApiOperation(value = "Lấy danh sách Đơn đúng hạn trễ hạn tại đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody Object getDanhSachDonDungHanTreHanTaiDonVi(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "month", required = false) Long month,
+			@RequestParam(value = "year", required = false) Long year,
+			@RequestParam(value = "donViId", required = true) Long donViId,
+			@RequestParam(value = "quyTrinh", required = true) String quyTrinh,
+			@RequestParam(value = "trangThaiDon", required = true) String trangThaiDon,
+			@RequestParam(value = "tinhTrangXuLy", required = true) String tinhTrangXuLy,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (donViId == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+
+			List<Don> listDon = new ArrayList<Don>();
+			ProcessTypeEnum processType = ProcessTypeEnum.valueOf(quyTrinh);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			
+			boolean isDungHan = true;
+			boolean isTreHan = false;
+			if (StringUtils.isNotBlank(trangThaiDon) && StringUtils.isNotBlank(tinhTrangXuLy)) {
+				TheoDoiGiamSatEnum tinhTrang = TheoDoiGiamSatEnum.valueOf(tinhTrangXuLy);
+				BooleanExpression predDSDons = predDSAllDons;
+				if (processType.equals(ProcessTypeEnum.XU_LY_DON)) {
+					BooleanExpression predDSXLDons = predDSAllDons;
+					predDSXLDons = predDSXLDons.and(QDon.don.thanhLapDon.isTrue().and(QDon.don.ngayBatDauXLD.isNotNull()));
+					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSXLDons, donViId, xuLyRepo, repo);
+					TrangThaiDonEnum trangThaiDangXL = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_XU_LY : TrangThaiDonEnum.DANG_XU_LY;
+					if (trangThaiDangXL.equals(TrangThaiDonEnum.DANG_XU_LY)) { 
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DANG_XU_LY)));
+							//predicateFindTongSoDonDungHanTreHanByTrangThaiXLD
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DANG_XU_LY)));
+						}
+					} else if (trangThaiDangXL.equals(TrangThaiDonEnum.DA_XU_LY)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DA_XU_LY)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DA_XU_LY)));
+						}
+					}
+				} else if (processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
+					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					predDSDons = predDSDons.and(QDon.don.thongTinGiaiQuyetDon.ngayBatDauGiaiQuyet.isNotNull());
+					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViGQD(predDSDons, donViId, giaiQuyetDonRepo, repo);
+					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiGQD(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiGQD(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						}
+					} else if (trangThaiDangGQ.equals(TrangThaiDonEnum.DA_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiGQD(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiGQD(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						}
+					}
+				} else if (processType.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
+					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					predDSDons = predDSDons.and(QDon.don.thongTinGiaiQuyetDon.ngayBatDauTTXM.isNotNull());
+					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViTTXM(predDSDons, donViId, giaiQuyetDonRepo, repo);
+					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiTTXM(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiTTXM(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						}
+					} else if (trangThaiDangGQ.equals(TrangThaiDonEnum.DA_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiTTXM(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiTTXM(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						}
+					}
+				} else if (processType.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
+					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					predDSDons = predDSDons.or(QDon.don.processType.isNull().and(QDon.don.trangThaiKTDX.isNotNull()));
+					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViKTDX(predDSDons, donViId, giaiQuyetDonRepo, repo);
+					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiKTDX(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiKTDX(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DANG_GIAI_QUYET)));
+						}
+					} else if (trangThaiDangGQ.equals(TrangThaiDonEnum.DA_GIAI_QUYET)) {
+						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiKTDX(predAll, repo, isTreHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
+							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiKTDX(predAll, repo, isDungHan, 
+									TrangThaiDonEnum.DA_GIAI_QUYET)));
+						}
+					}
+				} 
+			}
+
+			int start = pageable.getOffset();
+			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+			Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
+			return assembler.toResource(pages, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSats/layTenDonViTaiDanhSachDungHanTreHan")
+	@ApiOperation(value = "Lấy danh sách tình hình xử lý đơn tại các đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDSTinhHinhXuLyDonTaiDonVi(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "month", required = false) Long month,
+			@RequestParam(value = "year", required = false) Long year,
+			@RequestParam(value = "donViId", required = true) Long donViId,
+			@RequestParam(value = "tinhTrangXuLy", required = true) String tinhTrangXuLy,
+			PersistentEntityResourceAssembler eass) {
+		try {
+					
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (donViId == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			
+			TheoDoiGiamSatEnum tinhTrang = TheoDoiGiamSatEnum.valueOf(tinhTrangXuLy);
+			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> mapDonVi = new HashMap<>();
+			CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(donViId);
+			mapDonVi.put("ten", donVi.getTen());
+			mapDonVi.put("coQuanQuanLyId", donVi.getId());
+			map.put("donVi", mapDonVi);
+			String tieuDe = String.format("DANH SÁCH ĐƠN %s TẠI %s %s ", tinhTrang.getText(), donVi.getTen());
+			
+			if (year != null && year > 0) {
+				tieuDe = tieuDe.concat(String.format("TRONG NĂM %d", year));
+			} else if (month != null && month > 0) {
+				tieuDe = tieuDe.concat(String.format("TRONG THÁNG %d", month));
+			} else {
+				if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					LocalDateTime fromDate = Utils.fixTuNgay(tuNgay);
+					LocalDateTime toDate = Utils.fixTuNgay(denNgay);
+					tieuDe = tieuDe.concat(String.format("TỪ %d/%d/%d ĐẾN %d/%d/%d", fromDate.getDayOfMonth(),
+							fromDate.getMonthValue(), fromDate.getYear(), toDate.getDayOfMonth(),
+							toDate.getMonthValue(), toDate.getYear()));
+				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
+					LocalDateTime fromDate = Utils.fixTuNgay(tuNgay);
+					tieuDe = tieuDe.concat(String.format("TỪ %d/%d/%d", fromDate.getDayOfMonth(),
+							fromDate.getMonthValue(), fromDate.getYear()));
+				} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					LocalDateTime toDate = Utils.fixTuNgay(denNgay);
+					tieuDe = tieuDe.concat(String.format("ĐẾN %d/%d/%d", toDate.getDayOfMonth(), toDate.getMonthValue(),
+							toDate.getYear()));
+				}
+			}
+			map.put("tieuDe", tieuDe);
+			return new ResponseEntity<>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	

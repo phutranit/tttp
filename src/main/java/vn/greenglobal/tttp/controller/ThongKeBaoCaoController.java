@@ -142,7 +142,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}					
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));
 			}
 			donVis.addAll(list);
@@ -1511,7 +1510,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}					
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			donVis.addAll(list);
@@ -2354,7 +2352,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -2739,7 +2736,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -3125,7 +3121,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -3491,7 +3486,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
