@@ -564,7 +564,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							giaiQuyetDonTiepTheo = lanhDaoDonViTTXMGiaoViec(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, true, false, donViId,
 									nextStateType);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-						} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType)) {
+						} else if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType) || FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_LAP_DU_THAO.equals(nextStateType)) {
 							if (giaiQuyetDon.getCanBoXuLyChiDinh() == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.name(),
 										ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText(), ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText());
@@ -1194,7 +1194,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 			} else {
 				listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastTTXM(donViId, 
-						ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo));
+						ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo, false));
 			}
 			if (listTransitionEnd.size() > 0) {
 				giaiQuyetDonTiepTheo.setNextForm(listTransitionEnd.get(0).getForm());
@@ -1391,7 +1391,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
-		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 		disableGiaiQuyetDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChuc);
 		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonHienTai.getPhongBanGiaiQuyet());
@@ -1410,7 +1409,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 		giaiQuyetDonTiepTheo.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTiepTheo.setThuTuThucHien(giaiQuyetDonHienTai.getThuTuThucHien() + 1);
-		
+		Don don = donRepo.findOne(donId);
 		List<Transition> listTransitionEnd = new ArrayList<Transition>();
 		
 		if (!isLaTTXM) {
@@ -1420,14 +1419,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonTiepTheo.setSoTiepCongDan(giaiQuyetDonHienTai.getSoTiepCongDan());
 		} else {
 			listTransitionEnd = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindLastTTXM(donViId, 
-					ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo));
+					ProcessTypeEnum.THAM_TRA_XAC_MINH.toString(), processRepo, don.getCurrentState().getType().equals(FlowStateEnum.TRUONG_PHONG_NHAN_YEU_CAU_LAP_DU_THAO)));
 		}
 		if (listTransitionEnd.size() > 0) {
 			giaiQuyetDonTiepTheo.setNextForm(listTransitionEnd.get(0).getForm());
-		}
+		} 
 		
 		giaiQuyetDonTiepTheo = giaiQuyetDonService.save(giaiQuyetDonTiepTheo, congChucId);
-		Don don = donRepo.findOne(donId);
+		
 		don.setDonViThamTraXacMinh(don.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh());
 		don.setCanBoCoTheThuHoi(congChuc);
 		if (isLaTTXM) {
@@ -1668,6 +1667,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonBenTTXM.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViChuyenDon(giaiQuyetDonBenTTXM.getDonViChuyenDon());
 		giaiQuyetDonTiepTheo.setCanBoXuLyChiDinh(null);
+		giaiQuyetDonTiepTheo.setLaTTXM(true);
 		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonBenTTXM.getPhongBanGiaiQuyet());
 		giaiQuyetDonTiepTheo.setChucVu(vaiTroTTXM);
 
