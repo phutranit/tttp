@@ -381,11 +381,14 @@ public class CoQuanQuanLyService {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
 
 			if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
-				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
-						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))
-//						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3)))
-						);
+//				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+//						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
+//						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))
+////						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(3)))
+//						);
+				
+				predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donVi.id.eq(coQuanQuanLyId)
+						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.in(capCoQuanQuanLyIds)));
 			} else { 
 				predAll = predAll
 						.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)
