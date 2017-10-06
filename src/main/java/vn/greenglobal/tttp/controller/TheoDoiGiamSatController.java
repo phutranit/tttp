@@ -1129,12 +1129,11 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 					BooleanExpression predDSXLDons = predDSAllDons;
 					predDSXLDons = predDSXLDons.and(QDon.don.thanhLapDon.isTrue().and(QDon.don.ngayBatDauXLD.isNotNull()));
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSXLDons, donViId, xuLyRepo, repo);
-					TrangThaiDonEnum trangThaiDangXL = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_XU_LY : TrangThaiDonEnum.DANG_XU_LY;
+					TrangThaiDonEnum trangThaiDangXL = TrangThaiDonEnum.valueOf(trangThaiDon);
 					if (trangThaiDangXL.equals(TrangThaiDonEnum.DANG_XU_LY)) { 
 						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, 
 									TrangThaiDonEnum.DANG_XU_LY)));
-							//predicateFindTongSoDonDungHanTreHanByTrangThaiXLD
 						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, 
 									TrangThaiDonEnum.DANG_XU_LY)));
@@ -1149,7 +1148,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						}
 					}
 				} else if (processType.equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
-					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					TrangThaiDonEnum trangThaiDangGQ = TrangThaiDonEnum.valueOf(trangThaiDon);
 					predDSDons = predDSDons.and(QDon.don.thongTinGiaiQuyetDon.ngayBatDauGiaiQuyet.isNotNull());
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViGQD(predDSDons, donViId, giaiQuyetDonRepo, repo);
 					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
@@ -1170,7 +1169,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						}
 					}
 				} else if (processType.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
-					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					TrangThaiDonEnum trangThaiDangGQ = TrangThaiDonEnum.valueOf(trangThaiDon);
 					predDSDons = predDSDons.and(QDon.don.thongTinGiaiQuyetDon.ngayBatDauTTXM.isNotNull());
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViTTXM(predDSDons, donViId, giaiQuyetDonRepo, repo);
 					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
@@ -1191,7 +1190,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						}
 					}
 				} else if (processType.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
-					TrangThaiDonEnum trangThaiDangGQ = trangThaiDon.equals("dangXuLy") ? TrangThaiDonEnum.DANG_GIAI_QUYET : TrangThaiDonEnum.DA_GIAI_QUYET;
+					TrangThaiDonEnum trangThaiDangGQ = TrangThaiDonEnum.valueOf(trangThaiDon);
 					predDSDons = predDSDons.or(QDon.don.processType.isNull().and(QDon.don.trangThaiKTDX.isNotNull()));
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViKTDX(predDSDons, donViId, giaiQuyetDonRepo, repo);
 					if (trangThaiDangGQ.equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) {
@@ -1245,7 +1244,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
-			if (StringUtils.isNotBlank(tinhTrangXuLy)) {
+			if (StringUtils.isBlank(tinhTrangXuLy)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
@@ -1257,30 +1256,30 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			mapDonVi.put("ten", donVi.getTen());
 			mapDonVi.put("coQuanQuanLyId", donVi.getId());
 			map.put("donVi", mapDonVi);
-			String tieuDe = String.format("DANH SÁCH ĐƠN %s TẠI %s %s ", tinhTrang.getText(), donVi.getTen());
+			String tieuDe = String.format("Danh sách đơn %s tại %s ", tinhTrang.getText(), donVi.getTen());
 			
 			if (year != null && year > 0) {
-				tieuDe = tieuDe.concat(String.format("TRONG NĂM %d", year));
+				tieuDe = tieuDe.concat(String.format("trong năm %d", year));
 			} else if (month != null && month > 0) {
-				tieuDe = tieuDe.concat(String.format("TRONG THÁNG %d", month));
+				tieuDe = tieuDe.concat(String.format("trong tháng %d", month));
 			} else {
 				if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 					LocalDateTime fromDate = Utils.fixTuNgay(tuNgay);
 					LocalDateTime toDate = Utils.fixTuNgay(denNgay);
-					tieuDe = tieuDe.concat(String.format("TỪ %d/%d/%d ĐẾN %d/%d/%d", fromDate.getDayOfMonth(),
+					tieuDe = tieuDe.concat(String.format("từ %d/%d/%d đến %d/%d/%d", fromDate.getDayOfMonth(),
 							fromDate.getMonthValue(), fromDate.getYear(), toDate.getDayOfMonth(),
 							toDate.getMonthValue(), toDate.getYear()));
 				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
 					LocalDateTime fromDate = Utils.fixTuNgay(tuNgay);
-					tieuDe = tieuDe.concat(String.format("TỪ %d/%d/%d", fromDate.getDayOfMonth(),
+					tieuDe = tieuDe.concat(String.format("từ %d/%d/%d", fromDate.getDayOfMonth(),
 							fromDate.getMonthValue(), fromDate.getYear()));
 				} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 					LocalDateTime toDate = Utils.fixTuNgay(denNgay);
-					tieuDe = tieuDe.concat(String.format("ĐẾN %d/%d/%d", toDate.getDayOfMonth(), toDate.getMonthValue(),
+					tieuDe = tieuDe.concat(String.format("đến %d/%d/%d", toDate.getDayOfMonth(), toDate.getMonthValue(),
 							toDate.getYear()));
 				}
 			}
-			map.put("tieuDe", tieuDe);
+			map.put("tieuDe", tieuDe.toUpperCase());
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
