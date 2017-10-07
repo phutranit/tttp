@@ -2438,7 +2438,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}		
 		//Lich su Giai quyet don
 		GiaiQuyetDon giaiQuyetDonTruongPhong = new GiaiQuyetDon();
-		giaiQuyetDonTruongPhong = chuyenTruongPhongGiaiQuyet(xuLyDon, xuLyDonHienTai, giaiQuyetDonTruongPhong, thongTinGiaiQuyetDon, xuLyDonHienTai.getCanBoXuLyChiDinh(), congChuc, khongQuyTrinh);
+		giaiQuyetDonTruongPhong = chuyenTruongPhongGiaiQuyet(xuLyDon, xuLyDonHienTai, giaiQuyetDonTruongPhong, thongTinGiaiQuyetDon, don.getCanBoXuLyChiDinh(), congChuc, khongQuyTrinh);
 		//don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonTruongPhong.getId());
 		//donService.save(don, congChucId);
 		
