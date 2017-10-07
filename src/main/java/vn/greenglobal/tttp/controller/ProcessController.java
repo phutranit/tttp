@@ -709,10 +709,10 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 15L, 28L, 39L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 28L, 30L, 39L, false);
-						transitionService.save(transition, congChucId);
+						transitionService.save(transition, congChucId);		
 						transition = addDataTrasition(process, 31L, 30L, 39L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 29L, 31L, 33L, false);
+						transitionService.save(transition, congChucId);						
+						transition = addDataTrasition(process, 30L, 31L, 33L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1272,10 +1272,10 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 15L, 28L, 39L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 28L, 30L, 39L, false);
-						transitionService.save(transition, congChucId);
+						transitionService.save(transition, congChucId);		
 						transition = addDataTrasition(process, 31L, 30L, 39L, false);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 29L, 31L, 33L, false);
+						transitionService.save(transition, congChucId);						
+						transition = addDataTrasition(process, 30L, 31L, 33L, false);
 						transitionService.save(transition, congChucId);
 					}
 					

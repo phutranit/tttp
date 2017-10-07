@@ -544,7 +544,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 								giaiQuyetDonTiepTheo = thuHoiDon(giaiQuyetDonThuHoi, giaiQuyetDon, congChucId, true, false, donViId, VaiTroEnum.LANH_DAO);
 								return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 							}							
-						} else if (FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextStateType)) { 
+						} else if (FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextStateType) || FlowStateEnum.TRUONG_PHONG_THU_HOI_SAU_KHI_NHAN_DU_THAO.equals(nextStateType)) { 
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							GiaiQuyetDon giaiQuyetDonThuHoi = giaiQuyetDonService.predFindCurrentThuHoi(repo, thongTinGiaiQuyetDonId, congChucId);
 							if (giaiQuyetDonThuHoi != null) {
