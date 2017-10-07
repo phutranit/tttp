@@ -392,7 +392,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						Long coQuanQuanLyId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 						
 						if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(nextStateType) 
-								|| FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_KET_QUA_TTXM.equals(nextStateType)) {
+								|| FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_KET_QUA_TTXM.equals(nextStateType)
+								|| FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_DU_THAO.equals(nextStateType)) {
 							if (giaiQuyetDon.getCanBoXuLyChiDinh() == null) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.name(),
 										ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText(), ApiErrorEnum.CANBOXULYCHIDINH_REQUIRED.getText());
@@ -404,7 +405,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = chuyenVienDeXuatGiaoViecLai(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
-						} else if (FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextStateType)) { 
+						} else if (FlowStateEnum.TRUONG_PHONG_THU_HOI.equals(nextStateType)
+								|| FlowStateEnum.TRUONG_PHONG_THU_HOI_SAU_KHI_NHAN_DU_THAO.equals(nextStateType)) { 
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							GiaiQuyetDon giaiQuyetDonThuHoi = giaiQuyetDonService.predFindCurrentThuHoi(repo, thongTinGiaiQuyetDonId, congChucId);
 							if (giaiQuyetDonThuHoi != null) {
