@@ -2065,23 +2065,10 @@ public class Don extends Model<Don> {
 			map.put("donViId", getDonViThamTraXacMinh().getId());
 			map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
 			map.put("trangThaiDonType", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
-			map.put("ketQuaStr", "");
-			map.put("ketQuaType", "");
+			map.put("ketQuaStr", getKetQuaTTXM() != null ? getKetQuaTTXM().getText() : "");
+			map.put("ketQuaType", getKetQuaTTXM() != null ? getKetQuaTTXM().name() : "");
 			map.put("donViTTXM", "");
-			if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
-				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_TTXM.getText());
-				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_TTXM);
-			}
-			if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
-				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
-				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO);
-			}
-			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
-				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.getText());
-				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM);
-				map.put("trangThaiDonText", TrangThaiDonEnum.DANG_GIAI_QUYET.getText());
-				map.put("trangThaiDonType", TrangThaiDonEnum.DANG_GIAI_QUYET);
-			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
 				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");

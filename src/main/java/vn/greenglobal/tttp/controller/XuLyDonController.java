@@ -2403,6 +2403,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 		don.setTrangThaiDon(TrangThaiDonEnum.DANG_GIAI_QUYET);
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DANG_GIAI_QUYET);
+		don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DANG_TTXM);
 		don.setDonViThamTraXacMinh(xuLyDon.getDonViThamTraXacMinh());
 		don.setCanBoCoTheThuHoi(null);
 		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
