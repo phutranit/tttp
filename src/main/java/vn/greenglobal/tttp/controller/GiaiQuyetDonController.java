@@ -1332,7 +1332,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.THU_HOI_DON.getText());
+		if (VaiTroEnum.LANH_DAO.equals(vaiTro)) {
+			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.LANH_DAO_THU_HOI.getText());
+		} else if (VaiTroEnum.TRUONG_PHONG.equals(vaiTro)) {
+			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.TRUONG_PHONG_THU_HOI.getText());
+		}
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
@@ -1377,7 +1381,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setDonViXuLy(giaiQuyetDonHienTai.getDonViGiaiQuyet());
-		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.THU_HOI_DON.getText());
+		lichSuQTXLD.setTen(QuaTrinhXuLyEnum.TRUONG_PHONG_THU_HOI.getText());
 		lichSuQTXLD.setNoiDung(giaiQuyetDonHienTai.getyKienGiaiQuyet());
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
