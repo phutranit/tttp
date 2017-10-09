@@ -242,7 +242,7 @@ public class ExcelUtil {
 			c.setCellValue("Tình trạng xử lý/Kết quả xử lý");
 			c.setCellStyle(cellCenter);
 			
-
+			
 			int i = 1;
 			for (Don don : list) {
 				row = sheet1.createRow(idx);
@@ -263,7 +263,6 @@ public class ExcelUtil {
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
-				
 				ProcessTypeEnum process = don.getProcessType();
 				String thoiHanXuLyDon = don.getThoiHanXuLyDon();
 				Long soNgayXuLy = 0L;
@@ -285,7 +284,7 @@ public class ExcelUtil {
 										|| kq.equals(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI)))) {
 					thoiHanXuLyDon = "";
 				} else { 
-					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) { 
+					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
 						Map<String, Object> map = don.getThoiHanKTDXInfo();
 						if (map.get("type") != null) { 
 							type = map.get("type").toString();
@@ -376,12 +375,13 @@ public class ExcelUtil {
 				
 				String trangThaiDonText = "";
 				String ketQuaText = "";
+				
 				for(Map<String, Object>  map : don.getTrangThaiDonInfo()) {
 					Long _donViXuLyId = 0L;
-					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
+					if (map.get("donViId") != null && map.get("donViId").toString() != "") {
 						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
 					}
-					if (_donViXuLyId == donViXuLy) { 
+					if (_donViXuLyId.longValue() == donViXuLy.longValue()) {
 						trangThaiDonText = map.get("trangThaiDonText").toString();
 						ketQuaText = map.get("ketQuaStr").toString();
 						break;
@@ -1053,7 +1053,7 @@ public class ExcelUtil {
 					if (map.get("donViId") != null && map.get("donViId").toString() != "") { 
 						_donViXuLyId = Long.valueOf(map.get("donViId").toString());
 					}
-					if (_donViXuLyId == donViXuLy) { 
+					if (_donViXuLyId.longValue() == donViXuLy.longValue()) { 
 						trangThaiDonText = map.get("trangThaiDonText").toString();
 						ketQuaText = map.get("ketQuaStr").toString();
 						break;
@@ -4348,9 +4348,6 @@ public class ExcelUtil {
 		
 		return styles;
 	}
-	
-	
-	
 	
 	private static CellStyle createBorderedStyleCell(Workbook wb) {
 		CellStyle style = wb.createCellStyle();

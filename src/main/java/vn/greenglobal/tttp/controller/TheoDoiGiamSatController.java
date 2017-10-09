@@ -1188,7 +1188,6 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			int start = pageable.getOffset();
 			int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
 			Page<Don> pages = new PageImpl<Don>(listDon.subList(start, end), pageable, listDon.size());
-			System.out.println("listDon " +listDon.size());
 			return assembler.toResource(pages, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
