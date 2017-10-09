@@ -766,7 +766,7 @@ public class DonService {
 		}
 		return predAll;
 	}
-
+	
 	public List<PropertyChangeObject> getListThayDoi(Don donNew, Don donOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

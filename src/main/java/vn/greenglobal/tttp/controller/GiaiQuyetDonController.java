@@ -1876,7 +1876,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DANG_GIAI_QUYET);
 		don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO);
-		don.setCanBoXuLyChiDinh(null);
+		don.setCanBoTTXMChiDinh(null);
 		don.setCanBoCoTheThuHoi(null);
 		don.setGiaiQuyetTTXMCuoiCungId(null);
 		don.setCurrentState(canBoNhanYeuCauState);
