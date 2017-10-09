@@ -1758,14 +1758,14 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	
 	private GiaiQuyetDon canBoChuyenDuThaoVeDonViGiaiQuyet(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, 
-			Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon,
-			boolean coQuyTrinh) {
+			Long congChucId, String note, Long donViId, VaiTroEnum vaiTroGQD, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon, boolean coQuyTrinh) {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		thongTinGiaiQuyetDon.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET);
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setCongChuc(giaiQuyetDonHienTai.getCanBoXuLyChiDinh() != null ? giaiQuyetDonHienTai.getCanBoXuLyChiDinh() : congChuc);
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+		thongTinGiaiQuyetDon.setNgayKetThucGiaoLapDuThao(Utils.localDateTimeNow());
 		
 		GiaiQuyetDon giaiQuyetDonBenGiaiQuyet = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), false);
 		
@@ -1842,6 +1842,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
+		thongTinGiaiQuyetDon.setNgayBatDauGiaoLapDuThao(Utils.localDateTimeNow());
 		
 		GiaiQuyetDon giaiQuyetDonBenTTXM = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), true);
 		
