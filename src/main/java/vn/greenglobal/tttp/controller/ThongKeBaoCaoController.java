@@ -246,7 +246,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 					}
 				} else {
-					coQuanQuanLyRepo.findOne(donViXuLy);
 					list.add(coQuanQuanLyRepo.findOne(donViXuLy));
 				}
 				donVis.addAll(list);
@@ -866,7 +865,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 					}
 				} else {
-					coQuanQuanLyRepo.findOne(donViXuLy);
 					list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 				}
 				donVis.addAll(list);
@@ -1463,7 +1461,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 					}
 				} else {
-					coQuanQuanLyRepo.findOne(donViXuLy);
 					list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 				}
 				donVis.addAll(list);
@@ -2000,7 +1997,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				} else { 
 					if (donViId != null && donViId > 0)  {
-						coQuanQuanLyRepo.findOne(donViId);
 						list.add(coQuanQuanLyRepo.findOne(donViId));
 					} else {
 						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
@@ -2317,7 +2313,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 					}
 				} else {
-					coQuanQuanLyRepo.findOne(donViXuLy);
 					list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 				}
 				donVis.addAll(list);
@@ -2873,7 +2868,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				} else { 
 					if (donViId != null && donViId > 0)  {
-						coQuanQuanLyRepo.findOne(donViId);
 						list.add(coQuanQuanLyRepo.findOne(donViId));
 					} else {
 						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
@@ -3101,7 +3095,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				} else { 
 					if (donViId != null && donViId > 0)  {
-						coQuanQuanLyRepo.findOne(donViId);
 						list.add(coQuanQuanLyRepo.findOne(donViId));
 					} else {
 						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
@@ -3314,7 +3307,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				} else { 
 					if (donViId != null && donViId > 0)  {
-						coQuanQuanLyRepo.findOne(donViId);
 						list.add(coQuanQuanLyRepo.findOne(donViId));
 					} else {
 						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
@@ -3447,7 +3439,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -3655,7 +3646,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				}
 			} else { 
 				if (donViId != null && donViId > 0)  {
-					coQuanQuanLyRepo.findOne(donViId);
 					list.add(coQuanQuanLyRepo.findOne(donViId));
 				}
 			}
@@ -3832,7 +3822,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -4040,7 +4029,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				}
 			} else { 
 				if (donViId != null && donViId > 0)  {
-					coQuanQuanLyRepo.findOne(donViId);
 					list.add(coQuanQuanLyRepo.findOne(donViId));
 				}
 			}
@@ -4218,7 +4206,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -4406,7 +4393,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				}
 			} else { 
 				if (donViId != null && donViId > 0)  {
-					coQuanQuanLyRepo.findOne(donViId);
 					list.add(coQuanQuanLyRepo.findOne(donViId));
 				}
 			}
@@ -4584,7 +4570,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					}
 				}
 			} else {
-				coQuanQuanLyRepo.findOne(donViXuLy);
 				list.add(coQuanQuanLyRepo.findOne(donViXuLy));			
 			}
 			
@@ -4806,7 +4791,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				}
 			} else { 
 				if (donViId != null && donViId > 0)  {
-					coQuanQuanLyRepo.findOne(donViId);
 					list.add(coQuanQuanLyRepo.findOne(donViId));
 				}
 			}
@@ -4946,5 +4930,4 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
-	
 }
