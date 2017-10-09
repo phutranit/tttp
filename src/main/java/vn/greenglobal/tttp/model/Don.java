@@ -2059,7 +2059,11 @@ public class Don extends Model<Don> {
 				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_TTXM.getText());
 				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_TTXM);
 			}
-			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+			if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
+				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO);
+			}
+			if (!getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM) && !getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
 				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.getText());
 				map.put("ketQuaType", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM);
 				map.put("trangThaiDonText", TrangThaiDonEnum.DANG_GIAI_QUYET.getText());
@@ -2211,7 +2215,7 @@ public class Don extends Model<Don> {
 	public List<Map<String, Object>> getQuyenTuXuLyInfo() {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
-
+		
 		if (getDonViXuLyGiaiQuyet() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
@@ -2227,7 +2231,7 @@ public class Don extends Model<Don> {
 		if (getDonViKiemTraDeXuat() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViKiemTraDeXuat().getId());
-			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			map.put("quyenTuXuLy", isTuXuLyKTDX());
 			list.add(map);
 		}
 		return list;
