@@ -1778,6 +1778,17 @@ public class Don extends Model<Don> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanGiaoLapDuThaoInfo() {
+		if (getThongTinGiaiQuyetDon() != null) {
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauGiaoLapDuThao(),
+					getThongTinGiaiQuyetDon().getNgayHetHanGiaoLapDuThao(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaoLapDuThao());
+		}
+		return new HashMap<>();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanKTDXInfo() {
 		if (getThongTinGiaiQuyetDon() != null) {
 			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),

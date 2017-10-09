@@ -1036,7 +1036,7 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanXuLyDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
@@ -1055,13 +1055,13 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaiQuyetDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giải quyết đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanGiaiQuyeDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
-			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
+			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 60L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
@@ -1074,13 +1074,32 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanTTXM")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn thẩm tra xác minh", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định  thành công", response = Don.class) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanTTXM(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 20L;
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
+			if (thoiHan == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+			}
+			return new ResponseEntity<>(thoiHan, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaoLapDuThao")
+	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giao lập dự thảo", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
+	public Object getNgayMacDinhCuaThoiHanGiaoLapDuThao(@RequestHeader(value = "Authorization", required = true) String authorization,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAO_LAP_DU_THAO_MAC_DINH"));
+			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 3L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
