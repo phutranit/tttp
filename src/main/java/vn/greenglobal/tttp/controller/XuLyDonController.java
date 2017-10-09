@@ -2406,10 +2406,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DANG_TTXM);
 		don.setDonViThamTraXacMinh(xuLyDon.getDonViThamTraXacMinh());
 		don.setCanBoCoTheThuHoi(null);
-		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
-			don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
-		}
+//		if (xuLyDon.getCanBoXuLyChiDinh() != null) { 
+//			don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+//			xuLyDonHienTai.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+//		}
+		xuLyDonHienTai.setCanBoXuLyChiDinh(don.getCanBoXuLyChiDinh());
 		don.setCanBoXuLyPhanHeXLD(congChuc);
 		don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
