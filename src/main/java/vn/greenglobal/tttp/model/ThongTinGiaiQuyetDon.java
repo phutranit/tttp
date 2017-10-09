@@ -60,6 +60,12 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String noiDung = "";
 	//@Lob
 	private String noiDungKetLuanGiaiQuyetLai = "";
+	//@Lob
+	private String noiDungDoiThoai = "";
+	//@Lob
+	private String noiDungGiaoLapDuThao = "";
+	//@Lob
+	private String noiDungKetLuanDuThao = "";
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
@@ -82,6 +88,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
 	private LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet;
+	
+	private LocalDateTime ngayBatDauGiaoLapDuThao;
+	private LocalDateTime ngayKetThucGiaoLapDuThao;
+	private LocalDateTime ngayHetHanGiaoLapDuThao;
+	private LocalDateTime ngayHetHanSauKhiGiaHanGiaoLapDuThao;
 
 	private boolean lapToDoanXacMinh;
 	private boolean giaHanGiaiQuyet;
@@ -297,6 +308,30 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.noiDungKetLuanGiaiQuyetLai = noiDungKetLuanGiaiQuyetLai;
 	}
 
+	public String getNoiDungDoiThoai() {
+		return noiDungDoiThoai;
+	}
+
+	public void setNoiDungDoiThoai(String noiDungDoiThoai) {
+		this.noiDungDoiThoai = noiDungDoiThoai;
+	}
+
+	public String getNoiDungGiaoLapDuThao() {
+		return noiDungGiaoLapDuThao;
+	}
+
+	public void setNoiDungGiaoLapDuThao(String noiDungGiaoLapDuThao) {
+		this.noiDungGiaoLapDuThao = noiDungGiaoLapDuThao;
+	}
+
+	public String getNoiDungKetLuanDuThao() {
+		return noiDungKetLuanDuThao;
+	}
+
+	public void setNoiDungKetLuanDuThao(String noiDungKetLuanDuThao) {
+		this.noiDungKetLuanDuThao = noiDungKetLuanDuThao;
+	}
+
 	public String getSoQuyetDinhGiaHanTTXM() {
 		return soQuyetDinhGiaHanTTXM;
 	}
@@ -436,16 +471,48 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return ngayRaQuyetDinhGiaHanTTXM;
 	}
 
-	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
-		return ngayRaQuyetDinhGiaHanGiaiQuyet;
-	}
-
 	public void setNgayRaQuyetDinhGiaHanGiaiQuyet(LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet) {
 		this.ngayRaQuyetDinhGiaHanGiaiQuyet = ngayRaQuyetDinhGiaHanGiaiQuyet;
 	}
 
+	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
+		return ngayRaQuyetDinhGiaHanGiaiQuyet;
+	}
+
 	public void setNgayRaQuyetDinhGiaHanTTXM(LocalDateTime ngayRaQuyetDinhGiaHanTTXM) {
 		this.ngayRaQuyetDinhGiaHanTTXM = ngayRaQuyetDinhGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayBatDauGiaoLapDuThao() {
+		return ngayBatDauGiaoLapDuThao;
+	}
+
+	public void setNgayBatDauGiaoLapDuThao(LocalDateTime ngayBatDauGiaoLapDuThao) {
+		this.ngayBatDauGiaoLapDuThao = ngayBatDauGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayKetThucGiaoLapDuThao() {
+		return ngayKetThucGiaoLapDuThao;
+	}
+
+	public void setNgayKetThucGiaoLapDuThao(LocalDateTime ngayKetThucGiaoLapDuThao) {
+		this.ngayKetThucGiaoLapDuThao = ngayKetThucGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayHetHanGiaoLapDuThao() {
+		return ngayHetHanGiaoLapDuThao;
+	}
+
+	public void setNgayHetHanGiaoLapDuThao(LocalDateTime ngayHetHanGiaoLapDuThao) {
+		this.ngayHetHanGiaoLapDuThao = ngayHetHanGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayHetHanSauKhiGiaHanGiaoLapDuThao() {
+		return ngayHetHanSauKhiGiaHanGiaoLapDuThao;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanGiaoLapDuThao(LocalDateTime ngayHetHanSauKhiGiaHanGiaoLapDuThao) {
+		this.ngayHetHanSauKhiGiaHanGiaoLapDuThao = ngayHetHanSauKhiGiaHanGiaoLapDuThao;
 	}
 
 	public boolean isLapToDoanXacMinh() {
