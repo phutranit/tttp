@@ -93,6 +93,17 @@ public class ThongKeTongHopThanhTraService {
 		return predAllCuocThanhTra;
 	}
 	
+	/*
+	 * Tim cuoc thanh tra lai
+	 * 
+	 */
+	public Predicate predicateFindCuocThanhTraLai(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		// Xu ly
+		
+		return predAll;
+	}
+	
 	// 1
 	public Predicate predicateFindCuocThanhTraTheoLinhVuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum,CuocThanhTraRepository cuocThanhTraRepo) {
 		
@@ -135,6 +146,8 @@ public class ThongKeTongHopThanhTraService {
 		
 		return tongSoDon;
 	}
+	
+	
 	
 	// 8
 	public Long getSoDonViDuocThanhTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {

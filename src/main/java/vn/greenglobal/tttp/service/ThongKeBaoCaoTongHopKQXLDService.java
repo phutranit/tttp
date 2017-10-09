@@ -561,7 +561,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						LocalDateTime ngayKetThuc = LocalDateTime.of(year, month, 1, 0, 0);		
+						LocalDateTime ngayKetThuc = LocalDateTime.of(year, month, 1, 0, 0);
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(ngayKetThuc));
 					}
 				}
