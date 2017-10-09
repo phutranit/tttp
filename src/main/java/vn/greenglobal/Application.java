@@ -148,7 +148,10 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
+						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonViCon/xuatExcel",
 						"/soTiepCongDans/danhSachYeuCauGapLanhDao/excel",
+						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonVi/xuatExcel",
+						"/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi/xuatExcel",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
