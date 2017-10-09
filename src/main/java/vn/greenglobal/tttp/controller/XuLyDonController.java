@@ -2713,6 +2713,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLDChuyenDon.setThuTuThucHien(thuTuChuyenDon);
 		
 		disableDonChuyenCu(donOld.getId(), congChucId, donVi.getDonVi().getId());
+		Utils.changeQuyenTuXuLy(donOld, false, false, false);
+		Utils.changeQuyenTuXuLy(donMoi, false, false, false);
 		donService.save(donOld, congChucId);
 		donService.save(donMoi, congChucId);
 		xuLyDonService.save(xuLyDonHienTai, congChucId);
