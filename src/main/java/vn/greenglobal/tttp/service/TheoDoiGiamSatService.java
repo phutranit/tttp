@@ -235,19 +235,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				dons.addAll((List<Don>) donRepo.findAll(predAll));
 				if (isDungHan) {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
-							return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanTTXM());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
+//							return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+//						}
+//						return false;
+						return invalidNgayDungHanDangGQTTXM(d);
 					}).collect(Collectors.toList());
 				} else {		
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
-							return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanTTXM());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
+//							return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+//						}
+//						return false;
+						return invalidNgayTreHanDangGQTTXM(d);
 					}).collect(Collectors.toList());
 				}
 			} else {
@@ -255,19 +257,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				dons.addAll((List<Don>) donRepo.findAll(predAll));
 				if (isDungHan) {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
-							return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
+//							return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+//						}
+//						return false;
+						return invalidNgayDungHanDaGQTTXM(d);
 					}).collect(Collectors.toList());
 				} else {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
-							return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
+//							return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+//						}
+//						return false;
+						return invalidNgayTreHanDaGQTTXM(d);
 					}).collect(Collectors.toList());
 				}
 			}
@@ -310,19 +314,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				dons.addAll((List<Don>) donRepo.findAll(predAll));
 				if (isDungHan) {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-							return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+//							return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
+//						}
+//						return false;
+						return invalidNgayDungHanDangGQGQD(d);
 					}).collect(Collectors.toList());
 				} else {		
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-							return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+//							return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
+//						}
+//						return false;
+						return invalidNgayTreHanDangGQGQD(d);
 					}).collect(Collectors.toList());
 				}
 			} else {
@@ -330,19 +336,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 				dons.addAll((List<Don>) donRepo.findAll(predAll));
 				if (isDungHan) {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
-							return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
+//							return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+//						}
+//						return false;
+						return invalidNgayDungHanDaGQGQD(d);
 					}).collect(Collectors.toList());
 				} else {
 					dons = dons.stream().filter(d -> {
-						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
-							return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-						}
-						return false;
+//						ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//						if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
+//							return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+//						}
+//						return false;
+						return invalidNgayTreHanDaGQGQD(d);
 					}).collect(Collectors.toList());
 				}
 			}
@@ -370,19 +378,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 			dons.addAll((List<Don>) donRepo.findAll(predAll));
 			if (isDungHan) {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-						return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+//						return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
+//					}
+//					return false;
+					return invalidNgayDungHanDangGQGQD(d);
 				}).collect(Collectors.toList());
 			} else {		
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-						return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
+//						return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
+//					}
+//					return false;
+					return invalidNgayTreHanDangGQGQD(d);
 				}).collect(Collectors.toList());
 			}
 		} else {
@@ -390,19 +400,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 			dons.addAll((List<Don>) donRepo.findAll(predAll));
 			if (isDungHan) {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
-						return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
+//						return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+//					}
+//					return false;
+					return invalidNgayDungHanDaGQGQD(d);
 				}).collect(Collectors.toList());
 			} else {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
-						return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null) { 
+//						return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+//					}
+//					return false;
+					return invalidNgayTreHanDaGQGQD(d);
 				}).collect(Collectors.toList());
 			}
 		}
@@ -462,19 +474,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 			dons.addAll((List<Don>) donRepo.findAll(predAll));
 			if (isDungHan) {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
-						return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanTTXM());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
+//						return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+//					}
+//					return false;
+					return invalidNgayDungHanDangGQTTXM(d);
 				}).collect(Collectors.toList());
 			} else {		
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
-						return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanTTXM());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null) {
+//						return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+//					}
+//					return false;
+					return invalidNgayTreHanDangGQTTXM(d);
 				}).collect(Collectors.toList());
 			}
 		} else {
@@ -482,19 +496,21 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 			dons.addAll((List<Don>) donRepo.findAll(predAll));
 			if (isDungHan) {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
-						return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
+//						return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+//					}
+//					return false;
+					return invalidNgayDungHanDaGQTTXM(d);
 				}).collect(Collectors.toList());
 			} else {
 				dons = dons.stream().filter(d -> {
-					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
-					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
-						return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
-					}
-					return false;
+//					ThongTinGiaiQuyetDon ttgqd = d.getThongTinGiaiQuyetDon();
+//					if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null) { 
+//						return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+//					}
+//					return false;
+					return invalidNgayTreHanDaGQTTXM(d);
 				}).collect(Collectors.toList());
 			}
 		}
@@ -550,8 +566,99 @@ BooleanExpression base = QDon.don.daXoa.eq(false);
 		return predAll;
 	}
 	
-	public Predicate predicateFindDSDonTheoDoiGiamSat(BooleanExpression predDS) {
-		BooleanExpression predAll = predDS;
-		return predAll;
+	private boolean invalidNgayDungHanDangGQGQD(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+			return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet());
+		} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+			return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanGiaiQuyet());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayTreHanDangGQGQD(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+			return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet());
+		} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+			return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanGiaiQuyet());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayDungHanDaGQGQD(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null
+				&& ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+			return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+		} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null 
+				&& ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+			return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayTreHanDaGQGQD(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null
+				&& ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+			return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+		} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayKetThucGiaiQuyet() != null 
+				&& ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+			return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayDungHanDaGQTTXM(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null
+				&& ttgqd.getNgayHetHanSauKhiGiaHanTTXM() != null) {
+			return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanSauKhiGiaHanTTXM(), ttgqd.getNgayKetThucTTXM());
+		} else if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null 
+				&& ttgqd.getNgayHetHanSauKhiGiaHanTTXM() == null) {
+			return Utils.isValidNgayDungHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayTreHanDaGQTTXM(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null
+				&& ttgqd.getNgayHetHanSauKhiGiaHanTTXM() != null) {
+			return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanSauKhiGiaHanTTXM(), ttgqd.getNgayKetThucTTXM());
+		} else if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayKetThucTTXM() != null 
+				&& ttgqd.getNgayHetHanSauKhiGiaHanTTXM() == null) {
+			return Utils.isValidNgayTreHanDaXuLy(ttgqd.getNgayHetHanTTXM(), ttgqd.getNgayKetThucTTXM());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayDungHanDangGQTTXM(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayHetHanSauKhiGiaHanTTXM() != null) {
+			return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanSauKhiGiaHanTTXM());
+		} else if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayHetHanSauKhiGiaHanTTXM() == null) {
+			return Utils.isValidNgayDungHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean invalidNgayTreHanDangGQTTXM(Don don) {
+		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
+		if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayHetHanSauKhiGiaHanTTXM() != null) {
+			return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanSauKhiGiaHanTTXM());
+		} else if (ttgqd.getNgayBatDauTTXM() != null && ttgqd.getNgayHetHanTTXM() != null && ttgqd.getNgayHetHanSauKhiGiaHanTTXM() == null) {
+			return Utils.isValidNgayTreHanDangXuLy(ttgqd.getNgayHetHanTTXM());
+		} else {
+			return false;
+		}
 	}
 }

@@ -1288,24 +1288,18 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 					BooleanExpression predAll = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDonsTheoDonViXLD(predDSXLDons, donViId, xuLyRepo, repo);
 					TrangThaiDonEnum trangThaiDangXL = TrangThaiDonEnum.valueOf(trangThaiDon);
 					if (trangThaiDangXL.equals(TrangThaiDonEnum.DANG_XU_LY)) {
-						System.out.println("DANG_XU_LY");
 						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
-							System.out.println("TRE_HAN");
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, 
 									TrangThaiDonEnum.DANG_XU_LY)));
 						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
-							System.out.println("DUNG_HAN");
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, 
 									TrangThaiDonEnum.DANG_XU_LY)));
 						}
 					} else if (trangThaiDangXL.equals(TrangThaiDonEnum.DA_XU_LY)) {
-						System.out.println("DA_XU_LY");
 						if (tinhTrang.equals(TheoDoiGiamSatEnum.TRE_HAN)) {
-							System.out.println("TRE_HAN");
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isTreHan, 
 									TrangThaiDonEnum.DA_XU_LY)));
 						} else if (tinhTrang.equals(TheoDoiGiamSatEnum.DUNG_HAN)) {
-							System.out.println("DUNG_HAN");
 							listDon.addAll((List<Don>) repo.findAll(theoDoiGiamSatService.predicateFindTongSoDonDungHanTreHanByTrangThaiXLD(predAll, repo, isDungHan, 
 									TrangThaiDonEnum.DA_XU_LY)));
 						}
