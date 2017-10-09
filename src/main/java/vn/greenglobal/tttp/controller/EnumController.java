@@ -1100,13 +1100,16 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetTheoDons")
 	@ApiOperation(value = "Lấy danh sách kết quả giải quyết theo theo đơn", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachKetQuaGiaiQuyetTheoDon(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("khongCoDoiThoai") boolean khongCoDoiThoai) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
-		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
-		list.add(object);
+		if (!khongCoDoiThoai) {
+			object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+			object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
+			list.add(object);
+		}
 		
 		object = new HashMap<>();
 		object.put("ten", KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.getText());
