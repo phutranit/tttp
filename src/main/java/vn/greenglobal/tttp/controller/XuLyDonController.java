@@ -2652,6 +2652,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donOld.setCanBoXuLyChiDinh(null);
 		donOld.setCanBoCoTheThuHoi(null);
 		donOld.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_XU_LY);
+		donOld.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 		donOld.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.CHUYEN_DON);
 		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));	
 		donOld.setCurrentState(beginState);

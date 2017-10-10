@@ -674,19 +674,30 @@ public class ExcelUtil {
 				String type = "";
 				String time = "";
 				KetQuaTrangThaiDonEnum kq = don.getKetQuaXLDGiaiQuyet();
-				if ((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
-						&& (don.getTrangThaiXLDGiaiQuyet() != null
-								&& (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
-										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))))
-						|| ((kq != null && don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))
-								&& (kq.equals(KetQuaTrangThaiDonEnum.DE_XUAT_THU_LY)
-										|| kq.equals(KetQuaTrangThaiDonEnum.DINH_CHI)
-										|| kq.equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO)
-										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)
-										|| kq.equals(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY)
-										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN)
-										|| kq.equals(KetQuaTrangThaiDonEnum.CHUYEN_DON)
-										|| kq.equals(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI)))) {
+//				if ((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
+//						&& (don.getTrangThaiXLDGiaiQuyet() != null && (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
+//										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))
+//						))
+//						|| ((kq != null && don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))
+//								&& (kq.equals(KetQuaTrangThaiDonEnum.DE_XUAT_THU_LY)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.DINH_CHI)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.CHUYEN_DON)
+//										|| kq.equals(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI)))) {
+				
+				if (((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET) && 
+							(don.getDonViThamTraXacMinh() != null && don.getDonViThamTraXacMinh().getId() == donViXuLy.longValue())
+						)
+						|| (don.getTrangThaiKTDX() != null && don.getTrangThaiKTDX().equals(TrangThaiDonEnum.DA_GIAI_QUYET)) && 
+							(don.getDonViKiemTraDeXuat() != null && don.getDonViKiemTraDeXuat().getId() == donViXuLy.longValue()))
+						|| (don.getTrangThaiXLDGiaiQuyet() != null && (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
+										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)))
+						)
+				{
+					System.out.println("don " +don.getId());
 					thoiHanXuLyDon = "";
 				} else { 
 					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) { 
@@ -713,6 +724,7 @@ public class ExcelUtil {
 						} 
 					}
 					if (process != null && process.equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
+						System.out.println("gqd " +don.getId());
 						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
 						if (map.get("type") != null) { 
 							type = map.get("type").toString();
@@ -737,7 +749,12 @@ public class ExcelUtil {
 						}
 					}
 					if (process != null && process.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
-						Map<String, Object> map = don.getThoiHanTTXMInfo();
+						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
+						System.out.println("ttxm " +don.getId());
+						if (don.getDonViThamTraXacMinh() != null && don.getDonViThamTraXacMinh().getId() == donViXuLy.longValue()) { 
+							map = don.getThoiHanTTXMInfo();
+						}
+						
 						if (map.get("type") != null) { 
 							type = map.get("type").toString();
 						}

@@ -1768,10 +1768,12 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanTTXMInfo() {
-		if (getThongTinGiaiQuyetDon() != null) {
-			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
-					getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
-					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+		if (getTrangThaiTTXM() != null && getTrangThaiTTXM().equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) { 
+			if (getThongTinGiaiQuyetDon() != null) {
+				return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
+						getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
+						getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+			}
 		}
 		return new HashMap<>();
 	}
