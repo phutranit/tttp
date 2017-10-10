@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
-import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangKeHoachThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
@@ -54,7 +54,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra;
+	private ChucNangKeHoachThanhTraEnum chucNangKeHoachThanhTra;
 	
 	@Fetch(FetchMode.SELECT)
 	@NotNull
@@ -105,13 +105,13 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	public void setNgayRaQuyetDinh(LocalDateTime ngayRaQuyetDinh) {
 		this.ngayRaQuyetDinh = ngayRaQuyetDinh;
 	}
-
-	public HinhThucKeHoachThanhTraEnum getHinhThucKeHoachThanhTra() {
-		return hinhThucKeHoachThanhTra;
+	
+	public ChucNangKeHoachThanhTraEnum getChucNangKeHoachThanhTra() {
+		return chucNangKeHoachThanhTra;
 	}
 
-	public void setHinhThucKeHoachThanhTra(HinhThucKeHoachThanhTraEnum hinhThucKeHoachThanhTra) {
-		this.hinhThucKeHoachThanhTra = hinhThucKeHoachThanhTra;
+	public void setChucNangKeHoachThanhTra(ChucNangKeHoachThanhTraEnum chucNangKeHoachThanhTra) {
+		this.chucNangKeHoachThanhTra = chucNangKeHoachThanhTra;
 	}
 
 	@ApiModelProperty( hidden = true, example = "{}")
@@ -178,11 +178,11 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucKeHoachThanhTraInfo() {
-		if (getHinhThucKeHoachThanhTra() != null) {
+	public Map<String, Object> getChucNangKeHoachThanhTraInfo() {
+		if (getChucNangKeHoachThanhTra() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucKeHoachThanhTra().name());
-			map.put("text", getHinhThucKeHoachThanhTra().getText());
+			map.put("type", getChucNangKeHoachThanhTra().name());
+			map.put("text", getChucNangKeHoachThanhTra().getText());
 			return map;
 		}
 		return null;

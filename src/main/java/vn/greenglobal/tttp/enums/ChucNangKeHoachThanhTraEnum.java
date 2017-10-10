@@ -1,11 +1,11 @@
 package vn.greenglobal.tttp.enums;
 
-public enum HinhThucKeHoachThanhTraEnum {
+public enum ChucNangKeHoachThanhTraEnum {
 
 	HANH_CHINH("Hành chính"),
 	CHUYEN_NGANH("Chuyên ngành");
 
-	HinhThucKeHoachThanhTraEnum(String text) {
+	ChucNangKeHoachThanhTraEnum(String text) {
 		this.text = text;
 	}
 

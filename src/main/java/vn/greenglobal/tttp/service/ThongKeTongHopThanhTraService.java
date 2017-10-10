@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
@@ -115,20 +115,20 @@ public class ThongKeTongHopThanhTraService {
 	}
 	
 	// 4,5
-	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll, ChucNangThanhTraEnum hinhThucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
+	public Long getCuocThanhTraTheoHinhThuc(BooleanExpression predAll, HinhThucThanhTraEnum hinhThucThanhTraEnum, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		Long tongSoDon = 0L;
 		
-		if (StringUtils.equals(hinhThucThanhTraEnum.name(), ChucNangThanhTraEnum.THEO_KE_HOACH.name())) {
+		if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.THEO_KE_HOACH.name())) {
 			
 			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()).
-					and(QCuocThanhTra.cuocThanhTra.chucNangThanhTra.eq(ChucNangThanhTraEnum.THEO_KE_HOACH));
-		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), ChucNangThanhTraEnum.DOT_XUAT.name())) {
+					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.THEO_KE_HOACH));
+		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.DOT_XUAT.name())) {
 			
 			predAll = predAll.
 					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull()).
-					and(QCuocThanhTra.cuocThanhTra.chucNangThanhTra.eq(ChucNangThanhTraEnum.DOT_XUAT));
+					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.DOT_XUAT));
 		}
 		
 		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
