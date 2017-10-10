@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
@@ -161,7 +161,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT())
 								|| params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null
-								|| params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra() == null
+								|| params.getKeHoachThanhTra().getChucNangKeHoachThanhTra() == null
 								|| params.getKeHoachThanhTra().getNamThanhTra() <= 0) {
 							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
 									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
@@ -205,7 +205,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
 								CuocThanhTra cttSave = new CuocThanhTra();
 								cttSave.setId(ctt.getId());
-								cttSave.setChucNangThanhTra(ChucNangThanhTraEnum.THEO_KE_HOACH);
+								cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
 								cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 								cttSave.setKyThanhTra(ctt.getKyThanhTra());
 								cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());
@@ -284,7 +284,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						if (!StringUtils.isNotBlank(params.getKeHoachThanhTra().getQuyetDinhPheDuyetKTTT())
 								|| params.getKeHoachThanhTra().getNgayRaQuyetDinh() == null
-								|| params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra() == null
+								|| params.getKeHoachThanhTra().getChucNangKeHoachThanhTra() == null
 								|| params.getKeHoachThanhTra().getNamThanhTra() <= 0) {
 							return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
 									ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
@@ -325,7 +325,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 						KeHoachThanhTra keHoachThanhTraOld = repo.findOne(keHoachThanhTraService.predicateFindOne(params.getKeHoachThanhTra().getId()));
 						keHoachThanhTraOld.setGhiChu(params.getKeHoachThanhTra().getGhiChu());
-						keHoachThanhTraOld.setHinhThucKeHoachThanhTra(params.getKeHoachThanhTra().getHinhThucKeHoachThanhTra());
+						keHoachThanhTraOld.setChucNangKeHoachThanhTra(params.getKeHoachThanhTra().getChucNangKeHoachThanhTra());
 						keHoachThanhTraOld.setNamThanhTra(params.getKeHoachThanhTra().getNamThanhTra());
 						keHoachThanhTraOld.setNgayRaQuyetDinh(params.getKeHoachThanhTra().getNgayRaQuyetDinh());
 						keHoachThanhTraOld.setNguoiKy(params.getKeHoachThanhTra().getNguoiKy());
@@ -356,7 +356,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										cttSave = cuocThanhTraOld;
 									}
 								} else {
-									cttSave.setChucNangThanhTra(ChucNangThanhTraEnum.THEO_KE_HOACH);
+									cttSave.setHinhThucThanhTra(HinhThucThanhTraEnum.THEO_KE_HOACH);
 									cttSave.setNoiDungThanhTra(ctt.getNoiDungThanhTra());
 									cttSave.setKyThanhTra(ctt.getKyThanhTra());
 									cttSave.setThoiHanThanhTra(ctt.getThoiHanThanhTra());

@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
-import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
@@ -189,7 +189,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@Enumerated(EnumType.STRING)
 	private LinhVucThanhTraEnum linhVucThanhTra;//
 	@Enumerated(EnumType.STRING)
-	private ChucNangThanhTraEnum chucNangThanhTra;//
+	private HinhThucThanhTraEnum hinhThucThanhTra;//
 	@Enumerated(EnumType.STRING)
 	private LoaiHinhThanhTraEnum loaiHinhThanhTra;//
 	@Enumerated(EnumType.STRING)
@@ -895,12 +895,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.linhVucThanhTra = linhVucThanhTra;
 	}
 
-	public ChucNangThanhTraEnum getChucNangThanhTra() {
-		return chucNangThanhTra;
+	public HinhThucThanhTraEnum getHinhThucThanhTra() {
+		return hinhThucThanhTra;
 	}
 
-	public void setChucNangThanhTra(ChucNangThanhTraEnum chucNangThanhTra) {
-		this.chucNangThanhTra = chucNangThanhTra;
+	public void setHinhThucThanhTra(HinhThucThanhTraEnum hinhThucThanhTra) {
+		this.hinhThucThanhTra = hinhThucThanhTra;
 	}
 
 	public LoaiHinhThanhTraEnum getLoaiHinhThanhTra() {
@@ -1049,7 +1049,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			map.put("ngayRaQuyetDinh", getKeHoachThanhTra().getNgayRaQuyetDinh());
 			map.put("nguoiKy", getKeHoachThanhTra().getNguoiKy());
 			map.put("ghiChu", getKeHoachThanhTra().getGhiChu());
-			map.put("hinhThucKeHoachThanhTraInfo", getKeHoachThanhTra().getHinhThucKeHoachThanhTraInfo());
+			map.put("hinhThucKeHoachThanhTraInfo", getKeHoachThanhTra().getChucNangKeHoachThanhTraInfo());
 			map.put("donViInfo", getKeHoachThanhTra().getDonViInfo());
 			return map;
 		}
@@ -1106,11 +1106,11 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getChucNangThanhTraInfo() {
-		if (getChucNangThanhTra() != null) {
+	public Map<String, Object> getHinhThucThanhTraInfo() {
+		if (getHinhThucThanhTra() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("type", getChucNangThanhTra().name());
-			map.put("text", getChucNangThanhTra().getText());
+			map.put("type", getHinhThucThanhTra().name());
+			map.put("text", getHinhThucThanhTra().getText());
 			return map;
 		}
 		return null;
