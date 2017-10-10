@@ -30,7 +30,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
@@ -3465,9 +3465,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 			 	// Dem so cuoc theo thanh tra hinh thuc
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
@@ -3848,9 +3848,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 			 	// Dem so cuoc theo thanh tra hinh thuc
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
@@ -4232,9 +4232,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 			 	// Dem so cuoc theo thanh tra hinh thuc
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
@@ -4596,9 +4596,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 			 	// Dem so cuoc theo thanh tra hinh thuc
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
@@ -4994,9 +4994,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 			 	// Dem so cuoc theo thanh lai
 				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, ChucNangThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
 				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, ChucNangThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
