@@ -1,13 +1,17 @@
 package vn.greenglobal.tttp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.profile.CommonProfile;
@@ -65,6 +69,8 @@ public class AuthController {
 	@Value("${salt}")
 	private String salt;
 
+	private static final String anonymous = "unbreakable";
+	
 	@Autowired
 	Config config;
 
@@ -142,6 +148,81 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/auth/sendEmail")
+	public @ResponseBody ResponseEntity<Object> sendEmail(@RequestHeader(value = "Email", required = true) String email, HttpServletRequest request) {
+
+		try {
+			if (!congChucService.isValidEmailAddress(email)) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.EMAIL_INVALID.name(),
+						ApiErrorEnum.EMAIL_INVALID.getText(), ApiErrorEnum.EMAIL_INVALID.getText());
+			}
+			NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(email)));
+			if (user != null && !user.isDaXoa() && user.isActive()) {
+				String url = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
+				String salKey = user.getSalkey();
+				String salKeyHash = DigestUtils.md5Hex(salKey);
+				String timeHash = System.currentTimeMillis() + salKeyHash;
+				String hashCode = email+getAnonymousCode()+new String(Base64.encodeBase64(timeHash.getBytes()));
+				String link = url + "/reset-password/"+hashCode;
+				System.out.println("============link: " + link);
+				String linkReset = url + "/reset-password";
+				String content = "Xin chào,<br/> Bạn vừa gửi yêu cầu lấy lại mật khẩu. Để thiết lập lại mật khẩu mới của bạn trên Hệ thống Thanh tra thành phố Đà Nẵng, hãy nhấn vào liên kết bên dưới. "
+						+ "<br/> <a href='"+link+"'>"+link+"</a>"
+						+ "<br/> Liên kết này chỉ có hiệu lực trong 3 giờ. Để lấy lại mật khẩu, vui lòng truy cập địa chỉ  <a href='"+linkReset+"'>"+linkReset+"</a>"
+						+ "<br/> Xin cảm ơn.";	
+				Utils.sendEmailGmail(email, "[Thanh tra Thành phố] Email xác nhận lấy lại mật khẩu", content);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(),
+						ApiErrorEnum.USER_NOT_EXISTS.getText(), ApiErrorEnum.USER_NOT_EXISTS.getText());
+			}
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/auth/confirmCode")
+	public @ResponseBody ResponseEntity<Object> confirmCode(@RequestHeader(value = "code", required = true) String code, HttpServletRequest request) {
+
+		try {
+			System.out.println("confirmCode");
+			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
+			boolean acceptRequest = false; 
+			if(part != null && part.length == 2) {
+				String checkEmail = part[0];
+				String checkTime = part[1];
+				NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
+				if (user != null) {
+					String salKey = user.getSalkey();
+					String salKeyHash = DigestUtils.md5Hex(salKey);
+					String timeBase = new String(Base64.decodeBase64(checkTime.getBytes()));
+					String time = timeBase.replaceAll(salKeyHash,"");
+					try {
+						long t = Long.valueOf(time);
+						if(t > 0) {
+							long diff = new Date().getTime() - t;
+							long threeHours = TimeUnit.HOURS.toMillis(3);
+							acceptRequest = diff < threeHours;
+						}
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+					}
+				}				
+			}
+			if (acceptRequest) {
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	private String getAnonymousCode() {
+		return new String(Base64.encodeBase64(DigestUtils.md5Hex(anonymous).getBytes()));
+	}
+	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
 	public ResponseEntity<Object> logout(
@@ -264,6 +345,7 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
 	
 	private boolean checkQuyenBatDauQuyTrinhXuLyDon(Long donViId, VaiTroEnum loaiVaiTro) {
 		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));					
