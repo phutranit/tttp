@@ -673,7 +673,8 @@ public class ExcelUtil {
 				Long soNgayXuLy = 0L;
 				String type = "";
 				String time = "";
-				KetQuaTrangThaiDonEnum kq = don.getKetQuaXLDGiaiQuyet();
+				
+//				KetQuaTrangThaiDonEnum kq = don.getKetQuaXLDGiaiQuyet();
 //				if ((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
 //						&& (don.getTrangThaiXLDGiaiQuyet() != null && (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
 //										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))
@@ -694,10 +695,10 @@ public class ExcelUtil {
 						|| (don.getTrangThaiKTDX() != null && don.getTrangThaiKTDX().equals(TrangThaiDonEnum.DA_GIAI_QUYET)) && 
 							(don.getDonViKiemTraDeXuat() != null && don.getDonViKiemTraDeXuat().getId() == donViXuLy.longValue()))
 						|| (don.getTrangThaiXLDGiaiQuyet() != null && (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
-										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)))
+										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)) && 
+							don.getDonViXuLyGiaiQuyet() != null && don.getDonViXuLyGiaiQuyet().getId() == donViXuLy.longValue())
 						)
 				{
-					System.out.println("don " +don.getId());
 					thoiHanXuLyDon = "";
 				} else { 
 					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) { 
@@ -713,6 +714,7 @@ public class ExcelUtil {
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
@@ -724,7 +726,6 @@ public class ExcelUtil {
 						} 
 					}
 					if (process != null && process.equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
-						System.out.println("gqd " +don.getId());
 						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
 						if (map.get("type") != null) { 
 							type = map.get("type").toString();
@@ -736,8 +737,9 @@ public class ExcelUtil {
 							}
 							if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
-							} else if (soNgayXuLy < 0) { 
+							} else if (soNgayXuLy < 0) {
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
@@ -750,7 +752,6 @@ public class ExcelUtil {
 					}
 					if (process != null && process.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
 						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
-						System.out.println("ttxm " +don.getId());
 						if (don.getDonViThamTraXacMinh() != null && don.getDonViThamTraXacMinh().getId() == donViXuLy.longValue()) { 
 							map = don.getThoiHanTTXMInfo();
 						}
@@ -767,6 +768,7 @@ public class ExcelUtil {
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
@@ -4566,89 +4568,92 @@ public class ExcelUtil {
 				Long soNgayXuLy = 0L;
 				String type = "";
 				String time = "";
-				KetQuaTrangThaiDonEnum kq = don.getKetQuaXLDGiaiQuyet();
-				if ((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
-						&& (don.getTrangThaiXLDGiaiQuyet() != null
-								&& (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
-										|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))))
-						|| ((kq != null && don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY))
-								&& (kq.equals(KetQuaTrangThaiDonEnum.DE_XUAT_THU_LY)
-										|| kq.equals(KetQuaTrangThaiDonEnum.DINH_CHI)
-										|| kq.equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO)
-										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)
-										|| kq.equals(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY)
-										|| kq.equals(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN)
-										|| kq.equals(KetQuaTrangThaiDonEnum.CHUYEN_DON)
-										|| kq.equals(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI)))) {
+				
+				if (((don.getTrangThaiTTXM() != null && don.getTrangThaiTTXM().equals(TrangThaiDonEnum.DA_GIAI_QUYET) && 
+						(don.getDonViThamTraXacMinh() != null && don.getDonViThamTraXacMinh().getId() == donViXuLy.longValue())
+					)
+					|| (don.getTrangThaiKTDX() != null && don.getTrangThaiKTDX().equals(TrangThaiDonEnum.DA_GIAI_QUYET)) && 
+						(don.getDonViKiemTraDeXuat() != null && don.getDonViKiemTraDeXuat().getId() == donViXuLy.longValue()))
+					|| (don.getTrangThaiXLDGiaiQuyet() != null && (don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_GIAI_QUYET)
+									|| don.getTrangThaiXLDGiaiQuyet().equals(TrangThaiDonEnum.DA_XU_LY)) && 
+						don.getDonViXuLyGiaiQuyet() != null && don.getDonViXuLyGiaiQuyet().getId() == donViXuLy.longValue())
+					)
+				{
 					thoiHanXuLyDon = "";
-				} else {
-					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
+				} else { 
+					if (process != null && process.equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) { 
 						Map<String, Object> map = don.getThoiHanKTDXInfo();
-						if (map.get("type") != null) {
+						if (map.get("type") != null) { 
 							type = map.get("type").toString();
 						}
-
+						
 						if (type.equals("DAY")) {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								soNgayXuLy = Long.valueOf(map.get("value").toString());
-							}
-							if (soNgayXuLy > 0) {
-								thoiHanXuLyDon = "Còn " + soNgayXuLy + " ngày";
-							} else if (soNgayXuLy < 0) {
+							} if (soNgayXuLy > 0) { 
+								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
+							} else if (soNgayXuLy < 0) { 
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
-							} else {
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
+							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
 						} else {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								time = map.get("value").toString();
 							}
 							thoiHanXuLyDon = "Còn " + time;
-						}
+						} 
 					}
 					if (process != null && process.equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
 						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
-						if (map.get("type") != null) {
+						if (map.get("type") != null) { 
 							type = map.get("type").toString();
 						}
-
+						
 						if (type.equals("DAY")) {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								soNgayXuLy = Long.valueOf(map.get("value").toString());
 							}
-							if (soNgayXuLy > 0) {
-								thoiHanXuLyDon = "Còn " + soNgayXuLy + " ngày";
+							if (soNgayXuLy > 0) { 
+								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) {
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
-							} else {
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
+							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
 						} else {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								time = map.get("value").toString();
 							}
 							thoiHanXuLyDon = "Còn " + time;
 						}
 					}
 					if (process != null && process.equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
-						Map<String, Object> map = don.getThoiHanTTXMInfo();
-						if (map.get("type") != null) {
+						Map<String, Object> map = don.getThoiHanGiaiQuyetInfo();
+						if (don.getDonViThamTraXacMinh() != null && don.getDonViThamTraXacMinh().getId() == donViXuLy.longValue()) { 
+							map = don.getThoiHanTTXMInfo();
+						}
+						
+						if (map.get("type") != null) { 
 							type = map.get("type").toString();
 						}
-
+						
 						if (type.equals("DAY")) {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								soNgayXuLy = Long.valueOf(map.get("value").toString());
 							}
-							if (soNgayXuLy > 0) {
-								thoiHanXuLyDon = "Còn " + soNgayXuLy + " ngày";
-							} else if (soNgayXuLy < 0) {
+							if (soNgayXuLy > 0) { 
+								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
+							} else if (soNgayXuLy < 0) { 
 								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
-							} else {
+								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
+							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
 							}
 						} else {
-							if (map.get("value") != null) {
+							if (map.get("value") != null) { 
 								time = map.get("value").toString();
 							}
 							thoiHanXuLyDon = "Còn " + time;

@@ -1793,9 +1793,11 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanKTDXInfo() {
 		if (getThongTinGiaiQuyetDon() != null) {
-			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
-					getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
-					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+			if (getTrangThaiKTDX() != null && getTrangThaiKTDX().equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) { 
+				return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
+						getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
+						getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+			}
 		}
 		return new HashMap<>();
 	}
