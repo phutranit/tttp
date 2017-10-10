@@ -902,8 +902,33 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
-			Page<CoQuanQuanLy> page = repo.findAll(
-					coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo), pageable);
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo, null), pageable);
+
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/phongBanKhacPhongBanHienTaiTheoDonVi")
+	@ApiOperation(value = "Lấy danh sách Phong ban theo đơn vị", position = 6, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getDanhSachPhongBanKhacPhongBanHienTaiTheoDonVi(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
+
+			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
+			Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
+			Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donViId, thamSoService, repoThamSo, coQuanQuanLyId), pageable);
 
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {

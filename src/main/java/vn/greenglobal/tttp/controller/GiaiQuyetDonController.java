@@ -900,7 +900,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 		disableGiaiQuyetDonCu(VaiTroEnum.CHUYEN_VIEN, donId, congChuc);
 		giaiQuyetDonTiepTheo.setThongTinGiaiQuyetDon(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon());
-		giaiQuyetDonTiepTheo.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonTiepTheo.setPhongBanGiaiQuyet(giaiQuyetDonHienTai.getPhongBanGiaiQuyet());
 		giaiQuyetDonTiepTheo.setDonViGiaiQuyet(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		giaiQuyetDonTiepTheo.setChucVu(VaiTroEnum.CHUYEN_VIEN);
@@ -1559,7 +1558,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		if (isLaTTXM) {
 			Utils.changeQuyenTuXuLy(don, false, true, false);
 		}
-		if (isLaTTXM) {
+		if (isKTDX) {
 			Utils.changeQuyenTuXuLy(don, false, false, true);
 		}
 		

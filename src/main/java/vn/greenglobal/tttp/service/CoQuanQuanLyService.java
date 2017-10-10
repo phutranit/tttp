@@ -160,12 +160,17 @@ public class CoQuanQuanLyService {
 		return predicateFindPhongBan(capCoQuanQuanLy, id, repo, thamSoService, repoThamSo);
 	}
 	
-	public Predicate predicateFindPhongBanDonBanDonvi(Long donViId, ThamSoService thamSoService, ThamSoRepository repoThamSo) {
+	public Predicate predicateFindPhongBanDonBanDonvi(Long donViId, ThamSoService thamSoService, ThamSoRepository repoThamSo, Long coQuanQuanLyHienTai) {
 		BooleanExpression predAll = base;
 		ThamSo thamSoPB = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
 				.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(Long.valueOf(thamSoPB.getGiaTri().toString()))));
+		
+		if (coQuanQuanLyHienTai != null && coQuanQuanLyHienTai > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(coQuanQuanLyHienTai));
+		}
+			
 		return predAll;
 	}
 	
