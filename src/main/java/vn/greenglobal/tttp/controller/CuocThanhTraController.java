@@ -380,4 +380,18 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/validateTrungDoiTuongThanhTra")
+	@ApiOperation(value = "Validate trùng đối tượng thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "doiTuongThanhTraId", required = true) Long doiTuongThanhTraId,
+			PersistentEntityResourceAssembler eass) {
+		
+		try {
+//			List<CuocThanhTra> trungDoiTuongs = findAll()
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 }

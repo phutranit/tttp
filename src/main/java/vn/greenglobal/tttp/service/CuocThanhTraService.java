@@ -12,13 +12,18 @@ import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
+import vn.greenglobal.tttp.model.QDoiTuongThanhTra;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
 
 @Component
@@ -26,6 +31,9 @@ public class CuocThanhTraService {
 
 	@Autowired
 	private CuocThanhTraRepository cuocThanhTraRepository;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
 
@@ -120,6 +128,19 @@ public class CuocThanhTraService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllByDoiTuongThanhTra(Long doiTuongThanhTraId) {
+		BooleanExpression predAll = base;
+//		BooleanExpression ep = QDoiTuongThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTraId).and(QDoiTuongThanhTra.doiTuongThanhTra.daXoa.isFalse());
+//		DoiTuongThanhTra c = doiTuongThanhTraRepository.findOne(QDoiTuongThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTraId).and(QDoiTuongThanhTra.doiTuongThanhTra.daXoa.isFalse()));
+//		if (doiTuongThanhTraId != null && doiTuongThanhTraId > 0) {
+//			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTraId)
+//					.or(QCuocThanhTra.cuocThanhTra.doiTuongThanhTras.contains(c)
+//							.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTras.any().id.eq(doiTuongThanhTraId))));
+//		}
+//
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QCuocThanhTra.cuocThanhTra.id.eq(id));
@@ -142,41 +163,6 @@ public class CuocThanhTraService {
 
 		return cuocThanhTra;
 	}
-
-	// public boolean checkExistsData(DoiTuongThanhTraRepository repo,
-	// DoiTuongThanhTra body) {
-	// BooleanExpression predAll = base;
-	//
-	// if (!body.isNew()) {
-	// predAll =
-	// predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId()));
-	// }
-	//
-	// predAll =
-	// predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen())
-	// .and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(body.getLinhVucDoiTuongThanhTra().getId()))
-	// .and(QDoiTuongThanhTra.doiTuongThanhTra.loaiDoiTuongThanhTra.eq(LoaiDoiTuongThanhTraEnum.valueOf(body.getLoaiDoiTuongThanhTra().toString()))));
-	// List<DoiTuongThanhTra> doiTuongThanhTras = (List<DoiTuongThanhTra>)
-	// repo.findAll(predAll);
-	//
-	// return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true :
-	// false;
-	// }
-
-	// public boolean checkUsedData(DonRepository donRepository, Long id) {
-	// List<Don> donList = (List<Don>)
-	// donRepository.findAll(QDon.don.daXoa.eq(false)
-	// .and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
-	// .or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
-	//
-	// if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) ||
-	// (donList != null && donList.size() > 0)
-	// || (donList != null && donList.size() > 0)) {
-	// return true;
-	// }
-	//
-	// return false;
-	// }
 
 	public CuocThanhTra save(CuocThanhTra obj, Long congChucId) {
 		return Utils.save(cuocThanhTraRepository, obj, congChucId);
