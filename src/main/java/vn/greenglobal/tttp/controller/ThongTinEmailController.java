@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -56,7 +57,8 @@ public class ThongTinEmailController extends TttpController<ThongTinEmail> {
 			if (thongTinEmail == null) {
 				thongTinEmail = new ThongTinEmail();
 				thongTinEmail.setUsername("javagreenglobal@gmail.com");
-				thongTinEmail.setPassword("javagreenglobal123");
+				String password = new String(Base64.encodeBase64("javagreenglobal123".trim().getBytes()));
+				thongTinEmail.setPassword(password);
 				thongTinEmail.setEnableAuth(true);
 				thongTinEmail.setEnableStarttls(true);
 				thongTinEmail.setPort(587);
@@ -87,7 +89,8 @@ public class ThongTinEmailController extends TttpController<ThongTinEmail> {
 			if (thongTinEmailSave == null) {
 				thongTinEmailSave = new ThongTinEmail();
 			}
-			thongTinEmailSave.setPassword(thongTinEmail.getPassword());
+			String password = new String(Base64.encodeBase64(thongTinEmail.getPassword().trim().getBytes()));
+			thongTinEmailSave.setPassword(password);
 			thongTinEmailSave.setUsername(thongTinEmail.getUsername());
 			thongTinEmailSave.setEnableAuth(thongTinEmail.isEnableAuth());
 			thongTinEmailSave.setEnableStarttls(thongTinEmail.isEnableStarttls());
