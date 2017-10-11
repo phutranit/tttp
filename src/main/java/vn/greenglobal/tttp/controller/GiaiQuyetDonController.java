@@ -955,6 +955,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setXuLyDonCuoiCungId(null);
 		don.setCanBoXuLyChiDinh(giaiQuyetDon.getCanBoXuLyChiDinh());
 		don.setCanBoCoTheThuHoi(congChuc);
+		if (FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_DU_THAO.equals(nextStateType)) {
+			don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET);
+		}
 		Utils.changeQuyenTuXuLy(don, true, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1838,7 +1841,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO);
-		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET);
+		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO);
 		don.setCanBoCoTheThuHoi(null);
 		don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setCurrentState(canBoNhanKetQuaState);
