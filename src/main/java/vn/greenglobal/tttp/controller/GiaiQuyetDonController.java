@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.profile.CommonProfile;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -831,6 +832,34 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
 			if (giaiQuyetDonHienTaiTTXM != null) giaiQuyetDonService.save(giaiQuyetDonHienTaiTTXM, congChucId);
 			donService.save(don, congChucId);
+			
+			//tao lich su qua trinh xu ly don
+			LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
+			CongChuc cc = congChucRepo.findOne(congChucId);
+			lichSuQTXLD.setDon(don);
+			lichSuQTXLD.setNguoiXuLy(cc);
+			lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
+			lichSuQTXLD.setTen(QuaTrinhXuLyEnum.DINH_CHI.getText());
+			lichSuQTXLD.setNoiDung(params.getLyDoDinhChi());
+			lichSuQTXLD.setDonViXuLy(cc.getCoQuanQuanLy().getDonVi());
+			int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), cc.getCoQuanQuanLy().getDonVi().getId());
+			lichSuQTXLD.setThuTuThucHien(thuTu);
+			lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+			
+			List<LichSuQuaTrinhXuLy> lichSus = (List<LichSuQuaTrinhXuLy>) lichSuQuaTrinhXuLyRepo.findAll(lichSuQuaTrinhXuLyService.predicateFindAll(don.getId()));
+			if (lichSus != null && lichSus.size() > 0) {
+				for (LichSuQuaTrinhXuLy ls : lichSus) {
+					if (!ls.getDonViXuLy().equals(cc.getCoQuanQuanLy().getDonVi())) {
+						LichSuQuaTrinhXuLy lichSuQTXLDTmp = new LichSuQuaTrinhXuLy();
+						BeanUtils.copyProperties(lichSuQTXLD, lichSuQTXLDTmp);
+						lichSuQTXLDTmp.setId(null);
+						lichSuQTXLDTmp.setDonViXuLy(ls.getDonViXuLy());
+						int thuTuTmp = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), ls.getDonViXuLy().getId());
+						lichSuQTXLDTmp.setThuTuThucHien(thuTuTmp);
+						lichSuQuaTrinhXuLyService.save(lichSuQTXLDTmp, congChucId);
+					}
+				}
+			}
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
@@ -1019,6 +1048,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
+		don.setCanBoCoTheThuHoi(null);
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		
