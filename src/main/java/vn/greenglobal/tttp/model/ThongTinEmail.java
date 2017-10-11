@@ -8,8 +8,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,9 +22,11 @@ public class ThongTinEmail extends Model<ThongTinEmail> {
 	private String username = "";
 	@Size(max=255)
 	private String password = "";
+	private String host = "";
+	
 	private boolean enableAuth;
 	private boolean enableStarttls;
-	private String host = "";
+	
 	private int port;
 
 	

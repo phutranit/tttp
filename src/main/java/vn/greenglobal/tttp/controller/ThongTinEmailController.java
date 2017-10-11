@@ -39,7 +39,6 @@ public class ThongTinEmailController extends TttpController<ThongTinEmail> {
 	public ThongTinEmailController(BaseRepository<ThongTinEmail, Long> repo) {
 		super(repo);
 	}
-
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongTinEmails")
 	@ApiOperation(value = "Lấy thông tin email", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
