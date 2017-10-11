@@ -38,6 +38,8 @@ public enum ApiErrorEnum {
 	EMAIL_INVALID("Trường email không đúng định dạng."),
 	DATA_INVALID("Dữ liệu không hợp lệ."),
 	LOGIN_USER_PASSWORD_INCORRECT("Địa chỉ thư điện tử hoặc Mật khẩu không chính xác."),
+	OLD_PASSWORD_INCORRECT("Mật khẩu cũ không chính xác."),
+	NEW_PASSWORD_NOT_SAME("Mật khẩu mới phải giống nhau."),
 	USER_NOT_EXISTS("Tài khoản này không tồn tại trong hệ thống."),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống."),
 	PROCESS_NOT_FOUND("Không tìm thấy quy trình."),
