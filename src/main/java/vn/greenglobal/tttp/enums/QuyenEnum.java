@@ -73,6 +73,9 @@ public enum QuyenEnum {
 	TODANPHO_THEM("Thêm mới"),
 	TODANPHO_SUA("Chỉnh sửa"),
 	TODANPHO_XOA("Xoá"),
+	
+	THONGTINEMAIL_XEM("Xem"),
+	THONGTINEMAIL_SUA("Chỉnh sửa"),
 
 	DANTOC_LIETKE("Liệt kê"),
 	DANTOC_XEM("Xem"),
