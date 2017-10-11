@@ -299,10 +299,16 @@ public class CongDan extends Model<CongDan> {
 	public String getTenDiaChiSoDienThoai() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
-			out += " - " + getDiaChi();
+			out += "\n" + getDiaChi();
+			if (getQuanHuyen() != null) { 
+				out += ", " +getQuanHuyen().getTen();
+			}
+			if (getTinhThanh() != null) {
+				out += ", " +getTinhThanh().getTen();
+			}
 		}
 		if (getSoDienThoai() != null && !getSoDienThoai().isEmpty()) {
-			out += " - " + getSoDienThoai();
+			out += "\n" + getSoDienThoai();
 		}
 		return out;
 	}
