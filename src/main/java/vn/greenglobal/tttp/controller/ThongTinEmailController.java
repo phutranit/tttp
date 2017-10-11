@@ -21,7 +21,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.ThongTinEmail;
-import vn.greenglobal.tttp.model.ToDanPho;
 import vn.greenglobal.tttp.repository.ThongTinEmailRepository;
 import vn.greenglobal.tttp.service.ThongTinEmailService;
 import vn.greenglobal.tttp.util.Utils;
@@ -29,7 +28,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "thongTinEmails", description = "Thông tin email")
-public class ThongTinEmailController extends TttpController<ToDanPho> {
+public class ThongTinEmailController extends TttpController<ThongTinEmail> {
 
 	@Autowired
 	private ThongTinEmailRepository repo;
@@ -37,7 +36,7 @@ public class ThongTinEmailController extends TttpController<ToDanPho> {
 	@Autowired
 	private ThongTinEmailService thongTinEmailService;
 
-	public ThongTinEmailController(BaseRepository<ToDanPho, Long> repo) {
+	public ThongTinEmailController(BaseRepository<ThongTinEmail, Long> repo) {
 		super(repo);
 	}
 
@@ -49,7 +48,7 @@ public class ThongTinEmailController extends TttpController<ToDanPho> {
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_XEM) == null) {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THONGTINEMAIL_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -81,7 +80,7 @@ public class ThongTinEmailController extends TttpController<ToDanPho> {
 			@RequestBody ThongTinEmail thongTinEmail, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.TODANPHO_SUA) == null) {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THONGTINEMAIL_SUA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}

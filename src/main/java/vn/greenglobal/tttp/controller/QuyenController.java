@@ -77,6 +77,12 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Thông tin email");
+		quyenObj.put("tenQuyen", QuyenEnum.THONGTINEMAIL_XEM.getText() + "," + QuyenEnum.THONGTINEMAIL_SUA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THONGTINEMAIL_XEM.name() + "," + QuyenEnum.THONGTINEMAIL_SUA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Loại cơ quan quản lý");
 		quyenObj.put("tenQuyen", QuyenEnum.LOAICOQUANQUANLY_LIETKE.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_XEM.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_THEM.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_SUA.getText() + "," + QuyenEnum.LOAICOQUANQUANLY_XOA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.LOAICOQUANQUANLY_LIETKE.name() + "," + QuyenEnum.LOAICOQUANQUANLY_XEM.name() + "," + QuyenEnum.LOAICOQUANQUANLY_THEM.name() + "," + QuyenEnum.LOAICOQUANQUANLY_SUA.name() + "," + QuyenEnum.LOAICOQUANQUANLY_XOA.name());
