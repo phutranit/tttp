@@ -42,6 +42,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.docx4j.org.apache.xml.security.exceptions.Base64DecodingException;
+import org.docx4j.org.apache.xml.security.utils.Base64;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -879,7 +881,8 @@ public class Utils {
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(thongTinEmail.getUsername(), thongTinEmail.getPassword());
+				String password = new String(org.apache.commons.codec.binary.Base64.decodeBase64(thongTinEmail.getPassword().getBytes()));
+				return new PasswordAuthentication(thongTinEmail.getUsername(), password);
 			}
 		});
 

@@ -188,7 +188,8 @@ public class AuthController {
 				if (thongTinEmail == null) {
 					thongTinEmail = new ThongTinEmail();
 					thongTinEmail.setUsername("javagreenglobal@gmail.com");
-					thongTinEmail.setPassword("javagreenglobal123");
+					String password = new String(Base64.encodeBase64("javagreenglobal123".trim().getBytes()));
+					thongTinEmail.setPassword(password);
 					thongTinEmail.setEnableAuth(true);
 					thongTinEmail.setEnableStarttls(true);
 					thongTinEmail.setPort(587);
