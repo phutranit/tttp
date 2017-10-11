@@ -1422,6 +1422,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	public void exportWordPhieuDeXuatThuLy(
 			@RequestParam(value = "loaiDon", required = true) String loaiDon,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
+			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
 			@RequestParam(value = "diaChi", required = false) String diaChi, HttpServletResponse response) {
@@ -1431,6 +1432,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("loaiDonTieuDe", loaiDon.toUpperCase());
 			mappings.put("loaiDon", loaiDon.toLowerCase());
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
