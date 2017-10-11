@@ -50,6 +50,8 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@ManyToOne
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
+	private CoQuanQuanLy phongBanGiaiQuyetChiDinh;
+	@ManyToOne
 	private CoQuanQuanLy donViGiaiQuyet;
 	@ManyToOne
 	private CoQuanQuanLy donViChuyenDon;
@@ -128,6 +130,16 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setPhongBanGiaiQuyet(CoQuanQuanLy phongBanGiaiQuyet) {
 		this.phongBanGiaiQuyet = phongBanGiaiQuyet;
+	}
+
+	@ApiModelProperty(example = "{}", position = 2)
+	@QueryInit("*.*.*")
+	public CoQuanQuanLy getPhongBanGiaiQuyetChiDinh() {
+		return phongBanGiaiQuyetChiDinh;
+	}
+
+	public void setPhongBanGiaiQuyetChiDinh(CoQuanQuanLy phongBanGiaiQuyetChiDinh) {
+		this.phongBanGiaiQuyetChiDinh = phongBanGiaiQuyetChiDinh;
 	}
 
 	@ApiModelProperty(example = "{}", position = 2)
@@ -353,6 +365,18 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("ten", getPhongBanGiaiQuyet().getTen());
 			map.put("coQuanQuanLyId", getPhongBanGiaiQuyet().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getPhongBanGiaiQuyetChiDinhInfo() {
+		if (getPhongBanGiaiQuyetChiDinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getPhongBanGiaiQuyetChiDinh().getTen());
+			map.put("coQuanQuanLyId", getPhongBanGiaiQuyetChiDinh().getId());
 			return map;
 		}
 		return null;
