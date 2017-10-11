@@ -222,11 +222,44 @@ public class AuthController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/auth/resetPassword")
-	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestHeader(value = "code", required = true) String code, 
-			@RequestHeader(value = "password", required = true) String password) {
+	@RequestMapping(method = RequestMethod.POST, value = "/auth/changePassword")
+	public @ResponseBody ResponseEntity<Object> changePassword(@RequestHeader(value = "Authorization", required = true) String authorization, 
+			@RequestHeader(value = "oldPassword", required = true) String oldPassword, 
+			@RequestHeader(value = "newPassword", required = true) String newPassword,
+			@RequestHeader(value = "newPasswordAgain", required = true) String newPasswordAgain) {
 
 		try {
+			Long congChucId = Long.valueOf(
+					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			CongChuc congChuc = congChucRepository.findOne(congChucId);
+			NguoiDung nguoiDung = congChuc.getNguoiDung();
+			if (nguoiDung.checkPassword(oldPassword)) {
+				if (!newPassword.equals(newPasswordAgain)) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND,
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
+				} else {
+					nguoiDung.updatePassword(newPassword);
+					nguoiDungService.save(nguoiDung, congChucId);
+					return new ResponseEntity<>(HttpStatus.OK);
+				}
+ 			} else {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND,
+						ApiErrorEnum.OLD_PASSWORD_INCORRECT.name(),
+						ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText(),
+						ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText());
+			}
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/auth/resetPassword")
+	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestHeader(value = "code", required = true) String code, 
+			@RequestHeader(value = "password", required = true) String password, @RequestHeader(value = "passwordAgain", required = true) String passwordAgain) {
+
+		try {			
 			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
 			boolean acceptRequest = false; 
 			if(part != null && part.length == 2) {
@@ -249,6 +282,14 @@ public class AuthController {
 						// TODO: handle exception
 					}
 				}	
+				
+				if (!password.equals(passwordAgain)) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND,
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
+				}
+				
 				if (acceptRequest) {
 					user.updatePassword(password);
 					CongChuc congChuc = congChucRepository.findOne(QCongChuc.congChuc.nguoiDung.eq(user));
