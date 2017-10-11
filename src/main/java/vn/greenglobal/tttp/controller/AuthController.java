@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.model.QNguoiDung;
 import vn.greenglobal.tttp.model.State;
+import vn.greenglobal.tttp.model.ThongTinEmail;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
@@ -53,12 +54,14 @@ import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
+import vn.greenglobal.tttp.repository.ThongTinEmailRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
+import vn.greenglobal.tttp.service.ThongTinEmailService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.VaiTroService;
 import vn.greenglobal.tttp.util.ProfileUtils;
@@ -92,6 +95,9 @@ public class AuthController {
 	TransitionRepository transitionRepository;
 	
 	@Autowired
+	ThongTinEmailRepository thongTinEmailRepository;
+	
+	@Autowired
 	TransitionService transitionService;
 	
 	@Autowired
@@ -111,6 +117,9 @@ public class AuthController {
 	
 	@Autowired
 	NguoiDungService nguoiDungService;
+	
+	@Autowired
+	ThongTinEmailService thongTinEmailService;
 
 	@Autowired
 	VaiTroRepository vaiTroRepository;
@@ -175,7 +184,18 @@ public class AuthController {
 						+ "<br/> <a href='"+link+"'>"+link+"</a>"
 						+ "<br/> Liên kết này chỉ có hiệu lực trong 3 giờ. Để lấy lại mật khẩu, vui lòng truy cập địa chỉ  <a href='"+linkReset+"'>"+linkReset+"</a>"
 						+ "<br/> Xin cảm ơn.";	
-				Utils.sendEmailGmail(email, "[Thanh tra Thành phố] Email xác nhận lấy lại mật khẩu", content);
+				ThongTinEmail thongTinEmail = thongTinEmailRepository.findOne(1L);
+				if (thongTinEmail == null) {
+					thongTinEmail = new ThongTinEmail();
+					thongTinEmail.setUsername("javagreenglobal@gmail.com");
+					thongTinEmail.setPassword("javagreenglobal123");
+					thongTinEmail.setEnableAuth(true);
+					thongTinEmail.setEnableStarttls(true);
+					thongTinEmail.setPort(587);
+					thongTinEmail.setHost("smtp.gmail.com");
+					thongTinEmail = thongTinEmailService.save(thongTinEmail, 1L);
+				}
+				Utils.sendEmailGmail(email, "[Thanh tra Thành phố] Email xác nhận lấy lại mật khẩu", content, thongTinEmail);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(),
