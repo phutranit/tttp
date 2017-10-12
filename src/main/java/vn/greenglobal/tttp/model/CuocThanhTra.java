@@ -34,6 +34,7 @@ import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "cuocthanhtra")
@@ -1246,5 +1247,12 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	public List<ThanhVienDoan> getListThanhVienDoan() {
 		return getThanhVienDoans();
 	}
-
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanThanhTraInfo() {
+		return Utils.convertThoiHan(getNgayCongBoQuyetDinhThanhTra(),
+				getNgayHetHanThanhTra(),
+				getNgayHetHanGiaHanThanhTra());
+	}
 }

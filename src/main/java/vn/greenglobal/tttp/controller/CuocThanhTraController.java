@@ -379,11 +379,12 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		try {
 			LocalDateTime thoiHan = Utils.fixTuNgay(ngayCongBoQD);
 			Long soNgayThanhTra = Utils.getLaySoNgayXuLyThanhTra(thoiHan, thoiHanThanhTra);
-			if (thoiHanThanhTra == null) { 
+			if (thoiHanThanhTra != null && thoiHanThanhTra == 0) { 
 				thoiHan = thoiHan.plusDays(soNgayThanhTra);
 			} else { 
 				thoiHan = thoiHan.plusDays(soNgayThanhTra - 1);
 			}
+			
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
