@@ -1146,6 +1146,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						// set ngay ket thuc xu ly don cho don
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
 						don.setCanBoCoTheThuHoi(null);
+						if (don.getTrangThaiTTXM() != null) { 
+							don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
+							don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DINH_CHI);
+						}
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
