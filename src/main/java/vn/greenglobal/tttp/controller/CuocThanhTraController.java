@@ -2,10 +2,13 @@ package vn.greenglobal.tttp.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -32,9 +35,12 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
+import vn.greenglobal.tttp.service.DoiTuongThanhTraService;
 import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -45,12 +51,18 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 
 	@Autowired
 	private CuocThanhTraRepository repo;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	@Autowired
 	private CuocThanhTraService cuocThanhTraService;
 	
 	@Autowired
 	private ThanhVienDoanService thanhVienDoanService;
+	
+	@Autowired
+	private DoiTuongThanhTraService doiTuongThanhTraService;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -381,17 +393,33 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/validateTrungDoiTuongThanhTra")
 	@ApiOperation(value = "Validate trùng đối tượng thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "doiTuongThanhTraId", required = true) Long doiTuongThanhTraId,
-			PersistentEntityResourceAssembler eass) {
+			@RequestParam(value = "namThanhTra", required = true) Integer namThanhTra,
+			Pageable pageable,PersistentEntityResourceAssembler eass) {
 		
 		try {
-//			List<CuocThanhTra> trungDoiTuongs = findAll()
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			HashSet<Long> donViIds = new HashSet<Long>();
+			List<DoiTuongThanhTra> doiTuongThanhTras = new ArrayList<DoiTuongThanhTra>();
+			List<CuocThanhTra> cuocThanhTraTrungDoiTuongs = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindAllByDoiTuongThanhTra(namThanhTra, doiTuongThanhTraId));
+			if (cuocThanhTraTrungDoiTuongs != null && cuocThanhTraTrungDoiTuongs.size() > 0) {
+				for (CuocThanhTra ctt : cuocThanhTraTrungDoiTuongs) {
+					donViIds.add(ctt.getDonVi().getId());
+				}
+				if (donViIds != null && donViIds.size() > 0) {
+					Iterator<Long> itr = donViIds.iterator();
+					doiTuongThanhTras = (List<DoiTuongThanhTra>) doiTuongThanhTraRepository.findAll(doiTuongThanhTraService.predicateFindAllByMutiDoiTuongThanhTra((List<DoiTuongThanhTra>) itr));
+				}
+			}
+			
+			Page<DoiTuongThanhTra> page = new PageImpl<DoiTuongThanhTra>(doiTuongThanhTras, pageable, doiTuongThanhTras.size());
+			return new ResponseEntity<>(page, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
 }

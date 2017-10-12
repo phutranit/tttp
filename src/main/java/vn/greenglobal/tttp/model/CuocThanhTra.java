@@ -98,6 +98,8 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	//@Lob
 	private String lyDonGiaHan = "";//
 
+	@NotNull
+	private int namThanhTra = 0;
 	private int thoiHanThanhTra = 0;//
 	private int thoiHanGiaHanThanhTra = 0;//
 	
@@ -445,6 +447,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	public void setLyDonGiaHan(String lyDonGiaHan) {
 		this.lyDonGiaHan = lyDonGiaHan;
+	}
+
+	public int getNamThanhTra() {
+		return namThanhTra;
+	}
+
+	public void setNamThanhTra(int namThanhTra) {
+		this.namThanhTra = namThanhTra;
 	}
 
 	public int getThoiHanThanhTra() {
