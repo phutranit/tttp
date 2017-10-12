@@ -293,19 +293,38 @@ public class CongDan extends Model<CongDan> {
 		}
 		return null;
 	}
-
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public String getTenDiaChiSoCMND() {
+	public String getTenDiaChiSoDienThoai() {
 		String out = getHoVaTen();
 		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
-			out += " - " + getDiaChi();
+			out += "\n" + getDiaChi();
+			if (getQuanHuyen() != null) { 
+				out += ", " +getQuanHuyen().getTen();
+			}
+			if (getTinhThanh() != null) {
+				out += ", " +getTinhThanh().getTen();
+			}
 		}
-		if (getSoCMNDHoChieu() != null && !getSoCMNDHoChieu().isEmpty()) {
-			out += " - " + getSoCMNDHoChieu();
+		if (getSoDienThoai() != null && !getSoDienThoai().isEmpty()) {
+			out += "\n" + getSoDienThoai();
 		}
 		return out;
 	}
+	
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public String getTenDiaChiSoCMND() {
+//		String out = getHoVaTen();
+//		if (getDiaChi() != null && !getDiaChi().isEmpty()) {
+//			out += " - " + getDiaChi();
+//		}
+//		if (getSoCMNDHoChieu() != null && !getSoCMNDHoChieu().isEmpty()) {
+//			out += " - " + getSoCMNDHoChieu();
+//		}
+//		return out;
+//	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)

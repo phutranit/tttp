@@ -42,6 +42,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.docx4j.org.apache.xml.security.exceptions.Base64DecodingException;
+import org.docx4j.org.apache.xml.security.utils.Base64;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -63,6 +65,7 @@ import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.ThongTinEmail;
 
 public class Utils {
 
@@ -868,26 +871,25 @@ public class Utils {
 		return don;
 	}
 	
-	public static void sendEmailGmail(String mailTo, String subject, String content) {
-		final String username = "javagreenglobal@gmail.com";
-		final String password = "javagreenglobal123";
+	public static void sendEmailGmail(String mailTo, String subject, String content, ThongTinEmail thongTinEmail) {
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", true);
-		props.put("mail.smtp.starttls.enable", true);
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", 587);
+		props.put("mail.smtp.auth", thongTinEmail.isEnableAuth());
+		props.put("mail.smtp.starttls.enable", thongTinEmail.isEnableStarttls());
+		props.put("mail.smtp.host", thongTinEmail.getHost());
+		props.put("mail.smtp.port", thongTinEmail.getPort());
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				String password = new String(org.apache.commons.codec.binary.Base64.decodeBase64(thongTinEmail.getPassword().getBytes()));
+				return new PasswordAuthentication(thongTinEmail.getUsername(), password);
 			}
 		});
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(username));
+			message.setFrom(new InternetAddress(thongTinEmail.getUsername()));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
 			message.setSubject(subject);
 			// message.setText("Dear Mail Crawler," + "\n\n No spam to my email,

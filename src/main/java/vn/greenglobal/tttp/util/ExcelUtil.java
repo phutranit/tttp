@@ -256,7 +256,7 @@ public class ExcelUtil {
 				c.setCellValue(don.getNgayLapDonGapLanhDaoTmp().format(formatter));
 				c.setCellStyle(cellCenter);
 				c = row.createCell(2);
-				c.setCellValue(don.getListNguoiDungDon().size() > 0 ? don.getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND() : "");
+				c.setCellValue(don.getListNguoiDungDon().size() > 0 ? don.getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai() : "");
 				c.setCellStyle(cellLeft);
 				c = row.createCell(3);
 				c.setCellValue(don.getNoiDung());
@@ -385,7 +385,7 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getNgayTiepDan().format(formatter));
 				c.setCellStyle(cellCenter);
 				c = row.createCell(2);
-				c.setCellValue(tcd.getDon().getListNguoiDungDon().size() > 0 ? tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND() : "");
+				c.setCellValue(tcd.getDon().getListNguoiDungDon().size() > 0 ? tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai() : "");
 				c.setCellStyle(cellLeft);
 				c = row.createCell(3);
 				c.setCellValue(tcd.getDon().getNoiDung());
@@ -520,7 +520,7 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
 				c.setCellStyle(cellCenter);
 				c = row.createCell(3);
-				c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoCMND());
+				c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai());
 				c.setCellStyle(cellLeft);
 				c = row.createCell(4);
 				c.setCellValue(tcd.getDon().getNoiDung());
@@ -662,7 +662,7 @@ public class ExcelUtil {
 				c = row.createCell(3);
 				String tenNDD = "";
 				if(don.getListNguoiDungDon().size() > 0) {
-					tenNDD = don.getListNguoiDungDon().get(0).getCongDan().getHoVaTen();
+					tenNDD = don.getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai();
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
@@ -4558,7 +4558,7 @@ public class ExcelUtil {
 				c = row.createCell(3);
 				String tenNDD = "";
 				if (don.getListNguoiDungDon().size() > 0) {
-					tenNDD = don.getListNguoiDungDon().get(0).getCongDan().getHoVaTen();
+					tenNDD = don.getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai();
 				}
 				c.setCellValue(tenNDD);
 				c.setCellStyle(cellLeft);
