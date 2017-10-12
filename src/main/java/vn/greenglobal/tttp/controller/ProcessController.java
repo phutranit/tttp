@@ -601,6 +601,8 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 23L, 30L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 3L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -677,8 +679,13 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 27L, 31L, 32L, false);
 						transitionService.save(transition, congChucId);						
 						transition = addDataTrasition(process, 31L, 26L, 37L, false);
+						transitionService.save(transition, congChucId); 						
+						transition = addDataTrasition(process, 19L, 8L, 18L, false);
 						transitionService.save(transition, congChucId);
-						
+						transition = addDataTrasition(process, 19L, 25L, 38L, false);
+						transitionService.save(transition, congChucId);						
+						transition = addDataTrasition(process, 26L, 8L, 41L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					// Tham Tra Xac Minh
@@ -713,6 +720,10 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 31L, 30L, 39L, false);
 						transitionService.save(transition, congChucId);						
 						transition = addDataTrasition(process, 30L, 31L, 33L, false);
+						transitionService.save(transition, congChucId);	
+						transition = addDataTrasition(process, 3L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 28L, 29L, 40L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1165,6 +1176,8 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 23L, 30L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 3L, 8L, 4L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();
@@ -1242,6 +1255,12 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);						
 						transition = addDataTrasition(process, 31L, 26L, 37L, false);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 8L, 18L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 19L, 25L, 38L, false);
+						transitionService.save(transition, congChucId);						
+						transition = addDataTrasition(process, 26L, 8L, 41L, false);
+						transitionService.save(transition, congChucId);
 					}
 					
 					// Tham Tra Xac Minh
@@ -1276,6 +1295,11 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 31L, 30L, 39L, false);
 						transitionService.save(transition, congChucId);						
 						transition = addDataTrasition(process, 30L, 31L, 33L, false);
+						transitionService.save(transition, congChucId);
+						
+						transition = addDataTrasition(process, 3L, 15L, 17L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 28L, 29L, 40L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1329,6 +1353,8 @@ public class ProcessController extends TttpController<Process> {
 						transition = addDataTrasition(process, 23L, 5L, 21L, false);
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 5L, 23L, 34L, false);
+						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 3L, 16L, 22L, false);
 						transitionService.save(transition, congChucId);
 					}
 					
