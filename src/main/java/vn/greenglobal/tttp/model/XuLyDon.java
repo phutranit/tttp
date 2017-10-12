@@ -218,6 +218,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.thoiHanXuLy = thoiHanXuLy;
 	}
 	
+	@ApiModelProperty(example = "{}", position = 8)
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
 		return donViThamTraXacMinh;
 	}
