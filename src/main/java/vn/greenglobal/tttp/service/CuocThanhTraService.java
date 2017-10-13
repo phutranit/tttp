@@ -29,7 +29,7 @@ public class CuocThanhTraService {
 	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
 
 	public Predicate predicateFindAll(Integer namThanhTra, String soQuyetDinhKeHoach, String tenDoiTuongThanhTra, String soQuyetDinh, String loaiHinhThanhTra,
-			String linhVucThanhTra, String tienDoThanhTra, String tuNgay, String denNgay, Long donViId) {
+			String linhVucThanhTra, String tienDoThanhTra, String tuNgay, String denNgay, Long donViId, String soKetLuanThanhTra, String soQuyetDinhXL) {
 		BooleanExpression predAll = base;
 		if (donViId != null && donViId > 0) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
@@ -62,6 +62,14 @@ public class CuocThanhTraService {
 		
 		if (tienDoThanhTra != null && StringUtils.isNotBlank(tienDoThanhTra.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(TienDoThanhTraEnum.valueOf(tienDoThanhTra.trim())));
+		}
+		
+		if (soKetLuanThanhTra != null && StringUtils.isNotBlank(soKetLuanThanhTra.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.soKetLuanThanhTra.eq(soKetLuanThanhTra.trim()));
+		}
+		
+		if (soQuyetDinhXL != null && StringUtils.isNotBlank(soQuyetDinhXL.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.soQuyetDinhXuLy.eq(soQuyetDinhXL.trim()));
 		}
 		
 		if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
