@@ -79,6 +79,8 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
 			@RequestParam(value = "linhVucThanhTra", required = false) String linhVucThanhTra,
 			@RequestParam(value = "tienDoThanhTra", required = false) String tienDoThanhTra,
+			@RequestParam(value = "soKetLuanThanhTra", required = false) String soKetLuanThanhTra,
+			@RequestParam(value = "soQuyetDinhXL", required = false) String soQuyetDinhXL,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
@@ -93,7 +95,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKTTT, tenDoiTuongThanhTra,
-					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId), pageable);
+					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId, soKetLuanThanhTra, soQuyetDinhXL), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
