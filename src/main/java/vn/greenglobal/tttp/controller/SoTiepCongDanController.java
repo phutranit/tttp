@@ -727,14 +727,18 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			if (!don.isThanhLapDon()) {
-				don.setDaXoa(true);
-				donService.save(don, congChucId);
+				List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+				soTiepCongDans.addAll(soTiepCongDanService
+						.getKiemTraSoTiepCongDan(repo, soTiepCongDan.getDon().getId()));
+				System.out.println("soTiepCongDans " +soTiepCongDans.size());
+				if (soTiepCongDans.size() == 1) {
+					don.setDaXoa(true);
+					donService.save(don, congChucId);
+				}
 			}
 			
 			soTiepCongDan.setDaXoa(true);
 			soTiepCongDanService.save(soTiepCongDan, congChucId);
-			
-			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

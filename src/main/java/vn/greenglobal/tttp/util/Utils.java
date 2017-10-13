@@ -261,7 +261,6 @@ public class Utils {
 		long i = 1;
 		LocalDateTime ngayKetThuc = ngayBatDau;
 		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
-			ngayKetThuc = ngayKetThuc.plusDays(1);
 			while (i < soNgayGiaHan) {
 				ngayKetThuc = ngayKetThuc.plusDays(1);
 				if (ngayKetThuc.getDayOfWeek().getValue() == SATURDAY
@@ -269,6 +268,9 @@ public class Utils {
 					continue;
 				}
 				i++;
+			}
+			if (i > 1) { 
+				ngayKetThuc = ngayKetThuc.plusDays(1);
 			}
 			ngayKetThuc = LocalDateTime.of(
 					LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
