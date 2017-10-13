@@ -258,6 +258,9 @@ public class Utils {
 	public static LocalDateTime convertNumberToLocalDateTimeTinhTheoNgayLamViec(LocalDateTime ngayBatDau, Long soNgayGiaHan) {
 		long i = 1;
 		LocalDateTime ngayKetThuc = ngayBatDau;
+		ngayKetThuc = LocalDateTime.of(
+				LocalDate.of(2017, 10, 14),
+				LocalTime.MAX);
 		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
 			while (i < soNgayGiaHan) {
 				ngayKetThuc = ngayKetThuc.plusDays(1);
