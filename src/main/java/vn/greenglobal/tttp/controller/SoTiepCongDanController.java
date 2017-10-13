@@ -288,6 +288,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				int soLuotTiep = don.getTongSoLuotTCD();
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
+				if (don.isThanhLapDon()) {
+					if (soTiepCongDan.getHuongXuLy() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
+								ApiErrorEnum.HUONGXULY_REQUIRED.getText(), ApiErrorEnum.HUONGXULY_REQUIRED.getText());
+					}
+				}
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
@@ -299,30 +305,33 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //				}
 			}
 			
-			Transition transitionTTXM = null;
-			List<Transition> listTransitionHaveBegin = new ArrayList<Transition>();
-			if (flagChuyenDonViKiemTra) {
-				Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
-				List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
-				if (listProcess.size() < 1) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
-							ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
-				}			
-				for (Process processFromList : listProcess) {
-					transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
-					if (transitionTTXM != null) {
-						listTransitionHaveBegin.add(transitionTTXM);
-					}
-				}
-				if (listTransitionHaveBegin.size() < 1) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
-							ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
-				}	
-			}
+			
 
 			ResponseEntity<Object> output = soTiepCongDanService.doSave(soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
-				if (flagChuyenDonViKiemTra) {								
+				if (flagChuyenDonViKiemTra) {		
+					Transition transitionTTXM = null;
+					List<Transition> listTransitionHaveBegin = new ArrayList<Transition>();
+					if (flagChuyenDonViKiemTra) {
+						Predicate predicate = processService.predicateFindAllByDonVi(soTiepCongDan.getDonViChuTri(), ProcessTypeEnum.KIEM_TRA_DE_XUAT);
+						List<Process> listProcess = (List<Process>) repoProcess.findAll(predicate);
+						if (listProcess.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_GQD_NOT_FOUND.name(),
+									ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_GQD_NOT_FOUND.getText());
+						}			
+						for (Process processFromList : listProcess) {
+							transitionTTXM = repoTransition.findOne(transitionService.predicateFindFromCurrent(FlowStateEnum.BAT_DAU, processFromList));
+							if (transitionTTXM != null) {
+								listTransitionHaveBegin.add(transitionTTXM);
+							}
+						}
+						if (listTransitionHaveBegin.size() < 1) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_GQD_INVALID.name(),
+									ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
+						}	
+					}
+					
+					
 					State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
@@ -558,6 +567,14 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.HOAN_THANH);
 				} 
 			} else if (LoaiTiepDanEnum.THUONG_XUYEN.equals(soTiepCongDan.getLoaiTiepDan())) {
+				if (don.isThanhLapDon()) {
+					if (soTiepCongDan.getHuongXuLy() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
+								ApiErrorEnum.HUONGXULY_REQUIRED.getText(), ApiErrorEnum.HUONGXULY_REQUIRED.getText());
+					}
+				}
+				
+				
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
 					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy())) { 
 						don.setYeuCauGapTrucTiepLanhDao(true);
