@@ -220,6 +220,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : giaiQuyetDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 							State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.KET_THUC));
 							Process process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
+							if (process == null && isOwner) {
+								process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, false, don.getProcessType()));
+							}
 							Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
 							giaiQuyetDonHienTai.setNextState(nextState);
 							giaiQuyetDonHienTai.setNextForm(transition.getForm());
@@ -234,6 +237,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							boolean isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true : giaiQuyetDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
 							State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_GIAO_DON_VI_TTXM_LAP_DU_THAO));
 							Process process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
+							if (process == null && isOwner) {
+								process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, false, don.getProcessType()));
+							}
 							Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
 							giaiQuyetDonHienTai.setNextState(nextState);
 							giaiQuyetDonHienTai.setNextForm(transition.getForm());

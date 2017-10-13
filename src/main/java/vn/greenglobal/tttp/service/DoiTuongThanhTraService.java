@@ -99,7 +99,7 @@ public class DoiTuongThanhTraService {
 		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
-			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId()));
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId())); 
 		}
 
 		predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen())
