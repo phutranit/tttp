@@ -58,6 +58,20 @@ public class DoiTuongThanhTraService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllByMutiDoiTuongThanhTra(List<DoiTuongThanhTra> doiTuongIds) {
+		BooleanExpression predAll = base;
+		
+		if (doiTuongIds != null && doiTuongIds.size() > 0) {
+			List<Long> ids = new ArrayList<Long>();
+			for (DoiTuongThanhTra dttt : doiTuongIds) {
+				ids.add(dttt.getId());
+			}
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.notIn(ids));
+		}
+
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDoiTuongThanhTra.doiTuongThanhTra.id.eq(id));
@@ -85,7 +99,7 @@ public class DoiTuongThanhTraService {
 		BooleanExpression predAll = base;
 
 		if (!body.isNew()) {
-			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId()));
+			predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId())); 
 		}
 
 		predAll = predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen())
