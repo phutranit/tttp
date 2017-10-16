@@ -185,6 +185,13 @@ public class SoTiepCongDanService {
 		return soTiepCongDans;
 	}
 	
+	public List<SoTiepCongDan> getKiemTraSoTiepCongDan(SoTiepCongDanRepository repo, Long donId) {
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(
+				base.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(donId))));
+		return soTiepCongDans;
+	}
+	
 	public SoTiepCongDan save(SoTiepCongDan obj, Long congChucId) {
 		return Utils.save(soTiepCongDanRepository, obj, congChucId);
 	}

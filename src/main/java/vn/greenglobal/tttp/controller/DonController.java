@@ -1092,7 +1092,6 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanXuLyDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
@@ -1111,7 +1110,6 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaiQuyetDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giải quyết đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanGiaiQuyeDon(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
@@ -1130,7 +1128,6 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanTTXM")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn thẩm tra xác minh", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanTTXM(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
@@ -1149,7 +1146,6 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaoLapDuThao")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giao lập dự thảo", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Ngày mặc định thành công", response = Don.class) })
 	public Object getNgayMacDinhCuaThoiHanGiaoLapDuThao(@RequestHeader(value = "Authorization", required = true) String authorization,
 			PersistentEntityResourceAssembler eass) {
 		
