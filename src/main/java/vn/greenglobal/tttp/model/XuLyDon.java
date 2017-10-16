@@ -69,7 +69,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
 	@ManyToOne
-	private CoQuanQuanLy donViNgoaiHeThong;
+	private DonViNgoaiHeThong donViNgoaiHeThong;
 	
 	private boolean donChuyen = false;
 	private boolean donTra = false;
@@ -282,11 +282,11 @@ public class XuLyDon extends Model<XuLyDon> {
 	}
 	
 	@ApiModelProperty(example = "{}", position = 7)
-	public CoQuanQuanLy getDonViNgoaiHeThong() {
+	public DonViNgoaiHeThong getDonViNgoaiHeThong() {
 		return donViNgoaiHeThong;
 	}
 
-	public void setDonViNgoaiHeThong(CoQuanQuanLy donViNgoaiHeThong) {
+	public void setDonViNgoaiHeThong(DonViNgoaiHeThong donViNgoaiHeThong) {
 		this.donViNgoaiHeThong = donViNgoaiHeThong;
 	}
 
