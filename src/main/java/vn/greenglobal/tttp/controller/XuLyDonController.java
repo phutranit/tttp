@@ -605,6 +605,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				State nextStage = repoState.findOne(stateService.predicateFindOne(xuLyDon.getNextState().getId()));
 				Long donId = xuLyDon.getDon().getId();
 				Don don = donRepo.findOne(donService.predicateFindOne(donId));
+				if (don.getPhanLoaiDon() == null && xuLyDon.getPhanLoaiDon() == null) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+							ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+				}
 				if (don.getProcessType() == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
 							ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
@@ -837,7 +841,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 //							//TODO tim kiem don vi do co phong ban hay khong
 //							List<CoQuanQuanLy> listPhongBan = new ArrayList<CoQuanQuanLy>();
 //							listPhongBan = (List<CoQuanQuanLy>) coQuanQuanLyRepo.findAll(
-//									coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donVi.getId(), thamSoService, thamSoRepo));				
+//									coQuanQuanLyService.predicateFindPhongBanDonBanDonvi(donVi.getId(), thamSoService, thamSoRepo));	
 							Transition transitionGQD = null;					
 							
 							//Tim kiem VaiTro giai quyet don
