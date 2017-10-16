@@ -730,7 +730,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
 				soTiepCongDans.addAll(soTiepCongDanService
 						.getKiemTraSoTiepCongDan(repo, soTiepCongDan.getDon().getId()));
-				System.out.println("soTiepCongDans " +soTiepCongDans.size());
 				if (soTiepCongDans.size() == 1) {
 					don.setDaXoa(true);
 					donService.save(don, congChucId);
