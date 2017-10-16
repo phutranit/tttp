@@ -2068,8 +2068,10 @@ public class Don extends Model<Don> {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
 				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
 					String str = KetQuaTrangThaiDonEnum.DANG_TTXM.getText();
-					map.put("ketQuaStr", str + "\n" +getDonViThamTraXacMinh().getTen());
+					map.put("ketQuaStr", str + "\n" + getDonViThamTraXacMinh().getTen());
 				}
+			} else if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.equals(getKetQuaXLDGiaiQuyet())) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText() + "\n" + getDonViThamTraXacMinh().getTen());
 			} else {
 				map.put("donViTTXM", "");
 			}
