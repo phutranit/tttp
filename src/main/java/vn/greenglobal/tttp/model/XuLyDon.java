@@ -68,6 +68,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
+	@ManyToOne
+	private CoQuanQuanLy donViNgoaiHeThong;
+	
 	private boolean donChuyen = false;
 	private boolean donTra = false;
 	private int thuTuThucHien = 0;
@@ -276,6 +279,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCoQuanTiepNhan(CoQuanQuanLy coQuanTiepNhan) {
 		this.coQuanTiepNhan = coQuanTiepNhan;
+	}
+	
+	@ApiModelProperty(example = "{}", position = 7)
+	public CoQuanQuanLy getDonViNgoaiHeThong() {
+		return donViNgoaiHeThong;
+	}
+
+	public void setDonViNgoaiHeThong(CoQuanQuanLy donViNgoaiHeThong) {
+		this.donViNgoaiHeThong = donViNgoaiHeThong;
 	}
 
 	@ApiModelProperty(example = "{}", position = 1)
@@ -616,6 +628,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapCoQuanTiepNhan = null;
 		Map<String, Object> mapTrangThaiTTXM = null;
 		Map<String, Object> donViTTXM = null;
+		Map<String, Object> mapDonViNgoaiHeThong = null;
 		
 		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
@@ -625,6 +638,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("yKienXuLy", getNoiDungXuLy());
 		map.put("phanLoaiDonInfo", null);
 		map.put("lyDoKhongDuDieuKienThuLyInfo", null);
+		map.put("donViNgoaiHeThong", null);
 		
 		mapCanBoXuLy.put("id", getNguoiTao().getId());
 		mapCanBoXuLy.put("ten", getNguoiTao().getHoVaTen());
@@ -729,6 +743,10 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapCoQuanTiepNhan = new HashMap<String, Object>();
 				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
 				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");
+				
+				mapDonViNgoaiHeThong = new HashMap<String, Object>();
+				mapDonViNgoaiHeThong.put("id", getDonViNgoaiHeThong() != null ? getDonViNgoaiHeThong().getId() : "");
+				mapDonViNgoaiHeThong.put("ten", getDonViNgoaiHeThong() != null ? getDonViNgoaiHeThong().getTen() : "");
 				
 				mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");

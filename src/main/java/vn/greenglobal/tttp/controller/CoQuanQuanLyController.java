@@ -569,7 +569,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	public @ResponseBody Object getCoQuanTiepNhan(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
-
+		System.out.println("fdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfds");
 		try {
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -581,10 +581,25 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
 			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
-			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
+			List<CoQuanQuanLy> coQuanQuanLys = new ArrayList<CoQuanQuanLy>();
+			coQuanQuanLys.addAll((List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
 					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
-					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
+					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()))));
+			CoQuanQuanLy khac = new CoQuanQuanLy();
+			khac.setId(0L);
+			khac.setTen("Khác");
+			coQuanQuanLys.add(khac);
+			int start = pageable.getOffset();
+			int end = (start + pageable.getPageSize()) > coQuanQuanLys.size() ? coQuanQuanLys.size() : (start + pageable.getPageSize());
+			
+			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(coQuanQuanLys.subList(start, end), pageable, coQuanQuanLys.size());
+			
+//			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
+//					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+//					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
+//					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
+			
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
