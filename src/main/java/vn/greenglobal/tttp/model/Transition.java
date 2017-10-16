@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.TenQuyTrinhEnum;
 
 
 @Entity
@@ -19,6 +22,10 @@ import io.swagger.annotations.ApiModelProperty;
 public class Transition extends Model<Transition>{
 
 	private static final long serialVersionUID = -1388936774978057856L;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private TenQuyTrinhEnum tenQuyTrinh;
 
 	@NotNull
 	@ManyToOne
@@ -61,6 +68,14 @@ public class Transition extends Model<Transition>{
 
 	public void setForm(Form form) {
 		this.form = form;
+	}
+
+	public TenQuyTrinhEnum getTenQuyTrinh() {
+		return tenQuyTrinh;
+	}
+
+	public void setTenQuyTrinh(TenQuyTrinhEnum tenQuyTrinh) {
+		this.tenQuyTrinh = tenQuyTrinh;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -147,6 +162,18 @@ public class Transition extends Model<Transition>{
 			map.put("coQuanQuanLyId", getNguoiSua().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
 			map.put("hoVaTen", getNguoiSua().getHoVaTen());
 			map.put("congChucId", getNguoiSua().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getTenQuyTrinhInfo() {
+		if (getTenQuyTrinh() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("text", getTenQuyTrinh().getText());
+			map.put("type", getTenQuyTrinh().name());
 			return map;
 		}
 		return null;
