@@ -712,7 +712,7 @@ public class ExcelUtil {
 							} if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
@@ -737,7 +737,7 @@ public class ExcelUtil {
 							if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) {
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
@@ -766,7 +766,7 @@ public class ExcelUtil {
 							if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
@@ -4592,7 +4592,7 @@ public class ExcelUtil {
 							} if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
@@ -4617,7 +4617,7 @@ public class ExcelUtil {
 							if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) {
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
@@ -4646,7 +4646,7 @@ public class ExcelUtil {
 							if (soNgayXuLy > 0) { 
 								thoiHanXuLyDon = "Còn " +soNgayXuLy + " ngày";
 							} else if (soNgayXuLy < 0) { 
-								thoiHanXuLyDon = "Số ngày trễ hạn " + soNgayXuLy;
+								thoiHanXuLyDon = "Trễ hạn " + soNgayXuLy + " ngày";
 								thoiHanXuLyDon = thoiHanXuLyDon.replace("-", "");
 							} else { 
 								thoiHanXuLyDon = "Hết hạn ";
