@@ -569,7 +569,6 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	public @ResponseBody Object getCoQuanTiepNhan(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
-		System.out.println("fdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfdsfdsfsdfdsfdsfds");
 		try {
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
@@ -586,10 +585,10 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
 					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
 					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()))));
-			CoQuanQuanLy khac = new CoQuanQuanLy();
-			khac.setId(0L);
-			khac.setTen("Khác");
-			coQuanQuanLys.add(khac);
+			CoQuanQuanLy donViKhac = new CoQuanQuanLy();
+			donViKhac.setId(0L);
+			donViKhac.setTen("Khác");
+			coQuanQuanLys.add(donViKhac);
 			int start = pageable.getOffset();
 			int end = (start + pageable.getPageSize()) > coQuanQuanLys.size() ? coQuanQuanLys.size() : (start + pageable.getPageSize());
 			
