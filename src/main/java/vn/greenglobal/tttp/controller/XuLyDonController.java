@@ -52,6 +52,7 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.DoanDiCung;
 import vn.greenglobal.tttp.model.Don;
+import vn.greenglobal.tttp.model.DonViNgoaiHeThong;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -68,6 +69,7 @@ import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.DonViNgoaiHeThongRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
@@ -161,6 +163,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	
 	@Autowired
 	private TransitionRepository repoTransition;
+	
+	@Autowired
+	private DonViNgoaiHeThongRepository donViNgoaiHeThongRepo;
 	
 	public XuLyDonController(BaseRepository<XuLyDon, Long> repo) {
 		super(repo);
@@ -536,7 +541,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 						lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 						lichSuQTXLD.setTen(huongXuLyXLD.getText());
-						CoQuanQuanLy donViNgoaiHT = coQuanQuanLyRepo.findOne(xuLyDonHienTai.getDonViNgoaiHeThong().getId());
+						DonViNgoaiHeThong donViNgoaiHT = donViNgoaiHeThongRepo.findOne(xuLyDonHienTai.getDonViNgoaiHeThong().getId());
 						lichSuQTXLD.setNoiDung("Đơn vị tiếp nhận: " + donViNgoaiHT.getTen() + "\n\n" + xuLyDonHienTai.getNoiDungXuLy());
 						lichSuQTXLD.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 						int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), 
@@ -1087,7 +1092,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 							lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 							lichSuQTXLD.setTen(huongXuLyXLD.getText());
-							CoQuanQuanLy donViNgoaiHT = coQuanQuanLyRepo.findOne(xuLyDonHienTai.getDonViNgoaiHeThong().getId());
+							DonViNgoaiHeThong donViNgoaiHT = donViNgoaiHeThongRepo.findOne(xuLyDonHienTai.getDonViNgoaiHeThong().getId());
 							lichSuQTXLD.setNoiDung("Đơn vị tiếp nhận: " + donViNgoaiHT.getTen() + "\n\n" + xuLyDonHienTai.getNoiDungXuLy());
 							lichSuQTXLD.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
 							int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), 

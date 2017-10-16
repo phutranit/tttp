@@ -779,6 +779,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("huongXuLy", mapHuongXuLy);
 			map.put("mapTrangThaiTTXM", mapTrangThaiTTXM);
 			map.put("donViThamTraXacMinh", donViTTXM);
+			map.put("donViNgoaiHeThong", mapDonViNgoaiHeThong);
 		}
 
 		Don don = getDon();
