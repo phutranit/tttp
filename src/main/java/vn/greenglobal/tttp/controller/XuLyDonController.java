@@ -532,7 +532,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setCanBoCoTheThuHoi(null);
 						don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
-						don.setTuXuLyXLDGQD(false);
+						//don.setTuXuLyXLDGQD(false);
 						don.setHoanThanhDon(true);
 						
 						//tao lich su qua trinh xu ly don
@@ -548,7 +548,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								xuLyDonHienTai.getDonViXuLy().getId());
 						lichSuQTXLD.setThuTuThucHien(thuTu);
 						
-						donService.save(don, congChucId);
+						//donService.save(don, congChucId);
+						Utils.changeQuyenTuXuLy(don, false, false, false);
 						lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
@@ -1083,7 +1084,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoCoTheThuHoi(null);
 							don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
-							don.setTuXuLyXLDGQD(false);
+							//don.setTuXuLyXLDGQD(false);
 							don.setHoanThanhDon(true);
 							
 							//tao lich su qua trinh xu ly don
@@ -1099,7 +1100,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									xuLyDonHienTai.getDonViXuLy().getId());
 							lichSuQTXLD.setThuTuThucHien(thuTu);
 							
-							donService.save(don, congChucId);
+							//donService.save(don, congChucId);
+							Utils.changeQuyenTuXuLy(don, false, false, false);
 							lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 							
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
