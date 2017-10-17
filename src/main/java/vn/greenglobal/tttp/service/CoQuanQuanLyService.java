@@ -477,6 +477,16 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindAllByListId(List<Long> ids) {
+		BooleanExpression predAll = base;
+		
+		if (ids != null && ids.size() > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.in(ids));
+		}
+
+		return predAll;
+	}
+	
 	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
 		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
 	}
