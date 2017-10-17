@@ -740,24 +740,29 @@ public class XuLyDon extends Model<XuLyDon> {
 				donViTTXM.put("id", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getId() : "");
 				donViTTXM.put("ten", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getTen() : "");	
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-				mapCoQuanTiepNhan = new HashMap<String, Object>();
-				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
-				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");
-				
-				if (getDonViNgoaiHeThong() != null) { 
+				if (getCoQuanTiepNhan() != null) { 
+					mapCoQuanTiepNhan = new HashMap<String, Object>();
+					mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan().getId());
+					mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan().getTen());
+				}
+
+				if (getDonViNgoaiHeThong() != null) {
 					mapDonViNgoaiHeThong = new HashMap<String, Object>();
 					mapDonViNgoaiHeThong.put("id", getDonViNgoaiHeThong().getId());
 					mapDonViNgoaiHeThong.put("ten", getDonViNgoaiHeThong().getTen());
 				}
 				
-				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) { 
+				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) {
+					mapCoQuanTiepNhan = new HashMap<String, Object>();
 					mapCoQuanTiepNhan.put("id", 0L);
 					mapCoQuanTiepNhan.put("ten", "Khác");
 				}
 				
-				mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
-				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
-				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");
+				if (getThamQuyenGiaiQuyet() != null) {
+					mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
+					mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet().getId());
+					mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet().getTen());
+				}
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {

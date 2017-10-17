@@ -59,7 +59,12 @@ public class DonViNgoaiHeThongController extends TttpController<DonViNgoaiHeThon
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_XEM) == null) {
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -80,7 +85,12 @@ public class DonViNgoaiHeThongController extends TttpController<DonViNgoaiHeThon
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_LIETKE) == null
-					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_XEM) == null) {
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -101,7 +111,12 @@ public class DonViNgoaiHeThongController extends TttpController<DonViNgoaiHeThon
 			@RequestBody DonViNgoaiHeThong donViNgoaiHeThong, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_THEM) == null) {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DONVINGOAIHETHONG_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_THEM) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_XOA) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
