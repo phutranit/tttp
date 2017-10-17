@@ -68,6 +68,9 @@ public class XuLyDon extends Model<XuLyDon> {
 	private CoQuanQuanLy coQuanTiepNhan;
 	@ManyToOne
 	private CoQuanQuanLy coQuanChuyenDon;
+	@ManyToOne
+	private DonViNgoaiHeThong donViNgoaiHeThong;
+	
 	private boolean donChuyen = false;
 	private boolean donTra = false;
 	private int thuTuThucHien = 0;
@@ -276,6 +279,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setCoQuanTiepNhan(CoQuanQuanLy coQuanTiepNhan) {
 		this.coQuanTiepNhan = coQuanTiepNhan;
+	}
+	
+	@ApiModelProperty(example = "{}", position = 7)
+	public DonViNgoaiHeThong getDonViNgoaiHeThong() {
+		return donViNgoaiHeThong;
+	}
+
+	public void setDonViNgoaiHeThong(DonViNgoaiHeThong donViNgoaiHeThong) {
+		this.donViNgoaiHeThong = donViNgoaiHeThong;
 	}
 
 	@ApiModelProperty(example = "{}", position = 1)
@@ -616,6 +628,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		Map<String, Object> mapCoQuanTiepNhan = null;
 		Map<String, Object> mapTrangThaiTTXM = null;
 		Map<String, Object> donViTTXM = null;
+		Map<String, Object> mapDonViNgoaiHeThong = null;
 		
 		map.put("xuLyDonId", getId());
 		map.put("quyTrinhXuLy", "");
@@ -625,6 +638,7 @@ public class XuLyDon extends Model<XuLyDon> {
 		map.put("yKienXuLy", getNoiDungXuLy());
 		map.put("phanLoaiDonInfo", null);
 		map.put("lyDoKhongDuDieuKienThuLyInfo", null);
+		map.put("donViNgoaiHeThong", null);
 		
 		mapCanBoXuLy.put("id", getNguoiTao().getId());
 		mapCanBoXuLy.put("ten", getNguoiTao().getHoVaTen());
@@ -726,13 +740,29 @@ public class XuLyDon extends Model<XuLyDon> {
 				donViTTXM.put("id", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getId() : "");
 				donViTTXM.put("ten", getDonViThamTraXacMinh() != null ? getDonViThamTraXacMinh().getTen() : "");	
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.CHUYEN_DON)) {
-				mapCoQuanTiepNhan = new HashMap<String, Object>();
-				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
-				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");
+				if (getCoQuanTiepNhan() != null) { 
+					mapCoQuanTiepNhan = new HashMap<String, Object>();
+					mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan().getId());
+					mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan().getTen());
+				}
+
+				if (getDonViNgoaiHeThong() != null) {
+					mapDonViNgoaiHeThong = new HashMap<String, Object>();
+					mapDonViNgoaiHeThong.put("id", getDonViNgoaiHeThong().getId());
+					mapDonViNgoaiHeThong.put("ten", getDonViNgoaiHeThong().getTen());
+				}
 				
-				mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
-				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");
-				mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getTen() : "");
+				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) {
+					mapCoQuanTiepNhan = new HashMap<String, Object>();
+					mapCoQuanTiepNhan.put("id", 0L);
+					mapCoQuanTiepNhan.put("ten", "Khác");
+				}
+				
+				if (getThamQuyenGiaiQuyet() != null) {
+					mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
+					mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet().getId());
+					mapThamQuyenGiaiQuyet.put("ten", getThamQuyenGiaiQuyet().getTen());
+				}
 			} else if (getHuongXuLy().equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN)
 					|| getHuongXuLy().equals(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI)) {
@@ -761,6 +791,7 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("huongXuLy", mapHuongXuLy);
 			map.put("mapTrangThaiTTXM", mapTrangThaiTTXM);
 			map.put("donViThamTraXacMinh", donViTTXM);
+			map.put("donViNgoaiHeThong", mapDonViNgoaiHeThong);
 		}
 
 		Don don = getDon();

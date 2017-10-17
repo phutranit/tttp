@@ -4,6 +4,7 @@ public enum FlowStateEnum {
 
 	BAT_DAU("Bắt đầu"),
 	TRINH_LANH_DAO("Trình lãnh đạo"),	
+	TRINH_TRUONG_PHONG("Trình trưởng phòng"),	
 	VAN_THU_CHUYEN_DON_VI_TTXM("Văn thư chuyển đơn vị TTXM"),
 	LANH_DAO_GIAO_VIEC_TRUONG_PHONG("Lãnh đạo giao việc trưởng phòng"),
 	LANH_DAO_GIAO_VIEC_CAN_BO("Lãnh đạo giao việc cán bộ"),
