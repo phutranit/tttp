@@ -744,9 +744,16 @@ public class XuLyDon extends Model<XuLyDon> {
 				mapCoQuanTiepNhan.put("id", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getId() : "");
 				mapCoQuanTiepNhan.put("ten", getCoQuanTiepNhan() != null ? getCoQuanTiepNhan().getTen() : "");
 				
-				mapDonViNgoaiHeThong = new HashMap<String, Object>();
-				mapDonViNgoaiHeThong.put("id", getDonViNgoaiHeThong() != null ? getDonViNgoaiHeThong().getId() : "");
-				mapDonViNgoaiHeThong.put("ten", getDonViNgoaiHeThong() != null ? getDonViNgoaiHeThong().getTen() : "");
+				if (getDonViNgoaiHeThong() != null) { 
+					mapDonViNgoaiHeThong = new HashMap<String, Object>();
+					mapDonViNgoaiHeThong.put("id", getDonViNgoaiHeThong().getId());
+					mapDonViNgoaiHeThong.put("ten", getDonViNgoaiHeThong().getTen());
+				}
+				
+				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) { 
+					mapCoQuanTiepNhan.put("id", 0L);
+					mapCoQuanTiepNhan.put("ten", "Khác");
+				}
 				
 				mapThamQuyenGiaiQuyet = new HashMap<String, Object>();
 				mapThamQuyenGiaiQuyet.put("id", getThamQuyenGiaiQuyet() != null ? getThamQuyenGiaiQuyet().getId() : "");

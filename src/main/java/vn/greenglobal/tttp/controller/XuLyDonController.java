@@ -462,7 +462,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 						//Tim kiem vai tro dau tien o quy trinh
-						if (xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+						if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
 							Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 							State beginState = repoState
 									.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -1022,7 +1022,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 							//Tim kiem vai tro dau tien o quy trinh
-							if (xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+							if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
 								Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 								State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 								Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViXuLyId), ProcessTypeEnum.XU_LY_DON);
