@@ -35,12 +35,11 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
-import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
-import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
+import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
-import vn.greenglobal.tttp.service.DoiTuongThanhTraService;
 import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -53,7 +52,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	private CuocThanhTraRepository repo;
 	
 	@Autowired
-	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
+	private CoQuanQuanLyRepository coQuanQuanLyRepository;
 
 	@Autowired
 	private CuocThanhTraService cuocThanhTraService;
@@ -62,7 +61,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	private ThanhVienDoanService thanhVienDoanService;
 	
 	@Autowired
-	private DoiTuongThanhTraService doiTuongThanhTraService;
+	private CoQuanQuanLyService coQuanQuanLyService;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -406,7 +405,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		
 		try {
 			HashSet<Long> donViIds = new HashSet<Long>();
-			List<DoiTuongThanhTra> doiTuongThanhTras = new ArrayList<DoiTuongThanhTra>();
+			List<CoQuanQuanLy> coQuanQUanLys = new ArrayList<CoQuanQuanLy>();
 			List<CuocThanhTra> cuocThanhTraTrungDoiTuongs = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindAllByDoiTuongThanhTra(namThanhTra, doiTuongThanhTraId));
 			if (cuocThanhTraTrungDoiTuongs != null && cuocThanhTraTrungDoiTuongs.size() > 0) {
 				for (CuocThanhTra ctt : cuocThanhTraTrungDoiTuongs) {
@@ -414,11 +413,11 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				}
 				if (donViIds != null && donViIds.size() > 0) {
 					Iterator<Long> itr = donViIds.iterator();
-					doiTuongThanhTras = (List<DoiTuongThanhTra>) doiTuongThanhTraRepository.findAll(doiTuongThanhTraService.predicateFindAllByMutiDoiTuongThanhTra((List<DoiTuongThanhTra>) itr));
+					coQuanQUanLys = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId((List<Long>) itr));
 				}
 			}
 			
-			Page<DoiTuongThanhTra> page = new PageImpl<DoiTuongThanhTra>(doiTuongThanhTras, pageable, doiTuongThanhTras.size());
+			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(coQuanQUanLys, pageable, coQuanQUanLys.size());
 			return new ResponseEntity<>(page, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
