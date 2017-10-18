@@ -506,10 +506,11 @@ public class DonController extends TttpController<Don> {
 					List<State> listState = new ArrayList<State>();
 					Process process = null;
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+					String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 					for (Process processFromList : listProcess) {
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 						listState = ((List<State>) repoState.findAll(predicate));						
-						if (listState.size() > 0) {
+						if (listState.size() > 0 && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
 							State state = listState.get(0);
 							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 								listProcessHaveBeginState.add(processFromList);
@@ -760,10 +761,11 @@ public class DonController extends TttpController<Don> {
 						List<State> listState = new ArrayList<State>();
 						Process process = null;
 						List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+						String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 						for (Process processFromList : listProcess) {
 							Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 							listState = ((List<State>) repoState.findAll(predicate));
-							if (listState.size() > 0) {
+							if (listState.size() > 0  && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
 								State state = listState.get(0);
 								if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 									listProcessHaveBeginState.add(processFromList);
