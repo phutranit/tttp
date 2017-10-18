@@ -454,7 +454,7 @@ public class ThongKeService {
 			if (d.getNgayBatDauXLD() == null || d.getThoiHanXuLyXLD() == null) {
 				return false;
 			}
-			return Utils.isValidNgayTreHan(d.getThoiHanXuLyXLD());
+			return invalidNgayTreHanXLD(d);
 		}).collect(Collectors.toList());
 		
 		
@@ -486,7 +486,7 @@ public class ThongKeService {
 			if (d.getThongTinGiaiQuyetDon() == null) {
 				return false;
 			}
-			return invalidNgayTreHan(d);
+			return invalidNgayTreHanVaTinhTheoNgayKetThuc(d);
 		}).collect(Collectors.toList());
 		
 		List<Don> listtDons = new ArrayList<Don>();
@@ -691,20 +691,28 @@ public class ThongKeService {
 	
 	private boolean invalidNgayTreHanVaTinhTheoNgayKetThuc(Don don) {
 		ThongTinGiaiQuyetDon ttgqd = don.getThongTinGiaiQuyetDon();
-		if (ttgqd.getNgayBatDauGiaiQuyet() == null && ttgqd.getNgayHetHanGiaiQuyet() != null) {
-			if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
-				if (ttgqd.getNgayKetThucGiaiQuyet() != null) {
-					return Utils.isValidNgayTreHanTinhTheoNgayKetThuc(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-				} else {
-					return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet());
-				}
-			} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
-				if (ttgqd.getNgayKetThucGiaiQuyet() != null) {
-					return Utils.isValidNgayTreHanTinhTheoNgayKetThuc(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
-				} else {
-					return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanGiaiQuyet());
-				}
+		
+		if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+			if (ttgqd.getNgayKetThucGiaiQuyet() != null) {
+				return Utils.isValidNgayTreHanTinhTheoNgayKetThuc(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+			} else {
+				return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet());
 			}
+		} else if (ttgqd.getNgayBatDauGiaiQuyet() != null && ttgqd.getNgayHetHanGiaiQuyet() != null && ttgqd.getNgayHetHanSauKhiGiaHanGiaiQuyet() == null) {
+			if (ttgqd.getNgayKetThucGiaiQuyet() != null) {
+				return Utils.isValidNgayTreHanTinhTheoNgayKetThuc(ttgqd.getNgayHetHanGiaiQuyet(), ttgqd.getNgayKetThucGiaiQuyet());
+			} else {
+				return Utils.isValidNgayTreHan(ttgqd.getNgayHetHanGiaiQuyet());
+			}
+		}
+		return false;
+	}
+	
+	private boolean invalidNgayTreHanXLD(Don don) {
+		if (don.getNgayBatDauXLD() != null && don.getThoiHanXuLyXLD() != null && don.getNgayKetThucXLD() != null) {
+			return Utils.isValidNgayTreHanTinhTheoNgayKetThuc(don.getThoiHanXuLyXLD(), don.getNgayKetThucXLD());
+		} else if (don.getNgayBatDauXLD() != null && don.getThoiHanXuLyXLD() != null && don.getNgayKetThucXLD() == null) {
+			return Utils.isValidNgayTreHan(don.getThoiHanXuLyXLD());
 		}
 		return false;
 	}
