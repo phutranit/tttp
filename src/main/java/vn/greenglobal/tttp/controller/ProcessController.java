@@ -453,33 +453,55 @@ public class ProcessController extends TttpController<Process> {
 				
 				if (coQuyTrinhDayDu) {
 					// Don vi has State
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 1, donViId, 1L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 2, donViId, 2L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 3, donViId, 3L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 4, donViId, 9L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 5, donViId, 5L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 6, donViId, 17L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 7, donViId, 8L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 8, donViId, 22L);
-					donViHasStateService.save(donViHasState, congChucId);
-					donViHasState = new DonViHasState();
-					donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 9, donViId, 23L);
-					donViHasStateService.save(donViHasState, congChucId);
+					if (i == 1) {
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 1, donViId, 1L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 5, donViId, 5L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 6, donViId, 17L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 7, donViId, 8L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 8, donViId, 32L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 9, donViId, 23L);
+						donViHasStateService.save(donViHasState, congChucId);
+					} else {
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 1, donViId, 1L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 2, donViId, 2L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 3, donViId, 3L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 4, donViId, 9L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 5, donViId, 5L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 6, donViId, 17L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 7, donViId, 8L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 8, donViId, 22L);
+						donViHasStateService.save(donViHasState, congChucId);
+						donViHasState = new DonViHasState();
+						donViHasState = addDataState(ProcessTypeEnum.XU_LY_DON, 9, donViId, 23L);
+						donViHasStateService.save(donViHasState, congChucId);
+					}
+					
 					
 					donViHasState = new DonViHasState();
 					donViHasState = addDataState(ProcessTypeEnum.GIAI_QUYET_DON, 1, donViId, 1L);
@@ -573,11 +595,16 @@ public class ProcessController extends TttpController<Process> {
 					transition = new Transition();
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên", false, null, donViId, 3L, false);
 					process = processService.save(process, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 9L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
+					if (process != null && process.getId() != null && process.getId() > 0) {	
+						if (i == 1) {
+							transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+						} else {
+							transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 9L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+						}						
 					}
 					
 //					process = new Process();
@@ -596,44 +623,64 @@ public class ProcessController extends TttpController<Process> {
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Trưởng Phòng", false, null, donViId, 2L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {	
-						transition = addDataTrasition(process, 3L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 23L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 5L, 23L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 3L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
+						if (i == 1) {
+							transition = addDataTrasition(process, 32L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 23L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 5L, 23L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+						} else {
+							transition = addDataTrasition(process, 3L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 23L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 5L, 23L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 3L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+						}
 					}
 					
-					process = new Process();
-					transition = new Transition();
-					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
-					process = processService.save(process, congChucId);
-					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 2L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 2L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 3L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 9L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 22L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 22L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
+					if (i != 1) {
+						process = new Process();
+						transition = new Transition();
+						process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
+						process = processService.save(process, congChucId);
+						if (process != null && process.getId() != null && process.getId() > 0) {
+							transition = addDataTrasition(process, 2L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 2L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 3L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 9L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 22L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 22L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+						}
 					}
+					
+					
 					
 					process = new Process();
 					transition = new Transition();
 					process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Chuyên Viên nhập liệu", false, null, donViId, 4L, false);
 					process = processService.save(process, congChucId);
 					if (process != null && process.getId() != null && process.getId() > 0) {
-						transition = addDataTrasition(process, 1L, 2L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
-						transitionService.save(transition, congChucId);
+						if (i == 1) {
+							transition = addDataTrasition(process, 1L, 32L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
+							transitionService.save(transition, congChucId);
+						} else {
+							transition = addDataTrasition(process, 1L, 2L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+							transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
+						}
 					}
 					
 					// Giai Quyet Don
