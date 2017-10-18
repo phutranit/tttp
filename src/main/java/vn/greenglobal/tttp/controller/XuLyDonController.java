@@ -715,7 +715,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
-						coQuyTrinh);				
+						coQuyTrinh);	
+				System.out.println("donId: " + donId + " _ donViId: " + donViId + " _ coQuanQuanLyId: " + coQuanQuanLyId + " _ congChucId: " + congChucId + " _ vaiTroNguoiDungHienTai: " + vaiTroNguoiDungHienTai);
+				System.out.println("=====createWorkflow: " + (xuLyDonHienTai != null ? xuLyDonHienTai.getId() : "null roi"));
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();

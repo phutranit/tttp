@@ -600,6 +600,8 @@ public class ProcessController extends TttpController<Process> {
 							transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN);
 							transitionService.save(transition, congChucId);
 						} else {
+							transition = addDataTrasition(process, 1L, 2L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+							transitionService.save(transition, congChucId);
 							transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 							transitionService.save(transition, congChucId);
 							transition = addDataTrasition(process, 9L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
