@@ -54,21 +54,21 @@ public class ThongKeService {
 		
 		if (linhVucId != null && linhVucId > 0) { 
 			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
-					.and(QDon.don.linhVucDonThuChiTiet.isNull())
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+					.and(QDon.don.linhVucDonThuChiTiet.isNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
 		}
 		
 		if (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) { 
 			predAll = predAll.and(QDon.don.linhVucDonThuChiTiet.id.eq(chiTietLinhVucChaId))
-					.and(QDon.don.linhVucDonThu.isNotNull())
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+					.and(QDon.don.linhVucDonThu.isNotNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
 		}
 		
 		if (chiTietLinhVucConId != null && chiTietLinhVucConId > 0) { 
 			predAll = predAll
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId))
-					.and(QDon.don.linhVucDonThu.isNotNull())
-					.and(QDon.don.linhVucDonThuChiTiet.isNotNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId))
+					.and(QDon.don.linhVucDonThu.isNotNull());
+//					.and(QDon.don.linhVucDonThuChiTiet.isNotNull());
 		}
 		
 		tongPhanLoaiDon = Long.valueOf(((List<Don>)donRepo.findAll(predAll)).size());
@@ -89,21 +89,21 @@ public class ThongKeService {
 		
 		if (linhVucId != null && linhVucId > 0) { 
 			predAll = predAll.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
-					.and(QDon.don.linhVucDonThuChiTiet.isNull())
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+					.and(QDon.don.linhVucDonThuChiTiet.isNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
 		}
 		
 		if (chiTietLinhVucChaId != null && chiTietLinhVucChaId > 0) { 
 			predAll = predAll.and(QDon.don.linhVucDonThuChiTiet.id.eq(chiTietLinhVucChaId))
-					.and(QDon.don.linhVucDonThu.isNotNull())
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
+					.and(QDon.don.linhVucDonThu.isNotNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.isNull());
 		}
 		
 		if (chiTietLinhVucConId != null && chiTietLinhVucConId > 0) { 
 			predAll = predAll
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId))
-					.and(QDon.don.linhVucDonThu.isNotNull())
-					.and(QDon.don.linhVucDonThuChiTiet.isNotNull());
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(chiTietLinhVucConId));
+					.and(QDon.don.linhVucDonThu.isNotNull());
+//					.and(QDon.don.linhVucDonThuChiTiet.isNotNull());
 		}
 		
 		tongSoDon = ((List<Don>) donRepo.findAll(predAll)).size();
@@ -146,8 +146,7 @@ public class ThongKeService {
 		
 		if (linhVucs != null && linhVucs.size() > 0) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.don.linhVucDonThu.in(linhVucs)
-					.or(QXuLyDon.xuLyDon.don.linhVucDonThuChiTiet.in(linhVucs)
-					.or(QXuLyDon.xuLyDon.don.chiTietLinhVucDonThuChiTiet.in(linhVucs))));
+					.or(QXuLyDon.xuLyDon.don.linhVucDonThuChiTiet.in(linhVucs)));
 		}
 		
 		if (donViXuLyXLD != null && donViXuLyXLD > 0) {

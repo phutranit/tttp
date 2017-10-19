@@ -857,8 +857,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		predAllXLD = predAllXLD
 				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
 				.and(QXuLyDon.xuLyDon.don.linhVucDonThu.eq(linhVuc))
-				.and(QXuLyDon.xuLyDon.don.linhVucDonThuChiTiet.in(linhVucChiTiets)
-						.or(QXuLyDon.xuLyDon.don.chiTietLinhVucDonThuChiTiet.in(linhVucChiTiets)));
+				.and(QXuLyDon.xuLyDon.don.linhVucDonThuChiTiet.in(linhVucChiTiets));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
