@@ -92,6 +92,8 @@ public class Don extends Model<Don> {
 	private String trangThaiDonText = "";
 	@Size(max=255)
 	private String soVanBanDaGiaiQuyet = "";
+	@Size(max=255)
+	private String linhVucChiTietKhac = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
@@ -136,8 +138,8 @@ public class Don extends Model<Don> {
 	private LinhVucDonThu linhVucDonThu;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThuChiTiet;
-	@ManyToOne(fetch = FetchType.LAZY)
-	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -571,6 +573,14 @@ public class Don extends Model<Don> {
 		this.soVanBanDaGiaiQuyet = soVanBanDaGiaiQuyet;
 	}
 
+	public String getLinhVucChiTietKhac() {
+		return linhVucChiTietKhac;
+	}
+
+	public void setLinhVucChiTietKhac(String linhVucChiTietKhac) {
+		this.linhVucChiTietKhac = linhVucChiTietKhac;
+	}
+
 	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {
 		return ngayBanHanhVanBanDaGiaiQuyet;
 	}
@@ -703,14 +713,14 @@ public class Don extends Model<Don> {
 		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(position = 8, example = "{}")
-	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
-		return chiTietLinhVucDonThuChiTiet;
-	}
-
-	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
-		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
-	}
+//	@ApiModelProperty(position = 8, example = "{}")
+//	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
+//		return chiTietLinhVucDonThuChiTiet;
+//	}
+//
+//	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
+//		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
+//	}
 
 //	@ApiModelProperty(hidden = true)
 //	public List<SoTiepCongDan> getTiepCongDans() {
@@ -781,17 +791,17 @@ public class Don extends Model<Don> {
 		return null;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getChiTietLinhVucDonThuChiTietDon() {
-		if (getChiTietLinhVucDonThuChiTiet() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId());
-			map.put("ten", getChiTietLinhVucDonThuChiTiet().getTen());
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Map<String, Object> getChiTietLinhVucDonThuChiTietDon() {
+//		if (getChiTietLinhVucDonThuChiTiet() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId());
+//			map.put("ten", getChiTietLinhVucDonThuChiTiet().getTen());
+//			return map;
+//		}
+//		return null;
+//	}
 
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {

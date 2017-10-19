@@ -416,8 +416,8 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			return tongSo;
 		}
 		
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
-				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucs));
+//		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
+//				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucs));
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));

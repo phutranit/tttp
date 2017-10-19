@@ -761,8 +761,8 @@ public class DonService {
 				(linhVucChiTietChaId != null && linhVucChiTietChaId > 0)) { 
 			predAll = predAll
 					.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
-					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId))
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
+					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId));
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
 		}
 		return predAll;
 	}
@@ -873,15 +873,19 @@ public class DonService {
 					donOld.getLinhVucDonThuChiTiet() != null ? donOld.getLinhVucDonThuChiTiet().getTen() : "",
 					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
 		}
-		if ((donNew.getChiTietLinhVucDonThuChiTiet() == null && donOld.getChiTietLinhVucDonThuChiTiet() != null)
-				|| (donNew.getChiTietLinhVucDonThuChiTiet() != null && donOld.getChiTietLinhVucDonThuChiTiet() == null)
-				|| donNew.getChiTietLinhVucDonThuChiTiet() != donOld.getChiTietLinhVucDonThuChiTiet()) {
-			LinhVucDonThu linhVucDonThuNew = lichVuDonThuRepo.findOne(donNew.getChiTietLinhVucDonThuChiTiet().getId());
-			list.add(new PropertyChangeObject(
-					"Chi tiết lĩnh vực đơn thư chi tiết", donOld.getChiTietLinhVucDonThuChiTiet() != null
-							? donOld.getChiTietLinhVucDonThuChiTiet().getTen() : "",
-					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
+		if (donNew.getLinhVucChiTietKhac() != null && !donNew.getLinhVucChiTietKhac().isEmpty() && donOld.getLinhVucChiTietKhac() != null
+				&& !donNew.getLinhVucChiTietKhac().equals(donOld.getLinhVucChiTietKhac())) {
+			list.add(new PropertyChangeObject("Lĩnh vực chi tiết khác", donOld.getLinhVucChiTietKhac(), donNew.getLinhVucChiTietKhac()));
 		}
+//		if ((donNew.getChiTietLinhVucDonThuChiTiet() == null && donOld.getChiTietLinhVucDonThuChiTiet() != null)
+//				|| (donNew.getChiTietLinhVucDonThuChiTiet() != null && donOld.getChiTietLinhVucDonThuChiTiet() == null)
+//				|| donNew.getChiTietLinhVucDonThuChiTiet() != donOld.getChiTietLinhVucDonThuChiTiet()) {
+//			LinhVucDonThu linhVucDonThuNew = lichVuDonThuRepo.findOne(donNew.getChiTietLinhVucDonThuChiTiet().getId());
+//			list.add(new PropertyChangeObject(
+//					"Chi tiết lĩnh vực đơn thư chi tiết", donOld.getChiTietLinhVucDonThuChiTiet() != null
+//							? donOld.getChiTietLinhVucDonThuChiTiet().getTen() : "",
+//					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
+//		}
 		if ((donNew.getThamQuyenGiaiQuyet() == null && donOld.getThamQuyenGiaiQuyet() != null)
 				|| (donNew.getThamQuyenGiaiQuyet() != null && donOld.getThamQuyenGiaiQuyet() == null)
 				|| (donNew.getThamQuyenGiaiQuyet() != donOld.getThamQuyenGiaiQuyet())) {
