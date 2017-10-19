@@ -277,7 +277,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 
 	private CuocThanhTra checkDataCuocThanhTra(CuocThanhTra cuocThanhTra) {
-		if (!cuocThanhTra.isThanhLapDoan()) {
+		if (!cuocThanhTra.isThanhVienDoan()) {
 			cuocThanhTra.setSoQuyetDinhThanhLapDoan("");
 			cuocThanhTra.setNgayRaQuyetDinhThanhLapDoan(null);
 			cuocThanhTra.setThanhVienDoans(new ArrayList<ThanhVienDoan>());
@@ -313,7 +313,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			cuocThanhTra.setSoTienKienNghiThuHoi(0);
 			cuocThanhTra.setSoTienTichThuXuLyTaiSanViPham(0);
 			cuocThanhTra.setSoTienTieuHuyXuLyTaiSanViPham(0);*/
-		} else if (!cuocThanhTra.isPhatHienThamNhung()) {
+		} else if (!cuocThanhTra.isNoiDungThamNhung()) {
 			cuocThanhTra.setTenNguoi("");
 			cuocThanhTra.setToChucXuLyHanhChinhThamNhung(0);
 			cuocThanhTra.setCaNhanXuLyHanhChinhThamNhung(0);
