@@ -128,8 +128,10 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 
 	private boolean chuyenCoQuanDieuTra;//
 	private boolean viPham;//
-	private boolean phatHienThamNhung;//
-	private boolean thanhLapDoan;//
+	private boolean noiDungThamNhung;//
+	private boolean thanhVienDoan;//
+	private boolean giaHan;
+	private boolean noiDungKienNghi;
 	// private boolean theoDoiThucHien;
 	// private boolean kiemTraDonDoc;
 
@@ -570,20 +572,36 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.viPham = viPham;
 	}
 
-	public boolean isPhatHienThamNhung() {
-		return phatHienThamNhung;
+	public boolean isNoiDungThamNhung() {
+		return noiDungThamNhung;
 	}
 
-	public void setPhatHienThamNhung(boolean phatHienThamNhung) {
-		this.phatHienThamNhung = phatHienThamNhung;
+	public void setNoiDungThamNhung(boolean noiDungThamNhung) {
+		this.noiDungThamNhung = noiDungThamNhung;
 	}
 
-	public boolean isThanhLapDoan() {
-		return thanhLapDoan;
+	public boolean isThanhVienDoan() {
+		return thanhVienDoan;
 	}
 
-	public void setThanhLapDoan(boolean thanhLapDoan) {
-		this.thanhLapDoan = thanhLapDoan;
+	public void setThanhVienDoan(boolean thanhVienDoan) {
+		this.thanhVienDoan = thanhVienDoan;
+	}
+
+	public boolean isGiaHan() {
+		return giaHan;
+	}
+
+	public void setGiaHan(boolean giaHan) {
+		this.giaHan = giaHan;
+	}
+
+	public boolean isNoiDungKienNghi() {
+		return noiDungKienNghi;
+	}
+
+	public void setNoiDungKienNghi(boolean noiDungKienNghi) {
+		this.noiDungKienNghi = noiDungKienNghi;
 	}
 
 	/*public long getTienThuViPham() {
