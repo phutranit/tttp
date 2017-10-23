@@ -358,10 +358,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 || listTransitionHaveBegin.size() == 2? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
+					giaiQuyetDon.setChucVu2(listTransitionHaveBegin.size() == 2? listTransitionHaveBegin.get(1).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
 					giaiQuyetDon.setDonChuyen(true);
@@ -531,10 +532,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 							giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
-							giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
+							giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 || listTransitionHaveBegin.size() == 2 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 //							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
+							giaiQuyetDon.setChucVu2(listTransitionHaveBegin.size() == 2 ? listTransitionHaveBegin.get(1).getProcess().getVaiTro().getLoaiVaiTro() : null);
 							giaiQuyetDon.setDonChuyen(true);
 //							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							don.setDonViKiemTraDeXuat(soTiepCongDan.getDonViChuTri());
