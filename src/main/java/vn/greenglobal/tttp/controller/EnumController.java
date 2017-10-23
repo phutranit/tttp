@@ -552,11 +552,11 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý TCD", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyTCDs(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "phanLoaiDon", required = true) String phanLoaiDon) {
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
-		if (PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.equals(PhanLoaiDonEnum.valueOf(phanLoaiDon))) {
+		if (phanLoaiDon != null && !"".equals(phanLoaiDon) && PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.equals(PhanLoaiDonEnum.valueOf(phanLoaiDon))) {
 			object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
 			object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
 			list.add(object);
