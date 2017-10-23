@@ -551,38 +551,50 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý TCD", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyTCDs(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
-
-		object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.TIEP_NHAN_DON.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TIEP_NHAN_DON.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.name());
-		list.add(object);
 		
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.KHAC.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.KHAC.name());
-		list.add(object);
+		if (phanLoaiDon != null && !"".equals(phanLoaiDon) && PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.equals(PhanLoaiDonEnum.valueOf(phanLoaiDon))) {
+			object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+		} else {
+			object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TIEP_NHAN_DON.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TIEP_NHAN_DON.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.KHAC.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.KHAC.name());
+			list.add(object);
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);

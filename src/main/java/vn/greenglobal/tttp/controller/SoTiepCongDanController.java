@@ -288,13 +288,15 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				int soLuotTiep = don.getTongSoLuotTCD();
 				soTiepCongDan.setSoThuTuLuotTiep(soLuotTiep + 1);
 				don.setTongSoLuotTCD(soLuotTiep + 1);
+
 				if (don.isThanhLapDon()) {
 					if (soTiepCongDan.getHuongXuLy() == null) {
 						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.HUONGXULY_REQUIRED.name(),
 								ApiErrorEnum.HUONGXULY_REQUIRED.getText(), ApiErrorEnum.HUONGXULY_REQUIRED.getText());
 					}
 				}
-				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
+				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())
+						&& soTiepCongDan.isGuiYeuCauGapLanhDao()) {
 					don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
 					don.setYeuCauGapTrucTiepLanhDao(true);
 					don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
@@ -367,10 +369,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 					GiaiQuyetDon giaiQuyetDon = new GiaiQuyetDon();
 					giaiQuyetDon.setThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
-					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
+					giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 || listTransitionHaveBegin.size() == 2? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 					giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
 					giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
+					giaiQuyetDon.setChucVu2(listTransitionHaveBegin.size() == 2? listTransitionHaveBegin.get(1).getProcess().getVaiTro().getLoaiVaiTro() : null);
 					giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 					giaiQuyetDon.setThuTuThucHien(1);
 					giaiQuyetDon.setDonChuyen(true);
@@ -540,10 +543,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							giaiQuyetDon.setSoTiepCongDan(soTiepCongDan);
 							giaiQuyetDon.setDonViGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							giaiQuyetDon.setDonViChuyenDon(soTiepCongDan.getDonViTiepDan());
-							giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
+							giaiQuyetDon.setChucVu(listTransitionHaveBegin.size() == 1 || listTransitionHaveBegin.size() == 2 ? listTransitionHaveBegin.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null);
 //							giaiQuyetDon.setChucVu(VaiTroEnum.VAN_THU);
 							giaiQuyetDon.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 							giaiQuyetDon.setThuTuThucHien(1);
+							giaiQuyetDon.setChucVu2(listTransitionHaveBegin.size() == 2 ? listTransitionHaveBegin.get(1).getProcess().getVaiTro().getLoaiVaiTro() : null);
 							giaiQuyetDon.setDonChuyen(true);
 //							don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 							don.setDonViKiemTraDeXuat(soTiepCongDan.getDonViChuTri());
@@ -576,7 +580,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				
 				
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy())) { 
+					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy()) && soTiepCongDan.isGuiYeuCauGapLanhDao()) { 
 						don.setYeuCauGapTrucTiepLanhDao(true);
 						don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 						don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
