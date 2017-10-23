@@ -4993,10 +4993,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoCuocThanhTraLai = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraLai)).size());
 				
 			 	// Dem so cuoc theo thanh lai
-				// Theo ke hoach
-				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
-				// Dot xuat
-				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(predAllCuocThanhTraLai, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra theo tien do
 				// Ket thuc thanh tra truc tiep 
@@ -5046,11 +5042,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Map<String, Object> dangThucHien = new HashMap<>();
 				dangThucHien.put("kyTruocChuyenSang", 0);
 				dangThucHien.put("trienKhaiTrongKyBaoCao", 0);
-				
-				Map<String, Object> hinhThuc = new HashMap<>();
-				hinhThuc.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);
-				hinhThuc.put("dotXuat", tongSoCuocThanhTraDotXuat);
-				
+								
 				Map<String, Object> tienDo = new HashMap<>();
 				tienDo.put("ketThucThanhTraTrucTiep", tongSoCuocThanhTraKetThucTrucTiep);
 				tienDo.put("daBanHanhKetLuan", tongSoCuocThanhTraDaBanHanhKetLuan);
@@ -5058,10 +5050,14 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Map<String, Object> soCuocThanhTra = new HashMap<>();
 				soCuocThanhTra.put("tongSo", tongSoCuocThanhTraLai);
 				soCuocThanhTra.put("dangThucHien", dangThucHien);
-				soCuocThanhTra.put("hinhThuc", hinhThuc);
 				soCuocThanhTra.put("tienDo", tienDo);
 				
-				
+				Map<String, Object> canCuThanhTraLai = new HashMap<>();
+				canCuThanhTraLai.put("viPhamTrinhTu", tongSoCuocThanhTraLai);
+				canCuThanhTraLai.put("ketLuanKhongPhuHop", dangThucHien);
+				canCuThanhTraLai.put("saiLamApDungPhapLuat", tienDo);
+				canCuThanhTraLai.put("coYLamSaiLechHoSo", dangThucHien);
+				canCuThanhTraLai.put("viPhamNghiemTrong", tienDo);
 			
 				// Tong vi pham
 				Map<String, Object> tongViPham = new HashMap<>();

@@ -12,6 +12,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
+import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
@@ -94,7 +95,8 @@ public class ThongKeTongHopThanhTraService {
 	 */
 	public Predicate predicateFindCuocThanhTraLai(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
-		// Xu ly
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.loaiHinhThanhTra.eq(LoaiHinhThanhTraEnum.THANH_TRA_LAI))
+				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull());
 		
 		return predAll;
 	}
