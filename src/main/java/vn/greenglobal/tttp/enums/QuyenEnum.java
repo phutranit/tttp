@@ -80,6 +80,7 @@ public enum QuyenEnum {
 	TODANPHO_SUA("Chỉnh sửa"),
 	TODANPHO_XOA("Xoá"),
 	
+	THONGTINEMAIL_LIETKE("Liệt kê"),
 	THONGTINEMAIL_XEM("Xem"),
 	THONGTINEMAIL_SUA("Chỉnh sửa"),
 
