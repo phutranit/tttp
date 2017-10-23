@@ -86,13 +86,12 @@ public class GiaiQuyetDonService {
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanGiaiQuyet = 0L;
 		}
-		
 		if (phongBanGiaiQuyet != null && phongBanGiaiQuyet > 0) {
-			giaiQuyetDonQuery =  giaiQuyetDonQuery.and(giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyet));
+			giaiQuyetDonQuery =  giaiQuyetDonQuery.and(giaiQuyetDon.phongBanGiaiQuyet.id.eq(phongBanGiaiQuyet).or(giaiQuyetDon.phongBanGiaiQuyet.isNull()));
 		}
 		
 		if (StringUtils.isNotEmpty(chucVu)) {
-			giaiQuyetDonQuery = giaiQuyetDonQuery.and(giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(giaiQuyetDon.chucVu.isNull()));
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(giaiQuyetDon.chucVu.isNull()).or(giaiQuyetDon.chucVu2.eq(VaiTroEnum.valueOf(chucVu))));
 		}
 		
 		if (donViGiaiQuyet != null && donViGiaiQuyet > 0) {
@@ -100,7 +99,10 @@ public class GiaiQuyetDonService {
 		}
 		
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
-			giaiQuyetDonQuery = giaiQuyetDonQuery.and(giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoId));
+			giaiQuyetDonQuery = giaiQuyetDonQuery.and(
+					(giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoId)
+						.and(giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(chucVu)).or(giaiQuyetDon.chucVu2.eq(VaiTroEnum.valueOf(chucVu)))))
+					.or(giaiQuyetDon.canBoXuLyChiDinh.isNull()));
 		}
 		
 		OrderSpecifier<Integer> sortOrder = giaiQuyetDon.thuTuThucHien.desc();

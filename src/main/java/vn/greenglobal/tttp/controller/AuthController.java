@@ -462,7 +462,7 @@ public class AuthController {
 		for (Process processFromList : listProcess) {
 			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList, transitionRepository);
 			listState = ((List<State>) stateRepository.findAll(predicate));
-			if (listState.size() > 0) {
+			if (listState.size() > 0 && processFromList.getVaiTro().getLoaiVaiTro().equals(loaiVaiTro)) {
 				State state = listState.get(0);
 				if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 					process = processFromList;

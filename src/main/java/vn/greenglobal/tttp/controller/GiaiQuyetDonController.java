@@ -923,9 +923,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							return new ResponseEntity<>(eass.toFullResource(giaiQuyetDon), HttpStatus.OK);
 						}
 					}
-					
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
-							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
