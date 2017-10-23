@@ -1309,6 +1309,8 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);
 						transition = addDataTrasition(process, 30L, 29L, 40L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
+						transition = addDataTrasition(process, 1L, 2L, 14L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transitionService.save(transition, congChucId);
 					}
 					
 					process = new Process();

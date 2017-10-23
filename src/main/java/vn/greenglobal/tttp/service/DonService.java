@@ -270,7 +270,7 @@ public class DonService {
 			return predAll;
 		}
 		
-		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
+		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu) || "CHUYEN_VIEN".equals(chucVu))) {
 			// Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
@@ -287,7 +287,8 @@ public class DonService {
 			
 			if (StringUtils.isNotBlank(chucVu)) {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
-						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))).or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull()));
+						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))
+								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull()).or(QGiaiQuyetDon.giaiQuyetDon.chucVu2.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))));
 			}
 
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
