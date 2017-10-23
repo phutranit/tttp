@@ -617,4 +617,11 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	public Long getSoTiepCongDanId() {
 		return getId();
 	}
+	
+	private boolean guiYeuCauGapLanhDao = false;
+	
+	@Transient
+	public boolean isGuiYeuCauGapLanhDao() {
+		return guiYeuCauGapLanhDao;
+	}
 }
