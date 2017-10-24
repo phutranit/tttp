@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongViPham;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -144,6 +146,16 @@ public class ThongKeTongHopThanhTraService {
 		return tongSoDon;
 	}
 	
+	public Long getCuocThanhTraTheoCanCu(BooleanExpression predAll, CanCuThanhTraLaiEnum canCuThanhTraLai, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		Long tongSoDon = 0L;
+
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.canCuThanhTraLai.contains(canCuThanhTraLai.getText()));
+		tongSoDon = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll)).size());
+		
+		return tongSoDon;
+	}
+	
 	
 	
 	// 8
@@ -156,7 +168,31 @@ public class ThongKeTongHopThanhTraService {
 			
 		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
 
-			Long tongDonVi = 1L;
+			Long tongDonVi = (long) elem.getDoiTuongThanhTras().size();
+
+			if (!elem.getDoiTuongThanhTraLienQuan().isEmpty()) {
+
+				String[] array = elem.getDoiTuongThanhTraLienQuan().split(";");
+				tongDonVi += array.length;
+			}
+
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongGiaTri;
+	}
+	
+	public Long getSoDonViDuocThanhTraCoViPham(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll.and(QCuocThanhTra.cuocThanhTra.viPham.eq(true))));
+			
+		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
+
+			Long tongDonVi = (long) elem.getDoiTuongThanhTras().size();
 
 			if (!elem.getDoiTuongThanhTraLienQuan().isEmpty()) {
 
@@ -231,16 +267,23 @@ public class ThongKeTongHopThanhTraService {
 	
 		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
 		
-		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {
-
-			Long tongDonVi = 1L;
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
 			
 			if (StringUtils.equals(type, "TO_CHUC")) {
-
-				//tongDonVi += elem.getToChucXuLyHanhChinhViPham();	
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (!doiTuong.getToChucCoSaiPham().isEmpty()) {
+						String[] array = doiTuong.getToChucCoSaiPham().split(";");
+						tongDonVi += array.length;
+					}
+				}
 			} else if (StringUtils.equals(type, "CA_NHAN")) {
-				
-				//tongDonVi += elem.getCaNhanXuLyHanhChinhViPham();
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (!doiTuong.getCaNhanCoSaiPham().isEmpty()) {
+						String[] array = doiTuong.getToChucCoSaiPham().split(";");
+						tongDonVi += array.length;
+					}
+				}
 			}
 			return tongDonVi;
 
@@ -251,28 +294,32 @@ public class ThongKeTongHopThanhTraService {
 	
 	public Predicate predicateFindCuocThanhTraChuyenCoQuanDieuTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
-		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.chuyenCoQuanDieuTra.isTrue());
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.chuyenCoQuanDieuTra.eq(true));
 		
 		return predAll;
 	}
 	
 	public Long getKienNghiXuLyCCQDT(BooleanExpression predAll, String type,CuocThanhTraRepository cuocThanhTraRepo ) {
-		
 		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
 		Long tongGiaTri = 0L;
 		
 		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
-		
 		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
 
-			Long tongDonVi = 1L;
+			Long tongDonVi = 0L;
 			
-			if (StringUtils.equals(type, "VU")) {
-
-				//tongDonVi += elem.getSoVuDieuTra();	
-			} else if (StringUtils.equals(type, "DOI_TUONG")) {
-				
-				//tongDonVi += elem.getSoDoiTuongDieuTra();
+			if ("VU".equals(type)) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.isChuyenCoQuanDieuTra()) {
+						tongDonVi += doiTuong.getSoVuChuyenCoQuanDieuTra();
+					}					
+				}
+			} else if ("DOI_TUONG".equals(type)) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.isChuyenCoQuanDieuTra()) {
+						tongDonVi += doiTuong.getSoVuViecKienNghiChuyenCoQuanDieuTra();
+					}					
+				}
 			}
 			return tongDonVi;
 
