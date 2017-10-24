@@ -67,6 +67,12 @@ public enum ApiErrorEnum {
 	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
 	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này."),
 	TRANG_THAI_YCGLD_REQUIRED("Trường trangThaiYeuCauGapLanhDao không được bỏ trống."),
+	LOAIDON_REQUIRED("Trường loaiDon không được để trống."),
+	NOIDUNG_REQUIRED("Trường noiDung không được để trống."),
+	LINHVUCDONTHU_REQUIRED("Trường linhVucDonThu không được để trống."),
+	LOAIDOITUONG_REQUIRED("Trường loaiDoiTuong không được để trống."),
+	LOAIVUVIEC_REQUIRED("Trường loaiVuViec không được để trống."),
+	PHANLOAIDON_REQUIRED("Trường phanLoaiDon không được để trống."),
 	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		
 	ApiErrorEnum(String text) {
