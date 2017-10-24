@@ -47,6 +47,8 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.DoiTuongThayDoiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
+import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
+import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
@@ -405,25 +407,26 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
-				
+				List<State> listAllState = new ArrayList<State>();
 				List<State> listState = new ArrayList<State>();
 				Process process = null;
 				for (Process processFromList : listProcess) {
 					Predicate predicate = serviceState.predicateFindAll(currentStateId2, processFromList, repoTransition);
 					listState = ((List<State>) repoState.findAll(predicate));
+					System.out.println("processFromList: " + processFromList.getTenQuyTrinh() + " __ " + listState.size());
 					if (listState.size() > 0) {
 						process = processFromList;
-						break;
+						listAllState.addAll(listState);
 					}
 				}
 				
-				media.setListNextStates(listState);
+				media.setListNextStates(listAllState);
 				Transition transition = null;
-				if (listState.size() < 1) {
+				if (listAllState.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 							ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 				} else {
-					for (State nextState : listState) {
+					for (State nextState : listAllState) {
 						transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
 						if (transition != null) {
 							media.setCurrentForm(transition.getForm());
@@ -487,7 +490,34 @@ public class DonController extends TttpController<Don> {
 				Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
 				Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
-				
+				if (don.isThanhLapDon()) {
+					if (don.getLoaiDon() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
+								ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
+					}
+					if (don.getLinhVucDonThu() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
+								ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
+					}
+					if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
+								ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
+					}
+					if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
+						if (don.getLoaiDoiTuong() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
+									ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+						}
+					}
+					if (don.getLoaiVuViec() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
+								ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
+					}
+//					if (don.getPhanLoaiDon() == null) {
+//						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+//								ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+//					}
+				}
 				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
@@ -506,10 +536,11 @@ public class DonController extends TttpController<Don> {
 					List<State> listState = new ArrayList<State>();
 					Process process = null;
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+					String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 					for (Process processFromList : listProcess) {
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 						listState = ((List<State>) repoState.findAll(predicate));						
-						if (listState.size() > 0) {
+						if (listState.size() > 0 && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
 							State state = listState.get(0);
 							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 								listProcessHaveBeginState.add(processFromList);
@@ -546,6 +577,7 @@ public class DonController extends TttpController<Don> {
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
 					xuLyDon.setNoiDungXuLy(don.getNoiDungThongTinTrinhLanhDao());
+					xuLyDon.setCongChuc(congChucRepo.findOne(congChucId));
 					
 					//set co quan & don vi
 					xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne((coQuanQuanLyId)));
@@ -662,7 +694,34 @@ public class DonController extends TttpController<Don> {
 				Long congChucId = Long.valueOf(commonProfile.getAttribute("congChucId").toString());
 				Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
-				
+				if (don.isThanhLapDon()) {
+					if (don.getLoaiDon() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
+								ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
+					}
+					if (don.getLinhVucDonThu() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
+								ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
+					}
+					if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
+								ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
+					}
+					if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
+						if (don.getLoaiDoiTuong() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
+									ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+						}
+					}
+					if (don.getLoaiVuViec() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
+								ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
+					}
+					if (don.getPhanLoaiDon() == null) {
+						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+								ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+					}
+				}
 				don.setId(id);
 				don = checkDataThongTinDon(don);
 				
@@ -759,10 +818,11 @@ public class DonController extends TttpController<Don> {
 						List<State> listState = new ArrayList<State>();
 						Process process = null;
 						List<Process> listProcessHaveBeginState = new ArrayList<Process>();
+						String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 						for (Process processFromList : listProcess) {
 							Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 							listState = ((List<State>) repoState.findAll(predicate));
-							if (listState.size() > 0) {
+							if (listState.size() > 0  && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
 								State state = listState.get(0);
 								if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 									listProcessHaveBeginState.add(processFromList);

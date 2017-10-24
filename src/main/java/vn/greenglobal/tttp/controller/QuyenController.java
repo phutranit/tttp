@@ -84,8 +84,8 @@ public class QuyenController {
 		
 		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Thông tin email");
-		quyenObj.put("tenQuyen", QuyenEnum.THONGTINEMAIL_XEM.getText() + "," + QuyenEnum.THONGTINEMAIL_SUA.getText());
-		quyenObj.put("giaTriQuyen", QuyenEnum.THONGTINEMAIL_XEM.name() + "," + QuyenEnum.THONGTINEMAIL_SUA.name());
+		quyenObj.put("tenQuyen", QuyenEnum.THONGTINEMAIL_LIETKE.getText() + "," + QuyenEnum.THONGTINEMAIL_XEM.getText() + "," + QuyenEnum.THONGTINEMAIL_SUA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THONGTINEMAIL_LIETKE.name() + "," + QuyenEnum.THONGTINEMAIL_XEM.name() + "," + QuyenEnum.THONGTINEMAIL_SUA.name());
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();

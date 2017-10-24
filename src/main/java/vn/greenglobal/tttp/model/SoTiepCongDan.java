@@ -45,16 +45,16 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private Don don;
-	@NotNull
+	//@NotNull
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private CongChuc canBoTiepDan;
-	@NotNull
+	//@NotNull
 	@ManyToOne
 	@QueryInit("*.*.*")
 	private CoQuanQuanLy donViTiepDan;
 
-	@NotNull
+	//@NotNull
 	private LocalDateTime ngayTiepDan;
 	private LocalDateTime thoiHan;
 	private LocalDateTime ngayHenGapLanhDao;
@@ -90,10 +90,10 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 
 	private int soThuTuLuotTiep = 0;
 
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private HuongXuLyTCDEnum huongXuLy;
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiTiepDanEnum loaiTiepDan;
 	
@@ -616,5 +616,12 @@ public class SoTiepCongDan extends Model<SoTiepCongDan> {
 	@ApiModelProperty(hidden = true)
 	public Long getSoTiepCongDanId() {
 		return getId();
+	}
+	
+	private boolean guiYeuCauGapLanhDao = false;
+	
+	@Transient
+	public boolean isGuiYeuCauGapLanhDao() {
+		return guiYeuCauGapLanhDao;
 	}
 }

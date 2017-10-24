@@ -68,6 +68,9 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	
+	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu2;
+	
 	@ApiModelProperty(hidden = true)
 	public VaiTroEnum getChucVu() {
 		return chucVu;
@@ -75,6 +78,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 
 	public void setChucVu(VaiTroEnum chucVu) {
 		this.chucVu = chucVu;
+	}	
+	
+	@ApiModelProperty(hidden = true)
+	public VaiTroEnum getChucVu2() {
+		return chucVu2;
+	}
+
+	public void setChucVu2(VaiTroEnum chucVu2) {
+		this.chucVu2 = chucVu2;
 	}
 
 	public String getyKienGiaiQuyet() {
