@@ -874,7 +874,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ExcelUtil.exportDanhSachYeuCauGapLanhDao(response,
 					"DanhSachYeuCauGapLanhDao", "sheetName", (List<Don>) repoDon.findAll(donService
 							.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId)),
-					"Danh sách yêu cầu gặp lãnh đạo");
+					"Sổ đăng ký tiếp công dân định kỳ của lãnh đạo");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
