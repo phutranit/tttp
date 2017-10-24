@@ -12,8 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
@@ -27,10 +25,10 @@ public class CongDan extends Model<CongDan> {
 
 	private static final long serialVersionUID = 2302822305956477280L;
 
-	@NotBlank
+	//@NotBlank
 	@Size(max=255)
 	private String hoVaTen = "";
-	@NotBlank
+	//@NotBlank
 	@Size(max=255)
 	private String hoVaTenSearch = "";
 	@Size(max=255)
