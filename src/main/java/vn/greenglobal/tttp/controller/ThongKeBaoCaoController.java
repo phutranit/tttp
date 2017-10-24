@@ -5090,40 +5090,21 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				kienNghiXuly.put("hanhChinh", hanhChinh);
 				kienNghiXuly.put("chuyenCoQuanDieuTra", chuyenCoQuanDieuTra);
 				
-				// Da thu
-				Map<String, Object> daThu = new HashMap<>();
-				daThu.put("tien", 0);
-				daThu.put("dat", 0);
+				// Ket qua thuc hien
+				Map<String, Object> ketQuaThucHien = new HashMap<>();
 				
-				/* Note: Chua xong Theo doi thuc hien */
-				// Kiem tra don doc
-				Map<String, Object> ketQuaKiemTraDonDoc = new HashMap<>();
+				Map<String, Object> daXuLyHanhChinh = new HashMap<>();
+				daXuLyHanhChinh.put("toChuc", 0);
+				daXuLyHanhChinh.put("caNhan", 0);
 				
-				Map<String, Object> tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-				tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-				ketQuaKiemTraDonDoc.put("tien", tongHopketQuaKiemTraDonDoc);
+				Map<String, Object> daKhoiTo = new HashMap<>();
+				daKhoiTo.put("vu", 0);
+				daKhoiTo.put("doiTuong", 0);
 				
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-				tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-				ketQuaKiemTraDonDoc.put("dat", tongHopketQuaKiemTraDonDoc);
-				
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("toChuc", 0);
-				tongHopketQuaKiemTraDonDoc.put("caNhan", 0);
-				ketQuaKiemTraDonDoc.put("daXuLyHanhChinh", tongHopketQuaKiemTraDonDoc);
-				
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("vu", 0);
-				tongHopketQuaKiemTraDonDoc.put("doiTuong", 0);
-				ketQuaKiemTraDonDoc.put("daKhoiTo", tongHopketQuaKiemTraDonDoc);
-				
-				Map<String, Object> kiemTraDonDoc = new HashMap<>();
-				kiemTraDonDoc.put("tongSo", 0);
-				kiemTraDonDoc.put("ketQuaKiemTraDonDoc", ketQuaKiemTraDonDoc);
-				
-				// mapMaSo.put("dangThucHien", mapDonVi);
+				ketQuaThucHien.put("tienDaThu", 0);
+				ketQuaThucHien.put("datDaThu", 0);
+				ketQuaThucHien.put("daXuLyHanhChinh", daXuLyHanhChinh);
+				ketQuaThucHien.put("daKhoiTo", daKhoiTo);
 							
 				mapMaSo = new HashMap<String, Object>();
 				mapMaSo.put("donVi", mapDonVi);
@@ -5135,8 +5116,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("kienNghiThuHoi", kienNghiThuHoi);
 				mapMaSo.put("kienNghiKhac", kienNghiKhac);
 				mapMaSo.put("kienNghiXuLy", kienNghiXuly);
-				mapMaSo.put("daThu", daThu);
-				mapMaSo.put("kiemTraDonDoc", kiemTraDonDoc);
+				mapMaSo.put("ketQuaThucHien", ketQuaThucHien);
 				mapMaSo.put("ghiChu", "");
 				
 				maSos.add(mapMaSo);
