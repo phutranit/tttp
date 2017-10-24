@@ -118,6 +118,15 @@ public class ProcessService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindAllByDonVi(CoQuanQuanLy donVi, ProcessTypeEnum processType, VaiTroEnum vaiTro) {
+		BooleanExpression predAll = base;
+		predAll = predAll
+			.and(QProcess.process.coQuanQuanLy.eq(donVi))
+			.and(QProcess.process.vaiTro.loaiVaiTro.eq(vaiTro))
+			.and(QProcess.process.processType.eq(processType));
+		return predAll;
+	}
+	
 	public Process save(Process obj, Long congChucId) {
 		return Utils.save(processRepository, obj, congChucId);
 	}
