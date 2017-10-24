@@ -459,38 +459,44 @@ public class AuthController {
 		//Vai tro tiep theo
 		List<State> listState = new ArrayList<State>();
 		Process process = null;
+		boolean flagCoQuyTrinh = false;
 		for (Process processFromList : listProcess) {
 			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList, transitionRepository);
 			listState = ((List<State>) stateRepository.findAll(predicate));
-			if (listState.size() > 0 && processFromList.getVaiTro().getLoaiVaiTro().equals(loaiVaiTro)) {
+			if (listState.size() > 0) {
 				State state = listState.get(0);
 				if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
-					process = processFromList;
-					break;
+					flagCoQuyTrinh = true;
+					if (processFromList.getVaiTro().getLoaiVaiTro().equals(loaiVaiTro)) {
+						process = processFromList;
+						break;
+					}					
 				}	
 			}
 		}
 		
 		Transition transition = null;
-		if (process != null) {
-			if (listState.size() < 1) {
-				
-				return false;
-			} else {
-				for (State stateFromList : listState) {
-					transition = transitionRepository.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+		if (flagCoQuyTrinh) {
+			if (process != null) {
+				if (listState.size() < 1) {
+					return false;
+				} else {
+					for (State stateFromList : listState) {
+						transition = transitionRepository.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+						if (transition != null) {
+							break;
+						}	
+					}					
 					if (transition != null) {
-						break;
-					}	
-				}					
-				if (transition != null) {
-					return transition.getProcess().getVaiTro().getLoaiVaiTro().equals(loaiVaiTro);
+						return transition.getProcess().getVaiTro().getLoaiVaiTro().equals(loaiVaiTro);
+					}
 				}
+			} else {
+				return false;
 			}
 		} else {
 			return true;
 		}
-		
 		return false;
 	}
 
