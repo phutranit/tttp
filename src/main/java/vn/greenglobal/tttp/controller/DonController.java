@@ -407,25 +407,26 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_NOT_FOUND.name(),
 							ApiErrorEnum.PROCESS_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_NOT_FOUND.getText());
 				}
-				
+				List<State> listAllState = new ArrayList<State>();
 				List<State> listState = new ArrayList<State>();
 				Process process = null;
 				for (Process processFromList : listProcess) {
 					Predicate predicate = serviceState.predicateFindAll(currentStateId2, processFromList, repoTransition);
 					listState = ((List<State>) repoState.findAll(predicate));
+					System.out.println("processFromList: " + processFromList.getTenQuyTrinh() + " __ " + listState.size());
 					if (listState.size() > 0) {
 						process = processFromList;
-						break;
+						listAllState.addAll(listState);
 					}
 				}
 				
-				media.setListNextStates(listState);
+				media.setListNextStates(listAllState);
 				Transition transition = null;
-				if (listState.size() < 1) {
+				if (listAllState.size() < 1) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
 							ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 				} else {
-					for (State nextState : listState) {
+					for (State nextState : listAllState) {
 						transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
 						if (transition != null) {
 							media.setCurrentForm(transition.getForm());

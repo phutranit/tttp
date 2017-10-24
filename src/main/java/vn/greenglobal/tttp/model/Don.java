@@ -24,7 +24,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -64,7 +63,7 @@ public class Don extends Model<Don> {
 
 	@Size(max=255)
 	private String ma = "";
-	@NotBlank
+	//@NotBlank
 	//@Lob
 	private String noiDung = " ";
 	@Size(max=255)
@@ -133,7 +132,7 @@ public class Don extends Model<Don> {
 	private CongChuc canBoXuLy;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyPhanHeXLD;
-	@NotNull
+	//@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThu;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -215,17 +214,17 @@ public class Don extends Model<Don> {
 	private TrangThaiDonEnum trangThaiDon; // TCD Enum
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
-//	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
 	@Column(nullable = true)
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 
@@ -257,7 +256,7 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiVuViecEnum loaiVuViec;
 	

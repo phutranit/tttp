@@ -269,6 +269,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
 								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
 					}
+					if (soTiepCongDan.getyKienXuLy() == null || "".equals(soTiepCongDan.getyKienXuLy())
+							|| StringUtils.isBlank(soTiepCongDan.getyKienXuLy().trim())) {
+						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+								ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+					}
 					if (soTiepCongDan.isChuyenDonViKiemTra()) {
 						flagChuyenDonViKiemTra = true;
 						soTiepCongDan.setTinhTrangXuLyTCDLanhDao(HuongGiaiQuyetTCDEnum.GIAO_DON_VI_KIEM_TRA_VA_DE_XUAT);
@@ -476,6 +481,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					if (soTiepCongDan.getDonViChuTri() == null) {
 						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DONVICHUTRI_REQUIRED.name(),
 								ApiErrorEnum.DONVICHUTRI_REQUIRED.getText(), ApiErrorEnum.DONVICHUTRI_REQUIRED.getText());
+					}
+					if (soTiepCongDan.getyKienXuLy() == null || "".equals(soTiepCongDan.getyKienXuLy())
+							|| StringUtils.isBlank(soTiepCongDan.getyKienXuLy().trim())) {
+						return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+								ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
 					}
 					if (soTiepCongDan.getDonViPhoiHops() != null && 
 							soTiepCongDan.getDonViPhoiHops().size() > 0) {
