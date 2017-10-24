@@ -50,6 +50,10 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String saiPhamKhac = "";
 	//@Lob // Kien nghi xu ly khac
 	private String noiDungKienNghiXuLyKhac = "";
+	//@Lob // Kien nghi chuyen co quan dieu tra
+	private String donViViPham = "";
+	//@Lob // Kien nghi chuyen co quan dieu tra
+	private String viPhamKhac = "";
 	
 	//Kien nghi chuyen co quan dieu tra
 	private boolean chuyenCoQuanDieuTra;
@@ -139,6 +143,22 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setNoiDungKienNghiXuLyKhac(String noiDungKienNghiXuLyKhac) {
 		this.noiDungKienNghiXuLyKhac = noiDungKienNghiXuLyKhac;
+	}
+
+	public String getDonViViPham() {
+		return donViViPham;
+	}
+
+	public void setDonViViPham(String donViViPham) {
+		this.donViViPham = donViViPham;
+	}
+
+	public String getViPhamKhac() {
+		return viPhamKhac;
+	}
+
+	public void setViPhamKhac(String viPhamKhac) {
+		this.viPhamKhac = viPhamKhac;
 	}
 
 	public boolean isChuyenCoQuanDieuTra() {
