@@ -448,11 +448,31 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds)
+				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
+
+		return predAll;
+	}
+	
 	public Predicate predicateFindChinhDonViVaConCuaDonViVaNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId) {
 		BooleanExpression predAll = base;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(donViId)
 				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId))
+						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+								.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)))));
+
+		return predAll;
+	}
+	
+	public Predicate predicateFindChinhDonViVaConCuaDonViVaNotPhongBanNotCongAnNotPhuongXa(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(donViId)
+				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
+						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds))
 						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 								.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)))));
 
