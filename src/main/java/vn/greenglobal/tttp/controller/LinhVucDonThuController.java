@@ -97,7 +97,7 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThuCobombox")
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThuCombobox")
 	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư combobox", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListBombobox(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
