@@ -5254,7 +5254,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo = new HashMap<String, Object>();
 			}
 			map.put("maSos", maSos);
-			ExcelUtil.exportTongHopKetQuaThanhTraLai(response, "DanhSachTongHopKetQuaThanhTraLai", "sheetName", maSos, tuNgay, denNgay, "Thống kê đối với tất cả các cuộc thanh tra chọn LĨNH VỰC THANH TRA là HÀNH CHÍNH");
+			ExcelUtil.exportTongHopKetQuaThanhTraLai(response, "DanhSachTongHopKetQuaThanhTraLai", "sheetName", maSos, tuNgay, denNgay, "Thống kê đối với tất cả các cuộc thanh tra chọn LOẠI HÌNH là THANH TRA LẠI");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}

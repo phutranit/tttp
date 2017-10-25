@@ -3849,16 +3849,16 @@ public class ExcelUtil {
 		
 		List<String[]> header1 = new LinkedList<>();
 		// Colname, fromRow, toRow, fromCol, toCol
-		header1.add(new String[] {"Đơn vị", "10", "13", "0", "0"});
+		header1.add(new String[] {"Đơn vị", "10", "12", "0", "0"});
 		
-		header1.add(new String[] {"Số cuộc thanh tra", "10", "10", "1", "7"});
-		header1.add(new String[] {"Tổng số", "11", "13", "1", "1"});
+		header1.add(new String[] {"Số cuộc thanh tra", "10", "10", "1", "5"});
+		header1.add(new String[] {"Tổng số", "11", "12", "1", "1"});
 		header1.add(new String[] {"Đang thực hiện", "11", "11", "2", "3"});
-		header1.add(new String[] {"Kỳ trước chuyển sang", "12", "13", "2", "2"});
-		header1.add(new String[] {"Triển khai trong kỳ báo cáo", "12", "13", "3", "3"});
+		header1.add(new String[] {"Kỳ trước chuyển sang", "12", "12", "2", "2"});
+		header1.add(new String[] {"Triển khai trong kỳ báo cáo", "12", "12", "3", "3"});
 		header1.add(new String[] {"Tiến độ", "11", "11", "4", "5"});
-		header1.add(new String[] {"Kết thúc thanh tra trực tiếp", "12", "13", "4", "4"});
-		header1.add(new String[] {"Đã ban hành kết luận", "12", "13", "5", "5"});
+		header1.add(new String[] {"Kết thúc thanh tra trực tiếp", "12", "12", "4", "4"});
+		header1.add(new String[] {"Đã ban hành kết luận", "12", "12", "5", "5"});
 		
 		header1.add(new String[] {"Căn cứ thanh tra lại (số cuộc)","10","10","6","10"});
 		header1.add(new String[] {"Vi phạm trình tự, thủ tục dẫn đến sai lệch nghiêm trọng KL","11","12","6","6"});
@@ -3875,8 +3875,8 @@ public class ExcelUtil {
 		header1.add(new String[] {"Đất (m2)", "11", "12", "14", "14"});
 		
 		header1.add(new String[] {"Kiến nghị thu hồi", "10", "10", "15", "16"});
-		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "16", "16"});
-		header1.add(new String[] {"Đất (m2)", "11", "12", "17", "17"});
+		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "15", "15"});
+		header1.add(new String[] {"Đất (m2)", "11", "12", "16", "16"});
 		
 		header1.add(new String[] {"Kiến nghị khác", "10", "10", "17", "18"});
 		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "17", "17"});
@@ -3884,21 +3884,21 @@ public class ExcelUtil {
 		
 		header1.add(new String[] {"Kiến nghị xử lý", "10", "10", "19", "22"});
 		header1.add(new String[] {"Hành chính", "11", "11", "19", "20"});
-		header1.add(new String[] {"Tổ chức", "12", "13", "19", "19"});
-		header1.add(new String[] {"Cá nhân", "12", "13", "20", "20"});
+		header1.add(new String[] {"Tổ chức", "12", "12", "19", "19"});
+		header1.add(new String[] {"Cá nhân", "12", "12", "20", "20"});
 		header1.add(new String[] {"Chuyển cơ quan điều tra", "11", "11", "21", "22"});
-		header1.add(new String[] {"Vụ", "12", "13", "21", "21"});
-		header1.add(new String[] {"Đối tượng", "12", "13", "22", "22"});
+		header1.add(new String[] {"Vụ", "12", "12", "21", "21"});
+		header1.add(new String[] {"Đối tượng", "12", "12", "22", "22"});
 		
 		header1.add(new String[] {"Kết quả thực hiện","10","10","23","28"});
-		header1.add(new String[] {"Tiền đã thu (Trđ)","12","13","23","23"});
-		header1.add(new String[] {"Đất đã thu (m2)","12","13","24","24"});
-		header1.add(new String[] {"Đã xử lý hành chính","12","12","25","26"});
-		header1.add(new String[] {"Tổ chức","13","13","25","25"});
-		header1.add(new String[] {"Cá nhân","13","13","26","26"});
-		header1.add(new String[] {"Đã khởi tố","12","12","27","28"});
-		header1.add(new String[] {"Vụ","13","13","27","27"});
-		header1.add(new String[] {"Đối tượng","13","13","28","28"});
+		header1.add(new String[] {"Tiền đã thu (Trđ)","11","12","23","23"});
+		header1.add(new String[] {"Đất đã thu (m2)","11","12","24","24"});
+		header1.add(new String[] {"Đã xử lý hành chính","11","11","25","26"});
+		header1.add(new String[] {"Tổ chức","12","12","25","25"});
+		header1.add(new String[] {"Cá nhân","12","12","26","26"});
+		header1.add(new String[] {"Đã khởi tố","11","11","27","28"});
+		header1.add(new String[] {"Vụ","12","12","27","27"});
+		header1.add(new String[] {"Đối tượng","12","12","28","28"});
 		
 		header1.add(new String[] {"Ghi chú", "10", "12", "29", "29"});
 		
@@ -3948,7 +3948,7 @@ public class ExcelUtil {
 			c  = row.createCell(0);
 			c.setCellValue(title);
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "RED", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 29));
 
 			
 			idx+=2; //idx = 7
@@ -3966,7 +3966,7 @@ public class ExcelUtil {
 			String name;
 			Integer row1, row2, col1, col2;
 			
-			CellRangeAddress range;
+			CellRangeAddress range = null;
 			
 			for (String[] head : header1) {
 				name = (String) head[0];
@@ -3982,7 +3982,13 @@ public class ExcelUtil {
 				
 				if(row1 == row2 && col1 == col2){
 				} else {
-					range = new CellRangeAddress(row1, row2, col1, col2);
+					try {
+						range = new CellRangeAddress(row1, row2, col1, col2);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("row1: " + row1 + " _ row2: " + row2 + " _ col1: " + col1 + " _ col2: " + col2);
+					}
+					
 					sheet1.addMergedRegion(range);
 					RegionUtil.setBorderBottom(BorderStyle.THIN.getCode(), range, sheet1);
 					RegionUtil.setBorderTop(BorderStyle.THIN.getCode(), range, sheet1);
@@ -3991,9 +3997,9 @@ public class ExcelUtil {
 				}
 			}
 			
-			row = sheet1.createRow(++idx); //idx = 13
+			row = sheet1.createRow(idx); //idx = 13
 			row.setHeight((short)900);
-			for (int i = 0; i <= 31; i++) {
+			for (int i = 0; i <= 29; i++) {
 				c  = row.createCell(i);
 				if(i==0) { c.setCellValue("MS"); }
 				else if(i==1) { c.setCellValue("1=(2+3)=(4+5)"); }
