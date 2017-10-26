@@ -2262,4 +2262,16 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	private boolean isSaveTmp = true;
+
+	@Transient
+	public boolean isSaveTmp() {
+		return isSaveTmp;
+	}
+
+	public void setSaveTmp(boolean isSaveTmp) {
+		this.isSaveTmp = isSaveTmp;
+	}
+	
 }
