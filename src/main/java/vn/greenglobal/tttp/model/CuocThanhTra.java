@@ -219,6 +219,9 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donVi;//
+	
+	// Tmp
+	private DoiTuongThanhTra doiTuongThanhTraTrung;
 
 	// Theo doi thuc hien
 	// @Fetch(FetchMode.SELECT)
@@ -1273,4 +1276,33 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 				getNgayHetHanThanhTra(),
 				getNgayHetHanGiaHanThanhTra());
 	}
+
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public DoiTuongThanhTra getDoiTuongThanhTraTrung() {
+		return doiTuongThanhTraTrung;
+	}
+
+	public void setDoiTuongThanhTraTrung(DoiTuongThanhTra doiTuongThanhTraTrung) {
+		this.doiTuongThanhTraTrung = doiTuongThanhTraTrung;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	private Map<String, Object> getDoiTuongThanhTraTrungInfo() {
+		if (getDoiTuongThanhTraTrung() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("doiTuongThanhTraId", getDoiTuongThanhTraTrung().getId());
+			map.put("ten", getDoiTuongThanhTraTrung().getTen());
+			map.put("loaiDoiTuongThanhTraInfo", getDoiTuongThanhTraTrung().getLoaiDoiTuongThanhTraInfo());
+			map.put("linhVucDoiTuongThanhTraInfo", getDoiTuongThanhTraTrung().getLinhVucDoiTuongThanhTraInfo());
+			map.put("diaChi", getDoiTuongThanhTraTrung().getDiaChi());
+			map.put("ghiChu", getDoiTuongThanhTraTrung().getGhiChu());
+			map.put("soDienThoai", getDoiTuongThanhTraTrung().getSoDienThoai());
+			return map;
+		}
+		return null;
+	}
+	
+	
 }

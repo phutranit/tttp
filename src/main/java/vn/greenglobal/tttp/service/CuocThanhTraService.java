@@ -16,6 +16,7 @@ import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -45,7 +46,7 @@ public class CuocThanhTraService {
 		}
 		
 		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
-			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tenDoiTuongThanhTra));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tenDoiTuongThanhTra)));
 		}
 		
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
@@ -94,7 +95,7 @@ public class CuocThanhTraService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindThanhTraTrungResult(List<Long> cuocThanhTraIds, String tenDoiTuongThanhTra, String soQuyetDinh) {
+	public Predicate predicateFindThanhTraTrungResultOld(List<Long> cuocThanhTraIds, String tenDoiTuongThanhTra, String soQuyetDinh) {
 		BooleanExpression predAll = base;
 		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.daXoa.eq(false))
 				.and(QCuocThanhTra.cuocThanhTra.id.in(cuocThanhTraIds));
@@ -109,12 +110,39 @@ public class CuocThanhTraService {
 	
 		return predAll;
 	}
-			
-	public Predicate predicateFindThanhTraTrung(int namThanhTra) {
+	
+	public Predicate predicateFindThanhTraTrungResult(Long cuocThanhTraId, DoiTuongThanhTra doiTuongThanhTra) {
 		BooleanExpression predAll = base;
-		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.id.eq(cuocThanhTraId))
+				.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTra.getId())
+						.or(QCuocThanhTra.cuocThanhTra.doiTuongThanhTras.any().id.eq(doiTuongThanhTra.getId())));
+	
+		return predAll;
+	}
+			
+	public Predicate predicateFindThanhTraTrungOld(int namThanhTra) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
+		return predAll;
+	}
+	
+	public Predicate predicateFindThanhTraTrung(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
+		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
+		}
+		
+		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tenDoiTuongThanhTra)));
+		}
+		
+		if (soQuyetDinhPheDuyetKHTT != null && StringUtils.isNotBlank(soQuyetDinhPheDuyetKHTT.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()
+					.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinhPheDuyetKHTT)));
+		}
+		
 		return predAll;
 	}
 

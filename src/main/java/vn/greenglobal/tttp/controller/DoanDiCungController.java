@@ -25,7 +25,6 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.DoanDiCung;
-import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.medial.Medial_DoanDiCung;
 import vn.greenglobal.tttp.model.medial.Medial_DoanDiCung_Delete;
 import vn.greenglobal.tttp.model.medial.Medial_DoanDiCung_Post_Patch;
@@ -36,7 +35,7 @@ import vn.greenglobal.tttp.util.Utils;
 @RestController
 @RepositoryRestController
 @Api(value = "doanDiCungs", description = "Đoàn đi cùng")
-public class DoanDiCungController extends TttpController<Don_CongDan> {
+public class DoanDiCungController extends TttpController<DoanDiCung> {
 
 	@Autowired
 	private DoanDiCungRepository repo;
@@ -44,7 +43,7 @@ public class DoanDiCungController extends TttpController<Don_CongDan> {
 	@Autowired
 	private DoanDiCungService doanDiCungService;
 
-	public DoanDiCungController(BaseRepository<Don_CongDan, Long> repo) {
+	public DoanDiCungController(BaseRepository<DoanDiCung, Long> repo) {
 		super(repo);
 	}
 
