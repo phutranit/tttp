@@ -149,6 +149,7 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
 						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonViCon/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaPhatHienThamNhungQuaThanhTra/xuatExcel",
 						"/soTiepCongDans/danhSachYeuCauGapLanhDao/excel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraLai/xuatExcel",
 						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonVi/xuatExcel",
