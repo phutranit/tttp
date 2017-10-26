@@ -1601,7 +1601,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "noiDung", required = true) String noiDung,
-			@RequestParam(value = "diaChi", required = false) String diaChi, HttpServletResponse response) {
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "soCMNDHoChieu", required = false) String soCMNDHoChieu, 
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap, 
+			HttpServletResponse response) {
 		
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
@@ -1631,6 +1635,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChi", diaChi);
+			mappings.put("soCMNDHoChieu", soCMNDHoChieu);
+			mappings.put("noiCap", noiCap);
+			mappings.put("ngayCap", ngayCap);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 		} catch (Exception e) {
