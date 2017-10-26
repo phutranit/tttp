@@ -348,6 +348,96 @@ public class ThongKeTongHopThanhTraService {
 		return tongGiaTri;
 	}
 	
+	public Long getSoVuNguoiThamNhung(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo, String type) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		if (type.equals("VU")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getSoVuThamNhung()).mapToInt(Integer::intValue).sum());
+		} else if (type.equals("NGUOI")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getSoDoiTuongThamNhung()).mapToInt(Integer::intValue).sum());
+		}
+		
+		return tongGiaTri;
+	}
+	
+	public Long getSoKienNghiXuLyHanhChinhThamNhung(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo, String type) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		if (type.equals("TO_CHUC")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getToChucXuLyHanhChinhThamNhung()).mapToInt(Integer::intValue).sum());
+		} else if (type.equals("CA_NHAN")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getCaNhanXuLyHanhChinhThamNhung()).mapToInt(Integer::intValue).sum());
+		}
+		
+		return tongGiaTri;
+	}
+	
+	public Long getSoChuyenCoQuanDieuTraThamNhung(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo, String type) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		if (type.equals("VU")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getSoVuThamNhung()).mapToInt(Integer::intValue).sum());
+		} else if (type.equals("DOI_TUONG")) {
+			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getSoDoiTuongThamNhung()).mapToInt(Integer::intValue).sum());
+		}
+		
+		return tongGiaTri;
+	}
+	
+	public Long getGiaTriThamNhung(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo, String type, String loaiGiaTri) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		if (type.equals("TAI_SAN_THAM_NHUNG")) {
+			if (loaiGiaTri.equals("TONG_TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienThamNhung() + elem.getTaiSanKhacThamNhung()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienThamNhung()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TAI_SAN_KHAC")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTaiSanKhacThamNhung()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("DAT")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getDatThamNhung()).mapToLong(Long::longValue).sum());
+			}			
+		} else if (type.equals("KIEN_NGHI_THU_HOI")) {
+			if (loaiGiaTri.equals("TONG_TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienKienNghiThuHoi() + elem.getTaiSanKhacKienNghiThuHoi()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienKienNghiThuHoi()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TAI_SAN_KHAC")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTaiSanKhacKienNghiThuHoi()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("DAT")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getDatKienNghiThuHoi()).mapToLong(Long::longValue).sum());
+			}
+		} else if (type.equals("DA_THU")) {
+			if (loaiGiaTri.equals("TONG_TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienDaThu() + elem.getTaiSanKhacDaThu()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TIEN")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTienDaThu()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("TAI_SAN_KHAC")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getTaiSanKhacDaThu()).mapToLong(Long::longValue).sum());
+			} else if (loaiGiaTri.equals("DAT")) {
+				tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getDatDaThu()).mapToLong(Long::longValue).sum());
+			}
+		}
+		
+		return tongGiaTri;
+	}
+	
 	
 	// 9
 	public Predicate predicateFindCuocThanhTraCoViPham(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
