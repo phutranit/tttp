@@ -108,8 +108,7 @@ public class DonService {
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu,
 			Set<VaiTro> vaitros, String hoTen, String trangThaiDonToanHT, String ketQuaToanHT, XuLyDonRepository xuLyRepo, DonRepository donRepo,
-			GiaiQuyetDonRepository giaiQuyetDonRepo, boolean coQuyTrinh) {
-		System.out.println("===========================predicateFindAll: " + phongBanGiaiQuyetXLD + " __ phongBanXuLyXLD: " + phongBanXuLyXLD);
+			GiaiQuyetDonRepository giaiQuyetDonRepo, boolean coQuyTrinh) {		
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()

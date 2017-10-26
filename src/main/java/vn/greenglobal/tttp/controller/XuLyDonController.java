@@ -255,7 +255,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							if (xuLyDon != null) {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
 							}
-							System.out.println("====================getThongTinXuLyDon: " + (xuLyDon != null ? xuLyDon.getId() : "null roi"));
 						}
 					} Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
@@ -705,8 +704,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
 						coQuyTrinh);	
-				System.out.println("donId: " + donId + " _ donViId: " + donViId + " _ coQuanQuanLyId: " + coQuanQuanLyId + " _ congChucId: " + congChucId + " _ vaiTroNguoiDungHienTai: " + vaiTroNguoiDungHienTai);
-				System.out.println("=====createWorkflow: " + (xuLyDonHienTai != null ? xuLyDonHienTai.getId() : "null roi"));
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();
@@ -2965,10 +2962,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLDTaiDonViTTXM.setDonViXuLy(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
 		lichSuQTXLDTaiDonViTTXM.setThuTuThucHien(0);
 		
-		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-		System.out.println("lichSuQTXLD: " + lichSuQTXLD.getId());
+		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);		
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLDTaiDonViTTXM, congChucId);
-		System.out.println("lichSuQTXLDTaiDonViTTXM: " + lichSuQTXLDTaiDonViTTXM.getId());
 		
 		return xuLyDonHienTai;
 	}
