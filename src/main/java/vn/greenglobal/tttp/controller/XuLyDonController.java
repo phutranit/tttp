@@ -480,12 +480,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							Predicate predicateProcess = processService.predicateFindAllByDonVi(
 									coQuanQuanLyRepo.findOne(donViXuLyId), ProcessTypeEnum.XU_LY_DON);
 							List<Process> processes = (List<Process>) repoProcess.findAll(predicateProcess);
-
+							
 							// Vai tro tiep theo
 							List<State> states = new ArrayList<State>();
 							Process pro = null;
 							List<Process> listProcessHaveBeginState = new ArrayList<Process>();
-							for (Process processFromList : processes) {
+							for (Process processFromList : processes) {								
 								Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList,
 										repoTransition);
 								states = ((List<State>) repoState.findAll(predicate));
@@ -1074,7 +1074,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									states = ((List<State>) repoState.findAll(predicate));						
 									if (states.size() > 0) {
 										State state = states.get(0);
-										if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+										if (!state.getType().equals(FlowStateEnum.KET_THUC)) {
 											listProcessHaveBeginState.add(processFromList);
 											break;
 										}						
@@ -1487,6 +1487,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getPhongBanXuLyChiDinh() != null) {
 			xuLyDonHienTai.setPhongBanXuLyChiDinh(xuLyDon.getPhongBanXuLyChiDinh());
 		}
+		
+		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
+		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
 		if (StringUtils.isNotBlank(xuLyDon.getNoiDungYeuCauXuLy())) {
 			xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungYeuCauXuLy());
 		}
@@ -3203,6 +3206,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donOld.setCurrentState(beginState);
 		donOld.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		donOld.setHoanThanhDon(true);
+		donOld.setNgayKetThucXLD(Utils.localDateTimeNow());
 		
 		//tao don moi cua don vi chuyen den
 		Don donMoi = new Don();
@@ -3213,6 +3217,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		donMoi.setNgayBatDauXLD(Utils.localDateTimeNow());
 		donMoi.setNgayTiepNhan(Utils.localDateTimeNow());
+		donMoi.setNgayKetThucXLD(null);
 		ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 		Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 		donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
@@ -3455,6 +3460,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donGoc.setCanBoXuLyChiDinh(null);
 		donGoc.setXuLyDonCuoiCungId(null);
 		donGoc.setHoanThanhDon(false);
+		donGoc.setNgayKetThucXLD(null);
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();

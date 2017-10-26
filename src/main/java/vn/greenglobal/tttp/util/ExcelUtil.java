@@ -172,7 +172,7 @@ public class ExcelUtil {
 			List<Don> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		try {
 
 			CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "", "CENTER");
@@ -305,7 +305,7 @@ public class ExcelUtil {
 			List<SoTiepCongDan> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		try {
 
 			CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "", "CENTER");
@@ -436,7 +436,7 @@ public class ExcelUtil {
 			List<SoTiepCongDan> list, String title) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		try {
 
 			CellStyle cellCenter = setBorderAndFont(wb, 1, true, 11, "", "CENTER");
@@ -481,27 +481,35 @@ public class ExcelUtil {
 			c = row.createCell(0);
 			c.setCellValue("STT");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(1);
 			c.setCellValue("Ngày tiếp công dân");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(2);
-			c.setCellValue("Lãnh đạo tiếp dân");
-			c.setCellStyle(cellCenter);
-			c = row.createCell(3);
 			c.setCellValue("Người đứng đơn");
 			c.setCellStyle(cellCenter);
-			c = row.createCell(4);
+			
+			c = row.createCell(3);
 			c.setCellValue("Tóm tắt nội dung");
 			c.setCellStyle(cellCenter);
-			c = row.createCell(5);
+			
+			c = row.createCell(4);
 			c.setCellValue("Phân loại đơn/Số người");
 			c.setCellStyle(cellCenter);
-			c = row.createCell(6);
+			
+			c = row.createCell(5);
 			c.setCellValue("Cơ quan đã giải quyết");
 			c.setCellStyle(cellCenter);
+			
+			c = row.createCell(6);
+			c.setCellValue("Lãnh đạo tiếp dân");
+			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(7);
 			c.setCellValue("Kết quả tiếp dân");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(8);
 			c.setCellValue("Tình trạng xử lý");
 			c.setCellStyle(cellCenter);
@@ -513,28 +521,38 @@ public class ExcelUtil {
 				c = row.createCell(0);
 				c.setCellValue(i);
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(1);
 				c.setCellValue(tcd.getNgayTiepDan().format(formatter));
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(2);
-				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
-				c.setCellStyle(cellCenter);
-				c = row.createCell(3);
 				c.setCellValue(tcd.getDon().getListNguoiDungDon().get(0).getCongDan().getTenDiaChiSoDienThoai());
 				c.setCellStyle(cellLeft);
-				c = row.createCell(4);
+				
+				c = row.createCell(3);
 				c.setCellValue(tcd.getDon().getNoiDung());
 				c.setCellStyle(cellLeft);
-				c = row.createCell(5);
+				
+				c = row.createCell(4);
 				c.setCellValue(tcd.getDon().getLoaiDon().getText() + " / " + tcd.getDon().getSoNguoi() +" người");
 				c.setCellStyle(cellCenter);
-				c = row.createCell(6);
+				
+
+				c = row.createCell(5);
 				c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null
 						? tcd.getDon().getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellLeft);
-				c = row.createCell(7);
-				c.setCellValue(tcd.getHuongGiaiQuyetTCDLanhDao() != null ? tcd.getHuongGiaiQuyetTCDLanhDao().getText() : "");
+				
+				
+				c = row.createCell(6);
+				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
 				c.setCellStyle(cellCenter);
+				
+				c = row.createCell(7);
+				c.setCellValue(tcd.getHuongGiaiQuyetTCDLanhDaoStr() != null ? tcd.getHuongGiaiQuyetTCDLanhDaoStr() : "");
+				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(8);
 				c.setCellValue(tcd.getTinhTrangXuLyLanhDaoStr());
 				c.setCellStyle(cellCenter);
@@ -612,15 +630,19 @@ public class ExcelUtil {
 			row = sheet1.createRow(idx);
 			idx++;
 			row.setHeight((short) 800);
+			
 			c = row.createCell(0);
 			c.setCellValue("STT");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(1);
 			c.setCellValue("Mã đơn");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(2);
 			c.setCellValue("Ngày tiếp nhận");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(3);
 			c.setCellValue("Người đứng đơn");
 			c.setCellStyle(cellCenter);
@@ -628,6 +650,7 @@ public class ExcelUtil {
 			c = row.createCell(4);
 			c.setCellValue("Tóm tắc nội dung/Hạn xử lý");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(5);
 			c.setCellValue("Phân loại đơn/Số người");
 			c.setCellStyle(cellCenter);
@@ -639,9 +662,11 @@ public class ExcelUtil {
 			c = row.createCell(7);
 			c.setCellValue("Cơ quan đã giải quyết");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(8);
 			c.setCellValue("Tình trạng xử lý/Kết quả xử lý");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(9);
 			c.setCellValue("Cán bộ xử lý");
 			c.setCellStyle(cellCenter);

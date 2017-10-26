@@ -2388,7 +2388,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 							loaiKy, year, quy, month, tuNgay, denNgay);
 					Long tongSoDonTiepNhanXLDTCD = tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy + tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy + tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang + 
 							tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
-						
+					
 					//tong so don - 1
 					tongCongTongSoDonTiepNhanXLDTCD1 += tongSoDonTiepNhanXLDTCD;
 					mapMaSo.put("tongSoDonTiepNhanXLDTCD", tongSoDonTiepNhanXLDTCD);
