@@ -35,6 +35,7 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
@@ -102,9 +103,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTraTrungs")
+	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTraTrungOlds")
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra Trùng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Object getListThanhTraTrung(
+	public @ResponseBody Object getListThanhTraTrungOld(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
@@ -122,15 +123,57 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			int current = Utils.localDateTimeNow().getYear();
 			
 			if (namThanhTra != null && namThanhTra > 0) {
-				cuocThanhTraIds.addAll(getCuocThanhTraIds(namThanhTra));
+				cuocThanhTraIds.addAll(getCuocThanhTraIdsOld(namThanhTra));
 			} else {
 				for (int i = current; i >= 2010; i--) {
-					cuocThanhTraIds.addAll(getCuocThanhTraIds(i));
+					cuocThanhTraIds.addAll(getCuocThanhTraIdsOld(i));
 				}
 			}
 			
-			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult(cuocThanhTraIds, tenDoiTuongThanhTra, soQuyetDinh), pageable);
+			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResultOld(cuocThanhTraIds, tenDoiTuongThanhTra, soQuyetDinh), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTraTrungs")
+	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra Trùng", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListThanhTraTrung(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
+			@RequestParam(value = "soQuyetDinhPheDuyetKHTT", required = false) String soQuyetDinhPheDuyetKHTT,
+			@RequestParam(value = "donViId", required = false) Long donViId,
+			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
+			Pageable pageable, PersistentEntityResourceAssembler eass) {
+
+		try {
+			
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			List<List<Object>> cuocThanhTraIdVaDoiTuongIds = new ArrayList<List<Object>>();
+			List<CuocThanhTra> listResult = new ArrayList<CuocThanhTra>();
+			int current = Utils.localDateTimeNow().getYear();
+			
+			if (namThanhTra != null && namThanhTra > 0) {
+				cuocThanhTraIdVaDoiTuongIds.addAll(getCuocThanhTraIdVaDoiTuongIds(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
+			} else {
+				for (int i = current; i >= 2010; i--) {
+					cuocThanhTraIdVaDoiTuongIds.addAll(getCuocThanhTraIdVaDoiTuongIds(i, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
+				}
+			}
+			
+			for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
+				List<CuocThanhTra> ctts = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult((Long) l.get(0), (DoiTuongThanhTra) l.get(1)));
+				ctts.get(0).setDoiTuongThanhTraTrung((DoiTuongThanhTra) l.get(1));
+				listResult.add(ctts.get(0));
+			}
+			
+			return assembler.toResource(new PageImpl<CuocThanhTra>(listResult, pageable, listResult.size()), (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
@@ -333,41 +376,93 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		return cuocThanhTra;
 	}
 	
-	private List<Long> getCuocThanhTraIds(int namThanhTra) {
+	private List<Long> getCuocThanhTraIdsOld(int namThanhTra) {
 		List<Long> cuocThanhTraIds = new ArrayList<Long>();
-		List<CuocThanhTra> listCuocThanhTraCoKeHoachThanhTraTheoNam = (List<CuocThanhTra>) repo
-				.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra));
-		if (listCuocThanhTraCoKeHoachThanhTraTheoNam != null && listCuocThanhTraCoKeHoachThanhTraTheoNam.size() > 0) {
-			for (int j = 0; j < listCuocThanhTraCoKeHoachThanhTraTheoNam.size() - 1; j++) {
-				for (int k = j + 1; k < listCuocThanhTraCoKeHoachThanhTraTheoNam.size(); k++) {
-					if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
-							listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
+		List<CuocThanhTra> listCuocThanhTraTheoNam = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungOld(namThanhTra));
+		
+		if (listCuocThanhTraTheoNam != null && listCuocThanhTraTheoNam.size() > 0) {
+			for (int j = 0; j < listCuocThanhTraTheoNam.size() - 1; j++) {
+				for (int k = j + 1; k < listCuocThanhTraTheoNam.size(); k++) {
+					if (listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
+							listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
 						if (cuocThanhTraIds.size() > 0) {
 							boolean flagJ = false;
 							boolean flagK = false;
 							for (Long l : cuocThanhTraIds) {
-								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId().equals(l)) {
+								if (listCuocThanhTraTheoNam.get(j).getId().equals(l)) {
 									flagJ = true;
 								}
-								if (listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId().equals(l)) {
+								if (listCuocThanhTraTheoNam.get(k).getId().equals(l)) {
 									flagK = true;
 								}
 							}
 							if (!flagJ) {
-								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
+								cuocThanhTraIds.add(listCuocThanhTraTheoNam.get(j).getId());
 							}
 							if (!flagK) {
-								cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+								cuocThanhTraIds.add(listCuocThanhTraTheoNam.get(k).getId());
 							}
 						} else {
-							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(j).getId());
-							cuocThanhTraIds.add(listCuocThanhTraCoKeHoachThanhTraTheoNam.get(k).getId());
+							cuocThanhTraIds.add(listCuocThanhTraTheoNam.get(j).getId());
+							cuocThanhTraIds.add(listCuocThanhTraTheoNam.get(k).getId());
 						}
 					}
 				}
 			}
 		}
 		return cuocThanhTraIds;
+	}
+	
+	private List<List<Object>> getCuocThanhTraIdVaDoiTuongIds(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
+		List<List<Object>> cuocThanhTraIdVaDoiTuongIds = new ArrayList<List<Object>>();
+		List<CuocThanhTra> listCuocThanhTraTheoNam = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
+		List<Object> ids = null;
+		
+		if (listCuocThanhTraTheoNam != null && listCuocThanhTraTheoNam.size() > 0) {
+			for (int j = 0; j < listCuocThanhTraTheoNam.size() - 1; j++) {
+				for (int k = j + 1; k < listCuocThanhTraTheoNam.size(); k++) {
+					if (listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
+							listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
+						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
+							boolean flagJ = false;
+							boolean flagK = false;
+							for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
+								if (listCuocThanhTraTheoNam.get(j).getId().equals(l.get(0))
+										&& listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId().equals(l.get(1))) {
+									flagJ = true;
+								}
+								if (listCuocThanhTraTheoNam.get(k).getId().equals(l.get(0))
+										&& listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(l.get(1))) {
+									flagK = true;
+								}
+							}
+							if (!flagJ) {
+								ids = new ArrayList<Object>();
+								ids.add(listCuocThanhTraTheoNam.get(j).getId());
+								ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+								cuocThanhTraIdVaDoiTuongIds.add(ids);
+							}
+							if (!flagK) {
+								ids = new ArrayList<Object>();
+								ids.add(listCuocThanhTraTheoNam.get(k).getId());
+								ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+								cuocThanhTraIdVaDoiTuongIds.add(ids);
+							}
+						} else {
+							ids = new ArrayList<Object>();
+							ids.add(listCuocThanhTraTheoNam.get(j).getId());
+							ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+							cuocThanhTraIdVaDoiTuongIds.add(ids);
+							ids = new ArrayList<Object>();
+							ids.add(listCuocThanhTraTheoNam.get(k).getId());
+							ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+							cuocThanhTraIdVaDoiTuongIds.add(ids);
+						}
+					}
+				}
+			}
+		}
+		return cuocThanhTraIdVaDoiTuongIds;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/thoiHanThanhTra")

@@ -694,31 +694,33 @@ public class DonController extends TttpController<Don> {
 				Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 				if (don.isThanhLapDon()) {
-					if (don.getLoaiDon() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
-								ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
-					}
-					if (don.getLinhVucDonThu() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
-								ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
-					}
-					if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
-								ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
-					}
-					if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
-						if (don.getLoaiDoiTuong() == null) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
-									ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+					if (!don.isSaveTmp()) {
+						if (don.getLoaiDon() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
+									ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
 						}
-					}
-					if (don.getLoaiVuViec() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
-								ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
-					}
-					if (don.getPhanLoaiDon() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
-								ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+						if (don.getLinhVucDonThu() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
+									ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
+						}
+						if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
+									ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
+						}
+						if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
+							if (don.getLoaiDoiTuong() == null) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
+										ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+							}
+						}
+						if (don.getLoaiVuViec() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
+									ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
+						}
+						if (don.getPhanLoaiDon() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+									ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+						}
 					}
 				}
 				don.setId(id);
