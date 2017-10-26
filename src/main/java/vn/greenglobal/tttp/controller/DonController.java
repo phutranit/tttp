@@ -533,45 +533,23 @@ public class DonController extends TttpController<Don> {
 					donMoi.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					//Vai tro tiep theo
 					List<State> listState = new ArrayList<State>();
-					Process process = null;
 					List<Process> listProcessHaveBeginState = new ArrayList<Process>();
-					String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 					for (Process processFromList : listProcess) {
 						Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 						listState = ((List<State>) repoState.findAll(predicate));						
-						if (listState.size() > 0 && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
+						if (listState.size() > 0) {
 							State state = listState.get(0);
 							if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 								listProcessHaveBeginState.add(processFromList);
-								break;
 							}						
-						}
-					}
-					
-					Transition transition = null;
-					if (listProcessHaveBeginState.size() > 0) {
-						process = listProcessHaveBeginState.get(0);
-						if (listState.size() < 1) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-									ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
-						} else {
-							for (State stateFromList : listState) {
-								transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-								if (transition != null) {
-									break;
-								} 						
-							}
-							if (transition == null) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-										ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-							}
 						}
 					}
 
 					// Them xu ly don
 					XuLyDon xuLyDon = new XuLyDon();
 					xuLyDon.setDon(donMoi);
-					xuLyDon.setChucVu(transition != null ? transition.getProcess().getVaiTro().getLoaiVaiTro() : null);
+					xuLyDon.setChucVu(listProcessHaveBeginState.size() == 1 || listProcessHaveBeginState.size() == 2 ? listProcessHaveBeginState.get(0).getVaiTro().getLoaiVaiTro() : null);
+					xuLyDon.setChucVu2(listProcessHaveBeginState.size() == 2 ? listProcessHaveBeginState.get(1).getVaiTro().getLoaiVaiTro() : null);
 					//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 					xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					xuLyDon.setThuTuThucHien(0);
@@ -817,38 +795,15 @@ public class DonController extends TttpController<Don> {
 						
 						//Vai tro tiep theo
 						List<State> listState = new ArrayList<State>();
-						Process process = null;
 						List<Process> listProcessHaveBeginState = new ArrayList<Process>();
-						String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 						for (Process processFromList : listProcess) {
 							Predicate predicate = serviceState.predicateFindAll(beginState.getId(), processFromList, repoTransition);
 							listState = ((List<State>) repoState.findAll(predicate));
-							if (listState.size() > 0  && processFromList.getVaiTro().getLoaiVaiTro().toString().equals(vaiTroNguoiDungHienTai)) {
+							if (listState.size() > 0 ) {
 								State state = listState.get(0);
 								if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
 									listProcessHaveBeginState.add(processFromList);
-									break;
 								}						
-							}
-						}
-						
-						Transition transition = null;
-						if (listProcessHaveBeginState.size() > 0) {
-							process = listProcessHaveBeginState.get(0);
-							if (listState.size() < 1) {
-								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_INVALID.name(),
-										ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
-							} else {
-								for (State stateFromList : listState) {
-									transition = transitionRepo.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
-									if (transition != null) {
-										break;
-									} 						
-								}
-								if (transition == null) {
-									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_FORBIDDEN.name(),
-											ApiErrorEnum.TRANSITION_FORBIDDEN.getText(), ApiErrorEnum.TRANSITION_FORBIDDEN.getText());
-								}
 							}
 						}
 						
@@ -870,7 +825,8 @@ public class DonController extends TttpController<Don> {
 						
 						XuLyDon xuLyDon = new XuLyDon();
 						xuLyDon.setDon(don);
-						xuLyDon.setChucVu(transition != null ? transition.getProcess().getVaiTro().getLoaiVaiTro() : null);
+						xuLyDon.setChucVu(listProcessHaveBeginState.size() == 1 || listProcessHaveBeginState.size() == 2 ? listProcessHaveBeginState.get(0).getVaiTro().getLoaiVaiTro() : null);
+						xuLyDon.setChucVu2(listProcessHaveBeginState.size() == 2 ? listProcessHaveBeginState.get(1).getVaiTro().getLoaiVaiTro() : null);
 						//xuLyDon.setPhongBanXuLy(coQuanQuanLyRepo.findOne(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)));
 						xuLyDon.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 						xuLyDon.setThuTuThucHien(0);
