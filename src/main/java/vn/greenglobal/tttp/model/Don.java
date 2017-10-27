@@ -2272,15 +2272,15 @@ public class Don extends Model<Don> {
 		return list;
 	}
 	
-	private boolean isSaveTmp = true;
+	private boolean saveTmp = true;
 
 	@Transient
 	public boolean isSaveTmp() {
-		return isSaveTmp;
+		return saveTmp;
 	}
 
-	public void setSaveTmp(boolean isSaveTmp) {
-		this.isSaveTmp = isSaveTmp;
+	public void setSaveTmp(boolean saveTmp) {
+		this.saveTmp = saveTmp;
 	}
 	
 }

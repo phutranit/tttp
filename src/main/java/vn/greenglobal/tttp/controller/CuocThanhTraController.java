@@ -39,8 +39,10 @@ import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.ThanhVienDoan;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.DoiTuongThanhTraRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CuocThanhTraService;
+import vn.greenglobal.tttp.service.DoiTuongThanhTraService;
 import vn.greenglobal.tttp.service.ThanhVienDoanService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -54,6 +56,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
+	
+	@Autowired
+	private DoiTuongThanhTraRepository doiTuongThanhTraRepository;
 
 	@Autowired
 	private CuocThanhTraService cuocThanhTraService;
@@ -63,6 +68,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	
 	@Autowired
 	private CoQuanQuanLyService coQuanQuanLyService;
+	
+	@Autowired
+	private DoiTuongThanhTraService doiTuongThanhTraService;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -156,7 +164,10 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 			
 			List<List<Object>> cuocThanhTraIdVaDoiTuongIds = new ArrayList<List<Object>>();
+			List<List<Object>> cuocThanhTraIdVaDoiTuongIdsResult = new ArrayList<List<Object>>();
+			HashSet<String> cuocThanhTraIdVaDoiTuongIdsUnique = new HashSet<String>();
 			List<CuocThanhTra> listResult = new ArrayList<CuocThanhTra>();
+			
 			int current = Utils.localDateTimeNow().getYear();
 			
 			if (namThanhTra != null && namThanhTra > 0) {
@@ -167,9 +178,28 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 				}
 			}
 			
-			for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
-				List<CuocThanhTra> ctts = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult((Long) l.get(0), (DoiTuongThanhTra) l.get(1)));
-				ctts.get(0).setDoiTuongThanhTraTrung((DoiTuongThanhTra) l.get(1));
+			for (int j = 0; j <= cuocThanhTraIdVaDoiTuongIds.size() - 1; j++) {
+				cuocThanhTraIdVaDoiTuongIdsUnique.add(cuocThanhTraIdVaDoiTuongIds.get(j).get(0).toString().concat(((DoiTuongThanhTra) cuocThanhTraIdVaDoiTuongIds.get(j).get(1)).getId().toString()));
+			}
+			
+			if (cuocThanhTraIdVaDoiTuongIdsUnique != null && cuocThanhTraIdVaDoiTuongIdsUnique.size() > 0) {
+				List<String> strList = new ArrayList<String>(cuocThanhTraIdVaDoiTuongIdsUnique);
+				for (String u : strList) {
+					List<Object> ll = new ArrayList<Object>();
+					ll.add(u.substring(0, 1));
+					ll.add(u.substring(1, 2));
+					cuocThanhTraIdVaDoiTuongIdsResult.add(ll);
+				}
+			}
+			
+			System.out.println("cuocThanhTraIdVaDoiTuongIdsResult.size(): " + cuocThanhTraIdVaDoiTuongIdsResult.size());
+			
+			for (List<Object> l : cuocThanhTraIdVaDoiTuongIdsResult) {
+				DoiTuongThanhTra dt = doiTuongThanhTraRepository.findOne(doiTuongThanhTraService.predicateFindOne(Long.valueOf(l.get(1).toString())));
+				List<CuocThanhTra> ctts = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrungResult(Long.valueOf(l.get(0).toString()), dt));
+				ctts.get(0).setDoiTuongThanhTraTrung(dt);
+				System.out.println("DoiTuongThanhTra: " + ctts.get(0).getDoiTuongThanhTraTrung().getTen() + " --- "
+						+ ctts.get(0).getDoiTuongThanhTraTrung().getId() + "   CuocThanhTraId: " + ctts.get(0).getId());
 				listResult.add(ctts.get(0));
 			}
 			
@@ -421,48 +451,174 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		if (listCuocThanhTraTheoNam != null && listCuocThanhTraTheoNam.size() > 0) {
 			for (int j = 0; j < listCuocThanhTraTheoNam.size() - 1; j++) {
 				for (int k = j + 1; k < listCuocThanhTraTheoNam.size(); k++) {
-					if (listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(
-							listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId())) {
-						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
-							boolean flagJ = false;
-							boolean flagK = false;
-							for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
-								if (listCuocThanhTraTheoNam.get(j).getId().equals(l.get(0))
-										&& listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId().equals(l.get(1))) {
-									flagJ = true;
-								}
-								if (listCuocThanhTraTheoNam.get(k).getId().equals(l.get(0))
-										&& listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId().equals(l.get(1))) {
-									flagK = true;
-								}
-							}
-							if (!flagJ) {
+					List<DoiTuongThanhTra> listDoiTuongThanhTraOne = new ArrayList<DoiTuongThanhTra>();
+					List<DoiTuongThanhTra> listDoiTuongThanhTraTwo = new ArrayList<DoiTuongThanhTra>();
+					listDoiTuongThanhTraOne.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+					listDoiTuongThanhTraOne.addAll(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTras());
+					listDoiTuongThanhTraTwo.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+					listDoiTuongThanhTraTwo.addAll(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTras());
+					
+					List<DoiTuongThanhTra> trungNhieuDoiTuong = checkTrungNhieuDoiTuong(listDoiTuongThanhTraOne, listDoiTuongThanhTraTwo);
+					
+					if (trungNhieuDoiTuong.size() > 0) {
+//						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
+//							List<List<Boolean>> flag = new ArrayList<List<Boolean>>();
+//							for (DoiTuongThanhTra doiTuong : trungNhieuDoiTuong) {
+//								for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
+//									List<Boolean> tmp = new ArrayList<Boolean>();
+//									if (listCuocThanhTraTheoNam.get(j).getId().equals(l.get(0)) && doiTuong.equals(l.get(1))) {
+//										tmp.add(true);
+//									} else {
+//										tmp.add(false);
+//									}
+//									if (listCuocThanhTraTheoNam.get(k).getId().equals(l.get(0)) && doiTuong.equals(l.get(1))) {
+//										tmp.add(true);
+//									} else {
+//										tmp.add(false);
+//									}
+//									flag.add(tmp);
+//								}
+//							}
+//							
+//							for (int m = 0; m < trungNhieuDoiTuong.size(); m++) {
+//								if (!flag.get(m).get(0)) {
+//									ids = new ArrayList<Object>();
+//									ids.add(listCuocThanhTraTheoNam.get(j).getId());
+//									ids.add(trungNhieuDoiTuong.get(m));
+//									cuocThanhTraIdVaDoiTuongIds.add(ids);
+//									System.out.println("Add lan sau: " + ids.get(0) + " --- " + ((DoiTuongThanhTra) ids.get(1)).getId());
+//								}
+//								if (!flag.get(m).get(1)) {
+//									ids = new ArrayList<Object>();
+//									ids.add(listCuocThanhTraTheoNam.get(k).getId());
+//									ids.add(trungNhieuDoiTuong.get(m));
+//									cuocThanhTraIdVaDoiTuongIds.add(ids);
+//									System.out.println("Add lan sau: " + ids.get(0) + " --- " + ((DoiTuongThanhTra) ids.get(1)).getId());
+//								}
+//							}
+//						} else {
+//							boolean isThemLanDau = false;
+							for (DoiTuongThanhTra doiTuongThanhTra : trungNhieuDoiTuong) {
 								ids = new ArrayList<Object>();
 								ids.add(listCuocThanhTraTheoNam.get(j).getId());
-								ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+								ids.add(doiTuongThanhTra);
 								cuocThanhTraIdVaDoiTuongIds.add(ids);
-							}
-							if (!flagK) {
+								
 								ids = new ArrayList<Object>();
 								ids.add(listCuocThanhTraTheoNam.get(k).getId());
-								ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+								ids.add(doiTuongThanhTra);
 								cuocThanhTraIdVaDoiTuongIds.add(ids);
+								
+//								if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
+//									isThemLanDau = true;
+//									break;
+//								}
 							}
-						} else {
-							ids = new ArrayList<Object>();
-							ids.add(listCuocThanhTraTheoNam.get(j).getId());
-							ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
-							cuocThanhTraIdVaDoiTuongIds.add(ids);
-							ids = new ArrayList<Object>();
-							ids.add(listCuocThanhTraTheoNam.get(k).getId());
-							ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
-							cuocThanhTraIdVaDoiTuongIds.add(ids);
-						}
+							
+//							if (isThemLanDau) {
+//								List<List<Boolean>> flag = new ArrayList<List<Boolean>>();
+//								for (int n = 0; n < trungNhieuDoiTuong.size(); n++) {
+//									for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
+//										List<Boolean> tmp = new ArrayList<Boolean>();
+//										if (listCuocThanhTraTheoNam.get(j).getId().equals(l.get(0)) && trungNhieuDoiTuong.get(n).equals(l.get(1))) {
+//											tmp.add(true);
+//										} else {
+//											tmp.add(false);
+//										}
+//										if (listCuocThanhTraTheoNam.get(k).getId().equals(l.get(0)) && trungNhieuDoiTuong.get(n).equals(l.get(1))) {
+//											tmp.add(true);
+//										} else {
+//											tmp.add(false);
+//										}
+//										flag.add(tmp);
+//									}
+//								}
+//								
+//								for (int m = 0; m < trungNhieuDoiTuong.size(); m++) {
+//									if (!flag.get(m).get(0)) {
+//										ids = new ArrayList<Object>();
+//										ids.add(listCuocThanhTraTheoNam.get(j).getId());
+//										ids.add(trungNhieuDoiTuong.get(m));
+//										cuocThanhTraIdVaDoiTuongIds.add(ids);
+//										System.out.println("Add lan sau: " + ids.get(0) + " --- " + ((DoiTuongThanhTra) ids.get(1)).getId());
+//									}
+//									if (!flag.get(m).get(1)) {
+//										ids = new ArrayList<Object>();
+//										ids.add(listCuocThanhTraTheoNam.get(k).getId());
+//										ids.add(trungNhieuDoiTuong.get(m));
+//										cuocThanhTraIdVaDoiTuongIds.add(ids);
+//										System.out.println("Add lan sau: " + ids.get(0) + " --- " + ((DoiTuongThanhTra) ids.get(1)).getId());
+//									}
+//								}
+//							}
+//						}
 					}
+//					if (listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().getId().equals(
+//							listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().getId())) {
+//						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
+//							boolean flagJ = false;
+//							boolean flagK = false;
+//							for (List<Object> l : cuocThanhTraIdVaDoiTuongIds) {
+//								if (listCuocThanhTraTheoNam.get(j).getId().equals(l.get(0))
+//										&& listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra().equals(l.get(1))) {
+//									flagJ = true;
+//								}
+//								if (listCuocThanhTraTheoNam.get(k).getId().equals(l.get(0))
+//										&& listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra().equals(l.get(1))) {
+//									flagK = true;
+//								}
+//							}
+//							if (!flagJ) {
+//								ids = new ArrayList<Object>();
+//								ids.add(listCuocThanhTraTheoNam.get(j).getId());
+//								ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+//								cuocThanhTraIdVaDoiTuongIds.add(ids);
+//							}
+//							if (!flagK) {
+//								ids = new ArrayList<Object>();
+//								ids.add(listCuocThanhTraTheoNam.get(k).getId());
+//								ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+//								cuocThanhTraIdVaDoiTuongIds.add(ids);
+//							}
+//						} else {
+//							ids = new ArrayList<Object>();
+//							ids.add(listCuocThanhTraTheoNam.get(j).getId());
+//							ids.add(listCuocThanhTraTheoNam.get(j).getDoiTuongThanhTra());
+//							cuocThanhTraIdVaDoiTuongIds.add(ids);
+//							ids = new ArrayList<Object>();
+//							ids.add(listCuocThanhTraTheoNam.get(k).getId());
+//							ids.add(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTra());
+//							cuocThanhTraIdVaDoiTuongIds.add(ids);
+//						}
+//					}
 				}
 			}
 		}
 		return cuocThanhTraIdVaDoiTuongIds;
+	}
+	
+	private List<DoiTuongThanhTra> checkTrungNhieuDoiTuong(List<DoiTuongThanhTra> listDoiTuongThanhTraOne, List<DoiTuongThanhTra> listDoiTuongThanhTraTwo) {
+		List<DoiTuongThanhTra> doiTuongThanhTraIds = new ArrayList<DoiTuongThanhTra>();
+		for (int j = 0; j < listDoiTuongThanhTraOne.size(); j++) {
+			for (int k = 0; k < listDoiTuongThanhTraTwo.size(); k++) {
+				if (listDoiTuongThanhTraOne.get(j).getId().equals(listDoiTuongThanhTraTwo.get(k).getId())) {
+					if (doiTuongThanhTraIds.size() > 0) {
+						boolean flag = false;
+						for (DoiTuongThanhTra dttt : doiTuongThanhTraIds) {
+							if (dttt.getId().equals(listDoiTuongThanhTraOne.get(j).getId())) {
+								flag = true;
+							}
+						}
+						if (!flag) {
+							doiTuongThanhTraIds.add(listDoiTuongThanhTraOne.get(j));
+						}
+					} else {
+						doiTuongThanhTraIds.add(listDoiTuongThanhTraOne.get(j));
+					}
+				}
+			}
+		}
+		return doiTuongThanhTraIds;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/thoiHanThanhTra")

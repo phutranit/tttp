@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,19 +43,19 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String soQuyetDinhChuyenCoQuanDieuTra = "";
 	@Size(max=255) // Kien nghi chuyen co quan dieu tra
 	private String nguoiRaQuyetDinhChuyenCoQuanDieuTra = "";
-	//@Lob // Kien nghi chuyen co quan dieu tra
+	@Lob // Kien nghi chuyen co quan dieu tra
 	private String donViViPham = "";
-	//@Lob // Kien nghi chuyen co quan dieu tra
+	@Lob // Kien nghi chuyen co quan dieu tra
 	private String viPhamKhac = "";
-	//@Lob // Kien nghi xu ly ve hanh chinh
+	@Lob // Kien nghi xu ly ve hanh chinh
 	private String toChucCoSaiPham = "";
-	//@Lob // Kien nghi xu ly ve hanh chinh
+	@Lob // Kien nghi xu ly ve hanh chinh
 	private String caNhanCoSaiPham = "";
-	//@Lob // Kien nghi xu ly ve kinh te
+	@Lob // Kien nghi xu ly ve kinh te
 	private String saiPhamKhac = "";
 	// Kien nghi xu ly ve kinh te
 	private String quyetDinhGiaoDat = "";
-	//@Lob // Kien nghi xu ly khac
+	@Lob // Kien nghi xu ly khac
 	private String noiDungKienNghiXuLyKhac = "";
 	
 	//Kien nghi chuyen co quan dieu tra
@@ -66,7 +67,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private int soVuChuyenCoQuanDieuTra = 0;
 	
 	// Thu hoi trong qua trinh thanh tra
-	private long tiendaThuTrongQuaTrinhThanhTra;
+	private long tienDaThuTrongQuaTrinhThanhTra;
 	private long datDaThuTrongQuaTrinhThanhTra;
 	private long tongSoTienThuHoiTrongQuaTrinhThanhTra;
 	private long caNhanTienThuHoiTrongQuaTrinhThanhTra;
@@ -219,12 +220,12 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.soVuChuyenCoQuanDieuTra = soVuChuyenCoQuanDieuTra;
 	}
 
-	public long getTiendaThuTrongQuaTrinhThanhTra() {
-		return tiendaThuTrongQuaTrinhThanhTra;
+	public long getTienDaThuTrongQuaTrinhThanhTra() {
+		return tienDaThuTrongQuaTrinhThanhTra;
 	}
 
-	public void setTiendaThuTrongQuaTrinhThanhTra(long tiendaThuTrongQuaTrinhThanhTra) {
-		this.tiendaThuTrongQuaTrinhThanhTra = tiendaThuTrongQuaTrinhThanhTra;
+	public void setTienDaThuTrongQuaTrinhThanhTra(long tienDaThuTrongQuaTrinhThanhTra) {
+		this.tienDaThuTrongQuaTrinhThanhTra = tienDaThuTrongQuaTrinhThanhTra;
 	}
 
 	public long getDatDaThuTrongQuaTrinhThanhTra() {
