@@ -282,6 +282,11 @@ public class DonService {
 			// Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+			
+			if ("CHUYEN_VIEN".equals(chucVu)) {
+				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
+			}
+			
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum
 						.valueOf(StringUtils.upperCase(trangThaiDon));
