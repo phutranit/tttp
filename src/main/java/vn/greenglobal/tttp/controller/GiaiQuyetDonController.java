@@ -554,21 +554,21 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.name(),
 										ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText(), ApiErrorEnum.PROCESS_TTXM_NOT_FOUND.getText());
 							}
-							List<Transition> listTransitionHaveNhanYeuCau = new ArrayList<Transition>();
+							List<Process> listProcessNhanYeuCau = new ArrayList<Process>();
 							List<Transition> transitionTTXM = new ArrayList<Transition>();
 							for (Process processFromList : listProcessTTXM) {
 								transitionTTXM = (List<Transition>) transitionRepo.findAll(transitionService.predicateFindFromCurrent(FlowStateEnum.TRUONG_PHONG_NHAN_YEU_CAU_LAP_DU_THAO, processFromList));
 								if (transitionTTXM.size() > 0) {
-									listTransitionHaveNhanYeuCau.addAll(transitionTTXM);
+									listProcessNhanYeuCau.add(processFromList);
 								}
 							}
-							if (listTransitionHaveNhanYeuCau.size() == 0) {
+							if (listProcessNhanYeuCau.size() == 0) {
 								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TRANSITION_TTXM_INVALID.name(),
 										ApiErrorEnum.TRANSITION_TTXM_INVALID.getText(), ApiErrorEnum.TRANSITION_TTXM_INVALID.getText());
 							}
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = canBoGuiYeuCauLapDuThao(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, 
-									donViId, listTransitionHaveNhanYeuCau.size() == 1 ? listTransitionHaveNhanYeuCau.get(0).getProcess().getVaiTro().getLoaiVaiTro() : null, thongTinGiaiQuyetDon);
+									donViId, listProcessNhanYeuCau.size() == 1 ? listProcessNhanYeuCau.get(0).getVaiTro().getLoaiVaiTro() : null, thongTinGiaiQuyetDon);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 							
 						} else if (FlowStateEnum.CAN_BO_CHUYEN_DON_VI_TTXM.equals(nextStateType)) {	
