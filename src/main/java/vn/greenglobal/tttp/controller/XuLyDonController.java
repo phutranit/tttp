@@ -3190,6 +3190,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setCanBoXuLyChiDinh(null);
 		donMoi.setXuLyDonCuoiCungId(null);
 		donMoi.setHoanThanhDon(false);
+		donMoi.setCanBoXuLyPhanHeXLD(null);
+		donMoi.setCanBoXuLy(null);
 		xuLyDonTiepTheo.setDon(donMoi);
 		
 		//tao lich su qua trinh xu ly don
