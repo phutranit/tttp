@@ -3454,6 +3454,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			}
 			
 			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
 			
 			for (CoQuanQuanLy cq : donVis) {
 					
@@ -3516,9 +3518,17 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("donVi", mapDonVi);
 				
 				// So cuoc thanh tra 
+				BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
+						predAllCuocThanhTraTrongKy, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);
+				BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
+						predAllCuocThanhTraKyTruoc, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);		
+				
+				Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
+				Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
+				
 				Map<String, Object> dangThucHien = new HashMap<>();
-				dangThucHien.put("kyTruocChuyenSang", 0);
-				dangThucHien.put("trienKhaiTrongKyBaoCao", 0);
+				dangThucHien.put("kyTruocChuyenSang", tongSoCuocThanhTraKyTruoc);
+				dangThucHien.put("trienKhaiTrongKyBaoCao", tongSoCuocThanhTraTrongKy);
 				
 				Map<String, Object> hinhThuc = new HashMap<>();
 				hinhThuc.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);
@@ -3561,11 +3571,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Map<String, Object> kienNghiXuly = new HashMap<>();
 				kienNghiXuly.put("hanhChinh", hanhChinh);
 				kienNghiXuly.put("chuyenCoQuanDieuTra", chuyenCoQuanDieuTra);
-				
+			
 				// Da thu
 				Map<String, Object> daThu = new HashMap<>();
-				daThu.put("tien", 0);
-				daThu.put("dat", 0);
+				daThu.put("tien", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
+				daThu.put("dat", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
 				
 				/* Note: Chua xong Theo doi thuc hien */
 				// Kiem tra don doc
