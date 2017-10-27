@@ -131,6 +131,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVu;
 	@Enumerated(EnumType.STRING)
+	private VaiTroEnum chucVu2;
+	@Enumerated(EnumType.STRING)
 	private VaiTroEnum chucVuGiaoViec;
 
 	@JsonIgnore
@@ -475,6 +477,15 @@ public class XuLyDon extends Model<XuLyDon> {
 
 	public void setChucVu(VaiTroEnum chucVu) {
 		this.chucVu = chucVu;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public VaiTroEnum getChucVu2() {
+		return chucVu2;
+	}
+
+	public void setChucVu2(VaiTroEnum chucVu2) {
+		this.chucVu2 = chucVu2;
 	}
 
 	@ApiModelProperty(example = "{}", position = 3)
