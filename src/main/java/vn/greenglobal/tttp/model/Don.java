@@ -2236,6 +2236,15 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public boolean isHienThiPhanLoaiDon() {
+		if ((getTongSoLuotTCD() > 0 && isThanhLapDon()) || getCanBoXuLyPhanHeXLD() != null) {
+			return true;
+		}
+		return false;
+	}
+	
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<Map<String, Object>> getQuyenTuXuLyInfo() {
