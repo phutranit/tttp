@@ -3874,16 +3874,16 @@ public class ExcelUtil {
 		
 		List<String[]> header1 = new LinkedList<>();
 		// Colname, fromRow, toRow, fromCol, toCol
-		header1.add(new String[] {"Đơn vị", "10", "13", "0", "0"});
+		header1.add(new String[] {"Đơn vị", "10", "12", "0", "0"});
 		
-		header1.add(new String[] {"Số cuộc thanh tra", "10", "10", "1", "7"});
-		header1.add(new String[] {"Tổng số", "11", "13", "1", "1"});
+		header1.add(new String[] {"Số cuộc thanh tra", "10", "10", "1", "5"});
+		header1.add(new String[] {"Tổng số", "11", "12", "1", "1"});
 		header1.add(new String[] {"Đang thực hiện", "11", "11", "2", "3"});
-		header1.add(new String[] {"Kỳ trước chuyển sang", "12", "13", "2", "2"});
-		header1.add(new String[] {"Triển khai trong kỳ báo cáo", "12", "13", "3", "3"});
+		header1.add(new String[] {"Kỳ trước chuyển sang", "12", "12", "2", "2"});
+		header1.add(new String[] {"Triển khai trong kỳ báo cáo", "12", "12", "3", "3"});
 		header1.add(new String[] {"Tiến độ", "11", "11", "4", "5"});
-		header1.add(new String[] {"Kết thúc thanh tra trực tiếp", "12", "13", "4", "4"});
-		header1.add(new String[] {"Đã ban hành kết luận", "12", "13", "5", "5"});
+		header1.add(new String[] {"Kết thúc thanh tra trực tiếp", "12", "12", "4", "4"});
+		header1.add(new String[] {"Đã ban hành kết luận", "12", "12", "5", "5"});
 		
 		header1.add(new String[] {"Căn cứ thanh tra lại (số cuộc)","10","10","6","10"});
 		header1.add(new String[] {"Vi phạm trình tự, thủ tục dẫn đến sai lệch nghiêm trọng KL","11","12","6","6"});
@@ -3900,8 +3900,8 @@ public class ExcelUtil {
 		header1.add(new String[] {"Đất (m2)", "11", "12", "14", "14"});
 		
 		header1.add(new String[] {"Kiến nghị thu hồi", "10", "10", "15", "16"});
-		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "16", "16"});
-		header1.add(new String[] {"Đất (m2)", "11", "12", "17", "17"});
+		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "15", "15"});
+		header1.add(new String[] {"Đất (m2)", "11", "12", "16", "16"});
 		
 		header1.add(new String[] {"Kiến nghị khác", "10", "10", "17", "18"});
 		header1.add(new String[] {"Tiền (Tr.đ)", "11", "12", "17", "17"});
@@ -3909,21 +3909,21 @@ public class ExcelUtil {
 		
 		header1.add(new String[] {"Kiến nghị xử lý", "10", "10", "19", "22"});
 		header1.add(new String[] {"Hành chính", "11", "11", "19", "20"});
-		header1.add(new String[] {"Tổ chức", "12", "13", "19", "19"});
-		header1.add(new String[] {"Cá nhân", "12", "13", "20", "20"});
+		header1.add(new String[] {"Tổ chức", "12", "12", "19", "19"});
+		header1.add(new String[] {"Cá nhân", "12", "12", "20", "20"});
 		header1.add(new String[] {"Chuyển cơ quan điều tra", "11", "11", "21", "22"});
-		header1.add(new String[] {"Vụ", "12", "13", "21", "21"});
-		header1.add(new String[] {"Đối tượng", "12", "13", "22", "22"});
+		header1.add(new String[] {"Vụ", "12", "12", "21", "21"});
+		header1.add(new String[] {"Đối tượng", "12", "12", "22", "22"});
 		
 		header1.add(new String[] {"Kết quả thực hiện","10","10","23","28"});
-		header1.add(new String[] {"Tiền đã thu (Trđ)","12","13","23","23"});
-		header1.add(new String[] {"Đất đã thu (m2)","12","13","24","24"});
-		header1.add(new String[] {"Đã xử lý hành chính","12","12","25","26"});
-		header1.add(new String[] {"Tổ chức","13","13","25","25"});
-		header1.add(new String[] {"Cá nhân","13","13","26","26"});
-		header1.add(new String[] {"Đã khởi tố","12","12","27","28"});
-		header1.add(new String[] {"Vụ","13","13","27","27"});
-		header1.add(new String[] {"Đối tượng","13","13","28","28"});
+		header1.add(new String[] {"Tiền đã thu (Trđ)","11","12","23","23"});
+		header1.add(new String[] {"Đất đã thu (m2)","11","12","24","24"});
+		header1.add(new String[] {"Đã xử lý hành chính","11","11","25","26"});
+		header1.add(new String[] {"Tổ chức","12","12","25","25"});
+		header1.add(new String[] {"Cá nhân","12","12","26","26"});
+		header1.add(new String[] {"Đã khởi tố","11","11","27","28"});
+		header1.add(new String[] {"Vụ","12","12","27","27"});
+		header1.add(new String[] {"Đối tượng","12","12","28","28"});
 		
 		header1.add(new String[] {"Ghi chú", "10", "12", "29", "29"});
 		
@@ -3973,7 +3973,7 @@ public class ExcelUtil {
 			c  = row.createCell(0);
 			c.setCellValue(title);
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "RED", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 29));
 
 			
 			idx+=2; //idx = 7
@@ -3991,7 +3991,7 @@ public class ExcelUtil {
 			String name;
 			Integer row1, row2, col1, col2;
 			
-			CellRangeAddress range;
+			CellRangeAddress range = null;
 			
 			for (String[] head : header1) {
 				name = (String) head[0];
@@ -4007,7 +4007,13 @@ public class ExcelUtil {
 				
 				if(row1 == row2 && col1 == col2){
 				} else {
-					range = new CellRangeAddress(row1, row2, col1, col2);
+					try {
+						range = new CellRangeAddress(row1, row2, col1, col2);
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("row1: " + row1 + " _ row2: " + row2 + " _ col1: " + col1 + " _ col2: " + col2);
+					}
+					
 					sheet1.addMergedRegion(range);
 					RegionUtil.setBorderBottom(BorderStyle.THIN.getCode(), range, sheet1);
 					RegionUtil.setBorderTop(BorderStyle.THIN.getCode(), range, sheet1);
@@ -4016,9 +4022,9 @@ public class ExcelUtil {
 				}
 			}
 			
-			row = sheet1.createRow(++idx); //idx = 13
+			row = sheet1.createRow(idx); //idx = 13
 			row.setHeight((short)900);
-			for (int i = 0; i <= 31; i++) {
+			for (int i = 0; i <= 29; i++) {
 				c  = row.createCell(i);
 				if(i==0) { c.setCellValue("MS"); }
 				else if(i==1) { c.setCellValue("1=(2+3)=(4+5)"); }
@@ -4180,8 +4186,305 @@ public class ExcelUtil {
 			sheet1.setColumnWidth(28, width);
 			sheet1.setColumnWidth(29, width);
 			sheet1.setColumnWidth(30, width);
-			sheet1.setColumnWidth(31, width);
-			sheet1.setColumnWidth(32, width);
+			//END
+			
+			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+			wb.write(fileOut);
+			String mimeType = "application/octet-stream";
+			response.setContentType(mimeType);
+			response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"" + fileName + ".xlsx" + "\""));
+			response.setContentLength((int) fileOut.size());
+
+			//InputStream inputStream = new ByteArrayInputStream(fileOut.toByteArray());
+			FileCopyUtils.copy(fileOut.toByteArray(), response.getOutputStream());
+			response.flushBuffer();
+			//inputStream.close();
+		} finally {
+			wb.close();
+		}
+	}
+	
+	public static void exportTongHopKetQuaPhatHienThamNhungQuaThanhTra(HttpServletResponse response, String fileName, String sheetName,
+			List<Map<String, Object>> maSos,  String tuNgay, String denNgay, String title) throws IOException {
+		
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+		
+		String soLieuStr = String.format("(số liệu tính từ ngày %s đến ngày %s)", 
+				StringUtils.isNotBlank(tuNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(tuNgay)) : "", 
+				StringUtils.isNotBlank(denNgay) ? Utils.getMocThoiGianLocalDateTimeStr(Utils.fixTuNgay(denNgay)) : "");
+		
+		
+		List<String[]> header1 = new LinkedList<>();
+		// Colname, fromRow, toRow, fromCol, toCol
+		header1.add(new String[] {"Đơn vị", "8", "10", "0", "0"});
+		header1.add(new String[] {"Số vụ", "8", "10", "1", "1"});
+		header1.add(new String[] {"Số người", "8", "10", "2", "2"});
+		header1.add(new String[] {"Tài sản tham nhũng", "8", "8", "3", "6"});
+		header1.add(new String[] {"Tổng tiền", "9", "10", "3", "3"});
+		header1.add(new String[] {"Tiền", "9", "10", "4", "4"});
+		header1.add(new String[] {"Tài sản khác", "9", "10", "5", "5"});
+		header1.add(new String[] {"Đất", "9", "10", "6", "6"});
+		
+		header1.add(new String[] {"Kiến nghị thu hồi", "8", "8", "7", "10"});
+		header1.add(new String[] {"Tổng tiền", "9", "10", "7", "7"});
+		header1.add(new String[] {"Tiền", "9", "10", "8", "8"});
+		header1.add(new String[] {"Tài sản khác", "9", "10", "9", "9"});
+		header1.add(new String[] {"Đất", "9", "10", "10", "10"});
+		
+		header1.add(new String[] {"Đã thu", "8", "8", "11", "14"});
+		header1.add(new String[] {"Tổng tiền", "9", "10", "11", "11"});
+		header1.add(new String[] {"Tiền", "9", "10", "12", "12"});
+		header1.add(new String[] {"Tài sản khác", "9", "10", "13", "13"});
+		header1.add(new String[] {"Đất", "9", "10", "14", "14"});
+		
+		
+		header1.add(new String[] {"Kiến nghị xử lý", "8", "8", "15", "18"});
+		header1.add(new String[] {"Hành chính", "9", "9", "15", "16"});
+		header1.add(new String[] {"Tổ chức", "10", "10", "15", "15"});
+		header1.add(new String[] {"Cá nhân", "10", "10", "16", "16"});
+		header1.add(new String[] {"Chuyển cơ quan điều tra", "9", "9", "17", "18"});
+		header1.add(new String[] {"Vụ", "10", "10", "17", "17"});
+		header1.add(new String[] {"Đối tượng", "10", "10", "18", "18"});
+		
+		header1.add(new String[] {"Kết quả thực hiện","8","8","19","22"});
+		header1.add(new String[] {"Đã xử lý hành chính", "9", "9", "19", "20"});
+		header1.add(new String[] {"Tổ chức", "10", "10", "19", "19"});
+		header1.add(new String[] {"Cá nhân", "10", "10", "20", "20"});
+		header1.add(new String[] {"Đã khởi tố", "9", "9", "21", "22"});
+		header1.add(new String[] {"Vụ", "10", "10", "21", "21"});
+		header1.add(new String[] {"Đối tượng", "10", "10", "22", "22"});
+		
+		header1.add(new String[] {"Xử lý trách nhiệm người đứng đầu", "8", "9", "23", "24"});
+		header1.add(new String[] {"Kiến nghị", "10", "10", "23", "23"});
+		header1.add(new String[] {"Đã xử lý", "10", "10", "24", "24"});
+		
+		header1.add(new String[] {"Ghi chú", "8", "10", "25", "25"});
+		
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+				
+		Map<String, CellStyle> styles = createStylesMap(wb);
+		System.out.println("=======maSos: " + maSos.size());
+		try {
+			
+			// New Sheet
+			Sheet sheet1 = wb.createSheet(sheetName);
+			sheet1.getPrintSetup().setLandscape(true);
+			sheet1.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+			sheet1.createFreezePane(0, 12);
+			
+			// Row and column indexes
+			int idx = 0;
+			Row row;
+			Cell c;
+			
+			//Ten don vi
+			row = sheet1.createRow(++idx); //idx 1
+			c  = row.createCell(0);
+			c.setCellValue("BỘ, NGÀNH (UBND TỈNH, THÀNH PHỐ)...");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 7));
+			
+			idx+=2;
+			row = sheet1.createRow(idx); //idx 5
+			row.setHeight((short)400);
+			c  = row.createCell(0);
+			c.setCellValue(title);
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 25));
+			
+			row = sheet1.createRow(++idx); //idx 5
+			row.setHeight((short)300);
+			c  = row.createCell(0);
+			c.setCellValue(soLieuStr);
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", true));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 25));
+						
+			idx+=2; //idx = 7
+			for (int j = 6; j <= 10; j++) {
+				row = sheet1.createRow(j);
+				if(j==10){
+					row.setHeight((short)1200);
+				} else {
+					row.setHeight((short)400);
+				}
+				idx++;
+			}
+			//idx = 12
+			
+			String name;
+			Integer row1, row2, col1, col2;
+			
+			CellRangeAddress range = null;
+			
+			for (String[] head : header1) {
+				name = (String) head[0];
+				row1 = Integer.valueOf((String) head[1]);
+				row2 = Integer.valueOf((String) head[2]);
+				col1 = Integer.valueOf((String) head[3]);
+				col2 = Integer.valueOf((String) head[4]);
+				row = sheet1.getRow(row1);
+				
+				c  = row.createCell(col1);
+				c.setCellValue(name);
+				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER",false));
+				
+				if(row1 == row2 && col1 == col2){
+				} else {
+					try {
+						range = new CellRangeAddress(row1, row2, col1, col2);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					sheet1.addMergedRegion(range);
+					RegionUtil.setBorderBottom(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderTop(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderLeft(BorderStyle.THIN.getCode(), range, sheet1);
+					RegionUtil.setBorderRight(BorderStyle.THIN.getCode(), range, sheet1);
+				}
+			}
+			
+			row = sheet1.createRow(idx); //idx = 13
+			row.setHeight((short)600);
+			for (int i = 0; i <= 25; i++) {
+				c  = row.createCell(i);
+				if(i==0) { c.setCellValue("MS"); }
+				else if(i==3) { c.setCellValue("3=4+5"); }
+				else if(i==7) { c.setCellValue("7=8+9"); }
+				else if(i==11) { c.setCellValue("11=12+13"); }
+				else {
+					c.setCellValue(i);
+				}
+				c.setCellStyle(setBorderAndFont(wb, BorderStyle.THIN, true, 12, "BLACK", "CENTER",false));
+			}
+			
+			idx+=1; //idx = 14
+			int recordSize = 0;
+			int colSize = 0;
+			String formula = "SUM()";
+			String colName = "A";
+			
+			if(!maSos.isEmpty()){
+				recordSize = maSos.size();
+				colSize = maSos.get(0).size();
+				
+				Calendar calendar = Calendar.getInstance();
+				Map<String, Object> mapMaSo = null;
+				Object obj;
+				for (int i = 0; i <= recordSize; i++) {
+					row = sheet1.createRow(i+idx);
+					row.setHeight((short)400);
+					// Add data here
+					if(i < recordSize){
+						mapMaSo = maSos.get(i);
+						for (int j = 0; j < colSize; j++) {
+							c  = row.createCell(j);
+							obj = mapMaSo.get(String.valueOf(j));
+							if (obj instanceof Number) {
+								c.setCellValue(Integer.valueOf(String.valueOf(obj)));
+								c.setCellStyle(styles.get("cell_number"));
+								if(j==0){
+									c.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+								}
+							} else if (obj instanceof Date) {
+								calendar.setTime((Date)(obj));
+								c.setCellValue(calendar);
+								c.setCellStyle(styles.get("cell_day"));
+							} else {
+								c.setCellValue(String.valueOf(obj));
+								c.setCellStyle(styles.get("cell"));
+							}
+						}
+					} else {
+						for (int k = 0; k < colSize; k++) {
+							c  = row.createCell(k);
+							//Add TONG row
+							if(k==0){
+								c.setCellValue("Tổng");
+								c.setCellStyle(styles.get("cell"));
+							} else if(k==colSize-1){
+								c.setCellStyle(styles.get("cell"));
+							} else {
+								colName = CellReference.convertNumToColString(k);
+								formula = "SUM(" + colName + (idx+1) + ":" + colName + row.getRowNum() + ")";
+								c.setCellFormula(formula);
+								c.setCellStyle(styles.get("cell_number"));
+							}
+						}
+					}
+				}
+			}
+			idx = idx + recordSize + 3;
+			
+			row = sheet1.createRow(idx);
+			c = row.createCell(20);
+			c.setCellValue("....., ngày     tháng     năm");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 20, 27));
+			
+			row = sheet1.createRow(++idx);
+			c = row.createCell(20);
+			c.setCellValue("THỦ TRƯỞNG ĐƠN VỊ");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 20, 27));
+			
+			row = sheet1.createRow(++idx);
+			c = row.createCell(20);
+			c.setCellValue("(ký tên, đóng dấu)");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 11, "BLACK", "CENTER", false));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 20, 27));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("Lưu ý:");
+			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
+			
+			row = sheet1.createRow(idx);
+			c  = row.createCell(1);
+			c.setCellValue("- Cột 'đơn vị phát hiện/' ghi cụ thể tên đơn vị phát hiện tham nhũng");
+			c.setCellStyle(styles.get("cell_sub"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
+			
+			row = sheet1.createRow(++idx);
+			c  = row.createCell(1);
+			c.setCellValue("- Nếu cột 23 có nội dung trùng cột 16, 18; cột 24 có nội dung trùng cột 20, 22 thì cần ghi chú và giải thích. ");
+			c.setCellStyle(styles.get("cell_sub"));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 1, 20));
+						
+			int width = (int) (8 * 256);
+			// set column width
+			sheet1.setColumnWidth(0, 28 * 256);
+			sheet1.setColumnWidth(1, width);
+			sheet1.setColumnWidth(2, width);
+			sheet1.setColumnWidth(3, width);
+			sheet1.setColumnWidth(4, width);
+			sheet1.setColumnWidth(5, width);
+			sheet1.setColumnWidth(6, width);
+			sheet1.setColumnWidth(7, width);
+			sheet1.setColumnWidth(8, width);
+			sheet1.setColumnWidth(9, width);
+			sheet1.setColumnWidth(10, width);
+			sheet1.setColumnWidth(11, width);
+			sheet1.setColumnWidth(12, width);
+			sheet1.setColumnWidth(13, width);
+			sheet1.setColumnWidth(14, width);
+			sheet1.setColumnWidth(15, width);
+			sheet1.setColumnWidth(16, width);
+			sheet1.setColumnWidth(17, width);
+			sheet1.setColumnWidth(18, width);
+			sheet1.setColumnWidth(19, width);
+			sheet1.setColumnWidth(20, width);
+			sheet1.setColumnWidth(21, width);
+			sheet1.setColumnWidth(22, width);
+			sheet1.setColumnWidth(23, width);
+			sheet1.setColumnWidth(24, width);
+			sheet1.setColumnWidth(25, width);
+			sheet1.setColumnWidth(26, width);
+			sheet1.setColumnWidth(27, width);
+			sheet1.setColumnWidth(28, width);
+			sheet1.setColumnWidth(29, width);
+			sheet1.setColumnWidth(30, width);
 			//END
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();

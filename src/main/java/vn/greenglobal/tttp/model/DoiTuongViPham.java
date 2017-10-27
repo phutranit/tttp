@@ -67,7 +67,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private int soVuChuyenCoQuanDieuTra = 0;
 	
 	// Thu hoi trong qua trinh thanh tra
-	private long tiendaThuTrongQuaTrinhThanhTra;
+	private long tienDaThuTrongQuaTrinhThanhTra;
 	private long datDaThuTrongQuaTrinhThanhTra;
 	private long tongSoTienThuHoiTrongQuaTrinhThanhTra;
 	private long caNhanTienThuHoiTrongQuaTrinhThanhTra;
@@ -220,12 +220,12 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.soVuChuyenCoQuanDieuTra = soVuChuyenCoQuanDieuTra;
 	}
 
-	public long getTiendaThuTrongQuaTrinhThanhTra() {
-		return tiendaThuTrongQuaTrinhThanhTra;
+	public long getTienDaThuTrongQuaTrinhThanhTra() {
+		return tienDaThuTrongQuaTrinhThanhTra;
 	}
 
-	public void setTiendaThuTrongQuaTrinhThanhTra(long tiendaThuTrongQuaTrinhThanhTra) {
-		this.tiendaThuTrongQuaTrinhThanhTra = tiendaThuTrongQuaTrinhThanhTra;
+	public void setTienDaThuTrongQuaTrinhThanhTra(long tienDaThuTrongQuaTrinhThanhTra) {
+		this.tienDaThuTrongQuaTrinhThanhTra = tienDaThuTrongQuaTrinhThanhTra;
 	}
 
 	public long getDatDaThuTrongQuaTrinhThanhTra() {
