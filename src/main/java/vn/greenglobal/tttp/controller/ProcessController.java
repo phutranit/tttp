@@ -445,6 +445,7 @@ public class ProcessController extends TttpController<Process> {
 					coQuyTrinhDayDu = false;
 				}
 				if (i == 17) coQuyTrinhDayDu = false;
+				if (i == 24) coQuyTrinhDayDu = false;
 				if (i == 45) coQuyTrinhDayDu = true;
 				
 				Process process = null;
