@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -175,6 +176,69 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	
 	public SoTiepCongDanController(BaseRepository<SoTiepCongDan, Long> repo) {
 		super(repo);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDan/layTongSoDonDanhSachYeuCauGapLanhDao")
+	@ApiOperation(value = "Lấy Tổng Số Đơn Danh Sách Yêu Cầu Gặp Lãnh Đạo", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getTongSoDonDanhSachYeuCauGapLanhDao(@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Map<String, Object> map = new HashMap<>();
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			
+			Long tongSoDon = repoDon.count(donService.predicateFindDonYeuCauGapLanhDaoDinhKy("", null, null, "", "", "CHO_XIN_Y_KIEN", donViId));
+			map.put("tongSoDon", tongSoDon);
+			return new ResponseEntity<>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDan/layTongSoDonSoTiepCongDanDinhKy")
+	@ApiOperation(value = "Lấy Tổng Số Đơn Sổ Tiếp công Dân Định Kỳ", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getTongSoDonSoTiepCongDanDinhKy(@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Long tongSoDon = repo.count(soTiepCongDanService.predicateFindAllTCD("", "", "", null, null, "DINH_KY",
+					donViId, null, "", "", "DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT", "CHO_GIAI_QUYET", congChucService,
+					repoCongChuc, repoDonCongDan));
+			map.put("tongSoDon", tongSoDon);
+			return new ResponseEntity<>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDan/layTongSoDonSoTiepCongDanDotXuat")
+	@ApiOperation(value = "Lấy Tổng Số Đơn Sổ Tiếp công Dân Đột Xuất", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getTongSoDonSoTiepCongDanDotXuat(@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			Long tongSoDon = repo.count(soTiepCongDanService.predicateFindAllTCD("", "", "", null, null, "DOT_XUAT",
+					donViId, null, "", "", "DA_CO_BAO_CAO_KIEM_TRA_DE_XUAT", "CHO_GIAI_QUYET", congChucService,
+					repoCongChuc, repoDonCongDan));
+			map.put("tongSoDon", tongSoDon);
+			return new ResponseEntity<>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
