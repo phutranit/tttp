@@ -1794,6 +1794,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
+			@RequestParam(value = "soCMNDHoChieu", required = false) String soCMNDHoChieu,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
 			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
@@ -1831,6 +1834,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
+			mappings.put("soCMNDHoChieu", soCMNDHoChieu);
+			mappings.put("ngayCap", ngayCap);
+			mappings.put("noiCap", noiCap);
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
@@ -1942,7 +1948,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiKhieuNai", required = true) String nguoiKhieuNai,
 			@RequestParam(value = "diaChiNguoiKhieuNai", required = false) String diaChiNguoiKhieuNai,
-			@RequestParam(value = "SoCMNDHoChieu", required = false) String SoCMNDHoChieu,
+			@RequestParam(value = "SoCMNDHoChieu", required = false) String soCMNDHoChieu,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
 			@RequestParam(value = "noiCap", required = false) String noiCap,
 			@RequestParam(value = "noiDungKhieuNai", required = false) String noiDungKhieuNai,
@@ -1974,7 +1980,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiKhieuNai", nguoiKhieuNai);
 			mappings.put("diaChiNguoiKhieuNai", diaChiNguoiKhieuNai);
-			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(SoCMNDHoChieu) ? SoCMNDHoChieu : ".................");
+			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(soCMNDHoChieu) ? soCMNDHoChieu : ".................");
 			mappings.put("ngayCap", StringUtils.isNotBlank(ngayCap) ? ngayCap : ".................");
 			mappings.put("noiCap", StringUtils.isNotBlank(noiCap) ? noiCap : ".................");
 			mappings.put("noiDungKhieuNai", noiDungKhieuNai);
@@ -2227,6 +2233,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 		lichSuQTXLD.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
 		lichSuQTXLD.setDonViXuLy(xuLyDonTiepTheo.getDonViXuLy());
+		lichSuQTXLD.setLaLanhDao(true);
+		
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donId, 
 				xuLyDonTiepTheo.getDonViXuLy().getId());
 		lichSuQTXLD.setThuTuThucHien(thuTu);

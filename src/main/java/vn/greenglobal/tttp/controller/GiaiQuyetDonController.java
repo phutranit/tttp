@@ -2024,6 +2024,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh tố cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuXacMinhToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
 			@RequestParam(value = "ghiChu", required = false) String ghiChu,
@@ -2032,6 +2033,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -2058,6 +2060,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
+			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..................................");
 			mappings.put("tenCoQuan", tenCoQuan);
 			mappings.put("noiDungDonThu", noiDungDonThu);
 			mappings.put("ghiChu", ghiChu);
@@ -2071,6 +2074,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuXacMinhKhieuNai(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "tenCoQuanThuLyGQKN", required = false) String tenCoQuanThuLyGQKN,
 			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
 			@RequestParam(value = "hoTenNguoiKhieuNai", required = false) String hoTenNguoiKhieuNai,
@@ -2080,6 +2084,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -2106,6 +2111,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
+			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..................................");
 			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
 			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
 			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
