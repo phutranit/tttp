@@ -193,13 +193,18 @@ public class ThongKeTongHopThanhTraService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
 					if (quy != null && quy > 0) { 
 						if (quy == 2) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 4, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 4, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 						if (quy == 3) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 7, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 7, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 						if (quy == 4) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 10, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							System.out.println("year: " + year);
+							System.out.println("getDateFromCalendar(year, 10, 1): " + getDateFromCalendar(year, 10, 1));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 10, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 					}
 				}
