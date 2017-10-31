@@ -4392,6 +4392,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			}
 			
 			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
 			
 			for (CoQuanQuanLy cq : donVis) {
 					
@@ -4454,9 +4456,16 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("donVi", mapDonVi);
 				
 				// So cuoc thanh tra 
+				BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
+						predAllCuocThanhTraTrongKy, cq.getId(), LinhVucThanhTraEnum.DAT_DAI, cuocThanhTraRepo);
+				BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
+						predAllCuocThanhTraKyTruoc, cq.getId(), LinhVucThanhTraEnum.DAT_DAI, cuocThanhTraRepo);		
+				
+				Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
+				Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());		
 				Map<String, Object> dangThucHien = new HashMap<>();
-				dangThucHien.put("kyTruocChuyenSang", 0);
-				dangThucHien.put("trienKhaiTrongKyBaoCao", 0);
+				dangThucHien.put("kyTruocChuyenSang", tongSoCuocThanhTraKyTruoc);
+				dangThucHien.put("trienKhaiTrongKyBaoCao", tongSoCuocThanhTraTrongKy);
 				
 				Map<String, Object> hinhThuc = new HashMap<>();
 				hinhThuc.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);

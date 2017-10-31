@@ -567,6 +567,48 @@ public class ThongKeTongHopThanhTraService {
 		return tongSoDon;
 	}
 	
+	public Long getCacDangViPhamVeDat(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "DAT_LAN_CHIEM")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getDatLanChiemKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getGiaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "CAP_GCN_QSDD_SAI")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+				} 
+			} else if (StringUtils.equals(type, "CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+				}
+			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
 	public Predicate predicateFindCuocThanhTraChuyenCoQuanDieuTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo) {
 		
 		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.chuyenCoQuanDieuTra.eq(true));
