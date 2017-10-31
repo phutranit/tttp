@@ -2027,7 +2027,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
-			@RequestParam(value = "ghiChu", required = false) String ghiChu,
 			HttpServletResponse response) {
 
 		try {
@@ -2063,7 +2062,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..................................");
 			mappings.put("tenCoQuan", tenCoQuan);
 			mappings.put("noiDungDonThu", noiDungDonThu);
-			mappings.put("ghiChu", ghiChu);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);

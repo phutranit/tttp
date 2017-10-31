@@ -1036,6 +1036,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
 			mappings.put("soCMND", soCMND);
 			mappings.put("ngayCap", ngayCap);
@@ -1091,6 +1092,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
 			mappings.put("soCMND", soCMND);
 			mappings.put("ngayCap", ngayCap);
@@ -1107,7 +1109,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuTuChoi(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
-			@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
+			//@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
 			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
@@ -1145,7 +1147,8 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
-			mappings.put("ngayThongBao", ngayThongBao);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			//mappings.put("ngayThongBao", ngayThongBao);
 			mappings.put("hoVaTen", hoVaTen);
 			mappings.put("soCMND", soCMND);
 			mappings.put("ngayCap", ngayCap);
