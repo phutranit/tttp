@@ -3272,7 +3272,7 @@ public class ExcelUtil {
 			Sheet sheet1 = wb.createSheet(sheetName);
 			sheet1.getPrintSetup().setLandscape(true);
 			sheet1.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
-			sheet1.createFreezePane(0, 14);
+			sheet1.createFreezePane(0, 13);
 			
 			// Row and column indexes
 			int idx = 0;
@@ -3501,13 +3501,6 @@ public class ExcelUtil {
 			sheet1.setColumnWidth(23, width);
 			sheet1.setColumnWidth(24, width);
 			sheet1.setColumnWidth(25, width);
-			sheet1.setColumnWidth(26, width);
-			sheet1.setColumnWidth(27, width);
-			sheet1.setColumnWidth(28, width);
-			sheet1.setColumnWidth(29, width);
-			sheet1.setColumnWidth(30, width);
-			sheet1.setColumnWidth(31, width);
-			sheet1.setColumnWidth(32, width);
 			//END
 			
 			ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
