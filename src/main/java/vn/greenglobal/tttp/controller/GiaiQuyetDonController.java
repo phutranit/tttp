@@ -2059,7 +2059,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
-			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(9)");
+			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", tenCoQuan);
 			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings);
