@@ -1038,9 +1038,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "......................");
-			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "......................");
-			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "......................");
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
@@ -1094,9 +1094,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "......................");
-			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "......................");
-			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "......................");
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
@@ -1150,9 +1150,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			//mappings.put("ngayThongBao", ngayThongBao);
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "......................");
-			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "......................");
-			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "......................");
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);

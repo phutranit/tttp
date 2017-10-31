@@ -1622,9 +1622,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChi", diaChi);
-			mappings.put("soCMNDHoChieu", soCMNDHoChieu);
-			mappings.put("noiCap", noiCap);
-			mappings.put("ngayCap", ngayCap);
+			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 		} catch (Exception e) {
@@ -1766,9 +1766,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiKienNghi", nguoiKienNghi);
 			mappings.put("diaChiNguoiKienNghi", diaChiNguoiKienNghi);
-			mappings.put("soCMNDHoChieu", soCMNDHoChieu);
-			mappings.put("ngayCap", ngayCap);
-			mappings.put("noiCap", noiCap);
+			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_KIEN_NGHI.docx").getFile(), mappings);
 		} catch (Exception e) {
@@ -1872,9 +1872,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
-			mappings.put("soCMNDHoChieu", soCMNDHoChieu);
-			mappings.put("ngayCap", ngayCap);
-			mappings.put("noiCap", noiCap);
+			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("noiDung", noiDung);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
