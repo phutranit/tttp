@@ -2939,7 +2939,7 @@ public class ExcelUtil {
 			Sheet sheet1 = wb.createSheet(sheetName);
 			sheet1.getPrintSetup().setLandscape(true);
 			sheet1.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
-			sheet1.createFreezePane(0, 14);
+			sheet1.createFreezePane(0, 13);
 			
 			// Row and column indexes
 			int idx = 0;
@@ -2951,27 +2951,36 @@ public class ExcelUtil {
 			c  = row.createCell(0);
 			c.setCellValue("BỘ, NGÀNH (UBND TỈNH, THÀNH PHỐ)...");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 12));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 8));
 			
-			idx+=3;
-			row = sheet1.createRow(idx); //idx 6
-			row.setHeight((short)600);
+			idx+=2;
+			row = sheet1.createRow(idx); //idx 5
+			row.setHeight((short)400);
 			c  = row.createCell(0);
-			c.setCellValue(title);
+			c.setCellValue("TỔNG HỢP KẾT QUẢ THANH TRA TRONG LĨNH VỰC ĐẦU TƯ XÂY DỰNG CƠ BẢN");
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", false));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
-
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 31));
+			
 			row = sheet1.createRow(++idx); //idx 5
 			row.setHeight((short)300);
 			c  = row.createCell(0);
 			c.setCellValue(soLieuStr);
 			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "BLACK", "CENTER", true));
-			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 32));
+			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 31));
 			
-			idx+=1; //idx = 7
-			for (int j = 8; j <= 12; j++) {
+//			idx+=2;
+//			row = sheet1.createRow(idx); //idx 6
+//			row.setHeight((short)600);
+//			c  = row.createCell(0);
+//			c.setCellValue(title);
+//			c.setCellStyle(setBorderAndFont(wb, null, true, 12, "RED", "CENTER", false));
+//			sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 31));
+
+			
+			idx+=2; //idx = 7
+			for (int j = 6; j <= 10; j++) {
 				row = sheet1.createRow(j);
-				if(j==12){
+				if(j==10){
 					row.setHeight((short)1200);
 				} else {
 					row.setHeight((short)400);
