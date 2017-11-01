@@ -3421,7 +3421,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		
 //		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG));
+		//State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG));
 		State endState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.KET_THUC));
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 		don.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
@@ -3448,13 +3448,30 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setLanhDaoDuyet(true);
 		}
 		
+		Process process = null;
+		List<Process> processList = new ArrayList<Process>();
+		processList.addAll((List<Process>) repoProcess.findAll(processService.predicateFindAllByDonVi(xuLyDonHienTai.getCoQuanChuyenDon().getDonVi(), ProcessTypeEnum.XU_LY_DON, VaiTroEnum.TRUONG_PHONG)));
+		if (processList != null && processList.size() > 0) {
+			process = processList.get(0);
+		}
+		
+		Transition transition = null;
+		List<Transition> transitionXLDs = new ArrayList<Transition>();
+		if (process != null) { 
+			transitionXLDs.addAll((List<Transition>) transitionRepo.findAll(transitionService.predicateFindByProcess(process)));
+		}
+		if (transitionXLDs != null && transitionXLDs.size() > 0) { 
+			transition = transitionXLDs.get(0);
+		}
+		
 		Don donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGocId()));
+		donGoc.setCurrentState(transition.getCurrentState());
 		//donGoc.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
 		donGoc.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		//donGoc.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
 		donGoc.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 		donGoc.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
-		donGoc.setCurrentState(beginState);
+		//donGoc.setCurrentState(beginState);
 		donGoc.setHuongXuLyXLD(null);
 		donGoc.setKetQuaXLDGiaiQuyet(null);
 		donGoc.setCanBoCoTheThuHoi(null);
@@ -3468,8 +3485,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					 donViXuLyId, xuLyDonHienTai.getCoQuanChuyenDon().getId(), VaiTroEnum.TRUONG_PHONG);
 			
 		} else {
-			beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-			donGoc.setCurrentState(beginState);
+			//beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+			//donGoc.setCurrentState(beginState);
 			xuLyDonCuoiCungHienTai = xuLyDonService.predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(repo, xuLyDonHienTai.getDon().getDonGocId(), donViXuLyId);
 		}
 		 
