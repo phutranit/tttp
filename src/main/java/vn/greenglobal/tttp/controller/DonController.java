@@ -408,8 +408,13 @@ public class DonController extends TttpController<Don> {
 				}
 				List<State> listAllState = new ArrayList<State>();
 				List<State> listState = new ArrayList<State>();
+				listProcess.forEach(l -> {
+					System.out.println("process : " + l.getId() +" " +l.getTenQuyTrinh());
+				});
 				Process process = null;
 				for (Process processFromList : listProcess) {
+					System.out.println("currentStateId2 : " + currentStateId2.longValue());
+					System.out.println("processFromList : " + processFromList.getId());
 					Predicate predicate = serviceState.predicateFindAll(currentStateId2, processFromList, repoTransition);
 					listState = ((List<State>) repoState.findAll(predicate));
 					System.out.println("processFromList: " + processFromList.getTenQuyTrinh() + " __ " + listState.size());
@@ -419,6 +424,10 @@ public class DonController extends TttpController<Don> {
 					}
 				}
 				
+				listAllState.forEach(st -> {
+					System.out.println("st " +st.getId() +" " +st.getTen());
+				});
+				
 				media.setListNextStates(listAllState);
 				Transition transition = null;
 				if (listAllState.size() < 1) {
@@ -426,6 +435,7 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 				} else {
 					for (State nextState : listAllState) {
+						System.out.println("currentState " +currentState.getId());
 						transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
 						if (transition != null) {
 							media.setCurrentForm(transition.getForm());
