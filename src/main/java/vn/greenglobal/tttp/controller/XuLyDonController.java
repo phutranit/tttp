@@ -3485,7 +3485,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					 donViXuLyId, xuLyDonHienTai.getCoQuanChuyenDon().getId(), VaiTroEnum.TRUONG_PHONG);
 			
 		} else {
-			System.out.println("KHONG QUY TRINH");
 			beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 			//donGoc.setCurrentState(beginState);
 			xuLyDonCuoiCungHienTai = xuLyDonService.predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(repo, xuLyDonHienTai.getDon().getDonGocId(), donViXuLyId);
