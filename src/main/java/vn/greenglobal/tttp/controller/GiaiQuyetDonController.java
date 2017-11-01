@@ -2027,7 +2027,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
-			@RequestParam(value = "ghiChu", required = false) String ghiChu,
 			HttpServletResponse response) {
 
 		try {
@@ -2060,10 +2059,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
-			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..................................");
+			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", tenCoQuan);
-			mappings.put("noiDungDonThu", noiDungDonThu);
-			mappings.put("ghiChu", ghiChu);
+			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -2111,11 +2109,11 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
-			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..................................");
+			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(1)");
 			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
 			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
 			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
-			mappings.put("noiDungTTXM", noiDungTTXM);
+			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);

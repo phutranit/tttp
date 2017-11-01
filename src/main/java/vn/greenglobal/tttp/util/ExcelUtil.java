@@ -668,7 +668,7 @@ public class ExcelUtil {
 			c.setCellStyle(cellCenter);
 			
 			c = row.createCell(9);
-			c.setCellValue("Cán bộ xử lý");
+			c.setCellValue("Lãnh đạo/Cán bộ xử lý");
 			c.setCellStyle(cellCenter);
 			
 			int i = 1;

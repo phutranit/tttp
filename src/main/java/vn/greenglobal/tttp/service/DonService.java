@@ -247,6 +247,7 @@ public class DonService {
 		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
 					.or(QXuLyDon.xuLyDon.chucVu.isNull())
+					.or(QXuLyDon.xuLyDon.don.saveTmp.eq(true).and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
 					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
 					);
 		}
