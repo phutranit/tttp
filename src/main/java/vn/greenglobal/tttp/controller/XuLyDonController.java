@@ -3421,7 +3421,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 		
 //		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-		State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG));
+		//State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG));
 		State endState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.KET_THUC));
 		Don don = donRepo.findOne(donService.predicateFindOne(xuLyDonHienTai.getDon().getId()));
 		don.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
@@ -3485,7 +3485,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					 donViXuLyId, xuLyDonHienTai.getCoQuanChuyenDon().getId(), VaiTroEnum.TRUONG_PHONG);
 			
 		} else {
-			beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
+			//beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 			//donGoc.setCurrentState(beginState);
 			xuLyDonCuoiCungHienTai = xuLyDonService.predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(repo, xuLyDonHienTai.getDon().getDonGocId(), donViXuLyId);
 		}
