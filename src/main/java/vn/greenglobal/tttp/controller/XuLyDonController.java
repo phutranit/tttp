@@ -44,7 +44,6 @@ import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
-import vn.greenglobal.tttp.enums.TenQuyTrinhEnum;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
@@ -604,7 +603,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							}
 						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
-						System.out.println("chuyenVienTraLaiDonKhongDungThamQuyen");
 						xuLyDonTiepTheo = chuyenVienTraLaiDonKhongDungThamQuyen(xuLyDon, xuLyDonHienTai, congChucId, transitionXLD);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}
@@ -3460,32 +3458,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Transition transition = null;
 		List<Transition> transitionXLDs = new ArrayList<Transition>();
 		if (process != null) { 
-			System.out.println("process " +process.getId());
 			transitionXLDs.addAll((List<Transition>) transitionRepo.findAll(transitionService.predicateFindByProcess(process)));
-			
 		}
 		if (transitionXLDs != null && transitionXLDs.size() > 0) { 
-			transitionXLDs.forEach(t -> {
-				System.out.println("tran " +t.getId() +" vt " +t.getProcess().getVaiTro().getTen());
-			});
 			transition = transitionXLDs.get(0);
-			System.out.println("Vai tro " +transitionXLDs.get(0).getProcess().getVaiTro().getTen());
 		}
-		
-		System.out.println("beginState " +beginState.getTen() +" id " +beginState.getId());
 		
 		Don donGoc = donRepo.findOne(donService.predicateFindOne(don.getDonGocId()));
-		
-		if (transition != null) {
-			if (transition.getTenQuyTrinh().equals(TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU)) {
-				System.out.println("current state full " +transition.getCurrentState().getId() +"  " +transition.getCurrentState().getTen());
-				donGoc.setCurrentState(beginState);
-			} else if (transition.getTenQuyTrinh().equals(TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN)) { 
-				System.out.println("current state  " +transition.getCurrentState().getId() +"  " +transition.getCurrentState().getTen());
-				donGoc.setCurrentState(transition.getCurrentState());
-			}
-		}
-		
+		donGoc.setCurrentState(transition.getCurrentState());
 		//donGoc.setHuongXuLyXLD(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
 		donGoc.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		//donGoc.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
@@ -3505,8 +3485,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					 donViXuLyId, xuLyDonHienTai.getCoQuanChuyenDon().getId(), VaiTroEnum.TRUONG_PHONG);
 			
 		} else {
+			System.out.println("KHONG QUY TRINH");
 			beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
-			donGoc.setCurrentState(beginState);
+			//donGoc.setCurrentState(beginState);
 			xuLyDonCuoiCungHienTai = xuLyDonService.predFindXuLyDonCuoiCungHienTaiDonKhongQuyTrinh(repo, xuLyDonHienTai.getDon().getDonGocId(), donViXuLyId);
 		}
 		 
