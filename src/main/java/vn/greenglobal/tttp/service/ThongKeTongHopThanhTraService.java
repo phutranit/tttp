@@ -193,13 +193,18 @@ public class ThongKeTongHopThanhTraService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
 					if (quy != null && quy > 0) { 
 						if (quy == 2) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 4, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 4, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 						if (quy == 3) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 7, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 7, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 						if (quy == 4) { 
-							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 10, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+							System.out.println("year: " + year);
+							System.out.println("getDateFromCalendar(year, 10, 1): " + getDateFromCalendar(year, 10, 1));
+							predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 10, 1))
+									.and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 						}
 					}
 				}
@@ -262,12 +267,12 @@ public class ThongKeTongHopThanhTraService {
 		if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.THEO_KE_HOACH.name())) {
 			
 			predAll = predAll.
-					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()).
+					//and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()).
 					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.THEO_KE_HOACH));
 		} else if (StringUtils.equals(hinhThucThanhTraEnum.name(), HinhThucThanhTraEnum.DOT_XUAT.name())) {
 			
 			predAll = predAll.
-					and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull()).
+					//and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNull()).
 					and(QCuocThanhTra.cuocThanhTra.hinhThucThanhTra.eq(HinhThucThanhTraEnum.DOT_XUAT));
 		}
 		
@@ -317,7 +322,7 @@ public class ThongKeTongHopThanhTraService {
 				tongDonVi += array.length;
 			}
 
-			return tongDonVi;
+			return tongDonVi + 1;
 
 		}).mapToLong(Long::longValue).sum());
 		
@@ -376,6 +381,34 @@ public class ThongKeTongHopThanhTraService {
 		} else if (type.equals("CA_NHAN")) {
 			tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> elem.getCaNhanXuLyHanhChinhThamNhung()).mapToInt(Integer::intValue).sum());
 		}
+		
+		return tongGiaTri;
+	}
+	
+	public Long getSoDaThuTrongQuaTrinhThanhTra(BooleanExpression predAll, CuocThanhTraRepository cuocThanhTraRepo, String type) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongGiaTri = 0L;
+		
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongGiaTri = Long.valueOf(cuocThanhTras.stream().map(elem -> {
+
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "DAT")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getDatDaThuTrongQuaTrinhThanhTra();				
+				}
+			} else if (StringUtils.equals(type, "TIEN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienDaThuTrongQuaTrinhThanhTra();				
+				}
+			}
+
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
 		
 		return tongGiaTri;
 	}
@@ -462,15 +495,11 @@ public class ThongKeTongHopThanhTraService {
 			if (StringUtils.equals(type, "TONG_VI_PHAM")) {				
 				if (StringUtils.equals(typeValue, "DAT")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeDatKienNghiThuHoiKienNghiXuLyVeKinhTe() + doiTuong.getSaiPhamVeDatKienNghiKhacXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeDatKienNghiThuHoiKienNghiXuLyVeKinhTe() + doiTuong.getSaiPhamVeDatKienNghiKhacXuLyVeKinhTe();				
 					}
 				} else if (StringUtils.equals(typeValue, "TIEN")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeTienKienNghiThuHoiKienNghiXuLyVeKinhTe() + doiTuong.getSaiPhamVeTienKienNghiKhacXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeTienKienNghiThuHoiKienNghiXuLyVeKinhTe() + doiTuong.getSaiPhamVeTienKienNghiKhacXuLyVeKinhTe();				
 					}
 				}
 				
@@ -478,15 +507,17 @@ public class ThongKeTongHopThanhTraService {
 
 				if (StringUtils.equals(typeValue, "DAT")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeDatKienNghiThuHoiKienNghiXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeDatKienNghiThuHoiKienNghiXuLyVeKinhTe();			
 					}
 				} else if (StringUtils.equals(typeValue, "TIEN")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeTienKienNghiThuHoiKienNghiXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeTienKienNghiThuHoiKienNghiXuLyVeKinhTe();		
+					}
+				} else if (StringUtils.equals(typeValue, "QD_GIAO_DAT")) {
+					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+						if (doiTuong.getQuyetDinhGiaoDat() != null && !doiTuong.getQuyetDinhGiaoDat().isEmpty()) {
+							tongDonVi++;
+						}
 					}
 				}
 				
@@ -494,15 +525,11 @@ public class ThongKeTongHopThanhTraService {
 
 				if (StringUtils.equals(typeValue, "DAT")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeDatKienNghiKhacXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeDatKienNghiKhacXuLyVeKinhTe();				
 					}
 				} else if (StringUtils.equals(typeValue, "TIEN")) {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-						if (doiTuong.isChuyenCoQuanDieuTra()) {
-							tongDonVi += doiTuong.getSaiPhamVeTienKienNghiKhacXuLyVeKinhTe();
-						}					
+						tongDonVi += doiTuong.getSaiPhamVeTienKienNghiKhacXuLyVeKinhTe();			
 					}
 				}
 			}
@@ -526,17 +553,67 @@ public class ThongKeTongHopThanhTraService {
 			
 			if (StringUtils.equals(type, "TO_CHUC")) {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-					if (!doiTuong.getToChucCoSaiPham().isEmpty()) {
+					if (doiTuong.getToChucCoSaiPham() != null && !doiTuong.getToChucCoSaiPham().isEmpty()) {
 						String[] array = doiTuong.getToChucCoSaiPham().split(";");
 						tongDonVi += array.length;
 					}
 				}
 			} else if (StringUtils.equals(type, "CA_NHAN")) {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-					if (!doiTuong.getCaNhanCoSaiPham().isEmpty()) {
-						String[] array = doiTuong.getToChucCoSaiPham().split(";");
+					if (doiTuong.getCaNhanCoSaiPham() != null && !doiTuong.getCaNhanCoSaiPham().isEmpty()) {
+						String[] array = doiTuong.getCaNhanCoSaiPham().split(";");
 						tongDonVi += array.length;
 					}
+				}
+			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getCacDangViPhamVeDat(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "DAT_LAN_CHIEM")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getDatLanChiemKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getGiaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "CAP_GCN_QSDD_SAI")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCapGCNQSDDatSaiKienNghiXuLyVeDat();
+				} 
+			} else if (StringUtils.equals(type, "CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getcNChoThueKhongDungQDKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getsDDatKhongDungMDKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "BO_HOANG_HOA")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getBoHoanHoaKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "VI_PHAM_KHAC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getSaiPhamKhacKienNghiXuLyVeDat();
 				}
 			}
 			return tongDonVi;

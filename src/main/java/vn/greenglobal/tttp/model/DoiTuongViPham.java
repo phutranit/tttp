@@ -93,7 +93,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	// Kien nghi xu ly ve dat
 	private long datLanChiemKienNghiXuLyVeDat;
 	private long giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat;
-	private long capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	private long capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	private long capGCNQSDDatSaiKienNghiXuLyVeDat;
 	private long cNChoThueKhongDungQDKienNghiXuLyVeDat;
 	private long sDDatKhongDungMDKienNghiXuLyVeDat;
@@ -404,12 +404,12 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat = giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat;
 	}
 
-	public long getCapBanDatTraiThamQuyenKienNghiXuLyVeDay() {
-		return capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	public long getCapBanDatTraiThamQuyenKienNghiXuLyVeDat() {
+		return capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	}
 
-	public void setCapBanDatTraiThamQuyenKienNghiXuLyVeDay(long capBanDatTraiThamQuyenKienNghiXuLyVeDay) {
-		this.capBanDatTraiThamQuyenKienNghiXuLyVeDay = capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	public void setCapBanDatTraiThamQuyenKienNghiXuLyVeDat(long capBanDatTraiThamQuyenKienNghiXuLyVeDat) {
+		this.capBanDatTraiThamQuyenKienNghiXuLyVeDat = capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	}
 
 	public long getCapGCNQSDDatSaiKienNghiXuLyVeDat() {
