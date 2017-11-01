@@ -48,6 +48,8 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	
 	private LocalDateTime ngayXuLy;
 	
+	private boolean laLanhDao = false;
+	
 	@ApiModelProperty(position = 1)
 	public String getTen() {
 		return ten;
@@ -117,5 +119,13 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 
 	public void setDonViXuLy(CoQuanQuanLy donViXuLy) {
 		this.donViXuLy = donViXuLy;
+	}
+
+	public boolean isLaLanhDao() {
+		return laLanhDao;
+	}
+
+	public void setLaLanhDao(boolean laLanhDao) {
+		this.laLanhDao = laLanhDao;
 	}
 }

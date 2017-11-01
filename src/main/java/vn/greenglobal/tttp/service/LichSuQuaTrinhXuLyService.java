@@ -27,7 +27,13 @@ public class LichSuQuaTrinhXuLyService {
 	private LichSuQuaTrinhXuLyRepository lichSuQuaTrinhXuLyRepo;
 
 	BooleanExpression base = QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.daXoa.eq(false);
-
+	
+	public Predicate predicateFindByLanhDao(Long donId) {
+		BooleanExpression predAll = base.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.don.id.eq(donId))
+				.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.laLanhDao.isTrue());
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(Long donId) {
 		BooleanExpression predAll = base.and(QLichSuQuaTrinhXuLy.lichSuQuaTrinhXuLy.don.id.eq(donId));
 		return predAll;
