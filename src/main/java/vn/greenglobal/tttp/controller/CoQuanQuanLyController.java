@@ -750,7 +750,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/coQuanDieuTras/thanhTra")
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/coQuanDieuTras/cuocThanhTra")
 	@ApiOperation(value = "Lấy danh sách Cơ quan điều tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListCoQuanDieuTraThanhTra(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
