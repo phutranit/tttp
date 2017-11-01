@@ -44,6 +44,7 @@ import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.ChucNangKeHoachThanhTraEnum;
+import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
@@ -2029,6 +2030,27 @@ public class EnumController {
 		for (LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienXuLy : LyDoKhongDuDieuKienXuLyEnum.values()) {
 			object.put("ten", lyDoKhongDuDieuKienXuLy.getText());
 			object.put("giaTri", lyDoKhongDuDieuKienXuLy.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanDieuTraThanhTra")
+	@ApiOperation(value = "Lấy danh sách tất cả cơ quan điều tra thanh tra", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachCoQuanDieuTraThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		for (CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra : CoQuanDieuTraThanhTraEnum.values()) {
+			object.put("ten", coQuanDieuTraThanhTra.getText());
+			object.put("giaTri", coQuanDieuTraThanhTra.name());
 			list.add(object);
 			object = new HashMap<>();
 		}

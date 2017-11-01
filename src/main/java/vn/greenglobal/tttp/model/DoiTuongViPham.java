@@ -24,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucKienNghiEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
@@ -43,6 +44,8 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String soQuyetDinhChuyenCoQuanDieuTra = "";
 	@Size(max=255) // Kien nghi chuyen co quan dieu tra
 	private String nguoiRaQuyetDinhChuyenCoQuanDieuTra = "";
+	@Size(max=255) // Kien nghi chuyen co quan dieu tra
+	private String coQuanDieuTraKhac = "";
 	@Lob // Kien nghi chuyen co quan dieu tra
 	private String donViViPham = "";
 	@Lob // Kien nghi chuyen co quan dieu tra
@@ -53,10 +56,11 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String caNhanCoSaiPham = "";
 	@Lob // Kien nghi xu ly ve kinh te
 	private String saiPhamKhac = "";
-	// Kien nghi xu ly ve kinh te
+	@Size(max=255) // Kien nghi xu ly ve kinh te
 	private String quyetDinhGiaoDat = "";
 	@Lob // Kien nghi xu ly khac
 	private String noiDungKienNghiXuLyKhac = "";
+	
 	
 	//Kien nghi chuyen co quan dieu tra
 	private boolean chuyenCoQuanDieuTra;
@@ -105,6 +109,9 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private HinhThucKienNghiEnum hinhThucKienNghiToChuc;
 	@Enumerated(EnumType.STRING)
 	private HinhThucKienNghiEnum hinhThucKienNghiCaNhan;
+	// Kien nghi chuyen co quan dieu tra
+	@Enumerated(EnumType.STRING)
+	private CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra;
 	
 	@ManyToOne // Kien nghi chuyen co quan dieu tra
 	private CoQuanQuanLy coQuanDieuTra;
@@ -138,6 +145,14 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setNguoiRaQuyetDinhChuyenCoQuanDieuTra(String nguoiRaQuyetDinhChuyenCoQuanDieuTra) {
 		this.nguoiRaQuyetDinhChuyenCoQuanDieuTra = nguoiRaQuyetDinhChuyenCoQuanDieuTra;
+	}
+
+	public String getCoQuanDieuTraKhac() {
+		return coQuanDieuTraKhac;
+	}
+
+	public void setCoQuanDieuTraKhac(String coQuanDieuTraKhac) {
+		this.coQuanDieuTraKhac = coQuanDieuTraKhac;
 	}
 
 	public String getToChucCoSaiPham() {
@@ -466,6 +481,14 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setHinhThucKienNghiCaNhan(HinhThucKienNghiEnum hinhThucKienNghiCaNhan) {
 		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
+	}
+
+	public CoQuanDieuTraThanhTraEnum getCoQuanDieuTraThanhTra() {
+		return coQuanDieuTraThanhTra;
+	}
+
+	public void setCoQuanDieuTraThanhTra(CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra) {
+		this.coQuanDieuTraThanhTra = coQuanDieuTraThanhTra;
 	}
 
 	@ApiModelProperty(example = "{}")
