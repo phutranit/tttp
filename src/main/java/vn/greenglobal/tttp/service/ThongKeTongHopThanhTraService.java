@@ -513,6 +513,12 @@ public class ThongKeTongHopThanhTraService {
 					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
 						tongDonVi += doiTuong.getSaiPhamVeTienKienNghiThuHoiKienNghiXuLyVeKinhTe();		
 					}
+				} else if (StringUtils.equals(typeValue, "QD_GIAO_DAT")) {
+					for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+						if (doiTuong.getQuyetDinhGiaoDat() != null && !doiTuong.getQuyetDinhGiaoDat().isEmpty()) {
+							tongDonVi++;
+						}
+					}
 				}
 				
 			} else if (StringUtils.equals(type, "KIEN_NGHI_KHAC")) {
@@ -591,15 +597,23 @@ public class ThongKeTongHopThanhTraService {
 				}
 			} else if (StringUtils.equals(type, "CAP_GCN_QSDD_SAI")) {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+					tongDonVi += doiTuong.getCapGCNQSDDatSaiKienNghiXuLyVeDat();
 				} 
 			} else if (StringUtils.equals(type, "CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH")) {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+					tongDonVi += doiTuong.getcNChoThueKhongDungQDKienNghiXuLyVeDat();
 				}
 			} else if (StringUtils.equals(type, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH")) {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
-					tongDonVi += doiTuong.getCapBanDatTraiThamQuyenKienNghiXuLyVeDat();
+					tongDonVi += doiTuong.getsDDatKhongDungMDKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "BO_HOANG_HOA")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getBoHoanHoaKienNghiXuLyVeDat();
+				}
+			} else if (StringUtils.equals(type, "VI_PHAM_KHAC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getSaiPhamKhacKienNghiXuLyVeDat();
 				}
 			}
 			return tongDonVi;
