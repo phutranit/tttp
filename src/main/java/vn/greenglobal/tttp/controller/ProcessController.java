@@ -733,11 +733,11 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);		
 						transition = addDataTrasition(process, 31L, 26L, 37L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId); 						
-						transition = addDataTrasition(process, 19L, 8L, 18L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 19L, 8L, 31L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 19L, 25L, 38L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 19L, 25L, 31L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);						
-						transition = addDataTrasition(process, 26L, 8L, 41L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 26L, 8L, 37L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
 					}
 					
@@ -1364,11 +1364,11 @@ public class ProcessController extends TttpController<Process> {
 						transitionService.save(transition, congChucId);						
 						transition = addDataTrasition(process, 31L, 26L, 37L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 19L, 8L, 18L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 19L, 8L, 31L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
-						transition = addDataTrasition(process, 19L, 25L, 38L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 19L, 25L, 31L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);						
-						transition = addDataTrasition(process, 26L, 8L, 41L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
+						transition = addDataTrasition(process, 26L, 8L, 37L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU);
 						transitionService.save(transition, congChucId);
 					}
 					

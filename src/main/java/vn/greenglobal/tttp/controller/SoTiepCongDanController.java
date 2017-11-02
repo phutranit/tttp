@@ -660,7 +660,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				
 				
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy()) && soTiepCongDan.isGuiYeuCauGapLanhDao()) { 
+					if (soTiepCongDan.isGuiYeuCauGapLanhDao()) { 
 						don.setYeuCauGapTrucTiepLanhDao(true);
 						don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 						don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);

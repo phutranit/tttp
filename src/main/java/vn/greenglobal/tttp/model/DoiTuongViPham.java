@@ -60,7 +60,12 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String quyetDinhGiaoDat = "";
 	@Lob // Kien nghi xu ly khac
 	private String noiDungKienNghiXuLyKhac = "";
-	
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String soQuyetDinhKienNghiXuLyHanhChinhToChuc = "";
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String soQuyetDinhKienNghiXuLyHanhChinhCaNhan = "";
+	@Size(max=255) // Thu hoi trong qua trinh thanh tra
+	private String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
 	
 	//Kien nghi chuyen co quan dieu tra
 	private boolean chuyenCoQuanDieuTra;
@@ -193,6 +198,30 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setNoiDungKienNghiXuLyKhac(String noiDungKienNghiXuLyKhac) {
 		this.noiDungKienNghiXuLyKhac = noiDungKienNghiXuLyKhac;
+	}
+
+	public String getSoQuyetDinhKienNghiXuLyHanhChinhToChuc() {
+		return soQuyetDinhKienNghiXuLyHanhChinhToChuc;
+	}
+
+	public void setSoQuyetDinhKienNghiXuLyHanhChinhToChuc(String soQuyetDinhKienNghiXuLyHanhChinhToChuc) {
+		this.soQuyetDinhKienNghiXuLyHanhChinhToChuc = soQuyetDinhKienNghiXuLyHanhChinhToChuc;
+	}
+
+	public String getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan() {
+		return soQuyetDinhKienNghiXuLyHanhChinhCaNhan;
+	}
+
+	public void setSoQuyetDinhKienNghiXuLyHanhChinhCaNhan(String soQuyetDinhKienNghiXuLyHanhChinhCaNhan) {
+		this.soQuyetDinhKienNghiXuLyHanhChinhCaNhan = soQuyetDinhKienNghiXuLyHanhChinhCaNhan;
+	}
+
+	public String getQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra() {
+		return quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
+	}
+
+	public void setQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra(String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra) {
+		this.quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra = quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
 	}
 
 	public String getDonViViPham() {
