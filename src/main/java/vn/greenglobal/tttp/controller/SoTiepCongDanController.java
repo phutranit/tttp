@@ -183,7 +183,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	public Object getTongSoDonDanhSachYeuCauGapLanhDao(@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
@@ -206,7 +206,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
@@ -227,7 +227,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
@@ -660,7 +660,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				
 				
 				if (HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.equals(soTiepCongDan.getHuongXuLy())) {
-					if (!soTiepCongDan.getHuongXuLy().equals(soTiepCongDanOld.getHuongXuLy()) && soTiepCongDan.isGuiYeuCauGapLanhDao()) { 
+					if (soTiepCongDan.isGuiYeuCauGapLanhDao()) { 
 						don.setYeuCauGapTrucTiepLanhDao(true);
 						don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 						don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
@@ -1036,10 +1036,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND);
-			mappings.put("ngayCap", ngayCap);
-			mappings.put("noiCap", noiCap);
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
@@ -1091,10 +1092,11 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			}
 			
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND);
-			mappings.put("ngayCap", ngayCap);
-			mappings.put("noiCap", noiCap);
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
@@ -1107,7 +1109,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuTuChoi(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
-			@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
+			//@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
 			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
@@ -1145,11 +1147,12 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
 			}
 			
-			mappings.put("ngayThongBao", ngayThongBao);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			//mappings.put("ngayThongBao", ngayThongBao);
 			mappings.put("hoVaTen", hoVaTen);
-			mappings.put("soCMND", soCMND);
-			mappings.put("ngayCap", ngayCap);
-			mappings.put("noiCap", noiCap);
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);
