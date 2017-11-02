@@ -1677,7 +1677,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon); 
 			mappings.put("noiDung", noiDung);
-			mappings.put("lyDoDinhChi", lyDoDinhChi);
+			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
+					? lyDoDinhChi : "...................................................................................................................................(3)");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1688,6 +1689,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLyToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiToCao", required = true) String nguoiToCao,
 			@RequestParam(value = "diaChiNguoiToCao", required = false) String diaChiNguoiToCao,
@@ -1716,6 +1718,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 			}
 			
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiToCao", nguoiToCao);
 			mappings.put("diaChiNguoiToCao", diaChiNguoiToCao); 
