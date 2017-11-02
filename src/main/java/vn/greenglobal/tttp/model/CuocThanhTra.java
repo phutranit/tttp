@@ -130,7 +130,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private boolean chuyenCoQuanDieuTra;//
 	private boolean viPham;//
 	private boolean noiDungThamNhung;//
-	private boolean thanhVienDoan;//
+	private boolean thanhVienDoan = true;//
 	private boolean giaHan;
 	private boolean noiDungKienNghi;
 	// private boolean theoDoiThucHien;

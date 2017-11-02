@@ -404,6 +404,12 @@ public class ThongKeTongHopThanhTraService {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
 					tongDonVi += doiTuong.getTienDaThuTrongQuaTrinhThanhTra();				
 				}
+			} else if (StringUtils.equals(type, "QD_GIAO_DAT")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra() != null && !doiTuong.getQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra().isEmpty()) {
+						tongDonVi++;
+					}		
+				}
 			}
 
 			return tongDonVi;
@@ -565,7 +571,182 @@ public class ThongKeTongHopThanhTraService {
 						tongDonVi += array.length;
 					}
 				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getCaNhanCoSaiPham() != null && !doiTuong.getCaNhanCoSaiPham().isEmpty()) {
+						String[] array = doiTuong.getCaNhanCoSaiPham().split(";");
+						tongDonVi += array.length;
+					}
+					if (doiTuong.getToChucCoSaiPham() != null && !doiTuong.getToChucCoSaiPham().isEmpty()) {
+						String[] array = doiTuong.getToChucCoSaiPham().split(";");
+						tongDonVi += array.length;
+					}
+				}
 			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	
+	public Long getTienViPhamKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "TO_CHUC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienToChucViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "CA_NHAN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienCaNhanViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienToChucViPhamKienNghiXuLyVeKinhTe() + doiTuong.getTienCaNhanViPhamKienNghiXuLyVeKinhTe();
+				}
+			} if (StringUtils.equals(type, "KIEN_NGHI_THU_HOI")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getSoTienKienNghiThuHoiKienNghiXuLyVeKinhTe();
+				}
+			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "TO_CHUC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} else if (StringUtils.equals(type, "CA_NHAN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc().isEmpty()) {
+						tongDonVi++;
+					}
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} 
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getTienXuLyTaiSanKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "TICH_THU")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienTichThuXuLyTaiSanViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "TIEU_HUY")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienTieuHuyXuLyTaiSanViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienTichThuXuLyTaiSanViPhamKienNghiXuLyVeKinhTe() + doiTuong.getTienTieuHuyXuLyTaiSanViPhamKienNghiXuLyVeKinhTe();
+				}
+			} 
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getTienXuPhatViPhamKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "CA_NHAN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienCaNhanXuPhatViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "TO_CHUC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienToChucXuPhatViPhamKienNghiXuLyVeKinhTe();
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getTienCaNhanXuPhatViPhamKienNghiXuLyVeKinhTe() + doiTuong.getTienToChucXuPhatViPhamKienNghiXuLyVeKinhTe();
+				}
+			} 
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getTienDaThuThanhTraChuyenNganh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "CA_NHAN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCaNhanTienThuHoiTrongQuaTrinhThanhTra();
+				}
+			} else if (StringUtils.equals(type, "TO_CHUC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getToChucTienThuHoiTrongQuaTrinhThanhTra();
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					tongDonVi += doiTuong.getCaNhanTienThuHoiTrongQuaTrinhThanhTra() + doiTuong.getToChucTienThuHoiTrongQuaTrinhThanhTra();
+				}
+			} 
 			return tongDonVi;
 
 		}).mapToLong(Long::longValue).sum());
