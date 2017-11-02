@@ -4524,9 +4524,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 				// Da thu
 				Map<String, Object> daThu = new HashMap<>();
-				daThu.put("tien", 0);
-				daThu.put("dat", 0);
-				daThu.put("qdGiaoDat", 0);
+				daThu.put("tien",thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
+				daThu.put("dat", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
+				daThu.put("qdGiaoDat", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
 				
 				/* Note: Chua xong Theo doi thuc hien */
 				// Kiem tra don doc
@@ -4670,7 +4670,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("28", thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo));
 				mapMaSo.put("29", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
 				mapMaSo.put("30", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
-				mapMaSo.put("31", 0);
+				mapMaSo.put("31", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
 				mapMaSo.put("32", 0);
 				mapMaSo.put("33", 0);
 				mapMaSo.put("34", 0);
@@ -4772,9 +4772,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				
 				// So quyet dinh xu phat hanh chinh duoc ban hanh
 				Map<String, Object> soQDXuPhatHanhChinh = new HashMap<>();
-				soQDXuPhatHanhChinh.put("tongSo", 0L);
-				soQDXuPhatHanhChinh.put("caNhan", 0L);
-				soQDXuPhatHanhChinh.put("toChuc", 0L);
+				soQDXuPhatHanhChinh.put("tongSo", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TONG_SO", cuocThanhTraRepo));
+				soQDXuPhatHanhChinh.put("caNhan", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "CA_NHAN", cuocThanhTraRepo));
+				soQDXuPhatHanhChinh.put("toChuc", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TO_CHUC", cuocThanhTraRepo));
 				
 				// So tien vi pham
 				Map<String, Object> soTienViPham = new HashMap<>();
@@ -4884,9 +4884,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("8", thongKeTongHopThanhTraService.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TONG_SO", cuocThanhTraRepo));
 				mapMaSo.put("9", thongKeTongHopThanhTraService.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "CA_NHAN", cuocThanhTraRepo));
 				mapMaSo.put("10", thongKeTongHopThanhTraService.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TO_CHUC", cuocThanhTraRepo));
-				mapMaSo.put("11", 0);
-				mapMaSo.put("12", 0);
-				mapMaSo.put("13", 0);
+				mapMaSo.put("11", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TONG_SO", cuocThanhTraRepo));
+				mapMaSo.put("12", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "CA_NHAN", cuocThanhTraRepo));
+				mapMaSo.put("13", thongKeTongHopThanhTraService.getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TO_CHUC", cuocThanhTraRepo));
 				mapMaSo.put("14", thongKeTongHopThanhTraService.getTienViPhamKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TONG_SO", cuocThanhTraRepo));
 				mapMaSo.put("15", thongKeTongHopThanhTraService.getTienViPhamKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "CA_NHAN", cuocThanhTraRepo));
 				mapMaSo.put("16", thongKeTongHopThanhTraService.getTienViPhamKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuan, "TO_CHUC", cuocThanhTraRepo));

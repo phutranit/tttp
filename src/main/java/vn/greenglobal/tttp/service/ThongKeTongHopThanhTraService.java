@@ -404,6 +404,12 @@ public class ThongKeTongHopThanhTraService {
 				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
 					tongDonVi += doiTuong.getTienDaThuTrongQuaTrinhThanhTra();				
 				}
+			} else if (StringUtils.equals(type, "QD_GIAO_DAT")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra() != null && !doiTuong.getQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra().isEmpty()) {
+						tongDonVi++;
+					}		
+				}
 			}
 
 			return tongDonVi;
@@ -612,6 +618,45 @@ public class ThongKeTongHopThanhTraService {
 					tongDonVi += doiTuong.getSoTienKienNghiThuHoiKienNghiXuLyVeKinhTe();
 				}
 			}
+			return tongDonVi;
+
+		}).mapToLong(Long::longValue).sum());
+		
+		return tongSoDon;
+	}
+	
+	public Long getSoQuyetDinhXuPhatKienNghiXuLyHanhChinh(BooleanExpression predAll, String type, CuocThanhTraRepository cuocThanhTraRepo) {
+		
+		List<CuocThanhTra> cuocThanhTras = new ArrayList<CuocThanhTra>();
+		Long tongSoDon = 0L;
+	
+		cuocThanhTras.addAll((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAll));
+		
+		tongSoDon = Long.valueOf(cuocThanhTras.stream().map(elem -> {			
+			Long tongDonVi = 0L;
+			
+			if (StringUtils.equals(type, "TO_CHUC")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} else if (StringUtils.equals(type, "CA_NHAN")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} else if (StringUtils.equals(type, "TONG_SO")) {
+				for (DoiTuongViPham doiTuong : elem.getListDoiTuongViPham()) {
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhToChuc().isEmpty()) {
+						tongDonVi++;
+					}
+					if (doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan() != null && !doiTuong.getSoQuyetDinhKienNghiXuLyHanhChinhCaNhan().isEmpty()) {
+						tongDonVi++;
+					}
+				}
+			} 
 			return tongDonVi;
 
 		}).mapToLong(Long::longValue).sum());
