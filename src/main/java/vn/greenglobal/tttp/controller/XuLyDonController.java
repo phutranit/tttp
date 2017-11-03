@@ -240,7 +240,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								listState = ((List<State>) repoState.findAll(predicate));						
 								if (listState.size() > 0) {
 									State state = listState.get(0);
-									if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+									if (!state.getType().equals(FlowStateEnum.KET_THUC)) {
 										listProcessHaveBeginState.add(processFromList);
 										break;
 									}
@@ -1548,6 +1548,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1559,14 +1560,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanNhanDon", coQuanNhanDon);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
@@ -1604,18 +1608,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("loaiDonTieuDe", loaiDon.toUpperCase());
 			mappings.put("loaiDon", loaiDon.toLowerCase());
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
@@ -1653,6 +1661,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1664,20 +1673,24 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon); 
 			mappings.put("noiDung", noiDung);
-			mappings.put("lyDoDinhChi", lyDoDinhChi);
+			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
+					? lyDoDinhChi : "...................................................................................................................................(3)");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1688,6 +1701,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLyToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "donId", required = false) Long donId,
+			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiToCao", required = true) String nguoiToCao,
 			@RequestParam(value = "diaChiNguoiToCao", required = false) String diaChiNguoiToCao,
@@ -1697,6 +1712,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			Don don = donRepo.findOne(donId);
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -1706,16 +1722,29 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
+			String soVB = "";
+			
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("coQuanChuyenDon", "................................................................(1)");
+			if (don != null && don.isDonChuyen()) {
+				Don donGoc = donRepo.findOne(don.getDonGocId());
+				mappings.put("coQuanChuyenDon", donGoc.getDonViXuLyGiaiQuyet().getTen());
+			}
+			
+			System.out.println("soVB " +soVB);
+			mappings.put("soVB", soVB);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiToCao", nguoiToCao);
 			mappings.put("diaChiNguoiToCao", diaChiNguoiToCao); 
@@ -1750,18 +1779,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiKienNghi", nguoiKienNghi);
@@ -1796,6 +1829,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1807,14 +1841,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("noiDung", noiDung);
@@ -1850,6 +1887,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1861,14 +1899,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
@@ -1906,6 +1947,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1917,14 +1959,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
@@ -1956,18 +2001,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("doiTuongGiaiQuyet", doiTuongGiaiQuyet);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("doiTuongBiToCao", doiTuongBiToCao);
@@ -2002,18 +2051,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiKhieuNai", nguoiKhieuNai);
@@ -2048,18 +2101,22 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("loaiDonTieuDe", loaiDon.toUpperCase());
 			mappings.put("loaiDon", loaiDon.toLowerCase());
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
@@ -3265,7 +3322,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setNgayKetThucXLD(null);
 		ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 		Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-		donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+		donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 		donMoi.setDonCongDans(new ArrayList<Don_CongDan>());
 		donMoi.setTaiLieuBangChungs(new ArrayList<TaiLieuBangChung>());
 		donMoi.setDoanDiCungs(new ArrayList<DoanDiCung>());

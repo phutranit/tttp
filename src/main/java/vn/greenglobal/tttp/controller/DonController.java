@@ -586,7 +586,7 @@ public class DonController extends TttpController<Don> {
 					} else {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 						Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
 					xuLyDonService.save(xuLyDon, congChucId);
 //					if (donMoi.isTuTCDChuyenQua()) { 
@@ -770,7 +770,7 @@ public class DonController extends TttpController<Don> {
 						if (don.getThoiHanXuLyXLD() == null) {
 							ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 							Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 						}
 					} else {
 						if (don.getThoiHanXuLyXLD() == null) {
@@ -902,7 +902,7 @@ public class DonController extends TttpController<Don> {
 							if (don.getThoiHanXuLyXLD() == null) {
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 								Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 							}
 						} else {
 							if (don.getThoiHanXuLyXLD() == null) {
@@ -1060,7 +1060,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
@@ -1078,7 +1078,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 60L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}

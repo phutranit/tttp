@@ -437,7 +437,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					} else {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 						Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
-						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
 						thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
 					}
 					//thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
@@ -611,7 +611,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							} else {
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 								Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
-								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
 								thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
 								soTiepCongDan.setNgayBaoCaoKetQua(ngayHetHanKTDX);
 							}
@@ -963,6 +963,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -975,14 +976,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen.toUpperCase());
 			mappings.put("diaChi", diaChi != null ? diaChi.trim() : "");
@@ -1016,6 +1020,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1027,14 +1032,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
@@ -1072,6 +1080,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1083,14 +1092,17 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("hoVaTen", hoVaTen);
@@ -1109,7 +1121,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuTuChoi(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
-			//@RequestParam(value = "ngayThongBao", required = false) String ngayThongBao,
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
 			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
 			@RequestParam(value = "soCMND", required = false) String soCMND,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
@@ -1128,6 +1140,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -1139,16 +1152,19 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("coQuanTiepNhan", cq.getTen());
-			//mappings.put("ngayThongBao", ngayThongBao);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("hoVaTen", hoVaTen);
 			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
