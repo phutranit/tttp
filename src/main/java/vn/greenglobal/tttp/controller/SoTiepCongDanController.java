@@ -437,7 +437,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					} else {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 						Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
-						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+						LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
 						thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
 					}
 					//thongTinGiaiQuyetDon.setDonViThamTraXacMinh(soTiepCongDan.getDonViChuTri());
@@ -611,7 +611,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							} else {
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 								Long soNgayKTDXMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 45L;
-								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
+								LocalDateTime ngayHetHanKTDX = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayKTDXMacDinh);
 								thongTinGiaiQuyetDon.setNgayHetHanKTDX(ngayHetHanKTDX);
 								soTiepCongDan.setNgayBaoCaoKetQua(ngayHetHanKTDX);
 							}
