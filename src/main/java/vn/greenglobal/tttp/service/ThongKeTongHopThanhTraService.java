@@ -250,12 +250,9 @@ public class ThongKeTongHopThanhTraService {
 	}
 	
 	// 1
-	public Predicate predicateFindCuocThanhTraTheoLinhVuc(BooleanExpression predAll,Long donViXuLyXLD ,LinhVucThanhTraEnum linhVucThanhTraEnum,CuocThanhTraRepository cuocThanhTraRepo) {
-		
+	public Predicate predicateFindCuocThanhTraTheoLinhVuc(BooleanExpression predAll, LinhVucThanhTraEnum linhVucThanhTraEnum) {		
 		predAll = predAll.
-				and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(donViXuLyXLD)).
-				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum));
-		
+				and(QCuocThanhTra.cuocThanhTra.linhVucThanhTra.eq(linhVucThanhTraEnum));		
 		return predAll; 
 	}
 	
