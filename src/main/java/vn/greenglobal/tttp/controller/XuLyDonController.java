@@ -240,7 +240,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								listState = ((List<State>) repoState.findAll(predicate));						
 								if (listState.size() > 0) {
 									State state = listState.get(0);
-									if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+									if (!state.getType().equals(FlowStateEnum.KET_THUC)) {
 										listProcessHaveBeginState.add(processFromList);
 										break;
 									}
