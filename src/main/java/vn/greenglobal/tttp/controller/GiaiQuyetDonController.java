@@ -2040,6 +2040,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -2051,14 +2052,17 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", tenCoQuan);
 			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
@@ -2090,6 +2094,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
 			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
 			
+			String soVB = "";
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
@@ -2101,14 +2106,17 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 				} else { 
 					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
 				}
+				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
 				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
 				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
 				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
 				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("soVB", soVB);
 			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(1)");
 			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
 			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
