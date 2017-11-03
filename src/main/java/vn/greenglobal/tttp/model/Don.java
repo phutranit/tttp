@@ -1593,6 +1593,9 @@ public class Don extends Model<Don> {
 			map.put("ngayBatDauGiaiQuyet", getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet());
 			map.put("ngayBatDauTTXM", getThongTinGiaiQuyetDon().getNgayBatDauTTXM());
 			map.put("ngayBatDauKTDX", getThongTinGiaiQuyetDon().getNgayBatDauKTDX());
+			map.put("coQuanDaGiaiQuyetInfo", getThongTinGiaiQuyetDon().getCoQuanDaGiaiQuyetInfo());
+			map.put("nhomThamQuyenDaGiaiQuyet", getThongTinGiaiQuyetDon().getNhomThamQuyenDaGiaiQuyet());
+			map.put("nhomThamQuyenDaGiaiQuyet", getThongTinGiaiQuyetDon().getNhomThamQuyenDaGiaiQuyet());
 			return map;
 		}
 		return null;

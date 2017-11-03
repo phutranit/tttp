@@ -83,9 +83,12 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			checkDataThongTinGiaiQuyetDon(thongTinGiaiQuyetDon);
 			Don don = donRepo.findOne(donService.predicateFindOne(thongTinGiaiQuyetDon.getDon().getId()));
 			don.setDonViThamTraXacMinh(thongTinGiaiQuyetDon.getDonViThamTraXacMinh());
+			
 			if (thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet() != null) {
 				if (KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet()) 
 						&& thongTinGiaiQuyetDon.getNgayKetThucGiaiQuyet() == null) {
+					thongTinGiaiQuyetDon.setCoQuanDaGiaiQuyet(don.getCoQuanDangGiaiQuyet());
+					thongTinGiaiQuyetDon.setNhomThamQuyenDaGiaiQuyet("Hành chính");
 					thongTinGiaiQuyetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
 					don.setCanBoCoTheThuHoi(null);
 				}

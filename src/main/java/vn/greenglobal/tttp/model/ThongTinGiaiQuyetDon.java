@@ -56,6 +56,10 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String ketQuaGiaiQuyetKhac = "";
 	@Size(max=255)
 	private String ketQuaThucHienKhac = "";
+	@Size(max=255)
+	private String soVanBan = "";
+	@Size(max=255)
+	private String nguoiBanHanh = "";
 	//@Lob
 	private String noiDung = "";
 	//@Lob
@@ -66,6 +70,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String noiDungGiaoLapDuThao = "";
 	//@Lob
 	private String noiDungKetLuanDuThao = "";
+	
+	private LocalDateTime ngayBanHanh;
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
@@ -234,6 +240,32 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	}
 	/**
 	 * Ket thuc tao fields Luu thong tin tam thoi.
+	 */
+	
+	/**
+	 * Block ket qua da giai quyet cua lich su don nguoi dung don.
+	 */
+	private CoQuanQuanLy coQuanDaGiaiQuyet;
+	private String nhomThamQuyenDaGiaiQuyet;
+	
+	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
+		return coQuanDaGiaiQuyet;
+	}
+
+	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
+		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
+	}
+
+	public String getNhomThamQuyenDaGiaiQuyet() {
+		return nhomThamQuyenDaGiaiQuyet;
+	}
+
+	public void setNhomThamQuyenDaGiaiQuyet(String nhomThamQuyenDaGiaiQuyet) {
+		this.nhomThamQuyenDaGiaiQuyet = nhomThamQuyenDaGiaiQuyet;
+	}
+
+	/**
+	 * Ket thuc Block ket qua da giai quyet cua lich su don nguoi dung don.
 	 */
 
 	public String getSoQuyetDinhThanhLapDTXM() {
@@ -1068,6 +1100,18 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("type", getHuongThuLyGiaiQuyet().name());
 			map.put("text", getHuongThuLyGiaiQuyet().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDaGiaiQuyetInfo() {
+		if (getCoQuanDaGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			return map;
 		}
 		return null;
