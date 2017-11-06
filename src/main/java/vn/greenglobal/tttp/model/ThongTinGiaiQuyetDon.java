@@ -72,6 +72,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String noiDungKetLuanDuThao = "";
 	//@Lob
 	private String noiDungKetQuaGiaiQuyet = "";
+	//@Lob
+	private String noiDungBoSungHoSo = "";
 	
 	private LocalDateTime ngayBanHanh;
 
@@ -388,6 +390,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setNoiDungKetQuaGiaiQuyet(String noiDungKetQuaGiaiQuyet) {
 		this.noiDungKetQuaGiaiQuyet = noiDungKetQuaGiaiQuyet;
+	}
+
+	public String getNoiDungBoSungHoSo() {
+		return noiDungBoSungHoSo;
+	}
+
+	public void setNoiDungBoSungHoSo(String noiDungBoSungHoSo) {
+		this.noiDungBoSungHoSo = noiDungBoSungHoSo;
 	}
 
 	public String getSoQuyetDinhGiaHanTTXM() {
