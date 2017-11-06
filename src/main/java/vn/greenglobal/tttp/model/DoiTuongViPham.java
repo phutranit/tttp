@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -46,19 +45,19 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String nguoiRaQuyetDinhChuyenCoQuanDieuTra = "";
 	@Size(max=255) // Kien nghi chuyen co quan dieu tra
 	private String coQuanDieuTraKhac = "";
-	@Lob // Kien nghi chuyen co quan dieu tra
+	//@Lob // Kien nghi chuyen co quan dieu tra
 	private String donViViPham = "";
-	@Lob // Kien nghi chuyen co quan dieu tra
+	//@Lob // Kien nghi chuyen co quan dieu tra
 	private String viPhamKhac = "";
-	@Lob // Kien nghi xu ly ve hanh chinh
+	//@Lob // Kien nghi xu ly ve hanh chinh
 	private String toChucCoSaiPham = "";
-	@Lob // Kien nghi xu ly ve hanh chinh
+	//@Lob // Kien nghi xu ly ve hanh chinh
 	private String caNhanCoSaiPham = "";
-	@Lob // Kien nghi xu ly ve kinh te
+	//@Lob // Kien nghi xu ly ve kinh te
 	private String saiPhamKhac = "";
 	@Size(max=255) // Kien nghi xu ly ve kinh te
 	private String quyetDinhGiaoDat = "";
-	@Lob // Kien nghi xu ly khac
+	//@Lob // Kien nghi xu ly khac
 	private String noiDungKienNghiXuLyKhac = "";
 	@Size(max=255) // Kien nghi xu ly ve hanh chinh
 	private String soQuyetDinhKienNghiXuLyHanhChinhToChuc = "";
@@ -102,7 +101,7 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	// Kien nghi xu ly ve dat
 	private long datLanChiemKienNghiXuLyVeDat;
 	private long giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat;
-	private long capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	private long capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	private long capGCNQSDDatSaiKienNghiXuLyVeDat;
 	private long cNChoThueKhongDungQDKienNghiXuLyVeDat;
 	private long sDDatKhongDungMDKienNghiXuLyVeDat;
@@ -448,12 +447,12 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat = giaoCapDatSaiDoiTuongQDKienNghiXuLyVeDat;
 	}
 
-	public long getCapBanDatTraiThamQuyenKienNghiXuLyVeDay() {
-		return capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	public long getCapBanDatTraiThamQuyenKienNghiXuLyVeDat() {
+		return capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	}
 
-	public void setCapBanDatTraiThamQuyenKienNghiXuLyVeDay(long capBanDatTraiThamQuyenKienNghiXuLyVeDay) {
-		this.capBanDatTraiThamQuyenKienNghiXuLyVeDay = capBanDatTraiThamQuyenKienNghiXuLyVeDay;
+	public void setCapBanDatTraiThamQuyenKienNghiXuLyVeDat(long capBanDatTraiThamQuyenKienNghiXuLyVeDat) {
+		this.capBanDatTraiThamQuyenKienNghiXuLyVeDat = capBanDatTraiThamQuyenKienNghiXuLyVeDat;
 	}
 
 	public long getCapGCNQSDDatSaiKienNghiXuLyVeDat() {

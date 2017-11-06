@@ -1082,6 +1082,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		donService.save(don, congChucId);
 		
 		thongTinGiaiQyuetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
+		thongTinGiaiQyuetDon.setCoQuanDaGiaiQuyet(don.getCoQuanDangGiaiQuyet());
+		thongTinGiaiQyuetDon.setNhomThamQuyenDaGiaiQuyet("Hành chính");
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQyuetDon, congChucId);
 		
 		giaiQuyetDonHienTai.setCongChuc(giaiQuyetDonHienTai.getCanBoXuLyChiDinh() != null ? giaiQuyetDonHienTai.getCanBoXuLyChiDinh() : congChucRepo.findOne(congChucId));

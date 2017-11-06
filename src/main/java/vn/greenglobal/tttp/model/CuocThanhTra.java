@@ -12,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,10 +29,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
+import vn.greenglobal.tttp.enums.ChucNangCuocThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.ThucHienPhapLuatVeThanhTraEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -73,31 +74,31 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soThongBaoKetThucTTTT = "";//
 	@Size(max = 255) // Thong bao ket thuc thanh tra truc tiep
 	private String nguoiBanHanhThongBaoKetThucTTTT = "";//
-	@Lob // Thong bao ket thuc thanh tra truc tiep
+	//@Lob // Thong bao ket thuc thanh tra truc tiep
 	private String ghiChuThongBaoKetThucTTTT = "";//
-	//@Lob // Vi pham
+	////@Lob // Vi pham
 	//private String noiDungViPhamKhac = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";//
-	@Lob
+	//@Lob
 	private String noiDungThanhTra = "";//
-	@Lob
+	//@Lob
 	private String canCuThanhTraDotXuat = "";//
-	@Lob
+	//@Lob
 	private String canCuThanhTraLai = "";//
-	@Lob
+	//@Lob
 	private String tomTatKetLuanThanhTra = "";//
-	@Lob // Tham nhung
+	//@Lob // Tham nhung
 	private String tenNguoi = "";//
-	@Lob
+	//@Lob
 	private String donViPhoiHop = "";//
-	@Lob
+	//@Lob
 	private String doiTuongThanhTraLienQuan = "";//
-	@Lob
+	//@Lob
 	private String doiTuongViPham = "";//
-	@Lob
+	//@Lob
 	private String thongBaoKetThuc = "";//
-	@Lob
+	//@Lob
 	private String lyDonGiaHan = "";//
 
 	@NotNull
@@ -130,7 +131,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private boolean chuyenCoQuanDieuTra;//
 	private boolean viPham;//
 	private boolean noiDungThamNhung;//
-	private boolean thanhVienDoan;//
+	private boolean thanhVienDoan = true;//
 	private boolean giaHan;
 	private boolean noiDungKienNghi;
 	// private boolean theoDoiThucHien;
@@ -200,6 +201,10 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private LoaiHinhThanhTraEnum loaiHinhThanhTra;//
 	@Enumerated(EnumType.STRING)
 	private TienDoThanhTraEnum tienDoThanhTra;//
+	@Enumerated(EnumType.STRING)
+	private ChucNangCuocThanhTraEnum chucNangCuocThanhTra;//
+	@Enumerated(EnumType.STRING)
+	private ThucHienPhapLuatVeThanhTraEnum thucHienPhapLuatVeThanhTra;//
 
 	// Theo doi thuc hien
 	// @Enumerated(EnumType.STRING)
@@ -952,6 +957,22 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		this.tienDoThanhTra = tienDoThanhTra;
 	}
 
+	public ChucNangCuocThanhTraEnum getChucNangCuocThanhTra() {
+		return chucNangCuocThanhTra;
+	}
+
+	public void setChucNangCuocThanhTra(ChucNangCuocThanhTraEnum chucNangCuocThanhTra) {
+		this.chucNangCuocThanhTra = chucNangCuocThanhTra;
+	}
+
+	public ThucHienPhapLuatVeThanhTraEnum getThucHienPhapLuatVeThanhTra() {
+		return thucHienPhapLuatVeThanhTra;
+	}
+
+	public void setThucHienPhapLuatVeThanhTra(ThucHienPhapLuatVeThanhTraEnum thucHienPhapLuatVeThanhTra) {
+		this.thucHienPhapLuatVeThanhTra = thucHienPhapLuatVeThanhTra;
+	}
+
 	@ApiModelProperty(example = "{}")
 	public DoiTuongThanhTra getDoiTuongThanhTra() {
 		return doiTuongThanhTra;
@@ -1168,6 +1189,30 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("type", getTienDoThanhTra().name());
 			map.put("text", getTienDoThanhTra().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getChucNangCuocThanhTraInfo() {
+		if (getChucNangCuocThanhTra() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getChucNangCuocThanhTra().name());
+			map.put("text", getChucNangCuocThanhTra().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getThucHienPhapLuatVeThanhTraInfo() {
+		if (getThucHienPhapLuatVeThanhTra() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getThucHienPhapLuatVeThanhTra().name());
+			map.put("text", getThucHienPhapLuatVeThanhTra().getText());
 			return map;
 		}
 		return null;
