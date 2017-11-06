@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,12 +90,30 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs), pageable);
+			pageable = new PageRequest(0, 1000, null);
+			List<LinhVucDonThu> list = (List<LinhVucDonThu>) repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs));
+			List<LinhVucDonThu> listFinal = new ArrayList<>();
+			listFinal.addAll(list);
+			if ((tuKhoa != null && !tuKhoa.isEmpty()) || (cha != null && !cha.isEmpty()) 
+					|| (loaiDon != null && !loaiDon.isEmpty()) || (listLinhVucs != null && listLinhVucs.size() > 0)) {
+				for (LinhVucDonThu lv : list) {
+					listFinal = getParent(listFinal, lv);
+				}
+			}
+			Page<LinhVucDonThu> page =  new PageImpl<LinhVucDonThu>(listFinal, pageable, listFinal.size());
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	public List<LinhVucDonThu> getParent(List<LinhVucDonThu> list, LinhVucDonThu linhVuc) {
+		if (linhVuc.getCha() != null && !list.contains(linhVuc.getCha())) {
+			list.add(linhVuc.getCha());
+			return getParent(list, linhVuc.getCha());
+		}
+		return list;
+	}	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThuCombobox")
