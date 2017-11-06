@@ -3513,7 +3513,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.HANH_CHINH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					
 					// Dem so cuoc thanh tra 
 					Long tongSoCuocThanhTra = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
@@ -3571,9 +3571,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					
 					// So cuoc thanh tra 
 					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.HANH_CHINH);
+							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.TAI_CHINH);
 					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.HANH_CHINH);		
+							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.TAI_CHINH);		
 					
 					Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
 					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
@@ -3804,7 +3804,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.HANH_CHINH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					
 					// Dem so cuoc thanh tra 
 					Long tongSoCuocThanhTra = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
@@ -3861,9 +3861,9 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					
 					// So cuoc thanh tra 
 					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.HANH_CHINH);
+							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.TAI_CHINH);
 					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.HANH_CHINH);		
+							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.TAI_CHINH);		
 					
 					Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
 					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
@@ -4038,14 +4038,14 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.HANH_CHINH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					mapMaSo = new HashMap<String, Object>();
 					mapMaSo.put("0", cq.getTen());
 					mapMaSo.put("1", Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
 					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.HANH_CHINH);
+							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.TAI_CHINH);
 					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.HANH_CHINH);		
+							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())), LinhVucThanhTraEnum.TAI_CHINH);		
 					
 					Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
 					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
@@ -4103,14 +4103,14 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.HANH_CHINH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					mapMaSo = new HashMap<String, Object>();
 					mapMaSo.put("0", cdv.getTen());
 					mapMaSo.put("1", Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
 					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.HANH_CHINH);
+							predAllCuocThanhTraTrongKy.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.TAI_CHINH);
 					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(
-							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.HANH_CHINH);		
+							predAllCuocThanhTraKyTruoc.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())), LinhVucThanhTraEnum.TAI_CHINH);		
 					
 					Long tongSoCuocThanhTraTrongKy = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
 					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
@@ -6524,8 +6524,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.CHUYEN_NGANH);
-								
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);								
 					// So Cuoc Thanh Tra
 					Map<String, Object> soCuocTTKT= new HashMap<>();
 					Long soCuocTTKTTongSo = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
@@ -6731,7 +6730,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.CHUYEN_NGANH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 								
 					// So Cuoc Thanh Tra
 					Map<String, Object> soCuocTTKT= new HashMap<>();
@@ -6908,7 +6907,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.CHUYEN_NGANH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					mapMaSo = new HashMap<String, Object>();
 					mapMaSo.put("0", cq.getTen());
 					mapMaSo.put("1", Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
@@ -6961,7 +6960,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
 					
 					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.CHUYEN_NGANH);
+					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, LinhVucThanhTraEnum.TAI_CHINH);
 					mapMaSo = new HashMap<String, Object>();
 					mapMaSo.put("0", cdv.getTen());
 					mapMaSo.put("1", Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
