@@ -12,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -75,31 +74,31 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private String soThongBaoKetThucTTTT = "";//
 	@Size(max = 255) // Thong bao ket thuc thanh tra truc tiep
 	private String nguoiBanHanhThongBaoKetThucTTTT = "";//
-	@Lob // Thong bao ket thuc thanh tra truc tiep
+	//@Lob // Thong bao ket thuc thanh tra truc tiep
 	private String ghiChuThongBaoKetThucTTTT = "";//
-	//@Lob // Vi pham
+	////@Lob // Vi pham
 	//private String noiDungViPhamKhac = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";//
-	@Lob
+	//@Lob
 	private String noiDungThanhTra = "";//
-	@Lob
+	//@Lob
 	private String canCuThanhTraDotXuat = "";//
-	@Lob
+	//@Lob
 	private String canCuThanhTraLai = "";//
-	@Lob
+	//@Lob
 	private String tomTatKetLuanThanhTra = "";//
-	@Lob // Tham nhung
+	//@Lob // Tham nhung
 	private String tenNguoi = "";//
-	@Lob
+	//@Lob
 	private String donViPhoiHop = "";//
-	@Lob
+	//@Lob
 	private String doiTuongThanhTraLienQuan = "";//
-	@Lob
+	//@Lob
 	private String doiTuongViPham = "";//
-	@Lob
+	//@Lob
 	private String thongBaoKetThuc = "";//
-	@Lob
+	//@Lob
 	private String lyDonGiaHan = "";//
 
 	@NotNull

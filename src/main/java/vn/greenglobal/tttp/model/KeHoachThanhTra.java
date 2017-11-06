@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,7 +44,7 @@ public class KeHoachThanhTra extends Model<KeHoachThanhTra> {
 	@NotBlank
 	@Size(max=255)
 	private String quyetDinhPheDuyetKTTT = "";
-	@Lob
+	//@Lob
 	private String ghiChu = "";
 	@NotNull
 	private int namThanhTra = 0;
