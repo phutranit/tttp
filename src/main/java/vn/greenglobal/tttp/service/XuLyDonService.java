@@ -194,7 +194,10 @@ public class XuLyDonService {
 		
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
 			VaiTroEnum vaiTro = VaiTroEnum.valueOf(StringUtils.upperCase(chucVu));
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+			xuLyDonQuery = xuLyDonQuery.and((QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
+						.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.CHUYEN_VIEN)))
+					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.ne(VaiTroEnum.CHUYEN_VIEN)
+							.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
 					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
 					);
 		}	

@@ -491,37 +491,39 @@ public class DonController extends TttpController<Don> {
 				Long coQuanQuanLyId = Long.valueOf(commonProfile.getAttribute("coQuanQuanLyId").toString());
 				Long donViId = Long.valueOf(commonProfile.getAttribute("donViId").toString());
 				if (don.isThanhLapDon()) {
-					if (don.getLoaiDon() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
-								ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
-					}
-					if (don.getLinhVucDonThu() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
-								ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
-					}
-					if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
-								ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
-					}
-					if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
-						if (don.getLoaiDoiTuong() == null) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
-									ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+					if (!don.isSaveTmp()) {
+						if (don.getLoaiDon() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDON_REQUIRED.name(),
+									ApiErrorEnum.LOAIDON_REQUIRED.getText(), ApiErrorEnum.LOAIDON_REQUIRED.getText());
 						}
+						if (don.getLinhVucDonThu() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LINHVUCDONTHU_REQUIRED.name(),
+									ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText(), ApiErrorEnum.LINHVUCDONTHU_REQUIRED.getText());
+						}
+						if (don.getNoiDung() == null || don.getNoiDung().isEmpty()) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NOIDUNG_REQUIRED.name(),
+									ApiErrorEnum.NOIDUNG_REQUIRED.getText(), ApiErrorEnum.NOIDUNG_REQUIRED.getText());
+						}
+						if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI) || don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
+							if (don.getLoaiDoiTuong() == null) {
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIDOITUONG_REQUIRED.name(),
+										ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText(), ApiErrorEnum.LOAIDOITUONG_REQUIRED.getText());
+							}
+						}
+						if (don.getLoaiVuViec() == null) {
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
+									ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
+						}
+	//					if (don.getPhanLoaiDon() == null) {
+	//						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+	//								ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+	//					}
 					}
-					if (don.getLoaiVuViec() == null) {
-						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
-								ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
-					}
-//					if (don.getPhanLoaiDon() == null) {
-//						return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
-//								ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
-//					}
 				}
 				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
-				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				//donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
 				
 				if (donMoi.isThanhLapDon()) {
@@ -586,7 +588,7 @@ public class DonController extends TttpController<Don> {
 					} else {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 						Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+						donMoi.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(donMoi.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 					}
 					xuLyDonService.save(xuLyDon, congChucId);
 //					if (donMoi.isTuTCDChuyenQua()) { 
@@ -744,14 +746,14 @@ public class DonController extends TttpController<Don> {
 				}
 				
 				don.setProcessType(donOld.getProcessType());
-				don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDaGiaiQuyet());
+				don.setCoQuanDangGiaiQuyet(donOld.getCoQuanDangGiaiQuyet());
 				if (don.getNoiDungThongTinTrinhLanhDao().isEmpty()) { 
 					don.setNoiDungThongTinTrinhLanhDao(donOld.getNoiDungThongTinTrinhLanhDao());
 				}
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
@@ -770,7 +772,7 @@ public class DonController extends TttpController<Don> {
 						if (don.getThoiHanXuLyXLD() == null) {
 							ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 							Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+							don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 						}
 					} else {
 						if (don.getThoiHanXuLyXLD() == null) {
@@ -868,7 +870,7 @@ public class DonController extends TttpController<Don> {
 						}
 					}
 					
-					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					if (don.getProcessType() == null) {
 						don.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -889,7 +891,7 @@ public class DonController extends TttpController<Don> {
 						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+						//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
@@ -902,7 +904,7 @@ public class DonController extends TttpController<Don> {
 							if (don.getThoiHanXuLyXLD() == null) {
 								ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 								Long soNgayXuLyMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeGoc(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
+								don.setThoiHanXuLyXLD(Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(don.getNgayBatDauXLD(), soNgayXuLyMacDinh));
 							}
 						} else {
 							if (don.getThoiHanXuLyXLD() == null) {
@@ -1060,7 +1062,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
@@ -1078,7 +1080,7 @@ public class DonController extends TttpController<Don> {
 		try {
 			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 60L;
-			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeGoc(Utils.localDateTimeNow(), soNgayMacDinh);
+			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(), ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}

@@ -901,4 +901,22 @@ public class Utils {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static String splitWords(String words) {
+		String word = "";
+		if (words != null && words != "") {
+			words = words.replace(".", " ");
+			words = words.trim();
+			String[] strs = words.split(" ");
+			for (String str : strs) {
+				if (Character.isLetter(str.charAt(0))) {
+					word += str.charAt(0);
+				}
+			}
+			if (word != "") { 
+				word = word.toUpperCase();
+			}
+		}
+		return word;
+	}
 }
