@@ -3460,7 +3460,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra;
 				
 				// Get cuoc thanh tra theo linh vuc hanh chinh
-				predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);
+				//predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan, cq.getId(), LinhVucThanhTraEnum.HANH_CHINH, cuocThanhTraRepo);
 				
 				// Dem so cuoc thanh tra 
 				Long tongSoCuocThanhTra = Long.valueOf(((List<CuocThanhTra>)cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
