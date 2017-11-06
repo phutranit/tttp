@@ -18,7 +18,6 @@ import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.DoiTuongViPham;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
