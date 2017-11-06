@@ -39,6 +39,7 @@ public class XuLyDon extends Model<XuLyDon> {
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne
 	private CongChuc canBoXuLy;
+	@QueryInit("*.*.*")
 	@ManyToOne
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne

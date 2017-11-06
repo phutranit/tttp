@@ -244,12 +244,14 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
-		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
-					.or(QXuLyDon.xuLyDon.chucVu.isNull())
-					.or(QXuLyDon.xuLyDon.don.saveTmp.eq(true).and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-					);
+		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {			
+			xuLyDonQuery = xuLyDonQuery.and((QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
+					.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.CHUYEN_VIEN)))
+				.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.ne(VaiTroEnum.CHUYEN_VIEN)
+						.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
+				.or(QXuLyDon.xuLyDon.chucVu.isNull())
+				.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
+				);
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
