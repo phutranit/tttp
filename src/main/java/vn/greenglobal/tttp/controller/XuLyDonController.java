@@ -704,6 +704,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
 						coQuyTrinh);	
+				System.out.println("xuLyDonHienTai: " + (xuLyDonHienTai != null ? xuLyDonHienTai.getId() : "null roi"));
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();

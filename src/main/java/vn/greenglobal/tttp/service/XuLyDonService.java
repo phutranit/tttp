@@ -14,6 +14,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -82,9 +83,15 @@ public class XuLyDonService {
 
 			if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
 				VaiTroEnum vaiTro = VaiTroEnum.valueOf(StringUtils.upperCase(chucVu));
-				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
-						.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-						.or(QXuLyDon.xuLyDon.chucVu.isNull()));
+				BooleanExpression qChucVu = QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro));
+				BooleanExpression qLuuTamCoLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.ne(canBoId).and(qChucVu)
+						.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU));
+				BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId);
+				BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+					.or(qLuuTamCoLanhDao)
+					.or(qGiaoViec)
+					.or(qLuuTamKhongLanhDao));
 			}
 		}
 
@@ -194,12 +201,15 @@ public class XuLyDonService {
 		
 		if (StringUtils.isNotEmpty(chucVu) && StringUtils.equals(chucVu, VaiTroEnum.CHUYEN_VIEN.name())) {
 			VaiTroEnum vaiTro = VaiTroEnum.valueOf(StringUtils.upperCase(chucVu));
-			xuLyDonQuery = xuLyDonQuery.and((QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId)
-						.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.CHUYEN_VIEN)))
-					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.ne(VaiTroEnum.CHUYEN_VIEN)
-							.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-					.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-					);
+			BooleanExpression qChucVu = QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro));
+			BooleanExpression qLuuTamCoLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.ne(canBoId).and(qChucVu)
+					.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU));
+			BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId);
+			BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+				.or(qLuuTamCoLanhDao)
+				.or(qGiaoViec)
+				.or(qLuuTamKhongLanhDao));
 		}	
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 
