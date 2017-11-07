@@ -1050,7 +1050,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1110,7 +1110,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1170,7 +1170,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
