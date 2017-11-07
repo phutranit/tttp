@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -245,13 +247,15 @@ public class DonService {
 		}
 
 		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {			
-			xuLyDonQuery = xuLyDonQuery.and((QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
-					.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.eq(VaiTroEnum.CHUYEN_VIEN)))
-				.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.nguoiDung.vaiTroMacDinh.loaiVaiTro.ne(VaiTroEnum.CHUYEN_VIEN)
-						.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-				.or(QXuLyDon.xuLyDon.chucVu.isNull())
-				.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))))
-				);
+			BooleanExpression qChucVu = QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro));
+			BooleanExpression qLuuTamCoLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.ne(canBoXuLyXLD).and(qChucVu)
+					.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU).or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD)));
+			BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD);
+			BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+				.or(qLuuTamCoLanhDao)
+				.or(qGiaoViec)
+				.or(qLuuTamKhongLanhDao));
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
