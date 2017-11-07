@@ -1438,6 +1438,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			} else {
 				donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
 			}
+		} else {
+			donOld.setPhanLoaiDon(null);
 		}
 		if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 			xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
