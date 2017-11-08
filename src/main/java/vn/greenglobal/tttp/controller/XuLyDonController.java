@@ -1577,7 +1577,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanNhanDon", coQuanNhanDon);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("diaChi", diaChi);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_TRA_DON_CHUYEN_KHONG_DUNG_THAM_QUYEN.docx").getFile(), mappings);
 		} catch (Exception e) {
@@ -1635,7 +1635,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1690,7 +1690,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon); 
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
 					? lyDoDinhChi : "...................................................................................................................................(3)");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings);
@@ -1703,12 +1703,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu không đủ điều kiện thụ lý tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordPhieuKhongDuDieuKienThuLyToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
-			@RequestParam(value = "donId", required = false) Long donId,
+			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "coQuanTiepNhan", required = true) String coQuanTiepNhan,
 			@RequestParam(value = "nguoiToCao", required = true) String nguoiToCao,
 			@RequestParam(value = "diaChiNguoiToCao", required = false) String diaChiNguoiToCao,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
+			@RequestParam(value = "lyDo", required = false) String lyDo,
 			HttpServletResponse response) {
 
 		try {
@@ -1744,13 +1745,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				mappings.put("coQuanChuyenDon", donGoc.getDonViXuLyGiaiQuyet().getTen());
 			}
 			
-			System.out.println("soVB " +soVB);
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiToCao", nguoiToCao);
+			mappings.put("diaChi", diaChiNguoiToCao);
 			mappings.put("diaChiNguoiToCao", diaChiNguoiToCao); 
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
+			mappings.put("lyDoDinhChi", lyDo != null && lyDo != "" ? lyDo.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1768,6 +1770,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "soCMNDHoChieu", required = false) String soCMNDHoChieu,
 			@RequestParam(value = "ngayCap", required = false) String ngayCap,
 			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "lyDoDinhChi", required = false) String lyDoDinhChi,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			HttpServletResponse response) {
 
@@ -1804,7 +1807,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
-			mappings.put("noiDung", noiDung);
+			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
+					? lyDoDinhChi.concat(".") : "...................................................................................................................................(3)");
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_KIEN_NGHI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1856,7 +1861,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {
@@ -1876,7 +1881,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			@RequestParam(value = "noiCap", required = false) String noiCap,
 			@RequestParam(value = "noiDung", required = false) String noiDung,
 			@RequestParam(value = "coQuanTiepNhan", required = false) String coQuanTiepNhan,
-			@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
+			//@RequestParam(value = "coQuanChuyenDon", required = false) String coQuanChuyenDon,
 			HttpServletResponse response) {
 
 		try {
@@ -1918,9 +1923,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
+			mappings.put("coQuanChuyenDon", cq.getTen());
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1975,7 +1980,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_CHUYEN_DON_TO_CAO.docx").getFile(), mappings);
@@ -1988,6 +1993,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu dự thảo thông báo thụ lý giải quyết tố cáo", position = 5, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordDuThaoThongBaoThuLyGQTC(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "doiTuongGiaiQuyet", required = false) String doiTuongGiaiQuyet,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "doiTuongBiToCao", required = false) String doiTuongBiToCao,
@@ -1996,6 +2002,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			Don don = donRepo.findOne(donId);
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -2018,11 +2025,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			mappings.put("coQuanChuyenDon", "................................................................(1)");
+			if (don != null && don.isDonChuyen()) {
+				Don donGoc = donRepo.findOne(don.getDonGocId());
+				mappings.put("coQuanChuyenDon", donGoc.getDonViXuLyGiaiQuyet().getTen());
+			}
+			
 			mappings.put("soVB", soVB);
 			mappings.put("doiTuongGiaiQuyet", doiTuongGiaiQuyet);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("doiTuongBiToCao", doiTuongBiToCao);
-			mappings.put("noiDungToCao", noiDungToCao);
+			mappings.put("noiDungToCao", noiDungToCao != null && noiDungToCao != "" ? noiDungToCao.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_GQTC.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -2076,7 +2089,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(soCMNDHoChieu) ? soCMNDHoChieu : ".................");
 			mappings.put("ngayCap", StringUtils.isNotBlank(ngayCap) ? ngayCap : ".................");
 			mappings.put("noiCap", StringUtils.isNotBlank(noiCap) ? noiCap : ".................");
-			mappings.put("noiDungKhieuNai", noiDungKhieuNai);
+			mappings.put("noiDungKhieuNai", noiDungKhieuNai != null && noiDungKhieuNai != "" ? noiDungKhieuNai.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KHIEU_NAI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -2123,9 +2136,69 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("loaiDon", loaiDon.toLowerCase());
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
-			mappings.put("noiDung", noiDung);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("diaChi", diaChi);
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KIEN_NGHI.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuHuongDanToCao")
+	@ApiOperation(value = "In phiếu hướng dẫn tố cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanToCao(
+			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			@RequestParam(value = "soCMND", required = false) String soCMND,
+			@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			
+			String soVB = "";
+			mappings.put("kyTen", "");
+			mappings.put("capHanhChinh", "");
+			mappings.put("coQuanTrucThuoc", "");
+			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
+				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
+					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
+				} else { 
+					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
+				}
+				soVB = "UBND";
+			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
+				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
+				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
+				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
+			}
+			
+			mappings.put("soVB", soVB);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			mappings.put("hoVaTen", hoVaTen);
+			mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
