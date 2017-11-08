@@ -2034,7 +2034,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
-			LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
+			//LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -2065,7 +2065,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			
 			mappings.put("soVB", soVB);
-			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
+			//mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", tenCoQuan);
 			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings);
@@ -2083,12 +2083,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
 			@RequestParam(value = "hoTenNguoiKhieuNai", required = false) String hoTenNguoiKhieuNai,
 			@RequestParam(value = "noiDungTTXM", required = false) String noiDungTTXM,
+			@RequestParam(value = "thoiGianBaoCaoKetQuaTTXM", required = false) String thoiGianBaoCaoKetQuaTTXM,
 			HttpServletResponse response) {
 
 		try {
 			HashMap<String, String> mappings = new HashMap<String, String>();
 			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
-			LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
+			//LichSuQuaTrinhXuLy ls = lichSuQuaTrinhXuLyRepo.findOne(lichSuQuaTrinhXuLyService.predicateFindByLanhDao(donId));
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
@@ -2119,12 +2120,76 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			
 			mappings.put("soVB", soVB);
-			mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(1)");
+			//mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(1)");
 			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
 			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
 			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
 			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
+			mappings.put("ngayTTXM", thoiGianBaoCaoKetQuaTTXM != "" ? thoiGianBaoCaoKetQuaTTXM : "..................");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings);
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKienNghi")
+	@ApiOperation(value = "In phiếu giao nhiêm vụ xác minh kiến nghị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportWordPhieuXacMinhKienNghi(
+			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "tenCoQuanThuLyGQKN", required = false) String tenCoQuanThuLyGQKN,
+			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
+			@RequestParam(value = "hoTenNguoiKienNghi", required = false) String hoTenNguoiKienNghi,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDungTTXM", required = false) String noiDungTTXM,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			
+			String soVB = "";
+			String chucDanh = "";
+			mappings.put("kyTen", "");
+			mappings.put("chucDanh", "");
+			mappings.put("capHanhChinh", "");
+			mappings.put("coQuanTrucThuoc", "");
+			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
+				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
+					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
+					chucDanh = "Ủy ban nhân dân";
+				} else { 
+					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
+					chucDanh = "Chủ tịch";
+				}
+				soVB = "UBND";
+			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
+				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
+				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
+				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				chucDanh = "Giám đốc sở";
+				soVB = Utils.splitWords(cq.getTen());
+			}
+			
+			mappings.put("soVB", soVB);
+			mappings.put("chucDanh", chucDanh);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("tenCoQuanThuLyGQKN", tenCoQuanThuLyGQKN);
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
+			mappings.put("hoTenNguoiKienNghi", hoTenNguoiKienNghi);
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KIEN_NGHI.docx").getFile(), mappings);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
