@@ -194,6 +194,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy phongBanGiaiQuyet;
 	@ManyToOne
 	private State nextState;
+	@ManyToOne
+	private CoQuanQuanLy coQuanDaGiaiQuyet;
 
 	public String getyKienGiaiQuyet() {
 		return yKienGiaiQuyet;
@@ -249,7 +251,6 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	/**
 	 * Block ket qua da giai quyet cua lich su don nguoi dung don.
 	 */
-	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	private String nhomThamQuyenDaGiaiQuyet;
 	
 	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
