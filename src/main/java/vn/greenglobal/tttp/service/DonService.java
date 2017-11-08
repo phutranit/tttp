@@ -291,7 +291,7 @@ public class DonService {
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 			
 			if ("CHUYEN_VIEN".equals(chucVu)) {
-				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
+				//giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
 			}
 			
 			if (StringUtils.isNotBlank(trangThaiDon)) {
