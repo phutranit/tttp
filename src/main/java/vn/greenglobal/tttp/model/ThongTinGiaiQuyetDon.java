@@ -249,6 +249,7 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	/**
 	 * Block ket qua da giai quyet cua lich su don nguoi dung don.
 	 */
+	@ManyToOne
 	private CoQuanQuanLy coQuanDaGiaiQuyet;
 	private String nhomThamQuyenDaGiaiQuyet;
 	
