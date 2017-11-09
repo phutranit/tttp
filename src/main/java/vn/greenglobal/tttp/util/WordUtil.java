@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,9 +102,7 @@ public final class WordUtil {
 		reviewtable.getContent().add(reviewtable.getContent().size() - footerRows, workingRow);
 	}
 	
-
-	
-	public static void exportWord(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
+	public static void exportWord1(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
 		try {
 			WordprocessingMLPackage wordMLPackage;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -125,6 +124,56 @@ public final class WordUtil {
 
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
+
+			wordMLPackage = WordprocessingMLPackage.load(file);
+			VariablePrepare.prepare(wordMLPackage);
+			wordMLPackage.getMainDocumentPart().variableReplace(mappings);
+			wordMLPackage = wordMLPackage.getMainDocumentPart().convertAltChunks();
+			wordMLPackage.save(out);
+
+			response.setContentLength((int) out.size());
+			out.close();
+
+			inputStream = new BufferedInputStream(new ByteArrayInputStream(out.toByteArray()));
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
+
+			response.flushBuffer();
+			inputStream.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void exportWord(HttpServletResponse response, String pathFile, HashMap<String, String> mappings, String fileName) {
+		try {
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+			if (fileName != "") { 
+				fileName = fileName.replace("+", " ");
+			}
+			WordprocessingMLPackage wordMLPackage;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			InputStream inputStream = null;
+			File file = new File(pathFile);
+
+			if (!file.exists()) {
+				String errorMessage = "Sorry. The file you are looking for does not exist";
+				OutputStream outputStream = response.getOutputStream();
+				outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+				outputStream.close();
+				return;
+			}
+
+			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			if (mimeType == null) {
+				mimeType = "application/octet-stream";
+			}
+			
+			response.setContentType(mimeType);
+			response.setCharacterEncoding("UTF-8");
+	        
+//			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));			
+	        response.setHeader("Content-Disposition","attachment; filename="+fileName);
 
 			wordMLPackage = WordprocessingMLPackage.load(file);
 			VariablePrepare.prepare(wordMLPackage);

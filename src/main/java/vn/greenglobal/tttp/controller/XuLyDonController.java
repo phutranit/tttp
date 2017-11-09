@@ -1,5 +1,6 @@
 package vn.greenglobal.tttp.controller;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1574,12 +1575,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
-			mappings.put("coQuanNhanDon", coQuanNhanDon);
+			mappings.put("coQuanNhanDon", cq.getTen());
 			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
 			mappings.put("hoTenNguoiCoDon", hoTenNguoiCoDon);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("diaChi", diaChi);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_TRA_DON_CHUYEN_KHONG_DUNG_THAM_QUYEN.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_TRA_DON_CHUYEN_KHONG_DUNG_THAM_QUYEN.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc trả lại đơn chuyển không đúng thẩm quyền.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1629,14 +1632,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("loaiDonTieuDe", loaiDon.toUpperCase());
 			mappings.put("loaiDon", loaiDon.toLowerCase());
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
-			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChi", diaChi);
 			mappings.put("soCMNDHoChieu", soCMNDHoChieu != null && soCMNDHoChieu != "" ? soCMNDHoChieu : "................");
 			mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
+						
+			//WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
+			String fileName = "Phiếu đề xuất thụ lý đơn " +loaiDon.toLowerCase() +".docx";
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings, fileName);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1693,7 +1699,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
 					? lyDoDinhChi : "...................................................................................................................................(3)");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_KHONG_DU_DIEU_KIEN_THU_LY.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc khiếu nại không đủ điều kiện thụ lý giải quyết.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1753,7 +1761,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("diaChiNguoiToCao", diaChiNguoiToCao); 
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("lyDoDinhChi", lyDo != null && lyDo != "" ? lyDo.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_TO_CAO.docx").getFile(), mappings);
+//			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_TO_CAO.docx").getFile(), mappings);
+
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_TO_CAO.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc không thụ lý giải quyết tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1810,7 +1821,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("lyDoDinhChi", lyDoDinhChi != null && lyDoDinhChi != "" 
 					? lyDoDinhChi.concat(".") : "...................................................................................................................................(3)");
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_KIEN_NGHI.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_KHONG_THU_LY_GIAI_QUYET_KIEN_NGHI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc không xử lý giải quyết kiến nghị - phản ánh.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1862,8 +1875,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_TRA_DON_VA_HUONG_DAN_DON_KHIEU_NAI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc hướng dẫn người khiếu nại.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1926,7 +1940,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
 			mappings.put("coQuanChuyenDon", cq.getTen());
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_CHUYEN_DON_KIEN_NGHI_PHAN_ANH.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc chuyển đơn kiến nghị - phản ánh.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -1982,8 +1997,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
-			mappings.put("coQuanChuyenDon", coQuanChuyenDon);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_CHUYEN_DON_TO_CAO.docx").getFile(), mappings);
+			mappings.put("coQuanChuyenDon", cq.getTen());
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_CHUYEN_DON_TO_CAO.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc chuyển đơn tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -2032,11 +2049,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 			
 			mappings.put("soVB", soVB);
-			mappings.put("doiTuongGiaiQuyet", doiTuongGiaiQuyet);
+			mappings.put("doiTuongGiaiQuyet", cq.getTen());
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("doiTuongBiToCao", doiTuongBiToCao);
 			mappings.put("noiDungToCao", noiDungToCao != null && noiDungToCao != "" ? noiDungToCao.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_GQTC.docx").getFile(), mappings);
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_GQTC.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc thụ lý giải quyết tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -2083,14 +2101,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
-			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiKhieuNai", nguoiKhieuNai);
 			mappings.put("diaChiNguoiKhieuNai", diaChiNguoiKhieuNai);
 			mappings.put("SoCMNDHoChieu", StringUtils.isNotBlank(soCMNDHoChieu) ? soCMNDHoChieu : ".................");
 			mappings.put("ngayCap", StringUtils.isNotBlank(ngayCap) ? ngayCap : ".................");
 			mappings.put("noiCap", StringUtils.isNotBlank(noiCap) ? noiCap : ".................");
 			mappings.put("noiDungKhieuNai", noiDungKhieuNai != null && noiDungKhieuNai != "" ? noiDungKhieuNai.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KHIEU_NAI.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/khieunai/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KHIEU_NAI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc thụ lý giải quyết khiếu nại.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -2138,7 +2158,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 			mappings.put("diaChi", diaChi);
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KIEN_NGHI.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_DU_THAO_THONG_BAO_THU_LY_KIEN_NGHI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc thụ lý giải quyết kiến nghị - phản ánh.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -2198,7 +2220,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc hướng dẫn người tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
