@@ -102,7 +102,7 @@ public final class WordUtil {
 		reviewtable.getContent().add(reviewtable.getContent().size() - footerRows, workingRow);
 	}
 	
-	public static void exportWord1(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
+	public static void exportWord(HttpServletResponse response, String pathFile, HashMap<String, String> mappings) {
 		try {
 			WordprocessingMLPackage wordMLPackage;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
