@@ -854,7 +854,7 @@ public class ExcelUtil {
 					}
 				}
 				c = row.createCell(8);
-				c.setCellValue(trangThaiDonText + " / " +(ketQuaText != "" ? ketQuaText : "Chưa có kết quả"));
+				c.setCellValue(trangThaiDonText +(ketQuaText != "" ? (" / ".concat(ketQuaText)) : ""));
 				c.setCellStyle(cellCenter);
 				
 				String canBoDangXuLyText = "";
