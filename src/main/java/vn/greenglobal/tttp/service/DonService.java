@@ -290,10 +290,6 @@ public class DonService {
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
 			
-			if ("CHUYEN_VIEN".equals(chucVu)) {
-				giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
-			}
-			
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum
 						.valueOf(StringUtils.upperCase(trangThaiDon));
@@ -303,12 +299,30 @@ public class DonService {
 				}
 				giaiQuyetDonQuery = giaiQuyetDonQuery
 						.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.eq(tinhTrangGiaiQuyet));
+				if (TrangThaiXuLyDonEnum.DA_XU_LY.equals(trangThaiXuLyDon)) {
+					if (!"LANH_DAO".equals(chucVu)) { 
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.congChuc.isNull()
+								.or(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyXLD)));
+					}					
+					if ("CHUYEN_VIEN".equals(chucVu)) {
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull()
+								.or(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyXLD).and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.ne(canBoXuLyXLD)))
+								);
+						
+					}
+				} else {
+					if ("CHUYEN_VIEN".equals(chucVu)) {
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
+					}
+				}
 			}
 			
 			if (StringUtils.isNotBlank(chucVu)) {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
-						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))
-								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull()).or(QGiaiQuyetDon.giaiQuyetDon.chucVu2.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu)))));
+						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(vaiTro)
+								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull())
+								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu2.eq(vaiTro))
+								);
 			}
 
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
@@ -341,7 +355,6 @@ public class DonService {
 					.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct()
 					.collect(Collectors.toList());
-
 			//Neu search ttxt hoac kkdx cua giai quyet don
 			if (StringUtils.isNotBlank(searchGQD)) { 
 				predAll = predAll.and(QDon.don.in(donCollections2));
