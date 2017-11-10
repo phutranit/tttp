@@ -2,7 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum PhanLoaiDonEnum {
 
-	DU_DIEU_KIEN_XU_LY("Đủ điền kiện xử lý"),
+	DU_DIEU_KIEN_XU_LY("Đủ điều kiện xử lý"),
 	KHONG_DU_DIEU_KIEN_XU_LY("Không đủ điều kiện xử lý");
 
 	PhanLoaiDonEnum(String text) {

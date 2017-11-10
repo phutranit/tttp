@@ -627,7 +627,7 @@ public class ExcelUtil {
 			c.setCellStyle(cellCenter);
 			
 			c = row.createCell(4);
-			c.setCellValue("Tóm tắc nội dung/Hạn xử lý");
+			c.setCellValue("Tóm tắt nội dung/Hạn xử lý");
 			c.setCellStyle(cellCenter);
 			c = row.createCell(5);
 			c.setCellValue("Phân loại đơn/Số người");
