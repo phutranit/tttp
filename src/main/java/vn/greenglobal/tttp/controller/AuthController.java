@@ -393,7 +393,6 @@ public class AuthController {
 			NguoiDung user = profileUtil.getUserInfo(authorization);
 			
 			if (user != null) {
-				System.out.println("user " +user.getId());
 				VaiTro vaiTroMacDinh = vaiTroRepository.findOne(vaiTroService.predicateFindOne(vaiTroMacDinhId));
 				user.setVaiTroMacDinh(vaiTroMacDinh);
 				return returnUser(result, user);
