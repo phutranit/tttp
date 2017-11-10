@@ -1057,10 +1057,20 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanXuLyDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn xử lý đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getNgayMacDinhCuaThoiHanXuLyDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "type", required = true) String type,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH"));
+			ThamSo thamSo = null;
+			if ("DON_KHIEU_NAI".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH_KHIEU_NAI"));
+			} else if ("DON_TO_CAO".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH_TO_CAO"));
+			} else if ("DON_KIEN_NGHI_PHAN_ANH".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH_KIEN_NGHI_PHAN_ANH"));
+			} else if ("DON_TRANH_CHAP_DAT".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_XU_LY_DON_MAC_DINH_TRANH_CHAP_DAT"));
+			}			
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 10L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
@@ -1075,10 +1085,20 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanGiaiQuyetDon")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn giải quyết đơn", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getNgayMacDinhCuaThoiHanGiaiQuyeDon(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "type", required = true) String type,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH"));
+			ThamSo thamSo = null;
+			if ("DON_KHIEU_NAI".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH_KHIEU_NAI"));
+			} else if ("DON_TO_CAO".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH_TO_CAO"));
+			} else if ("DON_KIEN_NGHI_PHAN_ANH".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH_KIEN_NGHI_PHAN_ANH"));
+			} else if ("DON_TRANH_CHAP_DAT".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_GIAI_QUYET_DON_MAC_DINH_TRANH_CHAP_DAT"));
+			}	
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 60L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
@@ -1093,10 +1113,20 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/dons/ngayMacDinhThoiHanTTXM")
 	@ApiOperation(value = "Lấy Ngày mặc định của thời hạn thẩm tra xác minh", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getNgayMacDinhCuaThoiHanTTXM(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "type", required = true) String type,
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
-			ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH"));
+			ThamSo thamSo = null;
+			if ("DON_KHIEU_NAI".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH_KHIEU_NAI"));
+			} else if ("DON_TO_CAO".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH_TO_CAO"));
+			} else if ("DON_KIEN_NGHI_PHAN_ANH".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH_KIEN_NGHI_PHAN_ANH"));
+			} else if ("DON_TRANH_CHAP_DAT".equals(type)) {
+				thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("HAN_TTXM_MAC_DINH_TRANH_CHAP_DAT"));
+			}	
 			Long soNgayMacDinh = thamSo != null && thamSo.getGiaTri() != null && !"".equals(thamSo.getGiaTri()) ? Long.valueOf(thamSo.getGiaTri()) : 20L;
 			LocalDateTime thoiHan = Utils.convertNumberToLocalDateTimeTinhTheoNgayLamViec(Utils.localDateTimeNow(), soNgayMacDinh);
 			if (thoiHan == null) {
