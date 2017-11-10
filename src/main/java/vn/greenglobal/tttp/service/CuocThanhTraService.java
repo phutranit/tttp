@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiHinhThanhTraEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.DoiTuongThanhTra;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -30,7 +30,7 @@ public class CuocThanhTraService {
 	BooleanExpression base = QCuocThanhTra.cuocThanhTra.daXoa.eq(false);
 
 	public Predicate predicateFindAll(Integer namThanhTra, String soQuyetDinhKeHoach, String tenDoiTuongThanhTra, String soQuyetDinh, String loaiHinhThanhTra,
-			String linhVucThanhTra, String tienDoThanhTra, String tuNgay, String denNgay, Long donViId) {
+			String linhVucThanhTra, String tienDoThanhTra, String tuNgay, String denNgay, Long donViId, String soKetLuanThanhTra, String soQuyetDinhXL) {
 		BooleanExpression predAll = base;
 		if (donViId != null && donViId > 0) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
@@ -46,7 +46,7 @@ public class CuocThanhTraService {
 		}
 		
 		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
-			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.ten.containsIgnoreCase(tenDoiTuongThanhTra));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tenDoiTuongThanhTra)));
 		}
 		
 		if (soQuyetDinh != null && StringUtils.isNotBlank(soQuyetDinh.trim())) {
@@ -63,6 +63,14 @@ public class CuocThanhTraService {
 		
 		if (tienDoThanhTra != null && StringUtils.isNotBlank(tienDoThanhTra.trim())) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.tienDoThanhTra.eq(TienDoThanhTraEnum.valueOf(tienDoThanhTra.trim())));
+		}
+		
+		if (soKetLuanThanhTra != null && StringUtils.isNotBlank(soKetLuanThanhTra.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.soKetLuanThanhTra.eq(soKetLuanThanhTra.trim()));
+		}
+		
+		if (soQuyetDinhXL != null && StringUtils.isNotBlank(soQuyetDinhXL.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.soQuyetDinhXuLy.eq(soQuyetDinhXL.trim()));
 		}
 		
 		if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
@@ -87,7 +95,7 @@ public class CuocThanhTraService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindThanhTraTrungResult(List<Long> cuocThanhTraIds, String tenDoiTuongThanhTra, String soQuyetDinh) {
+	public Predicate predicateFindThanhTraTrungResultOld(List<Long> cuocThanhTraIds, String tenDoiTuongThanhTra, String soQuyetDinh) {
 		BooleanExpression predAll = base;
 		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.daXoa.eq(false))
 				.and(QCuocThanhTra.cuocThanhTra.id.in(cuocThanhTraIds));
@@ -102,12 +110,39 @@ public class CuocThanhTraService {
 	
 		return predAll;
 	}
-			
-	public Predicate predicateFindThanhTraTrung(int namThanhTra) {
+	
+	public Predicate predicateFindThanhTraTrungResult(Long cuocThanhTraId, DoiTuongThanhTra doiTuongThanhTra) {
 		BooleanExpression predAll = base;
-		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull())
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.daXoa.eq(false))
-				.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.namThanhTra.eq(namThanhTra));
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.id.eq(cuocThanhTraId))
+				.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTra.getId())
+						.or(QCuocThanhTra.cuocThanhTra.doiTuongThanhTras.any().id.eq(doiTuongThanhTra.getId())));
+	
+		return predAll;
+	}
+			
+	public Predicate predicateFindThanhTraTrungOld(int namThanhTra) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
+		return predAll;
+	}
+	
+	public Predicate predicateFindThanhTraTrung(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
+		
+		if (donViId != null && donViId > 0) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.donVi.id.eq(donViId));
+		}
+		
+		if (tenDoiTuongThanhTra != null && StringUtils.isNotBlank(tenDoiTuongThanhTra.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.tenSearch.containsIgnoreCase(Utils.unAccent(tenDoiTuongThanhTra)));
+		}
+		
+		if (soQuyetDinhPheDuyetKHTT != null && StringUtils.isNotBlank(soQuyetDinhPheDuyetKHTT.trim())) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull()
+					.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.quyetDinhPheDuyetKTTT.containsIgnoreCase(soQuyetDinhPheDuyetKHTT)));
+		}
+		
 		return predAll;
 	}
 
@@ -116,6 +151,17 @@ public class CuocThanhTraService {
 
 		if (keHoachThanhTraId != null && keHoachThanhTraId > 0) {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.id.eq(keHoachThanhTraId));
+		}
+
+		return predAll;
+	}
+	
+	public Predicate predicateFindAllByDoiTuongThanhTra(Integer namThanhTra, Long doiTuongThanhTraId) {
+		BooleanExpression predAll = base;
+		if (doiTuongThanhTraId != null && doiTuongThanhTraId > 0) {
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.doiTuongThanhTra.id.eq(doiTuongThanhTraId)
+					.or(QCuocThanhTra.cuocThanhTra.doiTuongThanhTras.any().id.eq(doiTuongThanhTraId)));
 		}
 
 		return predAll;
@@ -142,41 +188,6 @@ public class CuocThanhTraService {
 
 		return cuocThanhTra;
 	}
-
-	// public boolean checkExistsData(DoiTuongThanhTraRepository repo,
-	// DoiTuongThanhTra body) {
-	// BooleanExpression predAll = base;
-	//
-	// if (!body.isNew()) {
-	// predAll =
-	// predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.id.ne(body.getId()));
-	// }
-	//
-	// predAll =
-	// predAll.and(QDoiTuongThanhTra.doiTuongThanhTra.ten.eq(body.getTen())
-	// .and(QDoiTuongThanhTra.doiTuongThanhTra.linhVucDoiTuongThanhTra.id.eq(body.getLinhVucDoiTuongThanhTra().getId()))
-	// .and(QDoiTuongThanhTra.doiTuongThanhTra.loaiDoiTuongThanhTra.eq(LoaiDoiTuongThanhTraEnum.valueOf(body.getLoaiDoiTuongThanhTra().toString()))));
-	// List<DoiTuongThanhTra> doiTuongThanhTras = (List<DoiTuongThanhTra>)
-	// repo.findAll(predAll);
-	//
-	// return doiTuongThanhTras != null && doiTuongThanhTras.size() > 0 ? true :
-	// false;
-	// }
-
-	// public boolean checkUsedData(DonRepository donRepository, Long id) {
-	// List<Don> donList = (List<Don>)
-	// donRepository.findAll(QDon.don.daXoa.eq(false)
-	// .and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
-	// .or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
-	//
-	// if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) ||
-	// (donList != null && donList.size() > 0)
-	// || (donList != null && donList.size() > 0)) {
-	// return true;
-	// }
-	//
-	// return false;
-	// }
 
 	public CuocThanhTra save(CuocThanhTra obj, Long congChucId) {
 		return Utils.save(cuocThanhTraRepository, obj, congChucId);

@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,10 +87,14 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
-					if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
+						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
+						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
+					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-
 						predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.between(dtTuNgay, dtDenNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
@@ -411,8 +416,8 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 			return tongSo;
 		}
 		
-		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
-				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucs));
+//		predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.loaiDon.eq(LoaiDonEnum.DON_KHIEU_NAI))
+//				.and(QSoTiepCongDan.soTiepCongDan.don.chiTietLinhVucDonThuChiTiet.in(linhVucs));
 		
 		soTiepCongDans.addAll((List<SoTiepCongDan>) soTiepCongDanRepository.findAll(predAll));
 		dons.addAll(soTiepCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList()));

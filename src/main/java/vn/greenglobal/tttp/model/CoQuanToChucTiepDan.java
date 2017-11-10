@@ -20,7 +20,22 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	private static final long serialVersionUID = -4101233843699537605L;
 
 	@Size(max=255)
+	private String nguoiDaiDien = "";
+	@Size(max=255)
 	private String chucVu = "";
+
+	@ManyToOne
+	private CoQuanQuanLy coQuanDonVi;
+//	@ManyToOne
+//	private CongChuc nguoiDaiDien;
+	
+	public String getNguoiDaiDien() {
+		return nguoiDaiDien;
+	}
+
+	public void setNguoiDaiDien(String nguoiDaiDien) {
+		this.nguoiDaiDien = nguoiDaiDien;
+	}
 
 	public String getChucVu() {
 		return chucVu;
@@ -29,11 +44,6 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 	public void setChucVu(String chucVu) {
 		this.chucVu = chucVu;
 	}
-
-	@ManyToOne
-	private CoQuanQuanLy coQuanDonVi;
-	@ManyToOne
-	private CongChuc nguoiDaiDien;
 
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanDonVi() {
@@ -44,14 +54,14 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		this.coQuanDonVi = coQuanDonVi;
 	}
 
-	@ApiModelProperty(example = "{}")
-	public CongChuc getNguoiDaiDien() {
-		return nguoiDaiDien;
-	}
-
-	public void setNguoiDaiDien(CongChuc nguoiDaiDien) {
-		this.nguoiDaiDien = nguoiDaiDien;
-	}
+//	@ApiModelProperty(example = "{}")
+//	public CongChuc getNguoiDaiDien() {
+//		return nguoiDaiDien;
+//	}
+//
+//	public void setNguoiDaiDien(CongChuc nguoiDaiDien) {
+//		this.nguoiDaiDien = nguoiDaiDien;
+//	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -71,17 +81,17 @@ public class CoQuanToChucTiepDan extends Model<CoQuanToChucTiepDan> {
 		return null;
 	}
 	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getNguoiDaiDienInfo() {
-		if (getNguoiTao() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("congChucId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
-			map.put("ten",  getNguoiDaiDien() != null ? getNguoiDaiDien().getHoVaTen() : "");
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Map<String, Object> getNguoiDaiDienInfo() {
+//		if (getNguoiTao() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("congChucId", getNguoiDaiDien() != null ? getNguoiDaiDien().getId() : 0);
+//			map.put("ten",  getNguoiDaiDien() != null ? getNguoiDaiDien().getHoVaTen() : "");
+//			return map;
+//		}
+//		return null;
+//	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)

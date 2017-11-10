@@ -29,6 +29,7 @@ import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2Enum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 
 @Entity
 @Table(name = "thongtingiaiquyetdon")
@@ -55,10 +56,26 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private String ketQuaGiaiQuyetKhac = "";
 	@Size(max=255)
 	private String ketQuaThucHienKhac = "";
+	@Size(max=255)
+	private String soVanBan = "";
+	@Size(max=255)
+	private String nguoiBanHanh = "";
 	//@Lob
 	private String noiDung = "";
 	//@Lob
 	private String noiDungKetLuanGiaiQuyetLai = "";
+	//@Lob
+	private String noiDungDoiThoai = "";
+	//@Lob
+	private String noiDungGiaoLapDuThao = "";
+	//@Lob
+	private String noiDungKetLuanDuThao = "";
+	//@Lob
+	private String noiDungKetQuaGiaiQuyet = "";
+	//@Lob
+	private String noiDungBoSungHoSo = "";
+	
+	private LocalDateTime ngayBanHanh;
 
 	private LocalDateTime thoiGianDoiThoai;
 	private LocalDateTime ngayBaoCaoKetQuaTTXM;
@@ -81,6 +98,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	
 	private LocalDateTime ngayRaQuyetDinhGiaHanTTXM;
 	private LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet;
+	
+	private LocalDateTime ngayBatDauGiaoLapDuThao;
+	private LocalDateTime ngayKetThucGiaoLapDuThao;
+	private LocalDateTime ngayHetHanGiaoLapDuThao;
+	private LocalDateTime ngayHetHanSauKhiGiaHanGiaoLapDuThao;
 
 	private boolean lapToDoanXacMinh;
 	private boolean giaHanGiaiQuyet;
@@ -154,6 +176,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	@Enumerated(EnumType.STRING)
 	private KetQuaGiaiQuyetLan2Enum ketQuaGiaiQuyetLan2;
+	@Enumerated(EnumType.STRING)
+	private TrangThaiTTXMEnum huongThuLyGiaiQuyet;
 	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
@@ -221,6 +245,33 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	/**
 	 * Ket thuc tao fields Luu thong tin tam thoi.
 	 */
+	
+	/**
+	 * Block ket qua da giai quyet cua lich su don nguoi dung don.
+	 */
+	@ManyToOne
+	private CoQuanQuanLy coQuanDaGiaiQuyet;
+	private String nhomThamQuyenDaGiaiQuyet;
+	
+	public CoQuanQuanLy getCoQuanDaGiaiQuyet() {
+		return coQuanDaGiaiQuyet;
+	}
+
+	public void setCoQuanDaGiaiQuyet(CoQuanQuanLy coQuanDaGiaiQuyet) {
+		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
+	}
+
+	public String getNhomThamQuyenDaGiaiQuyet() {
+		return nhomThamQuyenDaGiaiQuyet;
+	}
+
+	public void setNhomThamQuyenDaGiaiQuyet(String nhomThamQuyenDaGiaiQuyet) {
+		this.nhomThamQuyenDaGiaiQuyet = nhomThamQuyenDaGiaiQuyet;
+	}
+
+	/**
+	 * Ket thuc Block ket qua da giai quyet cua lich su don nguoi dung don.
+	 */
 
 	public String getSoQuyetDinhThanhLapDTXM() {
 		return soQuyetDinhThanhLapDTXM;
@@ -274,6 +325,22 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return ketQuaThucHienKhac;
 	}
 
+	public String getSoVanBan() {
+		return soVanBan;
+	}
+
+	public void setSoVanBan(String soVanBan) {
+		this.soVanBan = soVanBan;
+	}
+
+	public String getNguoiBanHanh() {
+		return nguoiBanHanh;
+	}
+
+	public void setNguoiBanHanh(String nguoiBanHanh) {
+		this.nguoiBanHanh = nguoiBanHanh;
+	}
+
 	public void setKetQuaThucHienKhac(String ketQuaThucHienKhac) {
 		this.ketQuaThucHienKhac = ketQuaThucHienKhac;
 	}
@@ -294,12 +361,60 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.noiDungKetLuanGiaiQuyetLai = noiDungKetLuanGiaiQuyetLai;
 	}
 
+	public String getNoiDungDoiThoai() {
+		return noiDungDoiThoai;
+	}
+
+	public void setNoiDungDoiThoai(String noiDungDoiThoai) {
+		this.noiDungDoiThoai = noiDungDoiThoai;
+	}
+
+	public String getNoiDungGiaoLapDuThao() {
+		return noiDungGiaoLapDuThao;
+	}
+
+	public void setNoiDungGiaoLapDuThao(String noiDungGiaoLapDuThao) {
+		this.noiDungGiaoLapDuThao = noiDungGiaoLapDuThao;
+	}
+
+	public String getNoiDungKetLuanDuThao() {
+		return noiDungKetLuanDuThao;
+	}
+
+	public void setNoiDungKetLuanDuThao(String noiDungKetLuanDuThao) {
+		this.noiDungKetLuanDuThao = noiDungKetLuanDuThao;
+	}
+
+	public String getNoiDungKetQuaGiaiQuyet() {
+		return noiDungKetQuaGiaiQuyet;
+	}
+
+	public void setNoiDungKetQuaGiaiQuyet(String noiDungKetQuaGiaiQuyet) {
+		this.noiDungKetQuaGiaiQuyet = noiDungKetQuaGiaiQuyet;
+	}
+
+	public String getNoiDungBoSungHoSo() {
+		return noiDungBoSungHoSo;
+	}
+
+	public void setNoiDungBoSungHoSo(String noiDungBoSungHoSo) {
+		this.noiDungBoSungHoSo = noiDungBoSungHoSo;
+	}
+
 	public String getSoQuyetDinhGiaHanTTXM() {
 		return soQuyetDinhGiaHanTTXM;
 	}
 
 	public void setSoQuyetDinhGiaHanTTXM(String soQuyetDinhGiaHanTTXM) {
 		this.soQuyetDinhGiaHanTTXM = soQuyetDinhGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayBanHanh() {
+		return ngayBanHanh;
+	}
+
+	public void setNgayBanHanh(LocalDateTime ngayBanHanh) {
+		this.ngayBanHanh = ngayBanHanh;
 	}
 
 	public LocalDateTime getThoiGianDoiThoai() {
@@ -433,16 +548,48 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return ngayRaQuyetDinhGiaHanTTXM;
 	}
 
-	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
-		return ngayRaQuyetDinhGiaHanGiaiQuyet;
-	}
-
 	public void setNgayRaQuyetDinhGiaHanGiaiQuyet(LocalDateTime ngayRaQuyetDinhGiaHanGiaiQuyet) {
 		this.ngayRaQuyetDinhGiaHanGiaiQuyet = ngayRaQuyetDinhGiaHanGiaiQuyet;
 	}
 
+	public LocalDateTime getNgayRaQuyetDinhGiaHanGiaiQuyet() {
+		return ngayRaQuyetDinhGiaHanGiaiQuyet;
+	}
+
 	public void setNgayRaQuyetDinhGiaHanTTXM(LocalDateTime ngayRaQuyetDinhGiaHanTTXM) {
 		this.ngayRaQuyetDinhGiaHanTTXM = ngayRaQuyetDinhGiaHanTTXM;
+	}
+
+	public LocalDateTime getNgayBatDauGiaoLapDuThao() {
+		return ngayBatDauGiaoLapDuThao;
+	}
+
+	public void setNgayBatDauGiaoLapDuThao(LocalDateTime ngayBatDauGiaoLapDuThao) {
+		this.ngayBatDauGiaoLapDuThao = ngayBatDauGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayKetThucGiaoLapDuThao() {
+		return ngayKetThucGiaoLapDuThao;
+	}
+
+	public void setNgayKetThucGiaoLapDuThao(LocalDateTime ngayKetThucGiaoLapDuThao) {
+		this.ngayKetThucGiaoLapDuThao = ngayKetThucGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayHetHanGiaoLapDuThao() {
+		return ngayHetHanGiaoLapDuThao;
+	}
+
+	public void setNgayHetHanGiaoLapDuThao(LocalDateTime ngayHetHanGiaoLapDuThao) {
+		this.ngayHetHanGiaoLapDuThao = ngayHetHanGiaoLapDuThao;
+	}
+
+	public LocalDateTime getNgayHetHanSauKhiGiaHanGiaoLapDuThao() {
+		return ngayHetHanSauKhiGiaHanGiaoLapDuThao;
+	}
+
+	public void setNgayHetHanSauKhiGiaHanGiaoLapDuThao(LocalDateTime ngayHetHanSauKhiGiaHanGiaoLapDuThao) {
+		this.ngayHetHanSauKhiGiaHanGiaoLapDuThao = ngayHetHanSauKhiGiaHanGiaoLapDuThao;
 	}
 
 	public boolean isLapToDoanXacMinh() {
@@ -822,6 +969,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.ketQuaGiaiQuyetLan2 = ketQuaGiaiQuyetLan2;
 	}
 
+	public TrangThaiTTXMEnum getHuongThuLyGiaiQuyet() {
+		return huongThuLyGiaiQuyet;
+	}
+
+	public void setHuongThuLyGiaiQuyet(TrangThaiTTXMEnum huongThuLyGiaiQuyet) {
+		this.huongThuLyGiaiQuyet = huongThuLyGiaiQuyet;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getThongTinGiaiQuyetDonId() {
@@ -978,6 +1133,30 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", getNextState().getId());
 			map.put("type", getNextState().getType().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getHuongThuLyGiaiQuyetInfo() {
+		if (getHuongThuLyGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getHuongThuLyGiaiQuyet().name());
+			map.put("text", getHuongThuLyGiaiQuyet().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getCoQuanDaGiaiQuyetInfo() {
+		if (getCoQuanDaGiaiQuyet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getCoQuanDaGiaiQuyet().getTen());
+			map.put("coQuanQuanLyId", getCoQuanDaGiaiQuyet().getId());
 			return map;
 		}
 		return null;

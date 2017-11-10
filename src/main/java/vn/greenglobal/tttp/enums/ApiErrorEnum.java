@@ -19,6 +19,7 @@ public enum ApiErrorEnum {
 	HANGIAIQUYET_REQUIRED("Trường hanGiaiQuyet không được để trống."),
 	DON_REQUIRED("Trường đơn không được để trống."),
 	THONGTINGIAIQUYETDON_REQUIRED("Trường thongTinGiaiQuyetDon không được để trống."),
+	ACTIONTYPE_REQUIRED("Trường actionType không được để trống."),
 	TENDANGNHAP_REQUIRED("Trường tên đăng nhập không được để trống."),
 	EMAIL_REQUIRED("Trường email không được để trống."),
 	TENDANGNHAP_EXISTS("Tên đăng nhập đã tồn tại trong hệ thống."),
@@ -30,6 +31,8 @@ public enum ApiErrorEnum {
 	DATA_NOT_FOUND("Dữ liệu này không tồn tại trong hệ thống."),
 	DOITUONGTHANHTRA_NOT_FOUND("Đối tượng thanh tra này không tồn tại trong hệ thống."),
 	CUOCTHANHTRA_NOT_FOUND("Cuộc thanh tra này không tồn tại trong hệ thống."),
+	TSBANTIEPCONGDAN_NOT_FOUND("Không tìm thấy tham số của Ban tiếp công dân."),
+	BANTIEPCONGDAN_NOT_FOUND("Không tìm thấy Ban tiếp công dân."),
 	ROLE_FORBIDDEN("Tài khoản hiện tại Không có quyền thực hiện chức năng này."),
 	CONGCHUC_FORBIDDEN("Không thể xóa tài khoản Administator."),
 	DATA_USED("Dữ liệu này đang được sử dụng."),
@@ -37,6 +40,8 @@ public enum ApiErrorEnum {
 	EMAIL_INVALID("Trường email không đúng định dạng."),
 	DATA_INVALID("Dữ liệu không hợp lệ."),
 	LOGIN_USER_PASSWORD_INCORRECT("Địa chỉ thư điện tử hoặc Mật khẩu không chính xác."),
+	OLD_PASSWORD_INCORRECT("Mật khẩu cũ không chính xác."),
+	NEW_PASSWORD_NOT_SAME("Mật khẩu mới phải giống nhau."),
 	USER_NOT_EXISTS("Tài khoản này không tồn tại trong hệ thống."),
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống."),
 	PROCESS_NOT_FOUND("Không tìm thấy quy trình."),
@@ -62,6 +67,12 @@ public enum ApiErrorEnum {
 	DATA_INVALID_SIZE("Bạn đã nhập quá kí tự cho phép."),
 	KEHOACHTHANHTRA_EXISTS("Đã có kế hoach thanh tra cho năm này."),
 	TRANG_THAI_YCGLD_REQUIRED("Trường trangThaiYeuCauGapLanhDao không được bỏ trống."),
+	LOAIDON_REQUIRED("Trường loaiDon không được để trống."),
+	NOIDUNG_REQUIRED("Trường noiDung không được để trống."),
+	LINHVUCDONTHU_REQUIRED("Trường linhVucDonThu không được để trống."),
+	LOAIDOITUONG_REQUIRED("Trường loaiDoiTuong không được để trống."),
+	LOAIVUVIEC_REQUIRED("Trường loaiVuViec không được để trống."),
+	PHANLOAIDON_REQUIRED("Trường phanLoaiDon không được để trống."),
 	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		
 	ApiErrorEnum(String text) {

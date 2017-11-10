@@ -170,8 +170,25 @@ public class SoTiepCongDanService {
 	
 	public List<SoTiepCongDan> getCuocTiepDanDinhKyCuaLanhDaoTruoc(SoTiepCongDanRepository repo, Long id) {
 		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
-		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(base.and(QSoTiepCongDan.soTiepCongDan.id.ne(id))
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(base.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(id))
 				.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))));
+		return soTiepCongDans;
+	}
+	
+	public List<SoTiepCongDan> getCuocTiepDanDinhKyCuaLanhDaoTruocNotId(SoTiepCongDanRepository repo, Long donId,
+			Long id) {
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(
+				base.and(QSoTiepCongDan.soTiepCongDan.id.ne(id))
+				.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(donId))
+						.and(QSoTiepCongDan.soTiepCongDan.huongXuLy.eq(HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO))));
+		return soTiepCongDans;
+	}
+	
+	public List<SoTiepCongDan> getKiemTraSoTiepCongDan(SoTiepCongDanRepository repo, Long donId) {
+		List<SoTiepCongDan> soTiepCongDans = new ArrayList<SoTiepCongDan>();
+		soTiepCongDans.addAll((List<SoTiepCongDan>) repo.findAll(
+				base.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(donId))));
 		return soTiepCongDans;
 	}
 	

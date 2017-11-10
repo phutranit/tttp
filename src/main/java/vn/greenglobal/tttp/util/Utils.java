@@ -5,7 +5,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
@@ -23,9 +25,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
@@ -49,9 +59,11 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.ThongTinEmail;
 
 public class Utils {
 
@@ -107,7 +119,7 @@ public class Utils {
 			return returnError((ConstraintViolationException) e.getCause().getCause().getCause());
 		
 		System.out.println("Application.app.airBrakeActive: " + Application.app.airBrakeActive);
-		if (Application.app.airBrakeActive) {
+		if (Application.app.airBrakeActive && !(e instanceof SocketTimeoutException)) {
 			try {
 			    e.printStackTrace(printWriter);
 			    Backtrace backtrace = new Backtrace(e);
@@ -243,6 +255,29 @@ public class Utils {
 		return ngayKetThuc != null ? ngayKetThuc : null;
 	}
 
+	public static LocalDateTime convertNumberToLocalDateTimeTinhTheoNgayLamViec(LocalDateTime ngayBatDau, Long soNgayGiaHan) {
+		long i = 1;
+		LocalDateTime ngayKetThuc = ngayBatDau;
+		if (ngayKetThuc != null && soNgayGiaHan != null && soNgayGiaHan > 0) {
+			while (i < soNgayGiaHan) {
+				ngayKetThuc = ngayKetThuc.plusDays(1);
+				if (ngayKetThuc.getDayOfWeek().getValue() == SATURDAY
+						|| ngayKetThuc.getDayOfWeek().getValue() == SUNDAY) {
+					continue;
+				}
+				i++;
+			}
+			if (i > 1) { 
+				ngayKetThuc = ngayKetThuc.plusDays(1);
+			}
+			ngayKetThuc = LocalDateTime.of(
+					LocalDate.of(ngayKetThuc.getYear(), ngayKetThuc.getMonth(), ngayKetThuc.getDayOfMonth()),
+					LocalTime.MAX);
+		}
+
+		return ngayKetThuc != null ? ngayKetThuc : null;
+	}
+	
 	public static Long convertLocalDateTimeToNumber(LocalDateTime tuNgay, LocalDateTime denNgay) {
 		long soNgayXuLy = 0;
 		if (tuNgay != null && denNgay != null) {
@@ -827,5 +862,61 @@ public class Utils {
 			return result.replace("  ", " ");
 		}
 		return "";
+	}
+	
+	public static Don changeQuyenTuXuLy(Don don, boolean quyenTuXLDGQD, boolean quyenTTXM, boolean quyenKTDX) {
+		don.setTuXuLyXLDGQD(quyenTuXLDGQD);
+		don.setTuXuLyTTXM(quyenTTXM);
+		don.setTuXuLyKTDX(quyenKTDX);
+		return don;
+	}
+	
+	public static void sendEmailGmail(String mailTo, String subject, String content, ThongTinEmail thongTinEmail) {
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", thongTinEmail.isEnableAuth());
+		props.put("mail.smtp.starttls.enable", thongTinEmail.isEnableStarttls());
+		props.put("mail.smtp.host", thongTinEmail.getHost());
+		props.put("mail.smtp.port", thongTinEmail.getPort());
+
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				String password = new String(org.apache.commons.codec.binary.Base64.decodeBase64(thongTinEmail.getPassword().getBytes()));
+				return new PasswordAuthentication(thongTinEmail.getUsername(), password);
+			}
+		});
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(thongTinEmail.getUsername()));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
+			message.setSubject(subject);
+			// message.setText("Dear Mail Crawler," + "\n\n No spam to my email,
+			// please!");
+			message.setContent(MessageFormat.format(content, "THANH TRA ĐÀ NẴNG"), "text/html; charset=utf-8");
+			Transport.send(message);
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static String splitWords(String words) {
+		String word = "";
+		if (words != null && words != "") {
+			words = words.replace(".", " ");
+			words = words.trim();
+			String[] strs = words.split(" ");
+			for (String str : strs) {
+				if (Character.isLetter(str.charAt(0))) {
+					word += str.charAt(0);
+				}
+			}
+			if (word != "") { 
+				word = word.toUpperCase();
+			}
+		}
+		return word;
 	}
 }

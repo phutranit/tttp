@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,9 @@ import vn.greenglobal.tttp.util.ProfileUtils;
 import vn.greenglobal.tttp.enums.CanCuThanhTraLaiEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
-import vn.greenglobal.tttp.enums.HinhThucKeHoachThanhTraEnum;
-import vn.greenglobal.tttp.enums.ChucNangThanhTraEnum;
+import vn.greenglobal.tttp.enums.ChucNangKeHoachThanhTraEnum;
+import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
+import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
 import vn.greenglobal.tttp.enums.HuongGiaiQuyetTCDEnum;
@@ -98,6 +101,42 @@ public class EnumController {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/timKiemTheoLoaiKy")
+	@ApiOperation(value = "Lấy tìm kiếm theo Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTimKiemTheoLoaiKys(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiKy", required = true) String loaiKy) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+		int year = Utils.localDateTimeNow().getYear();
+		int month = Utils.localDateTimeNow().getMonthValue();
+		
+		if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+			object.put("year", year);
+			object.put("quy", Utils.getQuyHienTai());
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
+			object.put("year", year);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+			object.put("year", year);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
+			object.put("year", year);
+			object.put("month", month);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
+			LocalDateTime tuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+			Calendar c = Utils.getMocThoiGianLocalDateTime(tuNgay, 0, 0);
+			LocalDateTime denNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+			object.put("tuNgay", tuNgay);
+			object.put("denNgay", denNgay);
+		}
+		list.add(object);
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/layNgayGioHienTai")
 	@ApiOperation(value = "Lấy ngày giờ hiện tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -513,38 +552,50 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/huongXuLyTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Xử Lý TCD", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyTCDs(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
-
-		object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.TIEP_NHAN_DON.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TIEP_NHAN_DON.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
-		list.add(object);
-
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.name());
-		list.add(object);
 		
-		object = new HashMap<>();
-		object.put("ten", HuongXuLyTCDEnum.KHAC.getText());
-		object.put("giaTri", HuongXuLyTCDEnum.KHAC.name());
-		list.add(object);
+		if (phanLoaiDon != null && !"".equals(phanLoaiDon) && PhanLoaiDonEnum.KHONG_DU_DIEU_KIEN_XU_LY.equals(PhanLoaiDonEnum.valueOf(phanLoaiDon))) {
+			object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+		} else {
+			object.put("ten", HuongXuLyTCDEnum.TU_CHOI.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TU_CHOI.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.BO_SUNG_THONG_TIN.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TIEP_NHAN_DON.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TIEP_NHAN_DON.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.TRA_DON_VA_HUONG_DAN.name());
+			list.add(object);
+
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.YEU_CAU_GAP_LANH_DAO.name());
+			list.add(object);
+			
+			object = new HashMap<>();
+			object.put("ten", HuongXuLyTCDEnum.KHAC.getText());
+			object.put("giaTri", HuongXuLyTCDEnum.KHAC.name());
+			list.add(object);
+		}
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
@@ -1062,18 +1113,16 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/ketQuaGiaiQuyetTheoDons")
 	@ApiOperation(value = "Lấy danh sách kết quả giải quyết theo theo đơn", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachKetQuaGiaiQuyetTheoDon(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam("khongCoDoiThoai") boolean khongCoDoiThoai) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 		
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
-		list.add(object);
-		
-		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
-		list.add(object);
+		if (!khongCoDoiThoai) {
+			object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+			object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
+			list.add(object);
+		}
 		
 		object = new HashMap<>();
 		object.put("ten", KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.getText());
@@ -1148,13 +1197,18 @@ public class EnumController {
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.CHO_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DOI_THOAI.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DOI_THOAI.name());
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.getText());
-		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_DOI_THOAI.name());
+		object.put("ten", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.name());
 		list.add(object);
 		
 		object = new HashMap<>();
@@ -1640,10 +1694,6 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", LinhVucThanhTraEnum.HANH_CHINH.getText());
-		object.put("giaTri", LinhVucThanhTraEnum.HANH_CHINH.name());
-		list.add(object);
-
 		object = new HashMap<>();
 		object.put("ten", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.getText());
 		object.put("giaTri", LinhVucThanhTraEnum.XAY_DUNG_CO_BAN.name());
@@ -1660,8 +1710,8 @@ public class EnumController {
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", LinhVucThanhTraEnum.CHUYEN_NGANH.getText());
-		object.put("giaTri", LinhVucThanhTraEnum.CHUYEN_NGANH.name());
+		object.put("ten", LinhVucThanhTraEnum.THANH_TRA_TRACH_NHIEM.getText());
+		object.put("giaTri", LinhVucThanhTraEnum.THANH_TRA_TRACH_NHIEM.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -1677,18 +1727,18 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-//		object.put("ten", ChucNangThanhTraEnum.THEO_KE_HOACH.getText());
-//		object.put("giaTri", ChucNangThanhTraEnum.THEO_KE_HOACH.name());
+//		object.put("ten", HinhThucThanhTraEnum.THEO_KE_HOACH.getText());
+//		object.put("giaTri", HinhThucThanhTraEnum.THEO_KE_HOACH.name());
 //		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", ChucNangThanhTraEnum.THUONG_XUYEN.getText());
-		object.put("giaTri", ChucNangThanhTraEnum.THUONG_XUYEN.name());
+		object.put("ten", HinhThucThanhTraEnum.THUONG_XUYEN.getText());
+		object.put("giaTri", HinhThucThanhTraEnum.THUONG_XUYEN.name());
 		list.add(object);
 		
 		object = new HashMap<>();
-		object.put("ten", ChucNangThanhTraEnum.DOT_XUAT.getText());
-		object.put("giaTri", ChucNangThanhTraEnum.DOT_XUAT.name());
+		object.put("ten", HinhThucThanhTraEnum.DOT_XUAT.getText());
+		object.put("giaTri", HinhThucThanhTraEnum.DOT_XUAT.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -1844,13 +1894,13 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
-		object.put("ten", HinhThucKeHoachThanhTraEnum.HANH_CHINH.getText());
-		object.put("giaTri", HinhThucKeHoachThanhTraEnum.HANH_CHINH.name());
+		object.put("ten", ChucNangKeHoachThanhTraEnum.HANH_CHINH.getText());
+		object.put("giaTri", ChucNangKeHoachThanhTraEnum.HANH_CHINH.name());
 		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.getText());
-		object.put("giaTri", HinhThucKeHoachThanhTraEnum.CHUYEN_NGANH.name());
+		object.put("ten", ChucNangKeHoachThanhTraEnum.CHUYEN_NGANH.getText());
+		object.put("giaTri", ChucNangKeHoachThanhTraEnum.CHUYEN_NGANH.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
@@ -1976,6 +2026,27 @@ public class EnumController {
 		for (LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienXuLy : LyDoKhongDuDieuKienXuLyEnum.values()) {
 			object.put("ten", lyDoKhongDuDieuKienXuLy.getText());
 			object.put("giaTri", lyDoKhongDuDieuKienXuLy.name());
+			list.add(object);
+			object = new HashMap<>();
+		}
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/coQuanDieuTraThanhTra")
+	@ApiOperation(value = "Lấy danh sách tất cả cơ quan điều tra thanh tra", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachCoQuanDieuTraThanhTras(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		for (CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra : CoQuanDieuTraThanhTraEnum.values()) {
+			object.put("ten", coQuanDieuTraThanhTra.getText());
+			object.put("giaTri", coQuanDieuTraThanhTra.name());
 			list.add(object);
 			object = new HashMap<>();
 		}

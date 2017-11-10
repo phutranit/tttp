@@ -178,11 +178,20 @@ public class CongChucService {
 		return predAll;
 	}
 	
+	
 	public CongChuc save(CongChuc obj, Long congChucId) {
 		return Utils.save(congChucRepository, obj, congChucId);
 	}
 	
 	public ResponseEntity<Object> doSave(CongChuc obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		return Utils.doSave(congChucRepository, obj, congChucId, eass, status);		
+	}
+	
+
+	public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
 	}
 }

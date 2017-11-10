@@ -162,9 +162,8 @@ public class LinhVucDonThuService {
 		List<LinhVucDonThu> linhVucDonThuList = (List<LinhVucDonThu>) repo
 				.findAll(base.and(QLinhVucDonThu.linhVucDonThu.cha.id.eq(id)));
 		List<Don> donList = (List<Don>) donRepository.findAll(QDon.don.daXoa.eq(false)
-				.and(QDon.don.linhVucDonThu.id.eq(id)).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))
-				.or(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(id)));
-
+				.and(QDon.don.linhVucDonThu.id.eq(id).or(QDon.don.linhVucDonThuChiTiet.id.eq(id))));
+		
 		if ((linhVucDonThuList != null && linhVucDonThuList.size() > 0) || (donList != null && donList.size() > 0)
 				|| (donList != null && donList.size() > 0)) {
 			return true;

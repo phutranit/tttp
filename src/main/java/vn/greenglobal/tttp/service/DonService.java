@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+
+import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -32,6 +34,7 @@ import vn.greenglobal.tttp.enums.TrangThaiXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
@@ -45,6 +48,7 @@ import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
@@ -70,6 +74,9 @@ public class DonService {
 
 	@Autowired
 	private DonCongDanRepository donCongDanRepo;
+	
+	@Autowired
+	private CongChucRepository congChucRepo;
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
@@ -103,8 +110,7 @@ public class DonService {
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
 			Long canBoXuLyXLD, Long phongBanXuLyXLD, Long coQuanTiepNhanXLD, Long donViXuLyXLD, String chucVu,
 			Set<VaiTro> vaitros, String hoTen, String trangThaiDonToanHT, String ketQuaToanHT, XuLyDonRepository xuLyRepo, DonRepository donRepo,
-			GiaiQuyetDonRepository giaiQuyetDonRepo, boolean coQuyTrinh) {
-
+			GiaiQuyetDonRepository giaiQuyetDonRepo, boolean coQuyTrinh) {		
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(thanhLapDon));
 		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()
@@ -206,20 +212,23 @@ public class DonService {
 		 * chucVu.equals(VaiTroEnum.CHUYEN_VIEN.name())) { xuLyDonQuery =
 		 * xuLyDonQuery.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD)); }
 		 */
-		
+		CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
+		VaiTroEnum vaiTro = VaiTroEnum.valueOf(StringUtils.upperCase(chucVu));
 		if (coQuyTrinh) { 
 			if (phongBanXuLyXLD != null && phongBanXuLyXLD > 0) {
-				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD));
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.phongBanXuLy.id.eq(phongBanXuLyXLD).or(QXuLyDon.xuLyDon.phongBanXuLy.eq(congChuc.getCoQuanQuanLy().getDonVi())));
 			}
 			
 			if (vaitros.size() > 0) {
 				List<VaiTroEnum> listVaiTro = vaitros.stream().map(d -> d.getLoaiVaiTro()).distinct()
 						.collect(Collectors.toList());
-				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.in(listVaiTro).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.in(listVaiTro).or(QXuLyDon.xuLyDon.chucVu2.in(listVaiTro)).or(QXuLyDon.xuLyDon.chucVu.isNull()));
 			} else {
 				if (StringUtils.isNotBlank(chucVu)) {
 					xuLyDonQuery = xuLyDonQuery
-							.and(QXuLyDon.xuLyDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))).or(QXuLyDon.xuLyDon.chucVu.isNull()));
+							.and(QXuLyDon.xuLyDon.chucVu.eq(vaiTro)
+									.or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro))
+											.or(QXuLyDon.xuLyDon.chucVu.isNull()));
 				}
 			}
 		}
@@ -237,10 +246,16 @@ public class DonService {
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViXuLyXLD));
 		}
 
-		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD)
-					.or(QXuLyDon.xuLyDon.chucVu.isNull())
-					.or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD)));
+		if (StringUtils.isNotBlank(chucVu) && ("CHUYEN_VIEN".equals(chucVu))) {			
+			BooleanExpression qChucVu = QXuLyDon.xuLyDon.chucVu.eq(vaiTro).or(QXuLyDon.xuLyDon.chucVu2.eq(vaiTro));
+			BooleanExpression qLuuTamCoLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.ne(canBoXuLyXLD).and(qChucVu)
+					.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU).or(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyXLD)));
+			BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyXLD);
+			BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+				.or(qLuuTamCoLanhDao)
+				.or(qGiaoViec)
+				.or(qLuuTamKhongLanhDao));
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
@@ -270,10 +285,11 @@ public class DonService {
 			return predAll;
 		}
 		
-		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu))) {
+		if (StringUtils.isNotBlank(chucVu) && ("VAN_THU".equals(chucVu) || "LANH_DAO".equals(chucVu) || "CHUYEN_VIEN".equals(chucVu))) {
 			// Query don TTXM
 			BooleanExpression giaiQuyetDonQuery = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false)
 					.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+			
 			if (StringUtils.isNotBlank(trangThaiDon)) {
 				TrangThaiXuLyDonEnum trangThaiXuLyDon = TrangThaiXuLyDonEnum
 						.valueOf(StringUtils.upperCase(trangThaiDon));
@@ -283,11 +299,30 @@ public class DonService {
 				}
 				giaiQuyetDonQuery = giaiQuyetDonQuery
 						.and(QGiaiQuyetDon.giaiQuyetDon.tinhTrangGiaiQuyet.eq(tinhTrangGiaiQuyet));
+				if (TrangThaiXuLyDonEnum.DA_XU_LY.equals(trangThaiXuLyDon)) {
+					if (!"LANH_DAO".equals(chucVu)) { 
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.congChuc.isNull()
+								.or(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyXLD)));
+					}					
+					if ("CHUYEN_VIEN".equals(chucVu)) {
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull()
+								.or(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyXLD).and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.ne(canBoXuLyXLD)))
+								);
+						
+					}
+				} else {
+					if ("CHUYEN_VIEN".equals(chucVu)) {
+						giaiQuyetDonQuery = giaiQuyetDonQuery.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.isNull());
+					}
+				}
 			}
 			
 			if (StringUtils.isNotBlank(chucVu)) {
 				giaiQuyetDonQuery = giaiQuyetDonQuery
-						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(VaiTroEnum.valueOf(StringUtils.upperCase(chucVu))).or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull()));
+						.and(QGiaiQuyetDon.giaiQuyetDon.chucVu.eq(vaiTro)
+								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu.isNull())
+								.or(QGiaiQuyetDon.giaiQuyetDon.chucVu2.eq(vaiTro))
+								);
 			}
 
 			if (donViXuLyXLD != null && donViXuLyXLD > 0) {
@@ -320,7 +355,6 @@ public class DonService {
 					.findAll(giaiQuyetDonQuery, sortOrder2);
 			donCollections2 = giaiQuyetDons.stream().map(d -> d.getThongTinGiaiQuyetDon().getDon()).distinct()
 					.collect(Collectors.toList());
-
 			//Neu search ttxt hoac kkdx cua giai quyet don
 			if (StringUtils.isNotBlank(searchGQD)) { 
 				predAll = predAll.and(QDon.don.in(donCollections2));
@@ -761,12 +795,12 @@ public class DonService {
 				(linhVucChiTietChaId != null && linhVucChiTietChaId > 0)) { 
 			predAll = predAll
 					.and(QDon.don.linhVucDonThu.id.eq(linhVucId))
-					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId))
-					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
+					.and(QDon.don.linhVucDonThuChiTiet.id.eq(linhVucChiTietChaId));
+//					.and(QDon.don.chiTietLinhVucDonThuChiTiet.id.eq(linhVucChiTietConId));
 		}
 		return predAll;
 	}
-
+	
 	public List<PropertyChangeObject> getListThayDoi(Don donNew, Don donOld) {
 		List<PropertyChangeObject> list = new ArrayList<PropertyChangeObject>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -873,15 +907,19 @@ public class DonService {
 					donOld.getLinhVucDonThuChiTiet() != null ? donOld.getLinhVucDonThuChiTiet().getTen() : "",
 					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
 		}
-		if ((donNew.getChiTietLinhVucDonThuChiTiet() == null && donOld.getChiTietLinhVucDonThuChiTiet() != null)
-				|| (donNew.getChiTietLinhVucDonThuChiTiet() != null && donOld.getChiTietLinhVucDonThuChiTiet() == null)
-				|| donNew.getChiTietLinhVucDonThuChiTiet() != donOld.getChiTietLinhVucDonThuChiTiet()) {
-			LinhVucDonThu linhVucDonThuNew = lichVuDonThuRepo.findOne(donNew.getChiTietLinhVucDonThuChiTiet().getId());
-			list.add(new PropertyChangeObject(
-					"Chi tiết lĩnh vực đơn thư chi tiết", donOld.getChiTietLinhVucDonThuChiTiet() != null
-							? donOld.getChiTietLinhVucDonThuChiTiet().getTen() : "",
-					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
+		if (donNew.getLinhVucChiTietKhac() != null && !donNew.getLinhVucChiTietKhac().isEmpty() && donOld.getLinhVucChiTietKhac() != null
+				&& !donNew.getLinhVucChiTietKhac().equals(donOld.getLinhVucChiTietKhac())) {
+			list.add(new PropertyChangeObject("Lĩnh vực chi tiết khác", donOld.getLinhVucChiTietKhac(), donNew.getLinhVucChiTietKhac()));
 		}
+//		if ((donNew.getChiTietLinhVucDonThuChiTiet() == null && donOld.getChiTietLinhVucDonThuChiTiet() != null)
+//				|| (donNew.getChiTietLinhVucDonThuChiTiet() != null && donOld.getChiTietLinhVucDonThuChiTiet() == null)
+//				|| donNew.getChiTietLinhVucDonThuChiTiet() != donOld.getChiTietLinhVucDonThuChiTiet()) {
+//			LinhVucDonThu linhVucDonThuNew = lichVuDonThuRepo.findOne(donNew.getChiTietLinhVucDonThuChiTiet().getId());
+//			list.add(new PropertyChangeObject(
+//					"Chi tiết lĩnh vực đơn thư chi tiết", donOld.getChiTietLinhVucDonThuChiTiet() != null
+//							? donOld.getChiTietLinhVucDonThuChiTiet().getTen() : "",
+//					linhVucDonThuNew != null ? linhVucDonThuNew.getTen() : ""));
+//		}
 		if ((donNew.getThamQuyenGiaiQuyet() == null && donOld.getThamQuyenGiaiQuyet() != null)
 				|| (donNew.getThamQuyenGiaiQuyet() != null && donOld.getThamQuyenGiaiQuyet() == null)
 				|| (donNew.getThamQuyenGiaiQuyet() != donOld.getThamQuyenGiaiQuyet())) {

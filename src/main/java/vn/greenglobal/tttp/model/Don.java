@@ -24,13 +24,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.types.OrderSpecifier;
 
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
@@ -43,6 +43,7 @@ import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
@@ -62,7 +63,7 @@ public class Don extends Model<Don> {
 
 	@Size(max=255)
 	private String ma = "";
-	@NotBlank
+	//@NotBlank
 	//@Lob
 	private String noiDung = " ";
 	@Size(max=255)
@@ -90,6 +91,8 @@ public class Don extends Model<Don> {
 	private String trangThaiDonText = "";
 	@Size(max=255)
 	private String soVanBanDaGiaiQuyet = "";
+	@Size(max=255)
+	private String linhVucChiTietKhac = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
@@ -108,6 +111,9 @@ public class Don extends Model<Don> {
 	private boolean old = false;
 	private boolean hoanThanhDon = false;
 	private boolean dangGiaoKTDX = false;
+	private boolean tuXuLyXLDGQD = false;
+	private boolean tuXuLyTTXM = false;
+	private boolean tuXuLyKTDX = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -126,13 +132,13 @@ public class Don extends Model<Don> {
 	private CongChuc canBoXuLy;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CongChuc canBoXuLyPhanHeXLD;
-	@NotNull
+	//@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThu;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private LinhVucDonThu linhVucDonThuChiTiet;
-	@ManyToOne(fetch = FetchType.LAZY)
-	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private LinhVucDonThu chiTietLinhVucDonThuChiTiet;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ThamQuyenGiaiQuyet thamQuyenGiaiQuyet;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -208,17 +214,17 @@ public class Don extends Model<Don> {
 	private TrangThaiDonEnum trangThaiDon; // TCD Enum
 	@Enumerated(EnumType.STRING)
 	private QuyTrinhXuLyDonEnum quyTrinhXuLy;
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDonEnum loaiDon;
-//	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiDoiTuongEnum loaiDoiTuong;
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private NguonTiepNhanDonEnum nguonTiepNhanDon;
 	@Column(nullable = true)
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 
@@ -231,6 +237,7 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiXLDGiaiQuyet;
 	
+	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiTTXM;
 	
@@ -241,12 +248,15 @@ public class Don extends Model<Don> {
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
 	
 	@Enumerated(EnumType.STRING)
+	private KetQuaTrangThaiDonEnum ketQuaTTXM;
+	
+	@Enumerated(EnumType.STRING)
 	private PhanLoaiDonEnum phanLoaiDon;
 	
 	@Enumerated(EnumType.STRING)
 	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
-	@NotNull
+	//@NotNull
 	@Enumerated(EnumType.STRING)
 	private LoaiVuViecEnum loaiVuViec;
 	
@@ -562,6 +572,14 @@ public class Don extends Model<Don> {
 		this.soVanBanDaGiaiQuyet = soVanBanDaGiaiQuyet;
 	}
 
+	public String getLinhVucChiTietKhac() {
+		return linhVucChiTietKhac;
+	}
+
+	public void setLinhVucChiTietKhac(String linhVucChiTietKhac) {
+		this.linhVucChiTietKhac = linhVucChiTietKhac;
+	}
+
 	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {
 		return ngayBanHanhVanBanDaGiaiQuyet;
 	}
@@ -694,14 +712,14 @@ public class Don extends Model<Don> {
 		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
 	}
 
-	@ApiModelProperty(position = 8, example = "{}")
-	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
-		return chiTietLinhVucDonThuChiTiet;
-	}
-
-	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
-		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
-	}
+//	@ApiModelProperty(position = 8, example = "{}")
+//	public LinhVucDonThu getChiTietLinhVucDonThuChiTiet() {
+//		return chiTietLinhVucDonThuChiTiet;
+//	}
+//
+//	public void setChiTietLinhVucDonThuChiTiet(LinhVucDonThu chiTietLinhVucDonThuChiTiet) {
+//		this.chiTietLinhVucDonThuChiTiet = chiTietLinhVucDonThuChiTiet;
+//	}
 
 //	@ApiModelProperty(hidden = true)
 //	public List<SoTiepCongDan> getTiepCongDans() {
@@ -772,17 +790,17 @@ public class Don extends Model<Don> {
 		return null;
 	}
 
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getChiTietLinhVucDonThuChiTietDon() {
-		if (getChiTietLinhVucDonThuChiTiet() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId());
-			map.put("ten", getChiTietLinhVucDonThuChiTiet().getTen());
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Map<String, Object> getChiTietLinhVucDonThuChiTietDon() {
+//		if (getChiTietLinhVucDonThuChiTiet() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("linhVucDonThuId", getChiTietLinhVucDonThuChiTiet().getId());
+//			map.put("ten", getChiTietLinhVucDonThuChiTiet().getTen());
+//			return map;
+//		}
+//		return null;
+//	}
 
 	@ApiModelProperty(hidden = true)
 	public List<Don_CongDan> getDonCongDans() {
@@ -1391,6 +1409,15 @@ public class Don extends Model<Don> {
 	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
+	
+	@JsonIgnore
+	public KetQuaTrangThaiDonEnum getKetQuaTTXM() {
+		return ketQuaTTXM;
+	}
+
+	public void setKetQuaTTXM(KetQuaTrangThaiDonEnum ketQuaTTXM) {
+		this.ketQuaTTXM = ketQuaTTXM;
+	}
 
 	public PhanLoaiDonEnum getPhanLoaiDon() {
 		return phanLoaiDon;
@@ -1566,6 +1593,12 @@ public class Don extends Model<Don> {
 			map.put("ngayBatDauGiaiQuyet", getThongTinGiaiQuyetDon().getNgayBatDauGiaiQuyet());
 			map.put("ngayBatDauTTXM", getThongTinGiaiQuyetDon().getNgayBatDauTTXM());
 			map.put("ngayBatDauKTDX", getThongTinGiaiQuyetDon().getNgayBatDauKTDX());
+			//map.put("coQuanDaGiaiQuyetInfo", getThongTinGiaiQuyetDon().getCoQuanDaGiaiQuyetInfo());
+			map.put("nhomThamQuyenDaGiaiQuyet", getThongTinGiaiQuyetDon().getNhomThamQuyenDaGiaiQuyet());
+			map.put("soVanBan", getThongTinGiaiQuyetDon().getSoVanBan());
+			map.put("ngayBanHanh", getThongTinGiaiQuyetDon().getNgayBanHanh());
+			map.put("nguoiBanHanh", getThongTinGiaiQuyetDon().getNguoiBanHanh());
+			map.put("noiDungKetQuaGiaiQuyet", getThongTinGiaiQuyetDon().getNoiDungKetQuaGiaiQuyet());
 			return map;
 		}
 		return null;
@@ -1706,6 +1739,30 @@ public class Don extends Model<Don> {
 		this.dangGiaoKTDX = dangGiaoKTDX;
 	}
 
+	public boolean isTuXuLyXLDGQD() {
+		return tuXuLyXLDGQD;
+	}
+
+	public void setTuXuLyXLDGQD(boolean tuXuLyXLDGQD) {
+		this.tuXuLyXLDGQD = tuXuLyXLDGQD;
+	}
+
+	public boolean isTuXuLyTTXM() {
+		return tuXuLyTTXM;
+	}
+
+	public void setTuXuLyTTXM(boolean tuXuLyTTXM) {
+		this.tuXuLyTTXM = tuXuLyTTXM;
+	}
+
+	public boolean isTuXuLyKTDX() {
+		return tuXuLyKTDX;
+	}
+
+	public void setTuXuLyKTDX(boolean tuXuLyKTDX) {
+		this.tuXuLyKTDX = tuXuLyKTDX;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanXuLyInfo() {
@@ -1726,10 +1783,23 @@ public class Don extends Model<Don> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanTTXMInfo() {
+		if (getTrangThaiTTXM() != null && getTrangThaiTTXM().equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) { 
+			if (getThongTinGiaiQuyetDon() != null) {
+				return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
+						getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
+						getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+			}
+		}
+		return new HashMap<>();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getThoiHanGiaoLapDuThaoInfo() {
 		if (getThongTinGiaiQuyetDon() != null) {
-			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauTTXM(),
-					getThongTinGiaiQuyetDon().getNgayHetHanTTXM(),
-					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauGiaoLapDuThao(),
+					getThongTinGiaiQuyetDon().getNgayHetHanGiaoLapDuThao(),
+					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaoLapDuThao());
 		}
 		return new HashMap<>();
 	}
@@ -1738,9 +1808,11 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getThoiHanKTDXInfo() {
 		if (getThongTinGiaiQuyetDon() != null) {
-			return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
-					getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
-					getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+			if (getTrangThaiKTDX() != null && getTrangThaiKTDX().equals(TrangThaiDonEnum.DANG_GIAI_QUYET)) { 
+				return Utils.convertThoiHan(getThongTinGiaiQuyetDon().getNgayBatDauKTDX(),
+						getThongTinGiaiQuyetDon().getNgayHetHanKTDX(),
+						getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanKTDX());
+			}
 		}
 		return new HashMap<>();
 	}
@@ -1954,7 +2026,22 @@ public class Don extends Model<Don> {
 			map.put("trangThaiDonType", getTrangThaiXLDGiaiQuyet() != null ? getTrangThaiXLDGiaiQuyet().name() : "");
 			map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 			map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
-
+			
+			if (getKetQuaXLDGiaiQuyet() == null) { 
+				if (xuLyDons.size() > 0) {
+					List<XuLyDon> xlds = new ArrayList<XuLyDon>();
+					xlds.addAll(xuLyDons);
+					xlds = xlds.stream().filter(xld -> xld.isDonTra()).collect(Collectors.toList());
+					if (xlds.size() > 0) {
+						XuLyDon xld = xlds.get(xlds.size() - 1);
+						if (xld != null) { 
+							map.put("ketQuaStr", KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.getText());
+							map.put("ketQuaType", KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN.name());
+						}
+					}
+				}
+			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null
 					&& (KetQuaTrangThaiDonEnum.CHUYEN_DON.equals(getKetQuaXLDGiaiQuyet()))) { 
 				String ketQuaStr = "";
@@ -1988,11 +2075,18 @@ public class Don extends Model<Don> {
 				map.put("trangThaiDonText", trangThaiDonStr);
 				map.put("trangThaiDonType", "");
 			}
+			
 			if (getKetQuaXLDGiaiQuyet() != null
 					&& (KetQuaTrangThaiDonEnum.DANG_TTXM.equals(getKetQuaXLDGiaiQuyet())
 							|| KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM.equals(getKetQuaXLDGiaiQuyet()))
 					&& getDonViThamTraXacMinh() != null) {
 				map.put("donViTTXM", getDonViThamTraXacMinh().getTen());
+				if (getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_TTXM)) {
+					String str = KetQuaTrangThaiDonEnum.DANG_TTXM.getText();
+					map.put("ketQuaStr", str + "\n" + getDonViThamTraXacMinh().getTen());
+				}
+			} else if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.equals(getKetQuaXLDGiaiQuyet())) {
+				map.put("ketQuaStr", KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO.getText() + "\n" + getDonViThamTraXacMinh().getTen());
 			} else {
 				map.put("donViTTXM", "");
 			}
@@ -2003,10 +2097,11 @@ public class Don extends Model<Don> {
 			map.put("donViId", getDonViThamTraXacMinh().getId());
 			map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
 			map.put("trangThaiDonType", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
-			map.put("ketQuaStr", "");
-			map.put("ketQuaType", "");
+			map.put("ketQuaStr", getKetQuaTTXM() != null ? getKetQuaTTXM().getText() : "");
+			map.put("ketQuaType", getKetQuaTTXM() != null ? getKetQuaTTXM().name() : "");
 			map.put("donViTTXM", "");
-			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) { 
+			
+			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
 				map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
 			}
@@ -2125,4 +2220,73 @@ public class Don extends Model<Don> {
 		}
 		return null;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getSoTiepCongDanYCGLD() {
+		Map<String, Object> map = new HashMap<>();
+		List<SoTiepCongDan> stcds = new ArrayList<SoTiepCongDan>();
+		OrderSpecifier<Long> sortOrderSTCD = QSoTiepCongDan.soTiepCongDan.id.desc();
+		
+		stcds.addAll((List<SoTiepCongDan>) Application.app.getSoTiepCongDanRepository()
+				.findAll(QSoTiepCongDan.soTiepCongDan.daXoa.isFalse()
+				.and(QSoTiepCongDan.soTiepCongDan.don.id.eq(getId()))
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)), sortOrderSTCD));
+		
+		if (stcds != null && stcds.size() > 0) {
+			SoTiepCongDan tcd = stcds.get(0);
+			map.put("id", tcd.getId());
+			map.put("hoanThanhTCDLanhDao", tcd.isHoanThanhTCDLanhDao());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public boolean isHienThiPhanLoaiDon() {
+		if ((getTongSoLuotTCD() > 0 && isThanhLapDon()) || getCanBoXuLyPhanHeXLD() != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getQuyenTuXuLyInfo() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		
+		if (getDonViXuLyGiaiQuyet() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViXuLyGiaiQuyet().getId());
+			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
+			list.add(map);
+		}
+		if (getDonViThamTraXacMinh() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViThamTraXacMinh().getId());
+			map.put("quyenTuXuLy", isTuXuLyTTXM());
+			list.add(map);
+		}
+		if (getDonViKiemTraDeXuat() != null) {
+			map = new HashMap<>();
+			map.put("donViId", getDonViKiemTraDeXuat().getId());
+			map.put("quyenTuXuLy", isTuXuLyKTDX());
+			list.add(map);
+		}
+		return list;
+	}
+	
+	private boolean saveTmp = true;
+
+	@Transient
+	public boolean isSaveTmp() {
+		return saveTmp;
+	}
+
+	public void setSaveTmp(boolean saveTmp) {
+		this.saveTmp = saveTmp;
+	}
+	
 }

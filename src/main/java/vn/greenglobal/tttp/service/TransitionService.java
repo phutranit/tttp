@@ -75,6 +75,12 @@ public class TransitionService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindByProcess(Process process) {
+		BooleanExpression predAll = base;		
+		predAll = predAll.and(QTransition.transition.process.eq(process));
+		return predAll;
+	}
+	
 	public Predicate predicateFindLast(Long donViId, String processType, ProcessRepository processRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
@@ -87,15 +93,20 @@ public class TransitionService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindLastTTXM(Long donViId, String processType, ProcessRepository processRepo) {
+	public Predicate predicateFindLastTTXM(Long donViId, String processType, ProcessRepository processRepo, boolean isDuThao) {
 		BooleanExpression predAll = base;
 		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
 		processQuery = processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
 			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
 		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
-
-		predAll = predAll.and(QTransition.transition.process.in(listProcess))
-				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET));
+		if (isDuThao) {
+			predAll = predAll.and(QTransition.transition.process.in(listProcess))
+					.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_CHUYEN_DU_THAO_VE_DON_VI_GIAI_QUYET));
+		} else {
+			predAll = predAll.and(QTransition.transition.process.in(listProcess))
+					.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET));
+		}
+		
 		return predAll;
 	}
 	

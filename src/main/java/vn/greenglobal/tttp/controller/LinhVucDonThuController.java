@@ -1,10 +1,13 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -72,6 +75,39 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus/hienThiTree")
+	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListTree(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) String cha,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, 
+			@RequestParam(value = "listLinhVucs", required = false) List<LinhVucDonThu> listLinhVucs, 
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			pageable = new PageRequest(0, 1000, null);
+			List<LinhVucDonThu> list = (List<LinhVucDonThu>) repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs));
+			List<LinhVucDonThu> listFinal = new ArrayList<>();
+			listFinal.addAll(list);
+			if ((tuKhoa != null && !tuKhoa.isEmpty()) || (cha != null && !cha.isEmpty()) 
+					|| (loaiDon != null && !loaiDon.isEmpty()) || (listLinhVucs != null && listLinhVucs.size() > 0)) {
+				for (LinhVucDonThu lv : list) {
+					listFinal = getParent(listFinal, lv);
+				}
+			}
+			Page<LinhVucDonThu> page =  new PageImpl<LinhVucDonThu>(listFinal, pageable, listFinal.size());
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThus")
 	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
@@ -88,6 +124,60 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			Page<LinhVucDonThu> page = repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	public List<LinhVucDonThu> getParent(List<LinhVucDonThu> list, LinhVucDonThu linhVuc) {
+		if (linhVuc.getCha() != null && !list.contains(linhVuc.getCha())) {
+			list.add(linhVuc.getCha());
+			return getParent(list, linhVuc.getCha());
+		}
+		return list;
+	}	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/linhVucDonThuCombobox")
+	@ApiOperation(value = "Lấy danh sách Lĩnh Vực Đơn Thư combobox", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListBombobox(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "cha", required = false) String cha,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon, 
+			@RequestParam(value = "listLinhVucs", required = false) List<LinhVucDonThu> listLinhVucs, 
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			Page<LinhVucDonThu> page = null;
+			pageable = new PageRequest(0, 1000, null);
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_LIETKE) == null
+					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			List<LinhVucDonThu> list = (List<LinhVucDonThu>) repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs));
+			boolean flag = false;
+			LinhVucDonThu lvdt = new LinhVucDonThu();
+			if (list != null && list.size() > 0) {
+				for (LinhVucDonThu lv : list) {
+					if (Utils.unAccent("khac").equals(Utils.unAccent(lv.getTen()))) {
+						list.remove(lv);
+						lvdt = lv;
+						flag = true;
+						break;
+					}
+				}
+			}
+			
+			if (flag) {
+				list.add(lvdt);
+			}
+			
+			int start = pageable.getOffset();
+			int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+			page = new PageImpl<LinhVucDonThu>(list.subList(start, end), pageable, list.size());
+			
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

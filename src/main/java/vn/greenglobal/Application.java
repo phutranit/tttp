@@ -128,7 +128,7 @@ public class Application extends SpringBootServletInitializer {
 
 			@Override
 			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/v2/api-docs",
+				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/auth/sendEmail", "/auth/confirmCode", "/auth/resetPassword", "/v2/api-docs",
 						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao", "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai",
 						"/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
 						"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel",
@@ -148,7 +148,15 @@ public class Application extends SpringBootServletInitializer {
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
 						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
+						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonViCon/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaPhatHienThamNhungQuaThanhTra/xuatExcel",
 						"/soTiepCongDans/danhSachYeuCauGapLanhDao/excel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraLai/xuatExcel",
+						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonVi/xuatExcel",
+						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoChuyenNganh/xuatExcel",
+						"/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi/xuatExcel",
+						"/xuLyDons/inPhieuKhongDuDieuKienThuLyToCao", "/xuLyDons/inPhieuKhongDuDieuKienThuLyKienNghi",
+						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKienNghi", "/xuLyDons/inPhieuHuongDanToCao",
 						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
 			}
 
