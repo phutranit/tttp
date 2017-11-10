@@ -74,7 +74,7 @@ public class GiaiQuyetDonService {
 	
 	public Predicate predFindOld(Long donId, VaiTroEnum vaiTro, CongChuc congChuc) {
 		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
-		predicate = predicate.and(giaiQuyetDon.chucVu.eq(vaiTro))
+		predicate = predicate.and(giaiQuyetDon.chucVu.eq(vaiTro).or(giaiQuyetDon.chucVu2.eq(vaiTro)))
 				.and(giaiQuyetDon.congChuc.coQuanQuanLy.donVi.eq(congChuc.getCoQuanQuanLy().getDonVi()));
 		return predicate;
 	}
