@@ -2048,7 +2048,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -2103,7 +2103,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -2162,7 +2162,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 					chucDanh = "Ủy ban nhân dân";

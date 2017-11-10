@@ -194,4 +194,11 @@ public final class WordUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String splitWord(String str) {
+		if (str.contains("UBND")) {
+			str = str.replace("UBND", "Ủy Ban Nhân Dân \n");
+		}
+		return str;
+	}
 }

@@ -1557,7 +1557,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1618,7 +1618,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -1675,7 +1675,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1737,7 +1737,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -1800,7 +1800,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -1855,7 +1855,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1914,7 +1914,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1975,7 +1975,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -2032,7 +2032,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -2089,7 +2089,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -2141,7 +2141,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				soVB = "UBND";
 			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
@@ -2195,7 +2195,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
