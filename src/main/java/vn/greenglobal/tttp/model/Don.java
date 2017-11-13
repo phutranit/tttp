@@ -1190,7 +1190,8 @@ public class Don extends Model<Don> {
 		if (getDonGocId() != null && getDonGocId() > 0) {
 			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+				if (!tlvt.isDaXoa() && !BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet())
+						&& (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
@@ -1203,7 +1204,8 @@ public class Don extends Model<Don> {
 			}
 		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+				if (!tlvt.isDaXoa() && !BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet())
+						&& (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
 						|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet())
@@ -1262,7 +1264,8 @@ public class Don extends Model<Don> {
 		if (getDonGocId() != null && getDonGocId() > 0) {
 			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+				if (!tlvt.isDaXoa() && !BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet())
+						&& (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
@@ -1276,7 +1279,8 @@ public class Don extends Model<Don> {
 			}
 		}
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-				if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+				if (!tlvt.isDaXoa() && !BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet())
+						&& (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh())
 						|| ProcessTypeEnum.THAM_TRA_XAC_MINH.equals(tlvt.getLoaiQuyTrinh())
 						|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
@@ -1300,6 +1304,21 @@ public class Don extends Model<Don> {
 			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
 				if (!tlvt.isDaXoa() && (ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh()) 
 						|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh()))) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuBoSungHoSo() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getTaiLieuVanThus() != null) {
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) 
+						&& BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet()))) {
 					list.add(tlvt);
 				}
 			}
