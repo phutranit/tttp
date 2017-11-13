@@ -47,10 +47,10 @@ public class ProfileUtils {
 	public CommonProfile getCommonProfile(String authHeader) {
 		if (authHeader != null && authHeader.startsWith("Bearer")) {
 			String token = StringUtils.substringAfter(authHeader, " ");
-			InvalidToken invalid = invalidTokenRep.findOne(QInvalidToken.invalidToken.token.eq(token));
-			if(invalid!=null){
-				return null;
-			}
+//			InvalidToken invalid = invalidTokenRep.findOne(QInvalidToken.invalidToken.token.eq(token));
+//			if (invalid != null) {
+//				return null;
+//			}
 			secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 			secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
 			authenticator = new JwtAuthenticator(secretSignatureConfiguration, secretEncryptionConfiguration);
