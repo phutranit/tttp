@@ -974,7 +974,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("coQuanTiepNhan", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -995,14 +995,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("hoVaTen", hoVaTen.toUpperCase());
 			mappings.put("diaChi", diaChi != null ? diaChi.trim() : "");
 			mappings.put("noiDung", noiDung != null ? noiDung.trim() : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HEN.doc").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HEN.doc").getFile(), mappings, 
+					"Phiếu hẹn.doc");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanToCao")
-	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "In phiếu thông báo về việc hướng dẫn người tố cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuHuongDanToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
 			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
@@ -1030,7 +1032,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1055,14 +1057,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc hướng dẫn người tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuHuongDanKhieuNai")
-	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "In phiếu thông báo về việc hướng dẫn người khiếu nại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuHuongDanKhieuNai(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
 			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
@@ -1090,7 +1094,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1115,14 +1119,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_HUONG_DAN_KHIEU_NAI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc hướng dẫn người khiếu nại.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/soTiepCongDans/inPhieuTuChoi")
-	@ApiOperation(value = "In phiếu hẹn", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "In phiếu thông báo về việc từ chối tiếp công dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportPhieuTuChoi(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
 			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
@@ -1150,7 +1156,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("coQuanTrucThuoc", "");
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
-				mappings.put("capHanhChinh", cq.getTen().toUpperCase());
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
 				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
 					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
 				} else { 
@@ -1175,7 +1181,9 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings);
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/tiepcongdan/TCD_PHIEU_TU_CHOI.docx").getFile(), mappings, 
+					"Phiếu thông báo về việc từ chối tiếp công dân.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}

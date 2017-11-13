@@ -58,6 +58,7 @@ import vn.greenglobal.tttp.repository.ThongTinEmailRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.InvalidTokenService;
 import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
@@ -129,6 +130,9 @@ public class AuthController {
 
 	@Autowired
 	InvalidTokenRepository invalidTokenRep;
+	
+	@Autowired
+	InvalidTokenService invalidTokenService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(@RequestHeader(value = "Email", required = true) String username,
@@ -333,6 +337,7 @@ public class AuthController {
 	public ResponseEntity<Object> logout(
 			@RequestHeader(value = "Authorization", required = true) final String authorization,
 			final HttpServletRequest request, final HttpServletResponse response) {
+		
 		/*
 		 * Authentication auth =
 		 * SecurityContextHolder.getContext().getAuthentication();
@@ -363,7 +368,11 @@ public class AuthController {
 				final JwtAuthenticator authenticator = new JwtAuthenticator(secretSignatureConfiguration,
 						secretEncryptionConfiguration);
 				if (authenticator.validateToken(currentToken) != null) {
-					InvalidToken token = new InvalidToken(currentToken);
+					//InvalidToken token = new InvalidToken(currentToken);
+					//invalidTokenRep.save(token);
+					
+					InvalidToken token = invalidTokenService.predFindToKenCurrentByToken(currentToken);
+					token.setActive(false);
 					invalidTokenRep.save(token);
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
@@ -383,7 +392,7 @@ public class AuthController {
 			Map<String, Object> result = new HashMap<>();
 
 			NguoiDung user = profileUtil.getUserInfo(authorization);
-
+			
 			if (user != null) {
 				VaiTro vaiTroMacDinh = vaiTroRepository.findOne(vaiTroService.predicateFindOne(vaiTroMacDinhId));
 				user.setVaiTroMacDinh(vaiTroMacDinh);
@@ -443,6 +452,16 @@ public class AuthController {
 				result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());
 				result.put("loaiVaiTroMacDinh", user.getVaiTroMacDinh().getLoaiVaiTro());
 				result.put("tenVaiTro", user.getVaiTroMacDinh().getLoaiVaiTro().getText());
+				
+				InvalidToken invalidToken = invalidTokenService.predFindToKenCurrentByUser(user.getId());
+				if (invalidToken == null) {
+					invalidToken = new InvalidToken();
+				}
+				
+				invalidToken.setToken(token);
+				invalidToken.setActive(true);
+				invalidToken.setNguoiDung(user);
+				invalidTokenService.save(invalidToken, congChuc.getId());
 			}
 
 			return new ResponseEntity<>(result, HttpStatus.OK);

@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,9 +29,14 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.InvalidToken;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.VaiTro;
+import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.VaiTroRepository;
+import vn.greenglobal.tttp.service.InvalidTokenService;
+import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.VaiTroService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -45,7 +53,16 @@ public class VaiTroController extends TttpController<VaiTro> {
 
 	@Autowired
 	private NguoiDungRepository nguoiDungRepository;
-
+	
+	@Autowired
+	private NguoiDungService nguoiDungService;
+	
+	@Autowired
+	private InvalidTokenService invalidTokenService;
+	
+	@Autowired
+	private InvalidTokenRepository invalidTokenRepository;
+	
 	public VaiTroController(BaseRepository<VaiTro, Long> repo) {
 		super(repo);
 	}
@@ -144,8 +161,23 @@ public class VaiTroController extends TttpController<VaiTro> {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-
 			vaiTro.setTenSearch(Utils.unAccent(vaiTro.getTen().trim()));
+			VaiTro vaiTroOld = repo.findOne(vaiTro.getId());
+			if (vaiTroOld != null) {
+				if (!vaiTro.getQuyen().equals(vaiTroOld.getQuyen())) {
+					List<InvalidToken> invalidTokens = new ArrayList<InvalidToken>();
+					List<NguoiDung> nguoiDungs = new ArrayList<NguoiDung>();					
+					nguoiDungs.addAll((List<NguoiDung>) nguoiDungRepository.findAll(nguoiDungService.predFindByVaiTro(vaiTro)));
+					invalidTokens.addAll((List<InvalidToken>) invalidTokenRepository.findAll(invalidTokenService.predFindInVaidToKensByUser(nguoiDungs)));
+					if (invalidTokens.size() > 0) { 
+						for (InvalidToken invalidToken : invalidTokens) {
+							invalidToken.setActive(false);
+							invalidTokenService.save(invalidToken, 
+									Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+						}
+					}
+				}
+			}
 			return vaiTroService.doSave(vaiTro,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
 					HttpStatus.OK);

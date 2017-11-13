@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QNguoiDung;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -25,7 +26,12 @@ public class NguoiDungService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QNguoiDung.nguoiDung.id.eq(id));
 	}
-
+	
+	public Predicate predFindByVaiTro(VaiTro vaiTro) {
+		return base.and(QNguoiDung.nguoiDung.vaiTroMacDinh.id.eq(vaiTro.getId()))
+				.or(QNguoiDung.nguoiDung.vaiTros.contains(vaiTro));
+	}
+	
 	public boolean isExists(NguoiDungRepository repo, Long id) {
 		if (id != null && id > 0) {
 			return repo.exists(base.and(QNguoiDung.nguoiDung.id.eq(id)));
