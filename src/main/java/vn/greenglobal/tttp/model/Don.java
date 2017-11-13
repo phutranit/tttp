@@ -1306,6 +1306,21 @@ public class Don extends Model<Don> {
 		}
 		return list;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuBoSungHoSo() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		if (getTaiLieuVanThus() != null) {
+			for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+				if (!tlvt.isDaXoa() && (ProcessTypeEnum.GIAI_QUYET_DON.equals(tlvt.getLoaiQuyTrinh()) 
+						&& BuocGiaiQuyetEnum.BO_SUNG_SAU_KHI_LUU_HO_SO.equals(tlvt.getBuocGiaiQuyet()))) {
+					list.add(tlvt);
+				}
+			}
+		}
+		return list;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
