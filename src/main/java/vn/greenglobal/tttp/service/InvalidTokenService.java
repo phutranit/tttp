@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.model.InvalidToken;
+import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.QInvalidToken;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -23,6 +26,12 @@ public class InvalidTokenService {
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QInvalidToken.invalidToken.id.eq(id));
+	}
+	
+	public Predicate predFindInVaidToKensByUser(List<NguoiDung> nguoiDungs) {
+		BooleanExpression predAll = base;
+		predAll = predAll.and(QInvalidToken.invalidToken.nguoiDung.in(nguoiDungs));
+		return predAll;
 	}
 	
 	public InvalidToken predFindToKenCurrentByUser(Long nguoiDungId) {
