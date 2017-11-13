@@ -1,5 +1,7 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,14 +32,18 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.VaiTro;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
+import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.InvalidTokenService;
 import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ThamSoService;
 import vn.greenglobal.tttp.util.Utils;
@@ -70,7 +76,10 @@ public class CongChucController extends TttpController<CongChuc> {
 	
 	@Autowired
 	private NguoiDungService nguoiDungService;
-
+	
+	@Autowired
+	private InvalidTokenService invalidTokenService;
+	
 	public CongChucController(BaseRepository<CongChuc, Long> repo) {
 		super(repo);
 	}
@@ -329,6 +338,37 @@ public class CongChucController extends TttpController<CongChuc> {
 						congChuc.getNguoiDung().setMatKhau(nd.getMatKhau());
 						congChuc.getNguoiDung().setSalkey(nd.getSalkey());
 					}
+					
+					CongChuc congChucOld = repo.findOne(congChucService.predicateFindOne(congChuc.getId()));
+					NguoiDung nguoiDung = repoNguoiDung.findOne(nguoiDungService.predicateFindOne(congChuc.getNguoiDung().getId()));
+					InvalidToken invalidToken = invalidTokenService.predFindToKenCurrentByUser(nguoiDung.getId());
+					
+					boolean checkVaiTros = false;
+					if (congChuc.getNguoiDung().getVaiTros() != null) {
+						if (congChucOld != null) {
+							VaiTro vaiTro = congChuc.getNguoiDung().getVaiTros().iterator().next();
+							for (VaiTro vaiTroOld : nguoiDung.getVaiTros()) {
+								if (vaiTroOld.getId() != vaiTro.getId()) { 
+									checkVaiTros = true;
+									break;
+								}
+							}
+						} else { 
+							checkVaiTros = true;
+						}
+					}
+					
+					if (!congChucOld.getHoVaTen().equals(congChuc.getHoVaTen()) || !nguoiDung.getEmail().equals(congChuc.getNguoiDung().getEmail()) || 
+							!nguoiDung.getMatKhau().equals(congChuc.getNguoiDung().getMatKhau()) ||
+							nguoiDung.getVaiTroMacDinh().getId() != congChuc.getNguoiDung().getVaiTroMacDinh().getId() || 
+							checkVaiTros) {
+						if (invalidToken != null) { 
+							invalidToken.setActive(false);
+							invalidTokenService.save(invalidToken, Long.valueOf(
+									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+						}
+					}
+
 					nguoiDungService.save(congChuc.getNguoiDung(), Long.valueOf(
 							profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 					congChuc.setHoVaTenSearch(Utils.unAccent(congChuc.getHoVaTen().trim()));

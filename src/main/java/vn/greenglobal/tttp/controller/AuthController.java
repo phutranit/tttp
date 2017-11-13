@@ -337,6 +337,7 @@ public class AuthController {
 	public ResponseEntity<Object> logout(
 			@RequestHeader(value = "Authorization", required = true) final String authorization,
 			final HttpServletRequest request, final HttpServletResponse response) {
+		
 		/*
 		 * Authentication auth =
 		 * SecurityContextHolder.getContext().getAuthentication();
