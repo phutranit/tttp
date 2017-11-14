@@ -1066,7 +1066,8 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi")
 	@ApiOperation(value = "Lấy danh sách Đơn đúng hạn trễ hạn tại đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody Object getDanhSachDonDungHanTreHanTaiDonVi(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			Pageable pageable, @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "month", required = false) Long month,
@@ -1090,7 +1091,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 
 			List<Don> listDon = new ArrayList<Don>();
 			ProcessTypeEnum processType = ProcessTypeEnum.valueOf(quyTrinh);
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuKhoa, tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			
 			boolean isDungHan = true;
 			boolean isTreHan = false;
@@ -1261,7 +1262,8 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi/xuatExcel")
 	@ApiOperation(value = "Xuất file excel", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportExcel(HttpServletResponse response,
-			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			Pageable pageable,  @RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
 			@RequestParam(value = "denNgay", required = false) String denNgay,
 			@RequestParam(value = "month", required = false) Long month,
@@ -1274,7 +1276,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 		try {
 			List<Don> listDon = new ArrayList<Don>();
 			ProcessTypeEnum processType = ProcessTypeEnum.valueOf(quyTrinh);
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuKhoa, tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			
 			boolean isDungHan = true;
 			boolean isTreHan = false;
