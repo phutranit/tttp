@@ -19,11 +19,30 @@ public class LichSuCanBoXuLyChiDinh extends Model<LichSuCanBoXuLyChiDinh> {
 	 * 
 	 */
 	private static final long serialVersionUID = -2506862994836261167L;
+	
+	public LichSuCanBoXuLyChiDinh() {
+	}
+	
+	public LichSuCanBoXuLyChiDinh(CongChuc canBoChiDinh, CoQuanQuanLy donVi, Don don) {
+		this.canBoChiDinh = canBoChiDinh;
+		this.donVi = donVi;
+		this.don = don;
+	}
 
 	@ManyToOne
 	private CongChuc canBoChiDinh;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
+	@ManyToOne
+	private Don don;
+	
+	public Don getDon() {
+		return don;
+	}
+
+	public void setDon(Don don) {
+		this.don = don;
+	}
 
 	public CongChuc getCanBoChiDinh() {
 		return canBoChiDinh;
