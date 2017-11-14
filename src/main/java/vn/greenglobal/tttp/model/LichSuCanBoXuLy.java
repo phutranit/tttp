@@ -13,24 +13,24 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "lichsucanboxulychidinh")
 @ApiModel
-public class LichSuCanBoXuLyChiDinh extends Model<LichSuCanBoXuLyChiDinh> {
+public class LichSuCanBoXuLy extends Model<LichSuCanBoXuLy> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2506862994836261167L;
 	
-	public LichSuCanBoXuLyChiDinh() {
+	public LichSuCanBoXuLy() {
 	}
 	
-	public LichSuCanBoXuLyChiDinh(CongChuc canBoChiDinh, CoQuanQuanLy donVi, Don don) {
-		this.canBoChiDinh = canBoChiDinh;
+	public LichSuCanBoXuLy(CongChuc canBoXuLy, CoQuanQuanLy donVi, Don don) {
+		this.canBoXuLy = canBoXuLy;
 		this.donVi = donVi;
 		this.don = don;
 	}
 
 	@ManyToOne
-	private CongChuc canBoChiDinh;
+	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 	@ManyToOne
@@ -44,12 +44,12 @@ public class LichSuCanBoXuLyChiDinh extends Model<LichSuCanBoXuLyChiDinh> {
 		this.don = don;
 	}
 
-	public CongChuc getCanBoChiDinh() {
-		return canBoChiDinh;
+	public CongChuc getCanBoXuLy() {
+		return canBoXuLy;
 	}
 
-	public void setCanBoChiDinh(CongChuc canBoChiDinh) {
-		this.canBoChiDinh = canBoChiDinh;
+	public void setCanBoXuLy(CongChuc canBoXuLy) {
+		this.canBoXuLy = canBoXuLy;
 	}
 
 	public CoQuanQuanLy getDonVi() {
@@ -95,11 +95,11 @@ public class LichSuCanBoXuLyChiDinh extends Model<LichSuCanBoXuLyChiDinh> {
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCanBoChiDinhInfo() {
-		if (getCanBoChiDinh() != null) {
+		if (getCanBoXuLy() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getCanBoChiDinh().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
-			map.put("hoVaTen", getCanBoChiDinh().getHoVaTen());
-			map.put("congChucId", getCanBoChiDinh().getId());
+			map.put("coQuanQuanLyId", getCanBoXuLy().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getCanBoXuLy().getHoVaTen());
+			map.put("congChucId", getCanBoXuLy().getId());
 			return map;
 		}
 		return null;

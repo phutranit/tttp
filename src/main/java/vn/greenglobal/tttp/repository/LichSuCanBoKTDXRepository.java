@@ -3,9 +3,9 @@ package vn.greenglobal.tttp.repository;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import vn.greenglobal.core.model.common.MutableRepo;
-import vn.greenglobal.tttp.model.LichSuCanBoKTDXChiDinh;
+import vn.greenglobal.tttp.model.LichSuCanBoKTDX;
 
 @RestResource(path = "lichSuCanBoKTDXChiDinhs")
-public interface LichSuCanBoKTDXChiDinhRepository extends MutableRepo<LichSuCanBoKTDXChiDinh> {
+public interface LichSuCanBoKTDXRepository extends MutableRepo<LichSuCanBoKTDX> {
 
 }

@@ -11,13 +11,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "lichsucanboktdxchidinh")
+@Table(name = "lichsucanbottxmchidinh")
 @ApiModel
-public class LichSuCanBoKTDXChiDinh extends Model<LichSuCanBoKTDXChiDinh> {
+public class LichSuCanBoTTXM extends Model<LichSuCanBoTTXM> {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1629204598955451150L;
+	private static final long serialVersionUID = 3811126854333108737L;
 	
 	@ManyToOne
 	private CongChuc canBoChiDinh;
