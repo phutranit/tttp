@@ -196,7 +196,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			Long tongDonDungHanDaXL = 0L;
 			Long tongDonTreHanDaXL = 0L;
 			Long tongSoDangDaXL = 0L;
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons("", tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predDSDons = predDSAllDons;
 				BooleanExpression predDSXLDons = predDSAllDons;
@@ -473,7 +473,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			Long tongSoDonTreHanDaXL = 0L;
 			Long tongSo = 0L;
 			
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons("", tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			int idx = 0;
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predDSDons = predDSAllDons;
@@ -691,7 +691,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			Long tongDonDungHanDaXL = 0L;
 			Long tongDonTreHanDaXL = 0L;
 			Long tongSoDangDaXL = 0L;
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons("", tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predDSDons = predDSAllDons;
 				BooleanExpression predDSXLDons = predDSAllDons;
@@ -926,7 +926,7 @@ public class TheoDoiGiamSatController extends TttpController<Don> {
 			Long tongSoDonTreHanDaXL = 0L;
 			Long tongSo = 0L;
 			
-			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons(tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
+			BooleanExpression predDSAllDons = (BooleanExpression) theoDoiGiamSatService.predicateFindDanhSachDons("", tuNgay, denNgay, month, year, xuLyRepo, repo, giaiQuyetDonRepo);
 			int idx = 0;
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predDSDons = predDSAllDons;

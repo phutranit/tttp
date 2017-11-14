@@ -38,34 +38,6 @@ public class TheoDoiGiamSatService {
 	@Autowired
 	private DonCongDanRepository donCongDanRepo;
 	
-	public Predicate predicateFindDanhSachDons(String tiepNhanTuNgay, String tiepNhanDenNgay, Long month, Long year, XuLyDonRepository xuLyRepo,
-			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
-		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
-				.and(QDon.don.old.eq(false));
-
-		if (month != null && month > 0) { 
-			predAll = predAll.and(QDon.don.ngayTiepNhan.month().eq(month.intValue()));
-		}
-		
-		if (year != null && year > 0) { 
-			predAll = predAll.and(QDon.don.ngayTiepNhan.year().eq(year.intValue()));
-		}
-		
-		if (tiepNhanTuNgay != null && tiepNhanDenNgay != null && StringUtils.isNotBlank(tiepNhanTuNgay.trim())
-				&& StringUtils.isNotBlank(tiepNhanDenNgay.trim())) {
-			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
-			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
-			predAll = predAll.and(QDon.don.ngayTiepNhan.between(tuNgay, denNgay));
-		} else if (StringUtils.isBlank(tiepNhanTuNgay) && StringUtils.isNotBlank(tiepNhanDenNgay)) {
-			LocalDateTime denNgay = Utils.fixDenNgay(tiepNhanDenNgay);
-			predAll = predAll.and(QDon.don.ngayTiepNhan.before(denNgay));
-		} else if (StringUtils.isNotBlank(tiepNhanTuNgay) && StringUtils.isBlank(tiepNhanDenNgay)) {
-			LocalDateTime tuNgay = Utils.fixTuNgay(tiepNhanTuNgay);
-			predAll = predAll.and(QDon.don.ngayTiepNhan.after(tuNgay));
-		}
-		return predAll;
-	}
-	
 	public Predicate predicateFindDanhSachDons(String tuKhoa, String tiepNhanTuNgay, String tiepNhanDenNgay, Long month, Long year, XuLyDonRepository xuLyRepo,
 			DonRepository donRepo, GiaiQuyetDonRepository giaiQuyetDonRepo) {
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true))
