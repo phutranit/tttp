@@ -20,17 +20,36 @@ public class LichSuCanBoTTXM extends Model<LichSuCanBoTTXM> {
 	 */
 	private static final long serialVersionUID = 3811126854333108737L;
 	
+	public LichSuCanBoTTXM() {
+	}
+	
+	public LichSuCanBoTTXM(CongChuc canBoXuLy, CoQuanQuanLy donVi, Don don) {
+		this.canBoXuLy = canBoXuLy;
+		this.donVi = donVi;
+		this.don = don;
+	}
+	
 	@ManyToOne
-	private CongChuc canBoChiDinh;
+	private CongChuc canBoXuLy;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
-
-	public CongChuc getCanBoChiDinh() {
-		return canBoChiDinh;
+	@ManyToOne
+	private Don don;
+	
+	public Don getDon() {
+		return don;
 	}
 
-	public void setCanBoChiDinh(CongChuc canBoChiDinh) {
-		this.canBoChiDinh = canBoChiDinh;
+	public void setDon(Don don) {
+		this.don = don;
+	}
+
+	public CongChuc getCanBoXuLy() {
+		return canBoXuLy;
+	}
+
+	public void setCanBoXuLy(CongChuc canBoXuLy) {
+		this.canBoXuLy = canBoXuLy;
 	}
 
 	public CoQuanQuanLy getDonVi() {
@@ -43,7 +62,7 @@ public class LichSuCanBoTTXM extends Model<LichSuCanBoTTXM> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getLichSuCanBoXyLyChiDinhId() {
+	public Long getLichSuCanBoXuLyId() {
 		return getId();
 	}
 	
@@ -75,12 +94,12 @@ public class LichSuCanBoTTXM extends Model<LichSuCanBoTTXM> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCanBoChiDinhInfo() {
-		if (getCanBoChiDinh() != null) {
+	public Map<String, Object> getCanBoXuLyInfo() {
+		if (getCanBoXuLy() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getCanBoChiDinh().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
-			map.put("hoVaTen", getCanBoChiDinh().getHoVaTen());
-			map.put("congChucId", getCanBoChiDinh().getId());
+			map.put("coQuanQuanLyId", getCanBoXuLy().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
+			map.put("hoVaTen", getCanBoXuLy().getHoVaTen());
+			map.put("congChucId", getCanBoXuLy().getId());
 			return map;
 		}
 		return null;

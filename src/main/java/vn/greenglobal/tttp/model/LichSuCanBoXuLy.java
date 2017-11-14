@@ -62,7 +62,7 @@ public class LichSuCanBoXuLy extends Model<LichSuCanBoXuLy> {
 
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getLichSuCanBoXyLyChiDinhId() {
+	public Long getLichSuCanBoXuLyId() {
 		return getId();
 	}
 	
@@ -94,7 +94,7 @@ public class LichSuCanBoXuLy extends Model<LichSuCanBoXuLy> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getCanBoChiDinhInfo() {
+	public Map<String, Object> getCanBoXuLyInfo() {
 		if (getCanBoXuLy() != null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("coQuanQuanLyId", getCanBoXuLy().getCoQuanQuanLy() != null ? getNguoiSua().getCoQuanQuanLy().getId() : 0);
