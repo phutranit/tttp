@@ -41,7 +41,12 @@ public class TaiLieuVanThuService {
 		
 		return predAll;
 	}
-
+	
+	public Predicate predFindByDonGoc(Long donId) {
+		return base.and(QTaiLieuVanThu.taiLieuVanThu.don.donGocId.isNotNull())
+				.and(QTaiLieuVanThu.taiLieuVanThu.don.donGocId.eq(donId));
+	}
+	
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QTaiLieuVanThu.taiLieuVanThu.id.eq(id));
 	}

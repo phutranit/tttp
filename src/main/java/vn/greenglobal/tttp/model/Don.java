@@ -1040,6 +1040,16 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	public List<TaiLieuVanThu> getListTaiLieuVanThu() {
 		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
+					|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
+					|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
+					|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
+				list.add(tlvt);
+			}
+		}
+		
 		if (getDonGocId() != null && getDonGocId() > 0) {
 			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 			for (TaiLieuVanThu tlvt : donGoc.getTaiLieuVanThus()) {
@@ -1051,16 +1061,12 @@ public class Don extends Model<Don> {
 					list.add(tlvt);
 				}
 			}
-		} 
-		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
-			if (!tlvt.isDaXoa() && (ProcessTypeEnum.XU_LY_DON.equals(tlvt.getLoaiQuyTrinh())
-					|| ProcessTypeEnum.KIEM_TRA_DE_XUAT.equals(tlvt.getLoaiQuyTrinh())
-					|| ProcessTypeEnum.TIEP_CONG_DAN.equals(tlvt.getLoaiQuyTrinh())
-					|| BuocGiaiQuyetEnum.DINH_CHI_DON.equals(tlvt.getBuocGiaiQuyet())
-					|| BuocGiaiQuyetEnum.GIA_HAN.equals(tlvt.getBuocGiaiQuyet()))) {
-				list.add(tlvt);
-			}
+		} else { 
+			//List<TaiLieuVanThu> taiLieuVanThus = new ArrayList<TaiLieuVanThu>();
+			list.addAll((List<TaiLieuVanThu>) Application.app.getTaiLieuVanThuRepository()
+					.findAll(Application.app.getTaiLieuVanThuService().predFindByDonGoc(getId())));			
 		}
+		
 		return list;
 	}
 	
