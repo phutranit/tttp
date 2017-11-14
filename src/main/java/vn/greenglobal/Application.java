@@ -54,8 +54,10 @@ import vn.greenglobal.tttp.repository.DoiTuongViPhamRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
+import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.ChucVuService;
+import vn.greenglobal.tttp.service.TaiLieuVanThuService;
 import vn.greenglobal.tttp.util.upload.StorageProperties;
 
 @SpringBootApplication
@@ -309,8 +311,13 @@ public class Application extends SpringBootServletInitializer {
 	private DoiTuongViPhamRepository doiTuongViPhamRepository;
 	
 	@Autowired
+	private TaiLieuVanThuRepository taiLieuVanThuRepository;
+	
+	@Autowired
 	private ChucVuService chucVuService;
 	
+	@Autowired
+	private TaiLieuVanThuService taiLieuVanThuService;
 	
 	public SoTiepCongDanRepository getSoTiepCongDanRepository() {
 		return soTiepCongDanRepository;
@@ -339,9 +346,16 @@ public class Application extends SpringBootServletInitializer {
 	public DoiTuongViPhamRepository getDoiTuongViPhamRepository() {
 		return doiTuongViPhamRepository;
 	}
+	
+	public TaiLieuVanThuRepository getTaiLieuVanThuRepository() {
+		return taiLieuVanThuRepository;
+	}
 
 	public ChucVuService getChucVuService() {
 		return chucVuService;
 	}
 
+	public TaiLieuVanThuService getTaiLieuVanThuService() {
+		return taiLieuVanThuService;
+	}
 }
