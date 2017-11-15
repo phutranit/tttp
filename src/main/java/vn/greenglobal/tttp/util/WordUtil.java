@@ -197,7 +197,7 @@ public final class WordUtil {
 	
 	public static String splitWord(String str) {
 		if (str.contains("UBND")) {
-			str = str.replace("UBND", "Ủy Ban Nhân Dân \n");
+			str = str.replace("UBND", "Ủy Ban Nhân Dân          ");
 		}
 		return str;
 	}

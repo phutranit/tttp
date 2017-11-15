@@ -2164,7 +2164,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			//mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", cq.getTen());
 			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings, "Phiếu báo cáo Kết quả xác minh nội dung tố cáo.docx");
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings, "Phiếu báo cáo về việc thụ lý giải quyết tố cáo và giao nhiệm vụ xác minh nội dung tố cáo.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -2222,7 +2222,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
 			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
 			mappings.put("ngayTTXM", thoiGianBaoCaoKetQuaTTXM != "" ? thoiGianBaoCaoKetQuaTTXM : "..................");
-			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings, "Phiếu báo cáo Kết quả xác minh nội dung khiếu nại.docx");
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_KHIEU_NAI_1.docx").getFile(), mappings, "Phiếu báo cáo về việc giao nhiệm vụ xác minh nội dung khiếu nại.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}

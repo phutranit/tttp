@@ -551,6 +551,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+						System.out.println("@@tu xu ly");
 						if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 						}
@@ -578,6 +579,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setCanBoCoTheThuHoi(null);
 						//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
+						don.setCanBoXuLyChiDinh(null);
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -902,6 +904,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							|| FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(currentState)
 							|| FlowStateEnum.BAT_DAU.equals(currentState))
 							&& FlowStateEnum.KET_THUC.equals(nextState)) {
+						System.out.println("@@123");
 						// Xu ly don khong co van thu
 						HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 						if (huongXuLyXLD == null) {
@@ -1657,7 +1660,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 						
 			//WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
-			String fileName = "Phiếu đề xuất thụ lý đơn " +loaiDon.toLowerCase() +".docx";
+			String fileName = "Phiếu đề xuất thụ lý đơn " +loaiDon.toLowerCase().replace(",", " -") +".docx";
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings, fileName);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1709,7 +1712,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
-			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon); 
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
