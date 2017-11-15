@@ -140,6 +140,7 @@ public class DonService {
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
 			List<Don> dons = new ArrayList<Don>();
+			List<Long> donIds = new ArrayList<Long>();
 			BooleanExpression donCongDanQuery = baseDonCongDan;
 			
 			donCongDanQuery = donCongDanQuery
@@ -150,7 +151,11 @@ public class DonService {
 			
 			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-			predAll = predAll.and(QDon.don.in(dons));
+			donIds.addAll(dons.stream().map(d -> {
+				return d.getId();
+			}).distinct().collect(Collectors.toList()));
+			
+			predAll = predAll.and(QDon.don.in(dons).or(QDon.don.donGocId.in(donIds)));
 		}
 
 		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
