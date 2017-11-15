@@ -876,7 +876,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
 								don.setHoanThanhDon(true);
 							}
-							System.out.println("@@@@");
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
 							don.setHuongXuLyXLD(huongXuLyXLD);
