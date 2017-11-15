@@ -206,8 +206,10 @@ public class XuLyDonService {
 					.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU));
 			BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId);
 			BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
+			BooleanExpression qXuLy = QXuLyDon.xuLyDon.congChuc.id.eq(canBoId).and(qChucVu);
 			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
 				.or(qLuuTamCoLanhDao)
+				.or(qXuLy)
 				.or(qGiaoViec)
 				.or(qLuuTamKhongLanhDao));
 		}	
