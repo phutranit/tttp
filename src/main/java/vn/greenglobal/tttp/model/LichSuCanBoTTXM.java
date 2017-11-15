@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "lichsucanbottxmchidinh")
+@Table(name = "lichsucanbottxm")
 @ApiModel
 public class LichSuCanBoTTXM extends Model<LichSuCanBoTTXM> {
 

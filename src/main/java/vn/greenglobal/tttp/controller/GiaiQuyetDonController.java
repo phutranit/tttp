@@ -69,6 +69,9 @@ import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.GiaiQuyetDonService;
+import vn.greenglobal.tttp.service.LichSuCanBoKTDXService;
+import vn.greenglobal.tttp.service.LichSuCanBoTTXMService;
+import vn.greenglobal.tttp.service.LichSuCanBoXuLyService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.SoTiepCongDanService;
@@ -149,6 +152,15 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@Autowired
+	private LichSuCanBoXuLyService lichSuCanBoXuLyService;
+	
+	@Autowired
+	private LichSuCanBoTTXMService lichSuCanBoTTXMService;
+	
+	@Autowired
+	private LichSuCanBoKTDXService lichSuCanBoKTDXService;
 	
 	public GiaiQuyetDonController(BaseRepository<GiaiQuyetDon, Long> repo) {
 		super(repo);
@@ -238,6 +250,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = chuyenVienGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, "", thongTinGiaiQuyetDon, donViId);
+							lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+									giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						}
 					} else if ("GQD_NHAN_BAO_CAO_TTXM_GUI_DU_THAO".equals(giaiQuyetDon.getActionType())){
@@ -276,6 +290,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = canBoGuiYeuCauLapDuThao(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, "", 
 									donViId, transitionTTXM.get(0).getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon);
+							lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+									giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 							
 						}
@@ -326,6 +342,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = canBoChuyenVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, 
 									donViId, transitionGQD.getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, coQuyTrinh);
+							lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+									giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if ("TTXM_GUI_DU_THAO".equals(giaiQuyetDon.getActionType())) {
 							State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_CHUYEN_DU_THAO_VE_DON_VI_GIAI_QUYET));
@@ -363,6 +381,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 							giaiQuyetDonTiepTheo = canBoChuyenDuThaoVeDonViGiaiQuyet(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, "", donViId, transitionGQD.get(0).getProcess().getVaiTro().getLoaiVaiTro(), thongTinGiaiQuyetDon, 
 									coQuyTrinh);
+							lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+									giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 							
 					    }
@@ -386,6 +406,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 						giaiQuyetDonHienTai.setNextState(nextState);						
 						giaiQuyetDonHienTai.setNextForm(transition.getForm());	
 						giaiQuyetDonHienTai = canBoChuyenKetQuaVeDonViGiao(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, "", donViId, thongTinGiaiQuyetDon);
+						lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+								giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 						return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
 				}
@@ -1011,6 +1033,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1051,6 +1075,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1111,7 +1137,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-		
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonHienTai;
 	}
 	
@@ -1151,7 +1178,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
-		
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		// disable XULYDON cua VANTHU
 		List<XuLyDon> xuLyDonCu = (List<XuLyDon>) xuLyDonRepository.findAll(xuLyDonService.predFindLanhDaoVanThuOld(
 				VaiTroEnum.VAN_THU, don.getId(), giaiQuyetDonHienTai.getDonViGiaiQuyet().getId()));
@@ -1225,7 +1253,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLDTaiDonViTTXM, congChucId);
-		
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonHienTai;
 	}
 	
@@ -1287,6 +1316,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}		
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1434,6 +1470,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}	
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1514,6 +1557,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}	
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1559,6 +1609,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1651,6 +1703,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}	
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1703,6 +1762,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}	
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1750,6 +1816,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		if (isLaTTXM) {
+			lichSuCanBoTTXMService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		} else {
+			lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+					giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		}	
 		return giaiQuyetDonTiepTheo;
 	}
 
@@ -1827,6 +1900,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1908,6 +1983,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -1987,6 +2064,10 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		int thuTu = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, don.getId(), donViId);
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonTiepTheo;
 	}
 	
@@ -2031,6 +2112,8 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		lichSuQTXLD.setThuTuThucHien(thuTu);
 		lichSuQuaTrinhXuLyService.save(lichSuQTXLD, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
+		lichSuCanBoXuLyService.saveLichSuCanBoXuLy(don, congChucRepo.findOne(congChucId), 
+				giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 		return giaiQuyetDonHienTai;
 	}
 	
