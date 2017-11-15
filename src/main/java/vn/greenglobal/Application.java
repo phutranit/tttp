@@ -53,6 +53,7 @@ import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.repository.DoiTuongViPhamRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
+import vn.greenglobal.tttp.repository.LichSuCanBoXuLyRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.TaiLieuVanThuRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
@@ -311,6 +312,9 @@ public class Application extends SpringBootServletInitializer {
 	private DoiTuongViPhamRepository doiTuongViPhamRepository;
 	
 	@Autowired
+	private LichSuCanBoXuLyRepository lichSuCanBoXuLyRepository;
+	
+	@Autowired
 	private TaiLieuVanThuRepository taiLieuVanThuRepository;
 	
 	@Autowired
@@ -321,6 +325,10 @@ public class Application extends SpringBootServletInitializer {
 	
 	public SoTiepCongDanRepository getSoTiepCongDanRepository() {
 		return soTiepCongDanRepository;
+	}
+	
+	public LichSuCanBoXuLyRepository getLichSuCanBoXuLyRepository() {
+		return lichSuCanBoXuLyRepository;
 	}
 
 	public CuocThanhTraRepository getCuocThanhTraRepository() {
