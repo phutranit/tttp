@@ -106,8 +106,14 @@ public class LichSuQuaTrinhXuLy extends Model<LichSuQuaTrinhXuLy> {
 	@Transient
 	public String getNguoiXuLyText() {
 		String str = "";
-		if (getNguoiXuLy() != null) {
-			str = getNguoiXuLy().getHoVaTen();
+		if (getTen() != null && ("Chuyển đơn".equals(getTen()) || "Chuyển đơn vị TTXM".equals(getTen()) || "Chuyển đơn vị KTDX".equals(getTen()))) {
+			if (getNguoiXuLy() != null) {
+				str = getNguoiXuLy().getCoQuanQuanLy().getDonVi().getTen();
+			}
+		} else {
+			if (getNguoiXuLy() != null) {
+				str = getNguoiXuLy().getHoVaTen();
+			}
 		}
 		return str;
 	}

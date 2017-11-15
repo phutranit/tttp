@@ -21,7 +21,8 @@ public enum QuaTrinhXuLyEnum {
 	CHUYEN_GIAI_QUYET("Chuyển giải quyết"),
 	CHUYEN_KET_QUA_VE_DON_VI_GIAI_QUYET("Chuyển kết quả về đơn vị giải quyết"),
 	LUU_HO_SO("Lưu hồ sơ"),
-	DINH_CHI("Đình chỉ");
+	DINH_CHI("Đình chỉ"),
+	CHUYEN_DON("Chuyển đơn");
 	
 	QuaTrinhXuLyEnum(String text) {
 		this.text = text;

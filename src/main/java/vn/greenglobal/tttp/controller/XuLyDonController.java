@@ -3459,7 +3459,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		lichSuQTXLDChuyenDon.setDon(donMoi);
 		lichSuQTXLDChuyenDon.setNguoiXuLy(congChucRepo.findOne(congChucId));
 		lichSuQTXLDChuyenDon.setNgayXuLy(Utils.localDateTimeNow());
-		lichSuQTXLDChuyenDon.setTen("Tiếp nhận đơn");
+		lichSuQTXLDChuyenDon.setTen(QuaTrinhXuLyEnum.CHUYEN_DON.getText());
 		lichSuQTXLDChuyenDon.setNoiDung(xuLyDonHienTai.getNoiDungXuLy());
 		lichSuQTXLDChuyenDon.setDonViXuLy(donVi.getDonVi());
 		int thuTuChuyenDon = lichSuQuaTrinhXuLyService.timThuTuLichSuQuaTrinhXuLyHienTai(lichSuQuaTrinhXuLyRepo, donOld.getId(), 
