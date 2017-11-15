@@ -2186,6 +2186,23 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getListLichSuCanBoXuLy() {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		List<LichSuCanBoXuLy> listLichSu = (List<LichSuCanBoXuLy>) Application.app.getLichSuCanBoXuLyRepository()
+				.findAll(QLichSuCanBoXuLy.lichSuCanBoXuLy.don.eq(this));
+		for (LichSuCanBoXuLy lichSu : listLichSu) {
+			map = new HashMap<>();
+			map.put("congChucId", lichSu.getCanBoXuLy().getId());
+			map.put("hoVaTen", lichSu.getCanBoXuLy().getHoVaTen());
+			map.put("donViId", lichSu.getDonVi().getId());
+			list.add(map);
+		}
+		return list;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayTiepDan() {
