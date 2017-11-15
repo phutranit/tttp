@@ -226,10 +226,12 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
 								&& don.getDonViXuLyGiaiQuyet() != null
 								&& donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+							System.out.println("==========getThongTinXuLyDon");
 							XuLyDon xld = xuLyDonRepo
 									.findOne(xuLyDonService.predicateFindOne(don.getXuLyDonCuoiCungId()));
 							return new ResponseEntity<>(eass.toFullResource(xld), HttpStatus.OK);
 						} else {
+							System.out.println("============getThongTinXuLyDon else");
 							State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 							Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
 							List<Process> listProcess = (List<Process>) repoProcess.findAll(predicateProcess);
@@ -249,6 +251,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
 									phongBanXuLyXLD, congChucId, "");
 							if (listProcessHaveBeginState.size() > 0) {
+								System.out.println("listProcessHaveBeginState.size() > 0: " + vaiTroNguoiDungHienTai);
 								xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
 										phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
 							}
@@ -629,7 +632,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			NguoiDung nguoiDungHienTai = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_SUA);
 			CommonProfile commonProfile = profileUtil.getCommonProfile(authorization);
 			if (nguoiDungHienTai != null && commonProfile.containsAttribute("congChucId")
-					&& commonProfile.containsAttribute("coQuanQuanLyId")) {
+					&& commonProfile.containsAttribute("coQuanQuanLyId")) {				
 				if (xuLyDon.getDon() == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_REQUIRED.name(),
 							ApiErrorEnum.DON_REQUIRED.getText(), ApiErrorEnum.DON_REQUIRED.getText());
@@ -703,7 +706,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
-						coQuyTrinh);	
+						coQuyTrinh);					
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();
@@ -882,6 +885,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						}
 					} else if ((FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO.equals(currentState) 
 							|| FlowStateEnum.LANH_DAO_GIAO_VIEC_CAN_BO.equals(currentState)
+							|| FlowStateEnum.TRINH_TRUONG_PHONG.equals(currentState)
 							|| FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(currentState)
 							|| FlowStateEnum.BAT_DAU.equals(currentState))
 							&& FlowStateEnum.KET_THUC.equals(nextState)) {
