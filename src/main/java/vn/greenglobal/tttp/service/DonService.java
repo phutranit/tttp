@@ -105,16 +105,6 @@ public class DonService {
 		return predAll;
 	}
 	
-//	public Predicate predFindByListIds(Long id, List<> donIds) {
-//		BooleanExpression predAll = base;
-//		if (id > 0) {
-//			predAll = predAll.and(QDon.don.donGocId.eq(id));
-//			predAll = predAll.and(QDon.don.donChuyen.eq(true));
-//			predAll = predAll.and(QDon.don.donViXuLyDonChuyen.id.eq(donViId));
-//		}
-//		return predAll;
-//	}
-	
 	public Predicate predicateFindAll(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon,
 			String tiepNhanTuNgay, String tiepNhanDenNgay, String hanGiaiQuyetTuNgay, String hanGiaiQuyetDenNgay,
 			String tinhTrangXuLy, boolean thanhLapDon, String trangThaiDon, Long phongBanGiaiQuyetXLD,
@@ -150,7 +140,6 @@ public class DonService {
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
 			List<Don> dons = new ArrayList<Don>();
-			List<Don> donsByDonGoc = new ArrayList<Don>();
 			List<Long> donIds = new ArrayList<Long>();
 			BooleanExpression donCongDanQuery = baseDonCongDan;
 			
@@ -167,7 +156,6 @@ public class DonService {
 			}).distinct().collect(Collectors.toList()));
 			
 			predAll = predAll.and(QDon.don.in(dons).or(QDon.don.donGocId.in(donIds)));
-			donsByDonGoc.addAll((List<Don>) donRepo.findAll(predAll));
 		}
 
 		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
