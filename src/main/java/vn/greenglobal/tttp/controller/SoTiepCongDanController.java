@@ -383,8 +383,6 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 //					don.setNgayLapDonGapLanhDaoTmp(null);
 //				}
 			}
-			
-			
 
 			ResponseEntity<Object> output = soTiepCongDanService.doSave(soTiepCongDan, congChucId, eass, HttpStatus.CREATED);
 			if (output.getStatusCode().equals(HttpStatus.CREATED)) {
@@ -409,8 +407,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 									ApiErrorEnum.TRANSITION_GQD_INVALID.getText(), ApiErrorEnum.TRANSITION_GQD_INVALID.getText());
 						}	
 					}
-					
-					
+						
 					State beginState = repoState.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
@@ -455,6 +452,16 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					giaiQuyetDon.setThuTuThucHien(1);
 					giaiQuyetDon.setDonChuyen(true);
 					/*don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());*/
+					
+					LichSuQuaTrinhXuLy lichSuQTKTDX = new LichSuQuaTrinhXuLy();
+					lichSuQTKTDX.setDon(don);
+					lichSuQTKTDX.setNguoiXuLy(repoCongChuc.findOne(congChucId));
+					lichSuQTKTDX.setNgayXuLy(Utils.localDateTimeNow());
+					lichSuQTKTDX.setNoiDung(soTiepCongDan.getyKienXuLy());
+					lichSuQTKTDX.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
+					lichSuQTKTDX.setDonViXuLy(soTiepCongDan.getDonViChuTri());
+					lichSuQTKTDX.setThuTuThucHien(1);
+					lichSuQuaTrinhXuLyService.save(lichSuQTKTDX, congChucId);
 					giaiQuyetDonService.save(giaiQuyetDon, congChucId);
 				}
 				
@@ -462,7 +469,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				lichSuQTXL.setDon(soTiepCongDan.getDon());
 				lichSuQTXL.setNgayXuLy(Utils.localDateTimeNow());
 				lichSuQTXL.setNguoiXuLy(repoCongChuc.findOne(congChucId));
-				lichSuQTXL.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
+				//lichSuQTXL.setTen(QuaTrinhXuLyEnum.CHUYEN_DON_VI_KTDX.getText());
 				lichSuQTXL.setNoiDung(soTiepCongDan.getNoiDungTiepCongDan());
 				lichSuQTXL.setDonViXuLy(repoCoQuanQuanLy.findOne(donViId));
 				
