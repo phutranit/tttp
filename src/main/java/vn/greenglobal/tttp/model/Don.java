@@ -2331,4 +2331,28 @@ public class Don extends Model<Don> {
 		this.saveTmp = saveTmp;
 	}
 	
+	private LocalDateTime ngayNhanTraDonChuyen;
+
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public LocalDateTime getNgayNhanTraDonChuyen() {
+		return ngayNhanTraDonChuyen;
+	}
+
+	public void setNgayNhanTraDonChuyen(LocalDateTime ngayNhanTraDonChuyen) {
+		this.ngayNhanTraDonChuyen = ngayNhanTraDonChuyen;
+	}
+	
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public LocalDateTime getNgayNhanDon() {
+		if (getDonGocId() != null) {
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			return donGoc != null ? donGoc.getNgayNhanTraDonChuyen() : null;
+		} else {
+			return getNgayNhanTraDonChuyen();
+		}		
+	}
+	
 }

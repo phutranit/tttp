@@ -525,6 +525,7 @@ public class DonController extends TttpController<Don> {
 				Don donMoi = donService.save(don, congChucId);
 				//donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
+				donMoi.setNgayNhanTraDonChuyen(don.getNgayNhanTraDonChuyen());
 				
 				if (donMoi.isThanhLapDon()) {
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -712,6 +713,7 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
+				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
 				don.setLanhDaoDuyet(donOld.isLanhDaoDuyet());
