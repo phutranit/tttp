@@ -578,6 +578,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setCanBoCoTheThuHoi(null);
 						//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
+						don.setCanBoXuLyChiDinh(null);
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -1657,7 +1658,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
 						
 			//WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings);
-			String fileName = "Phiếu đề xuất thụ lý đơn " +loaiDon.toLowerCase() +".docx";
+			String fileName = "Phiếu đề xuất thụ lý đơn " +loaiDon.toLowerCase().replace(",", " -") +".docx";
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/XLD_PHIEU_DE_XUAT_THU_LY.docx").getFile(), mappings, fileName);
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
@@ -1709,7 +1710,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
-			mappings.put("coQuanTiepNhan", coQuanTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
 			mappings.put("nguoiDungDon", nguoiDungDon);
 			mappings.put("diaChiNguoiDungDon", diaChiNguoiDungDon); 
 			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
