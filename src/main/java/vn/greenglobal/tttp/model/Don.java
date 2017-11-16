@@ -2333,6 +2333,7 @@ public class Don extends Model<Don> {
 	
 	private LocalDateTime ngayNhanTraDonChuyen;
 
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	public LocalDateTime getNgayNhanTraDonChuyen() {
 		return ngayNhanTraDonChuyen;
@@ -2342,8 +2343,10 @@ public class Don extends Model<Don> {
 		this.ngayNhanTraDonChuyen = ngayNhanTraDonChuyen;
 	}
 	
+	
 	@Transient
-	private LocalDateTime getNgayNhanDon() {
+	@ApiModelProperty(hidden = true)
+	public LocalDateTime getNgayNhanDon() {
 		if (getDonGocId() != null) {
 			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
 			return donGoc != null ? donGoc.getNgayNhanTraDonChuyen() : null;
