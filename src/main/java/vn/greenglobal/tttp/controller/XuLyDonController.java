@@ -551,7 +551,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
-						System.out.println("@@tu xu ly");
 						if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 						}
@@ -904,7 +903,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							|| FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(currentState)
 							|| FlowStateEnum.BAT_DAU.equals(currentState))
 							&& FlowStateEnum.KET_THUC.equals(nextState)) {
-						System.out.println("@@123");
 						// Xu ly don khong co van thu
 						HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
 						if (huongXuLyXLD == null) {
