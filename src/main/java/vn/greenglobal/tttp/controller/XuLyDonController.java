@@ -3437,6 +3437,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//donOld.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		donOld.setHoanThanhDon(true);
 		donOld.setNgayKetThucXLD(Utils.localDateTimeNow());
+		donOld.setNgayNhanTraDonChuyen(Utils.localDateTimeNow());
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
@@ -3473,6 +3474,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		donMoi.setHoanThanhDon(false);
 		donMoi.setCanBoXuLyPhanHeXLD(null);
 		donMoi.setCanBoXuLy(null);
+		donMoi.setNgayNhanTraDonChuyen(Utils.localDateTimeNow());
 		xuLyDonTiepTheo.setDon(donMoi);
 		
 		//tao lich su qua trinh xu ly don
@@ -3726,12 +3728,14 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
 		don.setHoanThanhDon(true);
+		don.setNgayNhanTraDonChuyen(Utils.localDateTimeNow());
 		//donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
 		//donGoc.setXuLyDonCuoiCungId(xuLyDonTiepTheo.getId());
 		donGoc.setCanBoXuLyChiDinh(null);
 		donGoc.setXuLyDonCuoiCungId(null);
 		donGoc.setHoanThanhDon(false);
 		donGoc.setNgayKetThucXLD(null);
+		donGoc.setNgayNhanTraDonChuyen(Utils.localDateTimeNow());
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
