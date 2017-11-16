@@ -507,6 +507,36 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
+	public Predicate predFindDonViByCapCoQuanQuanLysTKBC(List<Long> capCoQuanQuanLys, List<Long> thamSos) {
+		BooleanExpression predAll = base;
+		String type = "";
+		
+		capCoQuanQuanLys.forEach(c -> {
+			System.out.println("c " +c);
+		});
+		if (capCoQuanQuanLys.contains(thamSos.get(0))) {
+			type = "CQQL_UBNDTP_DA_NANG";
+			System.out.println(type);
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(0))
+					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(1)))
+					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(2)))
+					);
+		} else if (capCoQuanQuanLys.contains(thamSos.get(1))) { 
+			type = "CCQQL_SO_BAN_NGANH";
+			System.out.println(type);
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(1)));
+		} else if (capCoQuanQuanLys.contains(thamSos.get(2))) {
+			type = "CCQQL_UBND_QUAN_HUYEN";
+			System.out.println(type);
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(2)));
+		} else {
+			System.out.println("##");
+			predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.in(capCoQuanQuanLys));
+		}
+
+		return predAll;
+	}
+	
 	public CoQuanQuanLy save(CoQuanQuanLy obj, Long congChucId) {
 		return Utils.save(coQuanQuanLyRepository, obj, congChucId);
 	}
