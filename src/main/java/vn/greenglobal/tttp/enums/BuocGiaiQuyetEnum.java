@@ -17,7 +17,8 @@ public enum BuocGiaiQuyetEnum {
 	THONG_TIN_CUOC_THANH_TRA("Thông tin cuộc thanh tra"),
 	THONG_BAO_KET_THUC_THANH_TRA_TRUC_TIEP("Thông báo kết thúc thanh tra trực tiếp"),
 	KIEN_NGHI_XU_LY_KHAC("Kiến nghị xử lý khác"),
-	BO_SUNG_SAU_KHI_LUU_HO_SO("Bổ sung tài liệu sau khi lưu hồ sơ");
+	BO_SUNG_SAU_KHI_LUU_HO_SO("Bổ sung tài liệu sau khi lưu hồ sơ"),
+	CO_QUAN_DA_GIAI_QUYET("Có cơ quan đã giải quyết");
 
 	BuocGiaiQuyetEnum(String text) {
 		this.text = text;
