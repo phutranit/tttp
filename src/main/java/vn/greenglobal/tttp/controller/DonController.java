@@ -699,10 +699,12 @@ public class DonController extends TttpController<Don> {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.LOAIVUVIEC_REQUIRED.name(),
 									ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText(), ApiErrorEnum.LOAIVUVIEC_REQUIRED.getText());
 						}
-						if (don.getPhanLoaiDon() == null) {
-							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
-									ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
-						}
+						
+//						Bo phanLoaiDon - cap nhat 16/11
+//						if (don.getPhanLoaiDon() == null) {
+//							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+//									ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+//						}
 					}
 				}
 				don.setId(id);
@@ -726,16 +728,19 @@ public class DonController extends TttpController<Don> {
 				// truong hop luu don set can bo chi dinh
 				don.setCanBoXuLyChiDinh(donOld.getCanBoXuLyChiDinh());
 				don.setDonViTiepDan(donOld.getDonViTiepDan());
-				if (don.getPhanLoaiDon() != null) {
-					if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(don.getPhanLoaiDon())) {
-						don.setLyDoKhongDuDieuKienThuLy(null);
-					} else {
-						don.setLyDoKhongDuDieuKienThuLy(don.getLyDoKhongDuDieuKienThuLy());
-					}
-				} else {
-					don.setPhanLoaiDon(donOld.getPhanLoaiDon());
-					don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
-				}
+				
+//				Bo phanLoaiDon - cap nhat 16/11
+//				if (don.getPhanLoaiDon() != null) {
+//					if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(don.getPhanLoaiDon())) {
+//						don.setLyDoKhongDuDieuKienThuLy(null);
+//					} else {
+//						don.setLyDoKhongDuDieuKienThuLy(don.getLyDoKhongDuDieuKienThuLy());
+//					}
+//				} else {
+//					don.setPhanLoaiDon(donOld.getPhanLoaiDon());
+//					don.setLyDoKhongDuDieuKienThuLy(donOld.getLyDoKhongDuDieuKienThuLy());
+//				}
+				
 				don.setTrangThaiYeuCauGapLanhDao(donOld.getTrangThaiYeuCauGapLanhDao());
 				don.setLyDoThayDoiTTYeuCauGapLanhDao(donOld.getLyDoThayDoiTTYeuCauGapLanhDao());
 				don.setNgayLapDonGapLanhDaoTmp(donOld.getNgayLapDonGapLanhDaoTmp());
