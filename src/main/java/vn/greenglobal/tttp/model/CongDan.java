@@ -37,6 +37,8 @@ public class CongDan extends Model<CongDan> {
 	private String soCMNDHoChieu = "";
 	@Size(max=255)
 	private String diaChi = "";
+	@Size(max=255)
+	private String toThon = "";
 
 	private LocalDateTime ngaySinh;
 	private LocalDateTime ngayCap;
@@ -130,6 +132,14 @@ public class CongDan extends Model<CongDan> {
 
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
+	}
+
+	public String getToThon() {
+		return toThon;
+	}
+
+	public void setToThon(String toThon) {
+		this.toThon = toThon;
 	}
 
 	@ApiModelProperty(position = 6, required = true)
