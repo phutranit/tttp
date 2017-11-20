@@ -897,8 +897,8 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDsTheoDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestParam(value = "donId", required = false) Long donId) {
-		
+			@RequestParam(value = "donId", required = false) Long donId, 
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {		
 		Don don = null;
 		if (donId != null && donId > 0) {
 			don = donRepo.findOne(donId);
@@ -918,6 +918,15 @@ public class EnumController {
 				}
 			}
 			errorBody.put("list", list);
+			
+			if (loaiDon != null && StringUtils.isNotBlank(loaiDon) && loaiDon.equals(LoaiDonEnum.DON_TO_CAO.toString())) {
+				for (Map<String, Object> obj : list) {
+					if (obj.get("giaTri").equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name())) { 
+						list.remove(obj);
+						break;
+					}
+				}
+			}
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}
 		
@@ -968,6 +977,15 @@ public class EnumController {
 				}
 			}
 			list.remove(mapRemove);
+		}
+
+		if (don.getLoaiDon().equals(LoaiDonEnum.DON_TO_CAO) || (loaiDon != null && StringUtils.isNotBlank(loaiDon) && loaiDon.equals(LoaiDonEnum.DON_TO_CAO.toString()))) {
+			for (Map<String, Object> obj : list) {
+				if (obj.get("giaTri").equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name())) { 
+					list.remove(obj);
+					break;
+				}
+			}
 		}
 		
 		errorBody.put("list", list);

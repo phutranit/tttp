@@ -844,7 +844,10 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		Long tongSo = 0L;
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
-		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY));
+		// predAllXLD =
+		// predAllXLD.and(QXuLyDon.xuLyDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY));
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.huongXuLy.ne(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
+				.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.isNotNull());
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());
@@ -968,8 +971,9 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		Long tongSo = 0L;
 		List<XuLyDon> xuLyDons = new ArrayList<XuLyDon>();
 		Set<Don> dons = new HashSet<Don>();
-		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY))
-				.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.isNull());
+		predAllXLD = predAllXLD// .and(QXuLyDon.xuLyDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY))
+				.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.isNull()).and(QXuLyDon.xuLyDon.huongXuLy
+						.eq(HuongXuLyXLDEnum.DE_XUAT_THU_LY).or(QXuLyDon.xuLyDon.don.hoanThanhDon.isFalse()));
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(xld -> xld.getDon()).distinct().collect(Collectors.toSet()));
 		tongSo = Long.valueOf(dons.size());

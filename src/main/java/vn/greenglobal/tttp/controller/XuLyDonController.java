@@ -658,10 +658,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				State nextStage = repoState.findOne(stateService.predicateFindOne(xuLyDon.getNextState().getId()));
 				Long donId = xuLyDon.getDon().getId();
 				Don don = donRepo.findOne(donService.predicateFindOne(donId));
-				if (don.getPhanLoaiDon() == null && xuLyDon.getPhanLoaiDon() == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
-							ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
-				}
+				
+//				Bo phanLoaiDon - cap nhat 16/11
+//				if (don.getPhanLoaiDon() == null && xuLyDon.getPhanLoaiDon() == null) {
+//					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+//							ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+//				}
+				
 				if (don.getProcessType() == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
 							ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
@@ -885,14 +888,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 							// set ngay ket thuc cho don
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							donService.save(don, congChucId);
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
@@ -1098,14 +1103,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
 							//don.setTuXuLyXLDGQD(false);
 							don.setHoanThanhDon(true);
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							if (!coQuyTrinh) { 
 								don.setLanhDaoDuyet(true);
@@ -1159,14 +1166,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoCoTheThuHoi(null);
 							//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							if (!coQuyTrinh) { 
 								don.setLanhDaoDuyet(true);
@@ -1449,16 +1458,18 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 		}				
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				donOld.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		} else {
-			donOld.setPhanLoaiDon(null);
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				donOld.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		} else {
+//			donOld.setPhanLoaiDon(null);
+//		}
+		
 		if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 			xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 			donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
@@ -2509,14 +2520,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getThoiHanXuLy() != null) {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
+		
 		don.setCanBoXuLyPhanHeXLD(congChuc);
 		// workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
@@ -2577,14 +2591,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getThoiHanXuLy() != null) {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
+		
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		// workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
@@ -2884,14 +2901,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		}
 		don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -2954,14 +2973,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCurrentState(beginState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
@@ -3170,14 +3190,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
@@ -3631,14 +3652,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		don.setCanBoCoTheThuHoi(null);
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
