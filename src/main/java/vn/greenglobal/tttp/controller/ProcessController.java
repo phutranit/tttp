@@ -669,19 +669,26 @@ public class ProcessController extends TttpController<Process> {
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {	
 				if (index == 1) {
+					// Chuyên viên xử lý đề xuất hướng xử lý sau khi được trưởng phòng giao việc
 					transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên xử lý nhận đơn và trình trưởng phòng
 					transition = addDataTrasition(process, 1L, 32L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên xử lý nhận đơn và gửi yêu cầu gặp lãnh đạo
 					transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
 				} else {
+					// Chuyên viên xử lý nhận đơn và trình lãnh đạo
 					transition = addDataTrasition(process, 1L, 2L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên xử lý đề xuất hướng xử lý sau khi được trưởng phòng giao việc
 					transition = addDataTrasition(process, 5L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên xử lý đề xuất hướng xử lý sau khi được lãnh đạo giao việc
 					transition = addDataTrasition(process, 9L, 8L, 4L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên xử lý nhận đơn và gửi yêu cầu gặp lãnh đạo
 					transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
 				}						
@@ -704,25 +711,35 @@ public class ProcessController extends TttpController<Process> {
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {	
 				if (index == 1) {
+					// Trưởng phòng giao viêc cán bộ sau khi được Chuyên viên xử lý hoặc chuyên viên nhập liệu trình đơn
 					transition = addDataTrasition(process, 32L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng tự xử lý sau khi được Chuyên viên xử lý hoặc chuyên viên nhập liệu trình đơn
 					transition = addDataTrasition(process, 32L, 8L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng giao việc cán bộ sau khi thu hồi đơn
 					transition = addDataTrasition(process, 23L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng tự xử lý sau thu hồi đơn
 					transition = addDataTrasition(process, 23L, 8L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng thu hồi đơn sau khi giao việc cho cán bộ
 					transition = addDataTrasition(process, 5L, 23L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
 				} else {
+					// Trưởng phòng giao việc cán bộ sau khi được lãnh đạo giao việc
 					transition = addDataTrasition(process, 3L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng giao việc cán bộ sau khi thu hồi đơn
 					transition = addDataTrasition(process, 23L, 5L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng thu hồi đơn sau khi giao việc cho cán bộ
 					transition = addDataTrasition(process, 5L, 23L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng tự xử lý sau khi lãnh đạo giao viêc
 					transition = addDataTrasition(process, 3L, 8L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Trưởng phòng tự xử lý sau thu hồi đơn
 					transition = addDataTrasition(process, 23L, 8L, 3L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
 				}
@@ -734,16 +751,22 @@ public class ProcessController extends TttpController<Process> {
 				process = addDataProcess(ProcessTypeEnum.XU_LY_DON, "Xử lý đơn của Lãnh Đạo", false, null, donViId, 1L, false);
 				process = processService.save(process, congChucId);
 				if (process != null && process.getId() != null && process.getId() > 0) {
+					// Lãnh đạo giao việc trường phòng sau khi 
 					transition = addDataTrasition(process, 2L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Lãnh đạo giao việc cán bộ sau khi được chuyên viên nhập liệu hoặc chuyên viên xử lý trình đơn
 					transition = addDataTrasition(process, 2L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Lãnh đạo thu hồi sau khi giao việc trưởng phòng
 					transition = addDataTrasition(process, 3L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Lãnh đạo thu hồi sau khi giao việc chuyên viên xử lý
 					transition = addDataTrasition(process, 9L, 22L, 30L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Lãnh đạo giao việc trưởng phòng sau khi thu hồi đơn
 					transition = addDataTrasition(process, 22L, 3L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Lãnh đạo giao việc cán bộ sau khi thu hồi đơn
 					transition = addDataTrasition(process, 22L, 9L, 2L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
 				}
@@ -755,13 +778,17 @@ public class ProcessController extends TttpController<Process> {
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				if (index == 1) {
+					// Chuyên viên nhập liệu nhận đơn và trình trưởng phòng
 					transition = addDataTrasition(process, 1L, 32L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên nhập liệu nhận đơn và gửi yêu cầu gặp lãnh đạo
 					transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_BAN_TIEP_CONG_DAN_I);
 					transitionService.save(transition, congChucId);
 				} else {
+					// Chuyên viên nhập liệu nhận đơn và trình lãnh đạo
 					transition = addDataTrasition(process, 1L, 2L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
+					// Chuyên viên nhập liệu gửi yêu cầu gặp lãnh đạo
 					transition = addDataTrasition(process, 1L, 17L, 1L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 					transitionService.save(transition, congChucId);
 				}
