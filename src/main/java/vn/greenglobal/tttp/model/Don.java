@@ -250,11 +250,13 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaTTXM;
 	
-	@Enumerated(EnumType.STRING)
-	private PhanLoaiDonEnum phanLoaiDon;
+	//Bo phanLoaiDon - cap nhat 16/11
+	//@Enumerated(EnumType.STRING)
+	//private PhanLoaiDonEnum phanLoaiDon;
 	
-	@Enumerated(EnumType.STRING)
-	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
+//	Bo phanLoaiDon - cap nhat 16/11
+//	@Enumerated(EnumType.STRING)
+//	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
 	//@NotNull
 	@Enumerated(EnumType.STRING)
@@ -1444,21 +1446,23 @@ public class Don extends Model<Don> {
 		this.ketQuaTTXM = ketQuaTTXM;
 	}
 
-	public PhanLoaiDonEnum getPhanLoaiDon() {
-		return phanLoaiDon;
-	}
+//	Bo phanLoaiDon - cap nhat 16/11
+//	public PhanLoaiDonEnum getPhanLoaiDon() {
+//		return phanLoaiDon;
+//	}
+//
+//	public void setPhanLoaiDon(PhanLoaiDonEnum phanLoaiDon) {
+//		this.phanLoaiDon = phanLoaiDon;
+//	}
 
-	public void setPhanLoaiDon(PhanLoaiDonEnum phanLoaiDon) {
-		this.phanLoaiDon = phanLoaiDon;
-	}
-
-	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
-		return lyDoKhongDuDieuKienThuLy;
-	}
-
-	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
-		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
-	}
+//	Bo phanLoaiDon - cap nhat 16/11
+//	public LyDoKhongDuDieuKienXuLyEnum getLyDoKhongDuDieuKienThuLy() {
+//		return lyDoKhongDuDieuKienThuLy;
+//	}
+//
+//	public void setLyDoKhongDuDieuKienThuLy(LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy) {
+//		this.lyDoKhongDuDieuKienThuLy = lyDoKhongDuDieuKienThuLy;
+//	}
 	
 	//@JsonIgnore
 	public TrangThaiYeuCauGapLanhDaoEnum getTrangThaiYeuCauGapLanhDao() {
@@ -2215,17 +2219,18 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getPhanLoaiDonInfo() {
-		if (getPhanLoaiDon() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getPhanLoaiDon().getText());
-			map.put("giaTri", getPhanLoaiDon().name());
-			return map;
-		}
-		return null;
-	}
+//	Bo phanLoaiDon - cap nhat 16/11
+//	@ApiModelProperty(hidden = true)
+//	@Transient
+//	public Map<String, Object> getPhanLoaiDonInfo() {
+//		if (getPhanLoaiDon() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("ten", getPhanLoaiDon().getText());
+//			map.put("giaTri", getPhanLoaiDon().name());
+//			return map;
+//		}
+//		return null;
+//	}
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
@@ -2239,17 +2244,18 @@ public class Don extends Model<Don> {
 		return null;
 	}
 	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getLyDoKhongDuDieuKienThuLyInfo() {
-		if (getLyDoKhongDuDieuKienThuLy() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getLyDoKhongDuDieuKienThuLy().getText());
-			map.put("giaTri", getLyDoKhongDuDieuKienThuLy().name());
-			return map;
-		}
-		return null;
-	}
+//	Bo phanLoaiDon - cap nhat 16/11
+//	@ApiModelProperty(hidden = true)
+//	@Transient
+//	public Map<String, Object> getLyDoKhongDuDieuKienThuLyInfo() {
+//		if (getLyDoKhongDuDieuKienThuLy() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("ten", getLyDoKhongDuDieuKienThuLy().getText());
+//			map.put("giaTri", getLyDoKhongDuDieuKienThuLy().name());
+//			return map;
+//		}
+//		return null;
+//	}
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
