@@ -9,6 +9,10 @@ public enum NguonTiepNhanDonEnum {
 	CHUYEN_DON("Chuyển đơn"),
 	GIAO_TTXM("Giao thẩm tra xác minh"),
 	GIAO_KTDX("Giao kiểm tra đề xuất"),
+	HOI_DONG_NHAN_DAN_TP("Hội đồng nhân dân TP"),
+	DAI_BIEU_QUOC_HOI_TP("Đại biểu Quốc hội TP"),
+	UBMTTQ_VIET_NAM_TP("UBMTTQ Việt Nam TP"),
+	TRUNG_UONG("Trung ương"),
 	KHAC("Khác");
 
 	NguonTiepNhanDonEnum(String text) {
