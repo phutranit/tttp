@@ -763,7 +763,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						if (thamSo == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.name(),
 									ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.getText(), ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.getText());
-						}
+						} 
 						CoQuanQuanLy banTiepCongDan = coQuanQuanLyRepo.findOne(Long.parseLong(thamSo.getGiaTri()));
 						if (banTiepCongDan == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.name(),
