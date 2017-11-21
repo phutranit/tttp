@@ -647,10 +647,12 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
 					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
 					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()))));
-			CoQuanQuanLy donViKhac = new CoQuanQuanLy();
-			donViKhac.setId(0L);
-			donViKhac.setTen("Khác");
-			coQuanQuanLys.add(donViKhac);
+			
+			//Fix chuyenDon - cap nhat 17/11
+			//CoQuanQuanLy donViKhac = new CoQuanQuanLy();
+			//donViKhac.setId(0L);
+			//donViKhac.setTen("Khác");
+			//coQuanQuanLys.add(donViKhac);
 			int start = pageable.getOffset();
 			int end = (start + pageable.getPageSize()) > coQuanQuanLys.size() ? coQuanQuanLys.size() : (start + pageable.getPageSize());
 			
