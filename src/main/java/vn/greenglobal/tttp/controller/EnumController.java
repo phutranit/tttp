@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.ChucNangKeHoachThanhTraEnum;
 import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
+import vn.greenglobal.tttp.enums.DonViTheoDoiGQDEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
@@ -101,6 +102,28 @@ public class EnumController {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDon/donViTheoDoi")
+	@ApiOperation(value = "Lấy danh sách Đơn vị theo dõi", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTrangThaiDonViTheoDois(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", DonViTheoDoiGQDEnum.THANH_TRA.getText());
+		object.put("giaTri", DonViTheoDoiGQDEnum.THANH_TRA.name());
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", DonViTheoDoiGQDEnum.KHAC.getText());
+		object.put("giaTri", DonViTheoDoiGQDEnum.KHAC.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/timKiemTheoLoaiKy")
 	@ApiOperation(value = "Lấy tìm kiếm theo Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
