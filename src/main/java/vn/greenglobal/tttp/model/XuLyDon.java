@@ -116,8 +116,6 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
-	private String donViNhan = "";
-	
 	//@Lob
 	private String ghiChu = "";
 	
@@ -543,14 +541,6 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanXuLyChiDinh = phongBanXuLyChiDinh;
 	}
 	
-	public String getDonViNhan() {
-		return donViNhan;
-	}
-
-	public void setDonViNhan(String donViNhan) {
-		this.donViNhan = donViNhan;
-	}
-
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
@@ -777,8 +767,8 @@ public class XuLyDon extends Model<XuLyDon> {
 				
 				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) {
 					mapCoQuanTiepNhan = new HashMap<String, Object>();
-					mapCoQuanTiepNhan.put("id", 0L);
-					mapCoQuanTiepNhan.put("ten", "Khác");
+					mapCoQuanTiepNhan.put("id", null);
+					mapCoQuanTiepNhan.put("ten", null);
 				}
 				
 				if (getThamQuyenGiaiQuyet() != null) {

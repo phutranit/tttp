@@ -483,7 +483,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 						//Tim kiem vai tro dau tien o quy trinh
-						if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+						
+						if (xuLyDon.getThamQuyenGiaiQuyet() == null) { 
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+									ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+						}
+						
+						ThamSo thamSoTQGQHC = repoThamSo.findOne(thamSoService.predicateFindTen("TQGQ_HANH_CHINH"));
+						
+						//if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+						if (thamSoTQGQHC != null && Long.valueOf(thamSoTQGQHC.getGiaTri()) == xuLyDon.getThamQuyenGiaiQuyet().getId()) {
 							Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 							State beginState = repoState
 									.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -1072,7 +1081,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 							//Tim kiem vai tro dau tien o quy trinh
-							if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+							
+							if (xuLyDon.getThamQuyenGiaiQuyet() == null) { 
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+							}
+							ThamSo thamSoTQGQHC = repoThamSo.findOne(thamSoService.predicateFindTen("TQGQ_HANH_CHINH"));
+							
+//							if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+							if (thamSoTQGQHC != null && Long.valueOf(thamSoTQGQHC.getGiaTri()) == xuLyDon.getThamQuyenGiaiQuyet().getId()) {
 								Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 								State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 								Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViXuLyId), ProcessTypeEnum.XU_LY_DON);
