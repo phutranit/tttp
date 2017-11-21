@@ -18,7 +18,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.model.Don;
