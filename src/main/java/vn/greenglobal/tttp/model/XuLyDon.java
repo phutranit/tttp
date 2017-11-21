@@ -116,6 +116,8 @@ public class XuLyDon extends Model<XuLyDon> {
 	@Enumerated(EnumType.STRING)
 	private LyDoKhongDuDieuKienXuLyEnum lyDoKhongDuDieuKienThuLy;
 	
+	private String donViNhan = "";
+	
 	//@Lob
 	private String ghiChu = "";
 	
@@ -541,6 +543,14 @@ public class XuLyDon extends Model<XuLyDon> {
 		this.phongBanXuLyChiDinh = phongBanXuLyChiDinh;
 	}
 	
+	public String getDonViNhan() {
+		return donViNhan;
+	}
+
+	public void setDonViNhan(String donViNhan) {
+		this.donViNhan = donViNhan;
+	}
+
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
