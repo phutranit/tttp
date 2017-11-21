@@ -2781,8 +2781,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						.getTongSoDonXLDTheoTrinhTuGiaiQuyetChuaDuocGiaiQuyet(predAllDXLDDonVi);
 				mapMaSo.put("23", tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet);
 
-				Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy
-						- tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
+				Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = 0L;
+				if (tongSoDonDuDieuKienThuLy > 0) { 
+					tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy - tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
+				}
 				// mapMaSo.put("24",
 				// thongKeBaoCaoTongHopKQXLDService.getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetLanDau(predAllDXLDDonVi));
 				mapMaSo.put("24", tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau);
