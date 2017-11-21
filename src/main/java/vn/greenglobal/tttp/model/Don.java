@@ -45,10 +45,8 @@ import vn.greenglobal.tttp.enums.LoaiFileDinhKemEnum;
 import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
 import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
-import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.NguonTiepNhanDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
@@ -93,6 +91,8 @@ public class Don extends Model<Don> {
 	private String soVanBanDaGiaiQuyet = "";
 	@Size(max=255)
 	private String linhVucChiTietKhac = "";
+	@Size(max=255)
+	private String coQuanDaGiaiQuyetDonThu  = "";
 
 	private int soLanKhieuNaiToCao = 0;
 	private int tongSoLuotTCD;
@@ -581,6 +581,14 @@ public class Don extends Model<Don> {
 	public void setLinhVucChiTietKhac(String linhVucChiTietKhac) {
 		this.linhVucChiTietKhac = linhVucChiTietKhac;
 	}
+	
+	public String getCoQuanDaGiaiQuyetDonThu() {
+		return coQuanDaGiaiQuyetDonThu;
+	}
+
+	public void setCoQuanDaGiaiQuyetDonThu(String coQuanDaGiaiQuyetDonThu) {
+		this.coQuanDaGiaiQuyetDonThu = coQuanDaGiaiQuyetDonThu;
+	}
 
 	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {
 		return ngayBanHanhVanBanDaGiaiQuyet;
@@ -1032,6 +1040,20 @@ public class Don extends Model<Don> {
 				if (!tlbc.isDaXoa() && BuocGiaiQuyetEnum.LUAT_SU.equals(tlbc.getBuocGiaiQuyet())) {
 					list.add(tlbc);
 				}
+			}
+		}
+		
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<TaiLieuVanThu> getListTaiLieuVanThuBlockCoQuanDaGiaiQuyet() {
+		List<TaiLieuVanThu> list = new ArrayList<TaiLieuVanThu>();
+		for (TaiLieuVanThu tlvt : getTaiLieuVanThus()) {
+			if (!tlvt.isDaXoa() && (ProcessTypeEnum.THONG_TIN_DON.equals(tlvt.getLoaiQuyTrinh())
+					&& BuocGiaiQuyetEnum.CO_QUAN_DA_GIAI_QUYET.equals(tlvt.getBuocGiaiQuyet()))) {
+				list.add(tlvt);
 			}
 		}
 		

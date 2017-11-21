@@ -1517,7 +1517,8 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/ketLuanNoiDungKhieuNais")
 	@ApiOperation(value = "Lấy danh sách kết luận nội dung khiếu nại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getKetLuanNoiDungKhieuNais(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
@@ -1534,6 +1535,13 @@ public class EnumController {
 		object.put("ten", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.getText());
 		object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.name());
 		list.add(object);
+		
+		if (!"".equals(loaiDon) && loaiDon != null && LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.equals(LoaiDonEnum.valueOf(loaiDon))) {
+			object = new HashMap<>();
+			object.put("ten", KetLuanNoiDungKhieuNaiEnum.KHAC.getText());
+			object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.KHAC.name());
+			list.add(object);
+		}
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
