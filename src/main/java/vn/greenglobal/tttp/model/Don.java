@@ -2111,6 +2111,9 @@ public class Don extends Model<Don> {
 								if (xld.getCoQuanTiepNhan() != null) {
 									String tenCQTN = xld.getCoQuanTiepNhan().getDonVi().getTen();
 									ketQuaStr += " " + tenCQTN;
+								} else if (xld.getDonViNgoaiHeThong() != null) {
+									String tenCQTN = xld.getDonViNgoaiHeThong().getTen();
+									ketQuaStr += " " + tenCQTN;
 								}
 							} else {
 								ketQuaStr = "";
