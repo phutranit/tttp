@@ -550,7 +550,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
-							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
 						if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 						}
@@ -559,12 +561,21 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setHoanThanhDon(true);
 							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)) {
 								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY);
-							} else {
+							} else if (HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
 								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI);
+							} else if (HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
 							}
 						} else {
-							don.setHoanThanhDon(true);
-							don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+//							don.setHoanThanhDon(true);
+//							don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+							
+							if (HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO);
+							}
+							if (HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON);
+							}
 						}
 						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -1137,22 +1148,33 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
+								|| HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)
 								|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
-								|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+								|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+								|| HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
 							if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 								xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 							}
 							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
-									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+									|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
 								don.setHoanThanhDon(true);
 								if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)) {
 									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY);
-								} else {
+								} else if (HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
 									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI);
+								} else if (HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
 								}
 							} else {
-								don.setHoanThanhDon(true);
-								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+//								don.setHoanThanhDon(true);
+//								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+								if (HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO);
+								}
+								if (HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON);
+								}
 							}
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -2251,6 +2273,68 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/tocao/XLD_PHIEU_HUONG_DAN_TO_CAO.docx").getFile(), mappings, 
 					"Phiếu thông báo về việc hướng dẫn người tố cáo.docx");
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuHuongDanKienNghi")
+	@ApiOperation(value = "In phiếu hướng dẫn kiến nghị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanKienNghi(
+			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			//@RequestParam(value = "soCMND", required = false) String soCMND,
+			//@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			//@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			
+			String soVB = "";
+			mappings.put("kyTen", "");
+			mappings.put("capHanhChinh", "");
+			mappings.put("coQuanTrucThuoc", "");
+			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
+				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
+					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
+				} else { 
+					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
+				}
+				soVB = "UBND";
+			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
+				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
+				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
+				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
+			}
+			
+			mappings.put("soVB", soVB);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			mappings.put("hoVaTen", hoVaTen);
+			//mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			//mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			//mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_HUONG_DAN_VIET_DON_KIEN_NGHI.docx").getFile(), mappings, 
+					"Phiếu hướng dẫn viết lại đơn kiến nghị.docx");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
