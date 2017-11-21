@@ -1,8 +1,12 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -78,7 +82,29 @@ public class QuocTichController extends TttpController<QuocTich> {
 			@RequestParam(value = "tuKhoa", required = false) String tuKhoa, PersistentEntityResourceAssembler eass) {
 
 		try {
-			Page<QuocTich> page = repo.findAll(quocTichService.predicateFindAll(tuKhoa), pageable);
+			Page<QuocTich> page = null;
+			pageable = new PageRequest(0, 1000, null);
+			List<QuocTich> list = (List<QuocTich>) repo.findAll(quocTichService.predicateFindAll(tuKhoa));
+			boolean flag = false;
+			QuocTich quocTich = new QuocTich();
+			if (list != null && list.size() > 0) {
+				for (QuocTich qt : list) {
+					if (Utils.unAccent("khac").equals(Utils.unAccent(qt.getTen()))) {
+						list.remove(qt);
+						quocTich = qt;
+						flag = true;
+						break;
+					}
+				}
+			}
+			
+			if (flag) {
+				list.add(quocTich);
+			}
+			
+			int start = pageable.getOffset();
+			int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+			page = new PageImpl<QuocTich>(list.subList(start, end), pageable, list.size());
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
