@@ -712,6 +712,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			donViHanhChinhList.add(thamSoThree.getId());
 			donViHanhChinhList.add(thamSoFour.getId());
 			donViHanhChinhList.add(thamSoFive.getId());
+			System.out.println("donViHanhChinhList: " + donViHanhChinhList.size());
 			
 			if (thamSoOne != null && thamSoTwo != null) {
 				page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(tuKhoa, Long.valueOf(thamSoOne.getGiaTri().toString()),
