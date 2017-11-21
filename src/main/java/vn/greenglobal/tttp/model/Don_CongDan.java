@@ -64,6 +64,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	@Size(max=255)
 	private String soTheLuatSu = "";
+	@Size(max=255)
+	private String toThon = "";
 	private boolean gioiTinh;
 	private boolean luatSu = false;
 
@@ -168,6 +170,14 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	public void setSoTheLuatSu(String soTheLuatSu) {
 		this.soTheLuatSu = soTheLuatSu;
+	}
+
+	public String getToThon() {
+		return toThon;
+	}
+
+	public void setToThon(String toThon) {
+		this.toThon = toThon;
 	}
 
 	public LocalDateTime getNgayCapTheLuatSu() {

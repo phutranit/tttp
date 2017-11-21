@@ -155,6 +155,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setPhuongXa(donCongDan.getPhuongXa());
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+								congDan.setToThon(donCongDan.getToThon());
 									
 								if (!PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
 									CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
@@ -286,6 +287,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setPhuongXa(donCongDan.getPhuongXa());
 								congDan.setToDanPho(donCongDan.getToDanPho());
 								congDan.setNoiCapCMND(donCongDan.getNoiCapCMND());
+								congDan.setToThon(donCongDan.getToThon());
 								
 								if (!PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN.equals(donCongDan.getPhanLoaiCongDan())) {
 									CongDan congDanUpdate = congDanService.save(congDan, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
