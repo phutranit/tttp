@@ -168,8 +168,7 @@ public class AuthController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/sendEmail")
-	public @ResponseBody ResponseEntity<Object> sendEmail(@RequestHeader(value = "Email", required = true) String email, HttpServletRequest request) {
-
+	public @ResponseBody ResponseEntity<Object> sendEmail(@RequestParam(value = "Email", required = true) String email, HttpServletRequest request) {
 		try {
 			if (!congChucService.isValidEmailAddress(email)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.EMAIL_INVALID.name(),
@@ -212,8 +211,7 @@ public class AuthController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/confirmCode")
-	public @ResponseBody ResponseEntity<Object> confirmCode(@RequestHeader(value = "code", required = true) String code) {
-
+	public @ResponseBody ResponseEntity<Object> confirmCode(@RequestParam(value = "code", required = true) String code) {
 		try {
 			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
 			boolean acceptRequest = false; 
@@ -249,10 +247,9 @@ public class AuthController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/changePassword")
 	public @ResponseBody ResponseEntity<Object> changePassword(@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestHeader(value = "oldPassword", required = true) String oldPassword, 
-			@RequestHeader(value = "newPassword", required = true) String newPassword,
-			@RequestHeader(value = "newPasswordAgain", required = true) String newPasswordAgain) {
-
+			@RequestParam(value = "oldPassword", required = true) String oldPassword, 
+			@RequestParam(value = "newPassword", required = true) String newPassword,
+			@RequestParam(value = "newPasswordAgain", required = true) String newPasswordAgain) {
 		try {
 			Long congChucId = Long.valueOf(
 					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
@@ -281,9 +278,8 @@ public class AuthController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/resetPassword")
-	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestHeader(value = "code", required = true) String code, 
-			@RequestHeader(value = "password", required = true) String password, @RequestHeader(value = "passwordAgain", required = true) String passwordAgain) {
-
+	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestParam(value = "code", required = true) String code, 
+			@RequestParam(value = "password", required = true) String password, @RequestParam(value = "passwordAgain", required = true) String passwordAgain) {
 		try {			
 			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
 			boolean acceptRequest = false; 
@@ -334,10 +330,8 @@ public class AuthController {
 	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
-	public ResponseEntity<Object> logout(
-			@RequestHeader(value = "Authorization", required = true) final String authorization,
+	public ResponseEntity<Object> logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
 			final HttpServletRequest request, final HttpServletResponse response) {
-		
 		/*
 		 * Authentication auth =
 		 * SecurityContextHolder.getContext().getAuthentication();
@@ -384,8 +378,7 @@ public class AuthController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/switchRole")
-	public @ResponseBody ResponseEntity<Object> switchRole(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody ResponseEntity<Object> switchRole(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "vaiTroMacDinhId", required = false) Long vaiTroMacDinhId) {
 
 		try {
