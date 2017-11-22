@@ -66,6 +66,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.model.medial.Medial_DonTraCuu;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -360,7 +361,7 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công", response = State.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
@@ -441,6 +442,29 @@ public class DonController extends TttpController<Don> {
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/traCuuDons/congDan")
+	@ApiOperation(value = "Lấy thông tin đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy thông tin đơn thành công", response = Don.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getTraCuuDonCongDan(@RequestParam(value = "maDon", required = true) String maDon, PersistentEntityResourceAssembler eass) {
+
+		try {
+			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.ma.equalsIgnoreCase(maDon)));
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
+			}
+			Medial_DonTraCuu media = new Medial_DonTraCuu();
+			media.copyDon(don);
+			//media.setListNextStates(listAllState);
+			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
