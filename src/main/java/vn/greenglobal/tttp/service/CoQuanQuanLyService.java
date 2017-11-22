@@ -489,13 +489,17 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId) {
+	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId, boolean isTTXM) {
 		BooleanExpression predAll = base;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId))
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId))
 						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 								.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
 
+		if (isTTXM) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViNhanTTXM.isTrue());
+		}
+		
 		return predAll;
 	}
 	
