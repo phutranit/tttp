@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +49,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThongTinEmail;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.VaiTro;
+import vn.greenglobal.tttp.model.medial.Medial_Param;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
@@ -76,34 +78,34 @@ public class AuthController {
 	private String salt;
 
 	private static final String anonymous = "unbreakable";
-	
+
 	@Autowired
 	Config config;
 
 	@Autowired
 	ProfileUtils profileUtil;
-	
+
 	@Autowired
 	StateRepository stateRepository;
-	
+
 	@Autowired
 	ProcessRepository processRepository;
-	
+
 	@Autowired
 	CoQuanQuanLyRepository coQuanQuanLyRepository;
 
 	@Autowired
 	TransitionRepository transitionRepository;
-	
+
 	@Autowired
 	ThongTinEmailRepository thongTinEmailRepository;
-	
+
 	@Autowired
 	TransitionService transitionService;
-	
+
 	@Autowired
 	StateService stateService;
-	
+
 	@Autowired
 	ProcessService processService;
 
@@ -115,10 +117,10 @@ public class AuthController {
 
 	@Autowired
 	CongChucService congChucService;
-	
+
 	@Autowired
 	NguoiDungService nguoiDungService;
-	
+
 	@Autowired
 	ThongTinEmailService thongTinEmailService;
 
@@ -130,7 +132,7 @@ public class AuthController {
 
 	@Autowired
 	InvalidTokenRepository invalidTokenRep;
-	
+
 	@Autowired
 	InvalidTokenService invalidTokenService;
 
@@ -143,7 +145,8 @@ public class AuthController {
 			NguoiDung user;
 
 			if (username != null && !username.isEmpty()) {
-				user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(username)));
+				user = nguoiDungRepository
+						.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(username)));
 				if (user != null && !user.isDaXoa() && user.isActive()) {
 					if (user.checkPassword(password)) {
 						return returnUser(result, user);
@@ -166,27 +169,29 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/sendEmail")
-	public @ResponseBody ResponseEntity<Object> sendEmail(@RequestParam(value = "Email", required = true) String email, HttpServletRequest request) {
+	public @ResponseBody ResponseEntity<Object> sendEmail(@RequestBody Medial_Param params,
+			HttpServletRequest request) {
 		try {
-			if (!congChucService.isValidEmailAddress(email)) {
+			if (!congChucService.isValidEmailAddress(params.getEmail())) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.EMAIL_INVALID.name(),
 						ApiErrorEnum.EMAIL_INVALID.getText(), ApiErrorEnum.EMAIL_INVALID.getText());
 			}
-			NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(email)));
+			NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(params.getEmail())));
 			if (user != null && !user.isDaXoa() && user.isActive()) {
-				String url = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
+				String url = request.getScheme() + "://" + request.getServerName()
+						+ (request.getServerPort() == 80 ? "" : ":" + request.getServerPort());
 				String salKey = user.getSalkey();
 				String salKeyHash = DigestUtils.md5Hex(salKey);
 				String timeHash = System.currentTimeMillis() + salKeyHash;
-				String hashCode = email+getAnonymousCode()+new String(Base64.encodeBase64(timeHash.getBytes()));
-				String link = url + "/reset-password/"+hashCode;
+				String hashCode = params.getEmail() + getAnonymousCode() + new String(Base64.encodeBase64(timeHash.getBytes()));
+				String link = url + "/reset-password/" + hashCode;
 				String linkReset = url + "/reset-password";
 				String content = "Xin chào,<br/> Bạn vừa gửi yêu cầu lấy lại mật khẩu. Để thiết lập lại mật khẩu mới của bạn trên Hệ thống Thanh tra thành phố Đà Nẵng, hãy nhấn vào liên kết bên dưới. "
-						+ "<br/> <a href='"+link+"'>"+link+"</a>"
-						+ "<br/> Liên kết này chỉ có hiệu lực trong 3 giờ. Để lấy lại mật khẩu, vui lòng truy cập địa chỉ  <a href='"+linkReset+"'>"+linkReset+"</a>"
-						+ "<br/> Xin cảm ơn.";	
+						+ "<br/> <a href='" + link + "'>" + link + "</a>"
+						+ "<br/> Liên kết này chỉ có hiệu lực trong 3 giờ. Để lấy lại mật khẩu, vui lòng truy cập địa chỉ  <a href='"
+						+ linkReset + "'>" + linkReset + "</a>" + "<br/> Xin cảm ơn.";
 				ThongTinEmail thongTinEmail = thongTinEmailRepository.findOne(1L);
 				if (thongTinEmail == null) {
 					thongTinEmail = new ThongTinEmail();
@@ -199,7 +204,7 @@ public class AuthController {
 					thongTinEmail.setHost("smtp.gmail.com");
 					thongTinEmail = thongTinEmailService.save(thongTinEmail, 1L);
 				}
-				Utils.sendEmailGmail(email, "[Thanh tra Thành phố] Email xác nhận lấy lại mật khẩu", content, thongTinEmail);
+				Utils.sendEmailGmail(params.getEmail(), "[Thanh tra Thành phố] Email xác nhận lấy lại mật khẩu", content, thongTinEmail);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.USER_NOT_EXISTS.name(),
@@ -209,13 +214,13 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/confirmCode")
-	public @ResponseBody ResponseEntity<Object> confirmCode(@RequestParam(value = "code", required = true) String code) {
+	public @ResponseBody ResponseEntity<Object> confirmCode(@RequestBody Medial_Param params) {
 		try {
-			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
-			boolean acceptRequest = false; 
-			if(part != null && part.length == 2) {
+			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
+			boolean acceptRequest = false;
+			if (part != null && part.length == 2) {
 				String checkEmail = part[0];
 				String checkTime = part[1];
 				NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
@@ -223,10 +228,10 @@ public class AuthController {
 					String salKey = user.getSalkey();
 					String salKeyHash = DigestUtils.md5Hex(salKey);
 					String timeBase = new String(Base64.decodeBase64(checkTime.getBytes()));
-					String time = timeBase.replaceAll(salKeyHash,"");
+					String time = timeBase.replaceAll(salKeyHash, "");
 					try {
 						long t = Long.valueOf(time);
-						if(t > 0) {
+						if (t > 0) {
 							long diff = new Date().getTime() - t;
 							long threeHours = TimeUnit.HOURS.toMillis(3);
 							acceptRequest = diff < threeHours;
@@ -234,7 +239,7 @@ public class AuthController {
 					} catch (NumberFormatException e) {
 						// TODO: handle exception
 					}
-				}				
+				}
 			}
 			if (acceptRequest) {
 				return new ResponseEntity<>(HttpStatus.OK);
@@ -244,57 +249,52 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/changePassword")
-	public @ResponseBody ResponseEntity<Object> changePassword(@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestParam(value = "oldPassword", required = true) String oldPassword, 
-			@RequestParam(value = "newPassword", required = true) String newPassword,
-			@RequestParam(value = "newPasswordAgain", required = true) String newPasswordAgain) {
+	public @ResponseBody ResponseEntity<Object> changePassword(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestBody Medial_Param params) {
 		try {
-			Long congChucId = Long.valueOf(
-					profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			Long congChucId = Long
+					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 			CongChuc congChuc = congChucRepository.findOne(congChucId);
 			NguoiDung nguoiDung = congChuc.getNguoiDung();
-			if (nguoiDung.checkPassword(oldPassword)) {
-				if (!newPassword.equals(newPasswordAgain)) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND,
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(),
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
+			if (nguoiDung.checkPassword(params.getOldPassword())) {
+				if (!params.getNewPassword().equals(params.getNewPasswordAgain())) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(), ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
 				} else {
-					nguoiDung.updatePassword(newPassword);
+					nguoiDung.updatePassword(params.getNewPasswordAgain());
 					nguoiDungService.save(nguoiDung, congChucId);
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
- 			} else {
-				return Utils.responseErrors(HttpStatus.NOT_FOUND,
-						ApiErrorEnum.OLD_PASSWORD_INCORRECT.name(),
-						ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText(),
-						ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText());
+			} else {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.OLD_PASSWORD_INCORRECT.name(),
+						ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText(), ApiErrorEnum.OLD_PASSWORD_INCORRECT.getText());
 			}
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/resetPassword")
-	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestParam(value = "code", required = true) String code, 
-			@RequestParam(value = "password", required = true) String password, @RequestParam(value = "passwordAgain", required = true) String passwordAgain) {
-		try {			
-			String[] part = code != null?code.split(getAnonymousCode()):new String[0];
-			boolean acceptRequest = false; 
-			if(part != null && part.length == 2) {
+	public @ResponseBody ResponseEntity<Object> resetPassword(@RequestBody Medial_Param params) {
+		try {
+			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
+			boolean acceptRequest = false;
+			if (part != null && part.length == 2) {
 				String checkEmail = part[0];
 				String checkTime = part[1];
-				NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
+				NguoiDung user = nguoiDungRepository
+						.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
 				if (user != null) {
 					String salKey = user.getSalkey();
 					String salKeyHash = DigestUtils.md5Hex(salKey);
 					String timeBase = new String(Base64.decodeBase64(checkTime.getBytes()));
-					String time = timeBase.replaceAll(salKeyHash,"");
+					String time = timeBase.replaceAll(salKeyHash, "");
 					try {
 						long t = Long.valueOf(time);
-						if(t > 0) {
+						if (t > 0) {
 							long diff = new Date().getTime() - t;
 							long threeHours = TimeUnit.HOURS.toMillis(3);
 							acceptRequest = diff < threeHours;
@@ -302,35 +302,33 @@ public class AuthController {
 					} catch (NumberFormatException e) {
 						// TODO: handle exception
 					}
-				}	
-				
-				if (!password.equals(passwordAgain)) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND,
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(),
-							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
 				}
-				
+
+				if (!params.getPassword().equals(params.getPassword())) {
+					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
+							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(), ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
+				}
+
 				if (acceptRequest) {
-					user.updatePassword(password);
+					user.updatePassword(params.getPassword());
 					CongChuc congChuc = congChucRepository.findOne(QCongChuc.congChuc.nguoiDung.eq(user));
 					nguoiDungService.save(user, congChuc.getId());
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
-			}			
+			}
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
+
 	private String getAnonymousCode() {
 		return new String(Base64.encodeBase64(DigestUtils.md5Hex(anonymous).getBytes()));
 	}
-	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
-	public ResponseEntity<Object> logout(@RequestHeader(value = "Authorization", required = true) final String authorization,
+	public ResponseEntity<Object> logout(
+			@RequestHeader(value = "Authorization", required = true) final String authorization,
 			final HttpServletRequest request, final HttpServletResponse response) {
 		/*
 		 * Authentication auth =
@@ -362,9 +360,9 @@ public class AuthController {
 				final JwtAuthenticator authenticator = new JwtAuthenticator(secretSignatureConfiguration,
 						secretEncryptionConfiguration);
 				if (authenticator.validateToken(currentToken) != null) {
-					//InvalidToken token = new InvalidToken(currentToken);
-					//invalidTokenRep.save(token);
-					
+					// InvalidToken token = new InvalidToken(currentToken);
+					// invalidTokenRep.save(token);
+
 					InvalidToken token = invalidTokenService.predFindToKenCurrentByToken(currentToken);
 					token.setActive(false);
 					invalidTokenRep.save(token);
@@ -378,14 +376,15 @@ public class AuthController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/switchRole")
-	public @ResponseBody ResponseEntity<Object> switchRole(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody ResponseEntity<Object> switchRole(
+			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "vaiTroMacDinhId", required = false) Long vaiTroMacDinhId) {
 
 		try {
 			Map<String, Object> result = new HashMap<>();
 
 			NguoiDung user = profileUtil.getUserInfo(authorization);
-			
+
 			if (user != null) {
 				VaiTro vaiTroMacDinh = vaiTroRepository.findOne(vaiTroService.predicateFindOne(vaiTroMacDinhId));
 				user.setVaiTroMacDinh(vaiTroMacDinh);
@@ -420,21 +419,30 @@ public class AuthController {
 					commonProfile.addAttribute("congChucId", congChuc.getId());
 					commonProfile.addAttribute("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
 					commonProfile.addAttribute("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
-					commonProfile.addAttribute("loaiVaiTro", user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
-					commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
-					commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
-					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+					commonProfile.addAttribute("loaiVaiTro",
+							user.getVaiTroMacDinh() != null ? user.getVaiTroMacDinh().getLoaiVaiTro() : "");
+					commonProfile.addAttribute("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+					commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
+					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
+							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 
 					result.put("congChucId", congChuc.getId());
 					result.put("hoVaTen", congChuc.getHoVaTen());
 					result.put("coQuanQuanLyId", congChuc.getCoQuanQuanLy().getId());
-					result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
-					result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
+					result.put("capCoQuanQuanLyId", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getId() : "");
+					result.put("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 					result.put("tenCoQuanQuanLy", congChuc.getCoQuanQuanLy().getTen());
-					result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
-					result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null ? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
+					result.put("tenCapCoQuanQuanLy", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getCapCoQuanQuanLy().getTen() : "");
+					result.put("tenCapCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
+							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
 					result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
-					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
+							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
 				}
 
 				String token = generator.generate(commonProfile);
@@ -445,12 +453,12 @@ public class AuthController {
 				result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());
 				result.put("loaiVaiTroMacDinh", user.getVaiTroMacDinh().getLoaiVaiTro());
 				result.put("tenVaiTro", user.getVaiTroMacDinh().getLoaiVaiTro().getText());
-				
+
 				InvalidToken invalidToken = invalidTokenService.predFindToKenCurrentByUser(user.getId());
 				if (invalidToken == null) {
 					invalidToken = new InvalidToken();
 				}
-				
+
 				invalidToken.setToken(token);
 				invalidToken.setActive(true);
 				invalidToken.setNguoiDung(user);
@@ -462,31 +470,32 @@ public class AuthController {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-	
-	
+
 	private boolean checkQuyenBatDauQuyTrinhXuLyDon(Long donViId, VaiTroEnum loaiVaiTro) {
-		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));					
-		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepository.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
+		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
+		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepository.findOne(donViId),
+				ProcessTypeEnum.XU_LY_DON);
 		List<Process> listProcess = (List<Process>) processRepository.findAll(predicateProcess);
-		//Vai tro tiep theo
+		// Vai tro tiep theo
 		List<State> listState = new ArrayList<State>();
 		Process process = null;
 		boolean flagCoQuyTrinh = false;
 		for (Process processFromList : listProcess) {
-			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList, transitionRepository);
+			Predicate predicate = stateService.predicateFindAll(beginState.getId(), processFromList,
+					transitionRepository);
 			listState = ((List<State>) stateRepository.findAll(predicate));
 			if (listState.size() > 0) {
 				State state = listState.get(0);
-				if (!state.getType().equals(FlowStateEnum.KET_THUC)) {								
+				if (!state.getType().equals(FlowStateEnum.KET_THUC)) {
 					flagCoQuyTrinh = true;
 					if (processFromList.getVaiTro().getLoaiVaiTro().equals(loaiVaiTro)) {
 						process = processFromList;
 						break;
-					}					
-				}	
+					}
+				}
 			}
 		}
-		
+
 		Transition transition = null;
 		if (flagCoQuyTrinh) {
 			if (process != null) {
@@ -494,11 +503,12 @@ public class AuthController {
 					return false;
 				} else {
 					for (State stateFromList : listState) {
-						transition = transitionRepository.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
+						transition = transitionRepository
+								.findOne(transitionService.predicatePrivileged(beginState, stateFromList, process));
 						if (transition != null) {
 							break;
-						}	
-					}					
+						}
+					}
 					if (transition != null) {
 						return transition.getProcess().getVaiTro().getLoaiVaiTro().equals(loaiVaiTro);
 					}
