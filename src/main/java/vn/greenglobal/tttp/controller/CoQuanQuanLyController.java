@@ -329,26 +329,26 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					// Danh sach don vi thuoc UBNDTP Da Nang
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri().toString())) {
 					// Danh sach don vi thuoc So Ban Nganh
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Quan Huyen
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Phuong Xa
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else {
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				}
 			}
 
@@ -390,26 +390,26 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					// Danh sach don vi thuoc UBNDTP Da Nang
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), true), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri().toString())) {
 					// Danh sach don vi thuoc So Ban Nganh
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), true), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Quan Huyen
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), true), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Phuong Xa
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), true), pageable);
 				} else {
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), true), pageable);
 				}
 			}
 
@@ -596,26 +596,26 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					// Danh sach don vi thuoc UBNDTP Da Nang
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLSoBanNganh.getGiaTri().toString())) {
 					// Danh sach don vi thuoc So Ban Nganh
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDQuanHuyen.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Quan Huyen
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else if (capCoQuanQuanLyCuaDonViId == Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString())) {
 					// Danh sach don vi thuoc Phuong Xa
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				} else {
 					page = repo.findAll(coQuanQuanLyService.predicateFindConCuaDonViVaNotPhongBanNotCongAn(donViId,
 							Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
-							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString())), pageable);
+							Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), false), pageable);
 				}
 			}
 
@@ -647,10 +647,12 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
 					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
 					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()))));
-			CoQuanQuanLy donViKhac = new CoQuanQuanLy();
-			donViKhac.setId(0L);
-			donViKhac.setTen("Khác");
-			coQuanQuanLys.add(donViKhac);
+			
+			//Fix chuyenDon - cap nhat 17/11
+			//CoQuanQuanLy donViKhac = new CoQuanQuanLy();
+			//donViKhac.setId(0L);
+			//donViKhac.setTen("Khác");
+			//coQuanQuanLys.add(donViKhac);
 			int start = pageable.getOffset();
 			int end = (start + pageable.getPageSize()) > coQuanQuanLys.size() ? coQuanQuanLys.size() : (start + pageable.getPageSize());
 			
@@ -691,6 +693,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@ApiOperation(value = "Lấy danh sách Nơi Cấp Chứng Minh Nhân Dân", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getListDonViHanhChinhTheoCapTinhThanhPho(
 			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -704,9 +707,18 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			Page<CoQuanQuanLy> page = null;
 			ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+			ThamSo thamSoThree = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_TINH"));
+			ThamSo thamSoFour = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO_TRUC_THUOC_TW"));
+			ThamSo thamSoFive = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO-TRUC_THUOC_TINH"));
+			List<Long> donViHanhChinhList = new ArrayList<Long>();
+			donViHanhChinhList.add(thamSoThree.getId());
+			donViHanhChinhList.add(thamSoFour.getId());
+			donViHanhChinhList.add(thamSoFive.getId());
+			System.out.println("donViHanhChinhList: " + donViHanhChinhList.size());
+			
 			if (thamSoOne != null && thamSoTwo != null) {
-				page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(Long.valueOf(thamSoOne.getGiaTri().toString()),
-								Long.valueOf(thamSoTwo.getGiaTri().toString())), pageable);
+				page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(tuKhoa, Long.valueOf(thamSoOne.getGiaTri().toString()),
+								Long.valueOf(thamSoTwo.getGiaTri().toString()), donViHanhChinhList), pageable);
 			}
 
 			return assembler.toResource(page, (ResourceAssembler) eass);

@@ -767,8 +767,8 @@ public class XuLyDon extends Model<XuLyDon> {
 				
 				if (getDonViNgoaiHeThong() != null && getCoQuanTiepNhan() == null) {
 					mapCoQuanTiepNhan = new HashMap<String, Object>();
-					mapCoQuanTiepNhan.put("id", 0L);
-					mapCoQuanTiepNhan.put("ten", "Khác");
+					mapCoQuanTiepNhan.put("id", null);
+					mapCoQuanTiepNhan.put("ten", null);
 				}
 				
 				if (getThamQuyenGiaiQuyet() != null) {
@@ -807,11 +807,13 @@ public class XuLyDon extends Model<XuLyDon> {
 			map.put("donViNgoaiHeThong", mapDonViNgoaiHeThong);
 		}
 
-		Don don = getDon();
-		if (don != null) {
-			map.put("phanLoaiDonInfo", don.getPhanLoaiDonInfo());
-			map.put("lyDoKhongDuDieuKienThuLyInfo", don.getLyDoKhongDuDieuKienThuLyInfo());
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		Don don = getDon();
+//		if (don != null) {
+//			map.put("phanLoaiDonInfo", don.getPhanLoaiDonInfo());
+//			map.put("lyDoKhongDuDieuKienThuLyInfo", don.getLyDoKhongDuDieuKienThuLyInfo());
+//		}
+		
 		return map;
 	}
 	

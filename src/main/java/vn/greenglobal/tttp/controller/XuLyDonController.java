@@ -39,7 +39,6 @@ import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
-import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.QuaTrinhXuLyEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
@@ -483,7 +482,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 						//Tim kiem vai tro dau tien o quy trinh
-						if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+						
+						if (xuLyDon.getThamQuyenGiaiQuyet() == null) { 
+							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+									ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+						}
+						
+						ThamSo thamSoTQGQHC = repoThamSo.findOne(thamSoService.predicateFindTen("TQGQ_HANH_CHINH"));
+						
+						//if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+						if (thamSoTQGQHC != null && Long.valueOf(thamSoTQGQHC.getGiaTri()) == xuLyDon.getThamQuyenGiaiQuyet().getId()) {
 							Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 							State beginState = repoState
 									.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
@@ -550,7 +558,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
 							|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
-							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+							|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)
+							|| HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
 						if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 							xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 						}
@@ -559,12 +569,21 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setHoanThanhDon(true);
 							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)) {
 								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY);
-							} else {
+							} else if (HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
 								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI);
+							} else if (HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
 							}
 						} else {
-							don.setHoanThanhDon(true);
-							don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+//							don.setHoanThanhDon(true);
+//							don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+							
+							if (HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO);
+							}
+							if (HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
+								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON);
+							}
 						}
 						xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 						xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -658,10 +677,13 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				State nextStage = repoState.findOne(stateService.predicateFindOne(xuLyDon.getNextState().getId()));
 				Long donId = xuLyDon.getDon().getId();
 				Don don = donRepo.findOne(donService.predicateFindOne(donId));
-				if (don.getPhanLoaiDon() == null && xuLyDon.getPhanLoaiDon() == null) {
-					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
-							ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
-				}
+				
+//				Bo phanLoaiDon - cap nhat 16/11
+//				if (don.getPhanLoaiDon() == null && xuLyDon.getPhanLoaiDon() == null) {
+//					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PHANLOAIDON_REQUIRED.name(),
+//							ApiErrorEnum.PHANLOAIDON_REQUIRED.getText(), ApiErrorEnum.PHANLOAIDON_REQUIRED.getText());
+//				}
+				
 				if (don.getProcessType() == null) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.PROCESS_TYPE_REQUIRED.name(),
 							ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText(), ApiErrorEnum.PROCESS_TYPE_REQUIRED.getText());
@@ -738,16 +760,21 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					} if (FlowStateEnum.TRINH_TRUONG_PHONG.equals(nextState)) {
 						ThamSo thamSo = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_BAN_TIEP_CONG_DAN"));
+						ThamSo thamSoUBNDTP = thamSoRepository.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+						
 						if (thamSo == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.name(),
 									ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.getText(), ApiErrorEnum.TSBANTIEPCONGDAN_NOT_FOUND.getText());
-						}
+						} 
 						CoQuanQuanLy banTiepCongDan = coQuanQuanLyRepo.findOne(Long.parseLong(thamSo.getGiaTri()));
 						if (banTiepCongDan == null) {
 							return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.name(),
 									ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.getText(), ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.getText());
 						}
 						
+						if (Long.valueOf(thamSoUBNDTP.getGiaTri()) == donViId) {
+							xuLyDon.setCanBoXuLyChiDinh(null);
+						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = trinhTruongPhong(xuLyDon, xuLyDonHienTai, coQuanQuanLyId, donViId, congChucId, banTiepCongDan);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
@@ -885,14 +912,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 							// set ngay ket thuc cho don
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							donService.save(don, congChucId);
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
@@ -1056,7 +1085,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.CHUYEN_DON.equals(huongXuLyXLD)) {
 							//Tim kiem vai tro dau tien o quy trinh
-							if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+							
+							if (xuLyDon.getThamQuyenGiaiQuyet() == null) { 
+								return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+										ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+							}
+							ThamSo thamSoTQGQHC = repoThamSo.findOne(thamSoService.predicateFindTen("TQGQ_HANH_CHINH"));
+							
+//							if (xuLyDon.getCoQuanTiepNhan() != null && xuLyDon.getCoQuanTiepNhan().getId() != 0L) {
+							if (thamSoTQGQHC != null && Long.valueOf(thamSoTQGQHC.getGiaTri()) == xuLyDon.getThamQuyenGiaiQuyet().getId()) {
 								Long donViXuLyId = xuLyDon.getCoQuanTiepNhan().getId();
 								State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));
 								Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViXuLyId), ProcessTypeEnum.XU_LY_DON);
@@ -1098,14 +1135,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
 							//don.setTuXuLyXLDGQD(false);
 							don.setHoanThanhDon(true);
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							if (!coQuyTrinh) { 
 								don.setLanhDaoDuyet(true);
@@ -1130,22 +1169,33 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							
 							return xuLyDonService.doSave(xuLyDonHienTai, congChucId, eass, HttpStatus.CREATED);
 						} else if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
+								|| HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)
 								|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)
-								|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+								|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+								|| HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
 							if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 								xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 							}
 							if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)
-									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
+									|| HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)
+									|| HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
 								don.setHoanThanhDon(true);
 								if (HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY.equals(huongXuLyXLD)) {
 									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY);
-								} else {
+								} else if (HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI.equals(huongXuLyXLD)) {
 									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI);
+								} else if (HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
 								}
 							} else {
-								don.setHoanThanhDon(true);
-								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+//								don.setHoanThanhDon(true);
+//								don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN);
+								if (HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO);
+								}
+								if (HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON.equals(huongXuLyXLD)) {
+									don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON);
+								}
 							}
 							xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 							xuLyDonHienTai.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
@@ -1159,14 +1209,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoCoTheThuHoi(null);
 							//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
-							if (xuLyDon.getPhanLoaiDon() != null) {
-								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-									don.setLyDoKhongDuDieuKienThuLy(null);
-								} else {
-									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-								}
-							}
+							
+//							Bo phanLoaiDon - cap nhat 16/11
+//							if (xuLyDon.getPhanLoaiDon() != null) {
+//								don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//								if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//									don.setLyDoKhongDuDieuKienThuLy(null);
+//								} else {
+//									don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//								}
+//							}
 							
 							if (!coQuyTrinh) { 
 								don.setLanhDaoDuyet(true);
@@ -1449,16 +1501,18 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			}
 		}				
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				donOld.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		} else {
-			donOld.setPhanLoaiDon(null);
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			donOld.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				donOld.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				donOld.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		} else {
+//			donOld.setPhanLoaiDon(null);
+//		}
+		
 		if (xuLyDon.getThamQuyenGiaiQuyet() != null) { 
 			xuLyDonHienTai.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
 			donOld.setThamQuyenGiaiQuyet(xuLyDon.getThamQuyenGiaiQuyet());
@@ -2245,6 +2299,68 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/xuLyDons/inPhieuHuongDanKienNghi")
+	@ApiOperation(value = "In phiếu hướng dẫn kiến nghị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void exportPhieuHuongDanKienNghi(
+			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "ngayTiepNhan", required = false) String ngayTiepNhan,
+			@RequestParam(value = "hoVaTen", required = false) String hoVaTen,
+			//@RequestParam(value = "soCMND", required = false) String soCMND,
+			//@RequestParam(value = "ngayCap", required = false) String ngayCap,
+			//@RequestParam(value = "noiCap", required = false) String noiCap,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "noiDung", required = false) String noiDung,
+			HttpServletResponse response) {
+
+		try {
+			HashMap<String, String> mappings = new HashMap<String, String>();
+			CoQuanQuanLy cq = coQuanQuanLyRepo.findOne(donViXuLyId);
+			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoUBNPX = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			ThamSo thamSoTTTP = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_THANH_TRA_THANH_PHO"));
+			
+			String soVB = "";
+			mappings.put("kyTen", "");
+			mappings.put("capHanhChinh", "");
+			mappings.put("coQuanTrucThuoc", "");
+			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
+				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
+				if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
+					mappings.put("kyTen", "ỦY BAN NHÂN DÂN".toUpperCase());
+				} else { 
+					mappings.put("kyTen", "CHỦ TỊCH".toUpperCase());
+				}
+				soVB = "UBND";
+			} else if (cq.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
+					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
+				CoQuanQuanLy ubndtp = coQuanQuanLyRepo.findOne(Long.valueOf(thamSoUBNDTPDN.getGiaTri()));
+				mappings.put("capHanhChinh", ubndtp.getTen().toUpperCase());
+				mappings.put("coQuanTrucThuoc", cq.getTen().toUpperCase());
+				mappings.put("kyTen", "Giám đốc sở".toUpperCase());
+				soVB = Utils.splitWords(cq.getTen());
+			}
+			
+			mappings.put("soVB", soVB);
+			mappings.put("ngayTiepNhan", ngayTiepNhan);
+			mappings.put("coQuanTiepNhan", cq.getTen());
+			mappings.put("hoVaTen", hoVaTen);
+			//mappings.put("soCMND", soCMND != null && soCMND != "" ? soCMND : "................");
+			//mappings.put("ngayCap", ngayCap != null && ngayCap != "" ? ngayCap : "................");
+			//mappings.put("noiCap", noiCap != null && noiCap != "" ? noiCap : "................");
+			mappings.put("diaChi", diaChi);
+			mappings.put("noiDung", noiDung != null && noiDung != "" ? noiDung.concat(".") : "");
+			
+			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/xulydon/kiennghiphananh/XLD_PHIEU_HUONG_DAN_VIET_DON_KIEN_NGHI.docx").getFile(), mappings, 
+					"Phiếu hướng dẫn viết lại đơn kiến nghị.docx");
+		} catch (Exception e) {
+			Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	private void disableDonChuyenCu(Long donId, Long congChucId, Long donViId) {
 		List<Don> donChuyenCus = (List<Don>) donRepo.findAll(donService.predFindOld(donId, donViId));
 		if (donChuyenCus != null) {
@@ -2509,14 +2625,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getThoiHanXuLy() != null) {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
+		
 		don.setCanBoXuLyPhanHeXLD(congChuc);
 		// workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
@@ -2577,14 +2696,17 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDon.getThoiHanXuLy() != null) {
 			don.setThoiHanXuLyXLD(xuLyDon.getThoiHanXuLy());
 		}
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
+		
 		don.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(congChucId));
 		// workflow
 		don.setCurrentState(xuLyDonHienTai.getNextState());
@@ -2884,14 +3006,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		}
 		don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		//tao lich su qua trinh xu ly don
 		LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -2954,14 +3078,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCurrentState(beginState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
@@ -3170,14 +3295,15 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 
@@ -3631,14 +3757,16 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		don.setCanBoCoTheThuHoi(null);
-		if (xuLyDon.getPhanLoaiDon() != null) {
-			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
-			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
-				don.setLyDoKhongDuDieuKienThuLy(null);
-			} else {
-				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
-			}
-		}
+		
+//		Bo phanLoaiDon - cap nhat 16/11
+//		if (xuLyDon.getPhanLoaiDon() != null) {
+//			don.setPhanLoaiDon(xuLyDon.getPhanLoaiDon());
+//			if (PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY.equals(xuLyDon.getPhanLoaiDon())) {
+//				don.setLyDoKhongDuDieuKienThuLy(null);
+//			} else {
+//				don.setLyDoKhongDuDieuKienThuLy(xuLyDon.getLyDoKhongDuDieuKienThuLy());
+//			}
+//		}
 		
 		boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 		if (!coQuyTrinh) { 

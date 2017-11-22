@@ -24,6 +24,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.tttp.enums.DonViTheoDoiGQDEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaGiaiQuyetLan2Enum;
 import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
@@ -148,8 +149,11 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CongChuc canBoThamTraXacMinh;
 	@ManyToOne
 	private CoQuanQuanLy coQuanDieuTra;
-	@ManyToOne
-	private CoQuanQuanLy coQuanTheoDoi;
+	
+//	Don vi theo doi - cap nhat 17/11
+//	@ManyToOne
+//	private CoQuanQuanLy coQuanTheoDoi;
+	
 	@ManyToOne
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
@@ -178,6 +182,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private KetQuaGiaiQuyetLan2Enum ketQuaGiaiQuyetLan2;
 	@Enumerated(EnumType.STRING)
 	private TrangThaiTTXMEnum huongThuLyGiaiQuyet;
+	@Enumerated(EnumType.STRING)
+	private DonViTheoDoiGQDEnum coQuanTheoDoi;
 	
 	/**
 	 * Bat dau tao fields Luu thong tin tam thoi.
@@ -884,14 +890,15 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		this.coQuanDieuTra = coQuanDieuTra;
 	}
 
-	@ApiModelProperty(example = "{}", position = 2)
-	public CoQuanQuanLy getCoQuanTheoDoi() {
-		return coQuanTheoDoi;
-	}
-
-	public void setCoQuanTheoDoi(CoQuanQuanLy coQuanTheoDoi) {
-		this.coQuanTheoDoi = coQuanTheoDoi;
-	}
+//	Don vi theo doi - cap nhat 17/11
+//	@ApiModelProperty(example = "{}", position = 2)
+//	public CoQuanQuanLy getCoQuanTheoDoi() {
+//		return coQuanTheoDoi;
+//	}
+//
+//	public void setCoQuanTheoDoi(CoQuanQuanLy coQuanTheoDoi) {
+//		this.coQuanTheoDoi = coQuanTheoDoi;
+//	}
 
 	@ApiModelProperty(example = "{}", position = 2)
 	public CoQuanQuanLy getDonViThamTraXacMinh() {
@@ -975,6 +982,14 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setHuongThuLyGiaiQuyet(TrangThaiTTXMEnum huongThuLyGiaiQuyet) {
 		this.huongThuLyGiaiQuyet = huongThuLyGiaiQuyet;
+	}
+	
+	public DonViTheoDoiGQDEnum getCoQuanTheoDoi() {
+		return coQuanTheoDoi;
+	}
+
+	public void setCoQuanTheoDoi(DonViTheoDoiGQDEnum coQuanTheoDoi) {
+		this.coQuanTheoDoi = coQuanTheoDoi;
 	}
 
 	@Transient
@@ -1066,13 +1081,26 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		return null;
 	}
 	
+//	Don vi theo doi - cap nhat 17/11
+//	@Transient
+//	@ApiModelProperty(hidden = true)
+//	public Map<String, Object> getCoQuanTheoDoiInfo() {
+//		if (getCoQuanTheoDoi() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("ten", getCoQuanTheoDoi().getTen());
+//			map.put("coQuanQuanLyId", getCoQuanTheoDoi().getId());
+//			return map;
+//		}
+//		return null;
+//	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getCoQuanTheoDoiInfo() {
 		if (getCoQuanTheoDoi() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getCoQuanTheoDoi().getTen());
-			map.put("coQuanQuanLyId", getCoQuanTheoDoi().getId());
+			map.put("type", getCoQuanTheoDoi().name());
+			map.put("text", getCoQuanTheoDoi().getText());
 			return map;
 		}
 		return null;

@@ -45,6 +45,7 @@ import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.HinhThucGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.ChucNangKeHoachThanhTraEnum;
 import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
+import vn.greenglobal.tttp.enums.DonViTheoDoiGQDEnum;
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.HinhThucTheoDoiEnum;
 import vn.greenglobal.tttp.enums.HinhThucThongKeEnum;
@@ -101,6 +102,28 @@ public class EnumController {
 	
 	@Autowired
 	private ThamSoService thamSoService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/giaiQuyetDon/donViTheoDoi")
+	@ApiOperation(value = "Lấy danh sách Đơn vị theo dõi", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getTrangThaiDonViTheoDois(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", DonViTheoDoiGQDEnum.THANH_TRA.getText());
+		object.put("giaTri", DonViTheoDoiGQDEnum.THANH_TRA.name());
+		list.add(object);
+
+		object = new HashMap<String, Object>();
+		object.put("ten", DonViTheoDoiGQDEnum.KHAC.getText());
+		object.put("giaTri", DonViTheoDoiGQDEnum.KHAC.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/thongKeBaoCao/timKiemTheoLoaiKy")
 	@ApiOperation(value = "Lấy tìm kiếm theo Loại kỳ thống kê báo cáo", position = 2, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -897,8 +920,8 @@ public class EnumController {
 	@ApiOperation(value = "Lấy danh sách tất cả Hướng Xử Lý Đơn XLD", position = 7, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachHuongXuLyXLDsTheoDon(
 			@RequestHeader(value = "Authorization", required = true) String authorization, 
-			@RequestParam(value = "donId", required = false) Long donId) {
-		
+			@RequestParam(value = "donId", required = false) Long donId, 
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {		
 		Don don = null;
 		if (donId != null && donId > 0) {
 			don = donRepo.findOne(donId);
@@ -910,14 +933,42 @@ public class EnumController {
 		
 		if (don == null) {
 			for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
-				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)) { 
+				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) &&
+						!hxl.equals(HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON) && 
+						!hxl.equals(HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO)) { 
 					object.put("ten", hxl.getText());
 					object.put("giaTri", hxl.name());
 					list.add(object);
 					object = new HashMap<>();
 				}
+				if (loaiDon != null && StringUtils.isNotBlank(loaiDon)
+						&& loaiDon.equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.toString())) {
+					if (hxl.equals(HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON) || 
+							hxl.equals(HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO)) {
+						object.put("ten", hxl.getText());
+						object.put("giaTri", hxl.name());
+						list.add(object);
+						object = new HashMap<>();
+					}
+					if (hxl.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)) {
+						object.put("ten", hxl.getText());
+						object.put("giaTri", hxl.name());
+						list.remove(object);
+						object = new HashMap<>();
+					}
+				}
 			}
 			errorBody.put("list", list);
+			
+			if ((loaiDon != null && StringUtils.isNotBlank(loaiDon) && loaiDon.equals(LoaiDonEnum.DON_TO_CAO.toString())) ||
+					(loaiDon != null && StringUtils.isNotBlank(loaiDon) && loaiDon.equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.toString()))) {
+				for (Map<String, Object> obj : list) {
+					if (obj.get("giaTri").equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name())) { 
+						list.remove(obj);
+						break;
+					}
+				}
+			}
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		}
 		
@@ -941,11 +992,30 @@ public class EnumController {
 		
 		if (xld != null) {
 			for (HuongXuLyXLDEnum hxl : HuongXuLyXLDEnum.values()) {
-				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)) { 
+				if (!hxl.equals(HuongXuLyXLDEnum.DINH_CHI) && !hxl.equals(HuongXuLyXLDEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN) &&
+						!hxl.equals(HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON) && 
+						!hxl.equals(HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO)) { 
 					object.put("ten", hxl.getText());
 					object.put("giaTri", hxl.name());
 					list.add(object);
 					object = new HashMap<>();
+				}
+				if (don.getLoaiDon().equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH)
+						|| (loaiDon != null && StringUtils.isNotBlank(loaiDon)
+								&& loaiDon.equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.toString()))) {
+					if (hxl.equals(HuongXuLyXLDEnum.HUONG_DAN_VIET_LAI_DON) || 
+							hxl.equals(HuongXuLyXLDEnum.KHONG_XU_LY_NEU_LY_DO)) {
+						object.put("ten", hxl.getText());
+						object.put("giaTri", hxl.name());
+						list.add(object);
+						object = new HashMap<>();
+					}
+					if (hxl.equals(HuongXuLyXLDEnum.KHONG_DU_DIEU_KIEN_THU_LY)) {
+						object.put("ten", hxl.getText());
+						object.put("giaTri", hxl.name());
+						list.remove(object);
+						object = new HashMap<>();
+					}
 				}
 			}
 //			if (xld.isDonChuyen()) {
@@ -968,6 +1038,20 @@ public class EnumController {
 				}
 			}
 			list.remove(mapRemove);
+		}
+
+		if ((don.getLoaiDon().equals(LoaiDonEnum.DON_TO_CAO)
+				|| don.getLoaiDon().equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH))
+				|| (loaiDon != null && StringUtils.isNotBlank(loaiDon)
+						&& loaiDon.equals(LoaiDonEnum.DON_TO_CAO.toString()))
+				|| (loaiDon != null && StringUtils.isNotBlank(loaiDon)
+						&& loaiDon.equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.toString()))) {
+			for (Map<String, Object> obj : list) {
+				if (obj.get("giaTri").equals(HuongXuLyXLDEnum.TRA_DON_VA_HUONG_DAN.name())) {
+					list.remove(obj);
+					break;
+				}
+			}
 		}
 		
 		errorBody.put("list", list);
@@ -1225,7 +1309,17 @@ public class EnumController {
 		object.put("ten", KetQuaTrangThaiDonEnum.LUU_HO_SO.getText());
 		object.put("giaTri", KetQuaTrangThaiDonEnum.LUU_HO_SO.name());
 		list.add(object);
-
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON.getText());
+		object.put("giaTri", KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON.name());
+		list.add(object);
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);
 
@@ -1446,7 +1540,8 @@ public class EnumController {
 	@RequestMapping(method = RequestMethod.GET, value = "/ketLuanNoiDungKhieuNais")
 	@ApiOperation(value = "Lấy danh sách kết luận nội dung khiếu nại", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getKetLuanNoiDungKhieuNais(
-			@RequestHeader(value = "Authorization", required = true) String authorization) {
+			@RequestHeader(value = "Authorization", required = true) String authorization,
+			@RequestParam(value = "loaiDon", required = false) String loaiDon) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<>();
 
@@ -1463,6 +1558,13 @@ public class EnumController {
 		object.put("ten", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.getText());
 		object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.DUNG_MOT_PHAN.name());
 		list.add(object);
+		
+		if (!"".equals(loaiDon) && loaiDon != null && LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH.equals(LoaiDonEnum.valueOf(loaiDon))) {
+			object = new HashMap<>();
+			object.put("ten", KetLuanNoiDungKhieuNaiEnum.KHAC.getText());
+			object.put("giaTri", KetLuanNoiDungKhieuNaiEnum.KHAC.name());
+			list.add(object);
+		}
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("list", list);

@@ -1852,7 +1852,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Long tongCongTongSoDonLinhVucToCao14 = 0L;
 			Long tongCongTongSoDonToCaoLinhVucHanhChinh15 = 0L;
 			Long tongCongTongSoDonToCaoLinhVucTuPhap16 = 0L;
-			Long tongCongTongSoDonToCaoLinhVucThamNhung17 = 0L;
+			Long tongCongTongSoDonToCaoLinhVucThamNhung17 = 0L; 
 			Long tongCongTongSoDonToCaoLinhVucVeDang18 = 0L;
 			Long tongCongTongSoDonToCaoLinhVucKhac19 = 0L;
 			Long tongCongTongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap20 = 0L;
@@ -2085,7 +2085,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet", tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet);
 				
 				//theo trinh tu giai quyet - da duoc giai quyet lan dau - 24
-				Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy - tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
+				
+				Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = 0L;
+				if (tongSoDonDuDieuKienThuLy > 0) { 
+					tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy - tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
+				}
 				tongCongTongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet24 += tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau;
 				mapMaSo.put("tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet", tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau);
 				
