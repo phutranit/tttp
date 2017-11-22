@@ -466,6 +466,17 @@ public class ProcessController extends TttpController<Process> {
 				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
 			}
 			
+			for (int i = 255; i <= 263; i++) {
+				donViId = Long.valueOf(i + "");
+				coQuyTrinhDayDu = false;
+				
+				Process process = null;
+				Transition transition = null;
+				DonViHasState donViHasState = null;
+				
+				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
+			}
+			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			
 		} catch (Exception e) {
