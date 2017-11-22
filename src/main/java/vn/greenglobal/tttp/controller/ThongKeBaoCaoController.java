@@ -140,7 +140,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 		try {
 
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
-				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), 
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			Long donViXuLy = Long
@@ -5119,17 +5119,50 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				year = Utils.localDateTimeNow().getYear();
 			}
 
-			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
-			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
-			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
-
+			Long field1 = 0L;
+			Long field2 = 0L;
+			Long field3 = 0L;
+			Long field4 = 0L;
+			Long field5 = 0L;
+			Long field6 = 0L;
+			Long field7 = 0L;
+			Long field8 = 0L;
+			Long field9 = 0L;
+			Long field10 = 0L;
+			Long field11 = 0L;
+			Long field12 = 0L;
+			Long field13 = 0L;
+			Long field14 = 0L;
+			Long field15 = 0L;
+			Long field16 = 0L;
+			Long field17 = 0L;
+			Long field18 = 0L;
+			Long field19 = 0L;
+			Long field20 = 0L;
+			Long field21 = 0L;
+			Long field22 = 0L;
+			Long field23 = 0L;
+			Long field24 = 0L;
+			Long field25 = 0L;
+			Long field26 = 0L;
+			Long field27 = 0L;
+			Long field28 = 0L;
+			Long field29 = 0L;
+			Long field30 = 0L;
+			Long field31 = 0L;
+			Long field32 = 0L;
+			Long field33 = 0L;
+			Long field34 = 0L;
+			Long field35 = 0L;
+			Long field36 = 0L;
+			Long field37 = 0L;
+			Long field38 = 0L;
+			Long field39 = 0L;
+			Long field40 = 0L;
+			
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 			if (hinhThucTK.equals(HinhThucThongKeEnum.DON_VI)) {
-
-				List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
-				if (listDonVis != null) {
+				if (listDonVis != null && listDonVis.size() > 0) {
 					for (CoQuanQuanLy dv : listDonVis) {
 						if (dv != null) {
 							CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
@@ -5139,674 +5172,362 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						}
 					}
 					if (list.size() == 0) {
-						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
-						capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
-						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
-						list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
-								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
+						list.add(coQuanQuanLyRepo.findOne(donViXuLy));
 					}
 				} else {
-					list.add(coQuanQuanLyRepo.findOne(donViXuLy));
+					List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
+							.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 				}
 				donVis.addAll(list);
-
-				Long field1 = 0L;
-				Long field2 = 0L;
-				Long field3 = 0L;
-				Long field4 = 0L;
-				Long field5 = 0L;
-				Long field6 = 0L;
-				Long field7 = 0L;
-				Long field8 = 0L;
-				Long field9 = 0L;
-				Long field10 = 0L;
-				Long field11 = 0L;
-				Long field12 = 0L;
-				Long field13 = 0L;
-				Long field14 = 0L;
-				Long field15 = 0L;
-				Long field16 = 0L;
-				Long field17 = 0L;
-				Long field18 = 0L;
-				Long field19 = 0L;
-				Long field20 = 0L;
-				Long field21 = 0L;
-				Long field22 = 0L;
-				Long field23 = 0L;
-				Long field24 = 0L;
-				Long field25 = 0L;
-				Long field26 = 0L;
-				Long field27 = 0L;
-				Long field28 = 0L;
-				Long field29 = 0L;
-				Long field30 = 0L;
-				Long field31 = 0L;
-				Long field32 = 0L;
-				Long field33 = 0L;
-				Long field34 = 0L;
-				Long field35 = 0L;
-				Long field36 = 0L;
-				Long field37 = 0L;
-				Long field38 = 0L;
-				Long field39 = 0L;
-				Long field40 = 0L;
-
-				for (CoQuanQuanLy cq : donVis) {
-
-					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
-							.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
-
-					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					// Dem so cuoc thanh tra
-					Long tongSoCuocThanhTra = Long
-							.valueOf(((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
-
-					// Dem so cuoc theo thanh tra hinh thuc
-					// Theo ke hoach
-					Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
-					// Dot xuat
-					Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
-
-					// Dem so cuoc thanh tra theo tien do
-					// Ket thuc thanh tra truc tiep
-					Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
-							predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP,
-							cuocThanhTraRepo);
-					// Da ban hanh ket luan
-					Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
-							predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
-
-					// Dem so don vi duoc thanh tra
-					Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService
-							.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-					field8 += tongSoDonViDuocThanhTra;
-
-					// Lay danh sach cuoc thanh tra co vi pham
-					BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-
-					// Dem so don vi co vi pham
-					Long tongSoDonViCoViPham = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size());
-					field9 += tongSoDonViCoViPham;
-
-					// Block noi dung vi pham
-					Long tongViPhamTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo);
-					Long tongViPhamDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo);
-
-					Long tongKNTHTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo);
-					Long tongKNTHDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo);
-					Long tongKNTHQDGiaoDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo);
-
-					Long tongKNKTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo);
-					Long tongKNKDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo);
-
-					// Kien nghi xu ly
-					Long tongKNXLHanhChinhToChuc = thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo);
-					Long tongKNXLHanhChinhCaNhan = thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo);
-
-					// Lay danh sach cuoc thanh tra co vi pham
-					BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-
-					// Chuyen co quan dieu tra
-					Long tongKNXLVu = thongKeTongHopThanhTraService
-							.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo);
-					Long tongKNXLDoiTuong = thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
-							predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo);
-
-					mapDonVi = new HashMap<String, Object>();
-					mapDonVi.put("ten", cq.getTen());
-					mapDonVi.put("coQuanQuanLyId", cq.getId());
-
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("donVi", mapDonVi);
-
-					// So cuoc thanh tra
-					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraTrongKy
-											.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraKyTruoc
-											.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					Long tongSoCuocThanhTraTrongKy = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
-					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
-					Map<String, Object> dangThucHien = new HashMap<>();
-					field2 += tongSoCuocThanhTraKyTruoc;
-					dangThucHien.put("kyTruocChuyenSang", tongSoCuocThanhTraKyTruoc);
-					field3 += tongSoCuocThanhTraTrongKy;
-					dangThucHien.put("trienKhaiTrongKyBaoCao", tongSoCuocThanhTraTrongKy);
-
-					Map<String, Object> hinhThuc = new HashMap<>();
-					field4 += tongSoCuocThanhTraTrongKy;
-					hinhThuc.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);
-					field5 += tongSoCuocThanhTraDotXuat;
-					hinhThuc.put("dotXuat", tongSoCuocThanhTraDotXuat);
-
-					Map<String, Object> tienDo = new HashMap<>();
-					field6 += tongSoCuocThanhTraKetThucTrucTiep;
-					tienDo.put("ketThucThanhTraTrucTiep", tongSoCuocThanhTraKetThucTrucTiep);
-					field7 += tongSoCuocThanhTraKetThucTrucTiep;
-					tienDo.put("daBanHanhKetLuan", tongSoCuocThanhTraDaBanHanhKetLuan);
-
-					Map<String, Object> soCuocThanhTra = new HashMap<>();
-					field1 += tongSoCuocThanhTra;
-					soCuocThanhTra.put("tongSo", tongSoCuocThanhTra);
-					soCuocThanhTra.put("dangThucHien", dangThucHien);
-					soCuocThanhTra.put("hinhThuc", hinhThuc);
-					soCuocThanhTra.put("tienDo", tienDo);
-
-					// Tong vi pham
-					Map<String, Object> tongViPham = new HashMap<>();
-					field10 += tongViPhamTien;
-					tongViPham.put("tien", tongViPhamTien);
-					field11 += tongViPhamDat;
-					tongViPham.put("dat", tongViPhamDat);
-
-					// Cac dang vi pham ve dat
-					Map<String, Object> cacDangViPhamVeDat = new HashMap<>();
-					Long cacDangViPhamVeDatDatLanChiem = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo);
-					field12 += cacDangViPhamVeDatDatLanChiem;
-					cacDangViPhamVeDat.put("datLanChiem", cacDangViPhamVeDatDatLanChiem);
-					Long cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG",
-									cuocThanhTraRepo);
-					field13 += cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong;
-					cacDangViPhamVeDat.put("giaoDatCapDatSaiDoiTuong", cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong);
-					Long cacDangViPhamVeDatCapBanDatTraiThamQuyen = thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo);
-					field14 += cacDangViPhamVeDatCapBanDatTraiThamQuyen;
-					cacDangViPhamVeDat.put("capBanDatTraiThamQuyen", cacDangViPhamVeDatCapBanDatTraiThamQuyen);
-					Long cacDangViPhamVeDatCapGCNQSDDSai = thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo);
-					field15 += cacDangViPhamVeDatCapGCNQSDDSai;
-					cacDangViPhamVeDat.put("capGCNQSDDSai", cacDangViPhamVeDatCapGCNQSDDSai);
-					Long cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo);
-					field16 += cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh;
-					cacDangViPhamVeDat.put("chuyenNhuongChoThueKhongDungQuyDinh",
-							cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh);
-					Long cacDangViPhamVeDatSuDungDatKhongDungMucDich = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH",
-									cuocThanhTraRepo);
-					field17 += cacDangViPhamVeDatSuDungDatKhongDungMucDich;
-					cacDangViPhamVeDat.put("suDungDatKhongDungMucDich", cacDangViPhamVeDatSuDungDatKhongDungMucDich);
-					Long cacDangViPhamVeDatBoHoangHoa = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo);
-					field18 += cacDangViPhamVeDatBoHoangHoa;
-					cacDangViPhamVeDat.put("boHoangHoa", cacDangViPhamVeDatBoHoangHoa);
-					Long cacDangViPhamVeDatViPhamKhac = thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo);
-					field19 += cacDangViPhamVeDatViPhamKhac;
-					cacDangViPhamVeDat.put("viPhamKhac", cacDangViPhamVeDatViPhamKhac);
-
-					// Kien nghi thu hoi
-					Map<String, Object> kienNghiThuHoi = new HashMap<>();
-					field20 += tongKNTHTien;
-					kienNghiThuHoi.put("tien", tongKNTHTien);
-					field21 += tongKNTHDat;
-					kienNghiThuHoi.put("dat", tongKNTHDat);
-					field22 += tongKNTHQDGiaoDat;
-					kienNghiThuHoi.put("qdGiaoDat", tongKNTHQDGiaoDat);
-
-					// Kien nghi khac
-					Map<String, Object> kienNghiKhac = new HashMap<>();
-					field23 += tongKNKTien;
-					kienNghiKhac.put("tien", tongKNKTien);
-					field24 += tongKNKDat;
-					kienNghiKhac.put("dat", tongKNKDat);
-
-					// Kien nghi xu ly
-					Map<String, Object> hanhChinh = new HashMap<>();
-					field25 += tongKNXLHanhChinhToChuc;
-					hanhChinh.put("toChuc", tongKNXLHanhChinhToChuc);
-					field26 += tongKNXLHanhChinhCaNhan;
-					hanhChinh.put("caNhan", tongKNXLHanhChinhCaNhan);
-
-					Map<String, Object> chuyenCoQuanDieuTra = new HashMap<>();
-					field27 += tongKNXLVu;
-					chuyenCoQuanDieuTra.put("vu", tongKNXLVu);
-					field28 += tongKNXLDoiTuong;
-					chuyenCoQuanDieuTra.put("doiTuong", tongKNXLDoiTuong);
-
-					Map<String, Object> kienNghiXuly = new HashMap<>();
-					kienNghiXuly.put("hanhChinh", hanhChinh);
-					kienNghiXuly.put("chuyenCoQuanDieuTra", chuyenCoQuanDieuTra);
-
-					// Da thu
-					Map<String, Object> daThu = new HashMap<>();
-					Long daThuTien = thongKeTongHopThanhTraService
-							.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN");
-					field29 += daThuTien;
-					daThu.put("tien", daThuTien);
-					Long daThuDat = thongKeTongHopThanhTraService
-							.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT");
-					field30 += daThuDat;
-					daThu.put("dat", daThuDat);
-					Long daThuQdGiaoDat = thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT");
-					field31 += daThuQdGiaoDat;
-					daThu.put("qdGiaoDat", daThuQdGiaoDat);
-
-					/* Note: Chua xong Theo doi thuc hien */
-					// Kiem tra don doc
-					Map<String, Object> ketQuaKiemTraDonDoc = new HashMap<>();
-
-					Map<String, Object> tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-					tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-					ketQuaKiemTraDonDoc.put("tien", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-					tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-					ketQuaKiemTraDonDoc.put("dat", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("toChuc", 0);
-					tongHopketQuaKiemTraDonDoc.put("caNhan", 0);
-					ketQuaKiemTraDonDoc.put("daXuLyHanhChinh", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("vu", 0);
-					tongHopketQuaKiemTraDonDoc.put("doiTuong", 0);
-					ketQuaKiemTraDonDoc.put("daKhoiTo", tongHopketQuaKiemTraDonDoc);
-
-					Map<String, Object> kiemTraDonDoc = new HashMap<>();
-					kiemTraDonDoc.put("tongSo", 0);
-					kiemTraDonDoc.put("ketQuaKiemTraDonDoc", ketQuaKiemTraDonDoc);
-
-					// mapMaSo.put("dangThucHien", mapDonVi);
-
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("donVi", mapDonVi);
-					mapMaSo.put("soCuocThanhTra", soCuocThanhTra);
-					mapMaSo.put("soDonViDuocThanhTra", tongSoDonViDuocThanhTra);
-					mapMaSo.put("soDonViCoViPham", tongSoDonViCoViPham);
-					mapMaSo.put("tongViPham", tongViPham);
-					mapMaSo.put("cacDangViPhamVeDat", cacDangViPhamVeDat);
-					mapMaSo.put("kienNghiThuHoi", kienNghiThuHoi);
-					mapMaSo.put("kienNghiKhac", kienNghiKhac);
-					mapMaSo.put("kienNghiXuLy", kienNghiXuly);
-					mapMaSo.put("daThu", daThu);
-					mapMaSo.put("kiemTraDonDoc", kiemTraDonDoc);
-					mapMaSo.put("ghiChu", "");
-
-					maSos.add(mapMaSo);
-					mapMaSo = new HashMap<String, Object>();
-					mapDonVi = new HashMap<String, Object>();
-				}
-				// map Tong so
-				mapDonVi = new HashMap<String, Object>();
-				mapDonVi.put("ten", "Tổng cộng");
-				mapDonVi.put("coQuanQuanLyId", 0L);
-
-				Map<String, Object> dangThucHien = new HashMap<>();
-				dangThucHien.put("kyTruocChuyenSang", field2);
-				dangThucHien.put("trienKhaiTrongKyBaoCao", field3);
-
-				Map<String, Object> hinhThuc = new HashMap<>();
-				hinhThuc.put("theoKeHoach", field4);
-				hinhThuc.put("dotXuat", field5);
-
-				Map<String, Object> tienDo = new HashMap<>();
-				tienDo.put("ketThucThanhTraTrucTiep", field6);
-				tienDo.put("daBanHanhKetLuan", field7);
-
-				Map<String, Object> soCuocThanhTra = new HashMap<>();
-				soCuocThanhTra.put("tongSo", field1);
-				soCuocThanhTra.put("dangThucHien", dangThucHien);
-				soCuocThanhTra.put("hinhThuc", hinhThuc);
-				soCuocThanhTra.put("tienDo", tienDo);
-
-				Map<String, Object> tongViPham = new HashMap<>();
-				tongViPham.put("tien", field10);
-				tongViPham.put("dat", field11);
-
-				Map<String, Object> cacDangViPhamVeDat = new HashMap<>();
-				cacDangViPhamVeDat.put("datLanChiem", field12);
-				cacDangViPhamVeDat.put("giaoDatCapDatSaiDoiTuong", field13);
-				cacDangViPhamVeDat.put("capBanDatTraiThamQuyen", field14);
-				cacDangViPhamVeDat.put("capGCNQSDDSai", field15);
-				cacDangViPhamVeDat.put("chuyenNhuongChoThueKhongDungQuyDinh", field16);
-				cacDangViPhamVeDat.put("suDungDatKhongDungMucDich", field17);
-				cacDangViPhamVeDat.put("boHoangHoa", field18);
-				cacDangViPhamVeDat.put("viPhamKhac", field19);
-
-				Map<String, Object> kienNghiThuHoi = new HashMap<>();
-				kienNghiThuHoi.put("tien", field20);
-				kienNghiThuHoi.put("dat", field21);
-				kienNghiThuHoi.put("qdGiaoDat", field22);
-
-				Map<String, Object> kienNghiKhac = new HashMap<>();
-				kienNghiKhac.put("tien", field23);
-				kienNghiKhac.put("dat", field24);
-
-				Map<String, Object> hanhChinh = new HashMap<>();
-				hanhChinh.put("toChuc", field25);
-				hanhChinh.put("caNhan", field26);
-
-				Map<String, Object> chuyenCoQuanDieuTra = new HashMap<>();
-				chuyenCoQuanDieuTra.put("vu", field27);
-				chuyenCoQuanDieuTra.put("doiTuong", field28);
-				Map<String, Object> kienNghiXuly = new HashMap<>();
-				kienNghiXuly.put("hanhChinh", hanhChinh);
-				kienNghiXuly.put("chuyenCoQuanDieuTra", chuyenCoQuanDieuTra);
-
-				Map<String, Object> daThu = new HashMap<>();
-				daThu.put("tien", field29);
-				daThu.put("dat", field30);
-				daThu.put("qdGiaoDat", field31);
-
-				Map<String, Object> ketQuaKiemTraDonDoc = new HashMap<>();
-
-				Map<String, Object> tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("phaiThu", field33);
-				tongHopketQuaKiemTraDonDoc.put("daThu", field34);
-				ketQuaKiemTraDonDoc.put("tien", tongHopketQuaKiemTraDonDoc);
-
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("phaiThu", field35);
-				tongHopketQuaKiemTraDonDoc.put("daThu", field36);
-				ketQuaKiemTraDonDoc.put("dat", tongHopketQuaKiemTraDonDoc);
-
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("toChuc", field37);
-				tongHopketQuaKiemTraDonDoc.put("caNhan", field38);
-				ketQuaKiemTraDonDoc.put("daXuLyHanhChinh", tongHopketQuaKiemTraDonDoc);
-
-				tongHopketQuaKiemTraDonDoc = new HashMap<>();
-				tongHopketQuaKiemTraDonDoc.put("vu", field39);
-				tongHopketQuaKiemTraDonDoc.put("doiTuong", field40);
-				ketQuaKiemTraDonDoc.put("daKhoiTo", tongHopketQuaKiemTraDonDoc);
-
-				Map<String, Object> kiemTraDonDoc = new HashMap<>();
-				kiemTraDonDoc.put("tongSo", field32);
-				kiemTraDonDoc.put("ketQuaKiemTraDonDoc", ketQuaKiemTraDonDoc);
-
-				Map<String, Object> mapTongCong = new HashMap<String, Object>();
-				mapTongCong.put("donVi", mapDonVi);
-				mapTongCong.put("soCuocThanhTra", soCuocThanhTra);
-				mapTongCong.put("soDonViDuocThanhTra", field8);
-				mapTongCong.put("soDonViCoViPham", field9);
-				mapTongCong.put("tongViPham", tongViPham);
-				mapTongCong.put("cacDangViPhamVeDat", cacDangViPhamVeDat);
-				mapTongCong.put("kienNghiThuHoi", kienNghiThuHoi);
-				mapTongCong.put("kienNghiKhac", kienNghiKhac);
-				mapTongCong.put("kienNghiXuLy", kienNghiXuly);
-				mapTongCong.put("daThu", daThu);
-				mapTongCong.put("kiemTraDonDoc", kiemTraDonDoc);
-				mapTongCong.put("ghiChu", "");
-				maSos.add(mapTongCong);
-
 			} else {
-				List<CapCoQuanQuanLy> listCapCQs = new ArrayList<CapCoQuanQuanLy>();
-				if (listCapDonVis != null) {
-					if (listCapDonVis.size() > 0) {
-						for (CapCoQuanQuanLy cdv : listCapDonVis) {
-							CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
-							if (capDonVi != null) {
-								listCapCQs.add(capDonVi);
-							}
+				List<Long> listCapCQs = new ArrayList<Long>();
+				if (listCapDonVis != null && listCapDonVis.size() > 0) {
+					List<Long> thamSos = new ArrayList<Long>();
+					thamSos.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+					thamSos.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+					thamSos.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+
+					for (CapCoQuanQuanLy cdv : listCapDonVis) {
+						CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
+						if (capDonVi != null) {
+							listCapCQs.add(capDonVi.getId());
 						}
 					}
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
+							.findAll(coQuanQuanLyService.predFindDonViByCapCoQuanQuanLysTKBC(listCapCQs, thamSos)));
+
+					if (list.size() == 0) {
+						list.add(coQuanQuanLyRepo.findOne(donViXuLy));
+					}
 				} else {
-					listCapCQs.addAll((List<CapCoQuanQuanLy>) capCoQuanQuanLyRepo
-							.findAll(capCoQuanQuanLyService.predicateFindAll()));
+					List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
+							.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 				}
-				for (CapCoQuanQuanLy cdv : listCapCQs) {
-					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
-							.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
-
-					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					// Dem so cuoc thanh tra
-					Long tongSoCuocThanhTra = Long
-							.valueOf(((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
-
-					// Dem so cuoc theo thanh tra hinh thuc
-					// Theo ke hoach
-					Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
-					// Dot xuat
-					Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
-
-					// Dem so cuoc thanh tra theo tien do
-					// Ket thuc thanh tra truc tiep
-					Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
-							predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP,
-							cuocThanhTraRepo);
-					// Da ban hanh ket luan
-					Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
-							predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
-
-					// Dem so don vi duoc thanh tra
-					Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService
-							.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-
-					// Lay danh sach cuoc thanh tra co vi pham
-					BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-
-					// Dem so don vi co vi pham
-					Long tongSoDonViCoViPham = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size());
-
-					// Block noi dung vi pham
-					Long tongViPhamTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo);
-					Long tongViPhamDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo);
-
-					Long tongKNTHTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo);
-					Long tongKNTHDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo);
-					Long tongKNTHQDGiaoDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo);
-
-					Long tongKNKTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo);
-					Long tongKNKDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo);
-
-					// Kien nghi xu ly
-					Long tongKNXLHanhChinhToChuc = thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo);
-					Long tongKNXLHanhChinhCaNhan = thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo);
-
-					// Lay danh sach cuoc thanh tra co vi pham
-					BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-
-					// Chuyen co quan dieu tra
-					Long tongKNXLVu = thongKeTongHopThanhTraService
-							.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo);
-					Long tongKNXLDoiTuong = thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
-							predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo);
-
-					mapDonVi = new HashMap<String, Object>();
-					mapDonVi.put("ten", cdv.getTen());
-					mapDonVi.put("capCoQuanQuanLyId", cdv.getId());
-
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("donVi", mapDonVi);
-
-					// So cuoc thanh tra
-					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraTrongKy.and(
-											QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraKyTruoc.and(
-											QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					Long tongSoCuocThanhTraTrongKy = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
-					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
-					Map<String, Object> dangThucHien = new HashMap<>();
-					dangThucHien.put("kyTruocChuyenSang", tongSoCuocThanhTraKyTruoc);
-					dangThucHien.put("trienKhaiTrongKyBaoCao", tongSoCuocThanhTraTrongKy);
-
-					Map<String, Object> hinhThuc = new HashMap<>();
-					hinhThuc.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);
-					hinhThuc.put("dotXuat", tongSoCuocThanhTraDotXuat);
-
-					Map<String, Object> tienDo = new HashMap<>();
-					tienDo.put("ketThucThanhTraTrucTiep", tongSoCuocThanhTraKetThucTrucTiep);
-					tienDo.put("daBanHanhKetLuan", tongSoCuocThanhTraDaBanHanhKetLuan);
-
-					Map<String, Object> soCuocThanhTra = new HashMap<>();
-					soCuocThanhTra.put("tongSo", tongSoCuocThanhTra);
-					soCuocThanhTra.put("dangThucHien", dangThucHien);
-					soCuocThanhTra.put("hinhThuc", hinhThuc);
-					soCuocThanhTra.put("tienDo", tienDo);
-
-					// Tong vi pham
-					Map<String, Object> tongViPham = new HashMap<>();
-					tongViPham.put("tien", tongViPhamTien);
-					tongViPham.put("dat", tongViPhamDat);
-
-					// Cac dang vi pham ve dat
-					Map<String, Object> cacDangViPhamVeDat = new HashMap<>();
-					cacDangViPhamVeDat.put("datLanChiem", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("giaoDatCapDatSaiDoiTuong",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"GIAO_DAT_CAP_DAT_SAI_DOI_TUONG", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("capBanDatTraiThamQuyen",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("capGCNQSDDsai", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("chuyenNhuongChoThueKhongDungQuyDinh",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("suDungDatKhongDungMucDich",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"SU_DUNG_DAT_KHONG_DUNG_MUC_DICH", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("boHoangHoa", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo));
-					cacDangViPhamVeDat.put("viPhamKhac", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo));
-
-					// Kien nghi thu hoi
-					Map<String, Object> kienNghiThuHoi = new HashMap<>();
-					kienNghiThuHoi.put("tien", tongKNTHTien);
-					kienNghiThuHoi.put("dat", tongKNTHDat);
-					kienNghiThuHoi.put("qdGiaoDat", tongKNTHQDGiaoDat);
-
-					// Kien nghi khac
-					Map<String, Object> kienNghiKhac = new HashMap<>();
-					kienNghiKhac.put("tien", tongKNKTien);
-					kienNghiKhac.put("dat", tongKNKDat);
-
-					// Kien nghi xu ly
-					Map<String, Object> hanhChinh = new HashMap<>();
-					hanhChinh.put("toChuc", tongKNXLHanhChinhToChuc);
-					hanhChinh.put("caNhan", tongKNXLHanhChinhCaNhan);
-
-					Map<String, Object> chuyenCoQuanDieuTra = new HashMap<>();
-					chuyenCoQuanDieuTra.put("vu", tongKNXLVu);
-					chuyenCoQuanDieuTra.put("doiTuong", tongKNXLDoiTuong);
-
-					Map<String, Object> kienNghiXuly = new HashMap<>();
-					kienNghiXuly.put("hanhChinh", hanhChinh);
-					kienNghiXuly.put("chuyenCoQuanDieuTra", chuyenCoQuanDieuTra);
-
-					// Da thu
-					Map<String, Object> daThu = new HashMap<>();
-					daThu.put("tien", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
-					daThu.put("dat", thongKeTongHopThanhTraService
-							.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
-					daThu.put("qdGiaoDat", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
-
-					/* Note: Chua xong Theo doi thuc hien */
-					// Kiem tra don doc
-					Map<String, Object> ketQuaKiemTraDonDoc = new HashMap<>();
-
-					Map<String, Object> tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-					tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-					ketQuaKiemTraDonDoc.put("tien", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("phaiThu", 0);
-					tongHopketQuaKiemTraDonDoc.put("daThu", 0);
-					ketQuaKiemTraDonDoc.put("dat", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("toChuc", 0);
-					tongHopketQuaKiemTraDonDoc.put("caNhan", 0);
-					ketQuaKiemTraDonDoc.put("daXuLyHanhChinh", tongHopketQuaKiemTraDonDoc);
-
-					tongHopketQuaKiemTraDonDoc = new HashMap<>();
-					tongHopketQuaKiemTraDonDoc.put("vu", 0);
-					tongHopketQuaKiemTraDonDoc.put("doiTuong", 0);
-					ketQuaKiemTraDonDoc.put("daKhoiTo", tongHopketQuaKiemTraDonDoc);
-
-					Map<String, Object> kiemTraDonDoc = new HashMap<>();
-					kiemTraDonDoc.put("tongSo", 0);
-					kiemTraDonDoc.put("ketQuaKiemTraDonDoc", ketQuaKiemTraDonDoc);
-
-					// mapMaSo.put("dangThucHien", mapDonVi);
-
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("donVi", mapDonVi);
-					mapMaSo.put("soCuocThanhTra", soCuocThanhTra);
-					mapMaSo.put("soDonViDuocThanhTra", tongSoDonViDuocThanhTra);
-					mapMaSo.put("soDonViCoViPham", tongSoDonViCoViPham);
-					mapMaSo.put("tongViPham", tongViPham);
-					mapMaSo.put("cacDangViPhamVeDat", cacDangViPhamVeDat);
-					mapMaSo.put("kienNghiThuHoi", kienNghiThuHoi);
-					mapMaSo.put("kienNghiKhac", kienNghiKhac);
-					mapMaSo.put("kienNghiXuLy", kienNghiXuly);
-					mapMaSo.put("daThu", daThu);
-					mapMaSo.put("kiemTraDonDoc", kiemTraDonDoc);
-					mapMaSo.put("ghiChu", "");
-
-					maSos.add(mapMaSo);
-					mapMaSo = new HashMap<String, Object>();
-					mapDonVi = new HashMap<String, Object>();
-				}
+				donVis.addAll(list);
 			}
+			
+			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
+			
+			for (CoQuanQuanLy cq : donVis) {
+				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
+						.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
 
+				// Get cuoc thanh tra theo linh vuc hanh chinh
+				predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
+								LinhVucThanhTraEnum.DAT_DAI);
+
+				// Dem so cuoc thanh tra
+				Long tongSoCuocThanhTra = Long
+						.valueOf(((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size());
+
+				// Dem so cuoc theo thanh tra hinh thuc
+				// Theo ke hoach
+				Long tongSoCuocThanhTraTheoKeHoach = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
+						predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo);
+				// Dot xuat
+				Long tongSoCuocThanhTraDotXuat = thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
+						predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo);
+
+				// Dem so cuoc thanh tra theo tien do
+				// Ket thuc thanh tra truc tiep
+				Long tongSoCuocThanhTraKetThucTrucTiep = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
+						predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP,
+						cuocThanhTraRepo);
+				// Da ban hanh ket luan
+				Long tongSoCuocThanhTraDaBanHanhKetLuan = thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(
+						predAllCuocThanhTraCoQuan, TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo);
+
+				// Dem so don vi duoc thanh tra
+				Long tongSoDonViDuocThanhTra = thongKeTongHopThanhTraService
+						.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				
+
+				// Lay danh sach cuoc thanh tra co vi pham
+				BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+
+				// Dem so don vi co vi pham
+				Long tongSoDonViCoViPham = Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size());
+
+				// Block noi dung vi pham
+				Long tongViPhamTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo);
+				Long tongViPhamDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo);
+
+				Long tongKNTHTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo);
+				Long tongKNTHDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo);
+				Long tongKNTHQDGiaoDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo);
+
+				Long tongKNKTien = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo);
+				Long tongKNKDat = thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo);
+
+				// Kien nghi xu ly
+				Long tongKNXLHanhChinhToChuc = thongKeTongHopThanhTraService
+						.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo);
+				Long tongKNXLHanhChinhCaNhan = thongKeTongHopThanhTraService
+						.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo);
+
+				// Lay danh sach cuoc thanh tra co vi pham
+				BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+
+				// Chuyen co quan dieu tra
+				Long tongKNXLVu = thongKeTongHopThanhTraService
+						.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo);
+				Long tongKNXLDoiTuong = thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
+						predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo);
+
+				mapDonVi.put("ten", cq.getTen());
+				mapDonVi.put("coQuanQuanLyId", cq.getId());
+				mapMaSo.put("donVi", mapDonVi);
+				
+				// So cuoc thanh tra
+				BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(
+								predAllCuocThanhTraTrongKy
+										.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
+								LinhVucThanhTraEnum.DAT_DAI);
+				BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(
+								predAllCuocThanhTraKyTruoc
+										.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
+								LinhVucThanhTraEnum.DAT_DAI);
+
+				Long tongSoCuocThanhTraTrongKy = Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
+				Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
+				
+				field1 += tongSoCuocThanhTra;
+				mapMaSo.put("tongSo", tongSoCuocThanhTra);
+				
+				field2 += tongSoCuocThanhTraKyTruoc;
+				mapMaSo.put("kyTruocChuyenSang", tongSoCuocThanhTraKyTruoc);
+				
+				field3 += tongSoCuocThanhTraTrongKy;
+				mapMaSo.put("trienKhaiTrongKyBaoCao", tongSoCuocThanhTraTrongKy);
+				
+				field4 += tongSoCuocThanhTraTrongKy;
+				mapMaSo.put("theoKeHoach", tongSoCuocThanhTraTheoKeHoach);
+				
+				field5 += tongSoCuocThanhTraDotXuat;
+				mapMaSo.put("dotXuat", tongSoCuocThanhTraDotXuat);
+				
+				field6 += tongSoCuocThanhTraKetThucTrucTiep;
+				mapMaSo.put("ketThucThanhTraTrucTiep", tongSoCuocThanhTraKetThucTrucTiep);
+				
+				field7 += tongSoCuocThanhTraKetThucTrucTiep;
+				mapMaSo.put("daBanHanhKetLuan", tongSoCuocThanhTraDaBanHanhKetLuan);
+				
+				//8
+				field8 += tongSoDonViDuocThanhTra;
+				mapMaSo.put("soDonViDuocThanhTra", tongSoDonViDuocThanhTra);
+				
+				//9
+				field9 += tongSoDonViCoViPham;
+				mapMaSo.put("soDonViCoViPham", tongSoDonViCoViPham);
+
+				// Tong vi pham
+				field10 += tongViPhamTien;
+				mapMaSo.put("tongViPhamTien", tongViPhamTien);
+				
+				field11 += tongViPhamDat;
+				mapMaSo.put("tongViPhamDat", tongViPhamDat);
+
+				// Cac dang vi pham ve dat
+				Long cacDangViPhamVeDatDatLanChiem = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo);
+				field12 += cacDangViPhamVeDatDatLanChiem;
+				mapMaSo.put("datLanChiem", cacDangViPhamVeDatDatLanChiem);
+				
+				Long cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG",
+								cuocThanhTraRepo);
+				field13 += cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong;
+				mapMaSo.put("giaoDatCapDatSaiDoiTuong", cacDangViPhamVeDatGiaoDatCapDatSaiDoiTuong);
+				
+				Long cacDangViPhamVeDatCapBanDatTraiThamQuyen = thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo);
+				field14 += cacDangViPhamVeDatCapBanDatTraiThamQuyen;
+				mapMaSo.put("capBanDatTraiThamQuyen", cacDangViPhamVeDatCapBanDatTraiThamQuyen);
+				
+				Long cacDangViPhamVeDatCapGCNQSDDSai = thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo);
+				field15 += cacDangViPhamVeDatCapGCNQSDDSai;
+				mapMaSo.put("capGCNQSDDSai", cacDangViPhamVeDatCapGCNQSDDSai);
+				
+				Long cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
+								"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo);
+				field16 += cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh;
+				mapMaSo.put("chuyenNhuongChoThueKhongDungQuyDinh",
+						cacDangViPhamVeDatChuyenNhuongChoThueKhongDungQuyDinh);
+				
+				Long cacDangViPhamVeDatSuDungDatKhongDungMucDich = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH",
+								cuocThanhTraRepo);
+				field17 += cacDangViPhamVeDatSuDungDatKhongDungMucDich;
+				mapMaSo.put("suDungDatKhongDungMucDich", cacDangViPhamVeDatSuDungDatKhongDungMucDich);
+				
+				Long cacDangViPhamVeDatBoHoangHoa = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo);
+				field18 += cacDangViPhamVeDatBoHoangHoa;
+				mapMaSo.put("boHoangHoa", cacDangViPhamVeDatBoHoangHoa);
+				
+				Long cacDangViPhamVeDatViPhamKhac = thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo);
+				field19 += cacDangViPhamVeDatViPhamKhac;
+				mapMaSo.put("viPhamKhac", cacDangViPhamVeDatViPhamKhac);
+				
+				// Kien nghi thu hoi
+				field20 += tongKNTHTien;
+				mapMaSo.put("kienNghiThuHoiTien", tongKNTHTien);
+				
+				field21 += tongKNTHDat;
+				mapMaSo.put("kienNghiThuHoiDat", tongKNTHDat);
+				
+				field22 += tongKNTHQDGiaoDat;
+				mapMaSo.put("kienNghiThuHoiQDGiaoDat", tongKNTHQDGiaoDat);
+				
+				// Kien nghi khac
+				field23 += tongKNKTien;
+				mapMaSo.put("kienNghiKhacTien", tongKNKTien);
+				
+				field24 += tongKNKDat;
+				mapMaSo.put("kienNghiKhacDat", tongKNKDat);
+				
+				// Kien nghi xu ly
+				field25 += tongKNXLHanhChinhToChuc;
+				mapMaSo.put("hanhChinhToChuc", tongKNXLHanhChinhToChuc);
+				
+				field26 += tongKNXLHanhChinhCaNhan;
+				mapMaSo.put("hanhChinhCaNhan", tongKNXLHanhChinhCaNhan);
+				
+				field27 += tongKNXLVu;
+				mapMaSo.put("chuyenCoQuanDieuTraVu", tongKNXLVu);
+				
+				field28 += tongKNXLDoiTuong;
+				mapMaSo.put("chuyenCoQuanDieuTraDoiTuong", tongKNXLDoiTuong);
+
+
+				// Da thu
+				Long daThuTien = thongKeTongHopThanhTraService
+						.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN");
+				field29 += daThuTien;
+				mapMaSo.put("daThuTien", daThuTien);
+				
+				Long daThuDat = thongKeTongHopThanhTraService
+						.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT");
+				field30 += daThuDat;
+				mapMaSo.put("daThuDat", daThuDat);
+				
+				Long daThuQdGiaoDat = thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
+						predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT");
+				field31 += daThuQdGiaoDat;
+				mapMaSo.put("daThuQdGiaoDat", daThuQdGiaoDat);
+				
+				field32 += 0;
+				mapMaSo.put("tongSoKLTTVaQDXLDaKTDD", 0);
+				
+				/* Note: Chua xong Theo doi thuc hien */
+				// Kiem tra don doc
+				field33 += 0;
+				mapMaSo.put("ketQuaKiemTraDonDocTienPhaiThu", 0);
+				
+				field34 += 0;
+				mapMaSo.put("ketQuaKiemTraDonDocTienDaThu", 0);
+				
+				field35 += 0;
+				mapMaSo.put("ketQuaKiemTraDonDocDatPhaiThu", 0);
+				
+				field36 += 0;
+				mapMaSo.put("ketQuaKiemTraDonDocDatDaThu", 0);
+				
+				field37 += 0;
+				mapMaSo.put("daXuLyHanhChinhToChuc", 0);
+				
+				field38 += 0;
+				mapMaSo.put("daXuLyHanhChinhCaNhan", 0);
+				
+				field39 += 0;
+				mapMaSo.put("daKhoiToVu", 0);
+				
+				field40 += 0;
+				mapMaSo.put("daKhoiToDoiTuong", 0);
+				
+				mapMaSo.put("ghiChu", "");
+
+				maSos.add(mapMaSo);
+				mapMaSo = new HashMap<String, Object>();
+				mapDonVi = new HashMap<String, Object>();
+			}
+			
+			// map Tong so
+			Map<String, Object> mapTongCong = new HashMap<String, Object>();
+			mapTongCong.put("tongSo", field1);
+			mapTongCong.put("kyTruocChuyenSang", field2);
+			mapTongCong.put("trienKhaiTrongKyBaoCao", field3);
+			mapTongCong.put("theoKeHoach", field4);
+			mapTongCong.put("dotXuat", field5);
+			mapTongCong.put("ketThucThanhTraTrucTiep", field6);
+			mapTongCong.put("daBanHanhKetLuan", field7);
+			mapTongCong.put("soDonViDuocThanhTra", field8);
+			mapTongCong.put("soDonViCoViPham", field9);
+			mapTongCong.put("tongViPhamTien", field10);
+			mapTongCong.put("tongViPhamDat", field11);
+			mapTongCong.put("datLanChiem", field12);
+			mapTongCong.put("giaoDatCapDatSaiDoiTuong", field13);
+			mapTongCong.put("capBanDatTraiThamQuyen", field14);
+			mapTongCong.put("capGCNQSDDSai", field15);
+			mapTongCong.put("chuyenNhuongChoThueKhongDungQuyDinh", field16);
+			mapTongCong.put("suDungDatKhongDungMucDich", field17);
+			mapTongCong.put("boHoangHoa", field18);
+			mapTongCong.put("viPhamKhac", field19);
+			mapTongCong.put("kienNghiThuHoiTien", field20);
+			mapTongCong.put("kienNghiThuHoiDat", field21);
+			mapTongCong.put("kienNghiThuHoiQDGiaoDat", field22);
+			mapTongCong.put("kienNghiKhacTien", field23);
+			mapTongCong.put("kienNghiKhacDat", field24);
+			mapTongCong.put("hanhChinhToChuc", field25);
+			mapTongCong.put("hanhChinhCaNhan", field26);
+			mapTongCong.put("chuyenCoQuanDieuTraVu", field27);
+			mapTongCong.put("chuyenCoQuanDieuTraDoiTuong", field28);
+			mapTongCong.put("daThuTien", field29);
+			mapTongCong.put("daThuDat", field30);
+			mapTongCong.put("daThuQdGiaoDat", field31);
+			mapTongCong.put("tongSoKLTTVaQDXLDaKTDD", field32);
+			mapTongCong.put("ketQuaKiemTraDonDocTienPhaiThu", field33);
+			mapTongCong.put("ketQuaKiemTraDonDocTienDaThu", field34);
+			mapTongCong.put("ketQuaKiemTraDonDocDatPhaiThu", field35);
+			mapTongCong.put("ketQuaKiemTraDonDocDatDaThu", field36);
+			mapTongCong.put("daXuLyHanhChinhToChuc", field37);
+			mapTongCong.put("daXuLyHanhChinhCaNhan", field38);
+			mapTongCong.put("daKhoiToVu", field39);
+			mapTongCong.put("daKhoiToDoiTuong", field40);
+			mapTongCong.put("ghiChu", "");
+			
+			map.put("tongCongs", mapTongCong);
 			map.put("maSos", maSos);
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
@@ -5833,38 +5554,38 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			Map<String, Object> mapMaSo = new HashMap<>();
 			List<CoQuanQuanLy> donVis = new ArrayList<CoQuanQuanLy>();
 			List<Map<String, Object>> maSos = new ArrayList<>();
-			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
-			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
-			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			ThongKeBaoCaoLoaiKyEnum loaiKyEnum = ThongKeBaoCaoLoaiKyEnum.valueOf(loaiKy);
+			
 			if (month == null) {
 				month = Utils.localDateTimeNow().getMonthValue();
 			}
-			if (quy == null) {
-				quy = Utils.getQuyHienTai();
+			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
+				if (quy == null) {
+					quy = Utils.getQuyHienTai();
+				}
 			}
 			if (year == null) {
 				year = Utils.localDateTimeNow().getYear();
 			}
-			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
-			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
-			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-					.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
-			HinhThucThongKeEnum hinhThucTK = HinhThucThongKeEnum.valueOf(hinhThucThongKe);
+			
+			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
+			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			
+			List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 			if (hinhThucTK.equals(HinhThucThongKeEnum.DON_VI)) {
-
-				List<CoQuanQuanLy> list = new ArrayList<CoQuanQuanLy>();
 				if (listDonVis != null) {
 					for (CoQuanQuanLy dv : listDonVis) {
-						if (dv != null) {
-							CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
-							if (coQuan != null) {
-								list.add(coQuan);
-							}
+						CoQuanQuanLy coQuan = coQuanQuanLyRepo.findOne(dv.getId());
+						if (coQuan != null) {
+							list.add(coQuan);
 						}
 					}
-					if (list.size() == 0) {
+				} else {
+					if (donViId != null && donViId > 0) {
+						list.add(coQuanQuanLyRepo.findOne(donViId));
+					} else {
 						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
 						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
 						capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
@@ -5872,234 +5593,152 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
 								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
 					}
-				} else {
-					list.add(coQuanQuanLyRepo.findOne(donViId));
 				}
 				donVis.addAll(list);
-				for (CoQuanQuanLy cq : donVis) {
-					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
-							.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
-
-					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
-									LinhVucThanhTraEnum.DAT_DAI);
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("0", cq.getTen());
-					mapMaSo.put("1", Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
-					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraTrongKy
-											.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraKyTruoc
-											.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					Long tongSoCuocThanhTraTrongKy = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
-					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
-					mapMaSo.put("2", tongSoCuocThanhTraKyTruoc);
-					mapMaSo.put("3", tongSoCuocThanhTraTrongKy);
-					mapMaSo.put("4", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo));
-					mapMaSo.put("5", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo));
-					mapMaSo.put("6", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
-							TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo));
-					mapMaSo.put("7", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
-							TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo));
-					mapMaSo.put("8", thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan,
-							cuocThanhTraRepo));
-					BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-					mapMaSo.put("9", Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size()));
-					mapMaSo.put("10", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("11", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("12", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo));
-					mapMaSo.put("13", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG", cuocThanhTraRepo));
-					mapMaSo.put("14", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo));
-					mapMaSo.put("15", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo));
-					mapMaSo.put("16",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo));
-					mapMaSo.put("17", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH", cuocThanhTraRepo));
-					mapMaSo.put("18", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo));
-					mapMaSo.put("19", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo));
-					mapMaSo.put("20", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("21", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("22", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo));
-					mapMaSo.put("23", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("24", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("25", thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo));
-					mapMaSo.put("26", thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo));
-					BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-					mapMaSo.put("27", thongKeTongHopThanhTraService
-							.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo));
-					mapMaSo.put("28", thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
-							predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo));
-					mapMaSo.put("29", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
-					mapMaSo.put("30", thongKeTongHopThanhTraService
-							.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
-					mapMaSo.put("31", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
-					mapMaSo.put("32", 0);
-					mapMaSo.put("33", 0);
-					mapMaSo.put("34", 0);
-					mapMaSo.put("35", 0);
-					mapMaSo.put("36", 0);
-					mapMaSo.put("37", 0);
-					mapMaSo.put("38", 0);
-					mapMaSo.put("39", 0);
-					mapMaSo.put("40", 0);
-					mapMaSo.put("41", "");
-
-					maSos.add(mapMaSo);
-					mapMaSo = new HashMap<String, Object>();
-				}
 			} else {
-				List<CapCoQuanQuanLy> listCapCQs = new ArrayList<CapCoQuanQuanLy>();
+				List<Long> listCapCQs = new ArrayList<Long>();
 				if (listCapDonVis != null) {
 					if (listCapDonVis.size() > 0) {
+						List<Long> thamSos = new ArrayList<Long>();
+						thamSos.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+						thamSos.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+						thamSos.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+
 						for (CapCoQuanQuanLy cdv : listCapDonVis) {
 							CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
 							if (capDonVi != null) {
-								listCapCQs.add(capDonVi);
+								listCapCQs.add(capDonVi.getId());
 							}
 						}
+						list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
+								.findAll(coQuanQuanLyService.predFindDonViByCapCoQuanQuanLysTKBC(listCapCQs, thamSos)));
 					}
 				} else {
-					listCapCQs.addAll((List<CapCoQuanQuanLy>) capCoQuanQuanLyRepo
-							.findAll(capCoQuanQuanLyService.predicateFindAll()));
+					if (donViId != null && donViId > 0) {
+						list.add(coQuanQuanLyRepo.findOne(donViId));
+					} else {
+						List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+						capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+						list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
+								.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
+					}
 				}
-				for (CapCoQuanQuanLy cdv : listCapCQs) {
-					BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
-							.and(QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId()));
-
-					// Get cuoc thanh tra theo linh vuc hanh chinh
-					predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
-									LinhVucThanhTraEnum.DAT_DAI);
-					mapMaSo = new HashMap<String, Object>();
-					mapMaSo.put("0", cdv.getTen());
-					mapMaSo.put("1", Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
-					BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraTrongKy.and(
-											QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-					BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraTheoLinhVuc(
-									predAllCuocThanhTraKyTruoc.and(
-											QCuocThanhTra.cuocThanhTra.donViChuTri.capCoQuanQuanLy.id.eq(cdv.getId())),
-									LinhVucThanhTraEnum.DAT_DAI);
-
-					Long tongSoCuocThanhTraTrongKy = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
-					Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
-					mapMaSo.put("2", tongSoCuocThanhTraKyTruoc);
-					mapMaSo.put("3", tongSoCuocThanhTraTrongKy);
-					mapMaSo.put("4", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo));
-					mapMaSo.put("5", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
-							predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo));
-					mapMaSo.put("6", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
-							TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo));
-					mapMaSo.put("7", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
-							TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo));
-					mapMaSo.put("8", thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan,
-							cuocThanhTraRepo));
-					BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-					mapMaSo.put("9", Long.valueOf(
-							((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size()));
-					mapMaSo.put("10", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("11", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("12", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo));
-					mapMaSo.put("13", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG", cuocThanhTraRepo));
-					mapMaSo.put("14", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo));
-					mapMaSo.put("15", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo));
-					mapMaSo.put("16",
-							thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
-									"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo));
-					mapMaSo.put("17", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
-							predAllCuocThanhTraCoQuanViPham, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH", cuocThanhTraRepo));
-					mapMaSo.put("18", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo));
-					mapMaSo.put("19", thongKeTongHopThanhTraService
-							.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo));
-					mapMaSo.put("20", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("21", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("22", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo));
-					mapMaSo.put("23", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo));
-					mapMaSo.put("24", thongKeTongHopThanhTraService.getTienDatTheoViPham(
-							predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo));
-					mapMaSo.put("25", thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo));
-					mapMaSo.put("26", thongKeTongHopThanhTraService
-							.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo));
-					BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
-							.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
-					mapMaSo.put("27", thongKeTongHopThanhTraService
-							.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo));
-					mapMaSo.put("28", thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
-							predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo));
-					mapMaSo.put("29", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
-					mapMaSo.put("30", thongKeTongHopThanhTraService
-							.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
-					mapMaSo.put("31", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
-							predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
-					mapMaSo.put("32", 0);
-					mapMaSo.put("33", 0);
-					mapMaSo.put("34", 0);
-					mapMaSo.put("35", 0);
-					mapMaSo.put("36", 0);
-					mapMaSo.put("37", 0);
-					mapMaSo.put("38", 0);
-					mapMaSo.put("39", 0);
-					mapMaSo.put("40", 0);
-					mapMaSo.put("41", "");
-
-					maSos.add(mapMaSo);
-					mapMaSo = new HashMap<String, Object>();
-				}
+				donVis.addAll(list);
 			}
+			
+			BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTra(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTraTrongKy(loaiKy, quy, year, month, tuNgay, denNgay);
+			BooleanExpression predAllCuocThanhTraKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
+					.predicateFindAllCuocThanhTraKyTruoc(loaiKy, quy, year, month, tuNgay, denNgay);
+			
+			for (CoQuanQuanLy cq : donVis) {
+				BooleanExpression predAllCuocThanhTraCoQuan = predAllCuocThanhTra
+						.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId()));
+
+				// Get cuoc thanh tra theo linh vuc hanh chinh
+				predAllCuocThanhTraCoQuan = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(predAllCuocThanhTraCoQuan,
+								LinhVucThanhTraEnum.DAT_DAI);
+				mapMaSo = new HashMap<String, Object>();
+				mapMaSo.put("0", cq.getTen());
+				mapMaSo.put("1", Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuan)).size()));
+				BooleanExpression predAllCuocThanhTraCoQuanTrongKy = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(
+								predAllCuocThanhTraTrongKy
+										.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
+								LinhVucThanhTraEnum.DAT_DAI);
+				BooleanExpression predAllCuocThanhTraCoQuanKyTruoc = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraTheoLinhVuc(
+								predAllCuocThanhTraKyTruoc
+										.and(QCuocThanhTra.cuocThanhTra.donViChuTri.id.eq(cq.getId())),
+								LinhVucThanhTraEnum.DAT_DAI);
+
+				Long tongSoCuocThanhTraTrongKy = Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanTrongKy)).size());
+				Long tongSoCuocThanhTraKyTruoc = Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanKyTruoc)).size());
+				mapMaSo.put("2", tongSoCuocThanhTraKyTruoc);
+				mapMaSo.put("3", tongSoCuocThanhTraTrongKy);
+				mapMaSo.put("4", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
+						predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.THEO_KE_HOACH, cuocThanhTraRepo));
+				mapMaSo.put("5", thongKeTongHopThanhTraService.getCuocThanhTraTheoHinhThuc(
+						predAllCuocThanhTraCoQuan, HinhThucThanhTraEnum.DOT_XUAT, cuocThanhTraRepo));
+				mapMaSo.put("6", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
+						TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP, cuocThanhTraRepo));
+				mapMaSo.put("7", thongKeTongHopThanhTraService.getCuocThanhTraTheoTienDo(predAllCuocThanhTraCoQuan,
+						TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN, cuocThanhTraRepo));
+				mapMaSo.put("8", thongKeTongHopThanhTraService.getSoDonViDuocThanhTra(predAllCuocThanhTraCoQuan,
+						cuocThanhTraRepo));
+				BooleanExpression predAllCuocThanhTraCoQuanViPham = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraCoViPham(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				mapMaSo.put("9", Long.valueOf(
+						((List<CuocThanhTra>) cuocThanhTraRepo.findAll(predAllCuocThanhTraCoQuanViPham)).size()));
+				mapMaSo.put("10", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "TIEN", cuocThanhTraRepo));
+				mapMaSo.put("11", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "TONG_VI_PHAM", "DAT", cuocThanhTraRepo));
+				mapMaSo.put("12", thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "DAT_LAN_CHIEM", cuocThanhTraRepo));
+				mapMaSo.put("13", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "GIAO_DAT_CAP_DAT_SAI_DOI_TUONG", cuocThanhTraRepo));
+				mapMaSo.put("14", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "CAP_BAN_GIAO_DAT_TRAI_THAM_QUYEN", cuocThanhTraRepo));
+				mapMaSo.put("15", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "CAP_GCN_QSDD_SAI", cuocThanhTraRepo));
+				mapMaSo.put("16",
+						thongKeTongHopThanhTraService.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham,
+								"CHUYEN_NHUONG_CHO_THUE_KHONG_DUNG_QUY_DINH", cuocThanhTraRepo));
+				mapMaSo.put("17", thongKeTongHopThanhTraService.getCacDangViPhamVeDat(
+						predAllCuocThanhTraCoQuanViPham, "SU_DUNG_DAT_KHONG_DUNG_MUC_DICH", cuocThanhTraRepo));
+				mapMaSo.put("18", thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "BO_HOANG_HOA", cuocThanhTraRepo));
+				mapMaSo.put("19", thongKeTongHopThanhTraService
+						.getCacDangViPhamVeDat(predAllCuocThanhTraCoQuanViPham, "VI_PHAM_KHAC", cuocThanhTraRepo));
+				mapMaSo.put("20", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "TIEN", cuocThanhTraRepo));
+				mapMaSo.put("21", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "DAT", cuocThanhTraRepo));
+				mapMaSo.put("22", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_THU_HOI", "QD_GIAO_DAT", cuocThanhTraRepo));
+				mapMaSo.put("23", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "TIEN", cuocThanhTraRepo));
+				mapMaSo.put("24", thongKeTongHopThanhTraService.getTienDatTheoViPham(
+						predAllCuocThanhTraCoQuanViPham, "KIEN_NGHI_KHAC", "DAT", cuocThanhTraRepo));
+				mapMaSo.put("25", thongKeTongHopThanhTraService
+						.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "TO_CHUC", cuocThanhTraRepo));
+				mapMaSo.put("26", thongKeTongHopThanhTraService
+						.getKienNghiXuLyHanhChinh(predAllCuocThanhTraCoQuanViPham, "CA_NHAN", cuocThanhTraRepo));
+				BooleanExpression predAllCuocThanhTraChuyenCoQuanDieuTra = (BooleanExpression) thongKeTongHopThanhTraService
+						.predicateFindCuocThanhTraChuyenCoQuanDieuTra(predAllCuocThanhTraCoQuan, cuocThanhTraRepo);
+				mapMaSo.put("27", thongKeTongHopThanhTraService
+						.getKienNghiXuLyCCQDT(predAllCuocThanhTraChuyenCoQuanDieuTra, "VU", cuocThanhTraRepo));
+				mapMaSo.put("28", thongKeTongHopThanhTraService.getKienNghiXuLyCCQDT(
+						predAllCuocThanhTraChuyenCoQuanDieuTra, "DOI_TUONG", cuocThanhTraRepo));
+				mapMaSo.put("29", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
+						predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "TIEN"));
+				mapMaSo.put("30", thongKeTongHopThanhTraService
+						.getSoDaThuTrongQuaTrinhThanhTra(predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "DAT"));
+				mapMaSo.put("31", thongKeTongHopThanhTraService.getSoDaThuTrongQuaTrinhThanhTra(
+						predAllCuocThanhTraCoQuanViPham, cuocThanhTraRepo, "QD_GIAO_DAT"));
+				mapMaSo.put("32", 0);
+				mapMaSo.put("33", 0);
+				mapMaSo.put("34", 0);
+				mapMaSo.put("35", 0);
+				mapMaSo.put("36", 0);
+				mapMaSo.put("37", 0);
+				mapMaSo.put("38", 0);
+				mapMaSo.put("39", 0);
+				mapMaSo.put("40", 0);
+				mapMaSo.put("41", "");
+
+				maSos.add(mapMaSo);
+				mapMaSo = new HashMap<String, Object>();
+			}			
 			map.put("maSos", maSos);
 			ExcelUtil.exportTongHopKetQuaThanhTraTheoDatDai(response, "DanhSachTongHopKetQuaThanhTraTheoDatDai",
 					"sheetName", maSos, tuNgay, denNgay, "TỔNG HỢP KẾT QUẢ THANH TRA TRONG LĨNH VỰC ĐẤT ĐAI");
