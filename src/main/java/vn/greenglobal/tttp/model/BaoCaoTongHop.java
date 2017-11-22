@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
 
 @Entity
-@Table(name = "dantoc")
+@Table(name = "baocaotonghop")
 @ApiModel
 public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 
@@ -27,6 +27,7 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	private static final long serialVersionUID = 8452451590975658258L;
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
+	private String tenBaoCao = "";
 	private LocalDate ngayBatDauBC;
 	private LocalDate ngayKetThucBC;
 	private int namBaoCao;
@@ -45,6 +46,14 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 
 	public int getNamBaoCao() {
 		return namBaoCao;
+	}
+	
+	public String getTenBaoCao() {
+		return tenBaoCao;
+	}
+
+	public void setTenBaoCao(String tenBaoCao) {
+		this.tenBaoCao = tenBaoCao;
 	}
 
 	public void setNamBaoCao(int namBaoCao) {

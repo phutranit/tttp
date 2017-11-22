@@ -39,6 +39,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
+	private String tenBaoCao = "";
 	private LocalDate ngayBatDauBC;
 	private LocalDate ngayKetThucBC;
 	private int soNgayTuDongGui;	
@@ -54,7 +55,15 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	@Fetch(value = FetchMode.SELECT)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanQuanLy> donViNhans = new ArrayList<CoQuanQuanLy>();//
-	
+		
+	public String getTenBaoCao() {
+		return tenBaoCao;
+	}
+
+	public void setTenBaoCao(String tenBaoCao) {
+		this.tenBaoCao = tenBaoCao;
+	}
+
 	public KyBaoCaoTongHopEnum getKyBaoCao() {
 		return kyBaoCao;
 	}
