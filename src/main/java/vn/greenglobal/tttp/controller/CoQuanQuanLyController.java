@@ -711,10 +711,9 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			ThamSo thamSoFour = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO_TRUC_THUOC_TW"));
 			ThamSo thamSoFive = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_THANH_PHO-TRUC_THUOC_TINH"));
 			List<Long> donViHanhChinhList = new ArrayList<Long>();
-			donViHanhChinhList.add(thamSoThree.getId());
-			donViHanhChinhList.add(thamSoFour.getId());
-			donViHanhChinhList.add(thamSoFive.getId());
-			System.out.println("donViHanhChinhList: " + donViHanhChinhList.size());
+			donViHanhChinhList.add(Long.valueOf(thamSoThree.getGiaTri().toString()));
+			donViHanhChinhList.add(Long.valueOf(thamSoFour.getGiaTri().toString()));
+			donViHanhChinhList.add(Long.valueOf(thamSoFive.getGiaTri().toString()));
 			
 			if (thamSoOne != null && thamSoTwo != null) {
 				page = repo.findAll(coQuanQuanLyService.predicateFindNoiCapCMND(tuKhoa, Long.valueOf(thamSoOne.getGiaTri().toString()),
