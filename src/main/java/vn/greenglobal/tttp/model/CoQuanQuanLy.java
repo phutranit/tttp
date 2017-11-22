@@ -40,6 +40,8 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	//@Lob
 	private String moTaSearch = "";
 	
+	private boolean isDonViNhanTTXM;
+	
 	@ManyToOne
 	private CoQuanQuanLy cha;
 
@@ -100,6 +102,14 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 
 	public void setMoTaSearch(String moTaSearch) {
 		this.moTaSearch = moTaSearch;
+	}
+
+	public boolean isDonViNhanTTXM() {
+		return isDonViNhanTTXM;
+	}
+
+	public void setDonViNhanTTXM(boolean isDonViNhanTTXM) {
+		this.isDonViNhanTTXM = isDonViNhanTTXM;
 	}
 
 	@ApiModelProperty(position = 4)
