@@ -38,6 +38,7 @@ import io.swagger.annotations.Api;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
@@ -365,6 +366,7 @@ public class AuthController {
 
 					InvalidToken token = invalidTokenService.predFindToKenCurrentByToken(currentToken);
 					token.setActive(false);
+					token.setTrangThaiToken(TrangThaiInvalidTokenEnum.DANG_XUAT);
 					invalidTokenRep.save(token);
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
@@ -462,6 +464,7 @@ public class AuthController {
 				invalidToken.setToken(token);
 				invalidToken.setActive(true);
 				invalidToken.setNguoiDung(user);
+				invalidToken.setTrangThaiToken(TrangThaiInvalidTokenEnum.DANG_NHAP);
 				invalidTokenService.save(invalidToken, congChuc.getId());
 			}
 
