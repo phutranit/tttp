@@ -697,13 +697,12 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
-
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 			Page<CoQuanQuanLy> page = null;
 			ThamSo thamSoOne = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoTwo = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
