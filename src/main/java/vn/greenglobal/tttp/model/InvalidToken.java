@@ -74,16 +74,4 @@ public class InvalidToken extends Model<InvalidToken> {
 	public void setTrangThaiToken(TrangThaiInvalidTokenEnum trangThaiToken) {
 		this.trangThaiToken = trangThaiToken;
 	}
-	
-	@ApiModelProperty(hidden = true)
-	@Transient
-	public Map<String, Object> getDonViThamTraXacMinhInfo() {
-		if (getTrangThaiToken() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("ten", getTrangThaiToken().getText());
-			map.put("giaTri", getTrangThaiToken().name());
-			return map;
-		}
-		return null;
-	}
 }
