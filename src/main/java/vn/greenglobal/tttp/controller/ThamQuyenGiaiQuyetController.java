@@ -117,7 +117,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.DESC, "ngaySua")));
 			Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
