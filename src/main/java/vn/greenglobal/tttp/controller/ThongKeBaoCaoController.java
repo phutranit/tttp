@@ -6730,7 +6730,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("27", 0);
 				mapMaSo.put("28", 0);
 				mapMaSo.put("29", 0);
-
 				maSos.add(mapMaSo);
 				mapMaSo = new HashMap<String, Object>();
 			}
