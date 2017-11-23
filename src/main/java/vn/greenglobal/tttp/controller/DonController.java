@@ -738,6 +738,7 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
+				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());

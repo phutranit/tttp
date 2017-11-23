@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -260,6 +264,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 			PersistentEntityResourceAssembler eass) {
 		
 		try {
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.DESC, "id")));
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.SOTIEPCONGDAN_LIETKE) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(), ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -874,6 +879,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.DESC, "id")));
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDaoDinhKy(tuKhoa, tuNgay, denNgay, phanLoai, nguonDon, trangThai, donViId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);
@@ -900,6 +906,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.DESC, "ngayTiepNhan")));
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<Don> page = repoDon.findAll(donService.predicateFindDonYeuCauGapLanhDao(tuNgay, denNgay, loaiDon, linhVucId, linhVucChiTietChaId, linhVucChiTietConId, donViId), pageable);
 			return assemblerDon.toResource(page, (ResourceAssembler) eass);

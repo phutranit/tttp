@@ -91,6 +91,7 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 					thongTinGiaiQuyetDon.setNhomThamQuyenDaGiaiQuyet("Hành chính");
 					thongTinGiaiQuyetDon.setNgayKetThucGiaiQuyet(Utils.localDateTimeNow());
 					don.setCanBoCoTheThuHoi(null);
+					don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 				}
 			}
 			
@@ -104,6 +105,13 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 					|| KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
 					|| KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())) {
 				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+			}
+			
+			if ((KetQuaTrangThaiDonEnum.DOI_THOAI.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
+					&& !don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DOI_THOAI))
+					|| (KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
+							&& !don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET))) {
+				don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 			}
 			
 			donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));

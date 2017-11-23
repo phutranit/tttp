@@ -810,13 +810,17 @@ public class ProcessController extends TttpController<Process> {
 			transition = new Transition();
 			process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Chuyên Viên", false, null, donViId, 3L, false);
 			process = processService.save(process, congChucId);
-			if (process != null && process.getId() != null && process.getId() > 0) {						
+			if (process != null && process.getId() != null && process.getId() > 0) {
+				// Chuyên viên xử lý giải quyết đơn sau khi trưởng phòng giao việc chuyên viên xử lý
 				transition = addDataTrasition(process, 5L, 8L, 12L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
+				// Chuyên viên xử lý giải quyết đơn sau khi trưởng phòng nhận kết quả thẩm tra xác minh và giao việc chuyên viên xử lý
 				transition = addDataTrasition(process, 24L, 8L, 18L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
+				// Chuyên viên xử lý giải quyết đơn sau khi trưởng phòng nhận dự thảo và giao việc chuyên viên xử lý
 				transition = addDataTrasition(process, 27L, 8L, 41L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
+				// Chuyên viên xử lý giao đơn vị TTXM lập dự thảo sau khi trưởng phòng nhận kết quả thẩm tra xác minh và giao việc chuyên viên xử lý
 				transition = addDataTrasition(process, 24L, 25L, 38L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 			}
@@ -826,10 +830,13 @@ public class ProcessController extends TttpController<Process> {
 			process = addDataProcess(ProcessTypeEnum.GIAI_QUYET_DON, "Giải quyết đơn của Trưởng Phòng", false, null, donViId, 2L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
+				// Trưởng phòng giao viêc chuyên viên xử lý sau khi nhận giải quyết đơn
 				transition = addDataTrasition(process, 1L, 5L, 11L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
+				// Trưởng phòng tự xử lý chuyên cho đơn vị TTXM
 				transition = addDataTrasition(process, 1L, 20L, 11L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
-				transitionService.save(transition, congChucId);						
+				transitionService.save(transition, congChucId);
+				// 
 				transition = addDataTrasition(process, 20L, 19L, 29L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				transition = addDataTrasition(process, 19L, 19L, 31L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
@@ -851,7 +858,7 @@ public class ProcessController extends TttpController<Process> {
 				transition = addDataTrasition(process, 24L, 23L, 32L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				transition = addDataTrasition(process, 25L, 26L, 37L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
-				transitionService.save(transition, congChucId);	
+				transitionService.save(transition, congChucId);
 				transition = addDataTrasition(process, 27L, 31L, 32L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);		
 				

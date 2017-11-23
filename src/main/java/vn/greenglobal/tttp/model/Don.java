@@ -124,6 +124,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	private LocalDateTime ngayRutDon;
+	private LocalDateTime ngayThucHienKetQuaXuLy;
 	
 	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
@@ -604,6 +605,14 @@ public class Don extends Model<Don> {
 
 	public void setNgayRutDon(LocalDateTime ngayRutDon) {
 		this.ngayRutDon = ngayRutDon;
+	}
+
+	public LocalDateTime getNgayThucHienKetQuaXuLy() {
+		return ngayThucHienKetQuaXuLy;
+	}
+
+	public void setNgayThucHienKetQuaXuLy(LocalDateTime ngayThucHienKetQuaXuLy) {
+		this.ngayThucHienKetQuaXuLy = ngayThucHienKetQuaXuLy;
 	}
 
 	@ApiModelProperty(hidden = true)

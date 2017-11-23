@@ -58,7 +58,6 @@ import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
-import vn.greenglobal.tttp.service.CapCoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.LinhVucDonThuService;
 import vn.greenglobal.tttp.service.ThamSoService;
@@ -112,9 +111,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 
 	@Autowired
 	private ThongKeTongHopThanhTraService thongKeTongHopThanhTraService;
-
-	@Autowired
-	private CapCoQuanQuanLyService capCoQuanQuanLyService;
 
 	@Autowired
 	private CoQuanQuanLyService coQuanQuanLyService;

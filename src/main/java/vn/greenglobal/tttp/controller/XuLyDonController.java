@@ -536,6 +536,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
 						//don.setTuXuLyXLDGQD(false);
 						don.setHoanThanhDon(true);
+						don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -598,6 +599,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 						don.setNgayKetThucXLD(Utils.localDateTimeNow());
 						don.setCanBoXuLyChiDinh(null);
+						don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 						
 						//tao lich su qua trinh xu ly don
 						LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
@@ -1135,6 +1137,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
 							//don.setTuXuLyXLDGQD(false);
 							don.setHoanThanhDon(true);
+							don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 							
 //							Bo phanLoaiDon - cap nhat 16/11
 //							if (xuLyDon.getPhanLoaiDon() != null) {
@@ -1209,6 +1212,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCanBoCoTheThuHoi(null);
 							//don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
+							don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 							
 //							Bo phanLoaiDon - cap nhat 16/11
 //							if (xuLyDon.getPhanLoaiDon() != null) {
@@ -1331,6 +1335,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 							don.setKetQuaTTXM(KetQuaTrangThaiDonEnum.DINH_CHI);
 						}
+						don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 						
 						boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(xuLyDonHienTai.getDonViXuLy().getId());
 						if (!coQuyTrinh) { 
@@ -3006,6 +3011,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			don.setDonViXuLyGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 		}
 		don.setTrangThaiYeuCauGapLanhDao(TrangThaiYeuCauGapLanhDaoEnum.CHO_XIN_Y_KIEN);
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		
 //		Bo phanLoaiDon - cap nhat 16/11
 //		if (xuLyDon.getPhanLoaiDon() != null) {
@@ -3077,6 +3083,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setProcessType(ProcessTypeEnum.GIAI_QUYET_DON);
 		don.setCurrentState(beginState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		
 //		Bo phanLoaiDon - cap nhat 16/11
 //		if (xuLyDon.getPhanLoaiDon() != null) {
@@ -3229,6 +3236,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		
 		giaiQuyetDon = chuyenCanBoGiaiQuyet(xuLyDon, xuLyDonHienTai, giaiQuyetDon, giaiQuyetDonTruongPhong, donViGiaiQuyet, thongTinGiaiQuyetDon, congChucId);
 		don.setGiaiQuyetDonCuoiCungId(giaiQuyetDon.getId());
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		donService.save(don, congChucId);
 		
 		//tao lich su qua trinh xu ly don
@@ -3293,6 +3301,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setProcessType(ProcessTypeEnum.THAM_TRA_XAC_MINH);
 		don.setCurrentState(beginState);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		
 //		Bo phanLoaiDon - cap nhat 16/11
@@ -3757,6 +3766,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		don.setCanBoCoTheThuHoi(null);
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		
 //		Bo phanLoaiDon - cap nhat 16/11
 //		if (xuLyDon.getPhanLoaiDon() != null) {
