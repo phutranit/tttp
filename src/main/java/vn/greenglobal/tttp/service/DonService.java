@@ -423,8 +423,6 @@ public class DonService {
 			boolean taiDonVi, List<CoQuanQuanLy> listDonViTiepNhan,
 			XuLyDonRepository xuLyRepo, DonRepository donRepo, 
 			GiaiQuyetDonRepository giaiQuyetDonRepo) {	
-		//ok : ten nguoi dung don, dia chi, loai don, linh vuc, linh vuc chi tiet, ma don, nguon don, trinh trang (tre han, dung han), tai don vi hoac toan he thong
-		//not ok: thoi gian theo trang thai, don vi tiep nhan
 		BooleanExpression predAll = base.and(QDon.don.thanhLapDon.eq(true));
 		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()
