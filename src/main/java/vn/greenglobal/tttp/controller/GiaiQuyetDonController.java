@@ -889,6 +889,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			}
 			don.setHoanThanhDon(true);
 			don.setCanBoCoTheThuHoi(null);
+			don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 			Utils.changeQuyenTuXuLy(don, false, false, false);
 			
 			giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1117,6 +1118,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
 		don.setCanBoCoTheThuHoi(null);
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		
@@ -1882,6 +1884,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCanBoCoTheThuHoi(null);
 		don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setCurrentState(canBoNhanKetQuaState);
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);
@@ -1965,6 +1968,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCanBoCoTheThuHoi(null);
 		don.setGiaiQuyetTTXMCuoiCungId(giaiQuyetDonHienTai.getId());
 		don.setCurrentState(canBoNhanKetQuaState);
+		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
 		Utils.changeQuyenTuXuLy(don, false, false, false);
 		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonHienTai, congChucId);

@@ -1,17 +1,11 @@
 package vn.greenglobal.tttp.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
 
 @Entity
