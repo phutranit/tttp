@@ -2160,7 +2160,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				BooleanExpression predAllDXLDDonViTrongKy = predAllDSXLDTrongKy;
 				BooleanExpression predAllDXLDDonViKyTruoc = predAllDSXLDKyTruoc;
 				//BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
-
+				
 				if (cq.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoUBNDTP.getGiaTri().toString()))) {
 //					predAllDSTCDDonVi = predAllDSTCDDonVi
 //							.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId()));
@@ -2172,7 +2172,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 //							.eq(cq.getId()).or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
 //							.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
 
-					System.out.println();
 					predAllDXLDDonVi = predAllDXLDDonVi.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(cq.getId())
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(cq.getId()))
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(cq.getId())));
