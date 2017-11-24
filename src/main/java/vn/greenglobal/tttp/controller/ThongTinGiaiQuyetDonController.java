@@ -168,6 +168,15 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setCoQuanDieuTra(null);
 			thongTinGiaiQuyetDon.setSoVuGiaoCoQuanDieuTra(0);
 			thongTinGiaiQuyetDon.setSoDoiTuongGiaoCoQuanDieuTra(0);
+			
+			thongTinGiaiQuyetDon.setKhoiTo(false);
+			thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
+			thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
+		} else {
+			if (!thongTinGiaiQuyetDon.isKhoiTo()) {
+				thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
+				thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
+			}
 		}
 		if (!thongTinGiaiQuyetDon.isQuyetDinhGiaiQuyetKhieuNai()) {
 			thongTinGiaiQuyetDon.setKetLuanNoiDungKhieuNai(null);
@@ -197,15 +206,6 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 			thongTinGiaiQuyetDon.setTienDaTraCongDan(0l);
 			thongTinGiaiQuyetDon.setDatDaTraCongDan(0l);
 			thongTinGiaiQuyetDon.setKetQuaThucHienKhac("");
-			
-			thongTinGiaiQuyetDon.setKhoiTo(false);
-			thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
-			thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
-		} else {
-			if (!thongTinGiaiQuyetDon.isKhoiTo()) {
-				thongTinGiaiQuyetDon.setSoVuBiKhoiTo(0);
-				thongTinGiaiQuyetDon.setSoDoiTuongBiKhoiTo(0);
-			}
 		}
 		return thongTinGiaiQuyetDon;
 	}

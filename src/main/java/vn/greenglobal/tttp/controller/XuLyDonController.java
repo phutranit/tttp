@@ -692,9 +692,11 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				}
 				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro")
 						.toString();
+				System.out.println("profileUtil.getCommonProfile(authorization): " + profileUtil.getCommonProfile(authorization));
+				System.out.println("222: " + profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				Long congChucId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
-
+				System.out.println("congChucId 11111: " + congChucId);
 				CongChuc congChuc = congChucRepo.findOne(congChucId);
 				List<VaiTroEnum> listVaiTro = congChuc.getNguoiDung().getVaiTros().stream().map(d -> d.getLoaiVaiTro()).distinct().collect(Collectors.toList());
 				
@@ -1156,6 +1158,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							//tao lich su qua trinh xu ly don
 							LichSuQuaTrinhXuLy lichSuQTXLD = new LichSuQuaTrinhXuLy();
 							lichSuQTXLD.setDon(don);
+							System.out.println("congChucRepo " + congChucRepo);
+							System.out.println("congChucId " + congChucId);
 							lichSuQTXLD.setNguoiXuLy(congChucRepo.findOne(congChucId));
 							lichSuQTXLD.setNgayXuLy(Utils.localDateTimeNow());
 							lichSuQTXLD.setTen(huongXuLyXLD.getText());
@@ -2123,7 +2127,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				Don donGoc = donRepo.findOne(don.getDonGocId());
 				mappings.put("coQuanChuyenDon", donGoc.getDonViXuLyGiaiQuyet().getTen());
 			}
-			
+
 			mappings.put("soVB", soVB);
 			mappings.put("doiTuongGiaiQuyet", cq.getTen());
 			mappings.put("nguoiDungDon", nguoiDungDon);
