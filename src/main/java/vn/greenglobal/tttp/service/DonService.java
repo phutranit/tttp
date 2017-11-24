@@ -492,6 +492,27 @@ public class DonService {
 			KetQuaTrangThaiDonEnum ketQuaValue = KetQuaTrangThaiDonEnum.valueOf(StringUtils.upperCase(ketQuaToanHT));
 			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViXuLyXLD)
 						.and(QDon.don.ketQuaXLDGiaiQuyet.eq(ketQuaValue))));
+			if (ketQuaValue.equals(KetQuaTrangThaiDonEnum.DINH_CHI) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.DE_XUAT_THU_LY) 
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.KHONG_DU_DIEU_KIEN_THU_LY) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.KHONG_XU_LY_NEU_LY_DO)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.CHUYEN_DON) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.TRA_DON_VA_HUONG_DAN)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.HUONG_DAN_VIET_LAI_DON) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.LUU_DON_VA_THEO_DOI)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.YEU_CAU_GAP_LANH_DAO) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.DA_CO_KET_QUA_TTXM) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.DOI_THOAI)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET)
+					|| ketQuaValue.equals(KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET) || ketQuaValue.equals(KetQuaTrangThaiDonEnum.LUU_HO_SO)) {
+				if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
+						&& StringUtils.isNotBlank(denNgay.trim())) {
+					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
+					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.between(tuNgayTK, denNgayTK));
+				} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.before(denNgayTK));
+				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
+					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.after(tuNgayTK));
+				}
+			}
 		}
 
 		if (phanLoaiDon != null && StringUtils.isNotBlank(phanLoaiDon.trim())) {
