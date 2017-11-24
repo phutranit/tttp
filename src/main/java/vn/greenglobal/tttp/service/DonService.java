@@ -618,18 +618,56 @@ public class DonService {
 		}
 
 		if (StringUtils.isNotBlank(hoTen)) {
-			predAll = predAll
-					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
-							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
-					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
+			List<Don> dons = new ArrayList<Don>();
+			List<Long> donIds = new ArrayList<Long>();
+			BooleanExpression donCongDanQuery = baseDonCongDan;
+			
+//			predAll = predAll
+//					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
+//							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(hoTen)))
+//					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+			
+			donCongDanQuery = donCongDanQuery
+					.and(QDon_CongDan.don_CongDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
+							.or(QDon_CongDan.don_CongDan.tenCoQuan.containsIgnoreCase(hoTen.trim())))
+					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+					
+			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
+			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+			donIds.addAll(dons.stream().map(d -> {
+				return d.getId();
+			}).distinct().collect(Collectors.toList()));
+			
+			predAll = predAll.and(QDon.don.in(dons).or(QDon.don.donGocId.in(donIds)));
 		}
 		
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll
-					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
-							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
-							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())))
-					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
+			List<Don> dons = new ArrayList<Don>();
+			List<Long> donIds = new ArrayList<Long>();
+			BooleanExpression donCongDanQuery = baseDonCongDan;
+			
+//			predAll = predAll
+//					.and(QDon.don.donCongDans.any().congDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
+//							.or(QDon.don.donCongDans.any().tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
+//							.or(QDon.don.donCongDans.any().soCMNDHoChieu.containsIgnoreCase(tuKhoa.trim())))
+//					.and(QDon.don.donCongDans.any().phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+			
+			donCongDanQuery = donCongDanQuery
+					.and(QDon_CongDan.don_CongDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+							.or(QDon_CongDan.don_CongDan.tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
+							.or(QDon_CongDan.don_CongDan.soCMNDHoChieu.eq(tuKhoa.trim())))
+					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
+			
+			
+			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
+			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
+			donIds.addAll(dons.stream().map(d -> {
+				return d.getId();
+			}).distinct().collect(Collectors.toList()));
+			
+			predAll = predAll.and(QDon.don.in(dons).or(QDon.don.donGocId.in(donIds)));
 		}
 
 		if (StringUtils.isNotBlank(nguonDon)) {
@@ -809,12 +847,24 @@ public class DonService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDon.don.id.eq(id));
 	}
+	
+	public String getMaHoSo(DonRepository repo, Long donId) {
+		String maHoSo = "MHS" + Utils.getMaDon();
+		boolean flagTonTai = true;
+		while (flagTonTai) {
+			flagTonTai = isMaDonExists(repo, donId, null, maHoSo);
+			if (flagTonTai) {
+				maHoSo = "MHS" + Utils.getMaDon();
+			}
+		}
+		return maHoSo;
+	}
 
 	public String getMaDon(DonRepository repo, Long donId) {
 		String maDon = Utils.getMaDon();
 		boolean flagTonTai = true;
 		while (flagTonTai) {
-			flagTonTai = isMaDonExists(repo, donId, maDon);
+			flagTonTai = isMaDonExists(repo, donId, maDon, null);
 			if (flagTonTai) {
 				maDon = Utils.getMaDon();
 			}
@@ -822,12 +872,24 @@ public class DonService {
 		return maDon;
 	}
 
-	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon) {
+	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon, String maHS) {
 		if (donId != null && donId > 0) {
-			Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.ma.eq(maDon));
-			return repo.exists(predicate);
+			if (maHS != null) {
+				Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.maHoSo.eq(maHS));
+				return repo.exists(predicate);
+			} else {
+				Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.ma.eq(maDon));
+				return repo.exists(predicate);
+			}
+		} else {
+			if (maHS != null) {
+				Predicate predicate = base.and(QDon.don.maHoSo.eq(maHS));
+				return repo.exists(predicate);
+			} else {
+				Predicate predicate = base.and(QDon.don.ma.eq(maDon));
+				return repo.exists(predicate);
+			}
 		}
-		return false;
 	}
 
 	public boolean isExists(DonRepository repo, Long id) {

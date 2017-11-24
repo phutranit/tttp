@@ -186,9 +186,9 @@ public class AuthController {
 				String salKey = user.getSalkey();
 				String salKeyHash = DigestUtils.md5Hex(salKey);
 				String timeHash = System.currentTimeMillis() + salKeyHash;
-				String hashCode = params.getEmail() + getAnonymousCode() + new String(Base64.encodeBase64(timeHash.getBytes()));
-				String link = url + "/reset-password/" + hashCode;
-				String linkReset = url + "/reset-password";
+				String hashCode = new String(Base64.encodeBase64(params.getEmail().getBytes())) + getAnonymousCode() + new String(Base64.encodeBase64(timeHash.getBytes()));
+				String link = url + "/tao-mat-khau-moi/" + hashCode;
+				String linkReset = url + "/tao-mat-khau-moi";
 				String content = "Xin chào,<br/> Bạn vừa gửi yêu cầu lấy lại mật khẩu. Để thiết lập lại mật khẩu mới của bạn trên Hệ thống Thanh tra thành phố Đà Nẵng, hãy nhấn vào liên kết bên dưới. "
 						+ "<br/> <a href='" + link + "'>" + link + "</a>"
 						+ "<br/> Liên kết này chỉ có hiệu lực trong 3 giờ. Để lấy lại mật khẩu, vui lòng truy cập địa chỉ  <a href='"
@@ -222,7 +222,7 @@ public class AuthController {
 			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
 			boolean acceptRequest = false;
 			if (part != null && part.length == 2) {
-				String checkEmail = part[0];
+				String checkEmail = new String(Base64.decodeBase64(part[0]));
 				String checkTime = part[1];
 				NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
 				if (user != null) {
@@ -284,7 +284,7 @@ public class AuthController {
 			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
 			boolean acceptRequest = false;
 			if (part != null && part.length == 2) {
-				String checkEmail = part[0];
+				String checkEmail = new String(Base64.decodeBase64(part[0]));
 				String checkTime = part[1];
 				NguoiDung user = nguoiDungRepository
 						.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
@@ -305,7 +305,7 @@ public class AuthController {
 					}
 				}
 
-				if (!params.getPassword().equals(params.getPassword())) {
+				if (!params.getPassword().equals(params.getPasswordAgain())) {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NEW_PASSWORD_NOT_SAME.name(),
 							ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText(), ApiErrorEnum.NEW_PASSWORD_NOT_SAME.getText());
 				}
@@ -452,7 +452,7 @@ public class AuthController {
 				result.put("email", user.getEmail());
 				result.put("userId", user.getId());
 				result.put("roles", user.getVaiTros());
-				result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());
+				result.put("vaiTroMacDinhId", user.getVaiTroMacDinh().getId());	
 				result.put("loaiVaiTroMacDinh", user.getVaiTroMacDinh().getLoaiVaiTro());
 				result.put("tenVaiTro", user.getVaiTroMacDinh().getLoaiVaiTro().getText());
 
