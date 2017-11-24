@@ -551,6 +551,7 @@ public class DonController extends TttpController<Don> {
 				donMoi.setNgayNhanTraDonChuyen(don.getNgayNhanTraDonChuyen());
 				
 				if (donMoi.isThanhLapDon()) {
+					donMoi.setMaHoSo(donService.getMaHoSo(repo, null));
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
@@ -738,6 +739,9 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
+				if (don.isThanhLapDon() && !donOld.isThanhLapDon()) {
+					don.setMaHoSo(donService.getMaHoSo(repo, don.getId()));
+				}
 				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
