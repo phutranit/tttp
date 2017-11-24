@@ -61,6 +61,8 @@ public class Don extends Model<Don> {
 
 	@Size(max=255)
 	private String ma = "";
+	@Size(max=255)
+	private String maHoSo = "";
 	//@NotBlank
 	//@Lob
 	private String noiDung = " ";
@@ -334,6 +336,15 @@ public class Don extends Model<Don> {
 		this.ma = ma;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	public String getMaHoSo() {
+		return maHoSo;
+	}
+
+	public void setMaHoSo(String maHoSo) {
+		this.maHoSo = maHoSo;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public CongChuc getCanBoCoTheThuHoi() {
 		return canBoCoTheThuHoi;

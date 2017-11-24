@@ -3060,6 +3060,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//tao ma don
 		if (don.getMa() == null || don.getMa().isEmpty()) {
 			don.setMa(donService.getMaDon(donRepo, don.getId()));
+			don.setMaHoSo(don.getMa());
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
@@ -3179,6 +3180,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//tao ma don
 		if (don.getMa() == null || don.getMa().isEmpty()) {
 			don.setMa(donService.getMaDon(donRepo, don.getId()));
+			don.setMaHoSo(don.getMa());
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
@@ -3277,6 +3279,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//tao ma don
 		if (don.getMa() == null || don.getMa().isEmpty()) {
 			don.setMa(donService.getMaDon(donRepo, don.getId()));
+			don.setMaHoSo(don.getMa());
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDon.getHuongXuLy();
@@ -3989,6 +3992,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		//tao ma don
 		if (don.getMa() == null || don.getMa().isEmpty()) {
 			don.setMa(donService.getMaDon(donRepo, don.getId()));
+			don.setMaHoSo(don.getMa());
 		}
 		
 		HuongXuLyXLDEnum huongXuLyXLD = xuLyDonHienTai.getHuongXuLy();

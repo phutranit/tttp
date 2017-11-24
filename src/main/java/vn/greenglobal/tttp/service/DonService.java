@@ -621,12 +621,24 @@ public class DonService {
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDon.don.id.eq(id));
 	}
+	
+	public String getMaHoSo(DonRepository repo, Long donId) {
+		String maHoSo = "MHS" + Utils.getMaDon();
+		boolean flagTonTai = true;
+		while (flagTonTai) {
+			flagTonTai = isMaDonExists(repo, donId, null, maHoSo);
+			if (flagTonTai) {
+				maHoSo = "MHS" + Utils.getMaDon();
+			}
+		}
+		return maHoSo;
+	}
 
 	public String getMaDon(DonRepository repo, Long donId) {
 		String maDon = Utils.getMaDon();
 		boolean flagTonTai = true;
 		while (flagTonTai) {
-			flagTonTai = isMaDonExists(repo, donId, maDon);
+			flagTonTai = isMaDonExists(repo, donId, maDon, null);
 			if (flagTonTai) {
 				maDon = Utils.getMaDon();
 			}
@@ -634,12 +646,24 @@ public class DonService {
 		return maDon;
 	}
 
-	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon) {
+	public boolean isMaDonExists(DonRepository repo, Long donId, String maDon, String maHS) {
 		if (donId != null && donId > 0) {
-			Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.ma.eq(maDon));
-			return repo.exists(predicate);
+			if (maHS != null) {
+				Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.maHoSo.eq(maHS));
+				return repo.exists(predicate);
+			} else {
+				Predicate predicate = base.and(QDon.don.id.ne(donId)).and(QDon.don.ma.eq(maDon));
+				return repo.exists(predicate);
+			}
+		} else {
+			if (maHS != null) {
+				Predicate predicate = base.and(QDon.don.maHoSo.eq(maHS));
+				return repo.exists(predicate);
+			} else {
+				Predicate predicate = base.and(QDon.don.ma.eq(maDon));
+				return repo.exists(predicate);
+			}
 		}
-		return false;
 	}
 
 	public boolean isExists(DonRepository repo, Long id) {
