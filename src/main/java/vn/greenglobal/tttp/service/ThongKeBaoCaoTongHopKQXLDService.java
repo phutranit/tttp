@@ -105,11 +105,22 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						LocalDateTime ngayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);
-						LocalDateTime ngayKetThuc = LocalDateTime.of(year, month, 1, 0, 0);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().eq(month))
-								.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(ngayTiepNhan)
-										.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(ngayKetThuc)));
+						if (month == 1) {
+							LocalDateTime tuNgayTiepNhan = LocalDateTime.of(year - 1, 1, 1, 0, 0);
+							LocalDateTime denNgayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().eq(month))
+									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(tuNgayTiepNhan, denNgayTiepNhan)
+											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month)
+													.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year)))
+											);
+						} else { 
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().eq(month))
+									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().lt(month)
+											.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
+											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month)
+													.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year))));
+						}
+						
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
@@ -248,8 +259,15 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
-						LocalDateTime ngayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(ngayTiepNhan));
+						if (month == 1) {
+							LocalDateTime tuNgayTiepNhan = LocalDateTime.of(year - 1, 1, 1, 0, 0);
+							LocalDateTime denNgayTiepNhan = LocalDateTime.of(year, month, 1, 0, 0);
+							predAllXLD = predAllXLD
+									.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(tuNgayTiepNhan, denNgayTiepNhan));
+						} else { 
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month)
+									.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year)));
+						}
 					}
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {

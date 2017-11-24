@@ -2161,6 +2161,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				BooleanExpression predAllDXLDDonViKyTruoc = predAllDSXLDKyTruoc;
 				//BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
 				
+				xldrepo.findAll(predAllDXLDDonVi).forEach(xld -> {
+					System.out.println("don " +xld.getDon().getId());
+				});
+				
 				if (cq.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoUBNDTP.getGiaTri().toString()))) {
 //					predAllDSTCDDonVi = predAllDSTCDDonVi
 //							.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId()));
@@ -2172,6 +2176,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 //							.eq(cq.getId()).or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
 //							.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
 
+					System.out.println();
 					predAllDXLDDonVi = predAllDXLDDonVi.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(cq.getId())
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(cq.getId()))
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(cq.getId())));
@@ -2184,6 +2189,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(cq.getId()))
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(cq.getId())));
 				}
+				
+				System.out.println("");
+				xldrepo.findAll(predAllDSXLD).forEach(xld -> {
+					System.out.println("don e " +xld.getDon().getId());
+				});
 				
 				mapDonVi.put("ten", cq.getTen());
 				mapDonVi.put("coQuanQuanLyId", cq.getId());
@@ -2340,10 +2350,12 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19 = thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(predAllDXLDDonVi,
 								linhVucKhacDonToCao, thamQuyenGiaiQuyetHanhChinh);
-				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
+				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = 
+						//tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
-						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+//						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+						tongSoDonKhieuNaiLinhVucHanhChinh + tongSoDonToCaoLinhVucHanhChinh
 						+ tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh17 + tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19;
 
 				// theo tham quyen giai quyet - cua cac co quan hanh chinh cac
@@ -2759,10 +2771,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19 = thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(predAllDXLDDonVi,
 								linhVucKhacDonToCao, thamQuyenGiaiQuyetHanhChinh);
-				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
+				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = 
+						//tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
-						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+						tongSoDonKhieuNaiLinhVucHanhChinh + tongSoDonToCaoLinhVucHanhChinh
 						+ tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh17 + tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19;
 
 				mapMaSo.put("20", tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap);
