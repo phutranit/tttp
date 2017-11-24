@@ -2774,8 +2774,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(predAllDXLDDonVi,
 								linhVucKhacDonToCao, thamQuyenGiaiQuyetHanhChinh);
 				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
-						+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
-						+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
+						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
+						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
 						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
 						+ tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh17 + tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19;
 
