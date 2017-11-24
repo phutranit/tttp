@@ -1,10 +1,12 @@
 package vn.greenglobal.tttp.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import io.swagger.annotations.ApiModel;
+import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
 
 @Entity
 @Table(name = "invalidtoken")
@@ -23,6 +25,9 @@ public class InvalidToken extends Model<InvalidToken> {
 
 	@ManyToOne
 	private NguoiDung nguoiDung;
+	
+	@Enumerated(EnumType.STRING)
+	private TrangThaiInvalidTokenEnum trangThaiToken;
 	
 	public InvalidToken() {
 		super();
@@ -54,5 +59,13 @@ public class InvalidToken extends Model<InvalidToken> {
 
 	public void setNguoiDung(NguoiDung nguoiDung) {
 		this.nguoiDung = nguoiDung;
+	}
+
+	public TrangThaiInvalidTokenEnum getTrangThaiToken() {
+		return trangThaiToken;
+	}
+
+	public void setTrangThaiToken(TrangThaiInvalidTokenEnum trangThaiToken) {
+		this.trangThaiToken = trangThaiToken;
 	}
 }

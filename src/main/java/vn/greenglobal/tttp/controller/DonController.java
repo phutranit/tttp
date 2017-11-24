@@ -607,7 +607,7 @@ public class DonController extends TttpController<Don> {
 				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
-				//donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setNgayNhanTraDonChuyen(don.getNgayNhanTraDonChuyen());
 				
@@ -799,6 +799,7 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
+				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
@@ -844,7 +845,7 @@ public class DonController extends TttpController<Don> {
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
@@ -961,7 +962,7 @@ public class DonController extends TttpController<Don> {
 						}
 					}
 					
-					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					if (don.getProcessType() == null) {
 						don.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -982,7 +983,7 @@ public class DonController extends TttpController<Don> {
 						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-						//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
