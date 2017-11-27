@@ -73,6 +73,7 @@ import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
+import vn.greenglobal.tttp.enums.TinhTrangXuLyEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
@@ -1077,6 +1078,28 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", HuongGiaiQuyetTCDEnum.CHO_TIEP.getText());
 		object.put("giaTri", HuongGiaiQuyetTCDEnum.CHO_TIEP.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tinhTrangXuLys")
+	@ApiOperation(value = "Lấy danh sách tình trạng xử lý của đơn", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachTinhTrangXuLys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", TinhTrangXuLyEnum.DUNG_HAN.getText());
+		object.put("giaTri", TinhTrangXuLyEnum.DUNG_HAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", TinhTrangXuLyEnum.TRE_HAN.getText());
+		object.put("giaTri", TinhTrangXuLyEnum.TRE_HAN.name());
 		list.add(object);
 
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
