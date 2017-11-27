@@ -41,8 +41,9 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	public void copyDon(Don don) {
 		setDonGocId(don.getDonGocId() != null && don.getDonGocId() > 0 ? don.getDonGocId() : don.getId());
 		setNoiDung(don.getNoiDung());
+		setMaDon(don.getMa());
 		setTrangThaiDon(don.getTrangThaiXLDGiaiQuyet().getText());
-		setKetQuaDon(don.getKetQuaXLDGiaiQuyet().getText());
+		setKetQuaDon(don.getKetQuaXLDGiaiQuyet() != null ? don.getKetQuaXLDGiaiQuyet().getText() : "");
 		setProcessType(don.getProcessType());
 		setThongTinGiaiQuyetDon(don.getThongTinGiaiQuyetDon());
 		setTrangThaiTTXM(don.getTrangThaiTTXM());
@@ -63,6 +64,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	@JsonIgnore
 	private Long donGocId;
 	private String noiDung = "";
+	private String maDon = "";
 	private String trangThaiDon = "";
 	private String ketQuaDon = "";
 	private String tenDonViGiuDenHienTai = "";
@@ -80,7 +82,15 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private TrangThaiDonEnum trangThaiKTDX;
 	@JsonIgnore
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
-	
+		
+	public String getMaDon() {
+		return maDon;
+	}
+
+	public void setMaDon(String maDon) {
+		this.maDon = maDon;
+	}
+
 	public Long getDonGocId() {
 		return donGocId;
 	}

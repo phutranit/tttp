@@ -164,6 +164,9 @@ public class DonController extends TttpController<Don> {
 	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
 	
 	@Autowired
+	protected PagedResourcesAssembler<Medial_DonTraCuu> mediaTraCuuDonAssembler;
+	
+	@Autowired
 	private ThamSoRepository thamSoRepository;
 	
 	@Autowired
@@ -463,8 +466,66 @@ public class DonController extends TttpController<Don> {
 			}
 			Medial_DonTraCuu media = new Medial_DonTraCuu();
 			media.copyDon(don);
-			//media.setListNextStates(listAllState);
 			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/traCuuDons/canBo")
+	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Medial_DonTraCuu.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getTraCuuDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "nguonDon", required = false) String nguonDon,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
+			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
+			@RequestParam(value = "linhVucChiTietId", required = false) Long linhVucChiTietId,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "hoTen", required = false) String hoTen, 
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
+			@RequestParam(value = "taiDonVi", required = false) boolean taiDonVi,
+			@RequestParam(value = "listDonViTiepNhan", required = false) List<CoQuanQuanLy> listDonViTiepNhan,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+
+			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
+			if (nguoiDung != null) {
+				Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+				OrderSpecifier<LocalDateTime> sortOrderDon = null;
+				List<Don> listDon = new ArrayList<Don>();
+				
+				sortOrderDon = QDon.don.ngayTiepNhan.desc();
+				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, tuKhoa, nguonDon, phanLoaiDon, linhVucId, 
+						linhVucChiTietId, tuNgay, denNgay, tinhTrangXuLy, donViXuLyXLD, hoTen, ketQuaToanHT, 
+						taiDonVi, listDonViTiepNhan, xuLyRepo, repo, giaiQuyetDonRepo), 
+						sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				List<Medial_DonTraCuu> listMedial = new ArrayList<Medial_DonTraCuu>();
+				Medial_DonTraCuu media = null;
+				for (Don don : listDon.subList(start, end)) {
+					media = new Medial_DonTraCuu();
+					media.copyDon(don);
+					listMedial.add(media);
+				}
+				Page<Medial_DonTraCuu> pages = new PageImpl<Medial_DonTraCuu>(listMedial, pageable, listDon.size());
+				
+				return mediaTraCuuDonAssembler.toResource(pages, (ResourceAssembler) eass);
+			}
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
