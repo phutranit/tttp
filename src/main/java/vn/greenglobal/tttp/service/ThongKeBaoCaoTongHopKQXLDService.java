@@ -280,8 +280,8 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 							predAllXLD = predAllXLD
 									.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(tuNgayTiepNhan, denNgayTiepNhan));
 						} else { 
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month)
-									.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year)));
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().lt(month)
+									.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year)));
 						}
 					}
 				}
@@ -327,6 +327,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				}
 			}
 		}
+		
 		return predAllXLD;
 	}
 	
