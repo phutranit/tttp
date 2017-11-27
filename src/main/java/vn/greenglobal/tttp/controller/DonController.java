@@ -741,6 +741,8 @@ public class DonController extends TttpController<Don> {
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
 				if (don.isThanhLapDon() && !donOld.isThanhLapDon()) {
 					don.setMaHoSo(donService.getMaHoSo(repo, don.getId()));
+				} else {
+					don.setMaHoSo(donOld.getMaHoSo());
 				}
 				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
