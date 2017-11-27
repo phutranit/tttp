@@ -2161,10 +2161,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				BooleanExpression predAllDXLDDonViKyTruoc = predAllDSXLDKyTruoc;
 				//BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
 				
-				xldrepo.findAll(predAllDXLDDonVi).forEach(xld -> {
-					System.out.println("don " +xld.getDon().getId());
-				});
-				
 				if (cq.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoUBNDTP.getGiaTri().toString()))) {
 //					predAllDSTCDDonVi = predAllDSTCDDonVi
 //							.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.id.eq(cq.getId()));
@@ -2189,11 +2185,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(cq.getId()))
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(cq.getId())));
 				}
-				
-				System.out.println("");
-				xldrepo.findAll(predAllDSXLD).forEach(xld -> {
-					System.out.println("don e " +xld.getDon().getId());
-				});
 				
 				mapDonVi.put("ten", cq.getTen());
 				mapDonVi.put("coQuanQuanLyId", cq.getId());

@@ -55,9 +55,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 	public Predicate predicateFindAllXLD(String loaiKy, Integer quy, Integer year, Integer month, String tuNgay, String denNgay) {
 		BooleanExpression predAllXLD = baseXLD;
 		if (year != null && year > 0) { 
-			predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year)
-					//.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().lt(year))
-					);
+			predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year));
 		}
 		
 		if(loaiKy != null && StringUtils.isNotBlank(loaiKy)){
@@ -118,7 +116,8 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().lt(month)
 											.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year))
 											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().eq(month)
-													.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year))));
+													.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.year().eq(year)))
+											);
 						}
 						
 					}
@@ -128,29 +127,45 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
 						Calendar c = Utils.getMocThoiGianLocalDateTime(dtTuNgay, 0, 0);
 						LocalDateTime dtDenNgay = LocalDateTime.of(year, month, c.getActualMaximum(Calendar.DAY_OF_MONTH), 0, 0);
+						int monthOfTuNgay = dtTuNgay.getMonthValue();
+						int yearOfTuNgay = dtTuNgay.getYear();
+						LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+						
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay)
-								.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay)
-										.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay)))
+								.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay)
+										.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay)))
 								);
 					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
 						LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+						int monthOfTuNgay = dtTuNgay.getMonthValue();
+						int yearOfTuNgay = dtTuNgay.getYear();
+						LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+						
 						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtTuNgay, dtDenNgay)
-								.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay)
-										.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay)))
+								.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay)
+										.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.between(dtTuNgay, dtDenNgay)))
 								);
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
 							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
+							int monthOfTuNgay = dtTuNgay.getMonthValue();
+							int yearOfTuNgay = dtTuNgay.getYear();
+							LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+							
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.after(dtTuNgay)
-									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay)
-											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtTuNgay)))
+									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay)
+											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.after(dtTuNgay)))
 									);
 						}
 						if (StringUtils.isNotBlank(denNgay)) {
 							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
+							int monthOfTuNgay = dtDenNgay.getMonthValue();
+							int yearOfTuNgay = dtDenNgay.getYear();
+							LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+							
 							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtDenNgay)
-									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtDenNgay)
+									.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtDenNgay)
 											.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.before(dtDenNgay)))
 									);
 						}
@@ -273,18 +288,40 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.TUY_CHON)) {
 					if (!StringUtils.isNotBlank(tuNgay) && !StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
+						int monthOfTuNgay = dtTuNgay.getMonthValue();
+						int yearOfTuNgay = dtTuNgay.getYear();
+						LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay));
+						//predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
 					} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 						LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
+						int monthOfTuNgay = dtTuNgay.getMonthValue();
+						int yearOfTuNgay = dtTuNgay.getYear();
+						LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+						
+//						LocalDateTime dtTuNgay = LocalDateTime.of(year, month, 1, 0, 0);
+//						LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuDay == 1 ? year - 1 : year, 1, 1, 0, 0);
+//						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay));
+//						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
+						
+						predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay));
 					} else {
 						if (StringUtils.isNotBlank(tuNgay)) {
 							LocalDateTime dtTuNgay = Utils.fixTuNgay(tuNgay);
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
+							int monthOfTuNgay = dtTuNgay.getMonthValue();
+							int yearOfTuNgay = dtTuNgay.getYear();
+							LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+							
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtTuNgay));
+							//predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtTuNgay));
 						}
 						if (StringUtils.isNotBlank(denNgay)) {
 							LocalDateTime dtDenNgay = Utils.fixDenNgay(denNgay);
-							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtDenNgay));
+							int monthOfTuNgay = dtDenNgay.getMonthValue();
+							int yearOfTuNgay = dtDenNgay.getYear();
+							LocalDateTime dtMocNgay = LocalDateTime.of(monthOfTuNgay == 1 ? yearOfTuNgay - 1 : yearOfTuNgay, 1, 1, 0, 0);
+							predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.between(dtMocNgay, dtDenNgay));
+							//predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.before(dtDenNgay));
 						}
 					}
 				}
@@ -767,7 +804,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
-		
+		System.out.println("");
 		dons = dons.parallelStream().filter(d -> {
 			Don don = d;
 			if (d.isDonChuyen()) { 
@@ -782,6 +819,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				return false;
 			}).count();
 			if (count == 1) {
+				System.out.println("d " +d.getId());
 				return true;
 			}
 			return false;
