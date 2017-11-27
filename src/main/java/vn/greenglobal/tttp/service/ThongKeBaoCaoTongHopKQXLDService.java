@@ -804,7 +804,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toList()));
 		
-		System.out.println("");
 		dons = dons.parallelStream().filter(d -> {
 			Don don = d;
 			if (d.isDonChuyen()) { 
@@ -819,7 +818,6 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				return false;
 			}).count();
 			if (count == 1) {
-				System.out.println("d " +d.getId());
 				return true;
 			}
 			return false;
