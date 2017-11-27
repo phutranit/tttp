@@ -2172,7 +2172,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 //							.eq(cq.getId()).or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.id.eq(cq.getId()))
 //							.or(QSoTiepCongDan.soTiepCongDan.donViTiepDan.cha.cha.id.eq(cq.getId())));
 
-					System.out.println();
 					predAllDXLDDonVi = predAllDXLDDonVi.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(cq.getId())
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.id.eq(cq.getId()))
 							.or(QXuLyDon.xuLyDon.donViXuLy.cha.cha.id.eq(cq.getId())));
