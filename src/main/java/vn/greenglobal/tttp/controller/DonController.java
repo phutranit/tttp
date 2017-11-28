@@ -80,6 +80,7 @@ import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
+import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
@@ -167,11 +168,17 @@ public class DonController extends TttpController<Don> {
 	protected PagedResourcesAssembler<Medial_DonTraCuu> mediaTraCuuDonAssembler;
 	
 	@Autowired
+	protected PagedResourcesAssembler<CongChuc> congChucAssembler;
+	
+	@Autowired
 	private ThamSoRepository thamSoRepository;
 	
 	@Autowired
 	private ThamSoService thamSoService;
-		
+	
+	@Autowired
+	private CongChucService congChucService;
+	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
 	}
@@ -523,6 +530,46 @@ public class DonController extends TttpController<Don> {
 				Page<Medial_DonTraCuu> pages = new PageImpl<Medial_DonTraCuu>(listMedial, pageable, listDon.size());
 				
 				return mediaTraCuuDonAssembler.toResource(pages, (ResourceAssembler) eass);
+			}
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/timKiemDonCanBos/canBo")
+	@ApiOperation(value = "Lấy danh sách Công chức theo Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody Object getTimKiemDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "hoTen", required = false) String hoTen,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+
+			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
+			if (nguoiDung != null) {
+				if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) { 
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
+							ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
+				}
+				
+				if (hoTen == null || (hoTen != null && !StringUtils.isNotBlank(hoTen))) { 
+					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(),
+							ApiErrorEnum.HOVATEN_REQUIRED.getText(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
+				}
+				
+				List<CongChuc> listCongChuc = new ArrayList<CongChuc>();
+				congChucRepo.findAll(congChucService.predicateFindByTen(hoTen));
+				
+				
+				//int start = pageable.getOffset();
+				//int end = (start + pageable.getPageSize()) > listCongChuc.size() ? listCongChuc.size() : (start + pageable.getPageSize());
+			
+				Page<CongChuc> pages = new PageImpl<CongChuc>(listCongChuc, pageable, listCongChuc.size());
+				
+				return congChucAssembler.toResource(pages, (ResourceAssembler) eass);
 			}
 			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
