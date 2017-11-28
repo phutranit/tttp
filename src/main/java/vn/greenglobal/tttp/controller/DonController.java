@@ -459,7 +459,7 @@ public class DonController extends TttpController<Don> {
 	public @ResponseBody Object getTraCuuDonCongDan(@RequestParam(value = "maDon", required = true) String maDon, PersistentEntityResourceAssembler eass) {
 
 		try {
-			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.ma.equalsIgnoreCase(maDon)));
+			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.maHoSo.equalsIgnoreCase(maDon)));
 			if (don == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
@@ -802,6 +802,8 @@ public class DonController extends TttpController<Don> {
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
 				if (don.isThanhLapDon() && !donOld.isThanhLapDon()) {
 					don.setMaHoSo(donService.getMaHoSo(repo, don.getId()));
+				} else {
+					don.setMaHoSo(donOld.getMaHoSo());
 				}
 				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());

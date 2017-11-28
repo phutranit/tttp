@@ -432,7 +432,7 @@ public class DonService {
 		
 		// Query don
 		if (maDon != null && StringUtils.isNotBlank(maDon.trim())) {
-			predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+			predAll = predAll.and(QDon.don.maHoSo.eq(maDon.trim()));
 		}
 
 		if (hoTen != null && StringUtils.isNotBlank(hoTen.trim())) {
