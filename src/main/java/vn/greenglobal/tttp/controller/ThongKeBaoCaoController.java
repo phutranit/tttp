@@ -2340,10 +2340,12 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19 = thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(predAllDXLDDonVi,
 								linhVucKhacDonToCao, thamQuyenGiaiQuyetHanhChinh);
-				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
+				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = 
+						//tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
-						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+//						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+						tongSoDonKhieuNaiLinhVucHanhChinh + tongSoDonToCaoLinhVucHanhChinh
 						+ tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh17 + tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19;
 
 				// theo tham quyen giai quyet - cua cac co quan hanh chinh cac
@@ -2759,10 +2761,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				Long tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19 = thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonTCDPhanLoaiDonToCaoTheoNoiDungLinhVucChaCoTQGQLaHanhChinh(predAllDXLDDonVi,
 								linhVucKhacDonToCao, thamQuyenGiaiQuyetHanhChinh);
-				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
+				Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = 
+						//tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan
 						//+ tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC
-						+ tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac + tongSoDonToCaoLinhVucHanhChinh
+						tongSoDonKhieuNaiLinhVucHanhChinh + tongSoDonToCaoLinhVucHanhChinh
 						+ tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh17 + tongSoDonToCaoLinhVucThamNhungTQGQHanhChinh19;
 
 				mapMaSo.put("20", tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap);

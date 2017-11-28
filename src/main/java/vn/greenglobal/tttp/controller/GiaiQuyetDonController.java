@@ -3,6 +3,7 @@ package vn.greenglobal.tttp.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -2129,6 +2130,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			@RequestParam(value = "donId", required = true) Long donId,
 			@RequestParam(value = "tenCoQuan", required = false) String tenCoQuan,
 			@RequestParam(value = "noiDungDonThu", required = false) String noiDungDonThu,
+			@RequestParam(value = "tenCoQuanDuocGiaoNhiemVuXM", required = false) String tenCoQuanDuocGiaoNhiemVuXM,
 			HttpServletResponse response) {
 
 		try {
@@ -2167,6 +2169,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("soVB", soVB);
 			//mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText().concat(".") : "..............................(9)");
 			mappings.put("tenCoQuan", cq.getTen());
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", WordUtil.capitaliseName(tenCoQuanDuocGiaoNhiemVuXM));
 			mappings.put("noiDungDonThu", noiDungDonThu != null && noiDungDonThu != "" ? noiDungDonThu.concat(".") : "");
 			WordUtil.exportWord(response, getClass().getClassLoader().getResource("word/giaiquyetdon/GQD_PHIEU_XAC_MINH_TO_CAO.docx").getFile(), mappings, "Phiếu báo cáo về việc thụ lý giải quyết tố cáo và giao nhiệm vụ xác minh nội dung tố cáo.docx");
 		} catch (Exception e) {
@@ -2222,7 +2225,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("soVB", soVB);
 			//mappings.put("tenLanhDao", ls != null ? ls.getNguoiXuLyText() : "..............................(1)");
 			mappings.put("tenCoQuanThuLyGQKN", cq.getTen());
-			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", WordUtil.capitaliseName(tenCoQuanDuocGiaoNhiemVuXM));
 			mappings.put("hoTenNguoiKhieuNai", hoTenNguoiKhieuNai);
 			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
 			mappings.put("ngayTTXM", thoiGianBaoCaoKetQuaTTXM != "" ? thoiGianBaoCaoKetQuaTTXM : "..................");
@@ -2285,7 +2288,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			mappings.put("chucDanh", chucDanh);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("tenCoQuanThuLyGQKN", cq.getTen());
-			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", tenCoQuanDuocGiaoNhiemVuXM);
+			mappings.put("tenCoQuanDuocGiaoNhiemVuXM", WordUtil.capitaliseName(tenCoQuanDuocGiaoNhiemVuXM));
 			mappings.put("hoTenNguoiKienNghi", hoTenNguoiKienNghi);
 			mappings.put("diaChi", diaChi);
 			mappings.put("noiDungTTXM", noiDungTTXM != null && noiDungTTXM != "" ? noiDungTTXM.concat(".") : "");
