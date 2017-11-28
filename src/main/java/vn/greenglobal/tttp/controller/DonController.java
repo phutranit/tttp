@@ -481,7 +481,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getTraCuuDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -506,7 +506,7 @@ public class DonController extends TttpController<Don> {
 				List<Don> listDon = new ArrayList<Don>();
 				
 				sortOrderDon = QDon.don.ngayTiepNhan.desc();
-				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, tuKhoa, nguonDon, phanLoaiDon, linhVucId, 
+				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, diaChi, nguonDon, phanLoaiDon, linhVucId, 
 						linhVucChiTietId, tuNgay, denNgay, tinhTrangXuLy, donViXuLyXLD, hoTen, ketQuaToanHT, 
 						taiDonVi, listDonViTiepNhan, xuLyRepo, repo, giaiQuyetDonRepo), 
 						sortOrderDon);
