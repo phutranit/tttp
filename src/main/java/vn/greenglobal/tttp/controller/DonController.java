@@ -466,7 +466,7 @@ public class DonController extends TttpController<Don> {
 	public @ResponseBody Object getTraCuuDonCongDan(@RequestParam(value = "maDon", required = true) String maDon, PersistentEntityResourceAssembler eass) {
 
 		try {
-			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.ma.equalsIgnoreCase(maDon)));
+			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.maHoSo.equalsIgnoreCase(maDon)));
 			if (don == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
 						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
@@ -488,7 +488,7 @@ public class DonController extends TttpController<Don> {
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
 	public @ResponseBody Object getTraCuuDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
-			@RequestParam(value = "tuKhoa", required = false) String tuKhoa,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
 			@RequestParam(value = "nguonDon", required = false) String nguonDon,
 			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
 			@RequestParam(value = "tuNgay", required = false) String tuNgay,
@@ -513,7 +513,7 @@ public class DonController extends TttpController<Don> {
 				List<Don> listDon = new ArrayList<Don>();
 				
 				sortOrderDon = QDon.don.ngayTiepNhan.desc();
-				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, tuKhoa, nguonDon, phanLoaiDon, linhVucId, 
+				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, diaChi, nguonDon, phanLoaiDon, linhVucId, 
 						linhVucChiTietId, tuNgay, denNgay, tinhTrangXuLy, donViXuLyXLD, hoTen, ketQuaToanHT, 
 						taiDonVi, listDonViTiepNhan, xuLyRepo, repo, giaiQuyetDonRepo), 
 						sortOrderDon);
@@ -849,6 +849,8 @@ public class DonController extends TttpController<Don> {
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
 				if (don.isThanhLapDon() && !donOld.isThanhLapDon()) {
 					don.setMaHoSo(donService.getMaHoSo(repo, don.getId()));
+				} else {
+					don.setMaHoSo(donOld.getMaHoSo());
 				}
 				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());

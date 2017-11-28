@@ -417,7 +417,7 @@ public class DonService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAllDonTraCuu(String maDon, String tuKhoa, String nguonDon, String phanLoaiDon, Long linhVucId, Long linhVucChiTietId,
+	public Predicate predicateFindAllDonTraCuu(String maDon, String diaChi, String nguonDon, String phanLoaiDon, Long linhVucId, Long linhVucChiTietId,
 			String tuNgay, String denNgay,
 			String tinhTrangXuLy, Long donViXuLyXLD, String hoTen, String ketQuaToanHT, 
 			boolean taiDonVi, List<CoQuanQuanLy> listDonViTiepNhan,
@@ -432,7 +432,7 @@ public class DonService {
 		
 		// Query don
 		if (maDon != null && StringUtils.isNotBlank(maDon.trim())) {
-			predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+			predAll = predAll.and(QDon.don.maHoSo.eq(maDon.trim()));
 		}
 
 		if (hoTen != null && StringUtils.isNotBlank(hoTen.trim())) {
@@ -448,27 +448,17 @@ public class DonService {
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
 			predAll = predAll.and(QDon.don.in(dons));
 		}
-
-		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
+		
+		if (diaChi != null && StringUtils.isNotBlank(diaChi.trim())) {
 			List<Don_CongDan> donCongDans = new ArrayList<Don_CongDan>();
 			List<Don> dons = new ArrayList<Don>();
-			List<Long> donIds = new ArrayList<Long>();
 			BooleanExpression donCongDanQuery = baseDonCongDan;
 			
 			donCongDanQuery = donCongDanQuery
-					.and(QDon_CongDan.don_CongDan.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
-							.or(QDon_CongDan.don_CongDan.tenCoQuan.containsIgnoreCase(tuKhoa.trim()))
-							.or(QDon_CongDan.don_CongDan.diaChi.containsIgnoreCase(tuKhoa.trim()))
-							.or(QDon_CongDan.don_CongDan.soCMNDHoChieu.eq(tuKhoa.trim())))
-					.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON));
-			
+					.and(QDon_CongDan.don_CongDan.diaChi.containsIgnoreCase(Utils.unAccent(diaChi.trim())));
 			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
-			donIds.addAll(dons.stream().map(d -> {
-				return d.getId();
-			}).distinct().collect(Collectors.toList()));
-			
-			predAll = predAll.and(QDon.don.in(dons).or(QDon.don.donGocId.in(donIds)));
+			predAll = predAll.and(QDon.don.in(dons));
 		}
 
 		if (nguonDon != null && StringUtils.isNotBlank(nguonDon.trim())) {
