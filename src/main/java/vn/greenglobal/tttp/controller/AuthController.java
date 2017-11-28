@@ -46,6 +46,7 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.model.QNguoiDung;
+import vn.greenglobal.tttp.model.ResetToken;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThongTinEmail;
 import vn.greenglobal.tttp.model.Transition;
@@ -56,6 +57,7 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.InvalidTokenRepository;
 import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
+import vn.greenglobal.tttp.repository.ResetTokenRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThongTinEmailRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
@@ -64,6 +66,7 @@ import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.InvalidTokenService;
 import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ProcessService;
+import vn.greenglobal.tttp.service.ResetTokenService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThongTinEmailService;
 import vn.greenglobal.tttp.service.TransitionService;
@@ -136,6 +139,12 @@ public class AuthController {
 
 	@Autowired
 	InvalidTokenService invalidTokenService;
+	
+	@Autowired
+	ResetTokenService resetTokenService;
+	
+	@Autowired
+	ResetTokenRepository resetTokenRepo;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/auth/login")
 	public @ResponseBody ResponseEntity<Object> login(@RequestHeader(value = "Email", required = true) String username,
@@ -222,6 +231,13 @@ public class AuthController {
 			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
 			boolean acceptRequest = false;
 			if (part != null && part.length == 2) {
+				System.out.println("====confirmCode: " + params.getCode());
+				ResetToken token = resetTokenService.predFindToKenCurrentByToken(params.getCode());
+				
+				if (token != null) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				
 				String checkEmail = new String(Base64.decodeBase64(part[0]));
 				String checkTime = part[1];
 				NguoiDung user = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.email.eq(checkEmail)));
@@ -284,6 +300,12 @@ public class AuthController {
 			String[] part = params.getCode() != null ? params.getCode().split(getAnonymousCode()) : new String[0];
 			boolean acceptRequest = false;
 			if (part != null && part.length == 2) {
+				ResetToken token = resetTokenService.predFindToKenCurrentByToken(params.getCode());
+				
+				if (token != null) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				
 				String checkEmail = new String(Base64.decodeBase64(part[0]));
 				String checkTime = part[1];
 				NguoiDung user = nguoiDungRepository
@@ -313,6 +335,8 @@ public class AuthController {
 				if (acceptRequest) {
 					user.updatePassword(params.getPassword());
 					CongChuc congChuc = congChucRepository.findOne(QCongChuc.congChuc.nguoiDung.eq(user));
+					ResetToken tokenReset = new ResetToken(params.getCode());
+					resetTokenService.save(tokenReset, congChuc.getId());
 					nguoiDungService.save(user, congChuc.getId());
 					return new ResponseEntity<>(HttpStatus.OK);
 				}

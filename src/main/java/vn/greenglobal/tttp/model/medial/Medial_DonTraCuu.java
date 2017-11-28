@@ -42,8 +42,18 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setDonGocId(don.getDonGocId() != null && don.getDonGocId() > 0 ? don.getDonGocId() : don.getId());
 		setNoiDung(don.getNoiDung());
 		setMaDon(don.getMa());
-		setTrangThaiDon(don.getTrangThaiXLDGiaiQuyet().getText());
+		setMaHoSo(don.getMaHoSo());
+		setNguonDon(don.getNguonTiepNhanDon().getText());
+		setLoaiDoiTuong(don.getLoaiDoiTuong().getText());
+		setLoaiDonThu(don.getLoaiDon() != null ? don.getLoaiDon().getText() : "");
+		setNgayTiepNhanDon(don.getNgayTiepNhan());
+		setTrangThaiDon(don.getTrangThaiXLDGiaiQuyet() != null ? don.getTrangThaiXLDGiaiQuyet().getText() : "");
+		setLoaiDoiTuong(don.getLoaiDoiTuong() != null ? don.getLoaiDoiTuong().getText() : "");
 		setKetQuaDon(don.getKetQuaXLDGiaiQuyet() != null ? don.getKetQuaXLDGiaiQuyet().getText() : "");
+		setLinhVucDonThu(don.getLinhVucDonThu() != null ? don.getLinhVucDonThu().getTen() : "");
+		setLinhVucDonThuChiTiet(don.getLinhVucDonThuChiTiet() != null ? don.getLinhVucDonThuChiTiet().getTen() : "");
+		setLoaiVuViec(don.getLoaiVuViec() != null ? don.getLoaiVuViec().getText() : "");
+		setLinhVucChiTietKhac(don.getLinhVucChiTietKhac());
 		setProcessType(don.getProcessType());
 		setThongTinGiaiQuyetDon(don.getThongTinGiaiQuyetDon());
 		setTrangThaiTTXM(don.getTrangThaiTTXM());
@@ -65,13 +75,24 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private Long donGocId;
 	private String noiDung = "";
 	private String maDon = "";
+	private String maHoSo = "";
+	private String nguonDon = "";
 	private String trangThaiDon = "";
+	private String loaiDonThu = "";
+	private String loaiDoiTuong = "";
 	private String ketQuaDon = "";
 	private String tenDonViGiuDenHienTai = "";
+	private String linhVucDonThu = "";
+	private String linhVucDonThuChiTiet = "";
+	private String linhVucChiTietKhac = "";
+	private String loaiVuViec = "";
+	
 	@JsonIgnore
 	private LocalDateTime ngayBatDauXLD;
 	@JsonIgnore
 	private LocalDateTime thoiHanXuLyXLD;
+	@JsonIgnore
+	private LocalDateTime ngayTiepNhanDon;
 	@JsonIgnore
 	private ProcessTypeEnum processType;
 	@JsonIgnore
@@ -89,6 +110,78 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 
 	public void setMaDon(String maDon) {
 		this.maDon = maDon;
+	}
+	
+	public String getMaHoSo() {
+		return maHoSo;
+	}
+
+	public void setMaHoSo(String maHoSo) {
+		this.maHoSo = maHoSo;
+	}
+
+	public String getLoaiVuViec() {
+		return loaiVuViec;
+	}
+
+	public void setLoaiVuViec(String loaiVuViec) {
+		this.loaiVuViec = loaiVuViec;
+	}
+
+	public String getLoaiDonThu() {
+		return loaiDonThu;
+	}
+
+	public void setLoaiDonThu(String loaiDonThu) {
+		this.loaiDonThu = loaiDonThu;
+	}
+
+	public String getNguonDon() {
+		return nguonDon;
+	}
+
+	public void setNguonDon(String nguonDon) {
+		this.nguonDon = nguonDon;
+	}
+	
+	public LocalDateTime getNgayTiepNhanDon() {
+		return ngayTiepNhanDon;
+	}
+
+	public void setNgayTiepNhanDon(LocalDateTime ngayTiepNhanDon) {
+		this.ngayTiepNhanDon = ngayTiepNhanDon;
+	}
+
+	public String getLinhVucDonThu() {
+		return linhVucDonThu;
+	}
+
+	public void setLinhVucDonThu(String linhVucDonThu) {
+		this.linhVucDonThu = linhVucDonThu;
+	}
+
+	public String getLinhVucDonThuChiTiet() {
+		return linhVucDonThuChiTiet;
+	}
+
+	public void setLinhVucDonThuChiTiet(String linhVucDonThuChiTiet) {
+		this.linhVucDonThuChiTiet = linhVucDonThuChiTiet;
+	}
+
+	public String getLinhVucChiTietKhac() {
+		return linhVucChiTietKhac;
+	}
+
+	public void setLinhVucChiTietKhac(String linhVucChiTietKhac) {
+		this.linhVucChiTietKhac = linhVucChiTietKhac;
+	}
+
+	public String getLoaiDoiTuong() {
+		return loaiDoiTuong;
+	}
+
+	public void setLoaiDoiTuong(String loaiDoiTuong) {
+		this.loaiDoiTuong = loaiDoiTuong;
 	}
 
 	public Long getDonGocId() {
