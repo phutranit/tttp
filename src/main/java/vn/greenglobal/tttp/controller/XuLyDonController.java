@@ -1213,6 +1213,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							don.setCoQuanDangGiaiQuyet(xuLyDonHienTai.getDonViXuLy());
 							don.setNgayKetThucXLD(Utils.localDateTimeNow());
 							don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
+							don.setCanBoXuLyChiDinh(null);
 							
 //							Bo phanLoaiDon - cap nhat 16/11
 //							if (xuLyDon.getPhanLoaiDon() != null) {
@@ -3766,7 +3767,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DA_XU_LY);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN);
 		don.setTrangThaiDon(TrangThaiDonEnum.DA_XU_LY);
-		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		//don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		don.setCanBoXuLyChiDinh(null);
 		don.setNgayKetThucXLD(Utils.localDateTimeNow());
 		don.setCanBoCoTheThuHoi(null);
 		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());
@@ -3865,10 +3867,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		xuLyDonTiepTheo = xuLyDonService.save(xuLyDonTiepTheo, congChucId);
 		
 		//disableXuLyDonLanhDaoVanThuCu(VaiTroEnum.VAN_THU, donGoc.getId(), congChucId, donVi.getDonVi().getId());
-		don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+		//don.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
 		don.setCoQuanDangGiaiQuyet(donVi.getDonVi());
 		donGoc.setCoQuanDangGiaiQuyet(donVi.getDonVi());
-		don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
+		//don.setCanBoXuLyChiDinh(xuLyDonHienTai.getCanBoXuLyChiDinh());
 		don.setHoanThanhDon(true);
 		don.setNgayNhanTraDonChuyen(Utils.localDateTimeNow());
 		//donGoc.setCanBoXuLyChiDinh(xuLyDonTiepTheo.getCanBoXuLyChiDinh());
