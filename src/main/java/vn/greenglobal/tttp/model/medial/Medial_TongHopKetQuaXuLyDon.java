@@ -13,7 +13,7 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Model;
 
 @Entity
-@Table(name = "medial_tonghopketquagiaiquyetkhieunai")
+@Table(name = "medial_tonghopketquaxulydon")
 public class Medial_TongHopKetQuaXuLyDon extends Model<Medial_TongHopKetQuaXuLyDon> {
 
 	private static final long serialVersionUID = 1L;
@@ -23,43 +23,36 @@ public class Medial_TongHopKetQuaXuLyDon extends Model<Medial_TongHopKetQuaXuLyD
 	
 	private int soThuTu;
 	
-	private Long tongSoDonKhieuNai;
-	private Long donNhanTrongKyBaoCao;
-	private Long donTonKyTruocChuyenSang;
-	private Long tongSoVuViec;
-	private Long soDonThuocThamQuyen;
-	private Long soVuViecThuocThamQuyen;
-	private Long soVuViecGiaiQuyetBangQDHanhChinh;
-	private Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
-	private Long khieuNaiDung;
-	private Long khieuNaiSai;
-	private Long khieuNaiDungMotPhan;
-	private Long giaiQuyetLan1;
-	private Long congNhanQuyetDinhGiaiQuyetLan1;
-	private Long huySuaQuyetDinhGiaiQuyetLan1;
-	private Long kienNghiThuHoiChoNhaNuocTien;
-	private Long kienNghiThuHoiChoNhaNuocDat;
-	private Long traLaiChoCongDanTien;
-	private Long traLaiChoCongDanDat;
-	private Long soNguoiDuocTraLaiQuyenLoi;
-	private Long kienNghiXuLyHanhChinhTongSoNguoi;
-	private Long kienNghiXuLyHanhChinhSoNguoiDaBiXuLy;
-	private Long soVuChuyenCoQuanDieuTra;
-	private Long soDoiTuongChuyenCoQuanDieuTra;
-	private Long soVuDaKhoiTo;
-	private Long soDoiTuongDaKhoiTo;
-	private Long soVuViecGiaiQuyetDungThoiHan;
-	private Long soVuViecGiaiQuyetQuaThoiHan;
-	private Long tongSoQuyetDinhPhaiToChucThucHien;
-	private Long tongSoQuyetDinhPhaiToChucThucHienDaThucHien;
-	private Long tienPhaiThuChoNhaNuoc;
-	private Long datPhaiThuChoNhaNuoc;
-	private Long tienDaThuChoNhaNuoc;
-	private Long datDaThuChoNhaNuoc;
-	private Long tienPhaiTraChoCongDan;
-	private Long datPhaiTraChoCongDan;
-	private Long tienDaTraChoCongDan;
-	private Long datDaTraChoCongDan;
+	private Long tongSoDonTiepNhanXLDTCD;
+	private Long tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
+	private Long tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
+	private Long tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
+	private Long tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
+	private Long tongSoDonDuDieuKienThuLy;
+	private Long tongSoDonKhieuNaiLinhVucHanhChinh;
+	private Long tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai;
+	private Long tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan;
+	private Long tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC;
+	private Long tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac;
+	private Long tongSoDonKhieuNaiLinhVucTuPhap;
+	private Long tongSoDonKhieuNaiLinhVucVeDang;
+	private Long tongSoDonLinhVucToCao;
+	private Long tongSoDonToCaoLinhVucHanhChinh;
+	private Long tongSoDonToCaoLinhVucTuPhap;
+	private Long tongSoDonToCaoLinhVucThamNhung;
+	private Long tongSoDonToCaoLinhVucVeDang;
+	private Long tongSoDonToCaoLinhVucKhac;
+	private Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap;
+	private Long tongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap;
+	private Long tongSoDonTheoTQGQCuaCoQuanDang;
+	private Long tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
+	private Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet;
+	private Long tongSoDonXLDDonKienNghiPhanAnh;
+	private Long tongSoDonXLDSoVanBanHuongDan;
+	private Long tongSoDonChuyenCQCoThamQuyen;
+	private Long tongSoDonCoSoCongVanDonDocViecGiaiQuyet;
+	private Long tongSoDonThuocThamQuyenKhieuNai;
+	private Long tongSoDonThuocThamQuyenToCao;
 	
 	private String ghiChu = "";
 
@@ -78,301 +71,252 @@ public class Medial_TongHopKetQuaXuLyDon extends Model<Medial_TongHopKetQuaXuLyD
 	public void setSoThuTu(int soThuTu) {
 		this.soThuTu = soThuTu;
 	}
-	
-	public Long getTongSoDonKhieuNai() {
-		return tongSoDonKhieuNai;
-	}
-
-	public void setTongSoDonKhieuNai(Long tongSoDonKhieuNai) {
-		this.tongSoDonKhieuNai = tongSoDonKhieuNai;
-	}
-
-	public Long getDonNhanTrongKyBaoCao() {
-		return donNhanTrongKyBaoCao;
-	}
-
-	public void setDonNhanTrongKyBaoCao(Long donNhanTrongKyBaoCao) {
-		this.donNhanTrongKyBaoCao = donNhanTrongKyBaoCao;
-	}
-
-	public Long getDonTonKyTruocChuyenSang() {
-		return donTonKyTruocChuyenSang;
-	}
-
-	public void setDonTonKyTruocChuyenSang(Long donTonKyTruocChuyenSang) {
-		this.donTonKyTruocChuyenSang = donTonKyTruocChuyenSang;
-	}
-
-	public Long getTongSoVuViec() {
-		return tongSoVuViec;
-	}
-
-	public void setTongSoVuViec(Long tongSoVuViec) {
-		this.tongSoVuViec = tongSoVuViec;
-	}
-
-	public Long getSoDonThuocThamQuyen() {
-		return soDonThuocThamQuyen;
-	}
-
-	public void setSoDonThuocThamQuyen(Long soDonThuocThamQuyen) {
-		this.soDonThuocThamQuyen = soDonThuocThamQuyen;
-	}
-
-	public Long getSoVuViecThuocThamQuyen() {
-		return soVuViecThuocThamQuyen;
-	}
-
-	public void setSoVuViecThuocThamQuyen(Long soVuViecThuocThamQuyen) {
-		this.soVuViecThuocThamQuyen = soVuViecThuocThamQuyen;
-	}
-
-	public Long getSoVuViecGiaiQuyetBangQDHanhChinh() {
-		return soVuViecGiaiQuyetBangQDHanhChinh;
-	}
-
-	public void setSoVuViecGiaiQuyetBangQDHanhChinh(Long soVuViecGiaiQuyetBangQDHanhChinh) {
-		this.soVuViecGiaiQuyetBangQDHanhChinh = soVuViecGiaiQuyetBangQDHanhChinh;
-	}
 
-	public Long getSoVuViecRutDonThongQuaGiaiThichThuyetPhuc() {
-		return soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
+	public Long getTongSoDonTiepNhanXLDTCD() {
+		return tongSoDonTiepNhanXLDTCD;
 	}
 
-	public void setSoVuViecRutDonThongQuaGiaiThichThuyetPhuc(Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc) {
-		this.soVuViecRutDonThongQuaGiaiThichThuyetPhuc = soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
+	public void setTongSoDonTiepNhanXLDTCD(Long tongSoDonTiepNhanXLDTCD) {
+		this.tongSoDonTiepNhanXLDTCD = tongSoDonTiepNhanXLDTCD;
 	}
 
-	public Long getKhieuNaiDung() {
-		return khieuNaiDung;
+	public Long getTongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy() {
+		return tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
 	}
 
-	public void setKhieuNaiDung(Long khieuNaiDung) {
-		this.khieuNaiDung = khieuNaiDung;
+	public void setTongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy(
+			Long tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy) {
+		this.tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy = tongSoDonCoNhieuNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
 	}
 
-	public Long getKhieuNaiSai() {
-		return khieuNaiSai;
+	public Long getTongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy() {
+		return tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
 	}
 
-	public void setKhieuNaiSai(Long khieuNaiSai) {
-		this.khieuNaiSai = khieuNaiSai;
+	public void setTongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy(
+			Long tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy) {
+		this.tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy = tongSoDonCoMotNguoiDungTenTiepNhanDonTiepNhanDonTrongKy;
 	}
 
-	public Long getKhieuNaiDungMotPhan() {
-		return khieuNaiDungMotPhan;
+	public Long getTongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang() {
+		return tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
 	}
 
-	public void setKhieuNaiDungMotPhan(Long khieuNaiDungMotPhan) {
-		this.khieuNaiDungMotPhan = khieuNaiDungMotPhan;
+	public void setTongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang(
+			Long tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang) {
+		this.tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang = tongSoDonCoNhieuNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
 	}
 
-	public Long getGiaiQuyetLan1() {
-		return giaiQuyetLan1;
+	public Long getTongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang() {
+		return tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
 	}
 
-	public void setGiaiQuyetLan1(Long giaiQuyetLan1) {
-		this.giaiQuyetLan1 = giaiQuyetLan1;
+	public void setTongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang(
+			Long tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang) {
+		this.tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang = tongSoDonCoMotNguoiDungTenTiepNhanDonDonKyTruocChuyenSang;
 	}
 
-	public Long getCongNhanQuyetDinhGiaiQuyetLan1() {
-		return congNhanQuyetDinhGiaiQuyetLan1;
+	public Long getTongSoDonDuDieuKienThuLy() {
+		return tongSoDonDuDieuKienThuLy;
 	}
 
-	public void setCongNhanQuyetDinhGiaiQuyetLan1(Long congNhanQuyetDinhGiaiQuyetLan1) {
-		this.congNhanQuyetDinhGiaiQuyetLan1 = congNhanQuyetDinhGiaiQuyetLan1;
+	public void setTongSoDonDuDieuKienThuLy(Long tongSoDonDuDieuKienThuLy) {
+		this.tongSoDonDuDieuKienThuLy = tongSoDonDuDieuKienThuLy;
 	}
 
-	public Long getHuySuaQuyetDinhGiaiQuyetLan1() {
-		return huySuaQuyetDinhGiaiQuyetLan1;
+	public Long getTongSoDonKhieuNaiLinhVucHanhChinh() {
+		return tongSoDonKhieuNaiLinhVucHanhChinh;
 	}
 
-	public void setHuySuaQuyetDinhGiaiQuyetLan1(Long huySuaQuyetDinhGiaiQuyetLan1) {
-		this.huySuaQuyetDinhGiaiQuyetLan1 = huySuaQuyetDinhGiaiQuyetLan1;
+	public void setTongSoDonKhieuNaiLinhVucHanhChinh(Long tongSoDonKhieuNaiLinhVucHanhChinh) {
+		this.tongSoDonKhieuNaiLinhVucHanhChinh = tongSoDonKhieuNaiLinhVucHanhChinh;
 	}
 
-	public Long getKienNghiThuHoiChoNhaNuocTien() {
-		return kienNghiThuHoiChoNhaNuocTien;
+	public Long getTongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai() {
+		return tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai;
 	}
 
-	public void setKienNghiThuHoiChoNhaNuocTien(Long kienNghiThuHoiChoNhaNuocTien) {
-		this.kienNghiThuHoiChoNhaNuocTien = kienNghiThuHoiChoNhaNuocTien;
+	public void setTongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai(
+			Long tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai) {
+		this.tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai = tongSoDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai;
 	}
 
-	public Long getKienNghiThuHoiChoNhaNuocDat() {
-		return kienNghiThuHoiChoNhaNuocDat;
+	public Long getTongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan() {
+		return tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan;
 	}
 
-	public void setKienNghiThuHoiChoNhaNuocDat(Long kienNghiThuHoiChoNhaNuocDat) {
-		this.kienNghiThuHoiChoNhaNuocDat = kienNghiThuHoiChoNhaNuocDat;
+	public void setTongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan(Long tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan) {
+		this.tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan = tongSoDonKhieuNaiLinhVucHanhChinhVeNhaVaTaiSan;
 	}
 
-	public Long getTraLaiChoCongDanTien() {
-		return traLaiChoCongDanTien;
+	public Long getTongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC() {
+		return tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC;
 	}
 
-	public void setTraLaiChoCongDanTien(Long traLaiChoCongDanTien) {
-		this.traLaiChoCongDanTien = traLaiChoCongDanTien;
+	public void setTongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC(
+			Long tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC) {
+		this.tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC = tongSoDonKhieuNaiLinhVucHanhChinhVeChinhSachCheDoCCVC;
 	}
 
-	public Long getTraLaiChoCongDanDat() {
-		return traLaiChoCongDanDat;
+	public Long getTongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac() {
+		return tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac;
 	}
 
-	public void setTraLaiChoCongDanDat(Long traLaiChoCongDanDat) {
-		this.traLaiChoCongDanDat = traLaiChoCongDanDat;
+	public void setTongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac(
+			Long tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac) {
+		this.tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac = tongSoDonKhieuNaiLinhVucHanhChinhLinhVucKTCTXHKhac;
 	}
 
-	public Long getSoNguoiDuocTraLaiQuyenLoi() {
-		return soNguoiDuocTraLaiQuyenLoi;
+	public Long getTongSoDonKhieuNaiLinhVucTuPhap() {
+		return tongSoDonKhieuNaiLinhVucTuPhap;
 	}
 
-	public void setSoNguoiDuocTraLaiQuyenLoi(Long soNguoiDuocTraLaiQuyenLoi) {
-		this.soNguoiDuocTraLaiQuyenLoi = soNguoiDuocTraLaiQuyenLoi;
+	public void setTongSoDonKhieuNaiLinhVucTuPhap(Long tongSoDonKhieuNaiLinhVucTuPhap) {
+		this.tongSoDonKhieuNaiLinhVucTuPhap = tongSoDonKhieuNaiLinhVucTuPhap;
 	}
 
-	public Long getKienNghiXuLyHanhChinhTongSoNguoi() {
-		return kienNghiXuLyHanhChinhTongSoNguoi;
+	public Long getTongSoDonKhieuNaiLinhVucVeDang() {
+		return tongSoDonKhieuNaiLinhVucVeDang;
 	}
 
-	public void setKienNghiXuLyHanhChinhTongSoNguoi(Long kienNghiXuLyHanhChinhTongSoNguoi) {
-		this.kienNghiXuLyHanhChinhTongSoNguoi = kienNghiXuLyHanhChinhTongSoNguoi;
+	public void setTongSoDonKhieuNaiLinhVucVeDang(Long tongSoDonKhieuNaiLinhVucVeDang) {
+		this.tongSoDonKhieuNaiLinhVucVeDang = tongSoDonKhieuNaiLinhVucVeDang;
 	}
 
-	public Long getKienNghiXuLyHanhChinhSoNguoiDaBiXuLy() {
-		return kienNghiXuLyHanhChinhSoNguoiDaBiXuLy;
+	public Long getTongSoDonLinhVucToCao() {
+		return tongSoDonLinhVucToCao;
 	}
 
-	public void setKienNghiXuLyHanhChinhSoNguoiDaBiXuLy(Long kienNghiXuLyHanhChinhSoNguoiDaBiXuLy) {
-		this.kienNghiXuLyHanhChinhSoNguoiDaBiXuLy = kienNghiXuLyHanhChinhSoNguoiDaBiXuLy;
+	public void setTongSoDonLinhVucToCao(Long tongSoDonLinhVucToCao) {
+		this.tongSoDonLinhVucToCao = tongSoDonLinhVucToCao;
 	}
 
-	public Long getSoVuChuyenCoQuanDieuTra() {
-		return soVuChuyenCoQuanDieuTra;
+	public Long getTongSoDonToCaoLinhVucHanhChinh() {
+		return tongSoDonToCaoLinhVucHanhChinh;
 	}
 
-	public void setSoVuChuyenCoQuanDieuTra(Long soVuChuyenCoQuanDieuTra) {
-		this.soVuChuyenCoQuanDieuTra = soVuChuyenCoQuanDieuTra;
+	public void setTongSoDonToCaoLinhVucHanhChinh(Long tongSoDonToCaoLinhVucHanhChinh) {
+		this.tongSoDonToCaoLinhVucHanhChinh = tongSoDonToCaoLinhVucHanhChinh;
 	}
 
-	public Long getSoDoiTuongChuyenCoQuanDieuTra() {
-		return soDoiTuongChuyenCoQuanDieuTra;
+	public Long getTongSoDonToCaoLinhVucTuPhap() {
+		return tongSoDonToCaoLinhVucTuPhap;
 	}
 
-	public void setSoDoiTuongChuyenCoQuanDieuTra(Long soDoiTuongChuyenCoQuanDieuTra) {
-		this.soDoiTuongChuyenCoQuanDieuTra = soDoiTuongChuyenCoQuanDieuTra;
+	public void setTongSoDonToCaoLinhVucTuPhap(Long tongSoDonToCaoLinhVucTuPhap) {
+		this.tongSoDonToCaoLinhVucTuPhap = tongSoDonToCaoLinhVucTuPhap;
 	}
 
-	public Long getSoVuDaKhoiTo() {
-		return soVuDaKhoiTo;
+	public Long getTongSoDonToCaoLinhVucThamNhung() {
+		return tongSoDonToCaoLinhVucThamNhung;
 	}
 
-	public void setSoVuDaKhoiTo(Long soVuDaKhoiTo) {
-		this.soVuDaKhoiTo = soVuDaKhoiTo;
+	public void setTongSoDonToCaoLinhVucThamNhung(Long tongSoDonToCaoLinhVucThamNhung) {
+		this.tongSoDonToCaoLinhVucThamNhung = tongSoDonToCaoLinhVucThamNhung;
 	}
 
-	public Long getSoDoiTuongDaKhoiTo() {
-		return soDoiTuongDaKhoiTo;
+	public Long getTongSoDonToCaoLinhVucVeDang() {
+		return tongSoDonToCaoLinhVucVeDang;
 	}
 
-	public void setSoDoiTuongDaKhoiTo(Long soDoiTuongDaKhoiTo) {
-		this.soDoiTuongDaKhoiTo = soDoiTuongDaKhoiTo;
+	public void setTongSoDonToCaoLinhVucVeDang(Long tongSoDonToCaoLinhVucVeDang) {
+		this.tongSoDonToCaoLinhVucVeDang = tongSoDonToCaoLinhVucVeDang;
 	}
 
-	public Long getSoVuViecGiaiQuyetDungThoiHan() {
-		return soVuViecGiaiQuyetDungThoiHan;
+	public Long getTongSoDonToCaoLinhVucKhac() {
+		return tongSoDonToCaoLinhVucKhac;
 	}
 
-	public void setSoVuViecGiaiQuyetDungThoiHan(Long soVuViecGiaiQuyetDungThoiHan) {
-		this.soVuViecGiaiQuyetDungThoiHan = soVuViecGiaiQuyetDungThoiHan;
+	public void setTongSoDonToCaoLinhVucKhac(Long tongSoDonToCaoLinhVucKhac) {
+		this.tongSoDonToCaoLinhVucKhac = tongSoDonToCaoLinhVucKhac;
 	}
 
-	public Long getSoVuViecGiaiQuyetQuaThoiHan() {
-		return soVuViecGiaiQuyetQuaThoiHan;
+	public Long getTongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap() {
+		return tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap;
 	}
 
-	public void setSoVuViecGiaiQuyetQuaThoiHan(Long soVuViecGiaiQuyetQuaThoiHan) {
-		this.soVuViecGiaiQuyetQuaThoiHan = soVuViecGiaiQuyetQuaThoiHan;
+	public void setTongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap(Long tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap) {
+		this.tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap = tongSoDonTheoTQGQCuaCacCoQuanHanhChinhCacCap;
 	}
 
-	public Long getTongSoQuyetDinhPhaiToChucThucHien() {
-		return tongSoQuyetDinhPhaiToChucThucHien;
+	public Long getTongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap() {
+		return tongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap;
 	}
 
-	public void setTongSoQuyetDinhPhaiToChucThucHien(Long tongSoQuyetDinhPhaiToChucThucHien) {
-		this.tongSoQuyetDinhPhaiToChucThucHien = tongSoQuyetDinhPhaiToChucThucHien;
+	public void setTongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap(Long tongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap) {
+		this.tongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap = tongSoDonTheoTQGQCuaCacCoQuanTuPhapCacCap;
 	}
 
-	public Long getTongSoQuyetDinhPhaiToChucThucHienDaThucHien() {
-		return tongSoQuyetDinhPhaiToChucThucHienDaThucHien;
+	public Long getTongSoDonTheoTQGQCuaCoQuanDang() {
+		return tongSoDonTheoTQGQCuaCoQuanDang;
 	}
 
-	public void setTongSoQuyetDinhPhaiToChucThucHienDaThucHien(Long tongSoQuyetDinhPhaiToChucThucHienDaThucHien) {
-		this.tongSoQuyetDinhPhaiToChucThucHienDaThucHien = tongSoQuyetDinhPhaiToChucThucHienDaThucHien;
+	public void setTongSoDonTheoTQGQCuaCoQuanDang(Long tongSoDonTheoTQGQCuaCoQuanDang) {
+		this.tongSoDonTheoTQGQCuaCoQuanDang = tongSoDonTheoTQGQCuaCoQuanDang;
 	}
 
-	public Long getTienPhaiThuChoNhaNuoc() {
-		return tienPhaiThuChoNhaNuoc;
+	public Long getTongSoDonTheoTTGiaiQuyetChuaGiaiQuyet() {
+		return tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
 	}
 
-	public void setTienPhaiThuChoNhaNuoc(Long tienPhaiThuChoNhaNuoc) {
-		this.tienPhaiThuChoNhaNuoc = tienPhaiThuChoNhaNuoc;
+	public void setTongSoDonTheoTTGiaiQuyetChuaGiaiQuyet(Long tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet) {
+		this.tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet = tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
 	}
 
-	public Long getDatPhaiThuChoNhaNuoc() {
-		return datPhaiThuChoNhaNuoc;
+	public Long getTongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet() {
+		return tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet;
 	}
 
-	public void setDatPhaiThuChoNhaNuoc(Long datPhaiThuChoNhaNuoc) {
-		this.datPhaiThuChoNhaNuoc = datPhaiThuChoNhaNuoc;
+	public void setTongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet(Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet) {
+		this.tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet = tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyet;
 	}
 
-	public Long getTienDaThuChoNhaNuoc() {
-		return tienDaThuChoNhaNuoc;
+	public Long getTongSoDonXLDDonKienNghiPhanAnh() {
+		return tongSoDonXLDDonKienNghiPhanAnh;
 	}
 
-	public void setTienDaThuChoNhaNuoc(Long tienDaThuChoNhaNuoc) {
-		this.tienDaThuChoNhaNuoc = tienDaThuChoNhaNuoc;
+	public void setTongSoDonXLDDonKienNghiPhanAnh(Long tongSoDonXLDDonKienNghiPhanAnh) {
+		this.tongSoDonXLDDonKienNghiPhanAnh = tongSoDonXLDDonKienNghiPhanAnh;
 	}
 
-	public Long getDatDaThuChoNhaNuoc() {
-		return datDaThuChoNhaNuoc;
+	public Long getTongSoDonXLDSoVanBanHuongDan() {
+		return tongSoDonXLDSoVanBanHuongDan;
 	}
 
-	public void setDatDaThuChoNhaNuoc(Long datDaThuChoNhaNuoc) {
-		this.datDaThuChoNhaNuoc = datDaThuChoNhaNuoc;
+	public void setTongSoDonXLDSoVanBanHuongDan(Long tongSoDonXLDSoVanBanHuongDan) {
+		this.tongSoDonXLDSoVanBanHuongDan = tongSoDonXLDSoVanBanHuongDan;
 	}
 
-	public Long getTienPhaiTraChoCongDan() {
-		return tienPhaiTraChoCongDan;
+	public Long getTongSoDonChuyenCQCoThamQuyen() {
+		return tongSoDonChuyenCQCoThamQuyen;
 	}
 
-	public void setTienPhaiTraChoCongDan(Long tienPhaiTraChoCongDan) {
-		this.tienPhaiTraChoCongDan = tienPhaiTraChoCongDan;
+	public void setTongSoDonChuyenCQCoThamQuyen(Long tongSoDonChuyenCQCoThamQuyen) {
+		this.tongSoDonChuyenCQCoThamQuyen = tongSoDonChuyenCQCoThamQuyen;
 	}
 
-	public Long getDatPhaiTraChoCongDan() {
-		return datPhaiTraChoCongDan;
+	public Long getTongSoDonCoSoCongVanDonDocViecGiaiQuyet() {
+		return tongSoDonCoSoCongVanDonDocViecGiaiQuyet;
 	}
 
-	public void setDatPhaiTraChoCongDan(Long datPhaiTraChoCongDan) {
-		this.datPhaiTraChoCongDan = datPhaiTraChoCongDan;
+	public void setTongSoDonCoSoCongVanDonDocViecGiaiQuyet(Long tongSoDonCoSoCongVanDonDocViecGiaiQuyet) {
+		this.tongSoDonCoSoCongVanDonDocViecGiaiQuyet = tongSoDonCoSoCongVanDonDocViecGiaiQuyet;
 	}
 
-	public Long getTienDaTraChoCongDan() {
-		return tienDaTraChoCongDan;
+	public Long getTongSoDonThuocThamQuyenKhieuNai() {
+		return tongSoDonThuocThamQuyenKhieuNai;
 	}
 
-	public void setTienDaTraChoCongDan(Long tienDaTraChoCongDan) {
-		this.tienDaTraChoCongDan = tienDaTraChoCongDan;
+	public void setTongSoDonThuocThamQuyenKhieuNai(Long tongSoDonThuocThamQuyenKhieuNai) {
+		this.tongSoDonThuocThamQuyenKhieuNai = tongSoDonThuocThamQuyenKhieuNai;
 	}
 
-	public Long getDatDaTraChoCongDan() {
-		return datDaTraChoCongDan;
+	public Long getTongSoDonThuocThamQuyenToCao() {
+		return tongSoDonThuocThamQuyenToCao;
 	}
 
-	public void setDatDaTraChoCongDan(Long datDaTraChoCongDan) {
-		this.datDaTraChoCongDan = datDaTraChoCongDan;
+	public void setTongSoDonThuocThamQuyenToCao(Long tongSoDonThuocThamQuyenToCao) {
+		this.tongSoDonThuocThamQuyenToCao = tongSoDonThuocThamQuyenToCao;
 	}
 
 	public String getGhiChu() {
@@ -397,7 +341,7 @@ public class Medial_TongHopKetQuaXuLyDon extends Model<Medial_TongHopKetQuaXuLyD
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getTongHopKetQuaGiaiQuyetKhieuNaiId() {
+	public Long getTongHopKetQuaXuLyDonId() {
 		return getId();
 	}
 }

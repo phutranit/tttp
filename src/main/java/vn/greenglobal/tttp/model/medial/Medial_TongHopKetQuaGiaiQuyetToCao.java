@@ -13,8 +13,8 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Model;
 
 @Entity
-@Table(name = "medial_tonghopketquagiaiquyetkhieunai")
-public class Medial_TongHopKetQuaGiaiQuyetKhieuNai extends Model<Medial_TongHopKetQuaGiaiQuyetKhieuNai> {
+@Table(name = "medial_tonghopketquagiaiquyettocao")
+public class Medial_TongHopKetQuaGiaiQuyetToCao extends Model<Medial_TongHopKetQuaGiaiQuyetToCao> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,20 +23,15 @@ public class Medial_TongHopKetQuaGiaiQuyetKhieuNai extends Model<Medial_TongHopK
 	
 	private int soThuTu;
 	
-	private Long tongSoDonKhieuNai;
+	private Long tongSoDonToCao;
 	private Long donNhanTrongKyBaoCao;
 	private Long donTonKyTruocChuyenSang;
 	private Long tongSoVuViec;
 	private Long soDonThuocThamQuyen;
 	private Long soVuViecThuocThamQuyen;
-	private Long soVuViecGiaiQuyetBangQDHanhChinh;
-	private Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
-	private Long khieuNaiDung;
-	private Long khieuNaiSai;
-	private Long khieuNaiDungMotPhan;
-	private Long giaiQuyetLan1;
-	private Long congNhanQuyetDinhGiaiQuyetLan1;
-	private Long huySuaQuyetDinhGiaiQuyetLan1;
+	private Long toCaoDung;
+	private Long toCaoSai;
+	private Long toCaoDungMotPhan;
 	private Long kienNghiThuHoiChoNhaNuocTien;
 	private Long kienNghiThuHoiChoNhaNuocDat;
 	private Long traLaiChoCongDanTien;
@@ -78,13 +73,13 @@ public class Medial_TongHopKetQuaGiaiQuyetKhieuNai extends Model<Medial_TongHopK
 	public void setSoThuTu(int soThuTu) {
 		this.soThuTu = soThuTu;
 	}
-	
-	public Long getTongSoDonKhieuNai() {
-		return tongSoDonKhieuNai;
+
+	public Long getTongSoDonToCao() {
+		return tongSoDonToCao;
 	}
 
-	public void setTongSoDonKhieuNai(Long tongSoDonKhieuNai) {
-		this.tongSoDonKhieuNai = tongSoDonKhieuNai;
+	public void setTongSoDonToCao(Long tongSoDonToCao) {
+		this.tongSoDonToCao = tongSoDonToCao;
 	}
 
 	public Long getDonNhanTrongKyBaoCao() {
@@ -127,68 +122,28 @@ public class Medial_TongHopKetQuaGiaiQuyetKhieuNai extends Model<Medial_TongHopK
 		this.soVuViecThuocThamQuyen = soVuViecThuocThamQuyen;
 	}
 
-	public Long getSoVuViecGiaiQuyetBangQDHanhChinh() {
-		return soVuViecGiaiQuyetBangQDHanhChinh;
+	public Long getToCaoDung() {
+		return toCaoDung;
 	}
 
-	public void setSoVuViecGiaiQuyetBangQDHanhChinh(Long soVuViecGiaiQuyetBangQDHanhChinh) {
-		this.soVuViecGiaiQuyetBangQDHanhChinh = soVuViecGiaiQuyetBangQDHanhChinh;
+	public void setToCaoDung(Long toCaoDung) {
+		this.toCaoDung = toCaoDung;
 	}
 
-	public Long getSoVuViecRutDonThongQuaGiaiThichThuyetPhuc() {
-		return soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
+	public Long getToCaoSai() {
+		return toCaoSai;
 	}
 
-	public void setSoVuViecRutDonThongQuaGiaiThichThuyetPhuc(Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc) {
-		this.soVuViecRutDonThongQuaGiaiThichThuyetPhuc = soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
+	public void setToCaoSai(Long toCaoSai) {
+		this.toCaoSai = toCaoSai;
 	}
 
-	public Long getKhieuNaiDung() {
-		return khieuNaiDung;
+	public Long getToCaoDungMotPhan() {
+		return toCaoDungMotPhan;
 	}
 
-	public void setKhieuNaiDung(Long khieuNaiDung) {
-		this.khieuNaiDung = khieuNaiDung;
-	}
-
-	public Long getKhieuNaiSai() {
-		return khieuNaiSai;
-	}
-
-	public void setKhieuNaiSai(Long khieuNaiSai) {
-		this.khieuNaiSai = khieuNaiSai;
-	}
-
-	public Long getKhieuNaiDungMotPhan() {
-		return khieuNaiDungMotPhan;
-	}
-
-	public void setKhieuNaiDungMotPhan(Long khieuNaiDungMotPhan) {
-		this.khieuNaiDungMotPhan = khieuNaiDungMotPhan;
-	}
-
-	public Long getGiaiQuyetLan1() {
-		return giaiQuyetLan1;
-	}
-
-	public void setGiaiQuyetLan1(Long giaiQuyetLan1) {
-		this.giaiQuyetLan1 = giaiQuyetLan1;
-	}
-
-	public Long getCongNhanQuyetDinhGiaiQuyetLan1() {
-		return congNhanQuyetDinhGiaiQuyetLan1;
-	}
-
-	public void setCongNhanQuyetDinhGiaiQuyetLan1(Long congNhanQuyetDinhGiaiQuyetLan1) {
-		this.congNhanQuyetDinhGiaiQuyetLan1 = congNhanQuyetDinhGiaiQuyetLan1;
-	}
-
-	public Long getHuySuaQuyetDinhGiaiQuyetLan1() {
-		return huySuaQuyetDinhGiaiQuyetLan1;
-	}
-
-	public void setHuySuaQuyetDinhGiaiQuyetLan1(Long huySuaQuyetDinhGiaiQuyetLan1) {
-		this.huySuaQuyetDinhGiaiQuyetLan1 = huySuaQuyetDinhGiaiQuyetLan1;
+	public void setToCaoDungMotPhan(Long toCaoDungMotPhan) {
+		this.toCaoDungMotPhan = toCaoDungMotPhan;
 	}
 
 	public Long getKienNghiThuHoiChoNhaNuocTien() {
@@ -397,7 +352,7 @@ public class Medial_TongHopKetQuaGiaiQuyetKhieuNai extends Model<Medial_TongHopK
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getTongHopKetQuaGiaiQuyetKhieuNaiId() {
+	public Long getTongHopKetQuaGiaiQuyetToCaoId() {
 		return getId();
 	}
 }
