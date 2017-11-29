@@ -13,8 +13,8 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Model;
 
 @Entity
-@Table(name = "medial_thanhtrahanhchinh")
-public class Medial_ThanhTraTaiChinh extends Model<Medial_ThanhTraTaiChinh> {
+@Table(name = "medial_thanhtralinhvuctaichinh")
+public class Medial_ThanhTraLinhVucTaiChinh extends Model<Medial_ThanhTraLinhVucTaiChinh> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -281,7 +281,7 @@ public class Medial_ThanhTraTaiChinh extends Model<Medial_ThanhTraTaiChinh> {
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
-	public Long getThanhTraHanhChinhId() {
+	public Long getThanhTraLinhVucTaiChinhId() {
 		return getId();
 	}
 }
