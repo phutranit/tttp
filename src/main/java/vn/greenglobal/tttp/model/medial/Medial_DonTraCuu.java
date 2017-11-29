@@ -16,9 +16,11 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
+import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.DoanDiCung;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
@@ -47,7 +49,12 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setMaHoSo(don.getMaHoSo());
 		setNguonDon(don.getNguonTiepNhanDon().getText());
 		setLoaiDoiTuong(don.getLoaiDoiTuong().getText());
-		setLoaiDonThu(don.getLoaiDon() != null ? don.getLoaiDon().getText() : "");
+		setLoaiDonThu(don.getLoaiDon());
+		setCoUyQuyen(don.isCoUyQuyen());
+		setDaGiaiQuyet(don.isDaGiaiQuyet());
+		setCoQuanDaGiaiQuyet(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
+		setSoVanBanDaGiaiQuyet(don.getSoVanBanDaGiaiQuyet());
+		setNgayBanHanhVanBanDaGiaiQuyet(don.getNgayBanHanhVanBanDaGiaiQuyet());
 		setNgayTiepNhanDon(don.getNgayTiepNhan());
 		setTrangThaiDon(don.getTrangThaiXLDGiaiQuyet() != null ? don.getTrangThaiXLDGiaiQuyet().getText() : "");
 		setLoaiDoiTuong(don.getLoaiDoiTuong() != null ? don.getLoaiDoiTuong().getText() : "");
@@ -56,7 +63,8 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setLinhVucDonThuChiTiet(don.getLinhVucDonThuChiTiet() != null ? don.getLinhVucDonThuChiTiet().getTen() : "");
 		setLoaiVuViec(don.getLoaiVuViec() != null ? don.getLoaiVuViec().getText() : "");
 		setLinhVucChiTietKhac(don.getLinhVucChiTietKhac());
-		setLoaiNguoiDungDon(don.getLoaiNguoiDungDon() != null ? don.getLoaiNguoiDungDon().getText() : "");
+		setLoaiNguoiDungDon(don.getLoaiNguoiDungDon());
+		setSoNguoi(don.getSoNguoi());
 		setProcessType(don.getProcessType());
 		setDoanDiCungs(don.getDoanDiCungs());
 		setThongTinGiaiQuyetDon(don.getThongTinGiaiQuyetDon());
@@ -108,8 +116,6 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String maHoSo = "";
 	private String nguonDon = "";
 	private String trangThaiDon = "";
-	private String loaiNguoiDungDon = "";
-	private String loaiDonThu = "";
 	private String loaiDoiTuong = "";
 	private String ketQuaDon = "";
 	private String tenDonViGiuDenHienTai = "";
@@ -117,6 +123,12 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String linhVucDonThuChiTiet = "";
 	private String linhVucChiTietKhac = "";
 	private String loaiVuViec = "";
+	private String soVanBanDaGiaiQuyet = "";
+	private String coQuanDaGiaiQuyet = "";
+	
+	private int soNguoi;
+	private boolean coUyQuyen;
+	private boolean daGiaiQuyet;
 	
 	private LocalDateTime hanXuLy;
 	@JsonIgnore
@@ -125,6 +137,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private LocalDateTime thoiHanXuLyXLD;
 	@JsonIgnore
 	private LocalDateTime ngayTiepNhanDon;
+	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	@JsonIgnore
 	private ProcessTypeEnum processType;
 	@JsonIgnore
@@ -135,6 +148,10 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private TrangThaiDonEnum trangThaiKTDX;
 	@JsonIgnore
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
+	@JsonIgnore
+	private LoaiDonEnum loaiDonThu;
+	@JsonIgnore
+	private LoaiNguoiDungDonEnum loaiNguoiDungDon;
 	@JsonIgnore
 	@Transient
 	private List<DoanDiCung> doanDiCungs = new ArrayList<DoanDiCung>();
@@ -162,13 +179,21 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	public void setLoaiVuViec(String loaiVuViec) {
 		this.loaiVuViec = loaiVuViec;
 	}
-
-	public String getLoaiDonThu() {
+	
+	public LoaiDonEnum getLoaiDonThu() {
 		return loaiDonThu;
 	}
 
-	public void setLoaiDonThu(String loaiDonThu) {
+	public void setLoaiDonThu(LoaiDonEnum loaiDonThu) {
 		this.loaiDonThu = loaiDonThu;
+	}
+
+	public String getCoQuanDaGiaiQuyet() {
+		return coQuanDaGiaiQuyet;
+	}
+
+	public void setCoQuanDaGiaiQuyet(String coQuanDaGiaiQuyet) {
+		this.coQuanDaGiaiQuyet = coQuanDaGiaiQuyet;
 	}
 
 	public String getNguonDon() {
@@ -178,12 +203,12 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	public void setNguonDon(String nguonDon) {
 		this.nguonDon = nguonDon;
 	}
-	
-	public String getLoaiNguoiDungDon() {
+
+	public LoaiNguoiDungDonEnum getLoaiNguoiDungDon() {
 		return loaiNguoiDungDon;
 	}
 
-	public void setLoaiNguoiDungDon(String loaiNguoiDungDon) {
+	public void setLoaiNguoiDungDon(LoaiNguoiDungDonEnum loaiNguoiDungDon) {
 		this.loaiNguoiDungDon = loaiNguoiDungDon;
 	}
 
@@ -217,6 +242,30 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 
 	public void setLinhVucChiTietKhac(String linhVucChiTietKhac) {
 		this.linhVucChiTietKhac = linhVucChiTietKhac;
+	}
+
+	public String getSoVanBanDaGiaiQuyet() {
+		return soVanBanDaGiaiQuyet;
+	}
+
+	public void setSoVanBanDaGiaiQuyet(String soVanBanDaGiaiQuyet) {
+		this.soVanBanDaGiaiQuyet = soVanBanDaGiaiQuyet;
+	}
+
+	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {
+		return ngayBanHanhVanBanDaGiaiQuyet;
+	}
+
+	public void setNgayBanHanhVanBanDaGiaiQuyet(LocalDateTime ngayBanHanhVanBanDaGiaiQuyet) {
+		this.ngayBanHanhVanBanDaGiaiQuyet = ngayBanHanhVanBanDaGiaiQuyet;
+	}
+
+	public int getSoNguoi() {
+		return soNguoi;
+	}
+
+	public void setSoNguoi(int soNguoi) {
+		this.soNguoi = soNguoi;
 	}
 
 	public String getLoaiDoiTuong() {
@@ -275,6 +324,22 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		this.tenDonViGiuDenHienTai = tenDonViGiuDenHienTai;
 	}
 	
+	public boolean isCoUyQuyen() {
+		return coUyQuyen;
+	}
+
+	public void setCoUyQuyen(boolean coUyQuyen) {
+		this.coUyQuyen = coUyQuyen;
+	}
+
+	public boolean isDaGiaiQuyet() {
+		return daGiaiQuyet;
+	}
+
+	public void setDaGiaiQuyet(boolean daGiaiQuyet) {
+		this.daGiaiQuyet = daGiaiQuyet;
+	}
+
 	public LocalDateTime getNgayBatDauXLD() {
 		return ngayBatDauXLD;
 	}
@@ -390,6 +455,18 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
+	public Don_CongDan getNguoiDuocUyQuyen() {
+		List<Don_CongDan> list = new ArrayList<Don_CongDan>();
+		Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+		list = (List<Don_CongDan>) Application.app.getDonCongDanRepository()
+				.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
+						.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUOC_UY_QUYEN))
+						.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
+		return list != null && list.size() > 0 ? list.get(0) : null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
 	public List<DoanDiCung> getListDoanDiCung() {
 		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
 		if (getDonGocId() != null && getDonGocId() > 0) { 
@@ -407,5 +484,29 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 			}
 		}
 		return list;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiDonThuInfo() {
+		if (getLoaiDonThu() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiDonThu().getText());
+			map.put("giaTri", getLoaiDonThu().toString());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiNguoiDungDonInfo() {
+		if (getLoaiNguoiDungDon() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiNguoiDungDon().getText());
+			map.put("giaTri", getLoaiNguoiDungDon().toString());
+			return map;
+		}
+		return null;
 	}
 }
