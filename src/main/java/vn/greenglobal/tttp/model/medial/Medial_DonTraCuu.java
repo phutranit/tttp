@@ -15,9 +15,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
+import vn.greenglobal.tttp.enums.LoaiDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
+import vn.greenglobal.tttp.model.DoanDiCung;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.Model;
@@ -54,7 +56,9 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setLinhVucDonThuChiTiet(don.getLinhVucDonThuChiTiet() != null ? don.getLinhVucDonThuChiTiet().getTen() : "");
 		setLoaiVuViec(don.getLoaiVuViec() != null ? don.getLoaiVuViec().getText() : "");
 		setLinhVucChiTietKhac(don.getLinhVucChiTietKhac());
+		setLoaiNguoiDungDon(don.getLoaiNguoiDungDon() != null ? don.getLoaiNguoiDungDon().getText() : "");
 		setProcessType(don.getProcessType());
+		setDoanDiCungs(don.getDoanDiCungs());
 		setThongTinGiaiQuyetDon(don.getThongTinGiaiQuyetDon());
 		setTrangThaiTTXM(don.getTrangThaiTTXM());
 		setTrangThaiKTDX(don.getTrangThaiKTDX());
@@ -63,11 +67,37 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setKetQuaXLDGiaiQuyet(don.getKetQuaXLDGiaiQuyet());
 		if (don.getProcessType().equals(ProcessTypeEnum.XU_LY_DON) || don.getProcessType().equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
 			setTenDonViGiuDenHienTai(don.getDonViXuLyGiaiQuyet() != null ? don.getDonViXuLyGiaiQuyet().getTen() : "");
+			if (don.getProcessType().equals(ProcessTypeEnum.XU_LY_DON)) {
+				setHanXuLy(don.getThoiHanXuLyXLD());
+			} else {
+				if (don.getLoaiDon().equals(LoaiDonEnum.DON_TO_CAO)) {
+					if (don.getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaiQuyet() != null) {
+						setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanGiaiQuyet());
+					} else {
+						setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet());
+					}					
+				} else {
+					setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet());
+				}
+			}
 		} else if (don.getProcessType().equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
 			setTenDonViGiuDenHienTai(don.getDonViThamTraXacMinh() != null ? don.getDonViThamTraXacMinh().getTen() : "");
-			
+			if (don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
+				setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanGiaoLapDuThao());
+			} else {
+				if (don.getLoaiDon().equals(LoaiDonEnum.DON_KHIEU_NAI)) {
+					if (don.getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM() != null) {
+						setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanSauKhiGiaHanTTXM());
+					} else {
+						setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanTTXM());
+					}
+				} else {
+					setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanTTXM());
+				}
+			}						
 		} else if (don.getProcessType().equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
 			setTenDonViGiuDenHienTai(don.getDonViKiemTraDeXuat() != null ? don.getDonViKiemTraDeXuat().getTen() : "");
+			setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanKTDX());
 		}
 	}
 	
@@ -78,6 +108,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String maHoSo = "";
 	private String nguonDon = "";
 	private String trangThaiDon = "";
+	private String loaiNguoiDungDon = "";
 	private String loaiDonThu = "";
 	private String loaiDoiTuong = "";
 	private String ketQuaDon = "";
@@ -87,6 +118,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String linhVucChiTietKhac = "";
 	private String loaiVuViec = "";
 	
+	private LocalDateTime hanXuLy;
 	@JsonIgnore
 	private LocalDateTime ngayBatDauXLD;
 	@JsonIgnore
@@ -103,6 +135,9 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private TrangThaiDonEnum trangThaiKTDX;
 	@JsonIgnore
 	private KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet;
+	@JsonIgnore
+	@Transient
+	private List<DoanDiCung> doanDiCungs = new ArrayList<DoanDiCung>();
 		
 	public String getMaDon() {
 		return maDon;
@@ -144,6 +179,14 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		this.nguonDon = nguonDon;
 	}
 	
+	public String getLoaiNguoiDungDon() {
+		return loaiNguoiDungDon;
+	}
+
+	public void setLoaiNguoiDungDon(String loaiNguoiDungDon) {
+		this.loaiNguoiDungDon = loaiNguoiDungDon;
+	}
+
 	public LocalDateTime getNgayTiepNhanDon() {
 		return ngayTiepNhanDon;
 	}
@@ -182,6 +225,14 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 
 	public void setLoaiDoiTuong(String loaiDoiTuong) {
 		this.loaiDoiTuong = loaiDoiTuong;
+	}	
+
+	public LocalDateTime getHanXuLy() {
+		return hanXuLy;
+	}
+
+	public void setHanXuLy(LocalDateTime hanXuLy) {
+		this.hanXuLy = hanXuLy;
 	}
 
 	public Long getDonGocId() {
@@ -279,6 +330,14 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	public void setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum ketQuaXLDGiaiQuyet) {
 		this.ketQuaXLDGiaiQuyet = ketQuaXLDGiaiQuyet;
 	}
+	
+	public List<DoanDiCung> getDoanDiCungs() {
+		return doanDiCungs;
+	}
+
+	public void setDoanDiCungs(List<DoanDiCung> doanDiCungs) {
+		this.doanDiCungs = doanDiCungs;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
@@ -326,6 +385,27 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 				.findAll(QDon_CongDan.don_CongDan.don.eq(donGoc)
 						.and(QDon_CongDan.don_CongDan.phanLoaiCongDan.eq(PhanLoaiDonCongDanEnum.NGUOI_DUNG_DON))
 						.and(QDon_CongDan.don_CongDan.daXoa.eq(false)));
+		return list;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<DoanDiCung> getListDoanDiCung() {
+		List<DoanDiCung> list = new ArrayList<DoanDiCung>();
+		if (getDonGocId() != null && getDonGocId() > 0) { 
+			Don donGoc = Application.app.getDonRepository().findOne(getDonGocId());
+			for (DoanDiCung dcd : donGoc.getDoanDiCungs()) {
+				if (!dcd.isDaXoa()) {
+					list.add(dcd);
+				}
+			}
+		} else { 
+			for (DoanDiCung dcd : getDoanDiCungs()) {
+				if (!dcd.isDaXoa()) {
+					list.add(dcd);
+				}
+			}
+		}
 		return list;
 	}
 }
