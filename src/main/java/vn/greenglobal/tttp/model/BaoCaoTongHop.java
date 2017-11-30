@@ -31,6 +31,8 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	private LocalDate ngayBatDauBC;
 	private LocalDate ngayKetThucBC;
 	private int namBaoCao;
+	private String quyBaoCao = "";
+	private int thangBaoCao;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
 	@Enumerated(EnumType.STRING)
@@ -58,6 +60,22 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 
 	public void setNamBaoCao(int namBaoCao) {
 		this.namBaoCao = namBaoCao;
+	}
+
+	public String getQuyBaoCao() {
+		return quyBaoCao;
+	}
+
+	public void setQuyBaoCao(String quyBaoCao) {
+		this.quyBaoCao = quyBaoCao;
+	}
+
+	public int getThangBaoCao() {
+		return thangBaoCao;
+	}
+
+	public void setThangBaoCao(int thangBaoCao) {
+		this.thangBaoCao = thangBaoCao;
 	}
 
 	public LocalDate getNgayBatDauBC() {

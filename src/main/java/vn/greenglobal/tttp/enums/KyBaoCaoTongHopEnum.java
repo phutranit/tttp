@@ -2,10 +2,8 @@ package vn.greenglobal.tttp.enums;
 
 public enum KyBaoCaoTongHopEnum {
 
-	QUY_I("Quý I"),
-	QUY_II("Quý II"),
-	QUY_III("Quý III"),
-	QUY_IV("Quý IV"),
+	THEO_QUY("Theo quý"),
+	THEO_THANG("Theo tháng"),
 	SAU_THANG("6 tháng"),
 	CHIN_THANG("9 tháng"),
 	NAM("Năm");
