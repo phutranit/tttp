@@ -1925,7 +1925,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
 		if (vaiTroGQD != null) {
-			disableGiaiQuyetDonCu(vaiTroGQD, donId, giaiQuyetDonBenGiaiQuyet.getCanBoXuLyChiDinh());
+			disableGiaiQuyetDonCu(vaiTroGQD, donId, giaiQuyetDonBenGiaiQuyet.getCongChuc());
 		} else {
 			giaiQuyetDonBenGiaiQuyet.setOld(true);
 		}		
