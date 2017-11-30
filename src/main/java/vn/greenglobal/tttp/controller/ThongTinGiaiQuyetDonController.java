@@ -104,7 +104,11 @@ public class ThongTinGiaiQuyetDonController extends TttpController<ThongTinGiaiQ
 					|| KetQuaTrangThaiDonEnum.DA_LAP_DU_THAO.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
 					|| KetQuaTrangThaiDonEnum.CHO_RA_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
 					|| KetQuaTrangThaiDonEnum.DA_CO_QUYET_DINH_GIAI_QUYET.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())) {
-				don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+				if (don.getKetQuaXLDGiaiQuyet() != null && don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.LUU_HO_SO)) {
+					don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.LUU_HO_SO);
+				} else { 
+					don.setKetQuaXLDGiaiQuyet(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet());
+				}
 			}
 			
 			if ((KetQuaTrangThaiDonEnum.DOI_THOAI.equals(thongTinGiaiQuyetDon.getKetQuaXLDGiaiQuyet())
