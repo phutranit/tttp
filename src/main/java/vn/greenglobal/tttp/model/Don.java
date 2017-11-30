@@ -61,6 +61,8 @@ public class Don extends Model<Don> {
 
 	@Size(max=255)
 	private String ma = "";
+	@Size(max=255)
+	private String maHoSo = "";
 	//@NotBlank
 	//@Lob
 	private String noiDung = " ";
@@ -124,6 +126,7 @@ public class Don extends Model<Don> {
 	private LocalDateTime ngayKetThucXLD;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	private LocalDateTime ngayRutDon;
+	private LocalDateTime ngayThucHienKetQuaXuLy;
 	
 	@QueryInit("*.*.*")
 	@OneToOne(mappedBy = "don")
@@ -333,6 +336,15 @@ public class Don extends Model<Don> {
 		this.ma = ma;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	public String getMaHoSo() {
+		return maHoSo;
+	}
+
+	public void setMaHoSo(String maHoSo) {
+		this.maHoSo = maHoSo;
+	}
+
 	@ApiModelProperty(hidden = true)
 	public CongChuc getCanBoCoTheThuHoi() {
 		return canBoCoTheThuHoi;
@@ -604,6 +616,14 @@ public class Don extends Model<Don> {
 
 	public void setNgayRutDon(LocalDateTime ngayRutDon) {
 		this.ngayRutDon = ngayRutDon;
+	}
+
+	public LocalDateTime getNgayThucHienKetQuaXuLy() {
+		return ngayThucHienKetQuaXuLy;
+	}
+
+	public void setNgayThucHienKetQuaXuLy(LocalDateTime ngayThucHienKetQuaXuLy) {
+		this.ngayThucHienKetQuaXuLy = ngayThucHienKetQuaXuLy;
 	}
 
 	@ApiModelProperty(hidden = true)

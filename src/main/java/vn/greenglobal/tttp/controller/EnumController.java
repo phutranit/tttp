@@ -73,6 +73,7 @@ import vn.greenglobal.tttp.enums.QuyTrinhXuLyDonEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TinhTrangTaiLieuEnum;
+import vn.greenglobal.tttp.enums.TinhTrangXuLyEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.TrangThaiTTXMEnum;
 import vn.greenglobal.tttp.enums.TrangThaiYeuCauGapLanhDaoEnum;
@@ -247,7 +248,7 @@ public class EnumController {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
 		int now = Utils.localDateTimeNow().getMonthValue();
-		for (int m = 1; m <= now; m ++) {
+		for (int m = 1; m <= 12; m ++) {
 			object.put("ten", m);
 			object.put("giaTri", m);
 			list.add(object);
@@ -1085,6 +1086,28 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/tinhTrangXuLys")
+	@ApiOperation(value = "Lấy danh sách tình trạng xử lý của đơn", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getDanhSachTinhTrangXuLys(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", TinhTrangXuLyEnum.DUNG_HAN.getText());
+		object.put("giaTri", TinhTrangXuLyEnum.DUNG_HAN.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", TinhTrangXuLyEnum.TRE_HAN.getText());
+		object.put("giaTri", TinhTrangXuLyEnum.TRE_HAN.name());
+		list.add(object);
+
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/huongGiaiQuyetCuaLanhDaoTCDs")
 	@ApiOperation(value = "Lấy danh sách Hướng Giải Quyết của Lãnh đạo TCD", position = 8, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getDanhSachGiaiQuyetCuaLanhDaoTCDs(
@@ -1822,7 +1845,7 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/chucNangThanhTras")
+	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucCuocThanhTra")
 	@ApiOperation(value = "Lấy danh sách hình thức thanh tra", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getHinhThucThanhTras(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
@@ -1989,7 +2012,7 @@ public class EnumController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/hinhThucKeHoachThanhTras")
+	@RequestMapping(method = RequestMethod.GET, value = "/chucNangKeHoachThanhTra")
 	@ApiOperation(value = "Lấy danh sách .", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> getHinhThucKeHoachThanhTras(
 			@RequestHeader(value = "Authorization", required = true) String authorization) {

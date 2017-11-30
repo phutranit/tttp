@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
@@ -361,6 +362,7 @@ public class CongChucController extends TttpController<CongChuc> {
 							checkVaiTros) {
 						if (invalidToken != null) { 
 							invalidToken.setActive(false);
+							invalidToken.setTrangThaiToken(TrangThaiInvalidTokenEnum.THAY_DOI_THONG_TIN_NGUOI_DUNG);
 							invalidTokenService.save(invalidToken, Long.valueOf(
 									profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 						}

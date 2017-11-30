@@ -66,6 +66,7 @@ import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
+import vn.greenglobal.tttp.model.medial.Medial_DonTraCuu;
 import vn.greenglobal.tttp.model.medial.Medial_Form_State;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -161,6 +162,9 @@ public class DonController extends TttpController<Don> {
 
 	@Autowired
 	protected PagedResourcesAssembler<LichSuThayDoi> lichSuThayDoiAssembler;
+	
+	@Autowired
+	protected PagedResourcesAssembler<Medial_DonTraCuu> mediaTraCuuDonAssembler;
 	
 	@Autowired
 	private ThamSoRepository thamSoRepository;
@@ -360,7 +364,7 @@ public class DonController extends TttpController<Don> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/currentForm")
 	@ApiOperation(value = "Lấy danh sách Trạng thái tiếp theo", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công thành công", response = State.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu trạng thái thành công", response = State.class),
 			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
 			@ApiResponse(code = 204, message = "Không có dữ liệu"),
 			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
@@ -445,6 +449,87 @@ public class DonController extends TttpController<Don> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/traCuuDons/congDan")
+	@ApiOperation(value = "Lấy thông tin đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy thông tin đơn thành công", response = Don.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getTraCuuDonCongDan(@RequestParam(value = "maDon", required = true) String maDon, PersistentEntityResourceAssembler eass) {
+
+		try {
+			Don don = repo.findOne(QDon.don.daXoa.eq(false).and(QDon.don.maHoSo.equalsIgnoreCase(maDon)));
+			if (don == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DON_NOT_FOUND.name(),
+						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
+			}
+			Medial_DonTraCuu media = new Medial_DonTraCuu();
+			media.copyDon(don);
+			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/traCuuDons/canBo")
+	@ApiOperation(value = "Lấy danh sách Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy dữ liệu đơn thành công", response = Medial_DonTraCuu.class),
+			@ApiResponse(code = 203, message = "Không có quyền lấy dữ liệu"),
+			@ApiResponse(code = 204, message = "Không có dữ liệu"),
+			@ApiResponse(code = 400, message = "Param không đúng kiểu"), })
+	public @ResponseBody Object getTraCuuDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			@RequestParam(value = "diaChi", required = false) String diaChi,
+			@RequestParam(value = "nguonDon", required = false) String nguonDon,
+			@RequestParam(value = "phanLoaiDon", required = false) String phanLoaiDon,
+			@RequestParam(value = "tuNgay", required = false) String tuNgay,
+			@RequestParam(value = "denNgay", required = false) String denNgay,
+			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
+			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
+			@RequestParam(value = "linhVucChiTietId", required = false) Long linhVucChiTietId,
+			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
+			@RequestParam(value = "hoTen", required = false) String hoTen, 
+			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
+			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
+			@RequestParam(value = "taiDonVi", required = false) boolean taiDonVi,
+			@RequestParam(value = "listDonViTiepNhan", required = false) List<CoQuanQuanLy> listDonViTiepNhan,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+
+			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
+			if (nguoiDung != null) {
+				Long donViXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+				OrderSpecifier<LocalDateTime> sortOrderDon = null;
+				List<Don> listDon = new ArrayList<Don>();
+				
+				sortOrderDon = QDon.don.ngayTiepNhan.desc();
+				listDon = (List<Don>) repo.findAll(donService.predicateFindAllDonTraCuu(maDon, diaChi, nguonDon, phanLoaiDon, linhVucId, 
+						linhVucChiTietId, tuNgay, denNgay, tinhTrangXuLy, donViXuLyXLD, hoTen, ketQuaToanHT, 
+						taiDonVi, listDonViTiepNhan, xuLyRepo, repo, giaiQuyetDonRepo), 
+						sortOrderDon);
+				
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > listDon.size() ? listDon.size() : (start + pageable.getPageSize());
+				List<Medial_DonTraCuu> listMedial = new ArrayList<Medial_DonTraCuu>();
+				Medial_DonTraCuu media = null;
+				for (Don don : listDon.subList(start, end)) {
+					media = new Medial_DonTraCuu();
+					media.copyDon(don);
+					listMedial.add(media);
+				}
+				Page<Medial_DonTraCuu> pages = new PageImpl<Medial_DonTraCuu>(listMedial, pageable, listDon.size());
+				
+				return mediaTraCuuDonAssembler.toResource(pages, (ResourceAssembler) eass);
+			}
+			return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+					ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 
 	public boolean checkInputDateTime(String tuNgay, String denNgay) {
 		if (StringUtils.isNotBlank(tuNgay)) {
@@ -522,11 +607,12 @@ public class DonController extends TttpController<Don> {
 				don = checkDataThongTinDon(don);
 				don.setNgayLapDonGapLanhDaoTmp(Utils.localDateTimeNow());
 				Don donMoi = donService.save(don, congChucId);
-				//donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+				donMoi.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setDonViTiepDan(coQuanQuanLyRepo.findOne(donViId));
 				donMoi.setNgayNhanTraDonChuyen(don.getNgayNhanTraDonChuyen());
 				
 				if (donMoi.isThanhLapDon()) {
+					donMoi.setMaHoSo(donService.getMaHoSo(repo, null));
 					donMoi.setProcessType(ProcessTypeEnum.XU_LY_DON);
 					State beginState = repoState.findOne(serviceState.predicateFindByType(FlowStateEnum.BAT_DAU));					
 					Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepo.findOne(donViId), ProcessTypeEnum.XU_LY_DON);
@@ -714,6 +800,12 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
 				Don donOld = repo.findOne(donService.predicateFindOne(id));
+				if (don.isThanhLapDon() && !donOld.isThanhLapDon()) {
+					don.setMaHoSo(donService.getMaHoSo(repo, don.getId()));
+				} else {
+					don.setMaHoSo(donOld.getMaHoSo());
+				}
+				don.setNgayThucHienKetQuaXuLy(donOld.getNgayThucHienKetQuaXuLy());
 				don.setNgayNhanTraDonChuyen(donOld.getNgayNhanTraDonChuyen());
 				don.setYeuCauGapTrucTiepLanhDao(donOld.isYeuCauGapTrucTiepLanhDao());
 				don.setThanhLapTiepDanGapLanhDao(donOld.isThanhLapTiepDanGapLanhDao());
@@ -759,7 +851,7 @@ public class DonController extends TttpController<Don> {
 				
 				if (don.isThanhLapDon() && don.getProcessType() == null) {
 					don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 					don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());
@@ -876,7 +968,7 @@ public class DonController extends TttpController<Don> {
 						}
 					}
 					
-					//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+					don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 					don.setTrangThaiDon(TrangThaiDonEnum.DANG_XU_LY);
 					if (don.getProcessType() == null) {
 						don.setProcessType(ProcessTypeEnum.XU_LY_DON);
@@ -897,7 +989,7 @@ public class DonController extends TttpController<Don> {
 						don.setNgayTiepNhan(donOld.getNgayTiepNhan());
 						don.setNgayBatDauXLD(donOld.getNgayBatDauXLD());
 						don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
-						//don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
+						don.setCoQuanDangGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 						don.setTrangThaiDon(donOld.getTrangThaiDon());
 						don.setCurrentState(donOld.getCurrentState());
 						don.setCanBoXuLyPhanHeXLD(donOld.getCanBoXuLyPhanHeXLD());

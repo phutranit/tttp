@@ -35,6 +35,8 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 	private String moTa = "";
 	//@Lob
 	private String moTaSearch = "";
+	
+	private String isDonVi;
 
 	@ManyToOne
 	private CapCoQuanQuanLy cha;
@@ -82,6 +84,14 @@ public class CapCoQuanQuanLy extends Model<CapCoQuanQuanLy> {
 
 	public void setMoTaSearch(String moTaSearch) {
 		this.moTaSearch = moTaSearch;
+	}
+
+	public String getIsDonVi() {
+		return isDonVi;
+	}
+
+	public void setIsDonVi(String isDonVi) {
+		this.isDonVi = isDonVi;
 	}
 
 	@ApiModelProperty(position = 4)
