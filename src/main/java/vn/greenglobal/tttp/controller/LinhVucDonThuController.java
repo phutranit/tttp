@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -32,6 +34,7 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.model.QLinhVucDonThu;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.service.LinhVucDonThuService;
@@ -149,14 +152,16 @@ public class LinhVucDonThuController extends TttpController<LinhVucDonThu> {
 			PersistentEntityResourceAssembler eass) {
 
 		try {
+			OrderSpecifier<String> sort = QLinhVucDonThu.linhVucDonThu.ten.asc();
 			Page<LinhVucDonThu> page = null;
 			pageable = new PageRequest(0, 1000, null);
+			
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_LIETKE) == null
 					&& Utils.quyenValidate(profileUtil, authorization, QuyenEnum.LINHVUCDONTHU_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			List<LinhVucDonThu> list = (List<LinhVucDonThu>) repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs));
+			List<LinhVucDonThu> list = (List<LinhVucDonThu>) repo.findAll(linhVucDonThuService.predicateFindAll(tuKhoa, cha, loaiDon, listLinhVucs), sort);
 			boolean flag = false;
 			LinhVucDonThu lvdt = new LinhVucDonThu();
 			if (list != null && list.size() > 0) {
