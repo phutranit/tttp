@@ -247,7 +247,7 @@ public class EnumController {
 			@RequestHeader(value = "Authorization", required = true) String authorization) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> object = new HashMap<String, Object>();
-		int now = Utils.localDateTimeNow().getMonthValue();
+//		int now = Utils.localDateTimeNow().getMonthValue();
 		for (int m = 1; m <= 12; m ++) {
 			object.put("ten", m);
 			object.put("giaTri", m);
