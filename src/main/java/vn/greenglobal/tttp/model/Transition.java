@@ -11,6 +11,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.TenQuyTrinhEnum;
@@ -29,6 +32,7 @@ public class Transition extends Model<Transition>{
 
 	@NotNull
 	@ManyToOne
+	@NotFound(action = NotFoundAction.IGNORE)
 	private Process process;
 	
 	@NotNull
