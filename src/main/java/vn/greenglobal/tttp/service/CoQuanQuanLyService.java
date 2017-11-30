@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 
+import vn.greenglobal.tttp.enums.TenQuyTrinhEnum;
 import vn.greenglobal.tttp.model.CapCoQuanQuanLy;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
@@ -21,14 +24,17 @@ import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCongChuc;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QDonViHanhChinh;
+import vn.greenglobal.tttp.model.QTransition;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.SoTiepCongDanRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -364,6 +370,22 @@ public class CoQuanQuanLyService {
 		BooleanExpression predAll = base;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId))
 				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
+		return predAll;
+	}
+	
+	public Predicate getListDonViKhongQuyTrinh(TransitionRepository transitionRepo) {
+		BooleanExpression predAll = base;
+		BooleanExpression transactionQuery = QTransition.transition.daXoa.eq(false)
+				.and(QTransition.transition.tenQuyTrinh.eq(TenQuyTrinhEnum.QUY_TRINH_1_BUOC_KHONG_DAY_DU))
+				.and(QTransition.transition.process.isNotNull())
+				.and(QTransition.transition.process.coQuanQuanLy.isNotNull());
+		List<Transition> listTransition = (List<Transition>) transitionRepo.findAll(transactionQuery);
+		List<CoQuanQuanLy> list = new ArrayList<>();
+		list = listTransition.stream()
+				.filter(d -> d.getProcess() != null)
+				.filter(d -> d.getProcess().getCoQuanQuanLy() != null)
+				.map(d -> d.getProcess().getCoQuanQuanLy()).distinct().collect(Collectors.toList());
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(list));
 		return predAll;
 	}
 	
