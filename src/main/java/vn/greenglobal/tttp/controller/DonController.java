@@ -465,7 +465,7 @@ public class DonController extends TttpController<Don> {
 						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
 			}
 			Medial_DonTraCuu media = new Medial_DonTraCuu();
-			media.copyDon(don);
+			media.copyDon(don, null);
 			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -515,7 +515,7 @@ public class DonController extends TttpController<Don> {
 				Medial_DonTraCuu media = null;
 				for (Don don : listDon.subList(start, end)) {
 					media = new Medial_DonTraCuu();
-					media.copyDon(don);
+					media.copyDon(don, donViXuLyXLD);
 					listMedial.add(media);
 				}
 				Page<Medial_DonTraCuu> pages = new PageImpl<Medial_DonTraCuu>(listMedial, pageable, listDon.size());
