@@ -1350,5 +1350,10 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		return null;
 	}
 	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<DoiTuongThanhTra> getListDoiTuongThanhTra() {
+		return getDoiTuongThanhTras();
+	}
 	
 }
