@@ -541,7 +541,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 										ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText(), ApiErrorEnum.PHONG_BAN_GIAI_QUYET_REQUIRED.getText());
 							}
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
-							giaiQuyetDonTiepTheo = truongPhongGiaoCungCap(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, donViId, nextStateType, banTiepCongDan);
+							giaiQuyetDonTiepTheo = truongPhongGiaoCungCap(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, note, coQuanQuanLyId, donViId, nextStateType, banTiepCongDan);
 							return giaiQuyetDonService.doSave(giaiQuyetDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 						} else if (FlowStateEnum.KET_THUC.equals(nextStateType)) {
 							GiaiQuyetDon giaiQuyetDonTiepTheo = new GiaiQuyetDon();
@@ -1025,7 +1025,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		String tenLichSu = "";
 		if (don.getLoaiDon().equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH) 
 				&& donViId.equals(banTiepCongDan.getDonVi().getId()) && FlowStateEnum.TRUONG_PHONG_GIAO_VIEC_CAN_BO_SAU_KHI_NHAN_KET_QUA_TTXM.equals(nextStateType)) {
-			tenLichSu = "Giao phòng ban văn phòng";
+			tenLichSu = "Giao phòng ban";
 		} else {
 			tenLichSu = QuaTrinhXuLyEnum.GIAO_CAN_BO_GIAI_QUYET.getText();
 		}
@@ -1051,7 +1051,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	}
 	
 	private GiaiQuyetDon truongPhongGiaoCungCap(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, 
-			Long congChucId, String note, Long donViId, FlowStateEnum nextStateType, CoQuanQuanLy banTiepCongDan) {
+			Long congChucId, String note, Long coQuanQuanLyId, Long donViId, FlowStateEnum nextStateType, CoQuanQuanLy banTiepCongDan) {
 		Long donId = giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDon().getId();
 		CongChuc congChuc = congChucRepo.findOne(congChucService.predicateFindOne(congChucId));
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
@@ -1078,7 +1078,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		String tenLichSu = "";
 		
-		if (don.getLoaiDon().equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH) && donViId.equals(banTiepCongDan.getDonVi().getId())) {
+		if (don.getLoaiDon().equals(LoaiDonEnum.DON_KIEN_NGHI_PHAN_ANH) && coQuanQuanLyId.equals(banTiepCongDan.getId())) {
 			tenLichSu = "Trình lãnh đạo văn phòng";
 		} else {
 			tenLichSu = QuaTrinhXuLyEnum.CHUYEN_PHONG_BAN.getText();
