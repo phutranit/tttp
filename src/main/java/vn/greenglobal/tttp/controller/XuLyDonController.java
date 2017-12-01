@@ -778,7 +778,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 							xuLyDon.setCanBoXuLyChiDinh(null);
 						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
-						xuLyDonTiepTheo = trinhTruongPhong(xuLyDon, xuLyDonHienTai, donViId, congChucId, banTiepCongDan);
+						xuLyDonTiepTheo = trinhTruongPhong(xuLyDon, xuLyDonHienTai, donViId, congChucId, banTiepCongDan, vaiTroNguoiDungHienTai);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
 					}  else if (FlowStateEnum.LANH_DAO_GIAO_VIEC_TRUONG_PHONG.equals(nextState)) {
 						if (xuLyDon.getPhongBanXuLyChiDinh() == null) {
@@ -2028,6 +2028,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 	@ApiOperation(value = "In phiếu chuyển đơn tố cáo", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void exportWordChuyenDonToCao(
 			@RequestParam(value = "donViXuLyId", required = true) Long donViXuLyId,
+			@RequestParam(value = "donViTiepNhanDonId", required = false) Long donViTiepNhanDonId,
 			@RequestParam(value = "ngayTiepNhan", required = true) String ngayTiepNhan,
 			@RequestParam(value = "nguoiDungDon", required = true) String nguoiDungDon,
 			@RequestParam(value = "diaChiNguoiDungDon", required = false) String diaChiNguoiDungDon,
@@ -2050,6 +2051,8 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			mappings.put("kyTen", "");
 			mappings.put("capHanhChinh", "");
 			mappings.put("coQuanTrucThuoc", "");
+			String chucDanh = "...............................................(1)";
+			
 			if (cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
 					cq.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
 				mappings.put("capHanhChinh", WordUtil.splitWord(cq.getTen()).toUpperCase());
@@ -2068,6 +2071,26 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				soVB = Utils.splitWords(cq.getTen());
 			}
 			
+			if (donViTiepNhanDonId != null) {
+				CoQuanQuanLy coQuanTiepNhanDon = coQuanQuanLyRepo.findOne(donViTiepNhanDonId);
+				String coQuan = coQuanTiepNhanDon.getTen();
+				if (coQuanTiepNhanDon.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri()) || 
+						coQuanTiepNhanDon.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDQH.getGiaTri()) ||
+						coQuanTiepNhanDon.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNPX.getGiaTri())) {
+					if (coQuanTiepNhanDon.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoUBNDTP.getGiaTri())) {
+						chucDanh = "ỦY BAN NHÂN DÂN";
+						coQuan = coQuan.replace("UBND ", "");
+					} else { 
+						chucDanh = "CHỦ TỊCH";
+					}
+				} else if (coQuanTiepNhanDon.getId() == Long.valueOf(thamSoTTTP.getGiaTri()) || 
+						coQuanTiepNhanDon.getCapCoQuanQuanLy().getId() == Long.valueOf(thamSoSBN.getGiaTri())) {
+					chucDanh = "Giám đốc sở";
+				}
+				chucDanh = String.format("%s %s", WordUtil.capitaliseName(chucDanh), coQuan);
+			}
+			
+			mappings.put("chucDanh", chucDanh);
 			mappings.put("soVB", soVB);
 			mappings.put("ngayTiepNhan", ngayTiepNhan);
 			mappings.put("nguoiDungDon", nguoiDungDon);
@@ -2661,7 +2684,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		return xuLyDonTiepTheo;
 	}	
 	
-	public XuLyDon trinhTruongPhong(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId, CoQuanQuanLy banTiepCongDan) {
+	public XuLyDon trinhTruongPhong(XuLyDon xuLyDon, XuLyDon xuLyDonHienTai, Long donViId, Long congChucId, CoQuanQuanLy banTiepCongDan, String chucVu) {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 
