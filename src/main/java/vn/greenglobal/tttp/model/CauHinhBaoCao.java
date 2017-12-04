@@ -44,6 +44,8 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	private LocalDate ngayKetThucBC;
 	private int soNgayTuDongGui;	
 	private int namBaoCao;
+	private int thangBaoCao;
+	private String quyBaoCao = "";
 	private boolean daTuDongGui;	
 	@ManyToOne
 	private CoQuanQuanLy donViGui;
@@ -86,6 +88,22 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 
 	public void setNgayBatDauBC(LocalDate ngayBatDauBC) {
 		this.ngayBatDauBC = ngayBatDauBC;
+	}
+
+	public int getThangBaoCao() {
+		return thangBaoCao;
+	}
+
+	public void setThangBaoCao(int thangBaoCao) {
+		this.thangBaoCao = thangBaoCao;
+	}
+
+	public String getQuyBaoCao() {
+		return quyBaoCao;
+	}
+
+	public void setQuyBaoCao(String quyBaoCao) {
+		this.quyBaoCao = quyBaoCao;
 	}
 
 	public LocalDate getNgayKetThucBC() {
