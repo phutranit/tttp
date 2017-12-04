@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +42,8 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
 	private String tenBaoCaoSearch = "";
-	private LocalDate ngayBatDauBC;
-	private LocalDate ngayKetThucBC;
+	private LocalDateTime ngayBatDauBC;
+	private LocalDateTime ngayKetThucBC;
 	private int soNgayTuDongGui;	
 	private int namBaoCao;
 	private int thangBaoCao;
@@ -83,11 +84,11 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.namBaoCao = namBaoCao;
 	}
 
-	public LocalDate getNgayBatDauBC() {
+	public LocalDateTime getNgayBatDauBC() {
 		return ngayBatDauBC;
 	}
 
-	public void setNgayBatDauBC(LocalDate ngayBatDauBC) {
+	public void setNgayBatDauBC(LocalDateTime ngayBatDauBC) {
 		this.ngayBatDauBC = ngayBatDauBC;
 	}
 
@@ -116,11 +117,11 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.tenBaoCaoSearch = tenBaoCaoSearch;
 	}
 
-	public LocalDate getNgayKetThucBC() {
+	public LocalDateTime getNgayKetThucBC() {
 		return ngayKetThucBC;
 	}
 
-	public void setNgayKetThucBC(LocalDate ngayKetThucBC) {
+	public void setNgayKetThucBC(LocalDateTime ngayKetThucBC) {
 		this.ngayKetThucBC = ngayKetThucBC;
 	}
 
@@ -180,6 +181,23 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 			map.put("id", getDonViGui().getId());
 			map.put("ten", getDonViGui().getTen());
 			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<Map<String, Object>> getDonViNhanInfo() {
+		if (getDonViNhans() != null && getDonViNhans().size() > 0) {
+			List<Map<String, Object>> list = new ArrayList<>();
+			
+			for (CoQuanQuanLy cq : getDonViNhans()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", cq.getId());
+				map.put("ten", cq.getTen());
+				list.add(map);
+			}
+			return list;
 		}
 		return null;
 	}
