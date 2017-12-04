@@ -38,6 +38,8 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	private TrangThaiBaoCaoDonViEnum trangThaiBaoCao;
 	@Enumerated(EnumType.STRING)
 	private LoaiBaoCaoTongHopEnum loaiBaoCao;
+	private boolean heThongTao;
+	private boolean tuThem;
 	
 	public LocalDate getNgayNop() {
 		return ngayNop;
@@ -85,6 +87,22 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 
 	public void setLoaiBaoCao(LoaiBaoCaoTongHopEnum loaiBaoCao) {
 		this.loaiBaoCao = loaiBaoCao;
+	}
+
+	public boolean isHeThongTao() {
+		return heThongTao;
+	}
+
+	public void setHeThongTao(boolean heThongTao) {
+		this.heThongTao = heThongTao;
+	}
+
+	public boolean isTuThem() {
+		return tuThem;
+	}
+
+	public void setTuThem(boolean tuThem) {
+		this.tuThem = tuThem;
 	}
 
 	@Transient
