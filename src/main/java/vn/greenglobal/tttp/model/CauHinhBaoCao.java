@@ -40,6 +40,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
+	private String tenBaoCaoSearch = "";
 	private LocalDate ngayBatDauBC;
 	private LocalDate ngayKetThucBC;
 	private int soNgayTuDongGui;	
@@ -104,6 +105,14 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 
 	public void setQuyBaoCao(String quyBaoCao) {
 		this.quyBaoCao = quyBaoCao;
+	}
+
+	public String getTenBaoCaoSearch() {
+		return tenBaoCaoSearch;
+	}
+
+	public void setTenBaoCaoSearch(String tenBaoCaoSearch) {
+		this.tenBaoCaoSearch = tenBaoCaoSearch;
 	}
 
 	public LocalDate getNgayKetThucBC() {

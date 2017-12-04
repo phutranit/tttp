@@ -26,7 +26,8 @@ public class CauHinhBaoCaoService {
 	public Predicate predicateFindAll(String tuKhoa) {
 		BooleanExpression predAll = base;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
-			predAll = predAll.and(QCauHinhBaoCao.cauHinhBaoCao.tenBaoCao.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())));
+			predAll = predAll.and(QCauHinhBaoCao.cauHinhBaoCao.tenBaoCao.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))
+					.or(QCauHinhBaoCao.cauHinhBaoCao.tenBaoCaoSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim()))));
 		}
 
 		return predAll;
