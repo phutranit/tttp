@@ -2688,7 +2688,6 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		Long donId = xuLyDon.getDon().getId();
 		XuLyDon xuLyDonTiepTheo = new XuLyDon();
 
-		xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 		xuLyDonHienTai.setNextState(xuLyDon.getNextState());
 //		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getNoiDungThongTinTrinhLanhDao());
 		xuLyDonHienTai.setNoiDungXuLy(xuLyDon.getyKienXuLy());
@@ -2718,6 +2717,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		if (xuLyDonHienTai.isDonTra()) {
 			xuLyDonTiepTheo.setDonTra(true);
 		}
+
 		// set don
 		Don don = donRepo.findOne(donId);
 		// set thoi han xu ly cho don
@@ -2743,6 +2743,39 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_XU_LY);
 		don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 		//don.setNoiDungThongTinTrinhLanhDao(xuLyDonHienTai.getNoiDungXuLy());
+		
+		if ((xuLyDonHienTai.getCongChuc() != null && congChucId == xuLyDonHienTai.getCongChuc().getId()) || 
+				xuLyDonHienTai.getCongChuc() == null) {
+			xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
+			xuLyDonHienTai.setChucVu(VaiTroEnum.valueOf(chucVu));
+			xuLyDonHienTai.setChucVu2(null);
+		} else {
+			XuLyDon xuLyDonOwner = new XuLyDon();
+			
+			xuLyDonHienTai.setChucVu(xuLyDonHienTai.getCongChuc().getNguoiDung().getVaiTroMacDinh().getLoaiVaiTro());
+			xuLyDonHienTai.setChucVu2(null);
+			xuLyDonOwner.setChucVu(VaiTroEnum.valueOf(chucVu));
+			xuLyDonOwner.setChucVu2(null);
+			xuLyDonOwner.setThuTuThucHien(xuLyDonHienTai.getThuTuThucHien() + 1);
+			xuLyDonOwner.setNextState(xuLyDonHienTai.getNextState());
+			xuLyDonOwner.setNextForm(xuLyDonHienTai.getNextForm());
+			xuLyDonOwner.setDon(xuLyDonHienTai.getDon());
+			xuLyDonOwner.setCongChuc(congChucRepo.findOne(congChucId));
+			xuLyDonOwner.setPhongBanXuLy(xuLyDonOwner.getCongChuc().getCoQuanQuanLy());
+			xuLyDonOwner.setDonViXuLy(xuLyDonHienTai.getDonViXuLy());
+			xuLyDonOwner.setCanBoXuLyChiDinh(xuLyDon.getCanBoXuLyChiDinh());
+			xuLyDonOwner.setTrangThaiDon(xuLyDonHienTai.getTrangThaiDon());
+			xuLyDonOwner.setNoiDungXuLy(xuLyDonHienTai.getNoiDungXuLy());
+			xuLyDonOwner.setThamQuyenGiaiQuyet(xuLyDonHienTai.getThamQuyenGiaiQuyet());
+			xuLyDonOwner.setCoQuanTiepNhan(xuLyDonHienTai.getCoQuanTiepNhan());
+			xuLyDonOwner.setCoQuanChuyenDon(xuLyDonHienTai.getCoQuanChuyenDon());
+			xuLyDonOwner.setCanBoChuyenDon(xuLyDonHienTai.getCanBoChuyenDon());
+			xuLyDonOwner.setDonChuyen(xuLyDonHienTai.isDonChuyen());
+			xuLyDonOwner.setDonTra(xuLyDonHienTai.isDonTra());
+			
+			xuLyDonTiepTheo.setThuTuThucHien(xuLyDonOwner.getThuTuThucHien() + 1);
+			xuLyDonService.save(xuLyDonOwner, congChucId);
+		}
 		
 		//tao lich su qua trinh xu ly don
 		donService.save(don, congChucId);
