@@ -107,6 +107,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.quyBaoCao = quyBaoCao;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public String getTenBaoCaoSearch() {
 		return tenBaoCaoSearch;
 	}
@@ -131,6 +132,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.soNgayTuDongGui = soNgayTuDongGui;
 	}
 
+	@ApiModelProperty(position = 1, example = "{}")
 	public CoQuanQuanLy getDonViGui() {
 		return donViGui;
 	}
@@ -147,6 +149,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.danhSachBaoCao = danhSachBaoCao;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public boolean isDaTuDongGui() {
 		return daTuDongGui;
 	}
