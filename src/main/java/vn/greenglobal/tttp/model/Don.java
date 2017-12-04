@@ -2382,6 +2382,7 @@ public class Don extends Model<Don> {
 		this.saveTmp = saveTmp;
 	}
 	
+	//la ngay dung de biet khi chuyen don, tra don
 	private LocalDateTime ngayNhanTraDonChuyen;
 
 	@JsonIgnore

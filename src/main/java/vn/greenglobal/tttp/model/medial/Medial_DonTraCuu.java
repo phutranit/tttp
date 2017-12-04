@@ -20,7 +20,6 @@ import vn.greenglobal.tttp.enums.LoaiNguoiDungDonEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonCongDanEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.DoanDiCung;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
@@ -42,7 +41,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		this.setId(0l);
 	}
 	
-	public void copyDon(Don don) {
+	public void copyDon(Don don, Long donViId) {
 		setDonGocId(don.getDonGocId() != null && don.getDonGocId() > 0 ? don.getDonGocId() : don.getId());
 		setNoiDung(don.getNoiDung());
 		setMaDon(don.getMa());
@@ -52,7 +51,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setLoaiDonThu(don.getLoaiDon());
 		setCoUyQuyen(don.isCoUyQuyen());
 		setDaGiaiQuyet(don.isDaGiaiQuyet());
-		setCoQuanDaGiaiQuyet(don.getCoQuanDaGiaiQuyet() != null ? don.getCoQuanDaGiaiQuyet().getTen() : "");
+		setCoQuanDaGiaiQuyet(don.getCoQuanDaGiaiQuyetDonThu());
 		setSoVanBanDaGiaiQuyet(don.getSoVanBanDaGiaiQuyet());
 		setNgayBanHanhVanBanDaGiaiQuyet(don.getNgayBanHanhVanBanDaGiaiQuyet());
 		setNgayTiepNhanDon(don.getNgayTiepNhan());
@@ -88,6 +87,11 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 					setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanGiaiQuyet());
 				}
 			}
+			if (donViId != null && don.getDonViXuLyGiaiQuyet() != null) {
+				if (donViId.equals(don.getDonViXuLyGiaiQuyet().getId())) {
+					setCanBoXuLy(don.getCanBoXuLyChiDinh() != null ? don.getCanBoXuLyChiDinh().getHoVaTen() : "");
+				}
+			}
 		} else if (don.getProcessType().equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
 			setTenDonViGiuDenHienTai(don.getDonViThamTraXacMinh() != null ? don.getDonViThamTraXacMinh().getTen() : "");
 			if (don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
@@ -102,10 +106,20 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 				} else {
 					setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanTTXM());
 				}
-			}						
+			}	
+			if (donViId != null && don.getDonViThamTraXacMinh() != null) {
+				if (donViId.equals(don.getDonViThamTraXacMinh().getId())) {
+					setCanBoXuLy(don.getCanBoTTXMChiDinh() != null ? don.getCanBoTTXMChiDinh().getHoVaTen() : "");
+				}
+			}
 		} else if (don.getProcessType().equals(ProcessTypeEnum.KIEM_TRA_DE_XUAT)) {
 			setTenDonViGiuDenHienTai(don.getDonViKiemTraDeXuat() != null ? don.getDonViKiemTraDeXuat().getTen() : "");
 			setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanKTDX());
+			if (donViId != null && don.getDonViKiemTraDeXuat() != null) {
+				if (donViId.equals(don.getDonViKiemTraDeXuat().getId())) {
+					setCanBoXuLy(don.getCanBoKTDXChiDinh() != null ? don.getCanBoKTDXChiDinh().getHoVaTen() : "");
+				}
+			}
 		}
 	}
 	
@@ -125,6 +139,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String loaiVuViec = "";
 	private String soVanBanDaGiaiQuyet = "";
 	private String coQuanDaGiaiQuyet = "";
+	private String canBoXuLy = "";
 	
 	private int soNguoi;
 	private boolean coUyQuyen;
@@ -250,6 +265,14 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 
 	public void setSoVanBanDaGiaiQuyet(String soVanBanDaGiaiQuyet) {
 		this.soVanBanDaGiaiQuyet = soVanBanDaGiaiQuyet;
+	}
+
+	public String getCanBoXuLy() {
+		return canBoXuLy;
+	}
+
+	public void setCanBoXuLy(String canBoXuLy) {
+		this.canBoXuLy = canBoXuLy;
 	}
 
 	public LocalDateTime getNgayBanHanhVanBanDaGiaiQuyet() {

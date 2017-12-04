@@ -265,7 +265,8 @@ public class DonService {
 		}
 		
 		if (StringUtils.isNotBlank(trangThaiDon)) {
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.stringValue().eq(trangThaiDon));
+			TrangThaiDonEnum trangThai = TrangThaiDonEnum.valueOf(trangThaiDon);
+			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.trangThaiDon.eq(trangThai));
 		}
 		
 		String searchXLD = "";
@@ -278,7 +279,7 @@ public class DonService {
 				}
 			}
 		}
-
+		
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 		Collection<XuLyDon> xldCollections = new ArrayList<XuLyDon>();
 		Iterable<XuLyDon> xuLyDons = xuLyRepo.findAll(xuLyDonQuery, sortOrder);
