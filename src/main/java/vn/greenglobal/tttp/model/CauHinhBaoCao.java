@@ -1,6 +1,7 @@
 package vn.greenglobal.tttp.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,13 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
-	private LocalDate ngayBatDauBC;
-	private LocalDate ngayKetThucBC;
+	private String tenBaoCaoSearch = "";
+	private LocalDateTime ngayBatDauBC;
+	private LocalDateTime ngayKetThucBC;
 	private int soNgayTuDongGui;	
 	private int namBaoCao;
+	private int thangBaoCao;
+	private String quyBaoCao = "";
 	private boolean daTuDongGui;	
 	@ManyToOne
 	private CoQuanQuanLy donViGui;
@@ -80,19 +84,44 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.namBaoCao = namBaoCao;
 	}
 
-	public LocalDate getNgayBatDauBC() {
+	public LocalDateTime getNgayBatDauBC() {
 		return ngayBatDauBC;
 	}
 
-	public void setNgayBatDauBC(LocalDate ngayBatDauBC) {
+	public void setNgayBatDauBC(LocalDateTime ngayBatDauBC) {
 		this.ngayBatDauBC = ngayBatDauBC;
 	}
 
-	public LocalDate getNgayKetThucBC() {
+	public int getThangBaoCao() {
+		return thangBaoCao;
+	}
+
+	public void setThangBaoCao(int thangBaoCao) {
+		this.thangBaoCao = thangBaoCao;
+	}
+
+	public String getQuyBaoCao() {
+		return quyBaoCao;
+	}
+
+	public void setQuyBaoCao(String quyBaoCao) {
+		this.quyBaoCao = quyBaoCao;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public String getTenBaoCaoSearch() {
+		return tenBaoCaoSearch;
+	}
+
+	public void setTenBaoCaoSearch(String tenBaoCaoSearch) {
+		this.tenBaoCaoSearch = tenBaoCaoSearch;
+	}
+
+	public LocalDateTime getNgayKetThucBC() {
 		return ngayKetThucBC;
 	}
 
-	public void setNgayKetThucBC(LocalDate ngayKetThucBC) {
+	public void setNgayKetThucBC(LocalDateTime ngayKetThucBC) {
 		this.ngayKetThucBC = ngayKetThucBC;
 	}
 
@@ -104,6 +133,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.soNgayTuDongGui = soNgayTuDongGui;
 	}
 
+	@ApiModelProperty(position = 1, example = "{}")
 	public CoQuanQuanLy getDonViGui() {
 		return donViGui;
 	}
@@ -120,6 +150,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.danhSachBaoCao = danhSachBaoCao;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public boolean isDaTuDongGui() {
 		return daTuDongGui;
 	}
@@ -150,6 +181,23 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 			map.put("id", getDonViGui().getId());
 			map.put("ten", getDonViGui().getTen());
 			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public List<Map<String, Object>> getDonViNhanInfo() {
+		if (getDonViNhans() != null && getDonViNhans().size() > 0) {
+			List<Map<String, Object>> list = new ArrayList<>();
+			
+			for (CoQuanQuanLy cq : getDonViNhans()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", cq.getId());
+				map.put("ten", cq.getTen());
+				list.add(map);
+			}
+			return list;
 		}
 		return null;
 	}
