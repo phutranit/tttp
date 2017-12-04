@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,6 +35,7 @@ import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.model.QThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.model.ThamQuyenGiaiQuyet;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.ThamQuyenGiaiQuyetRepository;
@@ -74,9 +77,10 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
+			OrderSpecifier<String> sort = QThamQuyenGiaiQuyet.thamQuyenGiaiQuyet.ten.asc();
 			Page<ThamQuyenGiaiQuyet> page = null;
-			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
-			List<ThamQuyenGiaiQuyet> list = (List<ThamQuyenGiaiQuyet>) repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa));
+			pageable = new PageRequest(0, 1000, null);
+			List<ThamQuyenGiaiQuyet> list = (List<ThamQuyenGiaiQuyet>) repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa), sort);
 			boolean flag = false;
 			ThamQuyenGiaiQuyet tqgq = new ThamQuyenGiaiQuyet();
 			if (list != null && list.size() > 0) {
@@ -117,7 +121,7 @@ public class ThamQuyenGiaiQuyetController extends TttpController<ThamQuyenGiaiQu
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.DESC, "ngaySua")));
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
 			Page<ThamQuyenGiaiQuyet> page = repo.findAll(thamQuyenGiaiQuyetService.predicateFindAll(tuKhoa), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {

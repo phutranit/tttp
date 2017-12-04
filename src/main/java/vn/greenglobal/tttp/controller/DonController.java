@@ -465,7 +465,7 @@ public class DonController extends TttpController<Don> {
 						ApiErrorEnum.DON_NOT_FOUND.getText(), ApiErrorEnum.DON_NOT_FOUND.getText());
 			}
 			Medial_DonTraCuu media = new Medial_DonTraCuu();
-			media.copyDon(don);
+			media.copyDon(don, null);
 			return new ResponseEntity<>(eass.toFullResource(media), HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -489,9 +489,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "tinhTrangXuLy", required = false) String tinhTrangXuLy,
 			@RequestParam(value = "linhVucId", required = false) Long linhVucId,
 			@RequestParam(value = "linhVucChiTietId", required = false) Long linhVucChiTietId,
-			@RequestParam(value = "trangThaiDon", required = false) String trangThaiDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen, 
-			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
 			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT,
 			@RequestParam(value = "taiDonVi", required = false) boolean taiDonVi,
 			@RequestParam(value = "listDonViTiepNhan", required = false) List<CoQuanQuanLy> listDonViTiepNhan,
@@ -517,7 +515,7 @@ public class DonController extends TttpController<Don> {
 				Medial_DonTraCuu media = null;
 				for (Don don : listDon.subList(start, end)) {
 					media = new Medial_DonTraCuu();
-					media.copyDon(don);
+					media.copyDon(don, donViXuLyXLD);
 					listMedial.add(media);
 				}
 				Page<Medial_DonTraCuu> pages = new PageImpl<Medial_DonTraCuu>(listMedial, pageable, listDon.size());

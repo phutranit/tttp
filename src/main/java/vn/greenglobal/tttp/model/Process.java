@@ -21,6 +21,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
@@ -45,6 +47,7 @@ public class Process extends Model<Process>{
 	
 	@NotNull
 	@ManyToOne
+	@NotFound(action = NotFoundAction.IGNORE)
 	private CoQuanQuanLy coQuanQuanLy;
 	
 	@NotNull
