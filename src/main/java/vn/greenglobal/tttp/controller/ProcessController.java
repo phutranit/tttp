@@ -444,9 +444,6 @@ public class ProcessController extends TttpController<Process> {
 				} else {
 					coQuyTrinhDayDu = false;
 				}
-				if (i == 17) coQuyTrinhDayDu = false;
-				if (i == 24) coQuyTrinhDayDu = false;
-				if (i == 45) coQuyTrinhDayDu = true;
 				
 				Process process = null;
 				Transition transition = null;
@@ -457,17 +454,6 @@ public class ProcessController extends TttpController<Process> {
 			
 			for (int i = 176; i <= 191; i++) {
 				donViId = Long.valueOf(i + "");
-				coQuyTrinhDayDu = true;
-				
-				Process process = null;
-				Transition transition = null;
-				DonViHasState donViHasState = null;
-				
-				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
-			}
-			
-			for (int i = 255; i <= 263; i++) {
-				donViId = Long.valueOf(i + "");
 				coQuyTrinhDayDu = false;
 				
 				Process process = null;
@@ -476,6 +462,17 @@ public class ProcessController extends TttpController<Process> {
 				
 				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
 			}
+			
+//			for (int i = 255; i <= 263; i++) {
+//				donViId = Long.valueOf(i + "");
+//				coQuyTrinhDayDu = false;
+//				
+//				Process process = null;
+//				Transition transition = null;
+//				DonViHasState donViHasState = null;
+//				
+//				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
+//			}
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			
