@@ -22,6 +22,14 @@ public class DoiTuongViPhamService {
 
 	BooleanExpression base = QDoiTuongViPham.doiTuongViPham.daXoa.eq(false);
 
+	public Predicate predicateFindAll(Long cuocThanhTraId) {
+		BooleanExpression predAll = base;
+		if (cuocThanhTraId != null && cuocThanhTraId > 0) {
+			predAll = predAll.and(QDoiTuongViPham.doiTuongViPham.cuocThanhTra.id.eq(cuocThanhTraId));
+		}
+		return predAll;
+	}
+
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QDoiTuongViPham.doiTuongViPham.id.eq(id));
 	}

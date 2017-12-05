@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +54,21 @@ public class DoiTuongViPhamController extends TttpController<DoiTuongViPham> {
 
 	public DoiTuongViPhamController(BaseRepository<DoiTuongViPham, Long> repo) {
 		super(repo);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/doiTuongViPhams")
+	@ApiOperation(value = "Lấy danh sách Đối Tượng Vi Phạm", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "cuocThanhTraId", required = false) Long cuocThanhTraId,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "id")));
+			Page<DoiTuongViPham> page = repo.findAll(doiTuongViPhamService.predicateFindOne(cuocThanhTraId), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
