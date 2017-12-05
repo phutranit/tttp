@@ -50,7 +50,8 @@ public class ScheduledTasks {
 	CauHinhBaoCaoService cauHinhBaoCaoService;
 
 	//second, minute, hour, day of month, month, day(s) of week
-	@Scheduled(cron = "0 25 10 * * *")
+
+	@Scheduled(cron = "0 44 11 * * *")
 	public void updateHinhThucXuLyQuanLy() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
 				.and(QCauHinhBaoCao.cauHinhBaoCao.daTuDongGui.eq(false))
@@ -60,7 +61,6 @@ public class ScheduledTasks {
 			//Tao bao cao tong hop
 			BaoCaoTongHop baoCaoTongHop = new BaoCaoTongHop();
 			baoCaoTongHop.setTenBaoCao(cauHinh.getTenBaoCao());
-			baoCaoTongHop.setTenBaoCaoSearch(cauHinh.getTenBaoCaoSearch());
 			baoCaoTongHop.setNamBaoCao(cauHinh.getNamBaoCao());
 			baoCaoTongHop.setDanhSachBaoCao(cauHinh.getDanhSachBaoCao());
 			baoCaoTongHop.setNgayBatDauBC(cauHinh.getNgayBatDauBC());

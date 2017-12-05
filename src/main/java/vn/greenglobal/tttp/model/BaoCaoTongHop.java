@@ -28,7 +28,6 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
-	private String tenBaoCaoSearch = "";
 	private LocalDateTime ngayBatDauBC;
 	private LocalDateTime ngayKetThucBC;
 	private int namBaoCao;
@@ -109,15 +108,6 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 
 	public void setDanhSachBaoCao(String danhSachBaoCao) {
 		this.danhSachBaoCao = danhSachBaoCao;
-	}
-
-	@ApiModelProperty(hidden = true)
-	public String getTenBaoCaoSearch() {
-		return tenBaoCaoSearch;
-	}
-
-	public void setTenBaoCaoSearch(String tenBaoCaoSearch) {
-		this.tenBaoCaoSearch = tenBaoCaoSearch;
 	}
 
 	@Transient
