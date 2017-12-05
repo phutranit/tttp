@@ -28,10 +28,11 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
+	private String tenBaoCaoSearch = "";
 	private LocalDateTime ngayBatDauBC;
 	private LocalDateTime ngayKetThucBC;
 	private int namBaoCao;
-	private String quyBaoCao = "";
+	private int quyBaoCao;
 	private int thangBaoCao;
 	@ManyToOne
 	private CoQuanQuanLy donVi;
@@ -62,11 +63,11 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 		this.namBaoCao = namBaoCao;
 	}
 
-	public String getQuyBaoCao() {
+	public int getQuyBaoCao() {
 		return quyBaoCao;
 	}
 
-	public void setQuyBaoCao(String quyBaoCao) {
+	public void setQuyBaoCao(int quyBaoCao) {
 		this.quyBaoCao = quyBaoCao;
 	}
 
@@ -108,6 +109,15 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 
 	public void setDanhSachBaoCao(String danhSachBaoCao) {
 		this.danhSachBaoCao = danhSachBaoCao;
+	}
+
+	@ApiModelProperty(hidden = true)
+	public String getTenBaoCaoSearch() {
+		return tenBaoCaoSearch;
+	}
+
+	public void setTenBaoCaoSearch(String tenBaoCaoSearch) {
+		this.tenBaoCaoSearch = tenBaoCaoSearch;
 	}
 
 	@Transient

@@ -23,6 +23,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
@@ -47,7 +49,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	private int soNgayTuDongGui;	
 	private int namBaoCao;
 	private int thangBaoCao;
-	private String quyBaoCao = "";
+	private int quyBaoCao;
 	private boolean daTuDongGui;	
 	@ManyToOne
 	private CoQuanQuanLy donViGui;
@@ -92,6 +94,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		return ngayGuiBaoCao;
 	}
 
+	@JsonIgnore
 	public void setNgayGuiBaoCao(LocalDateTime ngayGuiBaoCao) {
 		this.ngayGuiBaoCao = ngayGuiBaoCao;
 	}
@@ -108,15 +111,15 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 		this.thangBaoCao = thangBaoCao;
 	}
 
-	public String getQuyBaoCao() {
+	public int getQuyBaoCao() {
 		return quyBaoCao;
 	}
 
-	public void setQuyBaoCao(String quyBaoCao) {
+	public void setQuyBaoCao(int quyBaoCao) {
 		this.quyBaoCao = quyBaoCao;
 	}
 
-	@ApiModelProperty(hidden = true)
+	@JsonIgnore
 	public String getTenBaoCaoSearch() {
 		return tenBaoCaoSearch;
 	}
