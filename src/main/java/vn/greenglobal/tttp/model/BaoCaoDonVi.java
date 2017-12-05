@@ -75,6 +75,18 @@ public class BaoCaoDonVi extends Model<BaoCaoDonVi> {
 		return getBaoCaoTongHop();
 	}
 	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiBaoCaoInfo() {
+		if (getTrangThaiBaoCao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getTrangThaiBaoCao().getText());
+			map.put("giaTri", getTrangThaiBaoCao().name());
+			return map;
+		}
+		return null;
+	}
+	
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
