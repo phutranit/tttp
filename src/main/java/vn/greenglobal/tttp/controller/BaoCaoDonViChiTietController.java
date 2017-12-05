@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import java.util.Calendar;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,38 +22,33 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
-import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
-import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
-import vn.greenglobal.tttp.model.BaoCaoDonVi;
-import vn.greenglobal.tttp.repository.BaoCaoDonViRepository;
-import vn.greenglobal.tttp.service.BaoCaoDonViService;
+import vn.greenglobal.tttp.model.BaoCaoDonViChiTiet;
+import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
+import vn.greenglobal.tttp.service.BaoCaoDonViChiTietService;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
 @RepositoryRestController
-@Api(value = "baoCaoDonVis", description = "Báo cáo đơn vị")
-public class BaoCaoDonViController extends TttpController<BaoCaoDonVi> {
+@Api(value = "baoCaoDonViChiTiets", description = "Báo cáo đơn vị chi tiết")
+public class BaoCaoDonViChiTietController extends TttpController<BaoCaoDonViChiTiet> {
 
 	@Autowired
-	private BaoCaoDonViRepository repo;
+	private BaoCaoDonViChiTietRepository repo;
 
 	@Autowired
-	private BaoCaoDonViService baoCaoDonViService;
+	private BaoCaoDonViChiTietService baoCaoDonViChiTietService;
 
 
-	public BaoCaoDonViController(BaseRepository<BaoCaoDonVi, Long> repo) {
+	public BaoCaoDonViChiTietController(BaseRepository<BaoCaoDonViChiTiet, Long> repo) {
 		super(repo);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis")
-	@ApiOperation(value = "Lấy danh sách báo cáo đơn vị", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis/{id}/chiTiets")
+	@ApiOperation(value = "Lấy danh sách báo cáo đơn vị chi tiết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "loaiKy", required = false) String loaiKy,
-			@RequestParam(value = "quy", required = false) Integer quy,
-			@RequestParam(value = "year", required = false) Integer year,
-			@RequestParam(value = "month", required = false) Integer month,
+			Pageable pageable, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
@@ -65,23 +57,9 @@ public class BaoCaoDonViController extends TttpController<BaoCaoDonVi> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			Long donViXuLy = Long
-					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+					.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());			
 			
-			KyBaoCaoTongHopEnum loaiKyEnum = KyBaoCaoTongHopEnum.valueOf(loaiKy);
-			
-			if (year == null || year == 0) {
-				year = Calendar.getInstance().get(Calendar.YEAR);
-			}
-			if (month == null) {
-				month = Utils.localDateTimeNow().getMonthValue();
-			}
-			if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_QUY)) {
-				if (quy == null) {
-					quy = Utils.getQuyHienTai();
-				}
-			}
-			
-			Page<BaoCaoDonVi> page = repo.findAll(baoCaoDonViService.predicateFindAll(loaiKy, quy, year, month, donViXuLy), pageable);
+			Page<BaoCaoDonViChiTiet> page = repo.findAll(baoCaoDonViChiTietService.predicateFindAll(id, donViXuLy), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -89,11 +67,11 @@ public class BaoCaoDonViController extends TttpController<BaoCaoDonVi> {
 	}
 
 
-	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis/{id}")
-	@ApiOperation(value = "Lấy Báo cáo đơn vị theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Báo cáo đơn vị thành công", response = BaoCaoDonVi.class) })
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis/{id}/chiTiets/{idChiTiet}")
+	@ApiOperation(value = "Lấy Báo cáo đơn vị chi tiết theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Báo cáo đơn vị thành công", response = BaoCaoDonViChiTiet.class) })
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+			@PathVariable("id") long id, @PathVariable("idChiTiet") long idChiTiet, PersistentEntityResourceAssembler eass) {
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.BAOCAODONVI_LIETKE) == null) {
@@ -101,11 +79,11 @@ public class BaoCaoDonViController extends TttpController<BaoCaoDonVi> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			BaoCaoDonVi baoCaoDonVi = repo.findOne(baoCaoDonViService.predicateFindOne(id));
-			if (baoCaoDonVi == null) {
+			BaoCaoDonViChiTiet baoCaoDonViChiTiet = repo.findOne(baoCaoDonViChiTietService.predicateFindOne(id));
+			if (baoCaoDonViChiTiet == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			return new ResponseEntity<>(eass.toFullResource(baoCaoDonVi), HttpStatus.OK);
+			return new ResponseEntity<>(eass.toFullResource(baoCaoDonViChiTiet), HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

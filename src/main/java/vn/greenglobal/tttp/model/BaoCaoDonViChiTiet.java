@@ -104,6 +104,30 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	public void setTuThem(boolean tuThem) {
 		this.tuThem = tuThem;
 	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getLoaiBaoCaoInfo() {
+		if (getLoaiBaoCao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getLoaiBaoCao().getText());
+			map.put("giaTri", getLoaiBaoCao().name());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Map<String, Object> getTrangThaiBaoCaoInfo() {
+		if (getTrangThaiBaoCao() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getTrangThaiBaoCao().getText());
+			map.put("giaTri", getTrangThaiBaoCao().name());
+			return map;
+		}
+		return null;
+	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
