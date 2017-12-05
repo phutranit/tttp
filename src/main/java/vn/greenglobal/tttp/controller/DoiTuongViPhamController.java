@@ -64,7 +64,7 @@ public class DoiTuongViPhamController extends TttpController<DoiTuongViPham> {
 			PersistentEntityResourceAssembler eass) {
 		try {
 			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "id")));
-			Page<DoiTuongViPham> page = repo.findAll(doiTuongViPhamService.predicateFindOne(cuocThanhTraId), pageable);
+			Page<DoiTuongViPham> page = repo.findAll(doiTuongViPhamService.predicateFindAll(cuocThanhTraId), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
