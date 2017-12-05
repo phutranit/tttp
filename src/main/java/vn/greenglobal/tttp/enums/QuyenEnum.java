@@ -194,6 +194,18 @@ public enum QuyenEnum {
 	PROCESS_SUA("Chỉnh sửa"),
 	PROCESS_XOA("Xoá"),
 	
+	BAOCAODONVI_LIETKE("Liệt kê"),
+	BAOCAODONVI_XEM("Xem"),
+	BAOCAODONVI_THEM("Thêm mới"),
+	BAOCAODONVI_SUA("Chỉnh sửa"),
+	BAOCAODONVI_XOA("Xoá"),
+		
+	BAOCAOTONGHOP_LIETKE("Liệt kê"),
+	BAOCAOTONGHOP_XEM("Xem"),
+	BAOCAOTONGHOP_THEM("Thêm mới"),
+	BAOCAOTONGHOP_SUA("Chỉnh sửa"),
+	BAOCAOTONGHOP_XOA("Xoá"),
+	
 	TRANSITION_LIETKE("Liệt kê"),
 	TRANSITION_XEM("Xem"),
 	TRANSITION_THEM("Thêm mới"),

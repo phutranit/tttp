@@ -226,6 +226,18 @@ public class QuyenController {
 		quyenObj.put("giaTriQuyen", QuyenEnum.CAUHINHBAOCAO_LIETKE.name() + "," + QuyenEnum.CAUHINHBAOCAO_XEM.name() + "," + QuyenEnum.CAUHINHBAOCAO_THEM.name() + "," + QuyenEnum.CAUHINHBAOCAO_SUA.name() + "," + QuyenEnum.CAUHINHBAOCAO_XOA.name());
 		quyenList.add(quyenObj);
 		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang"," Báo cáo tổng hợp");
+		quyenObj.put("tenQuyen", QuyenEnum.BAOCAOTONGHOP_LIETKE.getText() + "," + QuyenEnum.BAOCAOTONGHOP_XEM.getText() + "," + QuyenEnum.BAOCAOTONGHOP_THEM.getText() + "," + QuyenEnum.BAOCAOTONGHOP_SUA.getText() + "," + QuyenEnum.BAOCAOTONGHOP_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.BAOCAOTONGHOP_LIETKE.name() + "," + QuyenEnum.BAOCAOTONGHOP_XEM.name() + "," + QuyenEnum.BAOCAOTONGHOP_THEM.name() + "," + QuyenEnum.BAOCAOTONGHOP_SUA.name() + "," + QuyenEnum.BAOCAOTONGHOP_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang"," Báo cáo đơn vị");
+		quyenObj.put("tenQuyen", QuyenEnum.BAOCAODONVI_LIETKE.getText() + "," + QuyenEnum.BAOCAODONVI_XEM.getText() + "," + QuyenEnum.BAOCAODONVI_THEM.getText() + "," + QuyenEnum.BAOCAODONVI_SUA.getText() + "," + QuyenEnum.BAOCAODONVI_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.BAOCAODONVI_LIETKE.name() + "," + QuyenEnum.BAOCAODONVI_XEM.name() + "," + QuyenEnum.BAOCAODONVI_THEM.name() + "," + QuyenEnum.BAOCAODONVI_SUA.name() + "," + QuyenEnum.BAOCAODONVI_XOA.name());
+		quyenList.add(quyenObj);
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("quyenList", quyenList);
 

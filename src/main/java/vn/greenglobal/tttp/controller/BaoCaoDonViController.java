@@ -96,7 +96,7 @@ public class BaoCaoDonViController extends TttpController<BaoCaoDonVi> {
 			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.DANTOC_XEM) == null) {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.BAOCAODONVI_XEM) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
