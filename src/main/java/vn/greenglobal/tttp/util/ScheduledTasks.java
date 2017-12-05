@@ -60,6 +60,7 @@ public class ScheduledTasks {
 			//Tao bao cao tong hop
 			BaoCaoTongHop baoCaoTongHop = new BaoCaoTongHop();
 			baoCaoTongHop.setTenBaoCao(cauHinh.getTenBaoCao());
+			baoCaoTongHop.setTenBaoCaoSearch(cauHinh.getTenBaoCaoSearch());
 			baoCaoTongHop.setNamBaoCao(cauHinh.getNamBaoCao());
 			baoCaoTongHop.setDanhSachBaoCao(cauHinh.getDanhSachBaoCao());
 			baoCaoTongHop.setNgayBatDauBC(cauHinh.getNgayBatDauBC());

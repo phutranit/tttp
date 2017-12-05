@@ -69,6 +69,11 @@ public class BaoCaoDonVi extends Model<BaoCaoDonVi> {
 	public Long getBaoCaoDonViId() {
 		return getId();
 	}
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public BaoCaoTongHop getBaoCaoTongHopInfo() {
+		return getBaoCaoTongHop();
+	}
 	
 	@Transient
 	@ApiModelProperty(hidden = true)
