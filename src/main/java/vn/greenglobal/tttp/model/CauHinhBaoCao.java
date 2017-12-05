@@ -1,6 +1,5 @@
 package vn.greenglobal.tttp.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +43,7 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 	private String tenBaoCaoSearch = "";
 	private LocalDateTime ngayBatDauBC;
 	private LocalDateTime ngayKetThucBC;
+	private LocalDateTime ngayGuiBaoCao;
 	private int soNgayTuDongGui;	
 	private int namBaoCao;
 	private int thangBaoCao;
@@ -86,6 +86,14 @@ public class CauHinhBaoCao extends Model<CauHinhBaoCao> {
 
 	public LocalDateTime getNgayBatDauBC() {
 		return ngayBatDauBC;
+	}
+	
+	public LocalDateTime getNgayGuiBaoCao() {
+		return ngayGuiBaoCao;
+	}
+
+	public void setNgayGuiBaoCao(LocalDateTime ngayGuiBaoCao) {
+		this.ngayGuiBaoCao = ngayGuiBaoCao;
 	}
 
 	public void setNgayBatDauBC(LocalDateTime ngayBatDauBC) {

@@ -1,6 +1,6 @@
 package vn.greenglobal.tttp.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +28,8 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	@Size(max=3000)
 	private String danhSachBaoCao = "";
 	private String tenBaoCao = "";
-	private LocalDate ngayBatDauBC;
-	private LocalDate ngayKetThucBC;
+	private LocalDateTime ngayBatDauBC;
+	private LocalDateTime ngayKetThucBC;
 	private int namBaoCao;
 	private String quyBaoCao = "";
 	private int thangBaoCao;
@@ -78,19 +78,19 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 		this.thangBaoCao = thangBaoCao;
 	}
 
-	public LocalDate getNgayBatDauBC() {
+	public LocalDateTime getNgayBatDauBC() {
 		return ngayBatDauBC;
 	}
 
-	public void setNgayBatDauBC(LocalDate ngayBatDauBC) {
+	public void setNgayBatDauBC(LocalDateTime ngayBatDauBC) {
 		this.ngayBatDauBC = ngayBatDauBC;
 	}
 
-	public LocalDate getNgayKetThucBC() {
+	public LocalDateTime getNgayKetThucBC() {
 		return ngayKetThucBC;
 	}
 
-	public void setNgayKetThucBC(LocalDate ngayKetThucBC) {
+	public void setNgayKetThucBC(LocalDateTime ngayKetThucBC) {
 		this.ngayKetThucBC = ngayKetThucBC;
 	}
 

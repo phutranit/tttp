@@ -79,6 +79,29 @@ public class CauHinhBaoCaoController extends TttpController<CauHinhBaoCao> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
+			if (cauHinhBaoCao.getNgayBatDauBC() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NGAYBATDAUBC_REQUIRED.name(),
+						ApiErrorEnum.NGAYBATDAUBC_REQUIRED.getText(), ApiErrorEnum.NGAYBATDAUBC_REQUIRED.getText());
+			}
+			
+			if (cauHinhBaoCao.getNgayKetThucBC() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.name(),
+						ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.getText(), ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getKyBaoCao() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.KYBAOCAO_REQUIRED.name(),
+						ApiErrorEnum.KYBAOCAO_REQUIRED.getText(), ApiErrorEnum.KYBAOCAO_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getDanhSachBaoCao() == null && cauHinhBaoCao.getDanhSachBaoCao().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.name(),
+						ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.getText(), ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getDonViGui() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DONVIGUI_REQUIRED.name(),
+						ApiErrorEnum.DONVIGUI_REQUIRED.getText(), ApiErrorEnum.DONVIGUI_REQUIRED.getText());
+			}
+			cauHinhBaoCao.setNgayGuiBaoCao(cauHinhBaoCao.getNgayKetThucBC().minusDays(cauHinhBaoCao.getSoNgayTuDongGui()));
+			
 			cauHinhBaoCao.setTenBaoCaoSearch(Utils.unAccent(cauHinhBaoCao.getTenBaoCao().trim()));
 			return cauHinhBaoCaoService.doSave(cauHinhBaoCao,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
@@ -123,14 +146,41 @@ public class CauHinhBaoCaoController extends TttpController<CauHinhBaoCao> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			
 			cauHinhBaoCao.setId(id);
-
+			
 			if (!cauHinhBaoCaoService.isExists(repo, id)) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
 			
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAUHINHBAOCAO_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			
+			if (cauHinhBaoCao.getNgayBatDauBC() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NGAYBATDAUBC_REQUIRED.name(),
+						ApiErrorEnum.NGAYBATDAUBC_REQUIRED.getText(), ApiErrorEnum.NGAYBATDAUBC_REQUIRED.getText());
+			}
+			
+			if (cauHinhBaoCao.getNgayKetThucBC() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.name(),
+						ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.getText(), ApiErrorEnum.NGAYKETTHUCBC_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getKyBaoCao() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.KYBAOCAO_REQUIRED.name(),
+						ApiErrorEnum.KYBAOCAO_REQUIRED.getText(), ApiErrorEnum.KYBAOCAO_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getDanhSachBaoCao() == null && cauHinhBaoCao.getDanhSachBaoCao().isEmpty()) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.name(),
+						ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.getText(), ApiErrorEnum.DANHSACHBAOCAO_REQUIRED.getText());
+			}
+			if (cauHinhBaoCao.getDonViGui() == null) {
+				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DONVIGUI_REQUIRED.name(),
+						ApiErrorEnum.DONVIGUI_REQUIRED.getText(), ApiErrorEnum.DONVIGUI_REQUIRED.getText());
+			}
+			cauHinhBaoCao.setNgayGuiBaoCao(cauHinhBaoCao.getNgayKetThucBC().minusDays(cauHinhBaoCao.getSoNgayTuDongGui()));			
 			cauHinhBaoCao.setTenBaoCaoSearch(Utils.unAccent(cauHinhBaoCao.getTenBaoCao().trim()));
 			return cauHinhBaoCaoService.doSave(cauHinhBaoCao,
 					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()), eass,
