@@ -214,6 +214,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 								dttt.setId(ctt.getDoiTuongThanhTraId());
 								cttSave.setDoiTuongThanhTra(dttt);
+								cttSave.setNamThanhTra(khtt.getNamThanhTra());
 								if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 									CoQuanQuanLy dvct = new CoQuanQuanLy();
 									dvct.setId(ctt.getDonViChuTriId());
@@ -346,6 +347,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 										dttt.setId(ctt.getDoiTuongThanhTraId());
 										cuocThanhTraOld.setDoiTuongThanhTra(dttt);
+										cuocThanhTraOld.setNamThanhTra(khtt.getNamThanhTra());
 										if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 											CoQuanQuanLy dvct = new CoQuanQuanLy();
 											dvct.setId(ctt.getDonViChuTriId());
@@ -365,6 +367,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 									dttt.setId(ctt.getDoiTuongThanhTraId());
 									cttSave.setDoiTuongThanhTra(dttt);
+									cttSave.setNamThanhTra(khtt.getNamThanhTra());
 									if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 										CoQuanQuanLy dvct = new CoQuanQuanLy();
 										dvct.setId(ctt.getDonViChuTriId());
