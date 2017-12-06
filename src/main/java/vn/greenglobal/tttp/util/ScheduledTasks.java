@@ -50,6 +50,7 @@ public class ScheduledTasks {
 	CauHinhBaoCaoService cauHinhBaoCaoService;
 
 	//second, minute, hour, day of month, month, day(s) of week
+
 	@Scheduled(cron = "0 44 11 * * *")
 	public void updateHinhThucXuLyQuanLy() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
