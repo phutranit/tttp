@@ -123,7 +123,6 @@ public class ScheduledTasks {
 					BaoCaoDonViChiTietTam baoCaoDonViChiTietTam = new BaoCaoDonViChiTietTam();
 					baoCaoDonViChiTietTam.setBaoCaoDonViChiTiet(baoCaoDonViChiTiet);
 					baoCaoDonViChiTietTam.setSoLieuBaoCao(baoCaoDonViChiTiet.getSoLieuBaoCao());
-					baoCaoDonViChiTietTam.setLoaiBaoCao(loaiBaoCao);
 					Utils.save(baoCaoDonViChiTietTamRepo, baoCaoDonViChiTietTam, nguoiTaoId);					
 				}
 			}			

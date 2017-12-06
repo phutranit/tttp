@@ -30,6 +30,14 @@ public class BaoCaoDonViChiTietService {
 
 		return predAll;
 	}
+	
+	public Predicate predicateFindAllBaoCaoDaChot(Long baoCaoDonViChiTietChaId) {
+		BooleanExpression predAll = base;
+		
+		predAll = predAll.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.cha.id.eq(baoCaoDonViChiTietChaId));
+
+		return predAll;
+	}
 
 	public Predicate predicateFindOne(Long id) {
 		return base.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.id.eq(id));
