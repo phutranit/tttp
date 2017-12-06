@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
-import vn.greenglobal.tttp.enums.HinhThucKienNghiEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
 
 @Entity
@@ -65,6 +64,10 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String soQuyetDinhKienNghiXuLyHanhChinhCaNhan = "";
 	@Size(max=255) // Thu hoi trong qua trinh thanh tra
 	private String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String hinhThucKienNghiToChuc;
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String hinhThucKienNghiCaNhan;
 	
 	//Kien nghi chuyen co quan dieu tra
 	private boolean chuyenCoQuanDieuTra;
@@ -109,10 +112,10 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private long saiPhamKhacKienNghiXuLyVeDat;
 	
 	// Kien nghi xu ly ve hanh chinh
-	@Enumerated(EnumType.STRING)
-	private HinhThucKienNghiEnum hinhThucKienNghiToChuc;
-	@Enumerated(EnumType.STRING)
-	private HinhThucKienNghiEnum hinhThucKienNghiCaNhan;
+	//@Enumerated(EnumType.STRING)
+	//private HinhThucKienNghiEnum hinhThucKienNghiToChuc;
+	//@Enumerated(EnumType.STRING)
+	//private HinhThucKienNghiEnum hinhThucKienNghiCaNhan;
 	// Kien nghi chuyen co quan dieu tra
 	@Enumerated(EnumType.STRING)
 	private CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra;
@@ -495,21 +498,21 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.saiPhamKhacKienNghiXuLyVeDat = saiPhamKhacKienNghiXuLyVeDat;
 	}
 
-	public HinhThucKienNghiEnum getHinhThucKienNghiToChuc() {
-		return hinhThucKienNghiToChuc;
-	}
-
-	public void setHinhThucKienNghiToChuc(HinhThucKienNghiEnum hinhThucKienNghiToChuc) {
-		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
-	}
-
-	public HinhThucKienNghiEnum getHinhThucKienNghiCaNhan() {
-		return hinhThucKienNghiCaNhan;
-	}
-
-	public void setHinhThucKienNghiCaNhan(HinhThucKienNghiEnum hinhThucKienNghiCaNhan) {
-		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
-	}
+//	public HinhThucKienNghiEnum getHinhThucKienNghiToChuc() {
+//		return hinhThucKienNghiToChuc;
+//	}
+//
+//	public void setHinhThucKienNghiToChuc(HinhThucKienNghiEnum hinhThucKienNghiToChuc) {
+//		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
+//	}
+//
+//	public HinhThucKienNghiEnum getHinhThucKienNghiCaNhan() {
+//		return hinhThucKienNghiCaNhan;
+//	}
+//
+//	public void setHinhThucKienNghiCaNhan(HinhThucKienNghiEnum hinhThucKienNghiCaNhan) {
+//		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
+//	}
 
 	public CoQuanDieuTraThanhTraEnum getCoQuanDieuTraThanhTra() {
 		return coQuanDieuTraThanhTra;
@@ -625,27 +628,27 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		return null;
 	}
 	
-	@Transient
-	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucKienNghiToChucInfo() {
-		if (getHinhThucKienNghiToChuc() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucKienNghiToChuc().name());
-			map.put("text", getHinhThucKienNghiToChuc().getText());
-			return map;
-		}
-		return null;
-	}
-	
-	@Transient
-	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucKienNghiCaNhanInfo() {
-		if (getHinhThucKienNghiCaNhan() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucKienNghiCaNhan().name());
-			map.put("text", getHinhThucKienNghiCaNhan().getText());
-			return map;
-		}
-		return null;
-	}
+//	@Transient
+//	@ApiModelProperty( hidden = true )
+//	public Map<String, Object> getHinhThucKienNghiToChucInfo() {
+//		if (getHinhThucKienNghiToChuc() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("type", getHinhThucKienNghiToChuc().name());
+//			map.put("text", getHinhThucKienNghiToChuc().getText());
+//			return map;
+//		}
+//		return null;
+//	}
+//	
+//	@Transient
+//	@ApiModelProperty( hidden = true )
+//	public Map<String, Object> getHinhThucKienNghiCaNhanInfo() {
+//		if (getHinhThucKienNghiCaNhan() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("type", getHinhThucKienNghiCaNhan().name());
+//			map.put("text", getHinhThucKienNghiCaNhan().getText());
+//			return map;
+//		}
+//		return null;
+//	}
 }

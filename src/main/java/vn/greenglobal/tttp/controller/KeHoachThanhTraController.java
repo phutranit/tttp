@@ -301,7 +301,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						if (params.getCuocThanhTras() != null && params.getCuocThanhTras().size() > 0) {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
-								if (ctt != null && ctt.getId() > 0 && !cuocThanhTraService.isExists(cuocThanhTraRepository, ctt.getId())) {
+								if (ctt != null && ctt.getId() != null && ctt.getId() > 0 && !cuocThanhTraService.isExists(cuocThanhTraRepository, ctt.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 											ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText());
 								}
