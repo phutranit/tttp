@@ -179,6 +179,12 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Theo dõi thực hiện");
+		quyenObj.put("tenQuyen", QuyenEnum.THEO_DOI_THUC_HIEN_LIETKE.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XEM.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_THEM.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_SUA.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THEO_DOI_THUC_HIEN_LIETKE.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XEM.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_THEM.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_SUA.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Tổng hợp báo cáo");
 		quyenObj.put("tenQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.getText() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.name() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.name());

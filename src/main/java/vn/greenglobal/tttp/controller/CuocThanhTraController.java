@@ -233,7 +233,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
 				thanhVienDoanService.save(tvd, congChucId);
 			}
+			checkDataCuocThanhTra(cuocThanhTra);
 			checkTienDoThanhTra(cuocThanhTra);
+			checkTheoDoiThucHien(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -287,6 +289,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 			checkDataCuocThanhTra(cuocThanhTra);
 			checkTienDoThanhTra(cuocThanhTra);
+			checkTheoDoiThucHien(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -444,6 +447,18 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 		}
 		return cuocThanhTraIds;
+	}
+	
+	private CuocThanhTra checkTheoDoiThucHien(CuocThanhTra cuocThanhTra) {
+		CuocThanhTra cttOld = null;
+		if (cuocThanhTra != null && cuocThanhTra.getId() != null && cuocThanhTra.getId() > 0) {
+			cttOld = repo.findOne(cuocThanhTraService.predicateFindOne(cuocThanhTra.getId()));
+		}
+		if ((cuocThanhTra.isChuyenTheoDoiThucHien() && cttOld == null)
+				|| (cuocThanhTra.isChuyenTheoDoiThucHien() && cttOld != null && !cttOld.isChuyenTheoDoiThucHien())) {
+			cuocThanhTra.setNgayChuyenTheoDoiThucHien(Utils.localDateTimeNow());
+		}
+		return cuocThanhTra;
 	}
 	
 	private List<List<Object>> getCuocThanhTraIdVaDoiTuongIds(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
