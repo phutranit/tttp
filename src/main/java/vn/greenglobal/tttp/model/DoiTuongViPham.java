@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDoiTuongViPhamEnum;
 
 @Entity
 @Table(name = "doituongvipham")
@@ -119,6 +120,8 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	// Kien nghi chuyen co quan dieu tra
 	@Enumerated(EnumType.STRING)
 	private CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra;
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDoiTuongViPhamEnum trangThaiDoiTuongViPham;
 	
 	@ManyToOne // Kien nghi chuyen co quan dieu tra
 	private CoQuanQuanLy coQuanDieuTra;
@@ -224,6 +227,22 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra(String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra) {
 		this.quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra = quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
+	}
+
+	public String getHinhThucKienNghiToChuc() {
+		return hinhThucKienNghiToChuc;
+	}
+
+	public void setHinhThucKienNghiToChuc(String hinhThucKienNghiToChuc) {
+		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
+	}
+
+	public String getHinhThucKienNghiCaNhan() {
+		return hinhThucKienNghiCaNhan;
+	}
+
+	public void setHinhThucKienNghiCaNhan(String hinhThucKienNghiCaNhan) {
+		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
 	}
 
 	public String getDonViViPham() {
@@ -522,6 +541,14 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.coQuanDieuTraThanhTra = coQuanDieuTraThanhTra;
 	}
 
+	public TrangThaiDoiTuongViPhamEnum getTrangThaiDoiTuongViPham() {
+		return trangThaiDoiTuongViPham;
+	}
+
+	public void setTrangThaiDoiTuongViPham(TrangThaiDoiTuongViPhamEnum trangThaiDoiTuongViPham) {
+		this.trangThaiDoiTuongViPham = trangThaiDoiTuongViPham;
+	}
+
 	@ApiModelProperty(example = "{}")
 	public CoQuanQuanLy getCoQuanDieuTra() {
 		return coQuanDieuTra;
@@ -624,6 +651,30 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	public Long getCuocThanhTraId() {
 		if (getCuocThanhTra() != null) {
 			return getCuocThanhTra().getId();
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getCoQuanDieuTraThanhTraInfo() {
+		if (getCoQuanDieuTraThanhTra() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getCoQuanDieuTraThanhTra().name());
+			map.put("text", getCoQuanDieuTraThanhTra().getText());
+			return map;
+		}
+		return null;
+	}
+	
+	@Transient
+	@ApiModelProperty( hidden = true )
+	public Map<String, Object> getTrangThaiDoiTuongViPhamInfo() {
+		if (getTrangThaiDoiTuongViPham() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("type", getTrangThaiDoiTuongViPham().name());
+			map.put("text", getTrangThaiDoiTuongViPham().getText());
+			return map;
 		}
 		return null;
 	}
