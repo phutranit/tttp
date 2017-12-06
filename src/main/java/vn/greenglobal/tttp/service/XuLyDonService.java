@@ -18,6 +18,7 @@ import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -34,6 +35,16 @@ public class XuLyDonService {
 	
 	@Autowired
 	private CongChucRepository congChucRepo;
+	
+	public Predicate predFindXLDByDonCongChuc(XuLyDonRepository repo, List<Don> dons, Long congChucId) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.in(dons)).and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId)
+						.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(congChucId))
+						);
+		return xuLyDonQuery;
+	}
 	
 	public int timThuTuXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViId) {
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId))

@@ -81,7 +81,28 @@ public class DonService {
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
+	
+	public Predicate predFindByMaDonCongChuc(String maDon, Long congChucId) {
+		BooleanExpression predAll = base;
 
+		if (maDon == null && !StringUtils.isNotBlank(maDon)) {
+			return null;
+		}
+
+		predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+
+		if (congChucId != null && congChucId.longValue() > 0) {
+			predAll = predAll.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(congChucId)
+						.or(QDon.don.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoXuLy.id.eq(congChucId))
+						.or(QDon.don.canBoTTXMChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoKTDXChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoCoTheThuHoi.id.eq(congChucId))
+						);
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindByCongDan(Long id) {
 		BooleanExpression predAll = base;
 		BooleanExpression preAllDCD = baseDonCongDan;

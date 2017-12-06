@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
@@ -26,6 +27,14 @@ public class ThongTinGiaiQuyetDonService {
 	ThongTinGiaiQuyetDonRepository thongTinGiaiQuyetDonRepository;
 	
 	BooleanExpression base = QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.daXoa.eq(false);
+	
+	public Predicate predicateFindByDonCongChuc(List<Don> dons, Long congChucId) {
+		return base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.don.in(dons))
+				.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoXuLyChiDinh.id.eq(congChucId)
+						.or(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoThamTraXacMinh.id.eq(congChucId))
+						.or(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoGiaiQuyet.id.eq(congChucId))
+						);
+	}
 	
 	public boolean isExists(ThongTinGiaiQuyetDonRepository repo, Long id) {
 		if (id != null && id > 0) {

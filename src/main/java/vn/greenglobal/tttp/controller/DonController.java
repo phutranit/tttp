@@ -56,6 +56,7 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
+import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -64,6 +65,7 @@ import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
+import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.Transition;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.model.medial.Medial_DonTraCuu;
@@ -78,16 +80,19 @@ import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
 import vn.greenglobal.tttp.repository.StateRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
+import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.repository.TransitionRepository;
 import vn.greenglobal.tttp.repository.XuLyDonRepository;
 import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
+import vn.greenglobal.tttp.service.GiaiQuyetDonService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
 import vn.greenglobal.tttp.service.StateService;
 import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.service.ThongTinGiaiQuyetDonService;
 import vn.greenglobal.tttp.service.TransitionService;
 import vn.greenglobal.tttp.service.XuLyDonService;
 import vn.greenglobal.tttp.util.ExcelUtil;
@@ -178,6 +183,15 @@ public class DonController extends TttpController<Don> {
 	
 	@Autowired
 	private CongChucService congChucService;
+	
+	@Autowired
+	private GiaiQuyetDonService giaiQuyetDonService;
+	
+	@Autowired
+	private ThongTinGiaiQuyetDonRepository thongTinGiaiQuyetDonRepository;
+	
+	@Autowired
+	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
 	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -537,35 +551,51 @@ public class DonController extends TttpController<Don> {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(method = RequestMethod.GET, value = "/timKiemDonCanBos/canBo")
-	@ApiOperation(value = "Lấy danh sách Công chức theo Đơn", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody Object getTimKiemDonCanBo(@RequestHeader(value = "Authorization", required = true) String authorization,
+	@RequestMapping(method = RequestMethod.GET, value = "/timKiemDanhSachCanBoDangXuLys/canBo")
+	@ApiOperation(value = "Lấy danh sách Cán bộ đang xử", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody Object getTimKiemDanhSachCanBoDangXuLy(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-
+			if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) { 
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MADON_REQUIRED.name(),
+						ApiErrorEnum.MADON_REQUIRED.getText(), ApiErrorEnum.MADON_REQUIRED.getText());
+			}
+			
+			if (hoTen == null || (hoTen != null && !StringUtils.isNotBlank(hoTen))) { 
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(),
+						ApiErrorEnum.HOVATEN_REQUIRED.getText(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
+			}
+			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 			if (nguoiDung != null) {
-				if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) { 
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.DATA_REQUIRED.name(),
-							ApiErrorEnum.DATA_REQUIRED.getText(), ApiErrorEnum.DATA_REQUIRED.getText());
-				}
-				
-				if (hoTen == null || (hoTen != null && !StringUtils.isNotBlank(hoTen))) { 
-					return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.HOVATEN_REQUIRED.name(),
-							ApiErrorEnum.HOVATEN_REQUIRED.getText(), ApiErrorEnum.HOVATEN_REQUIRED.getText());
-				}
-				
+				List<Don> listDon = new ArrayList<Don>();
+				List<CongChuc> congChucs = new ArrayList<CongChuc>();
+				List<Don> dons = new ArrayList<Don>();
+				List<XuLyDon> listXuLyDon = new ArrayList<XuLyDon>();
 				List<CongChuc> listCongChuc = new ArrayList<CongChuc>();
-				congChucRepo.findAll(congChucService.predicateFindByTen(hoTen));
+				List<GiaiQuyetDon> listGiaiQuyetDon = new ArrayList<GiaiQuyetDon>();
+				List<ThongTinGiaiQuyetDon> listThongTinGiaiQuyetDon = new ArrayList<ThongTinGiaiQuyetDon>();
+				listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, null)));
+				listCongChuc.addAll((List<CongChuc>) congChucRepo.findAll(congChucService.predicateFindByTen(hoTen)));
 				
-				
-				//int start = pageable.getOffset();
-				//int end = (start + pageable.getPageSize()) > listCongChuc.size() ? listCongChuc.size() : (start + pageable.getPageSize());
+				for (CongChuc congChuc : listCongChuc) {
+					listXuLyDon.addAll((List<XuLyDon>) xuLyRepo.findAll(xuLyDonService.predFindXLDByDonCongChuc(xuLyRepo, listDon, congChuc.getId())));
+					listGiaiQuyetDon.addAll((List<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonService.predFindQGDByDonCongChuc(listDon, congChuc.getId())));
+					listThongTinGiaiQuyetDon.addAll((List<ThongTinGiaiQuyetDon>) thongTinGiaiQuyetDonRepository.findAll(thongTinGiaiQuyetDonService.predicateFindByDonCongChuc(listDon, congChuc.getId())));
+					dons.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, congChuc.getId())));
+					if (listXuLyDon.size() > 0 || listGiaiQuyetDon.size() > 0 || listThongTinGiaiQuyetDon.size() > 0 ||
+							dons.size() > 0) {
+						congChucs.add(congChuc);
+					}
+				}
+
+				int start = pageable.getOffset();
+				int end = (start + pageable.getPageSize()) > congChucs.size() ? congChucs.size() : (start + pageable.getPageSize());
 			
-				Page<CongChuc> pages = new PageImpl<CongChuc>(listCongChuc, pageable, listCongChuc.size());
+				Page<CongChuc> pages = new PageImpl<CongChuc>(congChucs.subList(start, end), pageable, congChucs.size());
 				
 				return congChucAssembler.toResource(pages, (ResourceAssembler) eass);
 			}

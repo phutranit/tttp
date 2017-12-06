@@ -16,6 +16,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
@@ -29,7 +30,18 @@ public class GiaiQuyetDonService {
 
 	QGiaiQuyetDon giaiQuyetDon = QGiaiQuyetDon.giaiQuyetDon;
 	BooleanExpression base = giaiQuyetDon.daXoa.eq(false);
-
+	
+	public Predicate predFindQGDByDonCongChuc(List<Don> dons, Long congChucId) {
+		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.in(dons))
+				.and(giaiQuyetDon.old.eq(false))
+				.and(giaiQuyetDon.congChuc.id.eq(congChucId)
+						.or(giaiQuyetDon.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(giaiQuyetDon.canBoGiaoViec.id.eq(congChucId))
+						
+						);
+		return predicate;
+	}
+	
 	public GiaiQuyetDon predFindCurrent(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
 				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))

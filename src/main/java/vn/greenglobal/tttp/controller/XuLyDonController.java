@@ -2649,7 +2649,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 			xuLyDonTiepTheo.setDonTra(true);
 		}
 		
-		if ((xuLyDonHienTai.getCongChuc() != null && congChucId == xuLyDonHienTai.getCongChuc().getId()) || 
+		if ((xuLyDonHienTai.getCongChuc() != null && congChucId.longValue() == xuLyDonHienTai.getCongChuc().getId()) || 
 				xuLyDonHienTai.getCongChuc() == null) {
 			xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 			xuLyDonHienTai.setChucVu(VaiTroEnum.valueOf(chucVu));
@@ -2779,7 +2779,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 		don.setDonViXuLyGiaiQuyet(coQuanQuanLyRepo.findOne(donViId));
 		//don.setNoiDungThongTinTrinhLanhDao(xuLyDonHienTai.getNoiDungXuLy());
 		
-		if ((xuLyDonHienTai.getCongChuc() != null && congChucId == xuLyDonHienTai.getCongChuc().getId()) || 
+		if ((xuLyDonHienTai.getCongChuc() != null && congChucId.longValue() == xuLyDonHienTai.getCongChuc().getId()) || 
 				xuLyDonHienTai.getCongChuc() == null) {
 			xuLyDonHienTai.setCongChuc(congChucRepo.findOne(congChucId));
 			xuLyDonHienTai.setChucVu(VaiTroEnum.valueOf(chucVu));
