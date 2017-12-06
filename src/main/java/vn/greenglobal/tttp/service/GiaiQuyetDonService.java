@@ -16,9 +16,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -28,16 +28,52 @@ public class GiaiQuyetDonService {
 	@Autowired
 	private GiaiQuyetDonRepository giaiQuyetDonRepository;
 
+	@Autowired
+	private CongChucRepository congChucRepo;
+	
 	QGiaiQuyetDon giaiQuyetDon = QGiaiQuyetDon.giaiQuyetDon;
 	BooleanExpression base = giaiQuyetDon.daXoa.eq(false);
 	
-	public Predicate predFindQGDByDonCongChuc(List<Don> dons, Long congChucId) {
-		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.in(dons))
+	public GiaiQuyetDon predFindGQDByCanBoXuLy(GiaiQuyetDonRepository repo, Long donId, Long canBoXuLyId,
+			Long canBoXuLyThayTheId) {
+		// TODO Auto-generated method stub
+		BooleanExpression where = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId))
+				.and(giaiQuyetDon.old.eq(false));
+		
+		if (repo.exists(where)) {
+			GiaiQuyetDon result = repo.findOne(where);
+			boolean check = false;
+			
+			if (repo.exists(where.and(giaiQuyetDon.congChuc.id.eq(canBoXuLyId)))) {
+				result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(giaiQuyetDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
+				result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (check) {
+				System.out.println("OK");
+				return result;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	public Predicate predFindQGDByDonCongChuc(List<Long> donIds, Long congChucId) {
+		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.in(donIds))
 				.and(giaiQuyetDon.old.eq(false))
 				.and(giaiQuyetDon.congChuc.id.eq(congChucId)
 						.or(giaiQuyetDon.canBoXuLyChiDinh.id.eq(congChucId))
 						.or(giaiQuyetDon.canBoGiaoViec.id.eq(congChucId))
-						
 						);
 		return predicate;
 	}

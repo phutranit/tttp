@@ -18,7 +18,6 @@ import vn.greenglobal.tttp.enums.FlowStateEnum;
 import vn.greenglobal.tttp.enums.TrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CongChucRepository;
@@ -36,10 +35,56 @@ public class XuLyDonService {
 	@Autowired
 	private CongChucRepository congChucRepo;
 	
-	public Predicate predFindXLDByDonCongChuc(XuLyDonRepository repo, List<Don> dons, Long congChucId) {
-		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.in(dons)).and(QXuLyDon.xuLyDon.old.eq(false))
+	public XuLyDon predFindXLDByCanBoXuLy(XuLyDonRepository repo, Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
+		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
+		
+		if (repo.exists(where)) {
+			XuLyDon result = repo.findOne(where);
+			boolean check = false;
+			if (repo.exists(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId)))) {
+				System.out.println("congChuc");
+				result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoXuLyChiDinh");
+				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoXuLy");
+				result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoGiaoViec");
+				result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoChuyenDon");
+				result.setCanBoChuyenDon(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (check) {
+				System.out.println("OK");
+				return result;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	public Predicate predFindXLDByDonCongChuc(XuLyDonRepository repo, List<Long> donIds, Long congChucId) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.in(donIds)).and(QXuLyDon.xuLyDon.old.eq(false))
 				.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId)
 						.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoXuLy.id.eq(congChucId))
 						.or(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(congChucId))
 						.or(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(congChucId))
 						);

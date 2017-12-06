@@ -2,6 +2,7 @@ package vn.greenglobal.tttp.enums;
 
 public enum ApiErrorEnum {
 
+	MACANBO_REQUIRED("Mã cán bộ không được để trống."),
 	MADON_REQUIRED("Mã đơn không được để trống."),
 	LOAITEPDINHKEM_REQUIRED("Loại tệp đính kèm không được để trống."),
 	SOQUYETDINH_REQUIRED("Số quyết định không được để trống."),

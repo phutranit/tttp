@@ -169,10 +169,10 @@ public class Don extends Model<Don> {
 	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoTTXMChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@Fetch(FetchMode.JOIN)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoKTDXChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@Fetch(FetchMode.JOIN)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;

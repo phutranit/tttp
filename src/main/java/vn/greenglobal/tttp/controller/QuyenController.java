@@ -220,6 +220,12 @@ public class QuyenController {
 		quyenObj.put("giaTriQuyen", QuyenEnum.TRANSITION_LIETKE.name() + "," + QuyenEnum.TRANSITION_XEM.name() + "," + QuyenEnum.TRANSITION_THEM.name() + "," + QuyenEnum.TRANSITION_SUA.name() + "," + QuyenEnum.TRANSITION_XOA.name());
 		quyenList.add(quyenObj);
 		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Thay đổi cán bộ đang xử lý");
+		quyenObj.put("tenQuyen", QuyenEnum.THAYDOICANBO_LIETKE.getText() + "," + QuyenEnum.THAYDOICANBO_SUA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THAYDOICANBO_LIETKE.name() + "," + QuyenEnum.THAYDOICANBO_SUA.name());
+		quyenList.add(quyenObj);
+		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
 		errorBody.put("quyenList", quyenList);
 

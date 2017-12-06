@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QThongTinGiaiQuyetDon;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
+import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.ThongTinGiaiQuyetDonRepository;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -26,10 +26,48 @@ public class ThongTinGiaiQuyetDonService {
 	@Autowired
 	ThongTinGiaiQuyetDonRepository thongTinGiaiQuyetDonRepository;
 	
+	@Autowired
+	private CongChucRepository congChucRepo;
+	
 	BooleanExpression base = QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.daXoa.eq(false);
 	
-	public Predicate predicateFindByDonCongChuc(List<Don> dons, Long congChucId) {
-		return base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.don.in(dons))
+	public ThongTinGiaiQuyetDon predFindTTGQDByCanBoXuLy(ThongTinGiaiQuyetDonRepository repo, Long donId,
+			Long canBoXuLyId, Long canBoXuLyThayTheId) {
+		// TODO Auto-generated method stub
+		BooleanExpression where = base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
+
+		if (repo.exists(where)) {
+			ThongTinGiaiQuyetDon result = repo.findOne(where);
+			boolean check = false;
+			
+			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoXuLyChiDinh");
+				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoThamTraXacMinh.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoThamTraXacMinh");
+				result.setCanBoThamTraXacMinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoGiaiQuyet.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoGiaiQuyet");
+				result.setCanBoGiaiQuyet(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+			
+			if (check) {
+				return result;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	public Predicate predicateFindByDonCongChuc(List<Long> donIds, Long congChucId) {
+		return base.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.don.id.in(donIds))
 				.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoXuLyChiDinh.id.eq(congChucId)
 						.or(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoThamTraXacMinh.id.eq(congChucId))
 						.or(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoGiaiQuyet.id.eq(congChucId))
@@ -244,5 +282,4 @@ public class ThongTinGiaiQuyetDonService {
 	public ResponseEntity<Object> doSave(ThongTinGiaiQuyetDon obj, Long congChucId, PersistentEntityResourceAssembler eass, HttpStatus status) {
 		return Utils.doSave(thongTinGiaiQuyetDonRepository, obj, congChucId, eass, status);		
 	}
-	
 }
