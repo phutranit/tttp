@@ -23,10 +23,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.TrangThaiBaoCaoDonViEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "baocaodonvichitiet")
@@ -68,6 +71,7 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 		this.ngayNop = ngayNop;
 	}
 
+	@JsonIgnore
 	public String getSoLieuBaoCao() {
 		return soLieuBaoCao;
 	}
@@ -205,6 +209,15 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	@ApiModelProperty(hidden = true)
 	public Long getBaoCaoDonViChiTietId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true) 
+	public Object getSoLieuBaoCaoInfo() {
+		if (getSoLieuBaoCao() != null && !getSoLieuBaoCao().isEmpty()) {
+			return Utils.getSoLieuBaoCaoByJson(getLoaiBaoCao(), getSoLieuBaoCao());
+		}
+		return null;
 	}
 	
 	@Transient

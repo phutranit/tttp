@@ -962,6 +962,44 @@ public class Utils {
         }
     }
 	
+	@SuppressWarnings("unchecked")
+	public static <T> T getSoLieuBaoCaoByJson(LoaiBaoCaoTongHopEnum loaiBaoCao, String jsonString) {
+		if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_HANH_CHINH.equals(loaiBaoCao)) {			
+			return (T) json2Object(Medial_ThanhTraHanhChinh.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAU_TU_XAY_DUNG_CO_BAN.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraLinhVucDTXDCB.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_TAI_CHINH_NGAN_SACH.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraLinhVucTaiChinh.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAT_DAI.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraLinhVucDatDai.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_LAI.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraLai.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_KIEM_TRA_CHUYEN_NGANH.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraKTChuyenNganh.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_PHAT_HIEN_XU_LY_THAM_NHUNG_QUA_THANH_TRA.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraThamNhungPHQThanhTra.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_THANH_TRA.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_CongTacQuanLyNNVeThanhTra.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.CONG_TAC_XAY_DUNG_LUC_LUONG_THANH_TRA.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopCongTacXDLLThanhTra.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_TIEP_CONG_DAN.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopKetQuaTiepCongDan.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_XU_LY_DON_KHIEU_NAI_TO_CAO.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopKetQuaXuLyDon.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_KHIEU_NAI.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopKetQuaGiaiQuyetKhieuNai.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_TO_CAO.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopKetQuaGiaiQuyetToCao.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_KHIEU_NAI_TO_CAO.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_ThanhTraLinhVucDatDai.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.KET_QUA_CHU_YEU_VE_CONG_TAC_PHONG_CHONG_THAM_NHUNG.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_KetQuaChuYeuVeCTPCThamNhung.class, jsonString);
+		} else if (LoaiBaoCaoTongHopEnum.SO_LIEU_KE_KHAI_XAC_MINH_TAI_SAN.equals(loaiBaoCao)) {
+			return (T) json2Object(Medial_TongHopSoLieu.class, jsonString);
+		}
+		return null;
+	}
+	
 	public static String getJsonSoLieuByLoaiBaoCao(LoaiBaoCaoTongHopEnum loaiBaoCao, String tenDonVi) {
 		String output = "";
 		if (LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_HANH_CHINH.equals(loaiBaoCao)) {
