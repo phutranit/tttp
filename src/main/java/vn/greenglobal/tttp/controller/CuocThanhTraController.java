@@ -3,7 +3,6 @@ package vn.greenglobal.tttp.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,6 +71,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	
 	@Autowired
 	private DoiTuongThanhTraService doiTuongThanhTraService;
+	
+	@Autowired
+	protected PagedResourcesAssembler<CoQuanQuanLy> assemblerCoQuanQuanLy;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -646,15 +649,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/validateTrungDoiTuongThanhTra")
 	@ApiOperation(value = "Validate trùng đối tượng thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "doiTuongThanhTraId", required = true) Long doiTuongThanhTraId,
 			@RequestParam(value = "namThanhTra", required = true) Integer namThanhTra,
 			Pageable pageable,PersistentEntityResourceAssembler eass) {
 		
 		try {
+			Page<CoQuanQuanLy> page = null;
 			HashSet<Long> donViIds = new HashSet<Long>();
 			List<CoQuanQuanLy> coQuanQUanLys = new ArrayList<CoQuanQuanLy>();
 			List<CuocThanhTra> cuocThanhTraTrungDoiTuongs = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindAllByDoiTuongThanhTra(namThanhTra, doiTuongThanhTraId));
@@ -663,13 +667,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 					donViIds.add(ctt.getDonVi().getId());
 				}
 				if (donViIds != null && donViIds.size() > 0) {
-					Iterator<Long> itr = donViIds.iterator();
-					coQuanQUanLys = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId((List<Long>) itr));
+					List<Long> listDonVi = new ArrayList<Long>(donViIds);
+					coQuanQUanLys = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId(listDonVi));
+					page = coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId(listDonVi), pageable);
 				}
 			}
 			
-			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(coQuanQUanLys, pageable, coQuanQUanLys.size());
-			return new ResponseEntity<>(page, HttpStatus.OK);
+			if (page == null) {
+				page = new PageImpl<CoQuanQuanLy>(coQuanQUanLys, pageable, coQuanQUanLys.size());
+			}
+			return assemblerCoQuanQuanLy.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
