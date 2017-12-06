@@ -221,7 +221,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private KeHoachThanhTra keHoachThanhTra;//
 	//@ManyToOne// Chuyen co quan dieu tra
 	//private CoQuanQuanLy coQuanDieuTra;//
-	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;//
 	@NotNull
