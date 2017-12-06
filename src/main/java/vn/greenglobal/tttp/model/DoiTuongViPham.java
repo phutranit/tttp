@@ -24,8 +24,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.BuocGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.CoQuanDieuTraThanhTraEnum;
-import vn.greenglobal.tttp.enums.HinhThucKienNghiEnum;
 import vn.greenglobal.tttp.enums.ProcessTypeEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDoiTuongViPhamEnum;
 
 @Entity
 @Table(name = "doituongvipham")
@@ -65,6 +65,10 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private String soQuyetDinhKienNghiXuLyHanhChinhCaNhan = "";
 	@Size(max=255) // Thu hoi trong qua trinh thanh tra
 	private String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String hinhThucKienNghiToChuc;
+	@Size(max=255) // Kien nghi xu ly ve hanh chinh
+	private String hinhThucKienNghiCaNhan;
 	
 	//Kien nghi chuyen co quan dieu tra
 	private boolean chuyenCoQuanDieuTra;
@@ -109,13 +113,15 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	private long saiPhamKhacKienNghiXuLyVeDat;
 	
 	// Kien nghi xu ly ve hanh chinh
-	@Enumerated(EnumType.STRING)
-	private HinhThucKienNghiEnum hinhThucKienNghiToChuc;
-	@Enumerated(EnumType.STRING)
-	private HinhThucKienNghiEnum hinhThucKienNghiCaNhan;
+	//@Enumerated(EnumType.STRING)
+	//private HinhThucKienNghiEnum hinhThucKienNghiToChuc;
+	//@Enumerated(EnumType.STRING)
+	//private HinhThucKienNghiEnum hinhThucKienNghiCaNhan;
 	// Kien nghi chuyen co quan dieu tra
 	@Enumerated(EnumType.STRING)
 	private CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra;
+	@Enumerated(EnumType.STRING)
+	private TrangThaiDoiTuongViPhamEnum trangThaiDoiTuongViPham;
 	
 	@ManyToOne // Kien nghi chuyen co quan dieu tra
 	private CoQuanQuanLy coQuanDieuTra;
@@ -221,6 +227,22 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setQuyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra(String quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra) {
 		this.quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra = quyetDinhGiaoDatThuHoiTrongQuaTrinhThanhTra;
+	}
+
+	public String getHinhThucKienNghiToChuc() {
+		return hinhThucKienNghiToChuc;
+	}
+
+	public void setHinhThucKienNghiToChuc(String hinhThucKienNghiToChuc) {
+		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
+	}
+
+	public String getHinhThucKienNghiCaNhan() {
+		return hinhThucKienNghiCaNhan;
+	}
+
+	public void setHinhThucKienNghiCaNhan(String hinhThucKienNghiCaNhan) {
+		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
 	}
 
 	public String getDonViViPham() {
@@ -495,21 +517,21 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 		this.saiPhamKhacKienNghiXuLyVeDat = saiPhamKhacKienNghiXuLyVeDat;
 	}
 
-	public HinhThucKienNghiEnum getHinhThucKienNghiToChuc() {
-		return hinhThucKienNghiToChuc;
-	}
-
-	public void setHinhThucKienNghiToChuc(HinhThucKienNghiEnum hinhThucKienNghiToChuc) {
-		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
-	}
-
-	public HinhThucKienNghiEnum getHinhThucKienNghiCaNhan() {
-		return hinhThucKienNghiCaNhan;
-	}
-
-	public void setHinhThucKienNghiCaNhan(HinhThucKienNghiEnum hinhThucKienNghiCaNhan) {
-		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
-	}
+//	public HinhThucKienNghiEnum getHinhThucKienNghiToChuc() {
+//		return hinhThucKienNghiToChuc;
+//	}
+//
+//	public void setHinhThucKienNghiToChuc(HinhThucKienNghiEnum hinhThucKienNghiToChuc) {
+//		this.hinhThucKienNghiToChuc = hinhThucKienNghiToChuc;
+//	}
+//
+//	public HinhThucKienNghiEnum getHinhThucKienNghiCaNhan() {
+//		return hinhThucKienNghiCaNhan;
+//	}
+//
+//	public void setHinhThucKienNghiCaNhan(HinhThucKienNghiEnum hinhThucKienNghiCaNhan) {
+//		this.hinhThucKienNghiCaNhan = hinhThucKienNghiCaNhan;
+//	}
 
 	public CoQuanDieuTraThanhTraEnum getCoQuanDieuTraThanhTra() {
 		return coQuanDieuTraThanhTra;
@@ -517,6 +539,14 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 
 	public void setCoQuanDieuTraThanhTra(CoQuanDieuTraThanhTraEnum coQuanDieuTraThanhTra) {
 		this.coQuanDieuTraThanhTra = coQuanDieuTraThanhTra;
+	}
+
+	public TrangThaiDoiTuongViPhamEnum getTrangThaiDoiTuongViPham() {
+		return trangThaiDoiTuongViPham;
+	}
+
+	public void setTrangThaiDoiTuongViPham(TrangThaiDoiTuongViPhamEnum trangThaiDoiTuongViPham) {
+		this.trangThaiDoiTuongViPham = trangThaiDoiTuongViPham;
 	}
 
 	@ApiModelProperty(example = "{}")
@@ -627,11 +657,11 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucKienNghiToChucInfo() {
-		if (getHinhThucKienNghiToChuc() != null) {
+	public Map<String, Object> getCoQuanDieuTraThanhTraInfo() {
+		if (getCoQuanDieuTraThanhTra() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucKienNghiToChuc().name());
-			map.put("text", getHinhThucKienNghiToChuc().getText());
+			map.put("type", getCoQuanDieuTraThanhTra().name());
+			map.put("text", getCoQuanDieuTraThanhTra().getText());
 			return map;
 		}
 		return null;
@@ -639,13 +669,37 @@ public class DoiTuongViPham extends Model<DoiTuongViPham> {
 	
 	@Transient
 	@ApiModelProperty( hidden = true )
-	public Map<String, Object> getHinhThucKienNghiCaNhanInfo() {
-		if (getHinhThucKienNghiCaNhan() != null) {
+	public Map<String, Object> getTrangThaiDoiTuongViPhamInfo() {
+		if (getTrangThaiDoiTuongViPham() != null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("type", getHinhThucKienNghiCaNhan().name());
-			map.put("text", getHinhThucKienNghiCaNhan().getText());
+			map.put("type", getTrangThaiDoiTuongViPham().name());
+			map.put("text", getTrangThaiDoiTuongViPham().getText());
 			return map;
 		}
 		return null;
 	}
+	
+//	@Transient
+//	@ApiModelProperty( hidden = true )
+//	public Map<String, Object> getHinhThucKienNghiToChucInfo() {
+//		if (getHinhThucKienNghiToChuc() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("type", getHinhThucKienNghiToChuc().name());
+//			map.put("text", getHinhThucKienNghiToChuc().getText());
+//			return map;
+//		}
+//		return null;
+//	}
+//	
+//	@Transient
+//	@ApiModelProperty( hidden = true )
+//	public Map<String, Object> getHinhThucKienNghiCaNhanInfo() {
+//		if (getHinhThucKienNghiCaNhan() != null) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("type", getHinhThucKienNghiCaNhan().name());
+//			map.put("text", getHinhThucKienNghiCaNhan().getText());
+//			return map;
+//		}
+//		return null;
+//	}
 }
