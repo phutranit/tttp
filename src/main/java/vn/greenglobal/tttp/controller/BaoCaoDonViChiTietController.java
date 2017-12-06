@@ -79,7 +79,7 @@ public class BaoCaoDonViChiTietController extends TttpController<BaoCaoDonViChiT
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			BaoCaoDonViChiTiet baoCaoDonViChiTiet = repo.findOne(baoCaoDonViChiTietService.predicateFindOne(id));
+			BaoCaoDonViChiTiet baoCaoDonViChiTiet = repo.findOne(baoCaoDonViChiTietService.predicateFindOne(idChiTiet));
 			if (baoCaoDonViChiTiet == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
