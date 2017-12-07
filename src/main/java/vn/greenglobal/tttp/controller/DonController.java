@@ -5,10 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -613,13 +611,13 @@ public class DonController extends TttpController<Don> {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.PATCH, value = "/capNhatThayDoiCanBoDangXuLys/{canBoDangXuLyId}")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/capNhatThayDoiCanBoDangXuLys/{canBoXuLyThayTheId}")
 	@ApiOperation(value = "Cập nhật thay đổi cán bộ đang xử lý Đơn", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> capNhatThayDoiCanBoDangXuLy(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "maDon", required = true) String maDon,
-			@PathVariable("canBoDangXuLyId") Long canBoXuLyId,
-			@RequestParam(value = "canBoXuLyThayTheId", required = true) Long canBoXuLyThayTheId,
+			@PathVariable("canBoXuLyThayTheId") Long canBoXuLyThayTheId,
+			@RequestParam(value = "canBoDangXuLyId", required = true) Long canBoXuLyId,
 			PersistentEntityResourceAssembler eass) {
 		try {
 
