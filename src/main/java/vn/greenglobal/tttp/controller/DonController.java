@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
@@ -65,6 +66,8 @@ import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
+import vn.greenglobal.tttp.model.QGiaiQuyetDon;
+import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
 import vn.greenglobal.tttp.model.ThongTinGiaiQuyetDon;
@@ -619,41 +622,40 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "canBoXuLyThayTheId", required = true) Long canBoXuLyThayTheId,
 			PersistentEntityResourceAssembler eass) {
 		try {
-			
+
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.THAYDOICANBO_SUA) != null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			
-			if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) { 
+
+			if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MADON_REQUIRED.name(),
 						ApiErrorEnum.MADON_REQUIRED.getText(), ApiErrorEnum.MADON_REQUIRED.getText());
 			}
-			
-			if (canBoXuLyId == null || (canBoXuLyId != null && !(canBoXuLyId.longValue() > 0))) { 
+
+			if (canBoXuLyId == null || (canBoXuLyId != null && !(canBoXuLyId.longValue() > 0))) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MACANBO_REQUIRED.name(),
 						ApiErrorEnum.MACANBO_REQUIRED.getText(), ApiErrorEnum.MACANBO_REQUIRED.getText());
 			}
-			
-			if (canBoXuLyThayTheId == null || (canBoXuLyThayTheId != null && !(canBoXuLyThayTheId.longValue() > 0))) { 
+
+			if (canBoXuLyThayTheId == null || (canBoXuLyThayTheId != null && !(canBoXuLyThayTheId.longValue() > 0))) {
 				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MACANBO_REQUIRED.name(),
 						ApiErrorEnum.MACANBO_REQUIRED.getText(), ApiErrorEnum.MACANBO_REQUIRED.getText());
 			}
-			
+
 			CongChuc congChucDangXuLy = congChucRepo.findOne(congChucService.predicateFindOne(canBoXuLyId));
-			CongChuc congChucThayThe = congChucRepo.findOne(congChucService.predicateFindOne(canBoXuLyId));
-			
-			if (congChucDangXuLy == null) { 
+			CongChuc congChucThayThe = congChucRepo.findOne(congChucService.predicateFindOne(canBoXuLyThayTheId));
+
+			if (congChucDangXuLy == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			
-			if (congChucThayThe == null) { 
+
+			if (congChucThayThe == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}
-			
-			Set<Object> objects = new HashSet<Object>();
+
 			List<Don> listDon = new ArrayList<Don>();
 			listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, null)));
 			List<Don> dons = new ArrayList<Don>();
@@ -661,55 +663,134 @@ public class DonController extends TttpController<Don> {
 			if (dons.size() > 0) {
 				List<Long> donIds = new ArrayList<Long>();
 				donIds.addAll(listDon.stream().map(d -> d.getId()).collect(Collectors.toList()));
+				Long congChucId = Long
+						.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
 				for (Long donId : donIds) {
-					Don don = updateCanBoXuLyCuaDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId());
-					if (don != null) { 
-						objects.add(don);
-					}
-					
-					XuLyDon xuLyDon = updateCanBoXuLyCuaXuLyDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId());
-					if (xuLyDon != null) { 
-						objects.add(xuLyDon);
-					}
-					
-					ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = updateCanBoXuLyCuaThongTinGiaiQuyetDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId());
-					if (thongTinGiaiQuyetDon != null) { 
-						objects.add(thongTinGiaiQuyetDon);
-					}
-					
-					GiaiQuyetDon giaiQuyetDon = updateCanBoXuLyCuaGiaiQuyetDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId());
-					if (giaiQuyetDon != null) { 
-						objects.add(giaiQuyetDon);
-					}
+					updateCanBoXuLyCuaDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(), congChucId);
+					updateCanBoXuLyCuaThongTinGiaiQuyetDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
+							congChucId);
+					updateCanBoXuLyCuaXuLyDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(), congChucId);
+					updateCanBoXuLyCuaGiaiQuyetDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
+							congChucId);
 				}
 			}
-			
-			return congChucService.doSave(congChucThayThe, 
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()),
-					eass, HttpStatus.CREATED);
+
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
 	
-	public Don updateCanBoXuLyCuaDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
+	public void updateCanBoXuLyCuaDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
 		Don don = donService.predFindDonByCanBoXuLy(repo, donId, canBoXuLyId, canBoXuLyThayTheId);
-		return don;
+		if (don != null) {
+			donService.save(don, congChucId);
+		}
 	}
 	
-	public XuLyDon updateCanBoXuLyCuaXuLyDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
-		XuLyDon xuLyDon = xuLyDonService.predFindXLDByCanBoXuLy(xuLyRepo, donId, canBoXuLyId, canBoXuLyThayTheId);
-		return xuLyDon;
+	public void updateCanBoXuLyCuaXuLyDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		System.out.println("donId " +donId);
+		BooleanExpression base = QXuLyDon.xuLyDon.daXoa.eq(false);
+		BooleanExpression where = base.and(QXuLyDon.xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
+
+		if (xuLyRepo.exists(where)) {
+			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId)))) {
+				System.out.println("congChuc");
+				List<XuLyDon> results = new ArrayList<XuLyDon>();
+				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId))));
+				for (XuLyDon result : results) {
+					result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+					xuLyDonService.save(result, congChucId);
+				}
+			}
+			
+			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoXuLyChiDinh");
+				List<XuLyDon> results = new ArrayList<XuLyDon>();
+				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId))));
+				for (XuLyDon result : results) {
+					result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+					System.out.println("canBoXuLyThayTheId " +canBoXuLyThayTheId);
+					System.out.println("result " +result.getCanBoXuLyChiDinh().getId());
+					xuLyDonService.save(result, congChucId);
+				}
+			}
+			
+			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoXuLy");
+				List<XuLyDon> results = new ArrayList<XuLyDon>();
+				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId))));
+				for (XuLyDon result : results) {
+					 result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+					 xuLyDonService.save(result, congChucId);
+				}
+			}
+			
+			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoGiaoViec");
+				List<XuLyDon> results = new ArrayList<XuLyDon>();
+				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId))));
+				for (XuLyDon result : results) {
+					result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+					xuLyDonService.save(result, congChucId);
+				}
+			}
+			
+			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId)))) {
+				System.out.println("canBoChuyenDon");
+				List<XuLyDon> results = new ArrayList<XuLyDon>();
+				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId))));
+				for (XuLyDon result : results) {
+					result.setCanBoChuyenDon(congChucRepo.findOne(canBoXuLyThayTheId));
+					xuLyDonService.save(result, congChucId);
+				}
+			}
+		}
 	}
 	
-	public ThongTinGiaiQuyetDon updateCanBoXuLyCuaThongTinGiaiQuyetDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
-		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonService.predFindTTGQDByCanBoXuLy(thongTinGiaiQuyetDonRepository, donId, canBoXuLyId, canBoXuLyThayTheId);
-		return thongTinGiaiQuyetDon;
+	public void updateCanBoXuLyCuaThongTinGiaiQuyetDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		ThongTinGiaiQuyetDon thongTinGiaiQuyetDon = thongTinGiaiQuyetDonService
+				.predFindTTGQDByCanBoXuLy(thongTinGiaiQuyetDonRepository, donId, canBoXuLyId, canBoXuLyThayTheId);
+		if (thongTinGiaiQuyetDon != null) {
+			thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
+		}
 	}
 	
-	public GiaiQuyetDon updateCanBoXuLyCuaGiaiQuyetDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
-		GiaiQuyetDon giaiQuyetDon = giaiQuyetDonService.predFindGQDByCanBoXuLy(giaiQuyetDonRepo, donId, canBoXuLyId, canBoXuLyThayTheId);
-		return giaiQuyetDon;
+	public void updateCanBoXuLyCuaGiaiQuyetDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		BooleanExpression base = QGiaiQuyetDon.giaiQuyetDon.daXoa.eq(false);
+		BooleanExpression where = base.and(QGiaiQuyetDon.giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId))
+				.and(QGiaiQuyetDon.giaiQuyetDon.old.eq(false));
+
+		if (giaiQuyetDonRepo.exists(where)) {
+			if (giaiQuyetDonRepo.exists(where.and(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyId)))) {
+				List<GiaiQuyetDon> results = new ArrayList<>();
+				results.addAll((List<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(where.and(QGiaiQuyetDon.giaiQuyetDon.congChuc.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+					giaiQuyetDonService.save(result, congChucId);
+				}
+			}
+
+			if (giaiQuyetDonRepo.exists(where.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				List<GiaiQuyetDon> results = new ArrayList<>();
+				results.addAll(
+						(List<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(where.and(QGiaiQuyetDon.giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+					giaiQuyetDonService.save(result, congChucId);
+				}
+			}
+
+			if (giaiQuyetDonRepo.exists(where.and(QGiaiQuyetDon.giaiQuyetDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
+				List<GiaiQuyetDon> results = new ArrayList<>();
+				results.addAll(
+						(List<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(where.and(QGiaiQuyetDon.giaiQuyetDon.canBoGiaoViec.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+					giaiQuyetDonService.save(result, congChucId);
+				}
+			}
+		}
 	}
 	
 	public boolean checkInputDateTime(String tuNgay, String denNgay) {

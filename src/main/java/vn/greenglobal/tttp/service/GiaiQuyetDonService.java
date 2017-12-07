@@ -1,6 +1,10 @@
 package vn.greenglobal.tttp.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
+import vn.greenglobal.tttp.model.XuLyDon;
 import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -34,34 +39,49 @@ public class GiaiQuyetDonService {
 	QGiaiQuyetDon giaiQuyetDon = QGiaiQuyetDon.giaiQuyetDon;
 	BooleanExpression base = giaiQuyetDon.daXoa.eq(false);
 	
-	public GiaiQuyetDon predFindGQDByCanBoXuLy(GiaiQuyetDonRepository repo, Long donId, Long canBoXuLyId,
+	public List<GiaiQuyetDon> predFindGQDByCanBoXuLy(GiaiQuyetDonRepository repo, Long donId, Long canBoXuLyId,
 			Long canBoXuLyThayTheId) {
 		// TODO Auto-generated method stub
 		BooleanExpression where = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId))
 				.and(giaiQuyetDon.old.eq(false));
 		
 		if (repo.exists(where)) {
-			GiaiQuyetDon result = repo.findOne(where);
+			Set<GiaiQuyetDon> giaiQuyetDons = new HashSet<GiaiQuyetDon>();
 			boolean check = false;
 			
 			if (repo.exists(where.and(giaiQuyetDon.congChuc.id.eq(canBoXuLyId)))) {
-				result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+				List<GiaiQuyetDon> results =  new ArrayList<>();
+				results.addAll((List<GiaiQuyetDon>) repo.findAll(where.and(giaiQuyetDon.congChuc.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
+				}
+				giaiQuyetDons.addAll(results);
 				check = true;
 			}
 			
 			if (repo.exists(where.and(giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
-				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				List<GiaiQuyetDon> results =  new ArrayList<>();
+				results.addAll((List<GiaiQuyetDon>) repo.findAll(where.and(giaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				}
+				giaiQuyetDons.addAll(results);
 				check = true;
 			}
 			
 			if (repo.exists(where.and(giaiQuyetDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
-				result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+				List<GiaiQuyetDon> results =  new ArrayList<>();
+				results.addAll((List<GiaiQuyetDon>) repo.findAll(where.and(giaiQuyetDon.canBoGiaoViec.id.eq(canBoXuLyId))));
+				for (GiaiQuyetDon result : results) {
+					result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
+				}
+				giaiQuyetDons.addAll(results);
 				check = true;
 			}
 			
 			if (check) {
 				System.out.println("OK");
-				return result;
+				return giaiQuyetDons.stream().collect(Collectors.toList());
 			}
 			return null;
 		}
