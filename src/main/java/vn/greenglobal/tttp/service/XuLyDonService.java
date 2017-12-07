@@ -60,7 +60,7 @@ public class XuLyDonService {
 	}
 
 	public XuLyDon predFindXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD,
-			Long canBoId, String chucVu, boolean coQuyTrinh) {
+			Long canBoId, String chucVu, boolean coQuyTrinh, boolean isChuyenVienNhapLieu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
 			phongBanXuLyXLD = 0L;
@@ -88,10 +88,14 @@ public class XuLyDonService {
 						.and(QXuLyDon.xuLyDon.don.currentState.type.eq(FlowStateEnum.BAT_DAU));
 				BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId);
 				BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
-				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
-					.or(qLuuTamCoLanhDao)
-					.or(qGiaoViec)
-					.or(qLuuTamKhongLanhDao));
+				if (isChuyenVienNhapLieu) {
+					xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+							.or(qLuuTamCoLanhDao)
+							.or(qGiaoViec)
+							.or(qLuuTamKhongLanhDao));
+				} else {
+					xuLyDonQuery = xuLyDonQuery.and(qGiaoViec);
+				}
 			}
 		}
 
@@ -179,7 +183,7 @@ public class XuLyDonService {
 		return null;
 	}
 
-	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu) {
+	public XuLyDon predFindThongTinXuLy(XuLyDonRepository repo, Long donId, Long donViXuLyXLD, Long phongBanXuLyXLD, Long canBoId, String chucVu, boolean isChuyenVienNhapLieu) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.old.eq(false));
 		if (chucVu.equals(VaiTroEnum.LANH_DAO.name()) || chucVu.equals(VaiTroEnum.VAN_THU.name())) {
@@ -207,11 +211,15 @@ public class XuLyDonService {
 			BooleanExpression qGiaoViec = QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoId);
 			BooleanExpression qLuuTamKhongLanhDao = QXuLyDon.xuLyDon.canBoXuLyChiDinh.isNull().and(qChucVu);
 			BooleanExpression qXuLy = QXuLyDon.xuLyDon.congChuc.id.eq(canBoId).and(qChucVu);
-			xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
-				.or(qLuuTamCoLanhDao)
-				.or(qXuLy)
-				.or(qGiaoViec)
-				.or(qLuuTamKhongLanhDao));
+			if (isChuyenVienNhapLieu) {
+				xuLyDonQuery = xuLyDonQuery.and(QXuLyDon.xuLyDon.chucVu.isNull()
+						.or(qLuuTamCoLanhDao)
+						.or(qXuLy)
+						.or(qGiaoViec)
+						.or(qLuuTamKhongLanhDao));
+			} else {
+				xuLyDonQuery = xuLyDonQuery.and(qGiaoViec);
+			}
 		}	
 		OrderSpecifier<Integer> sortOrder = QXuLyDon.xuLyDon.thuTuThucHien.desc();
 

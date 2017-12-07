@@ -452,7 +452,7 @@ public class AuthController {
 					commonProfile.addAttribute("capCoQuanQuanLyCuaDonViId", congChuc.getCoQuanQuanLy() != null
 							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
-							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro(), user));
 					commonProfile.addAttribute("isChuyenVienNhapLieu", congChuc.getNguoiDung().isChuyenVienNhapLieu());
 
 					result.put("congChucId", congChuc.getId());
@@ -469,7 +469,7 @@ public class AuthController {
 							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getTen() : "");
 					result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
-							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro(), user));
 					result.put("isChuyenVienNhapLieu", congChuc.getNguoiDung().isChuyenVienNhapLieu());
 				}
 
@@ -500,7 +500,7 @@ public class AuthController {
 		}
 	}
 
-	private boolean checkQuyenBatDauQuyTrinhXuLyDon(Long donViId, VaiTroEnum loaiVaiTro) {
+	private boolean checkQuyenBatDauQuyTrinhXuLyDon(Long donViId, VaiTroEnum loaiVaiTro, NguoiDung user) {
 		State beginState = stateRepository.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 		Predicate predicateProcess = processService.predicateFindAllByDonVi(coQuanQuanLyRepository.findOne(donViId),
 				ProcessTypeEnum.XU_LY_DON);
@@ -537,6 +537,9 @@ public class AuthController {
 						if (transition != null) {
 							break;
 						}
+					}
+					if (loaiVaiTro.equals(VaiTroEnum.CHUYEN_VIEN) && !user.isChuyenVienNhapLieu()) {
+						return false;
 					}
 					if (transition != null) {
 						return transition.getProcess().getVaiTro().getLoaiVaiTro().equals(loaiVaiTro);
