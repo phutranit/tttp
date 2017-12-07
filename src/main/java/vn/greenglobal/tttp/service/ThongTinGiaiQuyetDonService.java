@@ -41,19 +41,16 @@ public class ThongTinGiaiQuyetDonService {
 			boolean check = false;
 			
 			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoXuLyChiDinh");
 				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
 				check = true;
 			}
 			
 			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoThamTraXacMinh.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoThamTraXacMinh");
 				result.setCanBoThamTraXacMinh(congChucRepo.findOne(canBoXuLyThayTheId));
 				check = true;
 			}
 			
 			if (repo.exists(where.and(QThongTinGiaiQuyetDon.thongTinGiaiQuyetDon.canBoGiaiQuyet.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoGiaiQuyet");
 				result.setCanBoGiaiQuyet(congChucRepo.findOne(canBoXuLyThayTheId));
 				check = true;
 			}

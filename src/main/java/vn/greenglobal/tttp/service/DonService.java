@@ -89,42 +89,35 @@ public class DonService {
 			boolean check = false;
 			if (repo.exists(where.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(canBoXuLyId)))) {
 				result.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("setCanBoXuLyPhanHeXLD");
 				check = true;
 			}
 
 			if (repo.exists(where.and(QDon.don.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
 				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("setCanBoXuLyChiDinh");
 				check = true;
 			}
 
 			if (repo.exists(where.and(QDon.don.canBoXuLy.id.eq(canBoXuLyId)))) {
 				result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("setCanBoXuLy");
 				check = true;
 			}
 
 			if (repo.exists(where.and(QDon.don.canBoTTXMChiDinh.id.eq(canBoXuLyId)))) {
 				result.setCanBoTTXMChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("setCanBoTTXMChiDinh");
 				check = true;
 			}
 
 			if (repo.exists(where.and(QDon.don.canBoKTDXChiDinh.id.eq(canBoXuLyId)))) {
 				result.setCanBoKTDXChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("setCanBoKTDXChiDinh");
 				check = true;
 			}
 
 			if (repo.exists(where.and(QDon.don.canBoCoTheThuHoi.id.eq(canBoXuLyId)))) {
 				result.setCanBoCoTheThuHoi(congChucRepo.findOne(canBoXuLyThayTheId));
-				System.out.println("canBoXuLyThayTheId");
 				check = true;
 			}
 
 			if (check) {
-				System.out.println("OK");
 				return result;
 			}
 			return null;
