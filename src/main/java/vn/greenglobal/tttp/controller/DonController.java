@@ -235,6 +235,7 @@ public class DonController extends TttpController<Don> {
 				Long phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 				String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 				Long canBoXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+				boolean isChuyenVienNhapLieu = Boolean.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("isChuyenVienNhapLieu").toString());
 				CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
 				if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai) 
 						|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
@@ -276,7 +277,7 @@ public class DonController extends TttpController<Don> {
 						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo,
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, isChuyenVienNhapLieu, xuLyRepo, repo, giaiQuyetDonRepo,
 								coQuyTrinh), 
 								sortOrderDonByCanBo, sortOrderDon);
 					} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
@@ -284,7 +285,7 @@ public class DonController extends TttpController<Don> {
 						listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 								hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 								phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo,
+								vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, isChuyenVienNhapLieu, xuLyRepo, repo, giaiQuyetDonRepo,
 								coQuyTrinh), 
 								sortOrderDon);
 					}
@@ -1340,6 +1341,7 @@ public class DonController extends TttpController<Don> {
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			@RequestParam(value = "trangThaiDonToanHT", required = false) String trangThaiDonToanHT,
 			@RequestParam(value = "ketQuaToanHT", required = false) String ketQuaToanHT, 
+			@RequestParam(value = "isChuyenVienNhapLieu", required = false) boolean isChuyenVienNhapLieu, 
 			@RequestParam(value = "page", required = false) Integer page, 
 			@RequestParam(value = "size", required = false) Integer size) throws IOException {
 		
@@ -1388,7 +1390,7 @@ public class DonController extends TttpController<Don> {
 					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo,
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, isChuyenVienNhapLieu, xuLyRepo, repo, giaiQuyetDonRepo,
 							coQuyTrinh), 
 							sortOrderDonByCanBo, sortOrderDon);
 				} else if ("DA_XU_LY".equals(trangThaiDon) || "DA_GIAI_QUYET".equals(trangThaiDon)) {
@@ -1396,7 +1398,7 @@ public class DonController extends TttpController<Don> {
 					listDon = (List<Don>) repo.findAll(donService.predicateFindAll(maDon, tuKhoa, nguonDon, phanLoaiDon, tiepNhanTuNgay, tiepNhanDenNgay,
 							hanGiaiQuyetTuNgay, hanGiaiQuyetDenNgay, tinhTrangXuLy, thanhLapDon, trangThaiDon,
 							phongBanGiaiQuyet, canBoXuLyXLD, phongBanXuLyXLD, coQuanTiepNhanXLD, donViXuLyXLD, 
-							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, xuLyRepo, repo, giaiQuyetDonRepo,
+							vaiTro, congChuc.getNguoiDung().getVaiTros(), hoTen, trangThaiDonToanHT, ketQuaToanHT, isChuyenVienNhapLieu, xuLyRepo, repo, giaiQuyetDonRepo,
 							coQuyTrinh), 
 							sortOrderDon);
 				}
@@ -1558,6 +1560,7 @@ public class DonController extends TttpController<Don> {
 			Long phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 			String vaiTroNguoiDungHienTai = profileUtil.getCommonProfile(authorization).getAttribute("loaiVaiTro").toString();
 			Long canBoXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString());
+			boolean isChuyenVienNhapLieu = Boolean.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("isChuyenVienNhapLieu").toString());
 			CongChuc congChuc = congChucRepo.findOne(canBoXuLyXLD);
 			if (StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai) 
 					|| StringUtils.equals(VaiTroEnum.VAN_THU.name(), vaiTroNguoiDungHienTai)) {
@@ -1584,11 +1587,11 @@ public class DonController extends TttpController<Don> {
 			if (listProcessHaveBeginState.size() < 1) {
 				coQuyTrinh = false;
 			}
-
+			
 			listDon.addAll((List<Don>) repo.findAll(donService.predicateFindAll(null, null, null, null, null, null,
 					null, null, null, true, "DANG_XU_LY",
 					null, canBoXuLyXLD, phongBanXuLyXLD, null, donViXuLyXLD, 
-					vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), null, null, null, xuLyRepo, repo, giaiQuyetDonRepo,
+					vaiTroNguoiDungHienTai, congChuc.getNguoiDung().getVaiTros(), null, null, null, isChuyenVienNhapLieu, xuLyRepo, repo, giaiQuyetDonRepo,
 					coQuyTrinh)));
 			tongSoDon = Long.valueOf(listDon.size());
 			map.put("tongSoDon", tongSoDon);
