@@ -128,6 +128,7 @@ public class CuocThanhTraService {
 	
 	public Predicate predicateFindThanhTraTrung(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
 		BooleanExpression predAll = base;
+
 		predAll = predAll.and(QCuocThanhTra.cuocThanhTra.namThanhTra.eq(namThanhTra));
 		
 		if (donViId != null && donViId > 0) {

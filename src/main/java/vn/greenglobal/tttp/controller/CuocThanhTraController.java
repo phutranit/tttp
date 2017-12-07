@@ -8,7 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -160,7 +164,6 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
 		try {
-			
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -171,7 +174,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			HashSet<String> cuocThanhTraIdVaDoiTuongIdsUnique = new HashSet<String>();
 			List<CuocThanhTra> listResult = new ArrayList<CuocThanhTra>();
 			
-			int current = Utils.localDateTimeNow().getYear();
+			int current = Utils.localDateTimeNow().getYear() + 1;
 			
 			if (namThanhTra != null && namThanhTra > 0) {
 				cuocThanhTraIdVaDoiTuongIds.addAll(getCuocThanhTraIdVaDoiTuongIds(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
@@ -205,7 +208,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						+ ctts.get(0).getDoiTuongThanhTraTrung().getId() + "   CuocThanhTraId: " + ctts.get(0).getId());
 				listResult.add(ctts.get(0));
 			}
-			
+
 			return assembler.toResource(new PageImpl<CuocThanhTra>(listResult, pageable, listResult.size()), (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -465,7 +468,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		List<List<Object>> cuocThanhTraIdVaDoiTuongIds = new ArrayList<List<Object>>();
 		List<CuocThanhTra> listCuocThanhTraTheoNam = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
 		List<Object> ids = null;
-		
+
 		if (listCuocThanhTraTheoNam != null && listCuocThanhTraTheoNam.size() > 0) {
 			for (int j = 0; j < listCuocThanhTraTheoNam.size() - 1; j++) {
 				for (int k = j + 1; k < listCuocThanhTraTheoNam.size(); k++) {
@@ -477,7 +480,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 					listDoiTuongThanhTraTwo.addAll(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTras());
 					
 					List<DoiTuongThanhTra> trungNhieuDoiTuong = checkTrungNhieuDoiTuong(listDoiTuongThanhTraOne, listDoiTuongThanhTraTwo);
-					
+
 					if (trungNhieuDoiTuong.size() > 0) {
 //						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
 //							List<List<Boolean>> flag = new ArrayList<List<Boolean>>();

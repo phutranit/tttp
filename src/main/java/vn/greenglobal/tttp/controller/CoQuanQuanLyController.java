@@ -1059,8 +1059,12 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
 			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
-			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAn(
-					Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+			ThamSo thamSoCCQQLUBNDPhuongXa = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLUBNDPhuongXa.getGiaTri().toString()));
+			capCoQuanQuanLyIds.add(Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()));
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXa(
+					capCoQuanQuanLyIds,
 					Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
 					Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
