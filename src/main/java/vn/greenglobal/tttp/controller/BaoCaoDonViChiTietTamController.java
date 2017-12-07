@@ -1,7 +1,11 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -20,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTietTam;
+import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
 import vn.greenglobal.tttp.service.BaoCaoDonViChiTietTamService;
 import vn.greenglobal.tttp.util.Utils;
@@ -53,8 +58,16 @@ public class BaoCaoDonViChiTietTamController extends TttpController<BaoCaoDonViC
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}		
 			
-			Page<BaoCaoDonViChiTietTam> page = repo.findAll(baoCaoDonViChiTietTamService.predicateFindAll(id), pageable);
-			return assembler.toResource(page, (ResourceAssembler) eass);
+			List<BaoCaoDonViChiTietTam> listTam = (List<BaoCaoDonViChiTietTam>) repo.findAll(baoCaoDonViChiTietTamService.predicateFindAll(id));
+			List<BaoCaoDonViChiTietTam> list = new ArrayList<>();
+			for (BaoCaoDonViChiTietTam bc : listTam) {
+				bc.setSoLieuBaoCao(baoCaoDonViChiTietTamService.getDataFromDB(bc));
+				list.add(bc);
+			}
+			
+			Page<BaoCaoDonViChiTietTam> pages = new PageImpl<BaoCaoDonViChiTietTam>(list, pageable, list.size());
+			
+			return assembler.toResource(pages, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

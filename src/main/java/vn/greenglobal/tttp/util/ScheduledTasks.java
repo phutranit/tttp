@@ -62,7 +62,7 @@ public class ScheduledTasks {
 	}
 
 	//second, minute, hour, day of month, month, day(s) of week
-	@Scheduled(cron = "0 23 11 * * *")
+	@Scheduled(cron = "0 43 8 * * *")
 	public void updateHinhThucXuLyQuanLy() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
 				.and(QCauHinhBaoCao.cauHinhBaoCao.daTuDongGui.eq(false))
@@ -114,6 +114,7 @@ public class ScheduledTasks {
 					BaoCaoDonViChiTiet baoCaoDonViChiTiet = new BaoCaoDonViChiTiet();
 					baoCaoDonViChiTiet.setBaoCaoDonVi(baoCaoDonVi);
 					baoCaoDonViChiTiet.setLoaiBaoCao(loaiBaoCao);
+					baoCaoDonViChiTiet.setDonVi(coQuan);
 					baoCaoDonViChiTiet.setCha(baoCaoDonViChiTietTongHop);
 					baoCaoDonViChiTiet.setTrangThaiBaoCao(TrangThaiBaoCaoDonViEnum.DANG_SOAN);
 					baoCaoDonViChiTiet.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(loaiBaoCao, coQuan.getTen()));
