@@ -324,13 +324,6 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 	
 	private CuocThanhTra checkTienDoThanhTra(CuocThanhTra cuocThanhTra) {
-		System.out.println("Namdaica");
-		System.out.println(cuocThanhTra.getSoQuyetDinhVeViecThanhTra());
-		System.out.println(cuocThanhTra.getNgayRaQuyetDinh());
-		System.out.println(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra());
-		System.out.println(cuocThanhTra.getSoThongBaoKetThucTTTT());
-		System.out.println(cuocThanhTra.getNgayRaQuyetDinh());
-		System.out.println(cuocThanhTra.getNgayRaQuyetDinh());
 		
 		if (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() != null && !"".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
 				&& cuocThanhTra.getNgayRaQuyetDinh() != null && !"".equals(cuocThanhTra.getNgayRaQuyetDinh())
