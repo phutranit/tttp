@@ -324,6 +324,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 	
 	private CuocThanhTra checkTienDoThanhTra(CuocThanhTra cuocThanhTra) {
+		
 		if (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() != null && !"".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
 				&& cuocThanhTra.getNgayRaQuyetDinh() != null && !"".equals(cuocThanhTra.getNgayRaQuyetDinh())
 				&& cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() != null && !"".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra())
@@ -335,20 +336,21 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		}
 		if (cuocThanhTra.getSoThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
 				&& cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT())
-				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
-						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
-						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+//				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+//						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+//						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
 				&& (cuocThanhTra.getSoKetLuanThanhTra() == null || "".equals(cuocThanhTra.getSoKetLuanThanhTra())
 						|| cuocThanhTra.getNgayBanHanhKetLuanThanhTra() == null || "".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra()))) {
 			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP);
 		}
 		if (cuocThanhTra.getSoKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getSoKetLuanThanhTra())
 				&& cuocThanhTra.getNgayBanHanhKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra())
-				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
-						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
-						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
-				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
-						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))) {
+//				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+//						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+//						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+//				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
+//						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))
+				) {
 			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN);
 		}
 		return cuocThanhTra;
