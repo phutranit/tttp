@@ -158,6 +158,12 @@ public enum QuyenEnum {
 	THANHTRA_SUA("Chỉnh sửa"),
 	THANHTRA_XOA("Xoá"),
 	
+	THEO_DOI_THUC_HIEN_LIETKE("Liệt kê"),
+	THEO_DOI_THUC_HIEN_XEM("Xem"),
+	THEO_DOI_THUC_HIEN_THEM("Thêm mới"),
+	THEO_DOI_THUC_HIEN_SUA("Chỉnh sửa"),
+	THEO_DOI_THUC_HIEN_XOA("Xoá"),
+	
 	TONGHOPBAOCAO_LIETKE("Liệt kê"),
 	TONGHOPBAOCAO_THONGKE("Thống kê"),
 	

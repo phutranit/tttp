@@ -453,6 +453,7 @@ public class AuthController {
 							? congChuc.getCoQuanQuanLy().getDonVi().getCapCoQuanQuanLy().getId() : "");
 					commonProfile.addAttribute("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
 							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+					commonProfile.addAttribute("isChuyenVienNhapLieu", congChuc.getNguoiDung().isChuyenVienNhapLieu());
 
 					result.put("congChucId", congChuc.getId());
 					result.put("hoVaTen", congChuc.getHoVaTen());
@@ -469,6 +470,7 @@ public class AuthController {
 					result.put("donViId", congChuc.getCoQuanQuanLy().getDonVi().getId());
 					result.put("quyenBatDauQuyTrinh", checkQuyenBatDauQuyTrinhXuLyDon(
 							congChuc.getCoQuanQuanLy().getDonVi().getId(), user.getVaiTroMacDinh().getLoaiVaiTro()));
+					result.put("isChuyenVienNhapLieu", congChuc.getNguoiDung().isChuyenVienNhapLieu());
 				}
 
 				String token = generator.generate(commonProfile);
