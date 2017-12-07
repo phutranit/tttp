@@ -1,10 +1,7 @@
 package vn.greenglobal.tttp.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,76 +34,6 @@ public class XuLyDonService {
 	
 	@Autowired
 	private CongChucRepository congChucRepo;
-	
-	public List<XuLyDon> predFindXLDByCanBoXuLy(XuLyDonRepository repo, Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
-		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
-		
-		if (repo.exists(where)) {
-			Set<XuLyDon> xuLyDons = new HashSet<XuLyDon>();
-			boolean check = false;
-			if (repo.exists(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId)))) {
-				System.out.println("congChuc");
-				List<XuLyDon> results = new ArrayList<XuLyDon>();
-				results.addAll((List<XuLyDon>)repo.findAll(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId))));
-				for (XuLyDon result : results) {
-					result.setCongChuc(congChucRepo.findOne(canBoXuLyThayTheId));
-				}
-				xuLyDons.addAll(results);
-				check = true;
-			}
-			
-			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoXuLyChiDinh");
-				List<XuLyDon> results = new ArrayList<XuLyDon>();
-				results.addAll((List<XuLyDon>)repo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId))));
-				for (XuLyDon result : results) {
-					result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
-				}
-				xuLyDons.addAll(results);
-				check = true;
-			}
-			
-			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoXuLy");
-				List<XuLyDon> results = new ArrayList<XuLyDon>();
-				results.addAll((List<XuLyDon>)repo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId))));
-				for (XuLyDon result : results) {
-					 result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
-				}
-				xuLyDons.addAll(results);
-				check = true;
-			}
-			
-			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoGiaoViec");
-				List<XuLyDon> results = new ArrayList<XuLyDon>();
-				results.addAll((List<XuLyDon>)repo.findAll(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId))));
-				for (XuLyDon result : results) {
-					result.setCanBoGiaoViec(congChucRepo.findOne(canBoXuLyThayTheId));
-				}
-				xuLyDons.addAll(results);
-				check = true;
-			}
-			
-			if (repo.exists(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoChuyenDon");
-				List<XuLyDon> results = new ArrayList<XuLyDon>();
-				results.addAll((List<XuLyDon>)repo.findAll(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId))));
-				for (XuLyDon result : results) {
-					result.setCanBoChuyenDon(congChucRepo.findOne(canBoXuLyThayTheId));
-				}
-				xuLyDons.addAll(results);
-				check = true;
-			}
-			
-			if (check) {
-				System.out.println("OK");
-				return xuLyDons.stream().collect(Collectors.toList());
-			}
-			return null;
-		}
-		return null;
-	}
 	
 	public Predicate predFindXLDByDonCongChuc(XuLyDonRepository repo, List<Long> donIds, Long congChucId) {
 		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.in(donIds)).and(QXuLyDon.xuLyDon.old.eq(false))

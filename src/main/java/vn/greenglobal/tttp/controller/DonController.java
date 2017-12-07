@@ -688,13 +688,11 @@ public class DonController extends TttpController<Don> {
 	}
 	
 	public void updateCanBoXuLyCuaXuLyDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
-		System.out.println("donId " +donId);
 		BooleanExpression base = QXuLyDon.xuLyDon.daXoa.eq(false);
 		BooleanExpression where = base.and(QXuLyDon.xuLyDon.don.id.eq(donId)).and(QXuLyDon.xuLyDon.old.eq(false));
 
 		if (xuLyRepo.exists(where)) {
 			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId)))) {
-				System.out.println("congChuc");
 				List<XuLyDon> results = new ArrayList<XuLyDon>();
 				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.congChuc.id.eq(canBoXuLyId))));
 				for (XuLyDon result : results) {
@@ -704,19 +702,15 @@ public class DonController extends TttpController<Don> {
 			}
 			
 			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoXuLyChiDinh");
 				List<XuLyDon> results = new ArrayList<XuLyDon>();
 				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(canBoXuLyId))));
 				for (XuLyDon result : results) {
 					result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
-					System.out.println("canBoXuLyThayTheId " +canBoXuLyThayTheId);
-					System.out.println("result " +result.getCanBoXuLyChiDinh().getId());
 					xuLyDonService.save(result, congChucId);
 				}
 			}
 			
 			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoXuLy");
 				List<XuLyDon> results = new ArrayList<XuLyDon>();
 				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoXuLy.id.eq(canBoXuLyId))));
 				for (XuLyDon result : results) {
@@ -726,7 +720,6 @@ public class DonController extends TttpController<Don> {
 			}
 			
 			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoGiaoViec");
 				List<XuLyDon> results = new ArrayList<XuLyDon>();
 				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(canBoXuLyId))));
 				for (XuLyDon result : results) {
@@ -736,7 +729,6 @@ public class DonController extends TttpController<Don> {
 			}
 			
 			if (xuLyRepo.exists(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId)))) {
-				System.out.println("canBoChuyenDon");
 				List<XuLyDon> results = new ArrayList<XuLyDon>();
 				results.addAll((List<XuLyDon>)xuLyRepo.findAll(where.and(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(canBoXuLyId))));
 				for (XuLyDon result : results) {
