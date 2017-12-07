@@ -81,7 +81,71 @@ public class DonService {
 	
 	BooleanExpression base = QDon.don.daXoa.eq(false);
 	BooleanExpression baseDonCongDan = QDon_CongDan.don_CongDan.daXoa.eq(false);
+	
+	public Don predFindDonByCanBoXuLy(DonRepository repo, Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId) {
+		BooleanExpression where = base.and(QDon.don.id.eq(donId)).and(QDon.don.old.eq(false));
+		if (repo.exists(where)) {
+			Don result = repo.findOne(where);
+			boolean check = false;
+			if (repo.exists(where.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(canBoXuLyId)))) {
+				result.setCanBoXuLyPhanHeXLD(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
 
+			if (repo.exists(where.and(QDon.don.canBoXuLyChiDinh.id.eq(canBoXuLyId)))) {
+				result.setCanBoXuLyChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+
+			if (repo.exists(where.and(QDon.don.canBoXuLy.id.eq(canBoXuLyId)))) {
+				result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+
+			if (repo.exists(where.and(QDon.don.canBoTTXMChiDinh.id.eq(canBoXuLyId)))) {
+				result.setCanBoTTXMChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+
+			if (repo.exists(where.and(QDon.don.canBoKTDXChiDinh.id.eq(canBoXuLyId)))) {
+				result.setCanBoKTDXChiDinh(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+
+			if (repo.exists(where.and(QDon.don.canBoCoTheThuHoi.id.eq(canBoXuLyId)))) {
+				result.setCanBoCoTheThuHoi(congChucRepo.findOne(canBoXuLyThayTheId));
+				check = true;
+			}
+
+			if (check) {
+				return result;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	public Predicate predFindByMaDonCongChuc(String maDon, Long congChucId) {
+		BooleanExpression predAll = base;
+
+		if (maDon == null && !StringUtils.isNotBlank(maDon)) {
+			return null;
+		}
+
+		predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+
+		if (congChucId != null && congChucId.longValue() > 0) {
+			predAll = predAll.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(congChucId)
+						.or(QDon.don.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoXuLy.id.eq(congChucId))
+						.or(QDon.don.canBoTTXMChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoKTDXChiDinh.id.eq(congChucId))
+						.or(QDon.don.canBoCoTheThuHoi.id.eq(congChucId))
+						);
+		}
+		return predAll;
+	}
+	
 	public Predicate predicateFindByCongDan(Long id) {
 		BooleanExpression predAll = base;
 		BooleanExpression preAllDCD = baseDonCongDan;

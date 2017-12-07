@@ -132,8 +132,10 @@ public class Don extends Model<Don> {
 	@OneToOne(mappedBy = "don")
 	private ThongTinGiaiQuyetDon thongTinGiaiQuyetDon;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoXuLy;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoXuLyPhanHeXLD;
 	//@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -161,12 +163,16 @@ public class Don extends Model<Don> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViXuLyDonChuyen;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoXuLyChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoTTXMChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoKTDXChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;
