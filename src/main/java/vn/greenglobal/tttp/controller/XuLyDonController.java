@@ -224,7 +224,7 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 				if (!StringUtils.equals(VaiTroEnum.LANH_DAO.name(), vaiTroNguoiDungHienTai)) { 
 					phongBanXuLyXLD = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());
 				}
-				
+				boolean isChuyenVienNhapLieu = Boolean.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("isChuyenVienNhapLieu").toString());
 				if (don != null) {
 					if (don.getGiaiQuyetDonCuoiCungId() == null) {
 						if (don.getXuLyDonCuoiCungId() != null && don.getXuLyDonCuoiCungId() > 0
@@ -251,10 +251,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 								}
 							}
 							XuLyDon xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
-									phongBanXuLyXLD, congChucId, "");
+									phongBanXuLyXLD, congChucId, "", isChuyenVienNhapLieu);
 							if (listProcessHaveBeginState.size() > 0) {
 								xuLyDon = xuLyDonService.predFindThongTinXuLy(repo, don.getId(), donViId,
-										phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai);
+										phongBanXuLyXLD, congChucId, vaiTroNguoiDungHienTai, isChuyenVienNhapLieu);
 							}
 							if (xuLyDon != null) {
 								return new ResponseEntity<>(eass.toFullResource(xuLyDon), HttpStatus.OK);
@@ -743,9 +743,10 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 						profileUtil.getCommonProfile(authorization).getAttribute("coQuanQuanLyId").toString());				
 				Long donViId = Long.valueOf(
 						profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
+				boolean isChuyenVienNhapLieu = Boolean.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("isChuyenVienNhapLieu").toString());
 				boolean coQuyTrinh = kiemTraDonViCoQuyTrinhXLD(donViId);
 				XuLyDon xuLyDonHienTai = xuLyDonService.predFindXuLyDonHienTai(repo, donId, donViId, coQuanQuanLyId, congChucId, vaiTroNguoiDungHienTai,
-						coQuyTrinh);					
+						coQuyTrinh, isChuyenVienNhapLieu);					
 				if (xuLyDonHienTai != null) {
 					FlowStateEnum currentState = don.getCurrentState() != null ? don.getCurrentState().getType() : null;
 					FlowStateEnum nextState = nextStage.getType();
