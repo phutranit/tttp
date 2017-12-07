@@ -35,6 +35,17 @@ public class XuLyDonService {
 	@Autowired
 	private CongChucRepository congChucRepo;
 	
+	public Predicate predFindXLDByDonCongChuc(XuLyDonRepository repo, List<Long> donIds, Long congChucId) {
+		BooleanExpression xuLyDonQuery = base.and(xuLyDon.don.id.in(donIds)).and(QXuLyDon.xuLyDon.old.eq(false))
+				.and(QXuLyDon.xuLyDon.congChuc.id.eq(congChucId)
+						.or(QXuLyDon.xuLyDon.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoXuLy.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoGiaoViec.id.eq(congChucId))
+						.or(QXuLyDon.xuLyDon.canBoChuyenDon.id.eq(congChucId))
+						);
+		return xuLyDonQuery;
+	}
+	
 	public int timThuTuXuLyDonHienTai(XuLyDonRepository repo, Long donId, Long donViId) {
 		BooleanExpression where = base.and(xuLyDon.don.id.eq(donId))
 				.and(QXuLyDon.xuLyDon.donViXuLy.id.eq(donViId));		
