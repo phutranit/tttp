@@ -24,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTietTam;
-import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
 import vn.greenglobal.tttp.service.BaoCaoDonViChiTietTamService;
 import vn.greenglobal.tttp.util.Utils;

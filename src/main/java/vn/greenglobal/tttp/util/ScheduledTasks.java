@@ -50,7 +50,7 @@ public class ScheduledTasks {
 	@Autowired
 	CauHinhBaoCaoService cauHinhBaoCaoService;
 	
-	@Scheduled(cron = "0 02 10 * * *")
+	@Scheduled(cron = "0 02 11 * * *")
 	public void test() throws Exception {	
 		Medial_ThanhTraHanhChinh medial = new Medial_ThanhTraHanhChinh();
 		medial.setTenDonVi("abc");
@@ -62,7 +62,7 @@ public class ScheduledTasks {
 	}
 
 	//second, minute, hour, day of month, month, day(s) of week
-	@Scheduled(cron = "0 43 8 * * *")
+	@Scheduled(cron = "0 41 11 * * *")
 	public void updateHinhThucXuLyQuanLy() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
 				.and(QCauHinhBaoCao.cauHinhBaoCao.daTuDongGui.eq(false))

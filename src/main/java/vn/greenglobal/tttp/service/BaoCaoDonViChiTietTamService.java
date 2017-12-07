@@ -13,9 +13,12 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
+import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
+import vn.greenglobal.tttp.enums.TrangThaiBaoCaoDonViEnum;
+import vn.greenglobal.tttp.model.BaoCaoDonViChiTiet;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTietTam;
 import vn.greenglobal.tttp.model.BaoCaoTongHop;
 import vn.greenglobal.tttp.model.CuocThanhTra;
@@ -23,6 +26,7 @@ import vn.greenglobal.tttp.model.QBaoCaoDonViChiTiet;
 import vn.greenglobal.tttp.model.QBaoCaoDonViChiTietTam;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraHanhChinh;
+import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
 import vn.greenglobal.tttp.util.Utils;
@@ -32,6 +36,9 @@ public class BaoCaoDonViChiTietTamService {
 	
 	@Autowired
 	private BaoCaoDonViChiTietTamRepository baoCaoDonViChiTietTamRepository;
+	
+	@Autowired
+	private BaoCaoDonViChiTietRepository baoCaoDonViChiTietRepo;
 	
 	@Autowired
 	private ThongKeTongHopThanhTraService thongKeTongHopThanhTraService;
@@ -104,11 +111,70 @@ public class BaoCaoDonViChiTietTamService {
 		return "";
 	}
 	
+	public LocalDateTime getNgayKetThucBaoCao(BaoCaoDonViChiTiet baoCaoDonViChiTiet) {
+		BaoCaoTongHop baoCaoTongHop = baoCaoDonViChiTiet.getBaoCaoDonVi().getBaoCaoTongHop();
+		LocalDateTime now = LocalDateTime.now();
+		if (now.isAfter(baoCaoTongHop.getNgayKetThucBC())) {
+			return baoCaoTongHop.getNgayKetThucBC();
+		}
+		LocalDateTime timeKetThuc =
+			    LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0, 0, 0);
+		return timeKetThuc;
+	}
+	
+	public LocalDateTime getNgayBatDauBaoCao(BaoCaoDonViChiTiet baoCaoDonViChiTiet) {
+		BaoCaoTongHop baoCaoTongHop = baoCaoDonViChiTiet.getBaoCaoDonVi().getBaoCaoTongHop();
+		if (baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.CHIN_THANG) 
+				|| baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.SAU_THANG)
+				|| baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.NAM)
+				|| (baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_QUY) && baoCaoTongHop.getQuyBaoCao() == 1)
+				|| (baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_THANG) && baoCaoTongHop.getThangBaoCao() == 1)) {
+			BooleanExpression pred = QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.daXoa.eq(false)
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.cha.isNull())
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.trangThaiBaoCao.eq(TrangThaiBaoCaoDonViEnum.DA_GUI))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.donVi.eq(baoCaoDonViChiTiet.getBaoCaoDonVi().getDonVi()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.kyBaoCao.eq(KyBaoCaoTongHopEnum.NAM))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.loaiBaoCao.eq(baoCaoDonViChiTiet.getLoaiBaoCao()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.namBaoCao.eq(baoCaoTongHop.getNamBaoCao()-1));
+			BaoCaoDonViChiTiet baoCaoKyTruoc = baoCaoDonViChiTietRepo.findOne(pred);
+			if (baoCaoKyTruoc != null) {
+				return baoCaoKyTruoc.getNgayNop();
+			}
+		} else if (baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_QUY) && baoCaoTongHop.getQuyBaoCao() != 1) {
+			BooleanExpression pred = QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.daXoa.eq(false)
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.cha.isNull())
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.trangThaiBaoCao.eq(TrangThaiBaoCaoDonViEnum.DA_GUI))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.donVi.eq(baoCaoDonViChiTiet.getBaoCaoDonVi().getDonVi()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.loaiBaoCao.eq(baoCaoDonViChiTiet.getLoaiBaoCao()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.kyBaoCao.eq(KyBaoCaoTongHopEnum.THEO_QUY))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.namBaoCao.eq(baoCaoTongHop.getNamBaoCao()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.quyBaoCao.eq(baoCaoTongHop.getQuyBaoCao()));
+			BaoCaoDonViChiTiet baoCaoKyTruoc = baoCaoDonViChiTietRepo.findOne(pred);
+			if (baoCaoKyTruoc != null) {
+				return baoCaoKyTruoc.getNgayNop();
+			}
+		} else if (baoCaoTongHop.getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_THANG) && baoCaoTongHop.getThangBaoCao() != 1) {
+			BooleanExpression pred = QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.daXoa.eq(false)
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.cha.isNull())
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.trangThaiBaoCao.eq(TrangThaiBaoCaoDonViEnum.DA_GUI))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.donVi.eq(baoCaoDonViChiTiet.getBaoCaoDonVi().getDonVi()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.loaiBaoCao.eq(baoCaoDonViChiTiet.getLoaiBaoCao()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.kyBaoCao.eq(KyBaoCaoTongHopEnum.THEO_THANG))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.namBaoCao.eq(baoCaoTongHop.getNamBaoCao()))
+					.and(QBaoCaoDonViChiTiet.baoCaoDonViChiTiet.baoCaoDonVi.baoCaoTongHop.quyBaoCao.eq(baoCaoTongHop.getThangBaoCao()));
+			BaoCaoDonViChiTiet baoCaoKyTruoc = baoCaoDonViChiTietRepo.findOne(pred);
+			if (baoCaoKyTruoc != null) {
+				return baoCaoKyTruoc.getNgayNop();
+			}
+		}
+		return baoCaoTongHop.getNgayBatDauBC();
+	}
+	
 	public String getDataKetQuaThanhTraHanhChinh(BaoCaoDonViChiTietTam baoCao) {
 		Medial_ThanhTraHanhChinh medial = Utils.json2Object(Medial_ThanhTraHanhChinh.class, baoCao.getSoLieuBaoCao());		
 		BaoCaoTongHop baoCaoTongHop = baoCao.getBaoCaoDonViChiTiet().getBaoCaoDonVi().getBaoCaoTongHop();
-		LocalDateTime ngayBatDau = baoCaoTongHop.getNgayBatDauBC();
-		LocalDateTime ngayKetThuc = baoCaoTongHop.getNgayKetThucBC();
+		LocalDateTime ngayBatDau = getNgayBatDauBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
+		LocalDateTime ngayKetThuc = getNgayKetThucBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
 		String ngayBatDauStr = ngayBatDau.toString().concat("Z");
 		String ngayKetThucStr = ngayKetThuc.toString().concat("Z");
 		BooleanExpression predAllCuocThanhTra = (BooleanExpression) thongKeTongHopThanhTraService

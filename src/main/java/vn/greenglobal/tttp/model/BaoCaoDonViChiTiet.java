@@ -1,6 +1,6 @@
 package vn.greenglobal.tttp.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +41,7 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	 */
 	private static final long serialVersionUID = 2740249455927215380L;
 	
-	private LocalDate ngayNop;
+	private LocalDateTime ngayNop;
 	@Size(max=4000)
 	private String soLieuBaoCao = "";
 	@ManyToOne
@@ -63,11 +63,11 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<CoQuanQuanLy> donViCons = new ArrayList<CoQuanQuanLy>();
 	
-	public LocalDate getNgayNop() {
+	public LocalDateTime getNgayNop() {
 		return ngayNop;
 	}
 
-	public void setNgayNop(LocalDate ngayNop) {
+	public void setNgayNop(LocalDateTime ngayNop) {
 		this.ngayNop = ngayNop;
 	}
 
