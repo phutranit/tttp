@@ -246,7 +246,6 @@ public class Don extends Model<Don> {
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiXLDGiaiQuyet;
 	
-	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiTTXM;
 	
