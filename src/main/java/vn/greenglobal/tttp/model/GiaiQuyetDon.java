@@ -17,6 +17,7 @@ import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.TinhTrangGiaiQuyetEnum;
 import vn.greenglobal.tttp.enums.VaiTroEnum;
 
@@ -453,4 +454,16 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		}
 		return null;
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getMaTraCuu() {
+		List<Don> dons = new ArrayList<Don>();
+		dons = (List<Don>) Application.app.getDonRepository().findAll(QDon.don.id.eq(getThongTinGiaiQuyetDon().getId()));
+		if (dons != null && dons.size() > 0) {
+			return dons.get(0) != null ? dons.get(0).getMaHoSo() : "";
+		}
+		return null;
+	}
+	
 }
