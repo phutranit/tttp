@@ -369,6 +369,11 @@ public class BaoCaoDonViChiTietTamService {
 				+ tongSoVuViecKhieuNaiLinhVucHanhChinhVeChinhSachCCVC20
 				+ tongSoVuViecKhieuNaiLinhVucHanhChinhCTVHXHKKhac21;
 		
+		// ve dang - 23
+		Long donKhieuNaiLinhVucVeDang = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiLinhVuc(predAllDSTCDDonVi,
+						linhVucHanhChinhKhieuNaiVeDang);
+		
 		Long donToCaoLinhVucHanhChinh = thongKeBaoCaoTongHopKQTCDService
 				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucHanhChinhDonToCao);
 		Long donToCaoLinhVucTuPhap = thongKeBaoCaoTongHopKQTCDService
@@ -380,9 +385,15 @@ public class BaoCaoDonViChiTietTamService {
 		Long donToCaoLinhVucKhac = thongKeBaoCaoTongHopKQTCDService
 				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucKhacDonToCao);
 
-		Long tongVuViecDonToCaoLinhVucHanhChinh18 = donToCaoLinhVucHanhChinh + donToCaoLinhVucTuPhap
-				+ donToCaoLinhVucThamNhung + donToCaoLinhVucVeDang + donToCaoLinhVucKhac;
+		Long donKhieuNaiLinhVucTuPhap = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiLinhVuc(predAllDSTCDDonVi,
+						linhVucHanhChinhKhieuNaiTuPhap);
 
+		Long tongVuViecDonToCaoLinhVucHanhChinh = donToCaoLinhVucHanhChinh + donToCaoLinhVucTuPhap
+				+ donToCaoLinhVucThamNhung + donToCaoLinhVucVeDang + donToCaoLinhVucKhac;
+		
+		Long phanAnhKienNghiKhac = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoDonKienNghiPhanAnhHXLLuuDonVaTheoDoi(predAllDSTCDDonVi);
 		
 		medial.setTiepCongDanThuongXuyenLuot(tiepCongDanThuongXuyenLuot);
 		medial.setTiepCongDanThuongXuyenNguoi(tiepCongDanThuongXuyenNguoi);
@@ -405,15 +416,15 @@ public class BaoCaoDonViChiTietTamService {
 		medial.setDonKhieuNaiLinhVucHanhChinhVeNhaTaiSan(tongSoVuViecKhieuNaiLinhVucHanhChinhVeNhaTaiSan19);
 		medial.setDonKhieuNaiLinhVucHanhChinhVeChinhSachCCVC(tongSoVuViecKhieuNaiLinhVucHanhChinhVeChinhSachCCVC20);
 		medial.setDonKhieuNaiLinhVucHanhChinhVeChinhCTVHXHKKhac(tongSoVuViecKhieuNaiLinhVucHanhChinhCTVHXHKKhac21);
-		medial.setDonKhieuNaiLinhVucTuPhap(0L);
-		medial.setDonKhieuNaiLinhVucVeDang(0L);
-		medial.setTongVuViecDonToCao(0L);
-		medial.setDonToCaoLinhVucHanhChinh(0L);
-		medial.setDonToCaoLinhVucTuPhap(0L);
-		medial.setDonToCaoLinhVucThamNhung(0L);
-		medial.setDonToCaoLinhVucVeDang(0L);
-		medial.setDonToCaoLinhVucKhac(0L);
-		medial.setPhanAnhKienNghiKhac(0L);
+		medial.setDonKhieuNaiLinhVucTuPhap(donKhieuNaiLinhVucTuPhap);
+		medial.setDonKhieuNaiLinhVucVeDang(donKhieuNaiLinhVucVeDang);
+		medial.setTongVuViecDonToCao(tongVuViecDonToCaoLinhVucHanhChinh);
+		medial.setDonToCaoLinhVucHanhChinh(donToCaoLinhVucHanhChinh);
+		medial.setDonToCaoLinhVucTuPhap(donToCaoLinhVucTuPhap);
+		medial.setDonToCaoLinhVucThamNhung(donToCaoLinhVucThamNhung);
+		medial.setDonToCaoLinhVucVeDang(donToCaoLinhVucVeDang);
+		medial.setDonToCaoLinhVucKhac(donToCaoLinhVucKhac);
+		medial.setPhanAnhKienNghiKhac(phanAnhKienNghiKhac);
 		medial.setChuaDuocGiaiQuyet(0L);
 		medial.setChuaCoQuyetDinhGiaiQuyet(0L);
 		medial.setDaCoQuyetDinhGiaiQuyet(0L);
