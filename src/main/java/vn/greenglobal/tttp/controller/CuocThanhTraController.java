@@ -8,7 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -104,6 +108,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.DESC, "ngayRaQuyetDinh")));
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
 			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKHTT, tenDoiTuongThanhTra,
 					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId, soKetLuanThanhTra, soQuyetDinhXL), pageable);

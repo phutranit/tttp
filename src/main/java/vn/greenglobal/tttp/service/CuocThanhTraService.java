@@ -73,26 +73,39 @@ public class CuocThanhTraService {
 			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.soQuyetDinhXuLy.eq(soQuyetDinhXL.trim()));
 		}
 		
+//		if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
+//				&& StringUtils.isNotBlank(denNgay.trim())) {
+//			LocalDateTime tuNgaySearch = Utils.fixTuNgay(tuNgay);
+//			LocalDateTime denNgaySearch = Utils.fixDenNgay(denNgay);
+//			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.between(tuNgaySearch, denNgaySearch)
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.between(tuNgaySearch, denNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.between(tuNgaySearch, denNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.between(tuNgaySearch, denNgaySearch))));
+//		} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+//			LocalDateTime denNgaySearch = Utils.fixDenNgay(denNgay);
+//			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(denNgaySearch)
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.before(denNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.before(denNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.before(denNgaySearch))));
+//		} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
+//			LocalDateTime tuNgaySearch = Utils.fixTuNgay(tuNgay);
+//			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.after(tuNgaySearch)
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.after(tuNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.after(tuNgaySearch))
+//					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.before(tuNgaySearch))));
+//		}
+		
 		if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
 				&& StringUtils.isNotBlank(denNgay.trim())) {
 			LocalDateTime tuNgaySearch = Utils.fixTuNgay(tuNgay);
 			LocalDateTime denNgaySearch = Utils.fixDenNgay(denNgay);
-			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.between(tuNgaySearch, denNgaySearch)
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.between(tuNgaySearch, denNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.between(tuNgaySearch, denNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.between(tuNgaySearch, denNgaySearch))));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.between(tuNgaySearch, denNgaySearch));
 		} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
 			LocalDateTime denNgaySearch = Utils.fixDenNgay(denNgay);
-			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(denNgaySearch)
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.before(denNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.before(denNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.before(denNgaySearch))));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(denNgaySearch));
 		} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
 			LocalDateTime tuNgaySearch = Utils.fixTuNgay(tuNgay);
-			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.after(tuNgaySearch)
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhQuyetDinhXuLy.after(tuNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.after(tuNgaySearch))
-					.or(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.isNotNull().and(QCuocThanhTra.cuocThanhTra.keHoachThanhTra.ngayRaQuyetDinh.before(tuNgaySearch))));
+			predAll = predAll.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.after(tuNgaySearch));
 		}
 
 		return predAll;
