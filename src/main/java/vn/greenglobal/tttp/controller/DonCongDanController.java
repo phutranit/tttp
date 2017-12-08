@@ -147,6 +147,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
 								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
 								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setDiaChiSearch(Utils.unAccent(donCongDan.getDiaChi().trim()));
 								congDan.setNgaySinh(donCongDan.getNgaySinh());
 								congDan.setNgayCap(donCongDan.getNgayCap());
 								congDan.setGioiTinh(donCongDan.isGioiTinh());
@@ -279,6 +280,7 @@ public class DonCongDanController extends TttpController<Don_CongDan> {
 								congDan.setSoCMNDHoChieu(donCongDan.getSoCMNDHoChieu());
 								congDan.setSoDienThoai(donCongDan.getSoDienThoai());
 								congDan.setDiaChi(donCongDan.getDiaChi());
+								congDan.setDiaChiSearch(Utils.unAccent(donCongDan.getDiaChi().trim()));
 								congDan.setNgaySinh(donCongDan.getNgaySinh());
 								congDan.setNgayCap(donCongDan.getNgayCap());
 								congDan.setGioiTinh(donCongDan.isGioiTinh());

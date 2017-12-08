@@ -55,6 +55,8 @@ public class Don_CongDan extends Model<Don_CongDan> {
 	@Size(max=255)
 	private String diaChi = "";
 	@Size(max=255)
+	private String diaChiSearch = "";
+	@Size(max=255)
 	private String soDienThoaiCoQuan = "";
 
 	// Người đứng đơn, ủy quyền, khiếu tố
@@ -330,6 +332,14 @@ public class Don_CongDan extends Model<Don_CongDan> {
 
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
+	}
+
+	public String getDiaChiSearch() {
+		return diaChiSearch;
+	}
+
+	public void setDiaChiSearch(String diaChiSearch) {
+		this.diaChiSearch = diaChiSearch;
 	}
 
 	public String getSoDienThoaiCoQuan() {

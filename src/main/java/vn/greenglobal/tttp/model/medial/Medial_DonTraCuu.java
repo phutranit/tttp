@@ -150,7 +150,6 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private LocalDateTime ngayBatDauXLD;
 	@JsonIgnore
 	private LocalDateTime thoiHanXuLyXLD;
-	@JsonIgnore
 	private LocalDateTime ngayTiepNhanDon;
 	private LocalDateTime ngayBanHanhVanBanDaGiaiQuyet;
 	@JsonIgnore
