@@ -43,6 +43,7 @@ public class Medial_ThanhTraThamNhungPHQThanhTra extends ModelThongKe<Medial_Tha
 	private Long daKhoiToDoiTuong;
 	private Long xuLyTrachNhiemNguoiDungDauKienNghi;
 	private Long xuLyTrachNhiemNguoiDungDauDaXuLy;
+	
 	private String tenDonVi = "";
 	private String ghiChu = "";
 	

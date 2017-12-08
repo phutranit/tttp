@@ -9,6 +9,7 @@ import vn.greenglobal.tttp.model.ModelThongKe;
 public class Medial_ThanhTraKTChuyenNganh extends ModelThongKe<Medial_ThanhTraKTChuyenNganh> {
 
 	private int soThuTu;	
+	
 	private Long soCuocTTKTTongSo;
 	private Long thanhLapDoan;
 	private Long thanhTraDocLap;
@@ -35,6 +36,7 @@ public class Medial_ThanhTraKTChuyenNganh extends ModelThongKe<Medial_ThanhTraKT
 	private Long soTienDaThuTongSo;
 	private Long soTienDaThuCaNhan;
 	private Long soTienDaThuToChuc;
+	
 	private String tenDonVi = "";
 	private String ghiChu = "";
 	
