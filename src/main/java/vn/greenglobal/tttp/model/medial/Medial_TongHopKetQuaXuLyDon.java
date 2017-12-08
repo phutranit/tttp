@@ -40,6 +40,7 @@ public class Medial_TongHopKetQuaXuLyDon extends ModelThongKe<Medial_TongHopKetQ
 	private Long tongSoDonCoSoCongVanDonDocViecGiaiQuyet;
 	private Long tongSoDonThuocThamQuyenKhieuNai;
 	private Long tongSoDonThuocThamQuyenToCao;
+	
 	private String tenDonVi = "";
 	private String ghiChu = "";
 	
