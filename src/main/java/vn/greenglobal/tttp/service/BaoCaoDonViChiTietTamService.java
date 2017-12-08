@@ -41,6 +41,7 @@ import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucDTXDCB;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucDatDai;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucTaiChinh;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraThamNhungPHQThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_TongHopKetQuaGiaiQuyetKhieuNai;
 import vn.greenglobal.tttp.model.medial.Medial_TongHopKetQuaTiepCongDan;
 import vn.greenglobal.tttp.model.medial.Medial_TongHopKetQuaXuLyDon;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
@@ -131,7 +132,7 @@ public class BaoCaoDonViChiTietTamService {
 				} else if (LoaiBaoCaoTongHopEnum.KET_QUA_TIEP_CONG_DAN.equals(loaiBaoCao)) {
 					return getDataKetQuaTiepCongDan(baoCao);
 				} else if (LoaiBaoCaoTongHopEnum.KET_QUA_XU_LY_DON_KHIEU_NAI_TO_CAO.equals(loaiBaoCao)) {
-					return "";
+					return getDataKetQuaXuLyDonKhieuNaiToCao(baoCao);
 				} else if (LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_KHIEU_NAI.equals(loaiBaoCao)) {
 					return "";
 				} else if (LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_TO_CAO.equals(loaiBaoCao)) {
@@ -202,6 +203,58 @@ public class BaoCaoDonViChiTietTamService {
 			}
 		}
 		return baoCaoTongHop.getNgayBatDauBC();
+	}
+	
+	public String getDataKetQuaGiaiQuyetDonKhieuNai(BaoCaoDonViChiTietTam baoCao) {
+		Medial_TongHopKetQuaGiaiQuyetKhieuNai medial = Utils.json2Object(Medial_TongHopKetQuaGiaiQuyetKhieuNai.class, baoCao.getSoLieuBaoCao());		
+		BaoCaoTongHop baoCaoTongHop = baoCao.getBaoCaoDonViChiTiet().getBaoCaoDonVi().getBaoCaoTongHop();
+		LocalDateTime ngayBatDau = getNgayBatDauBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
+		LocalDateTime ngayKetThuc = getNgayKetThucBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
+		String ngayBatDauStr = ngayBatDau.toString().concat("Z");
+		String ngayKetThucStr = ngayKetThuc.toString().concat("Z"); 
+		
+		/*
+		private Long tongSoDonKhieuNai;
+		private Long donNhanTrongKyBaoCao;
+		private Long donTonKyTruocChuyenSang;
+		private Long tongSoVuViec;
+		private Long soDonThuocThamQuyen;
+		private Long soVuViecThuocThamQuyen;
+		private Long soVuViecGiaiQuyetBangQDHanhChinh;
+		private Long soVuViecRutDonThongQuaGiaiThichThuyetPhuc;
+		private Long khieuNaiDung;
+		private Long khieuNaiSai;
+		private Long khieuNaiDungMotPhan;
+		private Long giaiQuyetLan1;
+		private Long congNhanQuyetDinhGiaiQuyetLan1;
+		private Long huySuaQuyetDinhGiaiQuyetLan1;
+		private Long kienNghiThuHoiChoNhaNuocTien;
+		private Long kienNghiThuHoiChoNhaNuocDat;
+		private Long traLaiChoCongDanTien;
+		private Long traLaiChoCongDanDat;
+		private Long soNguoiDuocTraLaiQuyenLoi;
+		private Long kienNghiXuLyHanhChinhTongSoNguoi;
+		private Long kienNghiXuLyHanhChinhSoNguoiDaBiXuLy;
+		private Long soVuChuyenCoQuanDieuTra;
+		private Long soDoiTuongChuyenCoQuanDieuTra;
+		private Long soVuDaKhoiTo;
+		private Long soDoiTuongDaKhoiTo;
+		private Long soVuViecGiaiQuyetDungThoiHan;
+		private Long soVuViecGiaiQuyetQuaThoiHan;
+		private Long tongSoQuyetDinhPhaiToChucThucHien;
+		private Long tongSoQuyetDinhPhaiToChucThucHienDaThucHien;
+		private Long tienPhaiThuChoNhaNuoc;
+		private Long datPhaiThuChoNhaNuoc;
+		private Long tienDaThuChoNhaNuoc;
+		private Long datDaThuChoNhaNuoc;
+		private Long tienPhaiTraChoCongDan;
+		private Long datPhaiTraChoCongDan;
+		private Long tienDaTraChoCongDan;
+		private Long datDaTraChoCongDan;
+		*/
+		
+		
+		return Utils.object2Json(medial);
 	}
 	
 	public String getDataKetQuaXuLyDonKhieuNaiToCao(BaoCaoDonViChiTietTam baoCao) {
