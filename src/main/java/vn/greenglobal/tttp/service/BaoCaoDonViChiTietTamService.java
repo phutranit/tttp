@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +19,19 @@ import vn.greenglobal.tttp.enums.HinhThucThanhTraEnum;
 import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
+import vn.greenglobal.tttp.enums.LoaiTiepDanEnum;
+import vn.greenglobal.tttp.enums.LoaiVuViecEnum;
 import vn.greenglobal.tttp.enums.TienDoThanhTraEnum;
 import vn.greenglobal.tttp.enums.TrangThaiBaoCaoDonViEnum;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTiet;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTietTam;
 import vn.greenglobal.tttp.model.BaoCaoTongHop;
 import vn.greenglobal.tttp.model.CuocThanhTra;
+import vn.greenglobal.tttp.model.LinhVucDonThu;
 import vn.greenglobal.tttp.model.QBaoCaoDonViChiTiet;
 import vn.greenglobal.tttp.model.QBaoCaoDonViChiTietTam;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
+import vn.greenglobal.tttp.model.QSoTiepCongDan;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraHanhChinh;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraKTChuyenNganh;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLai;
@@ -33,9 +39,11 @@ import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucDTXDCB;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucDatDai;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraLinhVucTaiChinh;
 import vn.greenglobal.tttp.model.medial.Medial_ThanhTraThamNhungPHQThanhTra;
+import vn.greenglobal.tttp.model.medial.Medial_TongHopKetQuaTiepCongDan;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
+import vn.greenglobal.tttp.repository.LinhVucDonThuRepository;
 import vn.greenglobal.tttp.util.Utils;
 
 @Component
@@ -52,6 +60,15 @@ public class BaoCaoDonViChiTietTamService {
 	
 	@Autowired
 	private CuocThanhTraRepository cuocThanhTraRepo;
+	
+	@Autowired
+	private LinhVucDonThuRepository linhVucDonThuRepo;
+	
+	@Autowired
+	private LinhVucDonThuService linhVucDonThuService;
+	
+	@Autowired
+	private ThongKeBaoCaoTongHopKQTCDService thongKeBaoCaoTongHopKQTCDService;
 
 	BooleanExpression base = QBaoCaoDonViChiTietTam.baoCaoDonViChiTietTam.daXoa.eq(false);
 
@@ -175,6 +192,234 @@ public class BaoCaoDonViChiTietTamService {
 			}
 		}
 		return baoCaoTongHop.getNgayBatDauBC();
+	}
+	
+	public String getDataKetQuaTiepCongDan(BaoCaoDonViChiTietTam baoCao) {
+		Medial_TongHopKetQuaTiepCongDan medial = Utils.json2Object(Medial_TongHopKetQuaTiepCongDan.class, baoCao.getSoLieuBaoCao());		
+		BaoCaoTongHop baoCaoTongHop = baoCao.getBaoCaoDonViChiTiet().getBaoCaoDonVi().getBaoCaoTongHop();
+		LocalDateTime ngayBatDau = getNgayBatDauBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
+		LocalDateTime ngayKetThuc = getNgayKetThucBaoCao(baoCao.getBaoCaoDonViChiTiet().getCha());
+		String ngayBatDauStr = ngayBatDau.toString().concat("Z");
+		String ngayKetThucStr = ngayKetThuc.toString().concat("Z");
+		
+		// khieu nai
+		LinhVucDonThu linhVucHanhChinhDonKhieuNai = linhVucDonThuRepo.findOne(1L);
+		LinhVucDonThu linhVucHanhChinhKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
+		LinhVucDonThu linhVucHanhChinhKhieuNaiVeDang = linhVucDonThuRepo.findOne(56L);
+
+		// to cao
+		LinhVucDonThu linhVucHanhChinhDonToCao = linhVucDonThuRepo.findOne(15L);
+		LinhVucDonThu linhVucTuPhapDonToCao = linhVucDonThuRepo.findOne(16L);
+		LinhVucDonThu linhVucThamNhungDonToCao = linhVucDonThuRepo.findOne(39L);
+		LinhVucDonThu linhVucVeDangDonToCao = linhVucDonThuRepo.findOne(62L);
+		LinhVucDonThu linhVucKhacDonToCao = linhVucDonThuRepo.findOne(63L);
+		
+		List<Long> idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais.add(55L);
+		
+		List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachs = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiVeChinhSachs.add(5L);
+
+		List<Long> idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(53L);
+		
+		List<Long> idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(57L);
+		
+		List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs.add(58L);
+
+		List<Long> idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs = new ArrayList<Long>();
+		idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs.add(59L);
+		
+		List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
+		linhVucTranhChapVeDatDais.addAll(linhVucDonThuService
+				.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais));
+
+		List<LinhVucDonThu> linhVucVeChinhSachs = new ArrayList<LinhVucDonThu>();
+		linhVucVeChinhSachs.addAll(
+				linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeChinhSachs));
+
+		List<LinhVucDonThu> linhVucVeCheDoCCVCs = new ArrayList<LinhVucDonThu>();
+		linhVucVeCheDoCCVCs.addAll(
+				linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs));
+		
+		List<LinhVucDonThu> linhVucVeNhaCuaTaiSans = new ArrayList<LinhVucDonThu>();
+		linhVucVeNhaCuaTaiSans.addAll(
+				linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
+		
+		List<LinhVucDonThu> linhVucVeChinhSachCCVCs = new ArrayList<LinhVucDonThu>();
+		linhVucVeChinhSachCCVCs.addAll(
+				linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs));
+		
+		List<LinhVucDonThu> linhVucCTVHXHKKhacs = new ArrayList<LinhVucDonThu>();
+		linhVucCTVHXHKKhacs.addAll(linhVucDonThuService
+				.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs));
+		
+		BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService
+				.predicateFindAllTCD("TUY_CHON", 0, baoCaoTongHop.getNamBaoCao(), 0, ngayBatDauStr, ngayKetThucStr);
+		
+		BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
+		predAllDSTCDDonVi = predAllDSTCDDonVi
+				.and(QSoTiepCongDan.soTiepCongDan.donViTiepDan.eq(baoCao.getBaoCaoDonViChiTiet().getDonVi()));
+
+		BooleanExpression predAllDSTCDThuongXuyen = predAllDSTCDDonVi;
+		predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.THUONG_XUYEN));
+
+		predAllDSTCDThuongXuyen = predAllDSTCDThuongXuyen
+				.and(QSoTiepCongDan.soTiepCongDan.don.yeuCauGapTrucTiepLanhDao.isFalse());
+
+		BooleanExpression predAllDSTCDLanhDao = predAllDSTCDDonVi;
+		predAllDSTCDLanhDao = predAllDSTCDLanhDao
+				.and(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DINH_KY)
+						.or(QSoTiepCongDan.soTiepCongDan.loaiTiepDan.eq(LoaiTiepDanEnum.DOT_XUAT)));
+
+
+		// tiep cong dan thuong xuyen
+		// luoc - 1
+		Long tiepCongDanThuongXuyenLuot = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoLuocTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen);
+
+		// nguoi - 2
+		Long tiepCongDanThuongXuyenNguoi = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoNguoiDungTenTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, false, false);
+
+		// vu viec cu - 3
+		Long tiepCongDanThuongXuyenVuViecCu = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, false, LoaiVuViecEnum.CU);
+
+		// vu viec moi phat sinh - 4
+		Long tiepCongDanThuongXuyenVuViecMoiPhatSinh = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, false,
+						LoaiVuViecEnum.MOI_PHAT_SINH);
+
+		// doan dong nguoi
+		// so doan - 5
+		Long tiepCongDanThuongXuyenDoanDongNguoiSoDoan = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoDoanDongNguoiTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, true);
+
+		// nguoi - 6
+		Long tiepCongDanThuongXuyenDoanDongNguoiSoNguoi = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoNguoiDungTenTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, false, true);
+
+		// doan dong nguoi - vu viec
+		// cu - 7
+		Long tiepCongDanThuongXuyenDoanDongNguoiVuViecCu = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, true, LoaiVuViecEnum.CU);
+
+		// moi phat sinh - 8
+		Long tiepCongDanThuongXuyenDoanDongNguoiVuViecMoiPhatSinh = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanThuongXuyen(predAllDSTCDThuongXuyen, true,
+						LoaiVuViecEnum.MOI_PHAT_SINH);
+
+		// tiep cong dan dinh ky dot xuat cua lanh dao
+		// luoc - 9
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoLuot = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoLuocTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao);
+
+		// nguoi - 10
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoNguoi = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao);
+
+		// tiep cong dan cua lanh dao - vu viec
+		// cu - 11
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecCu = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, false, LoaiVuViecEnum.CU);
+
+		// moi phat sinh - 12
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecMoiPhatSinh = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, false,
+						LoaiVuViecEnum.MOI_PHAT_SINH);
+
+		// tiep cong dan cua lanh dao - doan dong nguoi
+		// so doan - 13
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoDoan = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoDoanDongNguoiTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, true);
+
+		// so nguoi - 14
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoNguoiDungTenTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, false, true);
+
+		// tiep cong dan cua lanh dao - doan dong nguoi - vu viec
+		// cu - 15
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, true, LoaiVuViecEnum.CU);
+
+		// moi phat sinh - 16
+		Long tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh = thongKeBaoCaoTongHopKQTCDService
+				.getDemDonLoaiVuViecTiepCongDanDinhKyDotXuat(predAllDSTCDLanhDao, true,
+						LoaiVuViecEnum.MOI_PHAT_SINH);
+
+		Long tongSoVuViecKhieuNaiLinhVucHanhChinhLienQuanDenDatDai18 = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
+						linhVucHanhChinhDonKhieuNai, linhVucTranhChapVeDatDais);
+		Long tongSoVuViecKhieuNaiLinhVucHanhChinhVeNhaTaiSan19 = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
+						linhVucHanhChinhDonKhieuNai, linhVucVeNhaCuaTaiSans);
+		Long tongSoVuViecKhieuNaiLinhVucHanhChinhVeChinhSachCCVC20 = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
+						linhVucHanhChinhDonKhieuNai, linhVucVeChinhSachCCVCs);
+		Long tongSoVuViecKhieuNaiLinhVucHanhChinhCTVHXHKKhac21 = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
+						linhVucHanhChinhDonKhieuNai, linhVucCTVHXHKKhacs);
+
+		Long tongVuViecDonKhieuNaiLinhVucHanhChinh17 = tongSoVuViecKhieuNaiLinhVucHanhChinhLienQuanDenDatDai18
+				+ tongSoVuViecKhieuNaiLinhVucHanhChinhVeNhaTaiSan19
+				+ tongSoVuViecKhieuNaiLinhVucHanhChinhVeChinhSachCCVC20
+				+ tongSoVuViecKhieuNaiLinhVucHanhChinhCTVHXHKKhac21;
+		
+		Long donToCaoLinhVucHanhChinh = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucHanhChinhDonToCao);
+		Long donToCaoLinhVucTuPhap = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucTuPhapDonToCao);
+		Long donToCaoLinhVucThamNhung = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucThamNhungDonToCao);
+		Long donToCaoLinhVucVeDang = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucVeDangDonToCao);
+		Long donToCaoLinhVucKhac = thongKeBaoCaoTongHopKQTCDService
+				.getTongSoVuViecTiepCongDanDonToCaoLinhVucDonThu(predAllDSTCDDonVi, linhVucKhacDonToCao);
+
+		Long tongVuViecDonToCaoLinhVucHanhChinh18 = donToCaoLinhVucHanhChinh + donToCaoLinhVucTuPhap
+				+ donToCaoLinhVucThamNhung + donToCaoLinhVucVeDang + donToCaoLinhVucKhac;
+
+		
+		medial.setTiepCongDanThuongXuyenLuot(tiepCongDanThuongXuyenLuot);
+		medial.setTiepCongDanThuongXuyenNguoi(tiepCongDanThuongXuyenNguoi);
+		medial.setTiepCongDanThuongXuyenVuViecCu(tiepCongDanThuongXuyenVuViecCu);
+		medial.setTiepCongDanThuongXuyenVuViecMoiPhatSinh(tiepCongDanThuongXuyenVuViecMoiPhatSinh);
+		medial.setTiepCongDanThuongXuyenDoanDongNguoiSoDoan(tiepCongDanThuongXuyenDoanDongNguoiSoDoan);
+		medial.setTiepCongDanThuongXuyenDoanDongNguoiSoNguoi(tiepCongDanThuongXuyenDoanDongNguoiSoNguoi);
+		medial.setTiepCongDanThuongXuyenDoanDongNguoiVuViecCu(tiepCongDanThuongXuyenDoanDongNguoiVuViecCu);
+		medial.setTiepCongDanThuongXuyenDoanDongNguoiVuViecMoiPhatSinh(tiepCongDanThuongXuyenDoanDongNguoiVuViecMoiPhatSinh);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoLuot(tiepCongDanDinhKyDotXuatCuaLanhDaoLuot);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoNguoi(tiepCongDanDinhKyDotXuatCuaLanhDaoNguoi);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoVuViecCu(tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecCu);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoVuViecMoiPhatSinh(tiepCongDanDinhKyDotXuatCuaLanhDaoVuViecMoiPhatSinh);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoDoan(tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoDoan);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi(tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiSoNguoi);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu(tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecCu);
+		medial.setTiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh(tiepCongDanDinhKyDotXuatCuaLanhDaoDoanDongNguoiVuViecMoiPhatSinh);
+		medial.setTongVuViecDonKhieuNaiLinhVucHanhChinh(tongVuViecDonKhieuNaiLinhVucHanhChinh17);
+		medial.setDonKhieuNaiLinhVucHanhChinhLienQuanDenDatDai(tongSoVuViecKhieuNaiLinhVucHanhChinhLienQuanDenDatDai18);
+		medial.setDonKhieuNaiLinhVucHanhChinhVeNhaTaiSan(tongSoVuViecKhieuNaiLinhVucHanhChinhVeNhaTaiSan19);
+		medial.setDonKhieuNaiLinhVucHanhChinhVeChinhSachCCVC(tongSoVuViecKhieuNaiLinhVucHanhChinhVeChinhSachCCVC20);
+		medial.setDonKhieuNaiLinhVucHanhChinhVeChinhCTVHXHKKhac(tongSoVuViecKhieuNaiLinhVucHanhChinhCTVHXHKKhac21);
+		medial.setDonKhieuNaiLinhVucTuPhap(0L);
+		medial.setDonKhieuNaiLinhVucVeDang(0L);
+		medial.setTongVuViecDonToCao(0L);
+		medial.setDonToCaoLinhVucHanhChinh(0L);
+		medial.setDonToCaoLinhVucTuPhap(0L);
+		medial.setDonToCaoLinhVucThamNhung(0L);
+		medial.setDonToCaoLinhVucVeDang(0L);
+		medial.setDonToCaoLinhVucKhac(0L);
+		medial.setPhanAnhKienNghiKhac(0L);
+		medial.setChuaDuocGiaiQuyet(0L);
+		medial.setChuaCoQuyetDinhGiaiQuyet(0L);
+		medial.setDaCoQuyetDinhGiaiQuyet(0L);
+		medial.setDaCoBanAnCuaToa(0L);
+		
+		return Utils.object2Json(medial);
 	}
 	
 	public String getDataKetQuaPhatHienThamNhungQuaThanhTra(BaoCaoDonViChiTietTam baoCao) {

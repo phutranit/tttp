@@ -44,6 +44,7 @@ public class Medial_TongHopKetQuaTiepCongDan extends ModelThongKe<Medial_TongHop
 	private Long chuaCoQuyetDinhGiaiQuyet;
 	private Long daCoQuyetDinhGiaiQuyet;
 	private Long daCoBanAnCuaToa;
+	
 	private String tenDonVi = "";
 	private String ghiChu = "";
 	
