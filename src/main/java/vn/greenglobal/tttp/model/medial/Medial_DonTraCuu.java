@@ -46,8 +46,8 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setNoiDung(don.getNoiDung());
 		setMaDon(don.getMa());
 		setMaHoSo(don.getMaHoSo());
-		setNguonDon(don.getNguonTiepNhanDon().getText());
-		setLoaiDoiTuong(don.getLoaiDoiTuong().getText());
+		setNguonDon(don.getNguonTiepNhanDon() != null ? don.getNguonTiepNhanDon().getText() : "");
+		setLoaiDoiTuong(don.getLoaiDoiTuong() != null ? don.getLoaiDoiTuong().getText() : "");
 		setLoaiDonThu(don.getLoaiDon());
 		setCoUyQuyen(don.isCoUyQuyen());
 		setDaGiaiQuyet(don.isDaGiaiQuyet());
