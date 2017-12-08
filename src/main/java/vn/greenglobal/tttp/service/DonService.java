@@ -909,12 +909,12 @@ public class DonService {
 	}
 	
 	public String getMaHoSo(DonRepository repo, Long donId) {
-		String maHoSo = "MHS" + Utils.getMaDon();
+		String maHoSo = Utils.getMaDon();
 		boolean flagTonTai = true;
 		while (flagTonTai) {
 			flagTonTai = isMaDonExists(repo, donId, null, maHoSo);
 			if (flagTonTai) {
-				maHoSo = "MHS" + Utils.getMaDon();
+				maHoSo = Utils.getMaDon();
 			}
 		}
 		return maHoSo;

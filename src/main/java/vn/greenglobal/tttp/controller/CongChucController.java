@@ -29,7 +29,6 @@ import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
-import vn.greenglobal.tttp.enums.VaiTroEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.InvalidToken;
@@ -220,9 +219,6 @@ public class CongChucController extends TttpController<CongChuc> {
 			}
 
 			congChuc.getNguoiDung().setActive(true);
-			if (!VaiTroEnum.CHUYEN_VIEN.equals(congChuc.getNguoiDung().getVaiTroMacDinh().getLoaiVaiTro())) {
-				congChuc.getNguoiDung().setChuyenVienNhapLieu(false);
-			}
 			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 				@Override
 				public Object doInTransaction(TransactionStatus arg0) {
@@ -329,9 +325,6 @@ public class CongChucController extends TttpController<CongChuc> {
 			}
 
 			congChuc.getNguoiDung().setActive(true);
-			if (!VaiTroEnum.CHUYEN_VIEN.equals(congChuc.getNguoiDung().getVaiTroMacDinh().getLoaiVaiTro())) {
-				congChuc.getNguoiDung().setChuyenVienNhapLieu(false);
-			}
 			return (ResponseEntity<Object>) getTransactioner().execute(new TransactionCallback() {
 				@Override
 				public Object doInTransaction(TransactionStatus arg0) {

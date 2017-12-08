@@ -822,4 +822,17 @@ public class XuLyDon extends Model<XuLyDon> {
 	public Long getXuLyDonId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getMaHoSo() {
+		return don.getMaHoSo();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getMaDon() {
+		return don.getMa();
+	}
+	
 }
