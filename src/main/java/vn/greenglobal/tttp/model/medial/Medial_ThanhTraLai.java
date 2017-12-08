@@ -38,6 +38,7 @@ public class Medial_ThanhTraLai extends ModelThongKe<Medial_ThanhTraLai> {
 	private Long ketQuaThucHienCaNhan;
 	private Long ketQuaThucHienVu;
 	private Long ketQuaThucHienDoiTuong;
+	
 	private String tenDonVi = "";
 	private String ghiChu = "";
 	
