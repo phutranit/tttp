@@ -527,7 +527,7 @@ public class DonService {
 			BooleanExpression donCongDanQuery = baseDonCongDan;
 			
 			donCongDanQuery = donCongDanQuery
-					.and(QDon_CongDan.don_CongDan.diaChi.containsIgnoreCase(Utils.unAccent(diaChi.trim())));
+					.and(QDon_CongDan.don_CongDan.diaChiSearch.containsIgnoreCase(Utils.unAccent(diaChi.trim())));
 			donCongDans = (List<Don_CongDan>) donCongDanRepo.findAll(donCongDanQuery);
 			dons = donCongDans.stream().map(d -> d.getDon()).distinct().collect(Collectors.toList());
 			predAll = predAll.and(QDon.don.in(dons));
@@ -565,10 +565,10 @@ public class DonService {
 					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
 					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
 					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.between(tuNgayTK, denNgayTK));
-				} else if (StringUtils.isBlank(tuNgay) && StringUtils.isNotBlank(denNgay)) {
+				} else if (StringUtils.isBlank(denNgay) && StringUtils.isNotBlank(denNgay)) {
 					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
 					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.before(denNgayTK));
-				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(denNgay)) {
+				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(tuNgay)) {
 					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
 					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.after(tuNgayTK));
 				}

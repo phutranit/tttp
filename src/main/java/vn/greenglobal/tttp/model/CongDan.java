@@ -38,6 +38,8 @@ public class CongDan extends Model<CongDan> {
 	@Size(max=255)
 	private String diaChi = "";
 	@Size(max=255)
+	private String diaChiSearch = "";
+	@Size(max=255)
 	private String toThon = "";
 
 	private LocalDateTime ngaySinh;
@@ -132,6 +134,14 @@ public class CongDan extends Model<CongDan> {
 
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
+	}
+
+	public String getDiaChiSearch() {
+		return diaChiSearch;
+	}
+
+	public void setDiaChiSearch(String diaChiSearch) {
+		this.diaChiSearch = diaChiSearch;
 	}
 
 	public String getToThon() {

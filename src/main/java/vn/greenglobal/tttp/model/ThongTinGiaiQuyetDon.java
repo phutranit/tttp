@@ -1189,17 +1189,5 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 		}
 		return null;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getMaHoSo() {
-		return don.getMaHoSo();
-	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public String getMaDon() {
-		return don.getMa();
-	}
 
 }
