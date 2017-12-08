@@ -775,9 +775,9 @@ public class XuLyDonController extends TttpController<XuLyDon> {
 									ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.getText(), ApiErrorEnum.BANTIEPCONGDAN_NOT_FOUND.getText());
 						}
 						
-						if (Long.valueOf(thamSoUBNDTP.getGiaTri()) == donViId) {
-							xuLyDon.setCanBoXuLyChiDinh(null);
-						}
+//						if (Long.valueOf(thamSoUBNDTP.getGiaTri()) == donViId) {
+//							xuLyDon.setCanBoXuLyChiDinh(null);
+//						}
 						XuLyDon xuLyDonTiepTheo = new XuLyDon();
 						xuLyDonTiepTheo = trinhTruongPhong(xuLyDon, xuLyDonHienTai, donViId, congChucId, banTiepCongDan, vaiTroNguoiDungHienTai);
 						return xuLyDonService.doSave(xuLyDonTiepTheo, congChucId, eass, HttpStatus.CREATED);
