@@ -56,6 +56,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setNgayBanHanhVanBanDaGiaiQuyet(don.getNgayBanHanhVanBanDaGiaiQuyet());
 		setNgayTiepNhanDon(don.getNgayTiepNhan());
 		setTrangThaiDon(don.getTrangThaiXLDGiaiQuyet() != null ? don.getTrangThaiXLDGiaiQuyet().getText() : "");
+		setTrangThaiDonType(don.getTrangThaiXLDGiaiQuyet() != null ? don.getTrangThaiXLDGiaiQuyet().name() : "");
 		setLoaiDoiTuong(don.getLoaiDoiTuong() != null ? don.getLoaiDoiTuong().getText() : "");
 		setKetQuaDon(don.getKetQuaXLDGiaiQuyet() != null ? don.getKetQuaXLDGiaiQuyet().getText() : "");
 		setLinhVucDonThu(don.getLinhVucDonThu() != null ? don.getLinhVucDonThu().getTen() : "");
@@ -130,6 +131,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 	private String maHoSo = "";
 	private String nguonDon = "";
 	private String trangThaiDon = "";
+	private String trangThaiDonType = "";
 	private String loaiDoiTuong = "";
 	private String ketQuaDon = "";
 	private String tenDonViGiuDenHienTai = "";
@@ -328,6 +330,14 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 
 	public void setTrangThaiDon(String trangThaiDon) {
 		this.trangThaiDon = trangThaiDon;
+	}
+
+	public String getTrangThaiDonType() {
+		return trangThaiDonType;
+	}
+
+	public void setTrangThaiDonType(String trangThaiDonType) {
+		this.trangThaiDonType = trangThaiDonType;
 	}
 
 	public String getKetQuaDon() {
