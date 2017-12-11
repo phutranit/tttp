@@ -125,14 +125,14 @@ public class DonService {
 		return null;
 	}
 	
-	public Predicate predFindByMaDonCongChuc(String maDon, Long congChucId) {
+	public Predicate predFindByMaHoSoCongChuc(String maHoSo, Long congChucId) {
 		BooleanExpression predAll = base;
 
-		if (maDon == null && !StringUtils.isNotBlank(maDon)) {
+		if (maHoSo == null && !StringUtils.isNotBlank(maHoSo)) {
 			return null;
 		}
 
-		predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+		predAll = predAll.and(QDon.don.maHoSo.eq(maHoSo.trim()));
 
 		if (congChucId != null && congChucId.longValue() > 0) {
 			predAll = predAll.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(congChucId)
