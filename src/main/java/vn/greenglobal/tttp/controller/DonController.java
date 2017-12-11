@@ -58,6 +58,9 @@ import vn.greenglobal.tttp.model.CongChuc;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.Don_CongDan;
 import vn.greenglobal.tttp.model.GiaiQuyetDon;
+import vn.greenglobal.tttp.model.LichSuCanBoKTDX;
+import vn.greenglobal.tttp.model.LichSuCanBoTTXM;
+import vn.greenglobal.tttp.model.LichSuCanBoXuLy;
 import vn.greenglobal.tttp.model.LichSuQuaTrinhXuLy;
 import vn.greenglobal.tttp.model.LichSuThayDoi;
 import vn.greenglobal.tttp.model.NguoiDung;
@@ -65,6 +68,9 @@ import vn.greenglobal.tttp.model.Process;
 import vn.greenglobal.tttp.model.PropertyChangeObject;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QGiaiQuyetDon;
+import vn.greenglobal.tttp.model.QLichSuCanBoKTDX;
+import vn.greenglobal.tttp.model.QLichSuCanBoTTXM;
+import vn.greenglobal.tttp.model.QLichSuCanBoXuLy;
 import vn.greenglobal.tttp.model.QXuLyDon;
 import vn.greenglobal.tttp.model.State;
 import vn.greenglobal.tttp.model.ThamSo;
@@ -78,6 +84,9 @@ import vn.greenglobal.tttp.repository.CongChucRepository;
 import vn.greenglobal.tttp.repository.DonCongDanRepository;
 import vn.greenglobal.tttp.repository.DonRepository;
 import vn.greenglobal.tttp.repository.GiaiQuyetDonRepository;
+import vn.greenglobal.tttp.repository.LichSuCanBoKTDXRepository;
+import vn.greenglobal.tttp.repository.LichSuCanBoTTXMRepository;
+import vn.greenglobal.tttp.repository.LichSuCanBoXuLyRepository;
 import vn.greenglobal.tttp.repository.LichSuQuaTrinhXuLyRepository;
 import vn.greenglobal.tttp.repository.LichSuThayDoiRepository;
 import vn.greenglobal.tttp.repository.ProcessRepository;
@@ -90,6 +99,9 @@ import vn.greenglobal.tttp.service.CongChucService;
 import vn.greenglobal.tttp.service.DonCongDanService;
 import vn.greenglobal.tttp.service.DonService;
 import vn.greenglobal.tttp.service.GiaiQuyetDonService;
+import vn.greenglobal.tttp.service.LichSuCanBoKTDXService;
+import vn.greenglobal.tttp.service.LichSuCanBoTTXMService;
+import vn.greenglobal.tttp.service.LichSuCanBoXuLyService;
 import vn.greenglobal.tttp.service.LichSuQuaTrinhXuLyService;
 import vn.greenglobal.tttp.service.LichSuThayDoiService;
 import vn.greenglobal.tttp.service.ProcessService;
@@ -195,6 +207,24 @@ public class DonController extends TttpController<Don> {
 	
 	@Autowired
 	private ThongTinGiaiQuyetDonService thongTinGiaiQuyetDonService;
+	
+	@Autowired
+	private LichSuCanBoXuLyRepository lichSuCanBoXuLyRepository;
+	
+	@Autowired
+	private LichSuCanBoXuLyService lichSuCanBoXuLyService;
+	
+	@Autowired
+	private LichSuCanBoTTXMRepository lichSuCanBoTTXMRepository;
+	
+	@Autowired
+	private LichSuCanBoTTXMService lichSuCanBoTTXMService;
+	
+	@Autowired
+	private LichSuCanBoKTDXRepository lichSuCanBoKTDXRepository;
+	
+	@Autowired
+	private LichSuCanBoKTDXService lichSuCanBoKTDXService;
 	
 	public DonController(BaseRepository<Don, Long> repo) {
 		super(repo);
@@ -558,14 +588,14 @@ public class DonController extends TttpController<Don> {
 	@RequestMapping(method = RequestMethod.GET, value = "/timKiemDanhSachCanBoDangXuLys/canBo")
 	@ApiOperation(value = "Lấy danh sách Cán bộ đang xử", position = 1, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody Object getTimKiemDanhSachCanBoDangXuLy(@RequestHeader(value = "Authorization", required = true) String authorization,
-			Pageable pageable, @RequestParam(value = "maDon", required = false) String maDon,
+			Pageable pageable, @RequestParam(value = "maHoSo", required = false) String maHoSo,
 			@RequestParam(value = "hoTen", required = false) String hoTen,
 			PersistentEntityResourceAssembler eass) {
 
 		try {
-			if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) { 
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MADON_REQUIRED.name(),
-						ApiErrorEnum.MADON_REQUIRED.getText(), ApiErrorEnum.MADON_REQUIRED.getText());
+			if (maHoSo == null || (maHoSo != null && !StringUtils.isNotBlank(maHoSo))) { 
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MAHOSO_REQUIRED.name(),
+						ApiErrorEnum.MAHOSO_REQUIRED.getText(), ApiErrorEnum.MAHOSO_REQUIRED.getText());
 			}
 			
 			if (hoTen == null || (hoTen != null && !StringUtils.isNotBlank(hoTen))) { 
@@ -575,15 +605,15 @@ public class DonController extends TttpController<Don> {
 			
 			NguoiDung nguoiDung = Utils.quyenValidate(profileUtil, authorization, QuyenEnum.XULYDON_LIETKE);
 			if (nguoiDung != null) {
-				List<Long> listDonId = new ArrayList<Long>();
-				List<Don> listDon = new ArrayList<Don>();
-				List<CongChuc> congChucs = new ArrayList<CongChuc>();
 				List<Don> dons = new ArrayList<Don>();
+				List<Don> listDon = new ArrayList<Don>();
+				List<Long> listDonId = new ArrayList<Long>();
+				List<CongChuc> congChucs = new ArrayList<CongChuc>();
 				List<XuLyDon> listXuLyDon = new ArrayList<XuLyDon>();
 				List<CongChuc> listCongChuc = new ArrayList<CongChuc>();
 				List<GiaiQuyetDon> listGiaiQuyetDon = new ArrayList<GiaiQuyetDon>();
 				List<ThongTinGiaiQuyetDon> listThongTinGiaiQuyetDon = new ArrayList<ThongTinGiaiQuyetDon>();
-				listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, null)));
+				listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaHoSoCongChuc(maHoSo, null)));
 				listCongChuc.addAll((List<CongChuc>) congChucRepo.findAll(congChucService.predicateFindByTen(hoTen)));
 				listDonId.addAll(listDon.stream().map(d -> d.getId()).collect(Collectors.toList()));
 				
@@ -591,7 +621,7 @@ public class DonController extends TttpController<Don> {
 					listXuLyDon.addAll((List<XuLyDon>) xuLyRepo.findAll(xuLyDonService.predFindXLDByDonCongChuc(xuLyRepo, listDonId, congChuc.getId())));
 					listGiaiQuyetDon.addAll((List<GiaiQuyetDon>) giaiQuyetDonRepo.findAll(giaiQuyetDonService.predFindQGDByDonCongChuc(listDonId, congChuc.getId())));
 					listThongTinGiaiQuyetDon.addAll((List<ThongTinGiaiQuyetDon>) thongTinGiaiQuyetDonRepository.findAll(thongTinGiaiQuyetDonService.predicateFindByDonCongChuc(listDonId, congChuc.getId())));
-					dons.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, congChuc.getId())));
+					dons.addAll((List<Don>) repo.findAll(donService.predFindByMaHoSoCongChuc(maHoSo, congChuc.getId())));
 					if (listXuLyDon.size() > 0 || listGiaiQuyetDon.size() > 0 || listThongTinGiaiQuyetDon.size() > 0 ||
 							dons.size() > 0) {
 						congChucs.add(congChuc);
@@ -616,7 +646,7 @@ public class DonController extends TttpController<Don> {
 	@ApiOperation(value = "Cập nhật thay đổi cán bộ đang xử lý Đơn", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Object> capNhatThayDoiCanBoDangXuLy(
 			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "maDon", required = true) String maDon,
+			@RequestParam(value = "maHoSo", required = true) String maHoSo,
 			@PathVariable("canBoXuLyThayTheId") Long canBoXuLyThayTheId,
 			@RequestParam(value = "canBoDangXuLyId", required = true) Long canBoXuLyId,
 			PersistentEntityResourceAssembler eass) {
@@ -627,9 +657,9 @@ public class DonController extends TttpController<Don> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			if (maDon == null || (maDon != null && !StringUtils.isNotBlank(maDon))) {
-				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MADON_REQUIRED.name(),
-						ApiErrorEnum.MADON_REQUIRED.getText(), ApiErrorEnum.MADON_REQUIRED.getText());
+			if (maHoSo == null || (maHoSo != null && !StringUtils.isNotBlank(maHoSo))) {
+				return Utils.responseErrors(HttpStatus.BAD_REQUEST, ApiErrorEnum.MAHOSO_REQUIRED.name(),
+						ApiErrorEnum.MAHOSO_REQUIRED.getText(), ApiErrorEnum.MAHOSO_REQUIRED.getText());
 			}
 
 			if (canBoXuLyId == null || (canBoXuLyId != null && !(canBoXuLyId.longValue() > 0))) {
@@ -656,9 +686,9 @@ public class DonController extends TttpController<Don> {
 			}
 
 			List<Don> listDon = new ArrayList<Don>();
-			listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, null)));
+			listDon.addAll((List<Don>) repo.findAll(donService.predFindByMaHoSoCongChuc(maHoSo, null)));
 			List<Don> dons = new ArrayList<Don>();
-			dons.addAll((List<Don>) repo.findAll(donService.predFindByMaDonCongChuc(maDon, congChucDangXuLy.getId())));
+			dons.addAll((List<Don>) repo.findAll(donService.predFindByMaHoSoCongChuc(maHoSo, congChucDangXuLy.getId())));
 			if (dons.size() > 0) {
 				List<Long> donIds = new ArrayList<Long>();
 				donIds.addAll(listDon.stream().map(d -> d.getId()).collect(Collectors.toList()));
@@ -671,6 +701,12 @@ public class DonController extends TttpController<Don> {
 					updateCanBoXuLyCuaXuLyDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(), congChucId);
 					updateCanBoXuLyCuaGiaiQuyetDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
 							congChucId);
+					updateCanBoXuLyCuaLichSuCanBoXuLyDon(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
+							congChucId);
+					updateCanBoXuLyCuaLichSuCanBoTTXM(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
+							congChucId);
+					updateCanBoXuLyCuaLichSuCanBoKTDX(donId, congChucDangXuLy.getId(), congChucThayThe.getId(),
+							congChucId);
 				}
 			}
 
@@ -680,6 +716,60 @@ public class DonController extends TttpController<Don> {
 		}
 	}
 	
+	private void updateCanBoXuLyCuaLichSuCanBoKTDX(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		BooleanExpression base = QLichSuCanBoKTDX.lichSuCanBoKTDX.daXoa.eq(false);
+		BooleanExpression where = base.and(QLichSuCanBoKTDX.lichSuCanBoKTDX.don.id.eq(donId));
+		
+		if (lichSuCanBoKTDXRepository.exists(where)) {
+			if (lichSuCanBoKTDXRepository
+					.exists(where.and(QLichSuCanBoKTDX.lichSuCanBoKTDX.canBoXuLy.id.eq(canBoXuLyId)))) {
+				List<LichSuCanBoKTDX> results = new ArrayList<LichSuCanBoKTDX>();
+				results.addAll((List<LichSuCanBoKTDX>) lichSuCanBoKTDXRepository
+						.findAll(where.and(QLichSuCanBoKTDX.lichSuCanBoKTDX.canBoXuLy.id.eq(canBoXuLyId))));
+				for (LichSuCanBoKTDX result : results) {
+					result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+					lichSuCanBoKTDXService.save(result, congChucId);
+				}
+			}
+		}
+	}
+
+	private void updateCanBoXuLyCuaLichSuCanBoTTXM(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		BooleanExpression base = QLichSuCanBoTTXM.lichSuCanBoTTXM.daXoa.eq(false);
+		BooleanExpression where = base.and(QLichSuCanBoTTXM.lichSuCanBoTTXM.don.id.eq(donId));
+		
+		if (lichSuCanBoTTXMRepository.exists(where)) {
+			if (lichSuCanBoTTXMRepository
+					.exists(where.and(QLichSuCanBoTTXM.lichSuCanBoTTXM.canBoXuLy.id.eq(canBoXuLyId)))) {
+				List<LichSuCanBoTTXM> results = new ArrayList<LichSuCanBoTTXM>();
+				results.addAll((List<LichSuCanBoTTXM>) lichSuCanBoTTXMRepository
+						.findAll(where.and(QLichSuCanBoTTXM.lichSuCanBoTTXM.canBoXuLy.id.eq(canBoXuLyId))));
+				for (LichSuCanBoTTXM result : results) {
+					result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+					lichSuCanBoTTXMService.save(result, congChucId);
+				}
+			}
+		}
+	}
+
+	private void updateCanBoXuLyCuaLichSuCanBoXuLyDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
+		BooleanExpression base = QLichSuCanBoXuLy.lichSuCanBoXuLy.daXoa.eq(false);
+		BooleanExpression where = base.and(QLichSuCanBoXuLy.lichSuCanBoXuLy.don.id.eq(donId));
+		
+		if (lichSuCanBoXuLyRepository.exists(where)) {
+			if (lichSuCanBoXuLyRepository
+					.exists(where.and(QLichSuCanBoXuLy.lichSuCanBoXuLy.canBoXuLy.id.eq(canBoXuLyId)))) {
+				List<LichSuCanBoXuLy> results = new ArrayList<LichSuCanBoXuLy>();
+				results.addAll((List<LichSuCanBoXuLy>) lichSuCanBoXuLyRepository
+						.findAll(where.and(QLichSuCanBoXuLy.lichSuCanBoXuLy.canBoXuLy.id.eq(canBoXuLyId))));
+				for (LichSuCanBoXuLy result : results) {
+					result.setCanBoXuLy(congChucRepo.findOne(canBoXuLyThayTheId));
+					lichSuCanBoXuLyService.save(result, congChucId);
+				}
+			}
+		}
+	}
+
 	public void updateCanBoXuLyCuaDon(Long donId, Long canBoXuLyId, Long canBoXuLyThayTheId, Long congChucId) {
 		Don don = donService.predFindDonByCanBoXuLy(repo, donId, canBoXuLyId, canBoXuLyThayTheId);
 		if (don != null) {

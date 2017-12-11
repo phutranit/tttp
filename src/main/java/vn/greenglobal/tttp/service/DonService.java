@@ -125,14 +125,14 @@ public class DonService {
 		return null;
 	}
 	
-	public Predicate predFindByMaDonCongChuc(String maDon, Long congChucId) {
+	public Predicate predFindByMaHoSoCongChuc(String maHoSo, Long congChucId) {
 		BooleanExpression predAll = base;
 
-		if (maDon == null && !StringUtils.isNotBlank(maDon)) {
+		if (maHoSo == null && !StringUtils.isNotBlank(maHoSo)) {
 			return null;
 		}
 
-		predAll = predAll.and(QDon.don.ma.eq(maDon.trim()));
+		predAll = predAll.and(QDon.don.maHoSo.eq(maHoSo.trim()));
 
 		if (congChucId != null && congChucId.longValue() > 0) {
 			predAll = predAll.and(QDon.don.canBoXuLyPhanHeXLD.id.eq(congChucId)
@@ -564,13 +564,26 @@ public class DonService {
 						&& StringUtils.isNotBlank(denNgay.trim())) {
 					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
 					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
-					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.between(tuNgayTK, denNgayTK));
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.between(tuNgayTK, denNgayTK));
 				} else if (StringUtils.isBlank(denNgay) && StringUtils.isNotBlank(denNgay)) {
 					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
-					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.before(denNgayTK));
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.before(denNgayTK));
 				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(tuNgay)) {
 					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
-					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.after(tuNgayTK));
+					predAll = predAll.and(QDon.don.ngayThucHienKetQuaXuLy.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.after(tuNgayTK));
+				}
+			} else {
+				if (tuNgay != null && denNgay != null && StringUtils.isNotBlank(tuNgay.trim())
+						&& StringUtils.isNotBlank(denNgay.trim())) {
+					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
+					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.between(tuNgayTK, denNgayTK));
+				} else if (StringUtils.isBlank(denNgay) && StringUtils.isNotBlank(denNgay)) {
+					LocalDateTime denNgayTK = Utils.fixDenNgay(denNgay);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.before(denNgayTK));
+				} else if (StringUtils.isNotBlank(tuNgay) && StringUtils.isBlank(tuNgay)) {
+					LocalDateTime tuNgayTK = Utils.fixTuNgay(tuNgay);
+					predAll = predAll.and(QDon.don.ngayTiepNhan.isNotNull()).and(QDon.don.ngayThucHienKetQuaXuLy.after(tuNgayTK));
 				}
 			}
 		}
