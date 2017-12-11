@@ -33,6 +33,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDoiTuongViPhamEnum;
 import vn.greenglobal.tttp.model.DoiTuongViPham;
 import vn.greenglobal.tttp.model.medial.Medial_DoiTuongViPham;
 import vn.greenglobal.tttp.model.medial.Medial_DoiTuongViPham_Delete;
@@ -90,6 +91,9 @@ public class DoiTuongViPhamController extends TttpController<DoiTuongViPham> {
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getDoiTuongViPhams().size() > 0) {
 							for (DoiTuongViPham doiTuongViPham : params.getDoiTuongViPhams()) {
+								if (doiTuongViPham.getTrangThaiDoiTuongViPham() == null) {
+									doiTuongViPham.setTrangThaiDoiTuongViPham(TrangThaiDoiTuongViPhamEnum.DANG_SOAN);
+								}
 								checkDataDoiTuongViPham(doiTuongViPham);
 								DoiTuongViPham dtvp = doiTuongViPhamService.save(doiTuongViPham, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDoiTuongViPhams().add(dtvp);

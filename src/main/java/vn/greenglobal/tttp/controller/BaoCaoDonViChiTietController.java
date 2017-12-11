@@ -46,7 +46,7 @@ public class BaoCaoDonViChiTietController extends TttpController<BaoCaoDonViChiT
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis/{id}/chiTiets")
-	@ApiOperation(value = "Lấy danh sách báo cáo đơn vị chi tiết", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Lấy danh sách các loại biểu mẫu của báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			Pageable pageable, @PathVariable("id") long id,
 			PersistentEntityResourceAssembler eass) {
@@ -67,11 +67,11 @@ public class BaoCaoDonViChiTietController extends TttpController<BaoCaoDonViChiT
 	}
 
 
-	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonVis/{id}/chiTiets/{idChiTiet}")
-	@ApiOperation(value = "Lấy Báo cáo đơn vị chi tiết theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Báo cáo đơn vị thành công", response = BaoCaoDonViChiTiet.class) })
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonViChiTiets/{id}")
+	@ApiOperation(value = "Lấy biểu mẫu của báo cáo theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy biểu mẫu của báo cáo thành công", response = BaoCaoDonViChiTiet.class) })
 	public ResponseEntity<Object> getById(@RequestHeader(value = "Authorization", required = true) String authorization,
-			@PathVariable("id") long id, @PathVariable("idChiTiet") long idChiTiet, PersistentEntityResourceAssembler eass) {
+			@PathVariable("id") long idChiTiet, PersistentEntityResourceAssembler eass) {
 
 		try {
 			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.BAOCAODONVI_LIETKE) == null) {
@@ -79,11 +79,31 @@ public class BaoCaoDonViChiTietController extends TttpController<BaoCaoDonViChiT
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
-			BaoCaoDonViChiTiet baoCaoDonViChiTiet = repo.findOne(baoCaoDonViChiTietService.predicateFindOne(id));
+			BaoCaoDonViChiTiet baoCaoDonViChiTiet = repo.findOne(baoCaoDonViChiTietService.predicateFindOne(idChiTiet));
 			if (baoCaoDonViChiTiet == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<>(eass.toFullResource(baoCaoDonViChiTiet), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonViChiTiets/{id}/chiTiets")
+	@ApiOperation(value = "Lấy danh sách các loại biểu mẫu của báo cáo", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getListBaoCaoCuaBieuMau(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @PathVariable("id") long id,
+			PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.tokenValidate(profileUtil, authorization) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}		
+			
+			Page<BaoCaoDonViChiTiet> page = repo.findAll(baoCaoDonViChiTietService.predicateFindAllBaoCaoDaChot(id), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

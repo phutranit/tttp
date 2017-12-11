@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "baocaodonvichitiettam")
@@ -28,9 +28,8 @@ public class BaoCaoDonViChiTietTam extends Model<BaoCaoDonViChiTietTam> {
 	private String soLieuBaoCao = "";
 	@ManyToOne
 	private BaoCaoDonViChiTiet baoCaoDonViChiTiet;
-	@Enumerated(EnumType.STRING)
-	private LoaiBaoCaoTongHopEnum loaiBaoCao;
 	
+	@JsonIgnore
 	public String getSoLieuBaoCao() {
 		return soLieuBaoCao;
 	}
@@ -46,19 +45,35 @@ public class BaoCaoDonViChiTietTam extends Model<BaoCaoDonViChiTietTam> {
 	public void setBaoCaoDonViChiTiet(BaoCaoDonViChiTiet baoCaoDonViChiTiet) {
 		this.baoCaoDonViChiTiet = baoCaoDonViChiTiet;
 	}
-
-	public LoaiBaoCaoTongHopEnum getLoaiBaoCao() {
-		return loaiBaoCao;
-	}
-
-	public void setLoaiBaoCao(LoaiBaoCaoTongHopEnum loaiBaoCao) {
-		this.loaiBaoCao = loaiBaoCao;
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public Map<String, Object> getBaoCaoDonViChiTietInfo() {
+		if (getBaoCaoDonViChiTiet() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("baoCaoDonViChiTietId", getBaoCaoDonViChiTiet().getId());
+			map.put("chaId", getBaoCaoDonViChiTiet().getCha().getId());
+			map.put("trangThaiBaoCao", getBaoCaoDonViChiTiet().getTrangThaiBaoCao().name());
+			map.put("loaiBaoCao", getBaoCaoDonViChiTiet().getLoaiBaoCao().name());
+			map.put("tuThem", getBaoCaoDonViChiTiet().isTuThem()	);
+			return map;
+		}
+		return null;
 	}
 
 	@Transient
 	@ApiModelProperty(hidden = true)
 	public Long getBaoCaoDonViChiTietTamId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true) 
+	public Object getSoLieuBaoCaoInfo() {
+		if (getSoLieuBaoCao() != null && !getSoLieuBaoCao().isEmpty()) {
+			return Utils.getSoLieuBaoCaoByJson(getBaoCaoDonViChiTiet().getLoaiBaoCao(), getSoLieuBaoCao());
+		}
+		return null;
 	}
 	
 	@Transient

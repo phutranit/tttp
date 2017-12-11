@@ -214,6 +214,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 								DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 								dttt.setId(ctt.getDoiTuongThanhTraId());
 								cttSave.setDoiTuongThanhTra(dttt);
+								cttSave.setNamThanhTra(khtt.getNamThanhTra());
 								if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 									CoQuanQuanLy dvct = new CoQuanQuanLy();
 									dvct.setId(ctt.getDonViChuTriId());
@@ -300,7 +301,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 						}
 						if (params.getCuocThanhTras() != null && params.getCuocThanhTras().size() > 0) {
 							for (Medial_KeHoachThanhTra_CuocThanhTra_Post_Patch ctt : params.getCuocThanhTras()) {
-								if (ctt != null && ctt.getId() > 0 && !cuocThanhTraService.isExists(cuocThanhTraRepository, ctt.getId())) {
+								if (ctt != null && ctt.getId() != null && ctt.getId() > 0 && !cuocThanhTraService.isExists(cuocThanhTraRepository, ctt.getId())) {
 									return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 											ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText(), ApiErrorEnum.CUOCTHANHTRA_NOT_FOUND.getText());
 								}
@@ -346,6 +347,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 										DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 										dttt.setId(ctt.getDoiTuongThanhTraId());
 										cuocThanhTraOld.setDoiTuongThanhTra(dttt);
+										cuocThanhTraOld.setNamThanhTra(khtt.getNamThanhTra());
 										if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 											CoQuanQuanLy dvct = new CoQuanQuanLy();
 											dvct.setId(ctt.getDonViChuTriId());
@@ -365,6 +367,7 @@ public class KeHoachThanhTraController extends TttpController<KeHoachThanhTra> {
 									DoiTuongThanhTra dttt = new DoiTuongThanhTra();
 									dttt.setId(ctt.getDoiTuongThanhTraId());
 									cttSave.setDoiTuongThanhTra(dttt);
+									cttSave.setNamThanhTra(khtt.getNamThanhTra());
 									if (ctt.getDonViChuTriId() != null && ctt.getDonViChuTriId() > 0) {
 										CoQuanQuanLy dvct = new CoQuanQuanLy();
 										dvct.setId(ctt.getDonViChuTriId());

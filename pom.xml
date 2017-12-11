@@ -143,6 +143,13 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/spring-data-rest-webcommon.jar</systemPath>
 		</dependency>
 		<dependency>
+			<groupId>dtt.services</groupId>
+			<artifactId>share-service</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/sharedservice-client-v1.6-20150205.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -158,6 +165,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+       <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-cas</artifactId>
         </dependency>
 		<dependency>
 			<groupId>com.github.vineey</groupId>
@@ -178,16 +189,16 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-hal-browser</artifactId>
 		</dependency>
@@ -198,7 +209,7 @@
 		<dependency>
 			<groupId>org.springframework.mobile</groupId>
 			<artifactId>spring-mobile-device</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
@@ -234,6 +245,11 @@
 		<dependency>
 			<groupId>org.pac4j</groupId>
 			<artifactId>pac4j-jwt</artifactId>
+			<version>${pac4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-cas</artifactId>
 			<version>${pac4j.version}</version>
 		</dependency>
 		<dependency>

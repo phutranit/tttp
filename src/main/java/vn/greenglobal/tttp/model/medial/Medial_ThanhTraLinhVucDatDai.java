@@ -11,16 +11,12 @@ import javax.persistence.Transient;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.Model;
+import vn.greenglobal.tttp.model.ModelThongKe;
 
 @Entity
 @Table(name = "medial_thanhtralinhvucdatdai")
-public class Medial_ThanhTraLinhVucDatDai extends Model<Medial_ThanhTraLinhVucDatDai> {
+public class Medial_ThanhTraLinhVucDatDai extends ModelThongKe<Medial_ThanhTraLinhVucDatDai> {
 
-	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	private CoQuanQuanLy donVi;
-	
 	private int soThuTu;
 	
 	private Long tongSoCuocThanhTra;
@@ -64,15 +60,8 @@ public class Medial_ThanhTraLinhVucDatDai extends Model<Medial_ThanhTraLinhVucDa
 	private Long daKhoiToVu;
 	private Long daKhoiToDoiTuong;
 	
+	private String tenDonVi = "";
 	private String ghiChu = "";
-
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
-	}
-
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
-	}
 	
 	public int getSoThuTu() {
 		return soThuTu;
@@ -409,22 +398,12 @@ public class Medial_ThanhTraLinhVucDatDai extends Model<Medial_ThanhTraLinhVucDa
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getDonViInfo() {
-		if (getDonVi() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getDonVi().getId());
-			map.put("ten", getDonVi().getTen());
-			return map;
-		}
-		return null;
+
+	public String getTenDonVi() {
+		return tenDonVi;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getThanhTraLinhVucDatDaiId() {
-		return getId();
+
+	public void setTenDonVi(String tenDonVi) {
+		this.tenDonVi = tenDonVi;
 	}
 }

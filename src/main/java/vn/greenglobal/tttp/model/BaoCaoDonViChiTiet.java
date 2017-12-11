@@ -1,21 +1,35 @@
 package vn.greenglobal.tttp.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.TrangThaiBaoCaoDonViEnum;
+import vn.greenglobal.tttp.util.Utils;
 
 @Entity
 @Table(name = "baocaodonvichitiet")
@@ -27,28 +41,37 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	 */
 	private static final long serialVersionUID = 2740249455927215380L;
 	
-	private LocalDate ngayNop;
+	private LocalDateTime ngayNop;
 	@Size(max=4000)
 	private String soLieuBaoCao = "";
 	@ManyToOne
 	private BaoCaoDonVi baoCaoDonVi;
-	@ManyToOne
+	@ManyToOne	
 	private BaoCaoDonViChiTiet cha;
+	@ManyToOne
+	private CoQuanQuanLy donVi;
 	@Enumerated(EnumType.STRING)
 	private TrangThaiBaoCaoDonViEnum trangThaiBaoCao;
 	@Enumerated(EnumType.STRING)
 	private LoaiBaoCaoTongHopEnum loaiBaoCao;
 	private boolean heThongTao;
 	private boolean tuThem;
+	@ManyToMany(fetch = FetchType.EAGER)// 
+	@JoinTable(name = "baocaodonvichitiet_donvicon", joinColumns = {
+			@JoinColumn(name = "baoCaoDonViChiTiet_id") }, inverseJoinColumns = { @JoinColumn(name = "coQuanQuanLy_id") })
+	@Fetch(value = FetchMode.SELECT)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private List<CoQuanQuanLy> donViCons = new ArrayList<CoQuanQuanLy>();
 	
-	public LocalDate getNgayNop() {
+	public LocalDateTime getNgayNop() {
 		return ngayNop;
 	}
 
-	public void setNgayNop(LocalDate ngayNop) {
+	public void setNgayNop(LocalDateTime ngayNop) {
 		this.ngayNop = ngayNop;
 	}
 
+	@JsonIgnore
 	public String getSoLieuBaoCao() {
 		return soLieuBaoCao;
 	}
@@ -71,6 +94,14 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 
 	public void setCha(BaoCaoDonViChiTiet cha) {
 		this.cha = cha;
+	}	
+
+	public List<CoQuanQuanLy> getDonViCons() {
+		return donViCons;
+	}
+
+	public void setDonViCons(List<CoQuanQuanLy> donViCons) {
+		this.donViCons = donViCons;
 	}
 
 	public TrangThaiBaoCaoDonViEnum getTrangThaiBaoCao() {
@@ -87,6 +118,14 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 
 	public void setLoaiBaoCao(LoaiBaoCaoTongHopEnum loaiBaoCao) {
 		this.loaiBaoCao = loaiBaoCao;
+	}
+	
+	public CoQuanQuanLy getDonVi() {
+		return donVi;
+	}
+
+	public void setDonVi(CoQuanQuanLy donVi) {
+		this.donVi = donVi;
 	}
 
 	public boolean isHeThongTao() {
@@ -119,6 +158,43 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	
 	@ApiModelProperty(hidden = true)
 	@Transient
+	public Map<String, Object> getDonViInfo() {
+		if (getDonVi() != null) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("ten", getDonVi().getTen());
+			map.put("donViId", getDonVi().getId());
+			return map;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public Long getChaId() {
+		if (getCha() != null) {
+			return getCha().getId();
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
+	public List<Map<String, Object>> getDonViConsInfo() {
+		if (getDonViCons() != null) {
+			List<Map<String, Object>> list = new ArrayList<>();
+			for (CoQuanQuanLy cq : getDonViCons()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("ten", cq.getTen());
+				map.put("donViId", cq.getId());
+				list.add(map);
+			}			
+			return list;
+		}
+		return null;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	@Transient
 	public Map<String, Object> getTrangThaiBaoCaoInfo() {
 		if (getTrangThaiBaoCao() != null) {
 			Map<String, Object> map = new HashMap<>();
@@ -133,6 +209,15 @@ public class BaoCaoDonViChiTiet extends Model<BaoCaoDonViChiTiet> {
 	@ApiModelProperty(hidden = true)
 	public Long getBaoCaoDonViChiTietId() {
 		return getId();
+	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true) 
+	public Object getSoLieuBaoCaoInfo() {
+		if (getSoLieuBaoCao() != null && !getSoLieuBaoCao().isEmpty()) {
+			return Utils.getSoLieuBaoCaoByJson(getLoaiBaoCao(), getSoLieuBaoCao());
+		}
+		return null;
 	}
 	
 	@Transient

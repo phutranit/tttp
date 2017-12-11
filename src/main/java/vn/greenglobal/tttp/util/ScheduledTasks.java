@@ -17,6 +17,7 @@ import vn.greenglobal.tttp.model.BaoCaoTongHopChiTiet;
 import vn.greenglobal.tttp.model.CauHinhBaoCao;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCauHinhBaoCao;
+import vn.greenglobal.tttp.model.medial.Medial_ThanhTraHanhChinh;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
 import vn.greenglobal.tttp.repository.BaoCaoDonViRepository;
@@ -48,10 +49,20 @@ public class ScheduledTasks {
 	
 	@Autowired
 	CauHinhBaoCaoService cauHinhBaoCaoService;
+	
+	@Scheduled(cron = "0 02 11 * * *")
+	public void test() throws Exception {	
+		Medial_ThanhTraHanhChinh medial = new Medial_ThanhTraHanhChinh();
+		medial.setTenDonVi("abc");
+		String jsonString = Utils.object2Json(medial);
+		System.out.println("====jsonString: " + jsonString);
+		
+		Medial_ThanhTraHanhChinh obj = Utils.json2Object(Medial_ThanhTraHanhChinh.class, jsonString);
+		System.out.println("TenDonVi: " + obj.getTenDonVi());
+	}
 
 	//second, minute, hour, day of month, month, day(s) of week
-
-	@Scheduled(cron = "0 44 11 * * *")
+	@Scheduled(cron = "0 41 11 * * *")
 	public void updateHinhThucXuLyQuanLy() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
 				.and(QCauHinhBaoCao.cauHinhBaoCao.daTuDongGui.eq(false))
@@ -95,6 +106,7 @@ public class ScheduledTasks {
 					BaoCaoDonViChiTiet baoCaoDonViChiTietTongHop = new BaoCaoDonViChiTiet();
 					baoCaoDonViChiTietTongHop.setBaoCaoDonVi(baoCaoDonVi);
 					baoCaoDonViChiTietTongHop.setLoaiBaoCao(loaiBaoCao);
+					baoCaoDonViChiTietTongHop.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(loaiBaoCao, "Tổng"));
 					baoCaoDonViChiTietTongHop.setTrangThaiBaoCao(TrangThaiBaoCaoDonViEnum.DANG_SOAN);
 					baoCaoDonViChiTietTongHop = Utils.save(baoCaoDonViChiTietRepo, baoCaoDonViChiTietTongHop, nguoiTaoId);
 					
@@ -102,20 +114,19 @@ public class ScheduledTasks {
 					BaoCaoDonViChiTiet baoCaoDonViChiTiet = new BaoCaoDonViChiTiet();
 					baoCaoDonViChiTiet.setBaoCaoDonVi(baoCaoDonVi);
 					baoCaoDonViChiTiet.setLoaiBaoCao(loaiBaoCao);
+					baoCaoDonViChiTiet.setDonVi(coQuan);
 					baoCaoDonViChiTiet.setCha(baoCaoDonViChiTietTongHop);
 					baoCaoDonViChiTiet.setTrangThaiBaoCao(TrangThaiBaoCaoDonViEnum.DANG_SOAN);
+					baoCaoDonViChiTiet.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(loaiBaoCao, coQuan.getTen()));
 					baoCaoDonViChiTiet = Utils.save(baoCaoDonViChiTietRepo, baoCaoDonViChiTiet, nguoiTaoId);
 					
 					//Tao bao cao don vi chi tiet tam
 					BaoCaoDonViChiTietTam baoCaoDonViChiTietTam = new BaoCaoDonViChiTietTam();
 					baoCaoDonViChiTietTam.setBaoCaoDonViChiTiet(baoCaoDonViChiTiet);
-					baoCaoDonViChiTietTam.setLoaiBaoCao(loaiBaoCao);
-					Utils.save(baoCaoDonViChiTietTamRepo, baoCaoDonViChiTietTam, nguoiTaoId);
-					
+					baoCaoDonViChiTietTam.setSoLieuBaoCao(baoCaoDonViChiTiet.getSoLieuBaoCao());
+					Utils.save(baoCaoDonViChiTietTamRepo, baoCaoDonViChiTietTam, nguoiTaoId);					
 				}
-			}
-			
-			
+			}			
 			cauHinh.setDaTuDongGui(true);
 			Utils.save(cauHinhBaoCaoRepository, cauHinh, nguoiTaoId);
 		}

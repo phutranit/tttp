@@ -1,25 +1,12 @@
 package vn.greenglobal.tttp.model.medial;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.Model;
+import vn.greenglobal.tttp.model.ModelThongKe;
 
 @Entity
 @Table(name = "medial_ketquachuyeuvectpcthamnhung")
-public class Medial_KetQuaChuYeuVeCTPCThamNhung extends Model<Medial_KetQuaChuYeuVeCTPCThamNhung> {
-
-	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	private CoQuanQuanLy donVi;
+public class Medial_KetQuaChuYeuVeCTPCThamNhung extends ModelThongKe<Medial_KetQuaChuYeuVeCTPCThamNhung> {
 	
 	private int soThuTu;
 	
@@ -79,16 +66,8 @@ public class Medial_KetQuaChuYeuVeCTPCThamNhung extends Model<Medial_KetQuaChuYe
 	private Long thucHienCacBPPNTNSoNguoiDuocTangBangKhenCuaThuTuongChinhPhu; //56
 	private Long thucHienCacBPPNTNSoNguoiTangBangKhenCuaBoNganhDiaPhuong;
 	private Long thucHienCacBPPNTNSoNguoiTangGiayKhen;
-	
+	private String tenDonVi = "";
 	private String ghiChu = "";
-
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
-	}
-
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
-	}
 	
 	public Long getChinhSachPhapLuatSoVanBanBanHanh() {
 		return chinhSachPhapLuatSoVanBanBanHanh;
@@ -566,8 +545,6 @@ public class Medial_KetQuaChuYeuVeCTPCThamNhung extends Model<Medial_KetQuaChuYe
 		this.soThuTu = soThuTu;
 	}
 
-	
-
 	public String getGhiChu() {
 		return ghiChu;
 	}
@@ -575,22 +552,12 @@ public class Medial_KetQuaChuYeuVeCTPCThamNhung extends Model<Medial_KetQuaChuYe
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getDonViInfo() {
-		if (getDonVi() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getDonVi().getId());
-			map.put("ten", getDonVi().getTen());
-			return map;
-		}
-		return null;
+
+	public String getTenDonVi() {
+		return tenDonVi;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getKetQuaChuYeuVeCTPCThamNhungId() {
-		return getId();
+
+	public void setTenDonVi(String tenDonVi) {
+		this.tenDonVi = tenDonVi;
 	}
 }
