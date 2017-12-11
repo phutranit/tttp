@@ -73,7 +73,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 		setNgayBatDauXLD(don.getNgayBatDauXLD());
 		setThoiHanXuLyXLD(don.getThoiHanXuLyXLD());
 		setKetQuaXLDGiaiQuyet(don.getKetQuaXLDGiaiQuyet());
-		if (don.getProcessType().equals(ProcessTypeEnum.XU_LY_DON) || don.getProcessType().equals(ProcessTypeEnum.GIAI_QUYET_DON)) {
+		if (don.getProcessType() != null && (don.getProcessType().equals(ProcessTypeEnum.XU_LY_DON) || don.getProcessType().equals(ProcessTypeEnum.GIAI_QUYET_DON))) {
 			setTenDonViGiuDenHienTai(don.getDonViXuLyGiaiQuyet() != null ? don.getDonViXuLyGiaiQuyet().getTen() : "");
 			if (don.getProcessType().equals(ProcessTypeEnum.XU_LY_DON)) {
 				setHanXuLy(don.getThoiHanXuLyXLD());
@@ -93,7 +93,7 @@ public class Medial_DonTraCuu extends Model<Medial_DonTraCuu>{
 					setCanBoXuLy(don.getCanBoXuLyChiDinh() != null ? don.getCanBoXuLyChiDinh().getHoVaTen() : "");
 				}
 			}
-		} else if (don.getProcessType().equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
+		} else if (don.getProcessType() != null && don.getProcessType().equals(ProcessTypeEnum.THAM_TRA_XAC_MINH)) {
 			setTenDonViGiuDenHienTai(don.getDonViThamTraXacMinh() != null ? don.getDonViThamTraXacMinh().getTen() : "");
 			if (don.getKetQuaXLDGiaiQuyet().equals(KetQuaTrangThaiDonEnum.DANG_LAP_DU_THAO)) {
 				setHanXuLy(don.getThongTinGiaiQuyetDon().getNgayHetHanGiaoLapDuThao());
