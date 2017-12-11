@@ -62,6 +62,7 @@ public class NguoiDung extends Model<NguoiDung> {
 	private VaiTro vaiTroMacDinh;
 
 	private boolean active;
+	private boolean chuyenVienNhapLieu;
 
 	@ManyToMany
 	@JoinTable(name = "nguoidung_vaitro", joinColumns = @JoinColumn(name = "nguoidung_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vaitro_id", referencedColumnName = "id"))
@@ -79,18 +80,20 @@ public class NguoiDung extends Model<NguoiDung> {
 	public NguoiDung() {
 	}
 
-	public NguoiDung(String email, String matKhau, boolean active) {
+	public NguoiDung(String email, String matKhau, boolean active, boolean chuyenVienNhapLieu) {
 		super();
 		this.email = email;
 		this.matKhau = matKhau;
 		this.active = active;
+		this.chuyenVienNhapLieu = chuyenVienNhapLieu;
 	}
 
-	public NguoiDung(String email, String matKhau, boolean active, Set<VaiTro> vaiTros) {
+	public NguoiDung(String email, String matKhau, boolean active, boolean chuyenVienNhapLieu, Set<VaiTro> vaiTros) {
 		super();
 		this.email = email;
 		this.matKhau = matKhau;
 		this.active = active;
+		this.chuyenVienNhapLieu = chuyenVienNhapLieu;
 		this.vaiTros = vaiTros;
 	}
 
@@ -126,6 +129,14 @@ public class NguoiDung extends Model<NguoiDung> {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public boolean isChuyenVienNhapLieu() {
+		return chuyenVienNhapLieu;
+	}
+
+	public void setChuyenVienNhapLieu(boolean chuyenVienNhapLieu) {
+		this.chuyenVienNhapLieu = chuyenVienNhapLieu;
 	}
 
 	public Set<VaiTro> getVaiTros() {

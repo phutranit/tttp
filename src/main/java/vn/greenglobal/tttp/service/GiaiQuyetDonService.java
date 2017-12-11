@@ -26,10 +26,20 @@ public class GiaiQuyetDonService {
 	
 	@Autowired
 	private GiaiQuyetDonRepository giaiQuyetDonRepository;
-
+	
 	QGiaiQuyetDon giaiQuyetDon = QGiaiQuyetDon.giaiQuyetDon;
 	BooleanExpression base = giaiQuyetDon.daXoa.eq(false);
-
+	
+	public Predicate predFindQGDByDonCongChuc(List<Long> donIds, Long congChucId) {
+		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.in(donIds))
+				.and(giaiQuyetDon.old.eq(false))
+				.and(giaiQuyetDon.congChuc.id.eq(congChucId)
+						.or(giaiQuyetDon.canBoXuLyChiDinh.id.eq(congChucId))
+						.or(giaiQuyetDon.canBoGiaoViec.id.eq(congChucId))
+						);
+		return predicate;
+	}
+	
 	public GiaiQuyetDon predFindCurrent(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
 				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))

@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +33,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.TrangThaiDoiTuongViPhamEnum;
 import vn.greenglobal.tttp.model.DoiTuongViPham;
 import vn.greenglobal.tttp.model.medial.Medial_DoiTuongViPham;
 import vn.greenglobal.tttp.model.medial.Medial_DoiTuongViPham_Delete;
@@ -47,6 +56,21 @@ public class DoiTuongViPhamController extends TttpController<DoiTuongViPham> {
 	public DoiTuongViPhamController(BaseRepository<DoiTuongViPham, Long> repo) {
 		super(repo);
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(method = RequestMethod.GET, value = "/doiTuongViPhams")
+	@ApiOperation(value = "Lấy danh sách Đối Tượng Vi Phạm", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
+			Pageable pageable, @RequestParam(value = "cuocThanhTraId", required = false) Long cuocThanhTraId,
+			PersistentEntityResourceAssembler eass) {
+		try {
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "id")));
+			Page<DoiTuongViPham> page = repo.findAll(doiTuongViPhamService.predicateFindAll(cuocThanhTraId), pageable);
+			return assembler.toResource(page, (ResourceAssembler) eass);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST, value = "/doiTuongViPhams/multi")
@@ -67,6 +91,9 @@ public class DoiTuongViPhamController extends TttpController<DoiTuongViPham> {
 					public Object doInTransaction(TransactionStatus arg0) {
 						if (params.getDoiTuongViPhams().size() > 0) {
 							for (DoiTuongViPham doiTuongViPham : params.getDoiTuongViPhams()) {
+								if (doiTuongViPham.getTrangThaiDoiTuongViPham() == null) {
+									doiTuongViPham.setTrangThaiDoiTuongViPham(TrangThaiDoiTuongViPhamEnum.DANG_SOAN);
+								}
 								checkDataDoiTuongViPham(doiTuongViPham);
 								DoiTuongViPham dtvp = doiTuongViPhamService.save(doiTuongViPham, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 								result.getDoiTuongViPhams().add(dtvp);

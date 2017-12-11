@@ -3,15 +3,19 @@ package vn.greenglobal.tttp.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,6 +75,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	
 	@Autowired
 	private DoiTuongThanhTraService doiTuongThanhTraService;
+	
+	@Autowired
+	protected PagedResourcesAssembler<CoQuanQuanLy> assemblerCoQuanQuanLy;
 
 	public CuocThanhTraController(BaseRepository<CuocThanhTra, Long> repo) {
 		super(repo);
@@ -81,7 +88,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	@ApiOperation(value = "Lấy danh sách Cuộc Thanh Tra", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getList(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "namThanhTra", required = false) Integer namThanhTra,
-			@RequestParam(value = "quyetDinhPheDuyetKTTT", required = false) String quyetDinhPheDuyetKTTT,
+			@RequestParam(value = "quyetDinhPheDuyetKHTT", required = false) String quyetDinhPheDuyetKHTT,
 			@RequestParam(value = "soQuyetDinh", required = false) String soQuyetDinh,
 			@RequestParam(value = "tenDoiTuongThanhTra", required = false) String tenDoiTuongThanhTra,
 			@RequestParam(value = "loaiHinhThanhTra", required = false) String loaiHinhThanhTra,
@@ -101,8 +108,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.DESC, "ngayRaQuyetDinh")));
 			Long donViId = Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("donViId").toString());
-			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKTTT, tenDoiTuongThanhTra,
+			Page<CuocThanhTra> page = repo.findAll(cuocThanhTraService.predicateFindAll(namThanhTra, quyetDinhPheDuyetKHTT, tenDoiTuongThanhTra,
 					soQuyetDinh, loaiHinhThanhTra, linhVucThanhTra, tienDoThanhTra, tuNgay, denNgay, donViId, soKetLuanThanhTra, soQuyetDinhXL), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -157,7 +165,6 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			Pageable pageable, PersistentEntityResourceAssembler eass) {
 
 		try {
-			
 			if (Utils.tokenValidate(profileUtil, authorization) == null) {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
@@ -168,7 +175,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			HashSet<String> cuocThanhTraIdVaDoiTuongIdsUnique = new HashSet<String>();
 			List<CuocThanhTra> listResult = new ArrayList<CuocThanhTra>();
 			
-			int current = Utils.localDateTimeNow().getYear();
+			int current = Utils.localDateTimeNow().getYear() + 1;
 			
 			if (namThanhTra != null && namThanhTra > 0) {
 				cuocThanhTraIdVaDoiTuongIds.addAll(getCuocThanhTraIdVaDoiTuongIds(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
@@ -202,7 +209,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 						+ ctts.get(0).getDoiTuongThanhTraTrung().getId() + "   CuocThanhTraId: " + ctts.get(0).getId());
 				listResult.add(ctts.get(0));
 			}
-			
+
 			return assembler.toResource(new PageImpl<CuocThanhTra>(listResult, pageable, listResult.size()), (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -230,7 +237,9 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			for (ThanhVienDoan tvd : cuocThanhTra.getThanhVienDoans()) {
 				thanhVienDoanService.save(tvd, congChucId);
 			}
+			checkDataCuocThanhTra(cuocThanhTra);
 			checkTienDoThanhTra(cuocThanhTra);
+			checkTheoDoiThucHien(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -284,6 +293,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 			checkDataCuocThanhTra(cuocThanhTra);
 			checkTienDoThanhTra(cuocThanhTra);
+			checkTheoDoiThucHien(cuocThanhTra);
 			return cuocThanhTraService.doSave(cuocThanhTra, congChucId, eass, HttpStatus.OK);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -319,6 +329,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 	}
 	
 	private CuocThanhTra checkTienDoThanhTra(CuocThanhTra cuocThanhTra) {
+		
 		if (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() != null && !"".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
 				&& cuocThanhTra.getNgayRaQuyetDinh() != null && !"".equals(cuocThanhTra.getNgayRaQuyetDinh())
 				&& cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() != null && !"".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra())
@@ -330,20 +341,21 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		}
 		if (cuocThanhTra.getSoThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
 				&& cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() != null && !"".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT())
-				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
-						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
-						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+//				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+//						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+//						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
 				&& (cuocThanhTra.getSoKetLuanThanhTra() == null || "".equals(cuocThanhTra.getSoKetLuanThanhTra())
 						|| cuocThanhTra.getNgayBanHanhKetLuanThanhTra() == null || "".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra()))) {
 			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.KET_THUC_THANH_TRA_TRUC_TIEP);
 		}
 		if (cuocThanhTra.getSoKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getSoKetLuanThanhTra())
 				&& cuocThanhTra.getNgayBanHanhKetLuanThanhTra() != null && !"".equals(cuocThanhTra.getNgayBanHanhKetLuanThanhTra())
-				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
-						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
-						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
-				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
-						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))) {
+//				&& (cuocThanhTra.getSoQuyetDinhVeViecThanhTra() == null || "".equals(cuocThanhTra.getSoQuyetDinhVeViecThanhTra())
+//						|| cuocThanhTra.getNgayRaQuyetDinh() == null || "".equals(cuocThanhTra.getNgayRaQuyetDinh())
+//						|| cuocThanhTra.getNgayCongBoQuyetDinhThanhTra() == null || "".equals(cuocThanhTra.getNgayCongBoQuyetDinhThanhTra()))
+//				&& (cuocThanhTra.getSoThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getSoThongBaoKetThucTTTT())
+//						|| cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT() == null || "".equals(cuocThanhTra.getNgayBanHanhThongBaoKetThucTTTT()))
+				) {
 			cuocThanhTra.setTienDoThanhTra(TienDoThanhTraEnum.DA_BAN_HANH_KET_LUAN);
 		}
 		return cuocThanhTra;
@@ -443,11 +455,23 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		return cuocThanhTraIds;
 	}
 	
+	private CuocThanhTra checkTheoDoiThucHien(CuocThanhTra cuocThanhTra) {
+		CuocThanhTra cttOld = null;
+		if (cuocThanhTra != null && cuocThanhTra.getId() != null && cuocThanhTra.getId() > 0) {
+			cttOld = repo.findOne(cuocThanhTraService.predicateFindOne(cuocThanhTra.getId()));
+		}
+		if ((cuocThanhTra.isChuyenTheoDoiThucHien() && cttOld == null)
+				|| (cuocThanhTra.isChuyenTheoDoiThucHien() && cttOld != null && !cttOld.isChuyenTheoDoiThucHien())) {
+			cuocThanhTra.setNgayChuyenTheoDoiThucHien(Utils.localDateTimeNow());
+		}
+		return cuocThanhTra;
+	}
+	
 	private List<List<Object>> getCuocThanhTraIdVaDoiTuongIds(int namThanhTra, String tenDoiTuongThanhTra, Long donViId, String soQuyetDinhPheDuyetKHTT) {
 		List<List<Object>> cuocThanhTraIdVaDoiTuongIds = new ArrayList<List<Object>>();
 		List<CuocThanhTra> listCuocThanhTraTheoNam = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindThanhTraTrung(namThanhTra, tenDoiTuongThanhTra, donViId, soQuyetDinhPheDuyetKHTT));
 		List<Object> ids = null;
-		
+
 		if (listCuocThanhTraTheoNam != null && listCuocThanhTraTheoNam.size() > 0) {
 			for (int j = 0; j < listCuocThanhTraTheoNam.size() - 1; j++) {
 				for (int k = j + 1; k < listCuocThanhTraTheoNam.size(); k++) {
@@ -459,7 +483,7 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 					listDoiTuongThanhTraTwo.addAll(listCuocThanhTraTheoNam.get(k).getDoiTuongThanhTras());
 					
 					List<DoiTuongThanhTra> trungNhieuDoiTuong = checkTrungNhieuDoiTuong(listDoiTuongThanhTraOne, listDoiTuongThanhTraTwo);
-					
+
 					if (trungNhieuDoiTuong.size() > 0) {
 //						if (cuocThanhTraIdVaDoiTuongIds.size() > 0) {
 //							List<List<Boolean>> flag = new ArrayList<List<Boolean>>();
@@ -646,15 +670,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.GET, value = "/cuocThanhTras/validateTrungDoiTuongThanhTra")
 	@ApiOperation(value = "Validate trùng đối tượng thanh tra", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
+	public @ResponseBody Object validateTrungDoiTuongThanhTra(@RequestHeader(value = "Authorization", required = true) String authorization,
 			@RequestParam(value = "doiTuongThanhTraId", required = true) Long doiTuongThanhTraId,
 			@RequestParam(value = "namThanhTra", required = true) Integer namThanhTra,
 			Pageable pageable,PersistentEntityResourceAssembler eass) {
 		
 		try {
+			Page<CoQuanQuanLy> page = null;
 			HashSet<Long> donViIds = new HashSet<Long>();
 			List<CoQuanQuanLy> coQuanQUanLys = new ArrayList<CoQuanQuanLy>();
 			List<CuocThanhTra> cuocThanhTraTrungDoiTuongs = (List<CuocThanhTra>) repo.findAll(cuocThanhTraService.predicateFindAllByDoiTuongThanhTra(namThanhTra, doiTuongThanhTraId));
@@ -663,13 +688,16 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 					donViIds.add(ctt.getDonVi().getId());
 				}
 				if (donViIds != null && donViIds.size() > 0) {
-					Iterator<Long> itr = donViIds.iterator();
-					coQuanQUanLys = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId((List<Long>) itr));
+					List<Long> listDonVi = new ArrayList<Long>(donViIds);
+					coQuanQUanLys = (List<CoQuanQuanLy>) coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId(listDonVi));
+					page = coQuanQuanLyRepository.findAll(coQuanQuanLyService.predicateFindAllByListId(listDonVi), pageable);
 				}
 			}
 			
-			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(coQuanQUanLys, pageable, coQuanQUanLys.size());
-			return new ResponseEntity<>(page, HttpStatus.OK);
+			if (page == null) {
+				page = new PageImpl<CoQuanQuanLy>(coQuanQUanLys, pageable, coQuanQUanLys.size());
+			}
+			return assemblerCoQuanQuanLy.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}

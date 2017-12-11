@@ -128,6 +128,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	// private int soVuKhoiTo = 0;
 	// private int soDoiTuongKhoiTo = 0;
 
+	private boolean chuyenTheoDoiThucHien;
 	private boolean chuyenCoQuanDieuTra;//
 	private boolean viPham;//
 	private boolean noiDungThamNhung;//
@@ -177,6 +178,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	// private long tienDaThuTheoKetLuan;
 	// private long datDaThuTheoKetLuan;
 
+	private LocalDateTime ngayChuyenTheoDoiThucHien;
 	private LocalDateTime ngayRaQuyetDinh;//
 	private LocalDateTime ngayCongBoQuyetDinhThanhTra;//
 	private LocalDateTime ngayBanHanhKetLuanThanhTra;//
@@ -219,7 +221,6 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	private KeHoachThanhTra keHoachThanhTra;//
 	//@ManyToOne// Chuyen co quan dieu tra
 	//private CoQuanQuanLy coQuanDieuTra;//
-	@NotNull
 	@ManyToOne
 	private CoQuanQuanLy donViChuTri;//
 	@NotNull
@@ -569,6 +570,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 		return chuyenCoQuanDieuTra;
 	}
 
+	public boolean isChuyenTheoDoiThucHien() {
+		return chuyenTheoDoiThucHien;
+	}
+
+	public void setChuyenTheoDoiThucHien(boolean chuyenTheoDoiThucHien) {
+		this.chuyenTheoDoiThucHien = chuyenTheoDoiThucHien;
+	}
+
 	public void setChuyenCoQuanDieuTra(boolean chuyenCoQuanDieuTra) {
 		this.chuyenCoQuanDieuTra = chuyenCoQuanDieuTra;
 	}
@@ -852,6 +861,14 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 	public void setSoTienTieuHuyXuLyTaiSanViPham(long soTienTieuHuyXuLyTaiSanViPham) {
 		this.soTienTieuHuyXuLyTaiSanViPham = soTienTieuHuyXuLyTaiSanViPham;
 	}*/
+	
+	public LocalDateTime getNgayChuyenTheoDoiThucHien() {
+		return ngayChuyenTheoDoiThucHien;
+	}
+
+	public void setNgayChuyenTheoDoiThucHien(LocalDateTime ngayChuyenTheoDoiThucHien) {
+		this.ngayChuyenTheoDoiThucHien = ngayChuyenTheoDoiThucHien;
+	}
 
 	public LocalDateTime getNgayRaQuyetDinh() {
 		return ngayRaQuyetDinh;
@@ -1103,7 +1120,7 @@ public class CuocThanhTra extends Model<CuocThanhTra> {
 			map.put("ngayRaQuyetDinh", getKeHoachThanhTra().getNgayRaQuyetDinh());
 			map.put("nguoiKy", getKeHoachThanhTra().getNguoiKy());
 			map.put("ghiChu", getKeHoachThanhTra().getGhiChu());
-			map.put("hinhThucKeHoachThanhTraInfo", getKeHoachThanhTra().getChucNangKeHoachThanhTraInfo());
+			map.put("chucNangKeHoachThanhTraInfo", getKeHoachThanhTra().getChucNangKeHoachThanhTraInfo());
 			map.put("donViInfo", getKeHoachThanhTra().getDonViInfo());
 			return map;
 		}

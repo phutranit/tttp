@@ -29,6 +29,16 @@ public class CongChucService {
 	
 	BooleanExpression base = QCongChuc.congChuc.daXoa.eq(false);
 
+	public Predicate predicateFindByTen(String hoTen) {
+		BooleanExpression predAll = base;
+		if (hoTen != null && StringUtils.isNotBlank(hoTen.trim())) {
+			predAll = predAll.and(QCongChuc.congChuc.hoVaTenSearch.containsIgnoreCase(Utils.unAccent(hoTen.trim()))
+					.or(QCongChuc.congChuc.nguoiDung.email.containsIgnoreCase(hoTen.trim())));
+		}
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindAll(String tuKhoa, String vaiTro, Long coQuanQuanLyId, Long congChucId,
 			CoQuanQuanLy coQuanQuanLyLogin) {
 		BooleanExpression predAll = base;

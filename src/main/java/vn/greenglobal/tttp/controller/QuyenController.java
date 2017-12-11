@@ -179,6 +179,12 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Theo dõi thực hiện");
+		quyenObj.put("tenQuyen", QuyenEnum.THEO_DOI_THUC_HIEN_LIETKE.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XEM.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_THEM.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_SUA.getText() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THEO_DOI_THUC_HIEN_LIETKE.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XEM.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_THEM.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_SUA.name() + "," + QuyenEnum.THEO_DOI_THUC_HIEN_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Tổng hợp báo cáo");
 		quyenObj.put("tenQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.getText() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.TONGHOPBAOCAO_LIETKE.name() + "," + QuyenEnum.TONGHOPBAOCAO_THONGKE.name());
@@ -236,6 +242,12 @@ public class QuyenController {
 		quyenObj.put("tenChucNang"," Báo cáo đơn vị");
 		quyenObj.put("tenQuyen", QuyenEnum.BAOCAODONVI_LIETKE.getText() + "," + QuyenEnum.BAOCAODONVI_XEM.getText() + "," + QuyenEnum.BAOCAODONVI_THEM.getText() + "," + QuyenEnum.BAOCAODONVI_SUA.getText() + "," + QuyenEnum.BAOCAODONVI_XOA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.BAOCAODONVI_LIETKE.name() + "," + QuyenEnum.BAOCAODONVI_XEM.name() + "," + QuyenEnum.BAOCAODONVI_THEM.name() + "," + QuyenEnum.BAOCAODONVI_SUA.name() + "," + QuyenEnum.BAOCAODONVI_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Thay đổi cán bộ đang xử lý");
+		quyenObj.put("tenQuyen", QuyenEnum.THAYDOICANBO_LIETKE.getText() + "," + QuyenEnum.THAYDOICANBO_SUA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.THAYDOICANBO_LIETKE.name() + "," + QuyenEnum.THAYDOICANBO_SUA.name());
 		quyenList.add(quyenObj);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
