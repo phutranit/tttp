@@ -57,14 +57,7 @@ public class CasController {
 		if (auth != null) {
 			Pac4jAuthenticationToken pac4j = (Pac4jAuthenticationToken) auth;
 			
-			//System.out.println(pac4j.getCredentials());
-			System.out.println(pac4j.isAuthenticated());
-			//System.out.println(pac4j.getName());
-			System.out.println(pac4j.getPrincipal());
-			
 			String username = pac4j.getName();
-			System.out.println(username);
-			
 			String redirectUrl = "http://localhost:3000/redirect?token=";
 			
 			NguoiDung nguoiDung = nguoiDungRepository.findOne(QNguoiDung.nguoiDung.daXoa.eq(false).and(QNguoiDung.nguoiDung.active.isTrue()).and(QNguoiDung.nguoiDung.email.eq(username)));

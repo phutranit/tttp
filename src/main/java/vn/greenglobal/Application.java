@@ -18,9 +18,6 @@ import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
-import org.pac4j.springframework.security.web.CallbackFilter;
-import org.pac4j.springframework.security.web.Pac4jEntryPoint;
-import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -36,15 +33,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -109,7 +98,7 @@ public class Application extends SpringBootServletInitializer {
 		};
 	}
 
-	/*@Value("${cors.allowedOrigins}")
+	@Value("${cors.allowedOrigins}")
 	private String[] myAllowedOriginList;
 	
 	@Bean
@@ -127,7 +116,7 @@ public class Application extends SpringBootServletInitializer {
 						.maxAge(3600);
 			}
 		};
-	}*/
+	}
 
 	@Bean
 	public Config configPac4j() throws ParseException {
@@ -143,7 +132,6 @@ public class Application extends SpringBootServletInitializer {
 		CasConfiguration casConfiguration = new CasConfiguration(casProperties.getCasServerLoginUrl(), CasProtocol.CAS20);
 		casConfiguration.setPrefixUrl(casProperties.getCasServerUrl());
 		CasClient casClient = new CasClient(casConfiguration);
-		
 		
 		final Clients clients = new Clients(casProperties.getAppCallbackUrl(), parameterClient, headerClient, casClient);
 		final Config config = new Config(clients);
