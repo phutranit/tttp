@@ -1,6 +1,8 @@
 package vn.greenglobal.tttp.model;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import com.querydsl.core.annotations.QueryInit;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import vn.greenglobal.Application;
 import vn.greenglobal.tttp.enums.HuongXuLyXLDEnum;
 import vn.greenglobal.tttp.enums.LyDoKhongDuDieuKienXuLyEnum;
 import vn.greenglobal.tttp.enums.PhanLoaiDonEnum;
@@ -822,4 +825,16 @@ public class XuLyDon extends Model<XuLyDon> {
 	public Long getXuLyDonId() {
 		return getId();
 	}
+	
+	@Transient
+	@ApiModelProperty(hidden = true)
+	public String getMaTraCuu() {
+		List<Don> dons = new ArrayList<Don>();
+		dons = (List<Don>) Application.app.getDonRepository().findAll(QDon.don.id.eq(getDon().getId()));
+		if (dons != null && dons.size() > 0) {
+			return dons.get(0) != null ? dons.get(0).getMaHoSo() : "";
+		}
+		return null;
+	}
+	
 }
