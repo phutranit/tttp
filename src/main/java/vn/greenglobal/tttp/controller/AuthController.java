@@ -424,6 +424,22 @@ public class AuthController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/auth/me")
+	public @ResponseBody ResponseEntity<Object> getCurrentUser(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		try {
+			Map<String, Object> result = new HashMap<>();
+			NguoiDung user = profileUtil.getUserInfo(authorization);
+			if (user != null) {
+				return returnUser(result, user);
+			}
+			return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
+					ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 	private ResponseEntity<Object> returnUser(Map<String, Object> result, NguoiDung user) {
 		try {
 			CongChuc congChuc = null;
