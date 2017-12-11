@@ -1,10 +1,5 @@
 package vn.greenglobal.tttp.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import vn.dtt.sharedservice.WebserviceFactory;
 import vn.dtt.sharedservice.cmon.consumer.citizen.CongChucSoap;
 import vn.greenglobal.tttp.util.CongChucList;
 

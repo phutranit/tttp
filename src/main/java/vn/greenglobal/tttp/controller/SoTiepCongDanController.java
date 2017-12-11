@@ -417,6 +417,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 					don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 					don.setCurrentState(beginState);
 					don.setThanhLapDon(true);
+					don.setMaHoSo(donService.getMaHoSo(repoDon, null));
 //					don.setDonViXuLyGiaiQuyet(soTiepCongDan.getDonViChuTri());
 //					don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 					don.setDonViKiemTraDeXuat(soTiepCongDan.getDonViChuTri());
@@ -604,6 +605,7 @@ public class SoTiepCongDanController extends TttpController<SoTiepCongDan> {
 							don.setProcessType(ProcessTypeEnum.KIEM_TRA_DE_XUAT);					
 							don.setCurrentState(beginState);
 							don.setThanhLapDon(true);
+							don.setMaHoSo(donService.getMaHoSo(repoDon, null));
 //							don.setTrangThaiXLDGiaiQuyet(TrangThaiDonEnum.DANG_GIAI_QUYET);
 							don.setNgayTiepNhan(Utils.localDateTimeNow());
 							don.setLanhDaoDuyet(true);

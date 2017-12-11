@@ -1,11 +1,6 @@
 package vn.greenglobal.tttp;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.User;
