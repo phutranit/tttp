@@ -1,16 +1,7 @@
 package vn.greenglobal.tttp.model.medial;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.Model;
 import vn.greenglobal.tttp.model.ModelThongKe;
 
 @Entity

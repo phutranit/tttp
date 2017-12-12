@@ -10,9 +10,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
-import vn.greenglobal.tttp.model.BaoCaoDonVi;
 import vn.greenglobal.tttp.model.BaoCaoTongHop;
-import vn.greenglobal.tttp.model.QBaoCaoDonVi;
 import vn.greenglobal.tttp.model.QBaoCaoTongHop;
 import vn.greenglobal.tttp.repository.BaoCaoTongHopRepository;
 import vn.greenglobal.tttp.util.Utils;
