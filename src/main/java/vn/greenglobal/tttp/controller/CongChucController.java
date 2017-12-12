@@ -1,7 +1,5 @@
 package vn.greenglobal.tttp.controller;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +32,6 @@ import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.TrangThaiInvalidTokenEnum;
 import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CongChuc;
-import vn.greenglobal.tttp.model.CongDan;
 import vn.greenglobal.tttp.model.InvalidToken;
 import vn.greenglobal.tttp.model.NguoiDung;
 import vn.greenglobal.tttp.model.ThamSo;
