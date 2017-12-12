@@ -504,6 +504,7 @@ public class ThongKeBaoCaoTongHopKQGQDService {
 	public Long getTongSoDonTonKyTruoc(BooleanExpression predAll) { 
 		Long tongSo = 0L;
 		List<Don> dons = new ArrayList<Don>();
+		predAll = predAll.and(QDon.don.thongTinGiaiQuyetDon.ngayKetThucGiaiQuyet.isNull());
 		dons.addAll((List<Don>) donRepo.findAll(predAll));
 		tongSo = Long.valueOf(dons.size());
 		return tongSo;
