@@ -44,24 +44,27 @@ public class CoQuanQuanLyService {
 	@Autowired
 	private CoQuanQuanLyRepository coQuanQuanLyRepository;
 	
-	BooleanExpression base = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
+	BooleanExpression bassAll = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false);
+	BooleanExpression baseIsDonViTmp = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.isDonViTmp.isTrue());
+	BooleanExpression baseIsNotDonViTmp = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.isDonViTmp.isFalse());
 	
 	public Predicate predicateFindDonViByCapCoQuanQuanLys(List<Long> capCoQuanQuanLys) {
-		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(capCoQuanQuanLys.get(0))
+		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(capCoQuanQuanLys.get(0))
 				.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(1))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(2)))));
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll() {
-		BooleanExpression predAll = base;
+	public Predicate predicateFindAll(Long donViHanhChinhId) {
+		BooleanExpression predAll = bassAll;
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
 	public Predicate predicateFindAll(String tuKhoa, Long cha, Long capCoQuanQuanLy, Long donViHanhChinh, 
 			List<CoQuanQuanLy> listCoQuanQuanLys, List<CapCoQuanQuanLy> listCapCoQuanQuanLys) {
 
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = bassAll;
 		if (tuKhoa != null && StringUtils.isNotBlank(tuKhoa.trim())) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ma.containsIgnoreCase(tuKhoa.trim())
 					.or(QCoQuanQuanLy.coQuanQuanLy.tenSearch.containsIgnoreCase(Utils.unAccent(tuKhoa.trim())))
@@ -94,7 +97,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindAllNotPhongBan(Long cha, Long idCapPhongBan) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha))
@@ -108,7 +111,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindAllByName(String ten) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if (ten != null && !"".equals(ten)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.ten.containsIgnoreCase(ten));
 		}
@@ -117,7 +120,7 @@ public class CoQuanQuanLyService {
 	}
 
 	public Predicate predicateFindNoiCapCMND(String tuKhoa, Long capCoQuanQuanLy, Long loaiCoQuanQuanLy, List<Long> donViHanhChinhList) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 
 		if (capCoQuanQuanLy != null && capCoQuanQuanLy > 0 && loaiCoQuanQuanLy != null && loaiCoQuanQuanLy > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy)
@@ -147,7 +150,7 @@ public class CoQuanQuanLyService {
 	
 	public Predicate predicateFindPhongBan(Long capCoQuanQuanLy, Long id, CoQuanQuanLyRepository repo, 
 			ThamSoService thamSoService, ThamSoRepository repoThamSo) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		boolean check = false;
 
 		ThamSo thamSoQuan = repoThamSo.findOne(thamSoService.predicateFindTen("CDVHC_QUAN"));
@@ -177,7 +180,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindPhongBanDonBanDonvi(Long donViId, ThamSoService thamSoService, ThamSoRepository repoThamSo, Long coQuanQuanLyHienTai) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		ThamSo thamSoPB = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
@@ -191,11 +194,11 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindOne(Long id) {
-		return base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
+		return baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 	}
 	
 	public Predicate predicateFindByDonVi(Long id, Long capCoQuanQuanLyId) {
-		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)
+		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)
 				.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(id)));
 		if (capCoQuanQuanLyId != null) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyId));
@@ -204,12 +207,12 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindByCha(Long chaId) {
-		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(chaId));
+		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(chaId));
 		return predAll;
 	}
 	
 	public Predicate predicateFindByLoaiCQQLVaDVHC(Long loaiCQQLId, Long donViHanhChinhId) {
-		BooleanExpression predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.eq(loaiCQQLId));
+		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.eq(loaiCQQLId));
 		if (donViHanhChinhId != null) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinhId));
 		}
@@ -218,7 +221,7 @@ public class CoQuanQuanLyService {
 
 	public boolean isExists(CoQuanQuanLyRepository repo, Long id) {
 		if (id != null && id > 0) {
-			Predicate predicate = base.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
+			Predicate predicate = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(id));
 			return repo.exists(predicate);
 		}
 		return false;
@@ -235,7 +238,7 @@ public class CoQuanQuanLyService {
 	}
 
 	public boolean checkExistsData(CoQuanQuanLyRepository repo, CoQuanQuanLy body) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 
 		if (!body.isNew()) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.ne(body.getId()));
@@ -258,7 +261,7 @@ public class CoQuanQuanLyService {
 			DonRepository donRepository, SoTiepCongDanRepository soTiepCongDanRepository,
 			XuLyDonRepository xuLyDonRepository, Long id) {
 		List<CoQuanQuanLy> coQuanQuanLyList = (List<CoQuanQuanLy>) repo
-				.findAll(base.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)));
+				.findAll(baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id)));
 		List<CongChuc> congChucList = (List<CongChuc>) congChucRepository
 				.findAll(QCongChuc.congChuc.daXoa.eq(false).and(QCongChuc.congChuc.coQuanQuanLy.id.eq(id)));
 		List<Don> donList = (List<Don>) donRepository.findAll(QDon.don.daXoa.eq(false)
@@ -277,7 +280,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type, Long coQuanQuanLyDaChonId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
@@ -305,7 +308,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindDonViVaConCuaDonVi(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
 					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
@@ -322,7 +325,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindDSCoQuanDonViThamGiaTiepDan(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 				.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))
 						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2))
@@ -338,7 +341,7 @@ public class CoQuanQuanLyService {
 		ThamSo phongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 		Long capPhongBanId = Long.parseLong(phongBan.getGiaTri().toString());
 		
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if ("CQQL_UBNDTP_DA_NANG".equals(type)) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
 			// .or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
@@ -367,14 +370,14 @@ public class CoQuanQuanLyService {
 	}
 
 	public Predicate predicateFindDonViTheoChaTHTKBC(Long coQuanQuanLyId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId))
 				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
 		return predAll;
 	}
 	
 	public Predicate getListDonViKhongQuyTrinh(TransitionRepository transitionRepo) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		BooleanExpression transactionQuery = QTransition.transition.daXoa.eq(false)
 				.and(QTransition.transition.tenQuyTrinh.eq(TenQuyTrinhEnum.QUY_TRINH_1_BUOC_KHONG_DAY_DU))
 				.and(QTransition.transition.process.isNotNull())
@@ -390,7 +393,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindDonViVaConCuaDonViTDGDS(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(coQuanQuanLyId)
 					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId)));
@@ -413,7 +416,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindConCuaDonViChaTDGDS(Long coQuanQuanLyId, List<Long> capCoQuanQuanLyIds, String type) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if (coQuanQuanLyId != null && coQuanQuanLyId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(coQuanQuanLyId));
 
@@ -447,7 +450,7 @@ public class CoQuanQuanLyService {
 	 */
 	
 	public Predicate predicateFindAllDonViNotPhongBanNotCongAn(Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		QDonViHanhChinh qDonViHanhChinh2 = new QDonViHanhChinh("qDonViHanhChinh2");
 		QDonViHanhChinh qDonViHanhChinh3 = new QDonViHanhChinh("qDonViHanhChinh3");
 		QDonViHanhChinh qDonViHanhChinh4 = new QDonViHanhChinh("qDonViHanhChinh4");
@@ -482,14 +485,19 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXa(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
-		BooleanExpression predAll = base;
-		QDonViHanhChinh qDonViHanhChinh2 = new QDonViHanhChinh("qDonViHanhChinh2");
-		QDonViHanhChinh qDonViHanhChinh3 = new QDonViHanhChinh("qDonViHanhChinh3");
-		QDonViHanhChinh qDonViHanhChinh4 = new QDonViHanhChinh("qDonViHanhChinh4");
+		BooleanExpression predAll = baseIsNotDonViTmp;
 
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds)
 				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
-					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));		
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
+		return predAll;
+	}
+	
+	private BooleanExpression predicateFindAllOnlyUBNDTPDaNang(BooleanExpression predAll, Long donViHanhChinhId) {
+		QDonViHanhChinh qDonViHanhChinh2 = new QDonViHanhChinh("qDonViHanhChinh2");
+		QDonViHanhChinh qDonViHanhChinh3 = new QDonViHanhChinh("qDonViHanhChinh3");
+		QDonViHanhChinh qDonViHanhChinh4 = new QDonViHanhChinh("qDonViHanhChinh4");
 		
 		if (donViHanhChinhId != null && donViHanhChinhId > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinhId)
@@ -512,12 +520,11 @@ public class CoQuanQuanLyService {
 									.exists())
 							.exists())));
 		}
-
 		return predAll;
 	}
 	
 	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds)
 				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
@@ -526,7 +533,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindChinhDonViVaConCuaDonViVaNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(donViId)
 				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId))
@@ -537,7 +544,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindChinhDonViVaConCuaDonViVaNotPhongBanNotCongAnNotPhuongXa(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(donViId)
 				.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds))
@@ -548,7 +555,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAn(Long donViId, Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId, boolean isTTXM) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId))
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId))
 						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
@@ -562,7 +569,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindPhongBanThuocDonVi(Long donViId, Long capCoQuanQuanLyId) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId)
 				.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyId)));
 
@@ -570,7 +577,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predicateFindAllByListId(List<Long> ids) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		
 		if (ids != null && ids.size() > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.in(ids));
@@ -580,7 +587,7 @@ public class CoQuanQuanLyService {
 	}
 	
 	public Predicate predFindDonViByCapCoQuanQuanLysTKBC(List<Long> capCoQuanQuanLys, List<Long> thamSos) {
-		BooleanExpression predAll = base;
+		BooleanExpression predAll = baseIsNotDonViTmp;
 		if (capCoQuanQuanLys.contains(thamSos.get(0))) {
 			//CQQL_UBNDTP_DA_NANG
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(0))
@@ -594,7 +601,7 @@ public class CoQuanQuanLyService {
 			//CCQQL_UBND_QUAN_HUYEN
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(thamSos.get(2)));
 		} else {
-			predAll = base.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.in(capCoQuanQuanLys));
+			predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.in(capCoQuanQuanLys));
 		}
 		return predAll;
 	}
