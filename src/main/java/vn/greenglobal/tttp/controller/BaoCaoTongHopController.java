@@ -29,7 +29,6 @@ import vn.greenglobal.tttp.enums.KyBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
 import vn.greenglobal.tttp.enums.ThongKeBaoCaoLoaiKyEnum;
 import vn.greenglobal.tttp.model.BaoCaoTongHop;
-import vn.greenglobal.tttp.model.BaoCaoTongHop;
 import vn.greenglobal.tttp.repository.BaoCaoTongHopRepository;
 import vn.greenglobal.tttp.service.BaoCaoTongHopService;
 import vn.greenglobal.tttp.util.Utils;
