@@ -59,6 +59,7 @@ import vn.greenglobal.tttp.enums.KetLuanNoiDungKhieuNaiEnum;
 import vn.greenglobal.tttp.enums.KetQuaThucHienTheoDoiEnum;
 import vn.greenglobal.tttp.enums.KetQuaTrangThaiDonEnum;
 import vn.greenglobal.tttp.enums.LinhVucThanhTraEnum;
+import vn.greenglobal.tttp.enums.LoaiBaoCaoTongHopEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongEnum;
 import vn.greenglobal.tttp.enums.LoaiDoiTuongThanhTraEnum;
 import vn.greenglobal.tttp.enums.LoaiDonEnum;
@@ -1969,6 +1970,103 @@ public class EnumController {
 		object = new HashMap<>();
 		object.put("ten", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.getText());
 		object.put("giaTri", TienDoThanhTraEnum.THEO_DOI_THUC_THIEN_KET_LUAN_THANH_TRA.name());
+		list.add(object);
+		
+		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();
+		errorBody.put("list", list);
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/loaiBaoCaoTongHops")
+	@ApiOperation(value = "Lấy danh sách loại Báo cáo tổng hợp", position = 11, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> getLoaiBaoCaoTongHops(
+			@RequestHeader(value = "Authorization", required = true) String authorization) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> object = new HashMap<>();
+
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_HANH_CHINH.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_HANH_CHINH.name());
+		list.add(object);
+
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAU_TU_XAY_DUNG_CO_BAN.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAU_TU_XAY_DUNG_CO_BAN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_TAI_CHINH_NGAN_SACH.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_TAI_CHINH_NGAN_SACH.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAT_DAI.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_TRONG_LINH_VUC_DAT_DAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_LAI.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_LAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_KIEM_TRA_CHUYEN_NGANH.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_THANH_TRA_KIEM_TRA_CHUYEN_NGANH.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_PHAT_HIEN_XU_LY_THAM_NHUNG_QUA_THANH_TRA.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_PHAT_HIEN_XU_LY_THAM_NHUNG_QUA_THANH_TRA.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_THANH_TRA.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_THANH_TRA.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.CONG_TAC_XAY_DUNG_LUC_LUONG_THANH_TRA.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.CONG_TAC_XAY_DUNG_LUC_LUONG_THANH_TRA.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.CONG_TAC_XAY_DUNG_LUC_LUONG_THANH_TRA.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.CONG_TAC_XAY_DUNG_LUC_LUONG_THANH_TRA.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_TIEP_CONG_DAN.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_TIEP_CONG_DAN.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_XU_LY_DON_KHIEU_NAI_TO_CAO.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_XU_LY_DON_KHIEU_NAI_TO_CAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_KHIEU_NAI.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_KHIEU_NAI.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_TO_CAO.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_GIAI_QUYET_DON_TO_CAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_KHIEU_NAI_TO_CAO.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.CONG_TAC_QUAN_LY_NHA_NUOC_VE_KHIEU_NAI_TO_CAO.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.KET_QUA_CHU_YEU_VE_CONG_TAC_PHONG_CHONG_THAM_NHUNG.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.KET_QUA_CHU_YEU_VE_CONG_TAC_PHONG_CHONG_THAM_NHUNG.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", LoaiBaoCaoTongHopEnum.SO_LIEU_KE_KHAI_XAC_MINH_TAI_SAN.getText());
+		object.put("giaTri", LoaiBaoCaoTongHopEnum.SO_LIEU_KE_KHAI_XAC_MINH_TAI_SAN.name());
 		list.add(object);
 		
 		Map<String, List<Map<String, Object>>> errorBody = new HashMap<>();

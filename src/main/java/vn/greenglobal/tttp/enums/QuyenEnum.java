@@ -38,6 +38,12 @@ public enum QuyenEnum {
 	QUOCTICH_SUA("Chỉnh sửa"),
 	QUOCTICH_XOA("Xoá"),
 	
+	CAUHINHBAOCAO_LIETKE("Liệt kê"),
+	CAUHINHBAOCAO_XEM("Xem"),
+	CAUHINHBAOCAO_THEM("Thêm mới"),
+	CAUHINHBAOCAO_SUA("Chỉnh sửa"),
+	CAUHINHBAOCAO_XOA("Xoá"),
+	
 	CAPDONVIHANHCHINH_LIETKE("Liệt kê"),
 	CAPDONVIHANHCHINH_XEM("Xem"),
 	CAPDONVIHANHCHINH_THEM("Thêm mới"),
@@ -193,6 +199,18 @@ public enum QuyenEnum {
 	PROCESS_THEM("Thêm mới"),
 	PROCESS_SUA("Chỉnh sửa"),
 	PROCESS_XOA("Xoá"),
+	
+	BAOCAODONVI_LIETKE("Liệt kê"),
+	BAOCAODONVI_XEM("Xem"),
+	BAOCAODONVI_THEM("Thêm mới"),
+	BAOCAODONVI_SUA("Chỉnh sửa"),
+	BAOCAODONVI_XOA("Xoá"),
+		
+	BAOCAOTONGHOP_LIETKE("Liệt kê"),
+	BAOCAOTONGHOP_XEM("Xem"),
+	BAOCAOTONGHOP_THEM("Thêm mới"),
+	BAOCAOTONGHOP_SUA("Chỉnh sửa"),
+	BAOCAOTONGHOP_XOA("Xoá"),
 	
 	TRANSITION_LIETKE("Liệt kê"),
 	TRANSITION_XEM("Xem"),
