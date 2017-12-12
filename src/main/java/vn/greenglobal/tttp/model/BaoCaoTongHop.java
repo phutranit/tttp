@@ -117,6 +117,17 @@ public class BaoCaoTongHop extends Model<BaoCaoTongHop> {
 	}
 	
 	@Transient
+	@ApiModelProperty(hidden = true) 
+	public String getKyBaoCaoInfo() {
+		if (getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_QUY)) {
+			return "Quý " + (getQuyBaoCao() == 1 ? "I" : getQuyBaoCao() == 2 ? "II" : getQuyBaoCao() == 3 ? "III" : "IV");
+		} else if (getKyBaoCao().equals(KyBaoCaoTongHopEnum.THEO_THANG)) {
+			return "Tháng " + getThangBaoCao();
+		}
+		return getKyBaoCao().getText();
+	}
+	
+	@Transient
 	@ApiModelProperty(hidden = true)
 	public Map<String, Object> getNguoiTaoInfo() {
 		if (getNguoiTao() != null) {

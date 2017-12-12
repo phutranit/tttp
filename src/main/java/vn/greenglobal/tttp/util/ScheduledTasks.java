@@ -62,12 +62,14 @@ public class ScheduledTasks {
 	}
 
 	//second, minute, hour, day of month, month, day(s) of week
-	@Scheduled(cron = "0 41 11 * * *")
-	public void updateHinhThucXuLyQuanLy() throws Exception {		
+	@Scheduled(cron = "0 00 11 * * *")
+	public void tuDongGuiBaoCao() throws Exception {		
 		List<CauHinhBaoCao> list = (List<CauHinhBaoCao>) cauHinhBaoCaoRepository.findAll(QCauHinhBaoCao.cauHinhBaoCao.daXoa.eq(false)
 				.and(QCauHinhBaoCao.cauHinhBaoCao.daTuDongGui.eq(false))
 				.and(QCauHinhBaoCao.cauHinhBaoCao.ngayGuiBaoCao.before(LocalDateTime.now())));
+		System.out.println("tuDongGuiBaoCao");
 		for (CauHinhBaoCao cauHinh : list) {
+			System.out.println("cauHinh: " + cauHinh.getId());
 			Long nguoiTaoId = cauHinh.getNguoiTao().getId();
 			//Tao bao cao tong hop
 			BaoCaoTongHop baoCaoTongHop = new BaoCaoTongHop();
