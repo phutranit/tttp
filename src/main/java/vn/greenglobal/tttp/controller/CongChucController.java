@@ -25,6 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import vn.dtt.sharedservice.cmon.consumer.citizen.CongChucSoap;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
 import vn.greenglobal.tttp.enums.QuyenEnum;
@@ -41,9 +42,11 @@ import vn.greenglobal.tttp.repository.NguoiDungRepository;
 import vn.greenglobal.tttp.repository.ThamSoRepository;
 import vn.greenglobal.tttp.service.CoQuanQuanLyService;
 import vn.greenglobal.tttp.service.CongChucService;
+import vn.greenglobal.tttp.service.EgovService;
 import vn.greenglobal.tttp.service.InvalidTokenService;
 import vn.greenglobal.tttp.service.NguoiDungService;
 import vn.greenglobal.tttp.service.ThamSoService;
+import vn.greenglobal.tttp.util.CongChucList;
 import vn.greenglobal.tttp.util.Utils;
 
 @RestController
@@ -259,7 +262,7 @@ public class CongChucController extends TttpController<CongChuc> {
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.PATCH, value = "/congChucs/{id}")
 	@ApiOperation(value = "Cập nhật Công Chức", position = 4, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -461,5 +464,58 @@ public class CongChucController extends TttpController<CongChuc> {
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
 		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/egov/{id}")
+	@ApiOperation(value = "Lấy Công Chức Egov theo Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Chức thành công") })
+	public ResponseEntity<Object> getCongChucEgovById(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long id, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			CongChucSoap congChuc = EgovService.getCongChucEgovByCongChucId(id);
+			//CongChuc congChuc = repo.findOne(congChucService.predicateFindOne(id));
+			if (congChuc == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+			return new ResponseEntity<>(congChuc, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/egov/cqql/{cqqlid}")
+	@ApiOperation(value = "Lấy DS Công Chức theo cqql Id", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy Công Chức thành công") })
+	public ResponseEntity<Object> getCongChucEgovByCqqlId(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("cqqlid") long id, PersistentEntityResourceAssembler eass) {
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CONGCHUC_XEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+			CongChucList congChuc = EgovService.getDsCongChucByCQQL(id);
+			//CongChuc congChuc = repo.findOne(congChucService.predicateFindOne(id));
+			if (congChuc == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+			return new ResponseEntity<>(congChuc, HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/congChucs/egov/checkChange")
+	@ApiOperation(value = "Kiểm tra công dân tồn tại", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> checkChange(
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
+			@RequestParam(value ="username", required = false) String username) {
+		return null;
 	}
 }

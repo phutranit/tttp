@@ -6,6 +6,9 @@ import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
 
+import org.pac4j.cas.client.CasClient;
+import org.pac4j.cas.config.CasConfiguration;
+import org.pac4j.cas.config.CasProtocol;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
@@ -15,7 +18,6 @@ import org.pac4j.jwt.config.encryption.SecretEncryptionConfiguration;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
-import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -32,13 +34,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
 //import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -47,6 +42,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import vn.greenglobal.core.model.common.BaseRepositoryImpl;
+import vn.greenglobal.tttp.CasProperties;
 import vn.greenglobal.tttp.CustomAuthorizer;
 import vn.greenglobal.tttp.repository.ChucVuRepository;
 import vn.greenglobal.tttp.repository.CuocThanhTraRepository;
@@ -120,67 +116,6 @@ public class Application extends SpringBootServletInitializer {
 //	}
 
 	@Bean
-	public WebSecurityConfigurerAdapter securityConfiguration() {
-		return new WebSecurityConfigurerAdapter() {
-
-			@Override
-			public void configure(AuthenticationManagerBuilder auth) throws Exception {
-				auth.inMemoryAuthentication().withUser("tttp123").password("tttp@123").roles("USER", "ADMIN",
-						"ACTUATOR");
-			}
-
-			@Override
-			public void configure(WebSecurity sec) throws Exception {
-				sec.ignoring().antMatchers("/auth/login", "/auth/logout", "/auth/sendEmail", "/auth/confirmCode", "/auth/resetPassword", "/v2/api-docs",
-						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhToCao", "/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKhieuNai",
-						"/soTiepCongDans/inPhieuHen", "/documents/uploadhandler", "/tttpdata/files/**",
-						"/soTiepCongDans/excel", "/xuLyDons/inPhieuDeXuatThuLy", "/dons/xuatExcel",
-						"/xuLyDons/inPhieuKhongDuDieuKienThuLyKhieuNai", "/xuLyDons/inPhieuDuThaoThongBaoThuLyGQTC",
-						"/xuLyDons/inPhieuDuThaoThongBaoThuLyKhieuNai", "/xuLyDons/inPhieuDeXuatKienNghi",
-						"/xuLyDons/inPhieuKhongDuDieuKienThuLy", "/soTiepCongDans/word", "/configuration/ui",
-						"/configuration/security", "/xuLyDons/inPhieuTraDonVaHuongDanKhieuNai", "/swagger-resources",
-						"/swagger-ui.html", "/swagger-resources/configuration/ui", "/xuLyDons/inPhieuChuyenDonToCao",
-						"/xuLyDons/inPhieuTraDonChuyenKhongDungThamQuyen", "/xuLyDons/inPhieuDuThaoThongBaoThuLyKienNghi",
-						"/xuLyDons/inPhieuChuyenDonKienNghiPhanAnh", "/swagger-resources/configuration/security",
-						"/thongKeBaoCaos/tongHopKetQuaTiepCongDan/xuatExcel", "/thongKeBaoCaos/tongHopKetQuaXuLyDonThu/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonKhieuNai/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaGiaiQuyetDonToCao/xuatExcel",
-						"/soTiepCongDans/inPhieuTuChoi", "/soTiepCongDans/inPhieuHuongDanKhieuNai", 
-						"/soTiepCongDans/inPhieuHuongDanToCao","/traCuuDons/congDan",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoHanhChinh/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDauTuXayDungCoBan/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoTaiChinhNganSach/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoDatDai/xuatExcel",
-						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonViCon/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaPhatHienThamNhungQuaThanhTra/xuatExcel",
-						"/soTiepCongDans/danhSachYeuCauGapLanhDao/excel",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraLai/xuatExcel",
-						"/theoDoiGiamSats/tinhHinhXuLyDonTaiCacDonVi/xuatExcel",
-						"/thongKeBaoCaos/tongHopKetQuaThanhTraTheoChuyenNganh/xuatExcel",
-						"/theoDoiGiamSats/danhSachDonDungHanTreHanTaiDonVi/xuatExcel",
-						"/xuLyDons/inPhieuKhongDuDieuKienThuLyToCao", "/xuLyDons/inPhieuKhongDuDieuKienThuLyKienNghi",
-						"/giaiQuyetDons/inPhieuGiaoNhiemVuXacMinhKienNghi", "/xuLyDons/inPhieuHuongDanToCao",
-						"/xuLyDons/inPhieuHuongDanKienNghi",
-						"/webjars/**").antMatchers(HttpMethod.OPTIONS, "/**");
-			}
-
-			@Override
-			protected void configure(HttpSecurity http) throws Exception {
-
-				final SecurityFilter filter = new SecurityFilter(configPac4j(), "ParameterClient,HeaderClient",
-						"custom");
-				http.addFilterBefore(filter, BasicAuthenticationFilter.class).sessionManagement()
-						.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-
-				http.authorizeRequests().anyRequest().authenticated()
-						// .and().httpBasic()
-						.and().logout().logoutSuccessUrl("/").invalidateHttpSession(true).clearAuthentication(true)
-						.and().csrf().disable();
-			}
-		};
-	}
-
-	@Bean
 	public Config configPac4j() throws ParseException {
 		final SignatureConfiguration secretSignatureConfiguration = new SecretSignatureConfiguration(salt);
 		final SecretEncryptionConfiguration secretEncryptionConfiguration = new SecretEncryptionConfiguration(salt);
@@ -190,7 +125,12 @@ public class Application extends SpringBootServletInitializer {
 		HeaderClient headerClient = new HeaderClient(HEADER_STRING, TOKEN_PREFIX + " ", authenticator);
 		ParameterClient parameterClient = new ParameterClient("token", authenticator);
 		parameterClient.setSupportGetRequest(true);
-		final Clients clients = new Clients("http://localhost", parameterClient, headerClient);
+		
+		CasConfiguration casConfiguration = new CasConfiguration(casProperties.getCasServerLoginUrl(), CasProtocol.CAS20);
+		casConfiguration.setPrefixUrl(casProperties.getCasServerUrl());
+		CasClient casClient = new CasClient(casConfiguration);
+		
+		final Clients clients = new Clients(casProperties.getAppCallbackUrl(), parameterClient, headerClient, casClient);
 		final Config config = new Config(clients);
 		config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("ROLE_ADMIN"));
 		config.addAuthorizer("custom", new CustomAuthorizer());
@@ -290,6 +230,9 @@ public class Application extends SpringBootServletInitializer {
 	public String[] getACTIONS() {
 		return new String[] { LIETKE, XEM, THEM, SUA, XOA, GUI, DUYET };
 	}
+	
+	@Autowired
+	private CasProperties casProperties;
 	
 	@Autowired
 	private SoTiepCongDanRepository soTiepCongDanRepository;
