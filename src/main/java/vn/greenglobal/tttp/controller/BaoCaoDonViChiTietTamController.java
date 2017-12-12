@@ -12,6 +12,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import vn.greenglobal.core.model.common.BaseRepository;
 import vn.greenglobal.tttp.enums.ApiErrorEnum;
+import vn.greenglobal.tttp.enums.QuyenEnum;
+import vn.greenglobal.tttp.enums.TrangThaiBaoCaoDonViEnum;
+import vn.greenglobal.tttp.model.BaoCaoDonViChiTiet;
 import vn.greenglobal.tttp.model.BaoCaoDonViChiTietTam;
+import vn.greenglobal.tttp.model.CoQuanQuanLy;
+import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietRepository;
 import vn.greenglobal.tttp.repository.BaoCaoDonViChiTietTamRepository;
+import vn.greenglobal.tttp.repository.CoQuanQuanLyRepository;
+import vn.greenglobal.tttp.service.BaoCaoDonViChiTietService;
 import vn.greenglobal.tttp.service.BaoCaoDonViChiTietTamService;
 import vn.greenglobal.tttp.util.Utils;
 
@@ -39,6 +49,14 @@ public class BaoCaoDonViChiTietTamController extends TttpController<BaoCaoDonViC
 	@Autowired
 	private BaoCaoDonViChiTietTamService baoCaoDonViChiTietTamService;
 
+	@Autowired
+	private BaoCaoDonViChiTietRepository baoCaoDonViChiTietRepo;
+
+	@Autowired
+	private BaoCaoDonViChiTietService baoCaoDonViChiTietService;
+	
+	@Autowired 
+	private CoQuanQuanLyRepository coQuanQuanLyRepo;
 
 	public BaoCaoDonViChiTietTamController(BaseRepository<BaoCaoDonViChiTietTam, Long> repo) {
 		super(repo);
@@ -71,4 +89,83 @@ public class BaoCaoDonViChiTietTamController extends TttpController<BaoCaoDonViC
 			return Utils.responseInternalServerErrors(e);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonViChiTietTams/{id}/themDonVi/{idDonVi}")
+	@ApiOperation(value = "Lấy số liệu biểu mẫu tạm của đơn vị được thêm mới đã tồn tại", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy số liệu biểu mẫu của báo cáo thành công", response = BaoCaoDonViChiTietTam.class) })
+	public ResponseEntity<Object> getThemMoiDonViDaTonTai(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long idChiTiet, @PathVariable("idDonVi") long idDonVi, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.BAOCAODONVI_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			BaoCaoDonViChiTiet baoCaoDonViChiTietCha = baoCaoDonViChiTietRepo.findOne(baoCaoDonViChiTietService.predicateFindOne(idChiTiet));
+			if (baoCaoDonViChiTietCha == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			CoQuanQuanLy donVi = coQuanQuanLyRepo.findOne(idDonVi);
+			
+			BaoCaoDonViChiTiet baoCaoDonViChiTiet = new BaoCaoDonViChiTiet();
+			baoCaoDonViChiTiet.setCha(baoCaoDonViChiTietCha);
+			baoCaoDonViChiTiet.setBaoCaoDonVi(baoCaoDonViChiTietCha.getBaoCaoDonVi());
+			baoCaoDonViChiTiet.setLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao());
+			baoCaoDonViChiTiet.setId(0L);
+			baoCaoDonViChiTiet.setDonVi(donVi);
+			baoCaoDonViChiTiet.setTrangThaiBaoCao(TrangThaiBaoCaoDonViEnum.DANG_SOAN);
+			baoCaoDonViChiTiet.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao(), donVi.getTen()));
+
+			BaoCaoDonViChiTietTam baoCaoDonViChiTietTam = new BaoCaoDonViChiTietTam();
+			baoCaoDonViChiTietTam.setId(0L);
+			baoCaoDonViChiTietTam.setBaoCaoDonViChiTiet(baoCaoDonViChiTiet);
+			baoCaoDonViChiTietTam.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao(), donVi.getTen()));
+			baoCaoDonViChiTietTam.setSoLieuBaoCao(baoCaoDonViChiTietTamService.getDataFromDB(baoCaoDonViChiTietTam));
+			
+			return new ResponseEntity<>(eass.toFullResource(baoCaoDonViChiTietTam), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/baoCaoDonViChiTietTams/{id}/themDonVi")
+	@ApiOperation(value = "Lấy số liệu biểu mẫu tạm của đơn vị được thêm mới chưa tồn tại", position = 3, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lấy số liệu biểu mẫu của báo cáo thành công", response = BaoCaoDonViChiTietTam.class) })
+	public ResponseEntity<Object> getThemMoiDonViChuaTonTai(@RequestHeader(value = "Authorization", required = true) String authorization,
+			@PathVariable("id") long idChiTiet, PersistentEntityResourceAssembler eass) {
+
+		try {
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.BAOCAODONVI_LIETKE) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
+
+			BaoCaoDonViChiTiet baoCaoDonViChiTietCha = baoCaoDonViChiTietRepo.findOne(baoCaoDonViChiTietService.predicateFindOne(idChiTiet));
+			if (baoCaoDonViChiTietCha == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			BaoCaoDonViChiTiet baoCaoDonViChiTiet = new BaoCaoDonViChiTiet();
+			baoCaoDonViChiTiet.setCha(baoCaoDonViChiTietCha);
+			baoCaoDonViChiTiet.setBaoCaoDonVi(baoCaoDonViChiTietCha.getBaoCaoDonVi());
+			baoCaoDonViChiTiet.setLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao());
+			baoCaoDonViChiTiet.setTuThem(true);
+			baoCaoDonViChiTiet.setId(0L);
+			baoCaoDonViChiTiet.setTrangThaiBaoCao(TrangThaiBaoCaoDonViEnum.DANG_SOAN);
+			baoCaoDonViChiTiet.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao(), ""));
+
+			BaoCaoDonViChiTietTam baoCaoDonViChiTietTam = new BaoCaoDonViChiTietTam();
+			baoCaoDonViChiTietTam.setId(0L);
+			baoCaoDonViChiTietTam.setBaoCaoDonViChiTiet(baoCaoDonViChiTiet);
+			baoCaoDonViChiTietTam.setSoLieuBaoCao(Utils.getJsonSoLieuByLoaiBaoCao(baoCaoDonViChiTietCha.getLoaiBaoCao(), ""));
+			
+			return new ResponseEntity<>(eass.toFullResource(baoCaoDonViChiTietTam), HttpStatus.OK);
+		} catch (Exception e) {
+			return Utils.responseInternalServerErrors(e);
+		}
+	}
+	
 }
