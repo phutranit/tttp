@@ -3,7 +3,11 @@ package vn.greenglobal.tttp.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.ResourceAssembler;
@@ -125,7 +129,7 @@ public class CongChucController extends TttpController<CongChuc> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.ASC, "hoVaTen")));
 			Page<CongChuc> page = repo.findAll(congChucService.predicateFindByVaiTro(coQuanQuanLyId, vaiTro), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
@@ -145,9 +149,9 @@ public class CongChucController extends TttpController<CongChuc> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-
-			CongChuc congChuc = repo.findOne(
-					Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
+			
+			pageable = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(new Order(Direction.ASC, "hoVaTen")));
+			CongChuc congChuc = repo.findOne(Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 			ThamSo thamSo = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
 			CoQuanQuanLy donVi = null;
 			if (congChuc != null && congChuc.getCoQuanQuanLy() != null) {
