@@ -91,6 +91,7 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
 					predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.don.ngayTiepNhan.month().between(1, 6)
 							.or(QXuLyDon.xuLyDon.don.ngayTiepNhan.year().eq(year - 1)
+									.and(QDon.don.ngayTiepNhan.month().between(7, 12))
 									.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.month().between(1, 6)))
 							);
 				}
