@@ -463,16 +463,36 @@ public class ProcessController extends TttpController<Process> {
 				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
 			}
 			
-//			for (int i = 255; i <= 263; i++) {
-//				donViId = Long.valueOf(i + "");
-//				coQuyTrinhDayDu = false;
-//				
-//				Process process = null;
-//				Transition transition = null;
-//				DonViHasState donViHasState = null;
-//				
-//				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, i, congChucId, donViId);
-//			}
+			List<Integer> listId = new ArrayList<Integer>();
+			listId.add(141);
+			listId.add(142);
+			listId.add(143);
+			listId.add(148);
+			listId.add(149);
+			
+			listId.add(282);
+			listId.add(283);
+			listId.add(284);
+			listId.add(285);
+			listId.add(286);
+			listId.add(287);
+			listId.add(288);
+			listId.add(289);
+			listId.add(290);
+			listId.add(291);
+			listId.add(293);
+			listId.add(294);
+			
+			for (Integer idItem : listId) {
+				donViId = Long.valueOf(idItem + "");
+				coQuyTrinhDayDu = false;
+				
+				Process process = null;
+				Transition transition = null;
+				DonViHasState donViHasState = null;
+				
+				saveMaTran(coQuyTrinhDayDu, donViHasState, transition, process, 0, congChucId, donViId);
+			}
 			
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			
