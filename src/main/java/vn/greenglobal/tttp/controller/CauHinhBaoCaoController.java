@@ -74,10 +74,10 @@ public class CauHinhBaoCaoController extends TttpController<CauHinhBaoCao> {
 			@RequestBody CauHinhBaoCao cauHinhBaoCao, PersistentEntityResourceAssembler eass) {
 
 		try {
-//			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAUHINHBAOCAO_THEM) == null) {
-//				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
-//						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
-//			}
+			if (Utils.quyenValidate(profileUtil, authorization, QuyenEnum.CAUHINHBAOCAO_THEM) == null) {
+				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
+						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
+			}
 			
 			if (cauHinhBaoCao.getNgayBatDauBC() == null) {
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.NGAYBATDAUBC_REQUIRED.name(),
