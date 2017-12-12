@@ -180,8 +180,8 @@ public class DonService {
 		predAll = predAll.and(QDon.don.old.eq(false))
 				.and(QDon.don.xuLyDons.isNotEmpty()
 						.or(QDon.don.processType.eq(ProcessTypeEnum.KIEM_TRA_DE_XUAT)
-								.or(QDon.don.processType.isNull().and(QDon.don.thanhLapDon.isTrue())
-								.and(QDon.don.xuLyDons.isEmpty()))));
+								.or(QDon.don.processType.isNull().and(QDon.don.thanhLapDon.isTrue()).and(QDon.don.xuLyDons.isEmpty())))
+						);
 		
 		// Query don
 		if (maDon != null && StringUtils.isNotBlank(maDon.trim())) {

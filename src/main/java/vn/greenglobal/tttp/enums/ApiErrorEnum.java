@@ -76,6 +76,11 @@ public enum ApiErrorEnum {
 	LOAIDOITUONG_REQUIRED("Trường loaiDoiTuong không được để trống."),
 	LOAIVUVIEC_REQUIRED("Trường loaiVuViec không được để trống."),
 	PHANLOAIDON_REQUIRED("Trường phanLoaiDon không được để trống."),
+	NGAYBATDAUBC_REQUIRED("Trường ngayBatDauBC không được để trống."),
+	NGAYKETTHUCBC_REQUIRED("Trường ngayKetThucBC không được để trống."),
+	KYBAOCAO_REQUIRED("Trường kyBaoCao không được để trống."),
+	DONVIGUI_REQUIRED("Trường donViGui không được để trống."),
+	DANHSACHBAOCAO_REQUIRED("Trường danhSachBaoCao không được để trống."),
 	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		
 	ApiErrorEnum(String text) {

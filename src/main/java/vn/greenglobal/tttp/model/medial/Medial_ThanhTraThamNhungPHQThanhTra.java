@@ -1,25 +1,12 @@
 package vn.greenglobal.tttp.model.medial;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import io.swagger.annotations.ApiModelProperty;
-import vn.greenglobal.tttp.model.CoQuanQuanLy;
-import vn.greenglobal.tttp.model.Model;
+import vn.greenglobal.tttp.model.ModelThongKe;
 
 @Entity
 @Table(name = "medial_thanhtrathamnhungphathienquathanhtra")
-public class Medial_ThanhTraThamNhungPHQThanhTra extends Model<Medial_ThanhTraThamNhungPHQThanhTra> {
-
-	private static final long serialVersionUID = 1L;
-
-	@ManyToOne
-	private CoQuanQuanLy donVi;
+public class Medial_ThanhTraThamNhungPHQThanhTra extends ModelThongKe<Medial_ThanhTraThamNhungPHQThanhTra> {
 	
 	private int soThuTu;
 	
@@ -48,15 +35,8 @@ public class Medial_ThanhTraThamNhungPHQThanhTra extends Model<Medial_ThanhTraTh
 	private Long xuLyTrachNhiemNguoiDungDauKienNghi;
 	private Long xuLyTrachNhiemNguoiDungDauDaXuLy;
 	
+	private String tenDonVi = "";
 	private String ghiChu = "";
-
-	public CoQuanQuanLy getDonVi() {
-		return donVi;
-	}
-
-	public void setDonVi(CoQuanQuanLy donVi) {
-		this.donVi = donVi;
-	}
 	
 	public int getSoThuTu() {
 		return soThuTu;
@@ -265,22 +245,12 @@ public class Medial_ThanhTraThamNhungPHQThanhTra extends Model<Medial_ThanhTraTh
 	public void setGhiChu(String ghiChu) {
 		this.ghiChu = ghiChu;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Map<String, Object> getDonViInfo() {
-		if (getDonVi() != null) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("coQuanQuanLyId", getDonVi().getId());
-			map.put("ten", getDonVi().getTen());
-			return map;
-		}
-		return null;
+
+	public String getTenDonVi() {
+		return tenDonVi;
 	}
-	
-	@Transient
-	@ApiModelProperty(hidden = true)
-	public Long getThanhTraThamNhungPHQThanhTraId() {
-		return getId();
+
+	public void setTenDonVi(String tenDonVi) {
+		this.tenDonVi = tenDonVi;
 	}
 }

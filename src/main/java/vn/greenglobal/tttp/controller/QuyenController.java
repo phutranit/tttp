@@ -227,6 +227,24 @@ public class QuyenController {
 		quyenList.add(quyenObj);
 		
 		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang","Cấu hình báo cáo");
+		quyenObj.put("tenQuyen", QuyenEnum.CAUHINHBAOCAO_LIETKE.getText() + "," + QuyenEnum.CAUHINHBAOCAO_XEM.getText() + "," + QuyenEnum.CAUHINHBAOCAO_THEM.getText() + "," + QuyenEnum.CAUHINHBAOCAO_SUA.getText() + "," + QuyenEnum.CAUHINHBAOCAO_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.CAUHINHBAOCAO_LIETKE.name() + "," + QuyenEnum.CAUHINHBAOCAO_XEM.name() + "," + QuyenEnum.CAUHINHBAOCAO_THEM.name() + "," + QuyenEnum.CAUHINHBAOCAO_SUA.name() + "," + QuyenEnum.CAUHINHBAOCAO_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang"," Báo cáo tổng hợp");
+		quyenObj.put("tenQuyen", QuyenEnum.BAOCAOTONGHOP_LIETKE.getText() + "," + QuyenEnum.BAOCAOTONGHOP_XEM.getText() + "," + QuyenEnum.BAOCAOTONGHOP_THEM.getText() + "," + QuyenEnum.BAOCAOTONGHOP_SUA.getText() + "," + QuyenEnum.BAOCAOTONGHOP_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.BAOCAOTONGHOP_LIETKE.name() + "," + QuyenEnum.BAOCAOTONGHOP_XEM.name() + "," + QuyenEnum.BAOCAOTONGHOP_THEM.name() + "," + QuyenEnum.BAOCAOTONGHOP_SUA.name() + "," + QuyenEnum.BAOCAOTONGHOP_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
+		quyenObj.put("tenChucNang"," Báo cáo đơn vị");
+		quyenObj.put("tenQuyen", QuyenEnum.BAOCAODONVI_LIETKE.getText() + "," + QuyenEnum.BAOCAODONVI_XEM.getText() + "," + QuyenEnum.BAOCAODONVI_THEM.getText() + "," + QuyenEnum.BAOCAODONVI_SUA.getText() + "," + QuyenEnum.BAOCAODONVI_XOA.getText());
+		quyenObj.put("giaTriQuyen", QuyenEnum.BAOCAODONVI_LIETKE.name() + "," + QuyenEnum.BAOCAODONVI_XEM.name() + "," + QuyenEnum.BAOCAODONVI_THEM.name() + "," + QuyenEnum.BAOCAODONVI_SUA.name() + "," + QuyenEnum.BAOCAODONVI_XOA.name());
+		quyenList.add(quyenObj);
+		
+		quyenObj = new HashMap<>();
 		quyenObj.put("tenChucNang","Thay đổi cán bộ đang xử lý");
 		quyenObj.put("tenQuyen", QuyenEnum.THAYDOICANBO_LIETKE.getText() + "," + QuyenEnum.THAYDOICANBO_SUA.getText());
 		quyenObj.put("giaTriQuyen", QuyenEnum.THAYDOICANBO_LIETKE.name() + "," + QuyenEnum.THAYDOICANBO_SUA.name());
