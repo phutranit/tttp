@@ -145,8 +145,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			Page<CoQuanQuanLy> page = repo
-					.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, listCoQuanQuanLys, listCapCoQuanQuanLys), pageable);
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(tuKhoa, cha, capCoQuanQuanLy, donViHanhChinh, listCoQuanQuanLys, listCapCoQuanQuanLys), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
@@ -165,7 +164,9 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				return Utils.responseErrors(HttpStatus.FORBIDDEN, ApiErrorEnum.ROLE_FORBIDDEN.name(),
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
-			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(), pageable);
+			pageable = new PageRequest(0, 1000, new Sort(new Order(Direction.ASC, "ten")));
+			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
+			Page<CoQuanQuanLy> page = repo.findAll(coQuanQuanLyService.predicateFindAll(Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
