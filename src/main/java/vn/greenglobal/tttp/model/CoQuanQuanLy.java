@@ -40,9 +40,9 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	//@Lob
 	private String moTaSearch = "";
 	
-	private boolean isDonViNhanTTXM;
-	private boolean isDonViNhanTheoDoiThucHien;
-	private boolean isDonViTmp;
+	private boolean donViNhanTTXM;
+	private boolean donViNhanTheoDoiThucHien;
+	private boolean donViTmp;
 	
 	@ManyToOne
 	private CoQuanQuanLy cha;
@@ -107,27 +107,27 @@ public class CoQuanQuanLy extends Model<CoQuanQuanLy> {
 	}
 
 	public boolean isDonViNhanTTXM() {
-		return isDonViNhanTTXM;
+		return donViNhanTTXM;
 	}
 
-	public void setDonViNhanTTXM(boolean isDonViNhanTTXM) {
-		this.isDonViNhanTTXM = isDonViNhanTTXM;
+	public void setDonViNhanTTXM(boolean donViNhanTTXM) {
+		this.donViNhanTTXM = donViNhanTTXM;
 	}
 
 	public boolean isDonViNhanTheoDoiThucHien() {
-		return isDonViNhanTheoDoiThucHien;
+		return donViNhanTheoDoiThucHien;
 	}
 
-	public void setDonViNhanTheoDoiThucHien(boolean isDonViNhanTheoDoiThucHien) {
-		this.isDonViNhanTheoDoiThucHien = isDonViNhanTheoDoiThucHien;
+	public void setDonViNhanTheoDoiThucHien(boolean donViNhanTheoDoiThucHien) {
+		this.donViNhanTheoDoiThucHien = donViNhanTheoDoiThucHien;
 	}
 
 	public boolean isDonViTmp() {
-		return isDonViTmp;
+		return donViTmp;
 	}
 
-	public void setDonViTmp(boolean isDonViTmp) {
-		this.isDonViTmp = isDonViTmp;
+	public void setDonViTmp(boolean donViTmp) {
+		this.donViTmp = donViTmp;
 	}
 
 	@ApiModelProperty(position = 4)
