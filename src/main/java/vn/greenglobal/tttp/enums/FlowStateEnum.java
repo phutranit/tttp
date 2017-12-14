@@ -32,6 +32,8 @@ public enum FlowStateEnum {
 	CAN_BO_CHUYEN_VE_DON_VI_GIAI_QUYET("Cán bộ chuyển về đơn vị giải quyết"),
 	CAN_BO_CHUYEN_DU_THAO_VE_DON_VI_GIAI_QUYET("Cán bộ chuyển dự thảo về đơn vị giải quyết"),
 	CAN_BO_CHUYEN_VE_TP_DON_VI_GIAI_QUYET("Cán bộ chuyển về đơn vị giải quyết"),
+	CAN_BO_GUI_YEU_CAU_THEO_DOI_THUC_HIEN("Cán bộ, trưởng phòng gửi yêu cầu theo dõi thực hiện"),
+	CAN_BO_TDTH_LUU_DON("Cán bộ, trưởng phòng TDTH lưu đơn"),
 	YEU_CAU_GAP_LANH_DAO("Yêu cầu gặp lãnh đạo"),
 	KET_THUC("Kết thúc");
 

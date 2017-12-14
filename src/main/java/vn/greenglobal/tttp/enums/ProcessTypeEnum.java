@@ -9,6 +9,7 @@ public enum ProcessTypeEnum {
 	GIAI_QUYET_DON("Giải quyết đơn"),
 	THAM_TRA_XAC_MINH("Thẩm tra xác minh"),
 	THANH_TRA("Thanh tra"),
+	THEO_DOI_THUC_HIEN("Theo dõi thực hiện"),
 	KE_HOACH_THANH_TRA("Kế  hoạch thanh tra");
 	
 	ProcessTypeEnum(String text) {
