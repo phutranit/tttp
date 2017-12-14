@@ -498,12 +498,12 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
+	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
 		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds)
 				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
-
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
