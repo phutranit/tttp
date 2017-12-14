@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import io.swagger.annotations.Api;
@@ -45,6 +46,7 @@ import vn.greenglobal.tttp.model.CoQuanQuanLy;
 import vn.greenglobal.tttp.model.CuocThanhTra;
 import vn.greenglobal.tttp.model.Don;
 import vn.greenglobal.tttp.model.LinhVucDonThu;
+import vn.greenglobal.tttp.model.QCoQuanQuanLy;
 import vn.greenglobal.tttp.model.QCuocThanhTra;
 import vn.greenglobal.tttp.model.QDon;
 import vn.greenglobal.tttp.model.QSoTiepCongDan;
@@ -232,11 +234,14 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			linhVucVeNhaCuaTaiSans.addAll(
 					linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans));
 
+			ThamSo thamSoLCQQLBoCongAn = repoThamSo.findOne(thamSoService.predicateFindTen("LCCQQL_BO_CONG_AN"));
+			ThamSo thamSoDVHCTPDaNang = repoThamSo.findOne(thamSoService.predicateFindTen("DVHC_TP_DA_NANG"));
 			ThamSo thamSoUBNDTP = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
 			ThamSo thamSoUBNDTPDN = repoThamSo.findOne(thamSoService.predicateFindTen("CQQL_UBNDTP_DA_NANG"));
 			ThamSo thamSoSBN = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
 			ThamSo thamSoUBNDQH = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
-
+			ThamSo thamSoCCQQLPhongBan = repoThamSo.findOne(thamSoService.predicateFindTen("CCQQL_PHONG_BAN"));
+			
 			Map<String, Object> mapTongCong = new HashMap<>();
 			Long tongCongTiepCongDanThuongXuyenLuot1 = 0L;
 			Long tongCongTiepCongDanThuongXuyenNguoi2 = 0L;
@@ -287,12 +292,16 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 						list.add(coQuanQuanLyRepo.findOne(donViXuLy));
 					}
 				} else {
-					List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
-					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
-					capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
-					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+//					List<Long> capCoQuanQuanLyIds = new ArrayList<Long>();
+//					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDTPDN.getGiaTri().toString()));
+//					capCoQuanQuanLyIds.add(Long.valueOf(thamSoSBN.getGiaTri().toString()));
+//					capCoQuanQuanLyIds.add(Long.valueOf(thamSoUBNDQH.getGiaTri().toString()));
+					//OrderSpecifier<Long> sortOrder = QCoQuanQuanLy.coQuanQuanLy.cha.id.desc();
 					list.addAll((List<CoQuanQuanLy>) coQuanQuanLyRepo
-							.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(capCoQuanQuanLyIds)));
+							.findAll(coQuanQuanLyService.predicateFindDonViByCapCoQuanQuanLys(
+									Long.valueOf(thamSoCCQQLPhongBan.getGiaTri().toString()),
+									Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()),
+									Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()))));
 				}
 				donVis.addAll(list);
 			} else {
@@ -326,6 +335,11 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				donVis.addAll(list);
 			}
 
+			System.out.println("page size2 " +donVis.size());
+			donVis.forEach(p -> {
+				System.out.println("dv " +p.getTen());
+			});
+			
 			for (CoQuanQuanLy cq : donVis) {
 				BooleanExpression predAllDSTCDDonVi = predAllDSTCD;
 				if (cq.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoUBNDTP.getGiaTri().toString()))) {
