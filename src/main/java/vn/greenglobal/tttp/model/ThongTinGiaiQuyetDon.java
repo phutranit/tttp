@@ -158,6 +158,8 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne
 	private CoQuanQuanLy donViGiaoThamTraXacMinh;
+	@ManyToOne
+	private CoQuanQuanLy donViTheoDoiThucHien;
 	
 	@OneToOne
 	@JoinColumn(name = "don_id")
@@ -916,6 +918,15 @@ public class ThongTinGiaiQuyetDon extends Model<ThongTinGiaiQuyetDon> {
 
 	public void setDonViGiaoThamTraXacMinh(CoQuanQuanLy donViGiaoThamTraXacMinh) {
 		this.donViGiaoThamTraXacMinh = donViGiaoThamTraXacMinh;
+	}
+	
+	@ApiModelProperty(example = "{}", position = 2)
+	public CoQuanQuanLy getDonViTheoDoiThucHien() {
+		return donViTheoDoiThucHien;
+	}
+
+	public void setDonViTheoDoiThucHien(CoQuanQuanLy donViTheoDoiThucHien) {
+		this.donViTheoDoiThucHien = donViTheoDoiThucHien;
 	}
 
 	@ApiModelProperty(example = "{}", position = 2)

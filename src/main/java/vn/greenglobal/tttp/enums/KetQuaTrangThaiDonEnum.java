@@ -13,6 +13,7 @@ public enum KetQuaTrangThaiDonEnum {
 	YEU_CAU_GAP_LANH_DAO("Yêu cầu gặp lãnh đạo"),
 	TRA_LAI_DON_KHONG_DUNG_THAM_QUYEN("Trả lại đơn chuyển không đúng thẩm quyền"),
 	DANG_TTXM("Đang TTXM"),
+	DANG_TDTH("Đang TDTH"),
 	DA_CO_KET_QUA_TTXM("Đã có kết quả TTXM"),
 //	CHO_DOI_THOAI("Chờ đối thoại"),
 //	DA_CO_KET_QUA_DOI_THOAI("Đã có kết quả đối thoại"),
