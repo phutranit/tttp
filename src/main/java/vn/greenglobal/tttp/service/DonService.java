@@ -228,10 +228,12 @@ public class DonService {
 			if (nguonDonEnum != null) { 
 				if (!nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TDTH) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) {
 					predAll = predAll.and(
 							QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon)))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.KIEM_TRA_DE_XUAT))
+									.and(QDon.don.processType.ne(ProcessTypeEnum.THEO_DOI_THUC_HIEN))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.THAM_TRA_XAC_MINH))
 									.and(QDon.don.xuLyDons.any().donChuyen.isFalse()));
 				}
@@ -247,7 +249,9 @@ public class DonService {
 			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViXuLyXLD)
 						.and(QDon.don.trangThaiXLDGiaiQuyet.eq(trangThaiDonValue)))
 					.or(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD)
-							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue))));
+							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue)))
+					.or(QDon.don.donViTheoDoiThucHien.id.eq(donViXuLyXLD)
+							.and(QDon.don.trangThaiTDTH.eq(trangThaiDonValue))));
 		}
 		
 		if (ketQuaToanHT != null && StringUtils.isNotBlank(ketQuaToanHT.trim())) {
@@ -426,6 +430,11 @@ public class DonService {
 						giaiQuyetDonQuery = giaiQuyetDonQuery
 								.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.isTrue());
 					}
+					if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TDTH)) {
+						searchGQD = NguonTiepNhanDonEnum.GIAO_TDTH.name();
+						giaiQuyetDonQuery = giaiQuyetDonQuery
+								.and(QGiaiQuyetDon.giaiQuyetDon.laTDTH.isTrue());
+					}
 				}
 			}
 			
@@ -538,11 +547,13 @@ public class DonService {
 			if (nguonDonEnum != null) { 
 				if (!nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TDTH) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) {
 					predAll = predAll.and(
 							QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon)))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.KIEM_TRA_DE_XUAT))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.THAM_TRA_XAC_MINH))
+									.and(QDon.don.processType.ne(ProcessTypeEnum.THEO_DOI_THUC_HIEN))
 									.and(QDon.don.xuLyDons.any().donChuyen.isFalse()));
 				}
 			}
@@ -603,6 +614,7 @@ public class DonService {
 		if (taiDonVi) {
 			predAll = predAll.and(QDon.don.donViXuLyGiaiQuyet.id.eq(donViXuLyXLD)
 					.or(QDon.don.donViThamTraXacMinh.id.eq(donViXuLyXLD))
+					.or(QDon.don.donViTheoDoiThucHien.id.eq(donViXuLyXLD))
 					.or(QDon.don.donViKiemTraDeXuat.id.eq(donViXuLyXLD)))
 					;
 		}
@@ -748,11 +760,13 @@ public class DonService {
 			if (nguonDonEnum != null) {
 				if (!nguonDonEnum.equals(NguonTiepNhanDonEnum.CHUYEN_DON) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM) &&
+						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TDTH) &&
 						!nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_KTDX)) {
 					predAll = predAll.and(
 							QDon.don.nguonTiepNhanDon.eq(NguonTiepNhanDonEnum.valueOf(StringUtils.upperCase(nguonDon)))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.KIEM_TRA_DE_XUAT))
 									.and(QDon.don.processType.ne(ProcessTypeEnum.THAM_TRA_XAC_MINH))
+									.and(QDon.don.processType.ne(ProcessTypeEnum.THEO_DOI_THUC_HIEN))
 									.and(QDon.don.thongTinGiaiQuyetDon.giaiQuyetDons.any().donChuyen.isFalse()));
 				}
 			}
@@ -767,7 +781,9 @@ public class DonService {
 			predAll = predAll.and((QDon.don.donViXuLyGiaiQuyet.id.eq(donViGiaiQuyetId)
 						.and(QDon.don.trangThaiXLDGiaiQuyet.eq(trangThaiDonValue)))
 					.or(QDon.don.donViThamTraXacMinh.id.eq(donViGiaiQuyetId)
-							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue))));
+							.and(QDon.don.trangThaiTTXM.eq(trangThaiDonValue)))
+					.or(QDon.don.donViTheoDoiThucHien.id.eq(donViGiaiQuyetId)
+							.and(QDon.don.trangThaiTDTH.eq(trangThaiDonValue))));
 		}
 		
 		if (ketQuaToanHT != null && StringUtils.isNotBlank(ketQuaToanHT.trim())) {
@@ -836,6 +852,10 @@ public class DonService {
 				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TTXM)) {
 					giaiQuyetDonQuery = giaiQuyetDonQuery
 							.and(QGiaiQuyetDon.giaiQuyetDon.laTTXM.isTrue());
+				}
+				if (nguonDonEnum.equals(NguonTiepNhanDonEnum.GIAO_TDTH)) {
+					giaiQuyetDonQuery = giaiQuyetDonQuery
+							.and(QGiaiQuyetDon.giaiQuyetDon.laTDTH.isTrue());
 				}
 			}
 		}

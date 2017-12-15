@@ -2076,6 +2076,7 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<Map<String, Object>> getNguonDonInfo() {
+		System.out.println("getNguonDonInfo: ");
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		List<Long> listIdDonVi = new ArrayList<Long>();
@@ -2102,22 +2103,50 @@ public class Don extends Model<Don> {
 		if (getThongTinGiaiQuyetDon() != null) {
 			List<GiaiQuyetDon> giaiQuyetDons = thongTinGiaiQuyetDon.getGiaiQuyetDons();
 			if (giaiQuyetDons != null) {
-				for (GiaiQuyetDon gqd : giaiQuyetDons) {
-					Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
-					if (!listIdDonVi.contains(idDonViGiaiQuyet)) {
-						listIdDonVi.add(idDonViGiaiQuyet);
-						map = new HashMap<>();
-						map.put("idDonVi", idDonViGiaiQuyet);
-						if (gqd.isLaTTXM()) {					
-							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
-							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
-							map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
-						} else if (gqd.isDonChuyen()){
-							map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_KTDX.getText());
-							map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
-							map.put("type", NguonTiepNhanDonEnum.GIAO_KTDX.name());
+				if (thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null 
+						&& thongTinGiaiQuyetDon.getDonViThamTraXacMinh().getId().equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId())) {
+					for (GiaiQuyetDon gqd : giaiQuyetDons) {
+						Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
+						if (!listIdDonVi.contains(idDonViGiaiQuyet) 
+								&& (!idDonViGiaiQuyet.equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId()) 
+										|| (idDonViGiaiQuyet.equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId()) && gqd.isLaTDTH()) )) {
+							listIdDonVi.add(idDonViGiaiQuyet);
+							map = new HashMap<>();
+							map.put("idDonVi", idDonViGiaiQuyet);
+							if (gqd.isLaTDTH()) {					
+								map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TDTH.getText());
+								map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+								map.put("type", NguonTiepNhanDonEnum.GIAO_TDTH.name());
+							} else if (gqd.isDonChuyen()){
+								map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_KTDX.getText());
+								map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+								map.put("type", NguonTiepNhanDonEnum.GIAO_KTDX.name());
+							}
+							list.add(map);
 						}
-						list.add(map);
+					}
+				} else {
+					for (GiaiQuyetDon gqd : giaiQuyetDons) {
+						Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
+						if (!listIdDonVi.contains(idDonViGiaiQuyet)) {
+							listIdDonVi.add(idDonViGiaiQuyet);
+							map = new HashMap<>();
+							map.put("idDonVi", idDonViGiaiQuyet);
+							if (gqd.isLaTDTH()) {					
+								map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TDTH.getText());
+								map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+								map.put("type", NguonTiepNhanDonEnum.GIAO_TDTH.name());
+							} else if (gqd.isLaTTXM()) {					
+								map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_TTXM.getText());
+								map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+								map.put("type", NguonTiepNhanDonEnum.GIAO_TTXM.name());
+							} else if (gqd.isDonChuyen()){
+								map.put("nguonDonText", NguonTiepNhanDonEnum.GIAO_KTDX.getText());
+								map.put("donViChuyenText", gqd.getDonViChuyenDon() != null ? gqd.getDonViChuyenDon().getTen() : "");
+								map.put("type", NguonTiepNhanDonEnum.GIAO_KTDX.name());
+							}
+							list.add(map);
+						}
 					}
 				}
 			}
@@ -2206,13 +2235,15 @@ public class Don extends Model<Don> {
 			}
 			list.add(map);
 		}
-		if (getDonViThamTraXacMinh() != null) {
+		
+		if (getDonViTheoDoiThucHien() != null && getDonViThamTraXacMinh() != null 
+				&& getDonViTheoDoiThucHien().getId().equals(getDonViThamTraXacMinh().getId())) {
 			map = new HashMap<>();
-			map.put("donViId", getDonViThamTraXacMinh().getId());
-			map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
-			map.put("trangThaiDonType", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
-			map.put("ketQuaStr", getKetQuaTTXM() != null ? getKetQuaTTXM().getText() : "");
-			map.put("ketQuaType", getKetQuaTTXM() != null ? getKetQuaTTXM().name() : "");
+			map.put("donViId", getDonViTheoDoiThucHien().getId());
+			map.put("trangThaiDonText", getTrangThaiTDTH() != null ? getTrangThaiTDTH().getText() : "");
+			map.put("trangThaiDonType", getTrangThaiTDTH() != null ? getTrangThaiTDTH().name() : "");
+			map.put("ketQuaStr", getKetQuaTDTH()!= null ? getKetQuaTDTH().getText() : "");
+			map.put("ketQuaType", getKetQuaTDTH() != null ? getKetQuaTDTH().name() : "");
 			map.put("donViTTXM", "");
 			
 			if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
@@ -2220,7 +2251,39 @@ public class Don extends Model<Don> {
 				map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
 			}
 			list.add(map);
-		}
+		} else {
+			if (getDonViThamTraXacMinh() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViThamTraXacMinh().getId());
+				map.put("trangThaiDonText", getTrangThaiTTXM() != null ? getTrangThaiTTXM().getText() : "");
+				map.put("trangThaiDonType", getTrangThaiTTXM() != null ? getTrangThaiTTXM().name() : "");
+				map.put("ketQuaStr", getKetQuaTTXM() != null ? getKetQuaTTXM().getText() : "");
+				map.put("ketQuaType", getKetQuaTTXM() != null ? getKetQuaTTXM().name() : "");
+				map.put("donViTTXM", "");
+				
+				if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
+					map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+					map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+				}
+				list.add(map);
+			}
+			if (getDonViTheoDoiThucHien() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViTheoDoiThucHien().getId());
+				map.put("trangThaiDonText", getTrangThaiTDTH() != null ? getTrangThaiTDTH().getText() : "");
+				map.put("trangThaiDonType", getTrangThaiTDTH() != null ? getTrangThaiTDTH().name() : "");
+				map.put("ketQuaStr", getKetQuaTDTH()!= null ? getKetQuaTDTH().getText() : "");
+				map.put("ketQuaType", getKetQuaTDTH() != null ? getKetQuaTDTH().name() : "");
+				map.put("donViTTXM", "");
+				
+				if (getKetQuaXLDGiaiQuyet() != null && KetQuaTrangThaiDonEnum.DINH_CHI.equals(getKetQuaXLDGiaiQuyet())) {
+					map.put("ketQuaStr", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().getText() : "");
+					map.put("ketQuaType", getKetQuaXLDGiaiQuyet() != null ? getKetQuaXLDGiaiQuyet().name() : "");
+				}
+				list.add(map);
+			}
+		}		
+		
 		if (getDonViKiemTraDeXuat() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViKiemTraDeXuat().getId());

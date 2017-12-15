@@ -37,6 +37,7 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 	private boolean laTTXM;
 	private boolean old;
 	private boolean donChuyen;
+	private boolean laTDTH;
 	
 	@ManyToOne
 	@QueryInit("*.*.*")
@@ -209,6 +210,15 @@ public class GiaiQuyetDon extends Model<GiaiQuyetDon> {
 		this.laTTXM = laTTXM;
 	}
 	
+	@ApiModelProperty(hidden = true)
+	public boolean isLaTDTH() {
+		return laTDTH;
+	}
+
+	public void setLaTDTH(boolean laTDTH) {
+		this.laTDTH = laTDTH;
+	}
+
 	public boolean isDonChuyen() {
 		return donChuyen;
 	}
