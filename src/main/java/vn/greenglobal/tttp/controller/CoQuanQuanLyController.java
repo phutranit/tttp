@@ -122,22 +122,18 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo.findAll(coQuanQuanLyService
 						.predicateFindAllNotPhongBanNotCongAn(null, idCapPhongBan,
 								Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), 
-								Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString())));
+								Long.valueOf(thamSoDVHCTPDaNang.getGiaTri().toString()), capCoQuanQuanLyIds));
 				list.addAll(listDonViCon);
 			} else {
 				list.add(repo.findOne(donViId));
 				capCoQuanQuanLyIds.add(idCapPhongBan);
 				List<CoQuanQuanLy> listDonViCon = (List<CoQuanQuanLy>) repo
 						.findAll(coQuanQuanLyService.predicateFindAllNotPhongBanNotCongAn(donViId, idCapPhongBan, 
-								Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), null));
+								Long.valueOf(thamSoLCQQLBoCongAn.getGiaTri().toString()), null, null));
 				list.addAll(listDonViCon);
 			}
 
 			Page<CoQuanQuanLy> page = new PageImpl<CoQuanQuanLy>(list, pageable, list.size());
-			System.out.println("page size1 " +page.getNumberOfElements());
-			page.forEach(p -> {
-				System.out.println("p " +p.getTen());
-			});
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);
