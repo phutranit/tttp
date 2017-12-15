@@ -186,15 +186,15 @@ public class CuocThanhTraController extends TttpController<CuocThanhTra> {
 			}
 			
 			for (int j = 0; j <= cuocThanhTraIdVaDoiTuongIds.size() - 1; j++) {
-				cuocThanhTraIdVaDoiTuongIdsUnique.add(cuocThanhTraIdVaDoiTuongIds.get(j).get(0).toString().concat(((DoiTuongThanhTra) cuocThanhTraIdVaDoiTuongIds.get(j).get(1)).getId().toString()));
+				cuocThanhTraIdVaDoiTuongIdsUnique.add(cuocThanhTraIdVaDoiTuongIds.get(j).get(0).toString() + "-".concat(((DoiTuongThanhTra) cuocThanhTraIdVaDoiTuongIds.get(j).get(1)).getId().toString()));
 			}
 			
 			if (cuocThanhTraIdVaDoiTuongIdsUnique != null && cuocThanhTraIdVaDoiTuongIdsUnique.size() > 0) {
 				List<String> strList = new ArrayList<String>(cuocThanhTraIdVaDoiTuongIdsUnique);
 				for (String u : strList) {
 					List<Object> ll = new ArrayList<Object>();
-					ll.add(u.substring(0, 1));
-					ll.add(u.substring(1, 2));
+					ll.add(u.split("-")[0]);
+					ll.add(u.split("-")[1]);
 					cuocThanhTraIdVaDoiTuongIdsResult.add(ll);
 				}
 			}
