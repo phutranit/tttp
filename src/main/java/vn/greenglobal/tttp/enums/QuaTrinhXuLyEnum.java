@@ -13,6 +13,7 @@ public enum QuaTrinhXuLyEnum {
 	LANH_DAO_THU_HOI("Lãnh đạo thu hồi đơn"),
 	TRUONG_PHONG_THU_HOI("Trưởng phòng thu hồi đơn"),
 	CHUYEN_DON_VI_TTXM("Chuyển đơn vị TTXM"),
+	CHUYEN_DON_VI_TDTH("Chuyển đơn vị TDTH"),
 	CHUYEN_DON_VI_KTDX("Chuyển đơn vị KTDX"),
 	CHUYEN_CHUYEN_VIEN_NHAP_LIEU("Chuyển chuyên viên nhập liệu"),
 	GUI_BAO_CAO_TTXM_CHO_DON_VI_GIAO("Gửi báo cáo TTXM cho đơn vị giao"),

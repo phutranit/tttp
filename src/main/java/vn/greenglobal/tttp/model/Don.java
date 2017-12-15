@@ -153,6 +153,8 @@ public class Don extends Model<Don> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViThamTraXacMinh;
 	@ManyToOne(fetch = FetchType.LAZY)
+	private CoQuanQuanLy donViTheoDoiThucHien;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy donViKiemTraDeXuat;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CoQuanQuanLy phongBanGiaiQuyet; // Xu ly don TCD
@@ -250,6 +252,9 @@ public class Don extends Model<Don> {
 	private TrangThaiDonEnum trangThaiTTXM;
 	
 	@Enumerated(EnumType.STRING)
+	private TrangThaiDonEnum trangThaiTDTH;
+	
+	@Enumerated(EnumType.STRING)
 	private TrangThaiDonEnum trangThaiKTDX;
 	
 	@Enumerated(EnumType.STRING)
@@ -257,6 +262,9 @@ public class Don extends Model<Don> {
 	
 	@Enumerated(EnumType.STRING)
 	private KetQuaTrangThaiDonEnum ketQuaTTXM;
+	
+	@Enumerated(EnumType.STRING)
+	private KetQuaTrangThaiDonEnum ketQuaTDTH;
 	
 	//Bo phanLoaiDon - cap nhat 16/11
 	//@Enumerated(EnumType.STRING)
@@ -702,6 +710,15 @@ public class Don extends Model<Don> {
 	public void setHuongXuLyXLD(HuongXuLyXLDEnum huongXuLyXLD) {
 		this.huongXuLyXLD = huongXuLyXLD;
 	}	
+	
+	@ApiModelProperty(position = 16, example = "{}")
+	public CoQuanQuanLy getDonViTheoDoiThucHien() {
+		return donViTheoDoiThucHien;
+	}
+
+	public void setDonViTheoDoiThucHien(CoQuanQuanLy donViTheoDoiThucHien) {
+		this.donViTheoDoiThucHien = donViTheoDoiThucHien;
+	}
 
 	@JsonIgnore
 	@ApiModelProperty(position = 13)
@@ -1466,6 +1483,24 @@ public class Don extends Model<Don> {
 		this.trangThaiTTXM = trangThaiTTXM;
 	}
 	
+	@JsonIgnore
+	public TrangThaiDonEnum getTrangThaiTDTH() {
+		return trangThaiTDTH;
+	}
+
+	public void setTrangThaiTDTH(TrangThaiDonEnum trangThaiTDTH) {
+		this.trangThaiTDTH = trangThaiTDTH;
+	}
+
+	@JsonIgnore
+	public KetQuaTrangThaiDonEnum getKetQuaTDTH() {
+		return ketQuaTDTH;
+	}
+
+	public void setKetQuaTDTH(KetQuaTrangThaiDonEnum ketQuaTDTH) {
+		this.ketQuaTDTH = ketQuaTDTH;
+	}
+
 	@JsonIgnore
 	public TrangThaiDonEnum getTrangThaiKTDX() {
 		return trangThaiKTDX;

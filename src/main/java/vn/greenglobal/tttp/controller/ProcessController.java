@@ -1087,7 +1087,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên", false, null, donViId, 3L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				//Cán bộ lưu đơn sau khi duoc truong phong giao viec
@@ -1100,7 +1100,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên nhập liệu", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				//Chuyen vien nhap lieu trinh lanh dao
@@ -1110,7 +1110,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Trưởng phòng", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Trưởng phòng", false, null, donViId, 2L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				//Trưởng phòng giao việc cán bộ sau khi được lãnh đạo giao
@@ -1410,7 +1410,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Trưởng phòng", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Trưởng phòng", false, null, donViId, 2L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				transition = addDataTrasition(process, 1L, 34L, 50L, false, TenQuyTrinhEnum.QUY_TRINH_1_BUOC_KHONG_DAY_DU);
@@ -1419,7 +1419,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên nhập liệu", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên nhập liệu", false, null, donViId, 4L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				transition = addDataTrasition(process, 1L, 34L, 50L, false, TenQuyTrinhEnum.QUY_TRINH_1_BUOC_KHONG_DAY_DU);
@@ -1428,7 +1428,7 @@ public class ProcessController extends TttpController<Process> {
 			
 			process = new Process();
 			transition = new Transition();
-			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên", false, null, donViId, 1L, false);
+			process = addDataProcess(ProcessTypeEnum.THEO_DOI_THUC_HIEN, "Theo dõi thực hiện của Chuyên viên", false, null, donViId, 3L, false);
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				transition = addDataTrasition(process, 1L, 34L, 50L, false, TenQuyTrinhEnum.QUY_TRINH_1_BUOC_KHONG_DAY_DU);
