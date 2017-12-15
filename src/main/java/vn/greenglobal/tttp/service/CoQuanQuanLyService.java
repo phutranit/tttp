@@ -123,9 +123,8 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAll(Long donViHanhChinhId) {
+	public Predicate predicateFindAll() {
 		BooleanExpression predAll = baseAll;
-		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
@@ -243,20 +242,20 @@ public class CoQuanQuanLyService {
 
 		CoQuanQuanLy cqql = getCha(repo, id);
 		
-		if(cqql != null) {
+		if (cqql != null) {
 			id = cqql.getId();
-			if(cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoQuan.getGiaTri().toString())) || 
-					cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoHuyen.getGiaTri().toString())) || 
-					cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoSBN.getGiaTri().toString()))) {
+			if (cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoQuan.getGiaTri().toString()))
+					|| cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoHuyen.getGiaTri().toString()))
+					|| cqql.getCapCoQuanQuanLy().getId().equals(Long.valueOf(thamSoSBN.getGiaTri().toString()))) {
 				id = cqql.getId();
 				check = true;
 			}
 		}
 		
-		if(check || cqql == null) {
+		if (check || cqql == null) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(id))
 					.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLy));
-			
+
 			return predAll;
 		}
 		
@@ -533,38 +532,13 @@ public class CoQuanQuanLyService {
 	 * 
 	 */
 	
-	public Predicate predicateFindAllDonViNotPhongBanNotCongAn(Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
-		BooleanExpression predAll = baseIsNotDonViTmp;
-		QDonViHanhChinh qDonViHanhChinh2 = new QDonViHanhChinh("qDonViHanhChinh2");
-		QDonViHanhChinh qDonViHanhChinh3 = new QDonViHanhChinh("qDonViHanhChinh3");
-		QDonViHanhChinh qDonViHanhChinh4 = new QDonViHanhChinh("qDonViHanhChinh4");
+	public Predicate predicateFindAllDonViNotPhongBanNotCongAn(Long capCoQuanQuanLyId, Long loaiCoQuanQuanLyId, Long donViHanhChinhId, boolean notDonViTmp) {
+		BooleanExpression predAll = notDonViTmp ? baseIsNotDonViTmp : baseAll;
 
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyId)
 				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
-		
-		if (donViHanhChinhId != null && donViHanhChinhId > 0) {
-			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.id.eq(donViHanhChinhId)
-					.or(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.isNotNull()
-							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.isNotNull())
-							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.id.eq(donViHanhChinhId)))
-					.or(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.isNotNull()
-							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.isNotNull())
-							.and(JPAExpressions.selectFrom(qDonViHanhChinh2).where(qDonViHanhChinh2.daXoa.isFalse())
-									.where(qDonViHanhChinh2.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha))
-									.where(qDonViHanhChinh2.cha.id.eq(donViHanhChinhId)).exists()))
-					.or(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.isNotNull()
-							.and(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha.isNotNull())
-							.and(JPAExpressions.selectFrom(qDonViHanhChinh3).where(qDonViHanhChinh3.daXoa.isFalse())
-									.where(qDonViHanhChinh3.eq(QCoQuanQuanLy.coQuanQuanLy.donViHanhChinh.cha))
-									.where(qDonViHanhChinh3.cha.isNotNull())
-									.where(JPAExpressions.selectFrom(qDonViHanhChinh4).where(qDonViHanhChinh4.daXoa.isFalse())
-										.where(qDonViHanhChinh4.eq(qDonViHanhChinh3.cha))
-										.where(qDonViHanhChinh4.cha.id.eq(donViHanhChinhId))
-									.exists())
-							.exists())));
-		}
-
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
@@ -607,12 +581,12 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId) {
+	public Predicate predicateFindAllDonViNotPhongBanNotCongAnNotPhuongXaNotChiCuc(List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
 		BooleanExpression predAll = baseIsNotDonViTmp;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.notIn(capCoQuanQuanLyIds)
 				.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
 					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId))));
-
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
