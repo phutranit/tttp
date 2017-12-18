@@ -467,8 +467,7 @@ public class CoQuanQuanLyController extends TttpController<CoQuanQuanLy> {
 	@RequestMapping(method = RequestMethod.GET, value = "/coQuanQuanLys/donViNhanTGTHs")
 	@ApiOperation(value = "Lấy danh sách đơn vị chủ trì", position = 1, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Object getDonViNhanTGTH(
-			@RequestHeader(value = "Authorization", required = true) String authorization,
-			@RequestParam(value = "loaiDon", required = false) String loaiDon, Pageable pageable,
+			@RequestHeader(value = "Authorization", required = true) String authorization, Pageable pageable,
 			PersistentEntityResourceAssembler eass) {
 
 		try {

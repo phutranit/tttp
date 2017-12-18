@@ -548,7 +548,7 @@ public class CoQuanQuanLyService {
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isTrue()));
 		} else {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyIds.get(1)))
-					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId).and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isFalse()));
 		}
 		
@@ -556,7 +556,6 @@ public class CoQuanQuanLyService {
 	}
 	
 	// Logic function này đang dùng cho api lấy đơn vị theo dõi thực hiện.
-	// Logic loại đơn thư để lấy đơn vị theo dõi thực hiện.
 	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAnHasTGTH(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, boolean isTGTT) {
 		BooleanExpression predAll = baseAll;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId))
