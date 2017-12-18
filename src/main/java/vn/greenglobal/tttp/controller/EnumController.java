@@ -146,7 +146,9 @@ public class EnumController {
 			object.put("quy", Utils.getQuyHienTai());
 		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
 			object.put("year", year);
-		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM)) {
+			object.put("year", year);
+		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NAM)) {
 			object.put("year", year);
 		} else if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 			object.put("year", year);
@@ -335,8 +337,13 @@ public class EnumController {
 		list.add(object);
 
 		object = new HashMap<>();
-		object.put("ten", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.getText());
-		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM.name());
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM.name());
+		list.add(object);
+		
+		object = new HashMap<>();
+		object.put("ten", ThongKeBaoCaoLoaiKyEnum.THEO_NAM.getText());
+		object.put("giaTri", ThongKeBaoCaoLoaiKyEnum.THEO_NAM.name());
 		list.add(object);
 		
 		object = new HashMap<>();

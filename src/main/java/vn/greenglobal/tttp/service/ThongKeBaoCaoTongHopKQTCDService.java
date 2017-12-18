@@ -78,8 +78,11 @@ public class ThongKeBaoCaoTongHopKQTCDService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
 					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(1, 6));
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(7, 12));
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM)) {
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.month().between(1, 9));
+				}
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_NAM)) {
+					predAll = predAll.and(QSoTiepCongDan.soTiepCongDan.ngayTiepDan.year().eq(year));
 				}
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
 					if (month != null && month > 0) {
