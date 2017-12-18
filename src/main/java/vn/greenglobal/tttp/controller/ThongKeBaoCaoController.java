@@ -3453,9 +3453,10 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				List<Long> listCapCQs = new ArrayList<Long>();
 				if (listCapDonVis != null) {
 					if (listCapDonVis.size() > 0) {
+						System.out.println("@!#");
 						List<CoQuanQuanLy> coQuans = new ArrayList<CoQuanQuanLy>();
 						List<CoQuanQuanLy> addListCha = new ArrayList<CoQuanQuanLy>();
-						List<CoQuanQuanLy> coQuanTheoCaps = new ArrayList<CoQuanQuanLy>();
+						List<CoQuanQuanLy> coQuanTheoCaps = new ArrayList<CoQuanQuanLy>();	
 						List<CoQuanQuanLy> addListTatCaCacCoQuans = new ArrayList<CoQuanQuanLy>();
 						for (CapCoQuanQuanLy cdv : listCapDonVis) {
 							CapCoQuanQuanLy capDonVi = capCoQuanQuanLyRepo.findOne(cdv.getId());
@@ -3497,7 +3498,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 								addListTatCaCacCoQuans.removeAll(addListGroupChaCon);
 							}
 						}
-
+						
 						list.addAll(addListTatCaCacCoQuans);
 						list.addAll(coQuans);
 					}
@@ -3729,8 +3730,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo = new HashMap<String, Object>();
 			}
 			map.put("maSos", maSos);
-			ExcelUtil.exportTongHopBaoCaoXuLyDonThu(response, "DanhSachTongHopThongKeBaoCaoXuLyDonThu", "sheetName",
-					maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo xử lý đơn thư");
+//			ExcelUtil.exportTongHopBaoCaoXuLyDonThu(response, "DanhSachTongHopThongKeBaoCaoXuLyDonThu", "sheetName",
+//					maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo xử lý đơn thư");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
@@ -9776,7 +9777,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("11", thongKeTongHopThanhTraService.getGiaTriThamNhung(predAllThamNhungQuaThanhTra,
 						cuocThanhTraRepo, "DA_THU", "TONG_TIEN"));
 				mapMaSo.put("12", thongKeTongHopThanhTraService.getGiaTriThamNhung(predAllThamNhungQuaThanhTra,
-						cuocThanhTraRepo, "DA_THU", "TIEN"));
+						cuocThanhTraRepo, "DA_THU", "TIEN"));		
 				mapMaSo.put("13", thongKeTongHopThanhTraService.getGiaTriThamNhung(predAllThamNhungQuaThanhTra,
 						cuocThanhTraRepo, "DA_THU", "DAT"));
 				mapMaSo.put("14", thongKeTongHopThanhTraService.getGiaTriThamNhung(predAllThamNhungQuaThanhTra,
