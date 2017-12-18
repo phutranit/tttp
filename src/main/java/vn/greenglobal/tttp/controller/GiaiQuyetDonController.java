@@ -1353,7 +1353,6 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setCanBoCoTheThuHoi(null);
 		don.setNgayThucHienKetQuaXuLy(Utils.localDateTimeNow());		
 		Utils.changeQuyenTuXuLy(don, false, false, false, false);
-		donService.save(don, congChucId);
 		
 		GiaiQuyetDon giaiQuyetDonTDTH = new GiaiQuyetDon();
 		giaiQuyetDonTDTH.setThongTinGiaiQuyetDon(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon());
@@ -1362,11 +1361,13 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonTDTH.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTDTH.setDonViGiaiQuyet(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViTheoDoiThucHien());
 		if (giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViTheoDoiThucHien().getId().equals(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViThamTraXacMinh().getId())) {
+			don.setCanBoTTXMChiDinh(null);
 			GiaiQuyetDon giaiQuyetDonBenTTXM = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), true);
 			giaiQuyetDonTDTH.setPhongBanGiaiQuyet(giaiQuyetDonBenTTXM.getPhongBanGiaiQuyet());
 		}
 		giaiQuyetDonTDTH.setLaTDTH(true);
 		giaiQuyetDonTDTH.setThuTuThucHien(1);
+		donService.save(don, congChucId);
 		giaiQuyetDonService.save(giaiQuyetDonTDTH, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
 		
