@@ -116,6 +116,7 @@ public class Don extends Model<Don> {
 	private boolean tuXuLyXLDGQD = false;
 	private boolean tuXuLyTTXM = false;
 	private boolean tuXuLyKTDX = false;
+	private boolean tuXuLyTDTH = false;
 	
 	//@NotNull
 	private LocalDateTime ngayTiepNhan;
@@ -175,6 +176,9 @@ public class Don extends Model<Don> {
 	private CongChuc canBoKTDXChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
+	private CongChuc canBoTDTHChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;
@@ -182,6 +186,7 @@ public class Don extends Model<Don> {
 	private Long giaiQuyetDonCuoiCungId;
 	private Long giaiQuyetTTXMCuoiCungId;
 	private Long giaiQuyetKTDXCuoiCungId;
+	private Long giaiQuyetTDTHCuoiCungId;
 	
 //	@OneToMany(mappedBy = "don", fetch = FetchType.EAGER)
 //	@Fetch(value = FetchMode.SELECT)
@@ -329,6 +334,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoKTDXChiDinh(CongChuc canBoKTDXChiDinh) {
 		this.canBoKTDXChiDinh = canBoKTDXChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoTDTHChiDinh() {
+		return canBoTDTHChiDinh;
+	}
+
+	public void setCanBoTDTHChiDinh(CongChuc canBoTDTHChiDinh) {
+		this.canBoTDTHChiDinh = canBoTDTHChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
@@ -816,6 +830,15 @@ public class Don extends Model<Don> {
 
 	public void setGiaiQuyetKTDXCuoiCungId(Long giaiQuyetKTDXCuoiCungId) {
 		this.giaiQuyetKTDXCuoiCungId = giaiQuyetKTDXCuoiCungId;
+	}
+	
+	@JsonIgnore
+	public Long getGiaiQuyetTDTHCuoiCungId() {
+		return giaiQuyetTDTHCuoiCungId;
+	}
+
+	public void setGiaiQuyetTDTHCuoiCungId(Long giaiQuyetTDTHCuoiCungId) {
+		this.giaiQuyetTDTHCuoiCungId = giaiQuyetTDTHCuoiCungId;
 	}
 
 	@Transient
@@ -1872,6 +1895,14 @@ public class Don extends Model<Don> {
 
 	public void setTuXuLyKTDX(boolean tuXuLyKTDX) {
 		this.tuXuLyKTDX = tuXuLyKTDX;
+	}
+
+	public boolean isTuXuLyTDTH() {
+		return tuXuLyTDTH;
+	}
+
+	public void setTuXuLyTDTH(boolean tuXuLyTDTH) {
+		this.tuXuLyTDTH = tuXuLyTDTH;
 	}
 
 	@Transient

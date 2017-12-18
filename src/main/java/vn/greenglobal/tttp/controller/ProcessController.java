@@ -1096,6 +1096,9 @@ public class ProcessController extends TttpController<Process> {
 				//Cán bộ lưu đơn sau khi duoc lanh dao giao viec
 				transition = addDataTrasition(process, 9L, 34L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
+				//Chuyen vien trinh lanh dao
+				transition = addDataTrasition(process, 1L, 2L, 45L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transitionService.save(transition, congChucId);
 			}
 			
 			process = new Process();

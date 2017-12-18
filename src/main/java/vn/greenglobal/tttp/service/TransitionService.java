@@ -110,6 +110,18 @@ public class TransitionService {
 		return predAll;
 	}
 	
+	public Predicate predicateFindLastTDTH(Long donViId, String processType, ProcessRepository processRepo) {
+		BooleanExpression predAll = base;
+		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
+		processQuery = processQuery.and(QProcess.process.coQuanQuanLy.id.eq(donViId))
+			.and(QProcess.process.processType.eq(ProcessTypeEnum.valueOf(StringUtils.upperCase(processType))));
+		List<Process> listProcess = (List<Process>) processRepo.findAll(processQuery);
+
+		predAll = predAll.and(QTransition.transition.process.in(listProcess))
+				.and(QTransition.transition.nextState.type.eq(FlowStateEnum.CAN_BO_TDTH_LUU_DON));
+		return predAll;
+	}
+	
 	public Predicate predicateFindLastKTDX(Long donViId, String processType, ProcessRepository processRepo) {
 		BooleanExpression predAll = base;
 		BooleanExpression processQuery = QProcess.process.daXoa.eq(false);
