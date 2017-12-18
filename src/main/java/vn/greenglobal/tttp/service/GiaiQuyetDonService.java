@@ -53,6 +53,19 @@ public class GiaiQuyetDonService {
 		return null;
 	}
 	
+	public GiaiQuyetDon predFindCurrentTDTH(GiaiQuyetDonRepository repo, Long id) {
+		BooleanExpression where = base
+				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
+				.and(giaiQuyetDon.laTDTH.eq(true));
+		if (repo.exists(where)) {
+			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
+			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
+			Long lichSuId = results.get(0).getId();
+			return repo.findOne(lichSuId);
+		}
+		return null;
+	}
+	
 	public GiaiQuyetDon predFindCurrentDangGiaiQuyet(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
 				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))

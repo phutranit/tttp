@@ -175,6 +175,9 @@ public class Don extends Model<Don> {
 	private CongChuc canBoKTDXChiDinh;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
+	private CongChuc canBoTDTHChiDinh;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Fetch(FetchMode.JOIN)
 	private CongChuc canBoCoTheThuHoi;
 	
 	private Long donGocId;
@@ -329,6 +332,15 @@ public class Don extends Model<Don> {
 
 	public void setCanBoKTDXChiDinh(CongChuc canBoKTDXChiDinh) {
 		this.canBoKTDXChiDinh = canBoKTDXChiDinh;
+	}
+	
+	@ApiModelProperty(hidden = true)
+	public CongChuc getCanBoTDTHChiDinh() {
+		return canBoTDTHChiDinh;
+	}
+
+	public void setCanBoTDTHChiDinh(CongChuc canBoTDTHChiDinh) {
+		this.canBoTDTHChiDinh = canBoTDTHChiDinh;
 	}
 
 	@ApiModelProperty(hidden = true)
