@@ -1,5 +1,8 @@
 package vn.greenglobal.tttp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,7 +78,17 @@ public class CapCoQuanQuanLyController extends TttpController<CapCoQuanQuanLy> {
 						ApiErrorEnum.ROLE_FORBIDDEN.getText(), ApiErrorEnum.ROLE_FORBIDDEN.getText());
 			}
 			
-			Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindAll(), pageable);
+			List<Long> thamSos = new ArrayList<Long>();
+			ThamSo thamSoUBNDTTP = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_TINH_TP"));
+			ThamSo thamSoSOBANNGANH = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_SO_BAN_NGANH"));
+			ThamSo thamSoUBNDQUANHUYEN = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_QUAN_HUYEN"));
+			ThamSo thamSoPHUONGXATHITRAN = thamSoRepository.findOne(thamSoService.predicateFindTen("CCQQL_UBND_PHUONG_XA_THI_TRAN"));
+			thamSos.add(Long.valueOf(thamSoUBNDTTP.getGiaTri().toString()));
+			thamSos.add(Long.valueOf(thamSoSOBANNGANH.getGiaTri().toString()));
+			thamSos.add(Long.valueOf(thamSoUBNDQUANHUYEN.getGiaTri().toString()));
+			thamSos.add(Long.valueOf(thamSoPHUONGXATHITRAN.getGiaTri().toString()));
+			
+			Page<CapCoQuanQuanLy> page = repo.findAll(capCoQuanQuanLyService.predicateFindByThamSo(thamSos), pageable);
 			return assembler.toResource(page, (ResourceAssembler) eass);
 		} catch (Exception e) {
 			return Utils.responseInternalServerErrors(e);

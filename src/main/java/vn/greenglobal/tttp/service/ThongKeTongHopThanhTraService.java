@@ -61,8 +61,8 @@ public class ThongKeTongHopThanhTraService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
 					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 6));
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(7, 12));
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM)) {
+					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 9));
 				}
 				
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
@@ -130,9 +130,9 @@ public class ThongKeTongHopThanhTraService {
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_DAU_NAM)) {
 					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 6));
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(7, 12)
-							.or(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().lt(7).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull())));
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM)) {
+					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().between(1, 9)
+							.or(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.month().lt(1).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull())));
 				}
 				
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {
@@ -207,8 +207,8 @@ public class ThongKeTongHopThanhTraService {
 						}
 					}
 				}
-				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.SAU_THANG_CUOI_NAM)) {
-					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 7, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
+				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.CHIN_THANG_DAU_NAM)) {
+					predAllCuocThanhTra = predAllCuocThanhTra.and(QCuocThanhTra.cuocThanhTra.ngayRaQuyetDinh.before(getDateFromCalendar(year, 1, 1)).and(QCuocThanhTra.cuocThanhTra.ngayBanHanhKetLuanThanhTra.isNull()));
 				}
 				
 				if (loaiKyEnum.equals(ThongKeBaoCaoLoaiKyEnum.THEO_THANG)) {

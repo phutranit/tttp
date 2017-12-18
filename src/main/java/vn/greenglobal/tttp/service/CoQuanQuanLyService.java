@@ -49,6 +49,73 @@ public class CoQuanQuanLyService {
 	BooleanExpression baseIsDonViTmp = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isTrue());
 	BooleanExpression baseIsNotDonViTmp = QCoQuanQuanLy.coQuanQuanLy.daXoa.eq(false).and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isFalse());
 	
+	public Predicate predicateFindNhomCacDonViByChaVaLayChinhNo(Long cha, List<CoQuanQuanLy> coQuanQuanLys) {
+		BooleanExpression predAll = baseIsNotDonViTmp;
+		
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.in(coQuanQuanLys));
+		
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha)
+				.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(cha)));
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindChaVaLayChinhNo(Long cha, Long idCapPhongBan, Long loaiCoQuanQuanLyId,
+			Long donViHanhChinhId, List<Long> capCoQuanQuanLyIds) {
+		BooleanExpression predAll = baseIsNotDonViTmp;
+		
+		if (idCapPhongBan != null && idCapPhongBan > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		
+		if (loaiCoQuanQuanLyId != null && loaiCoQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
+		}
+		
+		if (donViHanhChinhId != null) { 
+			predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
+		}
+		
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha)
+				.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(cha)));
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindByChaNotPhongBan(Long chaId, Long idCapPhongBan) {
+		BooleanExpression predAll = baseIsNotDonViTmp;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(chaId)
+				.or(QCoQuanQuanLy.coQuanQuanLy.id.eq(chaId)));
+		
+		if (idCapPhongBan != null && idCapPhongBan > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		
+		return predAll;
+	}
+	
+	public Predicate predicateFindDonViByCapCoQuanQuanLys(Long idCapPhongBan, Long loaiCoQuanQuanLyId, 
+			Long donViHanhChinhId) {
+//		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(capCoQuanQuanLys.get(0))
+//				.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(1))
+//						.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(2)))));
+		
+		BooleanExpression predAll = baseIsNotDonViTmp;
+	
+		if (idCapPhongBan != null && idCapPhongBan > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		
+		if (loaiCoQuanQuanLyId != null && loaiCoQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
+		}
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
+		
+		return predAll;
+	}
+	
 	public Predicate predicateFindDonViByCapCoQuanQuanLys(List<Long> capCoQuanQuanLys) {
 		BooleanExpression predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(capCoQuanQuanLys.get(0))
 				.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(1))
@@ -96,16 +163,32 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindAllNotPhongBan(Long cha, Long idCapPhongBan) {
+	public Predicate predicateFindAllNotPhongBanNotCongAn(Long cha, Long idCapPhongBan, Long loaiCoQuanQuanLyId,
+			Long donViHanhChinhId, List<Long> capCoQuanQuanLyIds) {
 		BooleanExpression predAll = baseIsNotDonViTmp;
-
+		
 		if (cha != null && cha > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(cha))
 					.or(QCoQuanQuanLy.coQuanQuanLy.cha.cha.id.eq(cha));
 		}
-
+		
 		if (idCapPhongBan != null && idCapPhongBan > 0) {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		
+//		if (capCoQuanQuanLyIds != null && capCoQuanQuanLyIds.size() > 0) { 
+//			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(0))
+//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))
+//					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(2)))));
+//		}
+		
+		if (loaiCoQuanQuanLyId != null && loaiCoQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
+		}
+		
+		if (donViHanhChinhId != null) { 
+			predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		}
 		return predAll;
 	}
@@ -588,6 +671,25 @@ public class CoQuanQuanLyService {
 		} else {
 			predAll = baseIsNotDonViTmp.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.in(capCoQuanQuanLys));
 		}
+		return predAll;
+	}
+	
+	public Predicate predFindDonViByCapCoQuanQuanLysTKBCNotCongAn(List<Long> capCoQuanQuanLys, Long idCapPhongBan, 
+			Long loaiCoQuanQuanLyId, Long donViHanhChinhId) {
+		BooleanExpression predAll = baseIsNotDonViTmp;
+		
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLys.get(0)));
+		
+		if (loaiCoQuanQuanLyId != null && loaiCoQuanQuanLyId > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+					.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
+		}
+		
+		if (idCapPhongBan != null && idCapPhongBan > 0) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(idCapPhongBan));
+		}
+		
+		predAll = predicateFindAllOnlyUBNDTPDaNang(predAll, donViHanhChinhId);
 		return predAll;
 	}
 	
