@@ -2107,7 +2107,6 @@ public class Don extends Model<Don> {
 	@ApiModelProperty(hidden = true)
 	@Transient
 	public List<Map<String, Object>> getNguonDonInfo() {
-		System.out.println("getNguonDonInfo: ");
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		List<Long> listIdDonVi = new ArrayList<Long>();
