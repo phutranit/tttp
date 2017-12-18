@@ -89,6 +89,13 @@ public class GiaiQuyetDonService {
 		return predicate;
 	}
 	
+	public Predicate predFindOldByDonVi(Long donId, VaiTroEnum vaiTro, Long donViId) {
+		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
+		predicate = predicate.and(giaiQuyetDon.chucVu.eq(vaiTro).or(giaiQuyetDon.chucVu2.eq(vaiTro)))
+				.and(giaiQuyetDon.congChuc.coQuanQuanLy.donVi.id.eq(donViId));
+		return predicate;
+	}
+	
 	public GiaiQuyetDon predFindThongTinXuLy(GiaiQuyetDonRepository repo, Long donId, Long donViGiaiQuyet, Long phongBanGiaiQuyet, Long canBoId, String chucVu) {
 		BooleanExpression giaiQuyetDonQuery = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId))
 				.and(giaiQuyetDon.old.eq(false));

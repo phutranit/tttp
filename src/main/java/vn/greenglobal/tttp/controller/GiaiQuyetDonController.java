@@ -890,6 +890,16 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		}
 	}
 	
+	private void disableGiaiQuyetDonCuByDonVi(VaiTroEnum vaiTro, Long donId, CongChuc congChuc, Long idDonVi) {
+		List<GiaiQuyetDon> giaiQuyetDonCu = (List<GiaiQuyetDon>) repo.findAll(giaiQuyetDonService.predFindOldByDonVi(donId, vaiTro, idDonVi));
+		if (giaiQuyetDonCu != null) {
+			for (GiaiQuyetDon gqd: giaiQuyetDonCu) {
+				gqd.setOld(true);
+				giaiQuyetDonService.save(gqd, congChuc.getId());
+			}
+		}
+	}
+	
 	private void disableGiaiQuyetDonCuChiDinh(VaiTroEnum vaiTro, Long donId, CongChuc congChuc, CongChuc canBoXuLyChiDinh) {
 		List<GiaiQuyetDon> giaiQuyetDonCu = (List<GiaiQuyetDon>) repo.findAll(giaiQuyetDonService.predFindOld(donId, vaiTro, congChuc));
 		if (giaiQuyetDonCu != null) {
@@ -1262,7 +1272,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 	}
 	
 	private GiaiQuyetDon canBoChuyenYeuCauTDTH(GiaiQuyetDon giaiQuyetDonHienTai, GiaiQuyetDon giaiQuyetDon, Long congChucId, String note, Long donViId, 
-			VaiTroEnum chucVuNhanTTXM, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
+			VaiTroEnum chucVuNhanTDTH, ThongTinGiaiQuyetDon thongTinGiaiQuyetDon) {
 		
 		//thongTinGiaiQuyetDon.setyKienCuaDonViGiaoTTXM(giaiQuyetDon.getyKienGiaiQuyet());
 		
@@ -1272,7 +1282,9 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		giaiQuyetDonHienTai.setCongChuc(congChuc);
 		giaiQuyetDonHienTai.setyKienGiaiQuyet(giaiQuyetDon.getyKienGiaiQuyet());
 		giaiQuyetDonHienTai.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DA_GIAI_QUYET);
-		
+		if (chucVuNhanTDTH != null) {
+			disableGiaiQuyetDonCuByDonVi(chucVuNhanTDTH, donId, congChuc, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViTheoDoiThucHien().getId());
+		}
 		Don don = donRepo.findOne(donId);
 		State beginState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.BAT_DAU));
 		don.setProcessType(ProcessTypeEnum.THEO_DOI_THUC_HIEN);
@@ -1281,7 +1293,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		don.setTrangThaiTTXM(TrangThaiDonEnum.DA_GIAI_QUYET);
 		don.setKetQuaXLDGiaiQuyet(KetQuaTrangThaiDonEnum.DANG_TDTH);
 		don.setTrangThaiTDTH(TrangThaiDonEnum.DANG_GIAI_QUYET);
-		don.setKetQuaTDTH(KetQuaTrangThaiDonEnum.DANG_TTXM);
+		don.setKetQuaTDTH(KetQuaTrangThaiDonEnum.DANG_TDTH);
 		don.setCurrentState(beginState);
 		don.setDonViTheoDoiThucHien(don.getThongTinGiaiQuyetDon().getDonViTheoDoiThucHien());
 		don.setCanBoCoTheThuHoi(null);
@@ -1291,7 +1303,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 		
 		GiaiQuyetDon giaiQuyetDonTDTH = new GiaiQuyetDon();
 		giaiQuyetDonTDTH.setThongTinGiaiQuyetDon(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon());
-		giaiQuyetDonTDTH.setChucVu(chucVuNhanTTXM);
+		giaiQuyetDonTDTH.setChucVu(chucVuNhanTDTH);
 		giaiQuyetDonTDTH.setDonViChuyenDon(giaiQuyetDonHienTai.getDonViGiaiQuyet());
 		giaiQuyetDonTDTH.setTinhTrangGiaiQuyet(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET);
 		giaiQuyetDonTDTH.setDonViGiaiQuyet(giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getDonViTheoDoiThucHien());
@@ -1299,6 +1311,7 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 			GiaiQuyetDon giaiQuyetDonBenTTXM = giaiQuyetDonService.predFindCurrent(repo, giaiQuyetDonHienTai.getThongTinGiaiQuyetDon().getId(), true);
 			giaiQuyetDonTDTH.setPhongBanGiaiQuyet(giaiQuyetDonBenTTXM.getPhongBanGiaiQuyet());
 		}
+		giaiQuyetDonTDTH.setLaTDTH(true);
 		giaiQuyetDonTDTH.setThuTuThucHien(1);
 		giaiQuyetDonService.save(giaiQuyetDonTDTH, congChucId);
 		thongTinGiaiQuyetDonService.save(thongTinGiaiQuyetDon, congChucId);
