@@ -53,6 +53,19 @@ public class GiaiQuyetDonService {
 		return null;
 	}
 	
+	public GiaiQuyetDon predFindCurrentTDTH(GiaiQuyetDonRepository repo, Long id) {
+		BooleanExpression where = base
+				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
+				.and(giaiQuyetDon.laTDTH.eq(true));
+		if (repo.exists(where)) {
+			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
+			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
+			Long lichSuId = results.get(0).getId();
+			return repo.findOne(lichSuId);
+		}
+		return null;
+	}
+	
 	public GiaiQuyetDon predFindCurrentDangGiaiQuyet(GiaiQuyetDonRepository repo, Long id, boolean laTTXM) {
 		BooleanExpression where = base
 				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
@@ -86,6 +99,13 @@ public class GiaiQuyetDonService {
 		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
 		predicate = predicate.and(giaiQuyetDon.chucVu.eq(vaiTro).or(giaiQuyetDon.chucVu2.eq(vaiTro)))
 				.and(giaiQuyetDon.congChuc.coQuanQuanLy.donVi.eq(congChuc.getCoQuanQuanLy().getDonVi()));
+		return predicate;
+	}
+	
+	public Predicate predFindOldByDonVi(Long donId, VaiTroEnum vaiTro, Long donViId) {
+		BooleanExpression predicate = base.and(giaiQuyetDon.thongTinGiaiQuyetDon.don.id.eq(donId));
+		predicate = predicate.and(giaiQuyetDon.chucVu.eq(vaiTro).or(giaiQuyetDon.chucVu2.eq(vaiTro)))
+				.and(giaiQuyetDon.congChuc.coQuanQuanLy.donVi.id.eq(donViId));
 		return predicate;
 	}
 	

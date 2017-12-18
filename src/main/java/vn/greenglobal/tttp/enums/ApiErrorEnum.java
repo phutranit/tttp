@@ -49,6 +49,7 @@ public enum ApiErrorEnum {
 	LOGIN_INFOMATION_REQUIRED("Thông tin đăng nhập không được để trống."),
 	PROCESS_NOT_FOUND("Không tìm thấy quy trình."),
 	PROCESS_TTXM_NOT_FOUND("Không tìm thấy quy trình TTXM ở đơn vị được giao TTXM."),
+	PROCESS_TDTH_NOT_FOUND("Không tìm thấy quy trình TDTH ở đơn vị được giao TDTH."),
 	PROCESS_GQD_NOT_FOUND("Không tìm thấy quy trình GQD ở đơn vị được giao GQD."),
 	DON_NOT_FOUND("Không tìm thấy đơn."),
 	PROCESS_TYPE_REQUIRED("Trường processType không được để trống."),
@@ -80,6 +81,7 @@ public enum ApiErrorEnum {
 	NGAYKETTHUCBC_REQUIRED("Trường ngayKetThucBC không được để trống."),
 	KYBAOCAO_REQUIRED("Trường kyBaoCao không được để trống."),
 	DONVIGUI_REQUIRED("Trường donViGui không được để trống."),
+	DONVITHEODOITHUCHIEN_REQUIRED("Trường donViTheoDoiThucHien không được để trống."),
 	DANHSACHBAOCAO_REQUIRED("Trường danhSachBaoCao không được để trống."),
 	LY_DO_THAY_DOI_TRANG_THAI_YCGLD_REQUIRED("Trường lyDoThayDoiTrangThaiYeuCauGapLanhDao không được bỏ trống.");
 		

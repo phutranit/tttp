@@ -612,7 +612,9 @@ public class CoQuanQuanLyService {
 		return predAll;
 	}
 	
-	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAn(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, boolean isTTXM, String loaiDon) {
+	// Logic function này đang dùng cho api lấy đơn vị chủ trì và phối hợp ở TCD. Và đơn vị TTXM.
+	// Logic loại đơn thư để lấy đơn vị quận theo yêu cầu.
+	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAnHasTTXM(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, boolean isTTXM, String loaiDon) {
 		BooleanExpression predAll = baseAll;
 		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId))
 						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyIds.get(0)))
@@ -629,8 +631,23 @@ public class CoQuanQuanLyService {
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isTrue()));
 		} else {
 			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyIds.get(1)))
-					.or(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1))
+					.or(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId).and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.eq(capCoQuanQuanLyIds.get(1)))
 							.and(QCoQuanQuanLy.coQuanQuanLy.donViTmp.isFalse()));
+		}
+		
+		return predAll;
+	}
+	
+	// Logic function này đang dùng cho api lấy đơn vị theo dõi thực hiện.
+	public Predicate predicateFindConCuaDonViVaNotPhongBanNotCongAnHasTGTH(Long donViId, List<Long> capCoQuanQuanLyIds, Long loaiCoQuanQuanLyId, boolean isTGTT) {
+		BooleanExpression predAll = baseAll;
+		predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.cha.id.eq(donViId))
+						.and(QCoQuanQuanLy.coQuanQuanLy.capCoQuanQuanLy.id.ne(capCoQuanQuanLyIds.get(0)))
+						.and(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.isNull()
+								.or(QCoQuanQuanLy.coQuanQuanLy.loaiCoQuanQuanLy.id.ne(loaiCoQuanQuanLyId)));
+
+		if (isTGTT) {
+			predAll = predAll.and(QCoQuanQuanLy.coQuanQuanLy.donViNhanTheoDoiThucHien.isTrue());
 		}
 		
 		return predAll;

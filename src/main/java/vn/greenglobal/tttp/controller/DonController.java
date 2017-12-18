@@ -485,7 +485,10 @@ public class DonController extends TttpController<Don> {
 							ApiErrorEnum.TRANSITION_INVALID.getText(), ApiErrorEnum.TRANSITION_INVALID.getText());
 				} else {
 					for (State nextState : listAllState) {
-						transition = transitionRepo.findOne(transitionService.predicatePrivileged(currentState, nextState, process));
+						List<Transition> listTransition = (List<Transition>) transitionRepo.findAll(transitionService.predicatePrivileged(currentState, nextState, process));
+						if (listTransition != null && listTransition.size() > 0) {
+							transition = listTransition.get(0);
+						}
 						if (transition != null) {
 							media.setCurrentForm(transition.getForm());
 							break;
@@ -1389,7 +1392,7 @@ public class DonController extends TttpController<Don> {
 					return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 							ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 				}
-				Utils.changeQuyenTuXuLy(don, false, false, false);
+				Utils.changeQuyenTuXuLy(don, false, false, false, false);
 				donService.save(don, Long.valueOf(profileUtil.getCommonProfile(authorization).getAttribute("congChucId").toString()));
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}

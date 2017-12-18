@@ -885,10 +885,11 @@ public class Utils {
 		return "";
 	}
 	
-	public static Don changeQuyenTuXuLy(Don don, boolean quyenTuXLDGQD, boolean quyenTTXM, boolean quyenKTDX) {
+	public static Don changeQuyenTuXuLy(Don don, boolean quyenTuXLDGQD, boolean quyenTTXM, boolean quyenKTDX, boolean quyenTDTH) {
 		don.setTuXuLyXLDGQD(quyenTuXLDGQD);
 		don.setTuXuLyTTXM(quyenTTXM);
 		don.setTuXuLyKTDX(quyenKTDX);
+		don.setTuXuLyTDTH(quyenTDTH);
 		return don;
 	}
 	
