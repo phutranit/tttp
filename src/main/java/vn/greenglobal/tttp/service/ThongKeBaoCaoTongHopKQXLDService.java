@@ -1211,7 +1211,9 @@ public class ThongKeBaoCaoTongHopKQXLDService {
 		Set<Don> dons = new HashSet<Don>();
 		// predAllXLD =
 		// predAllXLD.and(QXuLyDon.xuLyDon.don.phanLoaiDon.eq(PhanLoaiDonEnum.DU_DIEU_KIEN_XU_LY));
-		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.huongXuLy.ne(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
+//		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.huongXuLy.ne(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
+//				.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.isNotNull());
+		predAllXLD = predAllXLD.and(QXuLyDon.xuLyDon.huongXuLy.eq(HuongXuLyXLDEnum.LUU_DON_VA_THEO_DOI))
 				.and(QXuLyDon.xuLyDon.don.ngayKetThucXLD.isNotNull());
 		xuLyDons.addAll((List<XuLyDon>) xuLyDonRepository.findAll(predAllXLD));
 		dons.addAll(xuLyDons.stream().map(tcd -> tcd.getDon()).distinct().collect(Collectors.toSet()));

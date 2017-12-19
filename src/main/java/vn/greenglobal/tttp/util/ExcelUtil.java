@@ -365,15 +365,19 @@ public class ExcelUtil {
 			c = row.createCell(5);
 			c.setCellValue("Cơ quan đã giải quyết");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(6);
-			c.setCellValue("Hướng xử lý");
+			c.setCellValue("Cán bộ tiếp dân");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(7);
 			c.setCellValue("Lượt tiếp");
 			c.setCellStyle(cellCenter);
+			
 			c = row.createCell(8);
-			c.setCellValue("Cán bộ tiếp dân");
+			c.setCellValue("Hướng xử lý");			
 			c.setCellStyle(cellCenter);
+			
 			int i = 1;
 			for (SoTiepCongDan tcd : list) {
 				row = sheet1.createRow(idx);
@@ -397,15 +401,19 @@ public class ExcelUtil {
 				c.setCellValue(tcd.getDon().getCoQuanDaGiaiQuyet() != null
 						? tcd.getDon().getCoQuanDaGiaiQuyet().getTen() : "");
 				c.setCellStyle(cellLeft);
+				
 				c = row.createCell(6);
-				c.setCellValue(tcd.getHuongXuLy() != null ? tcd.getHuongXuLy().getText() : "");
+				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(7);
 				c.setCellValue(tcd.getSoLuotTiepStr());
 				c.setCellStyle(cellCenter);
+				
 				c = row.createCell(8);
-				c.setCellValue(tcd.getCanBoTiepDan() != null ? tcd.getCanBoTiepDan().getHoVaTen() : "");
+				c.setCellValue(tcd.getHuongXuLy() != null ? tcd.getHuongXuLy().getText() : "");
 				c.setCellStyle(cellCenter);
+
 				i++;
 				idx++;
 			}
