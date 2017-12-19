@@ -167,40 +167,20 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 			BooleanExpression predAllDSTCD = (BooleanExpression) thongKeBaoCaoTongHopKQTCDService
 					.predicateFindAllTCD(loaiKy, quy, year, month, tuNgay, denNgay);
 
-			List<Long> idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais.add(55L);
-
-			List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachs = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeChinhSachs.add(5L);
-
-			List<Long> idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs.add(53L);
-
-			List<LinhVucDonThu> linhVucTranhChapVeDatDais = new ArrayList<LinhVucDonThu>();
-			linhVucTranhChapVeDatDais.addAll(linhVucDonThuService
-					.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeTranhChapVeDatDais));
-
-			List<LinhVucDonThu> linhVucVeChinhSachs = new ArrayList<LinhVucDonThu>();
-			linhVucVeChinhSachs.addAll(
-					linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeChinhSachs));
-
-			List<LinhVucDonThu> linhVucVeCheDoCCVCs = new ArrayList<LinhVucDonThu>();
-			linhVucVeCheDoCCVCs.addAll(
-					linhVucDonThuService.getLinhVucDonThuTheoNhieuIds(idLinhVucHanhChinhDonKhieuNaiVeCheDoCCVCs));
-
-			List<Long> idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(54L);
-
-			List<Long> idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(57L);
+			
+			// khieu nai
+			List<Long> idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs.add(59L);
 
 			List<Long> idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs = new ArrayList<Long>();
 			idLinhVucHanhChinhDonKhieuNaiVeChinhSachCCVCs.add(58L);
 
-			List<Long> idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs = new ArrayList<Long>();
-			idLinhVucHanhChinhDonKhieuNaiChinhTriVanHoaXaHoiKhacs.add(59L);
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeNhaCuaTaiSans.add(57L);
 
-			// khieu nai
+			List<Long> idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais = new ArrayList<Long>();
+			idLinhVucHanhChinhDonKhieuNaiVeLienQuanDenDatDais.add(54L);
+			
 			LinhVucDonThu linhVucHanhChinhDonKhieuNai = linhVucDonThuRepo.findOne(1L);
 			LinhVucDonThu linhVucHanhChinhKhieuNaiTuPhap = linhVucDonThuRepo.findOne(6L);
 			LinhVucDonThu linhVucHanhChinhKhieuNaiVeDang = linhVucDonThuRepo.findOne(56L);
@@ -563,7 +543,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 
 				Long tongSoVuViecKhieuNaiLinhVucHanhChinhLienQuanDenDatDai18 = thongKeBaoCaoTongHopKQTCDService
 						.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
-								linhVucHanhChinhDonKhieuNai, linhVucTranhChapVeDatDais);
+								linhVucHanhChinhDonKhieuNai, linhVucLienQuanDenDatDais);
 				Long tongSoVuViecKhieuNaiLinhVucHanhChinhVeNhaTaiSan19 = thongKeBaoCaoTongHopKQTCDService
 						.getTongSoVuViecTiepCongDanDonKhieuNaiNhieuLinhVucChiTietCha(predAllDSTCDDonVi,
 								linhVucHanhChinhDonKhieuNai, linhVucVeNhaCuaTaiSans);
@@ -3034,7 +3014,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				// thongKeBaoCaoTongHopKQXLDService.getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi(predAllDXLDDonVi);
 				// Long tongSoDonDuDieuKienThuLy = tongSoDonTiepNhanXLDTCD -
 				// tongSoDonCoHXLLuDonVaTheoDoi;
-				Long tongSoDonDuDieuKienThuLy = thongKeBaoCaoTongHopKQXLDService
+				Long tongSoDonDuDieuKienThuLy = tongSoDonTiepNhanXLDTCD - thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonDuDieuKienThuLy(predAllDXLDDonVi);
 
 				// don du dieu kien xu ly - 6
@@ -3453,7 +3433,6 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				List<Long> listCapCQs = new ArrayList<Long>();
 				if (listCapDonVis != null) {
 					if (listCapDonVis.size() > 0) {
-						System.out.println("@!#");
 						List<CoQuanQuanLy> coQuans = new ArrayList<CoQuanQuanLy>();
 						List<CoQuanQuanLy> addListCha = new ArrayList<CoQuanQuanLy>();
 						List<CoQuanQuanLy> coQuanTheoCaps = new ArrayList<CoQuanQuanLy>();	
@@ -3592,7 +3571,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				// thongKeBaoCaoTongHopKQXLDService.getTongSoDonDuDieuKienThuLyLuuDonVaTheoDoi(predAllDXLDDonVi);
 				// Long tongSoDonDuDieuKienThuLy = tongSoDonTiepNhanXLDTCD -
 				// tongSoDonCoHXLLuDonVaTheoDoi;
-				Long tongSoDonDuDieuKienThuLy = thongKeBaoCaoTongHopKQXLDService
+				Long tongSoDonDuDieuKienThuLy = tongSoDonTiepNhanXLDTCD - thongKeBaoCaoTongHopKQXLDService
 						.getTongSoDonDuDieuKienThuLy(predAllDXLDDonVi);
 				mapMaSo.put("6", tongSoDonDuDieuKienThuLy);
 
@@ -3700,9 +3679,7 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo.put("23", tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet);
 
 				Long tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = 0L;
-				if (tongSoDonDuDieuKienThuLy > 0) { 
-					tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy - tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
-				}
+				tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau = tongSoDonDuDieuKienThuLy - tongSoDonTheoTTGiaiQuyetChuaGiaiQuyet;
 				// mapMaSo.put("24",
 				// thongKeBaoCaoTongHopKQXLDService.getTongSoDonXLDTheoTrinhTuGiaiQuyetDaDuocGiaiQuyetLanDau(predAllDXLDDonVi));
 				mapMaSo.put("24", tongSoDonTheoTTGiaiQuyetDaDuocGiaiQuyetLanDau);
@@ -3730,8 +3707,8 @@ public class ThongKeBaoCaoController extends TttpController<Don> {
 				mapMaSo = new HashMap<String, Object>();
 			}
 			map.put("maSos", maSos);
-//			ExcelUtil.exportTongHopBaoCaoXuLyDonThu(response, "DanhSachTongHopThongKeBaoCaoXuLyDonThu", "sheetName",
-//					maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo xử lý đơn thư");
+			ExcelUtil.exportTongHopBaoCaoXuLyDonThu(response, "DanhSachTongHopThongKeBaoCaoXuLyDonThu", "sheetName",
+					maSos, tuNgay, denNgay, "Danh sách tổng hợp thống kê báo cáo xử lý đơn thư");
 		} catch (Exception e) {
 			Utils.responseInternalServerErrors(e);
 		}
