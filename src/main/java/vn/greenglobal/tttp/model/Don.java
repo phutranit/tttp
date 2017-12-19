@@ -2078,7 +2078,7 @@ public class Don extends Model<Don> {
 			list.add(map);
 		}
 		
-		if (thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null && thongTinGiaiQuyetDon.getDonViThamTraXacMinh() != null
+		if (getDonViTheoDoiThucHien() != null && thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null && thongTinGiaiQuyetDon.getDonViThamTraXacMinh() != null
 				&& thongTinGiaiQuyetDon.getDonViThamTraXacMinh().getId().equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId())) {
 			if (getCanBoTDTHChiDinh() != null) {
 				map = new HashMap<>();
@@ -2106,7 +2106,7 @@ public class Don extends Model<Don> {
 				list.add(map);
 			}
 			
-			if (getCanBoTDTHChiDinh() != null) {
+			if (getDonViTheoDoiThucHien() != null && getCanBoTDTHChiDinh() != null) {
 				map = new HashMap<>();
 				map.put("donViId", getDonViTheoDoiThucHien().getId());
 				if (getCanBoTDTHChiDinh() != null) {
