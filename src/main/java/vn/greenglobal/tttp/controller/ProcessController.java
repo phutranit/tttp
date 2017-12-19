@@ -1117,25 +1117,25 @@ public class ProcessController extends TttpController<Process> {
 			process = processService.save(process, congChucId);
 			if (process != null && process.getId() != null && process.getId() > 0) {
 				//Trưởng phòng giao việc cán bộ sau khi được lãnh đạo giao
-				transition = addDataTrasition(process, 3L, 5L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 3L, 5L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng tự lưu đơn sau khi được lãnh đạo giao
-				transition = addDataTrasition(process, 3L, 34L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 3L, 34L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng giao việc cán bộ sau khi thu hồi đơn
-				transition = addDataTrasition(process, 23L, 5L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 23L, 5L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng tự lưu đơn sau khi thu hồi đơn
-				transition = addDataTrasition(process, 23L, 34L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 23L, 34L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng giao việc cán bộ nếu đơn vị cũng là đơn vị TTXM
-				transition = addDataTrasition(process, 1L, 5L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 1L, 5L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng thu hồi đơn
 				transition = addDataTrasition(process, 5L, 23L, 48L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 				//Trưởng phòng tự lưu đơn nếu đơn vị cũng là đơn vị TTXM
-				transition = addDataTrasition(process, 1L, 34L, 46L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
+				transition = addDataTrasition(process, 1L, 34L, 49L, false, TenQuyTrinhEnum.QUY_TRINH_4_BUOC_DAY_DU_I);
 				transitionService.save(transition, congChucId);
 			}
 		} else {
