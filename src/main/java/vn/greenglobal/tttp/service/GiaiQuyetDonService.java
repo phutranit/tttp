@@ -80,6 +80,20 @@ public class GiaiQuyetDonService {
 		return null;
 	}
 	
+	public GiaiQuyetDon predFindCurrentDangTheoDoiThucHien(GiaiQuyetDonRepository repo, Long id) {
+		BooleanExpression where = base
+				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))
+				.and(giaiQuyetDon.tinhTrangGiaiQuyet.eq(TinhTrangGiaiQuyetEnum.DANG_GIAI_QUYET))
+				.and(giaiQuyetDon.laTDTH.eq(true));
+		if (repo.exists(where)) {
+			OrderSpecifier<Integer> sortOrder = QGiaiQuyetDon.giaiQuyetDon.thuTuThucHien.desc();
+			List<GiaiQuyetDon> results = (List<GiaiQuyetDon>) repo.findAll(where, sortOrder);
+			Long lichSuId = results.get(0).getId();
+			return repo.findOne(lichSuId);
+		}
+		return null;
+	}
+	
 	public GiaiQuyetDon predFindCurrentThuHoi(GiaiQuyetDonRepository repo, Long id, Long canBoId) {
 		BooleanExpression where = base
 				.and(giaiQuyetDon.thongTinGiaiQuyetDon.id.eq(id))

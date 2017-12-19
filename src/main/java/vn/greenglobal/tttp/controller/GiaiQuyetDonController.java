@@ -411,8 +411,32 @@ public class GiaiQuyetDonController extends TttpController<GiaiQuyetDon> {
 								giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
 						return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
 					}
+				} else if (ProcessTypeEnum.THEO_DOI_THUC_HIEN.equals(don.getProcessType())) {
+					GiaiQuyetDon giaiQuyetDonHienTai = giaiQuyetDonService.predFindCurrentDangTheoDoiThucHien(repo, thongTinGiaiQuyetDonId);
+					
+					if (giaiQuyetDonHienTai != null) {
+						boolean isOwner = false;
+						if ( giaiQuyetDonHienTai.getCanBoXuLyChiDinh() != null) {
+							isOwner = don.getNguoiTao().getId() == null || don.getNguoiTao().getId().equals(0L) ? true
+									: giaiQuyetDonHienTai.getCanBoXuLyChiDinh().getId().longValue() == don.getNguoiTao().getId().longValue() ? true : false;
+						}
+						State nextState = stateRepo.findOne(stateService.predicateFindByType(FlowStateEnum.CAN_BO_TDTH_LUU_DON));
+						Process process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, isOwner, don.getProcessType()));
+						if (process == null && isOwner) {
+							process = processRepo.findOne(processService.predicateFindAll(giaiQuyetDonHienTai.getChucVu().toString(), donVi, false, don.getProcessType()));
+						}
+						Transition transition = transitionRepo.findOne(transitionService.predicatePrivileged(don.getCurrentState(), nextState, process));
+						
+						giaiQuyetDonHienTai.setNextState(nextState);						
+						giaiQuyetDonHienTai.setNextForm(transition.getForm());	
+						
+						giaiQuyetDonHienTai = canBoTDTHLuuDon(giaiQuyetDonHienTai, giaiQuyetDon, congChucId, "", donViId, thongTinGiaiQuyetDon);						
+						
+						lichSuCanBoKTDXService.saveLichSuCanBoXuLy(don, giaiQuyetDonHienTai.getCanBoXuLyChiDinh(), 
+								giaiQuyetDonHienTai.getDonViGiaiQuyet().getDonVi());
+						return giaiQuyetDonService.doSave(giaiQuyetDonHienTai, congChucId, eass, HttpStatus.CREATED);
+					}
 				}
-				
 				return Utils.responseErrors(HttpStatus.NOT_FOUND, ApiErrorEnum.DATA_NOT_FOUND.name(),
 						ApiErrorEnum.DATA_NOT_FOUND.getText(), ApiErrorEnum.DATA_NOT_FOUND.getText());
 			}

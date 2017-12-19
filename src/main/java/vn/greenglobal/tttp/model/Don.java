@@ -2077,18 +2077,50 @@ public class Don extends Model<Don> {
 			}
 			list.add(map);
 		}
-		if (getDonViThamTraXacMinh() != null) {
-			map = new HashMap<>();
-			map.put("donViId", getDonViThamTraXacMinh().getId());
-			if (getCanBoTTXMChiDinh() != null) {
-				map.put("hoVaTen", getCanBoTTXMChiDinh().getHoVaTen());
-				map.put("congChucId", getCanBoTTXMChiDinh().getId());
-			} else {
-				map.put("hoVaTen", "");
-				map.put("congChucId", "");
+		
+		if (thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null && thongTinGiaiQuyetDon.getDonViThamTraXacMinh() != null
+				&& thongTinGiaiQuyetDon.getDonViThamTraXacMinh().getId().equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId())) {
+			if (getCanBoTDTHChiDinh() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViTheoDoiThucHien().getId());
+				if (getCanBoTDTHChiDinh() != null) {
+					map.put("hoVaTen", getCanBoTDTHChiDinh().getHoVaTen());
+					map.put("congChucId", getCanBoTDTHChiDinh().getId());
+				} else {
+					map.put("hoVaTen", "");
+					map.put("congChucId", "");
+				}
+				list.add(map);
 			}
-			list.add(map);
+		} else {
+			if (getDonViThamTraXacMinh() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViThamTraXacMinh().getId());
+				if (getCanBoTTXMChiDinh() != null) {
+					map.put("hoVaTen", getCanBoTTXMChiDinh().getHoVaTen());
+					map.put("congChucId", getCanBoTTXMChiDinh().getId());
+				} else {
+					map.put("hoVaTen", "");
+					map.put("congChucId", "");
+				}
+				list.add(map);
+			}
+			
+			if (getCanBoTDTHChiDinh() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViTheoDoiThucHien().getId());
+				if (getCanBoTDTHChiDinh() != null) {
+					map.put("hoVaTen", getCanBoTDTHChiDinh().getHoVaTen());
+					map.put("congChucId", getCanBoTDTHChiDinh().getId());
+				} else {
+					map.put("hoVaTen", "");
+					map.put("congChucId", "");
+				}
+				list.add(map);
+			}
 		}
+		
+		
 		if (getDonViKiemTraDeXuat() != null) {
 			map = new HashMap<>();
 			map.put("donViId", getDonViKiemTraDeXuat().getId());
@@ -2133,7 +2165,7 @@ public class Don extends Model<Don> {
 		if (getThongTinGiaiQuyetDon() != null) {
 			List<GiaiQuyetDon> giaiQuyetDons = thongTinGiaiQuyetDon.getGiaiQuyetDons();
 			if (giaiQuyetDons != null) {
-				if (thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null 
+				if (thongTinGiaiQuyetDon.getDonViTheoDoiThucHien() != null && thongTinGiaiQuyetDon.getDonViThamTraXacMinh() != null
 						&& thongTinGiaiQuyetDon.getDonViThamTraXacMinh().getId().equals(thongTinGiaiQuyetDon.getDonViTheoDoiThucHien().getId())) {
 					for (GiaiQuyetDon gqd : giaiQuyetDons) {
 						Long idDonViGiaiQuyet = gqd.getDonViGiaiQuyet() != null ? gqd.getDonViGiaiQuyet().getId() : 0L;
@@ -2489,11 +2521,28 @@ public class Don extends Model<Don> {
 			map.put("quyenTuXuLy", isTuXuLyXLDGQD());
 			list.add(map);
 		}
-		if (getDonViThamTraXacMinh() != null) {
-			map = new HashMap<>();
-			map.put("donViId", getDonViThamTraXacMinh().getId());
-			map.put("quyenTuXuLy", isTuXuLyTTXM());
-			list.add(map);
+		
+		if (getDonViTheoDoiThucHien() != null && getDonViThamTraXacMinh() != null 
+				&& getDonViTheoDoiThucHien().getId().equals(getDonViThamTraXacMinh().getId())) {
+			if (getDonViTheoDoiThucHien() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViTheoDoiThucHien().getId());
+				map.put("quyenTuXuLy", isTuXuLyTDTH());
+				list.add(map);
+			}
+		} else {
+			if (getDonViThamTraXacMinh() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViThamTraXacMinh().getId());
+				map.put("quyenTuXuLy", isTuXuLyTTXM());
+				list.add(map);
+			}
+			if (getDonViTheoDoiThucHien() != null) {
+				map = new HashMap<>();
+				map.put("donViId", getDonViTheoDoiThucHien().getId());
+				map.put("quyenTuXuLy", isTuXuLyTDTH());
+				list.add(map);
+			}
 		}
 		if (getDonViKiemTraDeXuat() != null) {
 			map = new HashMap<>();
